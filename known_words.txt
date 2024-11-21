@@ -1,0 +1,4 @@
+zabbix
+md
+autoregistration
+mkdocs
