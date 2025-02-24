@@ -1,0 +1,3096 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="An open-source Zabbix book">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://penmasters.github.io/zabbix-book/print_page/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.5">
+    
+    
+      
+        <title>Print Book - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CNunito:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Nunito"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("/zabbix-book/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+        <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
+        })
+        </script>
+        </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Select version";
+        const gGMC_TRANSLATE_CTA = "";
+        const gGMC_PAGE_LOCALE = "";
+        const gGMC_FILE_LOCALE = "";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Print Book
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../fr/ch9-zabbix-extending/chapter/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../de/ch9-zabbix-extending/chapter/" hreflang="de" class="md-select__link">
+              German
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../it/ch9-zabbix-extending/chapter/" hreflang="it" class="md-select__link">
+              Italian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../nl/ch9-zabbix-extending/chapter/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../pt/ch9-zabbix-extending/chapter/" hreflang="pt" class="md-select__link">
+              Portuguese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../es/ch9-zabbix-extending/chapter/" hreflang="es" class="md-select__link">
+              Spanish
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../th/ch9-zabbix-extending/chapter/" hreflang="th" class="md-select__link">
+              ภาษาไทย
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../zh/ch9-zabbix-extending/chapter/" hreflang="zh" class="md-select__link">
+              中国人
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../ch9-zabbix-extending/chapter/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guidlines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch0-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Getting started
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch1-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 1 : Zabbix components
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch2-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 2 : Installation
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch3-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 3 : Proxies and Webcomponents
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch4-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 4 : Collecting data 
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch5-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 5 : Triggers
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch6-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 6 : Templates
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch7-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 7 : Alerting
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch8-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 8 : LLD
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch9-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 9 : Extending Zabbix
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch10-zabbix-discovery/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 10 : Discovery
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch11-zabbix-visualisation/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 11 : Visualisation
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 12 : Zabbix API
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../ch13-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 13 : Real world examples
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#" class="md-nav__link">
+    <span class="md-ellipsis">
+      Welcome
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Guidlines
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting started
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting started">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch0-getting-started-initial-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Started with Zabbix – Unlocking the Power of Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch0-getting-started-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Requirements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-1-zabbix-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 1 : Zabbix components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 1 : Zabbix components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch1-zabbix-components-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zabbix components, basic functions and installation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch1-zabbix-components-basic-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic installation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch1-zabbix-components-ha-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      HA Setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-2-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 2 : Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 2 : Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch2-zabbix-installation-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting started with the Zabbix installation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch2-zabbix-installation-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch2-zabbix-installation-host-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Host groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch2-zabbix-installation-user-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      User groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch2-zabbix-installation-external-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      External authentication
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-3-proxies-and-webcomponents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 3 : Proxies and Webcomponents
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 3 : Proxies and Webcomponents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch3-zabbix-proxies-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxies and the Web services component
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch3-zabbix-proxies-passive-proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Passive Proxies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch3-zabbix-proxies-active-proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Active proxies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch3-zabbix-proxies-web-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web services
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-4-collecting-data-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 4 : Collecting data 
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 4 : Collecting data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch4-zabbix-collecting-data-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Collecting data with your Zabbix environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch4-zabbix-collecting-data-dataflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dataflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch4-zabbix-collecting-data-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protocols
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch4-zabbix-collecting-data-hosts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hosts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-5-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 5 : Triggers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 5 : Triggers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch5-zabbix-triggers-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting up triggers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch5-zabbix-triggers-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Triggers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ch5-zabbix-triggers-advanced-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced triggers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-6-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 6 : Templates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 6 : Templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch6-zabbix-templates-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building and using templates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-7-alerting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 7 : Alerting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 7 : Alerting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch7-zabbix-alerts-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sending out alerts with Zabbix
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-8-lld" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 8 : LLD
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 8 : LLD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch8-zabbix-lld-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Low level discovery to automate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-9-extending-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 9 : Extending Zabbix
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 9 : Extending Zabbix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch9-zabbix-extending-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Leveraging custom items for extending the Zabbix environment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-10-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 10 : Discovery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 10 : Discovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch10-zabbix-discovery-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automating Your Monitoring with Auto Discovery and Active Agent Auto Registration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-11-visualisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 11 : Visualisation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 11 : Visualisation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch11-zabbix-visualisation-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graphs, Dashboards, Reports, Maps and other visualisation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-12-zabbix-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 12 : Zabbix API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 12 : Zabbix API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch12-zabbix-api-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zabbix API
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-chapter-13-real-world-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter 13 : Real world examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 13 : Real world examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ch13-zabbix-real-world-examples-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zabbix real world examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+
+
+
+
+                  
+
+
+
+<div id="print-site-page" class="print-site-enumerate-figures">
+        <section id="print-site-cover-page">
+            <div>
+<img src="../assets/img/cover.jpg" />
+</div>
+
+
+<table>
+
+    
+    <tr>
+        <td>Description</td>
+        <td>An open-source Zabbix book</td>
+    </tr>
+    
+
+    
+    <tr>
+        <td>Author(s)</td>
+        <td>The Monitoring Penmasters</td>
+    </tr>
+    
+
+    
+    <tr>
+        <td>Repository</td>
+        <td><a href="https://github.com/penmasters/zabbix-book">https://github.com/penmasters/zabbix-book</a></td>
+    </tr>
+    
+
+    
+    <tr>
+        <td>Copyright</td>
+        <td>Copyright &copy; 2025 Stichting The Monitoring Penmasters</td>
+    </tr>
+    
+
+</table>
+        </section>
+        
+        <section class="print-page">
+            <div id="print-page-toc" data-toc-depth="6">
+                <nav role='navigation' class='print-page-toc-nav'>
+                <h1 class='print-page-toc-title'>Table of Contents</h1>
+                </nav>
+            </div>
+        </section>
+        <section class="print-page" id="index"><h1 id="index-about-page">About page<a class="headerlink" href="#index-about-page" title="Permanent link">&para;</a></h1>
+<h2 id="index-license">License<a class="headerlink" href="#index-license" title="Permanent link">&para;</a></h2>
+<p>Please before you start take a look at our most updated license : <a href="https://github.com/penmasters/zabbix-book/blob/main/readme.md">License</a>
+on Github.</p>
+<p><em>The Zabbix Book</em> is a freely accessible resource designed to help users understand
+and master Zabbix. Contributions are highly encouraged to improve and expand its
+content. However, the book is distributed under the
+<strong>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)</strong>
+license, meaning it is free for non-commercial use only.</p>
+<p>Contributors should be aware that:</p>
+<ul>
+<li>By contributing to this work, you irrevocably assign and transfer all rights, title,
+and interest in your contributions to <strong>The Monitoring Penmasters Foundation</strong>,
+including any associated intellectual property rights, to the fullest extent permitted by law.</li>
+<li><strong>The Monitoring Penmasters Foundation</strong> reserves the right to use, reproduce,
+modify, distribute, and commercially exploit any contributed material in any form,
+including but not limited to the publication of physical and digital books.</li>
+<li>All contributors must sign a <strong>Deed of Transfer of Intellectual Property Rights</strong> before making
+any contributions, ensuring the proper transfer of rights and handling of the content
+by <strong>The Monitoring Penmasters Foundation</strong>. Any contributions without a signed
+<strong>Deed of Transfer of Intellectual Property Rights</strong> cannot be accepted.</li>
+<li>All profits generated will be used by The Monitoring Penmasters Foundation to cover
+operational expenses and to sponsor other open-source projects, as determined by the foundation.</li>
+</ul>
+<p>Your contributions are invaluable and will help make <em>The Zabbix Book</em> an even greater
+resource for the entire community!</p>
+<p>Shield: <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="CC BY-NC-SA 4.0" src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg" /></a></p>
+<p><a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
+<p><a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="CC BY-NC-SA 4.0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a></p></section><section class="print-page" id="guidelines"><h1 id="guidelines-guidelines">Guidelines<a class="headerlink" href="#guidelines-guidelines" title="Permanent link">&para;</a></h1>
+<h2 id="guidelines-how-to-contribute">How to contribute<a class="headerlink" href="#guidelines-how-to-contribute" title="Permanent link">&para;</a></h2>
+<pre class="copy"><code class="language-yaml"></code></pre>
+<ul>
+<li>Clone the repository to you pc</li>
+<li>Install the needed software for Mkdocs to work, check
+  how-to-install-mkdocs.md</li>
+<li>Create a new branch to make your changes<ul>
+<li>git branch "&lt;your branch name&gt;"</li>
+<li>git checkout "&lt;your branch name&gt;"</li>
+</ul>
+</li>
+<li>Make the changes you want and commit them<ul>
+<li>git add "files you changed"</li>
+<li>git commit -m "add useful commit info"</li>
+</ul>
+</li>
+<li>Return back to the main branch<ul>
+<li>git checkout main</li>
+</ul>
+</li>
+<li>Make sure you have the latest changes merged from main<ul>
+<li>git pull origin main</li>
+</ul>
+</li>
+<li>Merge your branch into the main branch<ul>
+<li>git merge "&lt;your branch name&gt;"</li>
+<li>git push</li>
+</ul>
+</li>
+<li>cleanup your branch<ul>
+<li>git branch -d "&lt;your branch name&gt;"</li>
+</ul>
+</li>
+</ul>
+<pre><code></code></pre></section>
+                        <h1 class='nav-section-title' id='section-getting-started'>
+                            Getting started <a class='headerlink' href='#section-getting-started' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch0-getting-started-initial-steps"><h1 id="ch0-getting-started-initial-steps-getting-started-with-zabbix-unlocking-the-power-of-monitoring">Getting Started with Zabbix – Unlocking the Power of Monitoring<a class="headerlink" href="#ch0-getting-started-initial-steps-getting-started-with-zabbix-unlocking-the-power-of-monitoring" title="Permanent link">&para;</a></h1>
+<p>Welcome to the world of <strong>Zabbix</strong>, a powerful open-source monitoring solution
+designed to give you comprehensive insights into your IT infrastructure.
+Whether you're managing a small network or overseeing a large-scale enterprise
+system, Zabbix provides the tools you need to monitor performance, detect issues,
+and ensure the smooth operation of your services.</p>
+<p>In this book, we focus on <strong>Zabbix LTS 8.0</strong>, the long-term support version that
+ensures stability and reliability for your monitoring needs. We'll explore its
+extensive feature set, including the newly introduced <strong>reporting functionality</strong>
+and <strong>built-in web monitoring</strong> based on the Selenium driver, which allows for
+sophisticated end-user experience monitoring through automated browser interactions.</p>
+<p>Zabbix is more than just a simple monitoring tool. It offers a wide range of
+features that allow you to:</p>
+<ul>
+<li><strong>Monitor diverse environments</strong>: Track the performance and availability of
+servers, virtual machines, network devices, databases, and applications.</li>
+<li><strong>Create dynamic visualizations</strong>: Use dashboards, graphs, maps, and screens
+to visualize data and get an overview of your system's health at a glance.</li>
+<li><strong>Set up complex alerting mechanisms</strong>: Define triggers and actions that notify
+you of potential issues before they become critical, using various channels
+like email, SMS, and integrations with external services.</li>
+<li><strong>Automate monitoring tasks</strong>: Leverage auto-discovery and auto-registration to
+keep up with changing environments without manual intervention.</li>
+<li><strong>Customize and extend</strong>: Build custom scripts, templates, and integrations to
+tailor Zabbix to your specific needs.</li>
+</ul></section><section class="print-page" id="ch0-getting-started-requirements"><h1 id="ch0-getting-started-requirements-system-requirements">System Requirements<a class="headerlink" href="#ch0-getting-started-requirements-system-requirements" title="Permanent link">&para;</a></h1>
+<h1 id="ch0-getting-started-requirements-requirements">Requirements<a class="headerlink" href="#ch0-getting-started-requirements-requirements" title="Permanent link">&para;</a></h1>
+<p>Zabbix has specific hardware and software requirements that must be met,
+and these requirements may change over time. They also depend on the size of your
+setup and the software stack you select.
+Before purchasing hardware or installing a database version, it's essential to
+consult the Zabbix documentation for the most up-to-date requirements for the
+version you plan to install.
+You can find the latest requirements <a href="https://www.zabbix.com/documentation/current/en/manual/installation/requirements">https://www.zabbix.com/documentation/current/en/manual/installation/requirements</a>.
+Make sure to select the correct Zabbix version from the list.</p>
+<p>For smaller or test setups, Zabbix can comfortably run on a system with 2 CPUs
+and 8 GB of RAM. However, your setup size, the number of items you monitor,
+the triggers you create, and how long you plan to retain data will impact
+resource requirements.
+In today's virtualised environments, my advice is to start small and scale up
+as needed.</p>
+<p>You can install all components (Zabbix server, database, web server) on a single
+machine or distribute them across multiple servers.
+For simplicity, take note of the server details:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">IP Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Zabbix Server</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Database Server</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Web Server</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>Zabbix package names often use dashes (<code>-</code>) in their names, such as <code>zabbix-get</code>
+or <code>zabbix-sender</code>, but the binaries themselves may use underscores (<code>_</code>),
+like <code>zabbix_sender</code> or <code>zabbix_server</code>. This naming discrepancy can sometimes
+be confusing, particularly if you are using packages from non-official Zabbix
+repositories.
+Always check if a binary uses a dash or an underscore when troubleshooting.</p>
+</details>
+<hr />
+<h2 id="ch0-getting-started-requirements-basic-os-configuration">Basic OS Configuration<a class="headerlink" href="#ch0-getting-started-requirements-basic-os-configuration" title="Permanent link">&para;</a></h2>
+<p>Operating systems, so many choices, each with its own advantages and loyal user base.
+While Zabbix can be installed on a wide range of platforms, documenting the process
+for every available OS would be impractical. To keep this book focused and efficient,
+we have chosen to cover only the most widely used options: Ubuntu and Red Hat based
+distributions.</p>
+<p>Since not everyone has access to a Red Hat Enterprise Linux (RHEL) subscription even
+though a developer account provides limited access we have opted for Rocky Linux
+as a readily available alternative. For this book, we will be using
+Rocky Linux 9.x and Ubuntu LTS 24.04.x.</p>
+<ul>
+<li><a href="https://rockylinux.org/">https://rockylinux.org/</a></li>
+<li><a href="https://ubuntu.com/">https://ubuntu.com/</a></li>
+</ul>
+<h3 id="ch0-getting-started-requirements-firewall">Firewall<a class="headerlink" href="#ch0-getting-started-requirements-firewall" title="Permanent link">&para;</a></h3>
+<p>Before installing Zabbix, it's essential to properly prepare the operating system.
+The first step is to ensure that the firewall is installed and configured.</p>
+<p>To install and enable the firewall, run the following command:</p>
+<pre><code class="language-bash">RedHat
+# dnf install firewalld
+# systemctl enable firewalld --now
+
+Ubuntu
+# sudo apt install ufw -y
+# sudo ufw enable
+</code></pre>
+<p>Once installed, you can configure the necessary ports.
+For Zabbix, we need to allow access to port <code>10051/tcp</code>, which is where the
+Zabbix trapper listens for incoming data. Use the following command to open
+this port in the firewall:</p>
+<pre><code class="language-bash">RedHat
+# firewall-cmd --add-service=zabbix-server --permanent
+
+Ubuntu
+# sudo ufw allow 10051/tcp
+</code></pre>
+<p>If the service is not recognized, you can manually specify the port:</p>
+<pre><code class="language-bash"># firewall-cmd --add-port=10051/tcp --permanent
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">firewalld</p>
+<p>"Firewalld is the replacement for iptables in RHEL-based systems and allows
+changes to take effect immediately without needing to restart the service.
+If your distribution does not use <a href="https://www.firewalld.org">Firewalld</a>,
+refer to your OS documentation for the appropriate firewall configuration steps."
+Ubuntu makes use of UFW and is merely a frontend for iptables.</p>
+</div>
+<hr />
+<h3 id="ch0-getting-started-requirements-time-server">Time Server<a class="headerlink" href="#ch0-getting-started-requirements-time-server" title="Permanent link">&para;</a></h3>
+<p>Another crucial step is configuring the time server and syncing the Zabbix server
+using an NTP client.
+Accurate time synchronization is vital for Zabbix, both for the server and the
+devices it monitors.
+If one of the hosts has an incorrect time zone, it could lead to confusion, such
+as investigating an issue in Zabbix that appears to have happened hours earlier
+than it actually did.</p>
+<p>To install and enable chrony, our NTP client, use the following command:</p>
+<pre><code class="language-bash">RedHat
+# dnf install chrony
+# systemctl enable chronyd --now
+
+Ubuntu
+# sudo apt install chrony -y
+</code></pre>
+<p>Once installed, you can verify that Chrony is enabled and running by checking
+its status:</p>
+<pre><code class="language-bash">RedHat
+# systemctl status chronyd
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">dnf</p>
+<p>"dnf is a package manager used in Red Hat-based systems. If you're using another
+distribution, replace <code>dnf</code> with your appropriate package manager, such as <code>zyper</code>,
+<code>apt</code>, or <code>yum</code>. Chrony is a modern replacement for <code>ntpd</code>, offering faster and
+more accurate time synchronization.
+If your OS does not support <a href="https://chrony-project.org/">Chrony</a>, consider using
+<code>ntpd</code> instead."</p>
+</div>
+<p>Once Chrony is installed, the next step is to ensure the correct time zone is set. You can view your current time configuration using the <code>timedatectl</code> command:</p>
+<pre><code class="language-bash"># timedatectl
+               Local time: Thu 2023-11-16 15:09:14 UTC
+           Universal time: Thu 2023-11-16 15:09:14 UTC
+                 RTC time: Thu 2023-11-16 15:09:15
+                Time zone: UTC (UTC, +0000)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+</code></pre>
+<p>Ensure that the Chrony service is active (refer to the previous steps if needed).
+To set the correct time zone, first, you can list all available time zones with
+the following command:</p>
+<pre><code class="language-bash"># timedatectl list-timezones
+</code></pre>
+<p>This will display a list of time zones, from which you can select the one closest
+to your location, for example:</p>
+<pre><code class="language-bash">Africa/Abidjan
+Africa/Accra
+...
+Pacific/Tongatapu
+Pacific/Wake
+Pacific/Wallis
+UTC
+</code></pre>
+<p>Once you've identified your time zone, configure it using the following command:</p>
+<pre><code class="language-bash"># timedatectl set-timezone Europe/Brussels
+</code></pre>
+<p>To verify that the time zone has been configured correctly, use the <code>timedatectl</code>
+command again:</p>
+<pre><code class="language-bash"># timedatectl
+               Local time: Thu 2023-11-16 16:13:35 CET
+           Universal time: Thu 2023-11-16 15:13:35 UTC
+                 RTC time: Thu 2023-11-16 15:13:36
+                Time zone: Europe/Brussels (CET, +0100)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+</code></pre>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Some administrators prefer installing all servers in the UTC time zone to
+ensure that server logs across global deployments are synchronized.
+Zabbix supports user-based time zone settings, which allows the server to
+remain in UTC while individual users can adjust the time zone via the
+interface if needed.</p>
+</details>
+<hr />
+<h3 id="ch0-getting-started-requirements-verifying-chrony-synchronization">Verifying Chrony Synchronization<a class="headerlink" href="#ch0-getting-started-requirements-verifying-chrony-synchronization" title="Permanent link">&para;</a></h3>
+<p>To ensure that Chrony is synchronizing with the correct time servers, you can
+run the following command:</p>
+<pre><code class="language-bash"># chronyc
+</code></pre>
+<p>The output should resemble:</p>
+<pre><code class="language-bash">chrony version 4.2
+Copyright (C) 1997-2003, 2007, 2009-2021 Richard P. Curnow and others
+chrony comes with ABSOLUTELY NO WARRANTY.  This is free software, and
+you are welcome to redistribute it under certain conditions.  See the
+GNU General Public License version 2 for details.
+
+chronyc&gt;
+</code></pre>
+<p>Once inside the Chrony prompt, type the following to check the sources:</p>
+<pre><code class="language-bash">chronyc&gt; sources
+</code></pre>
+<p>Example output:</p>
+<pre><code class="language-bash">MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^- 51-15-20-83.rev.poneytel&gt;     2   9   377   354   +429us[ +429us] +/-  342ms
+^- 5.255.99.180                  2  10   377   620  +7424us[+7424us] +/-   37ms
+^- hachi.paina.net               2  10   377   412   +445us[ +445us] +/-   39ms
+^* leontp1.office.panq.nl        1  10   377   904  +6806ns[ +171us] +/- 2336us
+</code></pre>
+<p>In this example, the NTP servers in use are located outside your local region.
+It is recommended to switch to time servers in your country or, if available,
+to a dedicated company time server. You can find local NTP servers
+<a href="https://www.ntppool.org/">here</a>.</p>
+<hr />
+<h3 id="ch0-getting-started-requirements-updating-time-servers">Updating Time Servers<a class="headerlink" href="#ch0-getting-started-requirements-updating-time-servers" title="Permanent link">&para;</a></h3>
+<p>To update the time servers, modify the <code>/etc/chrony.conf</code> file under RedHat based systems if you use Ubuntu edit <code>/etc/chrony/chrony.conf</code> . Replace the existing
+NTP server with one closer to your location.</p>
+<p>Example of the current configuration:</p>
+<pre><code class="language-bash"># Use public servers from the pool.ntp.org project.
+# Please consider joining the pool (http://www.pool.ntp.org/join.html).
+pool 2.centos.pool.ntp.org iburst
+</code></pre>
+<p>Change the pools you want to a local time server:</p>
+<pre><code class="language-bash"># Use public servers from the pool.ntp.org project.
+# Please consider joining the pool (http://www.pool.ntp.org/join.html).
+pool be.pool.ntp.org iburst
+</code></pre>
+<p>After making this change, restart the Chrony service to apply the new configuration:</p>
+<pre><code class="language-bash"># systemctl restart chronyd
+</code></pre>
+<h3 id="ch0-getting-started-requirements-verifying-updated-time-servers">Verifying Updated Time Servers<a class="headerlink" href="#ch0-getting-started-requirements-verifying-updated-time-servers" title="Permanent link">&para;</a></h3>
+<p>Check the time sources again to ensure that the new local servers are in use:</p>
+<pre><code class="language-bash">chronyc&gt; sources
+</code></pre>
+<p>Example of expected output with local servers:</p>
+<pre><code class="language-bash">MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^- ntp1.unix-solutions.be        2   6    17    43   -375us[ -676us] +/-   28ms
+^* ntp.devrandom.be              2   6    17    43   -579us[ -880us] +/- 2877us
+^+ time.cloudflare.com           3   6    17    43   +328us[  +27us] +/- 2620us
+^+ time.cloudflare.com           3   6    17    43
+</code></pre>
+<p>This confirms that the system is now using local time servers.</p></section><h1 class='nav-section-title-end'>Ended: Getting started</h1>
+                        <h1 class='nav-section-title' id='section-chapter-1-zabbix-components'>
+                            Chapter 1 : Zabbix components <a class='headerlink' href='#section-chapter-1-zabbix-components' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch1-zabbix-components-chapter"><h1 id="ch1-zabbix-components-chapter-zabbix-components-basic-functions-and-installation">Zabbix components, basic functions and installation<a class="headerlink" href="#ch1-zabbix-components-chapter-zabbix-components-basic-functions-and-installation" title="Permanent link">&para;</a></h1>
+<p>In this chapter, we expand on the foundational knowledge from the "Getting Started"
+section to provide a comprehensive guide for both beginners who are installing
+Zabbix for the first time and advanced users who seek to optimize their setup.
+We’ll not only cover the essential steps for a basic installation but also delve
+into the finer details of Zabbix architecture, components, and best practices.</p>
+<p>We’ll start by walking through the installation process, ensuring you have a solid
+foundation to build on. From there, we'll move into the core components of
+Zabbix, what each one does, how they interact, and why they are crucial to your
+monitoring solution.
+You'll learn about subprocesses, their roles, and how they contribute to Zabbix
+efficiency and reliability.</p>
+<p>Additionally, we’ll explore good architectural choices that can make or break
+your monitoring setup. Whether you're managing a small network or a large-scale
+infrastructure, making the right design decisions early on will pay dividends
+in scalability, performance, and maintenance.</p>
+<p>This chapter is designed to cater to a wide range of readers.
+If you're simply looking to get Zabbix up and running, you'll find clear, step-by-step
+instructions. For those wanting to dive deeper, we'll provide detailed insights into
+how Zabbix functions under the hood, helping you make informed choices that align
+with your needs and future growth plans.</p>
+<p>By the end of this chapter, you will have not only a working Zabbix installation
+but also a thorough understanding of its components and architecture, empowering
+you to leverage Zabbix to its fullest potential, regardless of the complexity of
+your environment.</p>
+<p>Let’s embark on this detailed journey into Zabbix and equip ourselves with the
+knowledge to both start and optimize a powerful monitoring solution.</p></section><section class="print-page" id="ch1-zabbix-components-basic-installation"><h1 id="ch1-zabbix-components-basic-installation-basic-installation">Basic installation<a class="headerlink" href="#ch1-zabbix-components-basic-installation-basic-installation" title="Permanent link">&para;</a></h1>
+<p>In this chapter, we will walk through the process of installing the Zabbix server.
+There are many different ways to setup a Zabbix server. We will cover the most
+common setups with MariaDB and PostgreSQL on Ubuntu and on Rocky Linux.</p>
+<p>Before beginning the installation, it is important to understand the architecture
+of Zabbix.
+The Zabbix server is structured in a modular fashion, composed of three main components,
+which we will discuss in detail.</p>
+<ul>
+<li>The Zabbix server</li>
+<li>The Zabbix web server</li>
+<li>The Zabbix database</li>
+</ul>
+<p><img align="left" alt="overview" src="../ch1-zabbix-components/basic-installation/zabbix-server.png" />
+<em>1.1 Zabbix basic split installation</em></p>
+<p>All of these components can either be installed on a single server or distributed
+across three separate servers. The core of the system is the Zabbix server, often
+referred to as the "brain." This component is responsible for processing trigger
+calculations and sending alerts. The database serves as the storage for the Zabbix
+server’s configuration and all the data it collects. The web server provides the
+user interface (front-end) for interacting with the system. It is important to note
+that the Zabbix API is part of the front-end component, not the Zabbix server itself.</p>
+<p>These components must function together seamlessly, as illustrated in the diagram
+above. The Zabbix server must read configurations and store monitoring data in the
+database, while the front-end needs access to read and write configuration data.
+Furthermore, the front-end must be able to check the status of the Zabbix server
+and retrieve additional necessary information to ensure smooth operation.</p>
+<p>For our setup, we will be using two virtual machines (VMs): one VM will host both
+the Zabbix server and the Zabbix web front-end, while the second VM will host the
+Zabbix database.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>It's perfect possible to install all components on 1 single VM or every component
+on a separate VM.
+Reason we split the DB as an example is because the database will probably be the
+first component giving you performance headaches. It's also the component that
+needs some extra attention when we split it so for this reason we have chosen
+in this example to split the database from the rest of the setup.</p>
+</details>
+<p>We will cover the following topics:</p>
+<ul>
+<li>Install our Database based on MariaDB.</li>
+<li>Install our Database based on PostgreSQL.</li>
+<li>Installing the Zabbix server.</li>
+<li>Install the frontend.</li>
+</ul>
+<h2 id="ch1-zabbix-components-basic-installation-installing-the-mariadb-database">Installing the MariaDB database<a class="headerlink" href="#ch1-zabbix-components-basic-installation-installing-the-mariadb-database" title="Permanent link">&para;</a></h2>
+<p>To begin the installation process for the MariaDB server, the first step involves
+manually creating a repository configuration file. This file, mariadb.repo on Rocky,
+must be placed in the /etc/yum.repos.d/ directory. The repository file will allow
+your package manager to locate and install the necessary MariaDB components.
+For Ubuntu we need to import the repository keys and create a file for example
+'/etc/apt/sources.list.d/mariadb.sources'.</p>
+<p>To create the MariaDB repository file, execute the following command in your terminal:</p>
+<pre><code class="language-bash">RedHat
+# vi /etc/yum.repos.d/mariadb.repo
+
+Ubuntu
+# sudo apt-get install apt-transport-https curl
+# sudo mkdir -p /etc/apt/keyrings
+#sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+
+# sudo vi /etc/apt/sources.list.d/mariadb.sources
+</code></pre>
+<p>This will open a text editor where you can input the repository configuration details.
+Once the repository is configured, you can proceed with the installation of MariaDB
+using your package manager.</p>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>Always check Zabbix documentation for the latest supported versions.</p>
+</details>
+<p>The latest config can be found here:
+https://mariadb.org/download/?t=repo-config</p>
+<p>Here’s the configuration you need to add into the file:</p>
+<pre><code class="language-bash">RedHat
+# MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-02-21 10:15 UTC
+# https://mariadb.org/download/
+[mariadb]
+name = MariaDB
+# rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+# baseurl = https://rpm.mariadb.org/11.4/rhel/$releasever/$basearch
+baseurl = https://mirror.bouwhuis.network/mariadb/yum/11.4/rhel/$releasever/$basearch
+# gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgkey = https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
+gpgcheck = 1
+
+Ubuntu
+# MariaDB 11.4 repository list - created 2025-02-21 11:42 UTC
+# https://mariadb.org/download/
+X-Repolib-Name: MariaDB
+Types: deb
+# deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+# URIs: https://deb.mariadb.org/11.4/ubuntu
+URIs: https://mirror.bouwhuis.network/mariadb/repo/11.4/ubuntu
+Suites: noble
+Components: main main/debug
+Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+</code></pre>
+<p>After saving the file, ensure that everything is properly set up and that your
+MariaDB version is compatible with your Zabbix version to avoid potential
+integration issues.</p>
+<p>Before proceeding with the MariaDB installation, it’s a best practice to ensure
+your operating system is up-to-date with the latest patches and security fixes.
+This will help maintain system stability and compatibility with the software you're
+about to install.</p>
+<p>To update your OS, run the following command:</p>
+<pre><code class="language-bash">RedHat
+# dnf update -y
+
+
+Ubuntu
+sudo apt-get update
+</code></pre>
+<p>This command will automatically fetch and install the latest updates available for
+your system, applying security patches, performance improvements, and bug fixes.
+Once the update process is complete, you can move forward with the MariaDB installation.</p>
+<h3 id="ch1-zabbix-components-basic-installation-install-the-mariadb-database">Install the MariaDB database<a class="headerlink" href="#ch1-zabbix-components-basic-installation-install-the-mariadb-database" title="Permanent link">&para;</a></h3>
+<p>With the operating system updated and the MariaDB repository configured, you are
+now ready to install the MariaDB server and client packages. This will provide the
+necessary components to run and manage your database.</p>
+<p>To install the MariaDB server and client, execute the following command:</p>
+<pre><code class="language-bash">RedHat
+# dnf install MariaDB-server MariaDB-client
+
+Ubuntu
+sudo apt-get install mariadb-server
+</code></pre>
+<p>This command will download and install both the server and client packages, enabling
+you to set up, configure, and interact with your MariaDB database. Once the
+installation is complete, you can proceed to start and configure the MariaDB service.</p>
+<p>Now that MariaDB is installed, we need to enable the service to start automatically
+upon boot and start it immediately. Use the following command to accomplish this:</p>
+<pre><code class="language-bash">RedHat
+# systemctl enable mariadb --now
+</code></pre>
+<p>This command will both enable and start the MariaDB service. Once the service is
+running, you can verify that the installation was successful by checking the
+version of MariaDB using the following command:</p>
+<pre><code class="language-bash">RedHat and Ubuntu
+# mariadb -V
+</code></pre>
+<p>The expected output should resemble this:</p>
+<pre><code>mariadb from 11.4.5-MariaDB, client 15.2 for Linux (aarch64) using  EditLine wrapper
+</code></pre>
+<p>To ensure that the MariaDB service is running properly, you can check its status
+with the following command:</p>
+<pre><code class="language-bash">RedHat and Ubuntu
+# systemctl status mariadb
+</code></pre>
+<p>You should see an output similar to this, indicating that the MariaDB service
+is active and running:</p>
+<pre><code class="language-bash">mariadb.service - MariaDB 11.4.5 database server
+     Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
+    Drop-In: /etc/systemd/system/mariadb.service.d
+             └─migrated-from-my.cnf-settings.conf
+     Active: active (running) since Fri 2025-02-21 11:22:59 CET; 2min 8s ago
+       Docs: man:mariadbd(8)
+             https://mariadb.com/kb/en/library/systemd/
+    Process: 23147 ExecStartPre=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
+    Process: 23148 ExecStartPre=/bin/sh -c [ ! -e /usr/bin/galera_recovery ] &amp;&amp; VAR= ||   VAR=`/usr/bin/galera_recovery`; [ $? -eq 0 ]   &amp;&amp; systemctl set-enviro&gt;
+    Process: 23168 ExecStartPost=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
+   Main PID: 23156 (mariadbd)
+     Status: &quot;Taking your SQL requests now...&quot;
+      Tasks: 7 (limit: 30620)
+     Memory: 281.7M
+        CPU: 319ms
+     CGroup: /system.slice/mariadb.service
+             └─23156 /usr/sbin/mariadbd
+
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Plugin 'FEEDBACK' is disabled.
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Plugin 'wsrep-provider' is disabled.
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] InnoDB: Buffer pool(s) load completed at 250221 11:22:58
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Server socket created on IP: '0.0.0.0'.
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Server socket created on IP: '::'.
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] mariadbd: Event Scheduler: Loaded 0 events
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] /usr/sbin/mariadbd: ready for connections.
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: Version: '11.4.5-MariaDB'  socket: '/var/lib/mysql/mysql.sock'  port: 3306  MariaDB Server
+Feb 21 11:22:59 localhost.localdomain systemd[1]: Started MariaDB 11.4.5 database server.
+</code></pre>
+<p>This confirms that your MariaDB server is up and running, ready for further configuration.</p>
+<h3 id="ch1-zabbix-components-basic-installation-securing-the-mariadb-database">Securing the MariaDB Database<a class="headerlink" href="#ch1-zabbix-components-basic-installation-securing-the-mariadb-database" title="Permanent link">&para;</a></h3>
+<p>To enhance the security of your MariaDB server, it's essential to remove unnecessary
+test databases, anonymous users, and set a root password. This can be done using the
+mariadb-secure-installation script, which provides a step-by-step guide to securing
+your database.</p>
+<p>Run the following command:</p>
+<pre><code class="language-bash">RedHat and Ubuntu
+# sudo mariadb-secure-installation
+</code></pre>
+<pre><code>NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
+      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
+
+In order to log into MariaDB to secure it, we'll need the current
+password for the root user. If you've just installed MariaDB, and
+haven't set the root password yet, you should just press enter here.
+
+Enter current password for root (enter for none):
+OK, successfully used password, moving on...
+
+Setting the root password or using the unix_socket ensures that nobody
+can log into the MariaDB root user without the proper authorisation.
+
+You already have your root account protected, so you can safely answer 'n'.
+
+Switch to unix_socket authentication [Y/n] n
+ ... skipping.
+
+You already have your root account protected, so you can safely answer 'n'.
+
+Change the root password? [Y/n] y
+New password:
+Re-enter new password:
+Password updated successfully!
+Reloading privilege tables..
+ ... Success!
+
+
+By default, a MariaDB installation has an anonymous user, allowing anyone
+to log into MariaDB without having to have a user account created for
+them.  This is intended only for testing, and to make the installation
+go a bit smoother.  You should remove them before moving into a
+production environment.
+
+Remove anonymous users? [Y/n] y
+ ... Success!
+
+Normally, root should only be allowed to connect from 'localhost'.  This
+ensures that someone cannot guess at the root password from the network.
+
+Disallow root login remotely? [Y/n] y
+ ... Success!
+
+By default, MariaDB comes with a database named 'test' that anyone can
+access.  This is also intended only for testing, and should be removed
+before moving into a production environment.
+
+Remove test database and access to it? [Y/n] y
+ - Dropping test database...
+ ... Success!
+ - Removing privileges on test database...
+ ... Success!
+
+Reloading the privilege tables will ensure that all changes made so far
+will take effect immediately.
+
+Reload privilege tables now? [Y/n] y
+ ... Success!
+
+Cleaning up...
+
+All done!  If you've completed all of the above steps, your MariaDB
+installation should now be secure.
+
+Thanks for using MariaDB!
+</code></pre>
+<p>The mariadb-secure-installation script will guide you through several key steps:</p>
+<ol>
+<li>Set a root password if one isn't already set.</li>
+<li>Remove anonymous users.</li>
+<li>Disallow remote root logins.</li>
+<li>Remove the test database.</li>
+<li>Reload the privilege tables to ensure the changes take effect.</li>
+</ol>
+<p>Once complete, your MariaDB instance will be significantly more secure. You are
+now ready to configure the database for Zabbix.</p>
+<h3 id="ch1-zabbix-components-basic-installation-create-the-zabbix-database">Create the Zabbix database<a class="headerlink" href="#ch1-zabbix-components-basic-installation-create-the-zabbix-database" title="Permanent link">&para;</a></h3>
+<p>With MariaDB now set up and secured, we can move on to creating the database for
+Zabbix. This database will store all the necessary data related to your Zabbix server,
+including configuration information and monitoring data.</p>
+<p>Follow these steps to create the Zabbix database:</p>
+<p>Log in to the MariaDB shell as the root user:
+You'll be prompted to enter the root password that you set during the mariadb-secure-installation
+process.</p>
+<pre><code class="language-bash">RedHat and Ubuntu
+# mariadb -uroot -p
+</code></pre>
+<p>Once you're logged into the MariaDB shell, run the following command to create a
+database for Zabbix:</p>
+<pre><code class="language-bash">MariaDB [(none)]&gt; CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+</code></pre>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>utf8mb4 is a proper implementation of UTF-8 in MySQL/MariaDB, supporting all
+Unicode characters, including emojis. The older utf8 charset in MySQL/MariaDB
+only supports up to three bytes per character and is not a true UTF-8 implementation,
+which is why utf8mb4 is recommended.</p>
+</details>
+<p>This command creates a new database named zabbix with the UTF-8 character set,
+which is required for Zabbix.</p>
+<p>Create a dedicated user for Zabbix and grant the necessary privileges: Next, you
+need to create a user that Zabbix will use to access the database. Replace password
+with a strong password of your choice.</p>
+<pre><code class="language-sql">MariaDB [(none)]&gt; CREATE USER 'zabbix-web'@'&lt;zabbix server ip&gt;' IDENTIFIED BY '&lt;password&gt;';
+MariaDB [(none)]&gt; CREATE USER 'zabbix-srv'@'&lt;zabbix server ip&gt;' IDENTIFIED BY '&lt;password&gt;';
+MariaDB [(none)]&gt; GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix-srv'@'&lt;zabbix server ip&gt;';
+MariaDB [(none)]&gt; GRANT SELECT, UPDATE, DELETE, INSERT ON zabbix.* TO 'zabbix-web'@'&lt;zabbix server ip&gt;';
+MariaDB [(none)]&gt; FLUSH PRIVILEGES;
+</code></pre>
+<p>This creates new users for zabbix-web and zabbix-srv, grants them access to the
+zabbix database, and ensures that the privileges are applied immediately.</p>
+<p>In some cases, especially when setting up Zabbix with MariaDB, you might encounter
+issues related to stored functions and triggers if binary logging is enabled.
+To address this, you need to set the log_bin_trust_function_creators option to 1
+in the MariaDB configuration file. This allows non-root users to create stored
+functions and triggers without requiring SUPER privileges, which are restricted
+when binary logging is enabled.</p>
+<pre><code class="language-sql">MariaDB [(none)]&gt; SET GLOBAL log_bin_trust_function_creators = 1;
+MariaDB [(none)]&gt; QUIT
+</code></pre>
+<p>At this point, your Zabbix database is ready, and you can proceed with configuring
+the Zabbix server to connect to the database.</p>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>In the Zabbix documentation, it is explicitly stated that deterministic
+triggers need to be created during the schema import. On MySQL and MariaDB
+systems, this requires setting GLOBAL log_bin_trust_function_creators = 1
+if binary logging is enabled, and you lack superuser privileges.</p>
+<p>If the log_bin_trust_function_creators option is not set in the MySQL
+configuration file, it will block the creation of these triggers during
+schema import. This is essential because, without superuser access,
+non-root users cannot create triggers or stored functions unless this setting is applied.</p>
+<p>To summarize:</p>
+<ul>
+<li>
+<p>Binary logging enabled: If binary logging is enabled and the user does not
+  have superuser privileges, the creation of necessary Zabbix triggers will
+  fail unless log_bin_trust_function_creators = 1 is set.</p>
+</li>
+<li>
+<p>Solution: Add log_bin_trust_function_creators = 1 to the [mysqld] section
+  in your MySQL/MariaDB configuration file or temporarily set it at runtime
+  with SET GLOBAL log_bin_trust_function_creators = 1 if you have sufficient
+  permissions.</p>
+</li>
+</ul>
+<p>This ensures that Zabbix can successfully create the required triggers during
+schema import without encountering privilege-related errors.</p>
+</details>
+<h2 id="ch1-zabbix-components-basic-installation-installing-the-postgresql-database">Installing the PostgreSQL database<a class="headerlink" href="#ch1-zabbix-components-basic-installation-installing-the-postgresql-database" title="Permanent link">&para;</a></h2>
+<p>For our DB setup with PostgreSQL we need to add our PostgreSQL repository first
+to the system. As of writing PostgreSQL 13-17 are supported but best is to have
+a look before you install it as new versions may be supported and older maybe
+unsupported both by Zabbix and PostgreSQL. Usually it's a good idea to go with
+the latest version that is supported by Zabbix. Zabbix also supports the extension
+TimescaleDB this is something we will talk later about. As you will see the setup
+from PostgreSQL is very different from MySQL not only the installation but
+also securing the DB.</p>
+<p>The table of compatibility can be found <a href="https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/">https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/</a></p>
+<h3 id="ch1-zabbix-components-basic-installation-add-the-postgresql-repository">Add the PostgreSQL repository<a class="headerlink" href="#ch1-zabbix-components-basic-installation-add-the-postgresql-repository" title="Permanent link">&para;</a></h3>
+<p>So let us start first setting up our PostgreSQL repository with the following commands.</p>
+<pre><code class="language-bash">RedHat
+
+# Install the repository RPM:
+sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+
+# Disable the built-in PostgreSQL module:
+sudo dnf -qy module disable postgresql
+
+# Install PostgreSQL:
+sudo dnf install -y postgresql17-server
+
+# Initialize the database and enable automatic start:
+sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
+sudo systemctl enable postgresql-17 --now
+
+Ubuntu
+
+todo
+</code></pre>
+<h3 id="ch1-zabbix-components-basic-installation-securing-the-postgresql-database">Securing the PostgreSQL database<a class="headerlink" href="#ch1-zabbix-components-basic-installation-securing-the-postgresql-database" title="Permanent link">&para;</a></h3>
+<p>PostgreSQL handles access permissions differently from MySQL and MariaDB.
+PostgreSQL relies on a file called pg_hba.conf to manage who can access the database,
+from where, and what encryption method is used for authentication.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Client authentication in PostgreSQL is configured through the pg_hba.conf
+file, where "HBA" stands for Host-Based Authentication. This file specifies
+which users can access the database, from which hosts, and how they are authenticated.
+For further details, you can refer to the official PostgreSQL documentation."
+<a href="https://www.postgresql.org/docs/current/auth-pg-hba-conf.html">https://www.postgresql.org/docs/current/auth-pg-hba-conf.html</a></p>
+</details>
+<p>Add the following lines, the order here is important.</p>
+<pre><code class="language-bash">Redhat
+
+# vi /var/lib/pgsql/17/data/pg_hba.conf
+
+Ubuntu
+
+Todo
+</code></pre>
+<p>The result should look like : </p>
+<pre><code># &quot;local&quot; is for Unix domain socket connections only
+local    zabbix     zabbix-srv                                                              scram-sha-256
+local    all            all                                                                            peer
+# IPv4 local connections
+host     zabbix     zabbix-srv          &lt;ip from zabbix server/24&gt;     scram-sha-256
+host     zabbix     zabbix-web        &lt;ip from zabbix server/24&gt;     scram-sha-256
+host     all            all                         127.0.0.1/32                            scram-sha-256
+</code></pre>
+<p>After we changed the pg_hba file don't forget to restart postgres else the settings
+will not be applied. But before we restart let us also edit the file postgresql.conf
+and allow our database to listen on our network interface for incoming connections
+from the zabbix server. Postgresql will standard only allow connections from the socket.</p>
+<pre><code class="language-bash">RedHat
+# vi /var/lib/pgsql/17/data/postgresql.conf
+
+Ubuntu
+
+todo
+</code></pre>
+<p>To configure PostgreSQL to listen on all network interfaces, you need to modify
+the <code>postgresql.conf</code> file. Locate the following line:</p>
+<pre><code class="language-bash">#listen_addresses = 'localhost'
+</code></pre>
+<p>and replace it with:</p>
+<pre><code>listen_addresses = '*'
+</code></pre>
+<p>This will enable PostgreSQL to accept connections from any network interface,
+not just the local machine. After making this change, restart the PostgreSQL service
+to apply the new settings:</p>
+<pre><code class="language-bash">Redhat
+# systemctl restart postgresql-17
+
+Ubuntu
+
+todo
+</code></pre>
+<p>If the service fails to restart, review the pg_hba.conf file for any syntax errors,
+as incorrect entries here may prevent PostgreSQL from starting.</p>
+<p>Next, to prepare your PostgreSQL instance for Zabbix, you'll need to create the
+necessary database tables. Begin by installing the Zabbix repository, as you did
+for the Zabbix server. Then, install the appropriate Zabbix package that contains
+the predefined tables, images, icons, and other database elements needed for the
+Zabbix application.</p>
+<h3 id="ch1-zabbix-components-basic-installation-add-the-zabbix-repository-and-populate-the-pgsql-db">Add the Zabbix repository and populate the PgSQL DB<a class="headerlink" href="#ch1-zabbix-components-basic-installation-add-the-zabbix-repository-and-populate-the-pgsql-db" title="Permanent link">&para;</a></h3>
+<p>To begin, add the Zabbix repository to your system by running the following commands:</p>
+<pre><code class="language-bash">RedHat
+# dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm -y
+# dnf install zabbix-sql-scripts -y 
+
+Ubuntu
+
+todo
+</code></pre>
+<p>With the necessary packages installed, you are now ready to create the Zabbix users for both the server and frontend.</p>
+<p>First, switch to the <code>postgres</code> user and create the Zabbix server database user:</p>
+<pre><code># su - postgres
+# createuser --pwprompt zabbix-srv
+Enter password for new role: &lt;server-password&gt;
+Enter it again: &lt;server-password&gt;
+</code></pre>
+<p>Next, create the Zabbix frontend user, which will be used to connect to the database:</p>
+<pre><code># createuser --pwprompt zabbix-web
+Enter password for new role: &lt;frontend-password&gt;
+Enter it again: &lt;frontend-password&gt;
+</code></pre>
+<p>After creating the users, you need to prepare the database schema. As the root
+user, unzip the necessary schema files by running the following command:</p>
+<pre><code class="language-bash">RedHat
+# gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+
+Ubuntu
+
+todo
+</code></pre>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Zabbix seems to like to change the locations of the script to populate the
+DB every version or in between versions. If you encounter an error take a
+look at the Zabbix documentation there is a good chance that some location was changed.</p>
+</details>
+<p>This will extract the database schema required for the Zabbix server.</p>
+<p>Now that the users are created, the next step is to create the Zabbix database. 
+First, switch to the <code>postgres</code> user and execute the following command to create
+the database with the owner set to zabbix-srv:</p>
+<pre><code class="language-bash">RedHat
+# su - postgres
+# createdb -E Unicode -O zabbix-srv zabbix
+# exit
+
+Ubuntu
+
+Todo
+</code></pre>
+<p>Once the database is created, you should verify the connection and ensure that
+the correct user session is active. To do this, log into the zabbix database using
+the zabbix-srv user:</p>
+<pre><code># psql -d zabbix -U zabbix-srv
+</code></pre>
+<p>After logging in, run the following SQL query to confirm that both the <code>session_user</code>
+and <code>current_user</code> are set to <code>zabbix-srv</code>:</p>
+<pre><code>zabbix=&gt; SELECT session_user, current_user;
+ session_user | current_user
+--------------+--------------
+ zabbix-srv   | zabbix-srv
+(1 row)
+</code></pre>
+<p>If the output matches, you are successfully connected to the database with the correct user.</p>
+<p>PostgreSQL indeed differs significantly from MySQL or MariaDB in several aspects,
+and one of the key features that sets it apart is its use of schemas. Unlike MySQL,
+where databases are more standalone, PostgreSQL's schema system provides a structured,
+multi-user environment within a single database.</p>
+<p>Schemas act as logical containers within a database, enabling multiple users or
+applications to access and manage data independently without conflicts. This feature
+is especially valuable in environments where several users or applications need to
+interact with the same database concurrently. Each user or application can have
+its own schema, preventing accidental interference with each other’s data.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>PostgreSQL comes with a default schema, typically called public, but it's in
+general best practice to create custom schemas to better organize and separate
+database objects, especially in complex or multi-user environments.</p>
+<p>For more in-depth information, I recommend checking out the detailed guide at
+this URI, <a href="https://hevodata.com/learn/postgresql-schema/#schema">https://hevodata.com/learn/postgresql-schema/#schema</a>
+which explains the benefits and use cases for schemas in PostgreSQL.</p>
+</details>
+<p>To finalize the database setup for Zabbix, we need to configure schema permissions
+for both the <code>zabbix-srv</code> and <code>zabbix-web</code> users.</p>
+<p>First, we create a custom schema named <code>zabbix_server</code> and assign ownership to
+the <code>zabbix-srv</code> user:</p>
+<pre><code>zabbix=&gt; CREATE SCHEMA zabbix_server AUTHORIZATION &quot;zabbix-srv&quot;;
+CREATE SCHEMA
+</code></pre>
+<p>Next, we set the <code>search path</code> to <code>zabbix_server</code> schema so that it's the default
+for the current session:</p>
+<pre><code>zabbix=&gt; SET search_path TO &quot;zabbix_server&quot;;
+</code></pre>
+<p>To confirm the schema setup, you can list the existing schemas:</p>
+<pre><code>zabbix=&gt; \dn
+          List of schemas
+     Name      |       Owner
+---------------+-------------------
+ public        | pg_database_owner
+ zabbix_server | zabbix-srv
+(2 rows)
+</code></pre>
+<p>At this point, the <code>zabbix-srv</code> user has full access to the schema, but the <code>zabbix-web</code>
+user still needs appropriate permissions to connect and interact with the database.
+First, we grant <code>USAGE</code> privileges on the schema to allow <code>zabbix-web</code> to connect:</p>
+<pre><code>zabbix=# GRANT USAGE ON SCHEMA zabbix_server TO &quot;zabbix-web&quot;;
+GRANT
+</code></pre>
+<p>However, <code>zabbix-web</code> still cannot perform any operations on the tables or sequences.
+To allow basic data interaction without giving too many privileges, grant the
+following permissions:</p>
+<ul>
+<li>For tables: SELECT, INSERT, UPDATE, and DELETE.</li>
+<li>For sequences: SELECT and UPDATE.</li>
+</ul>
+<pre><code>zabbix=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server TO &quot;zabbix-web&quot;;
+grant
+</code></pre>
+<pre><code>zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO &quot;zabbix-web&quot;;
+GRANT
+</code></pre>
+<p>Now, the <code>zabbix-web</code> user has appropriate access to interact with the schema
+while maintaining security by limiting permissions to essential operations.</p>
+<p>With the users and permissions set up correctly, you can now populate the database
+with the Zabbix schema created and other required elements. Follow these steps:</p>
+<ul>
+<li>Execute the SQL file to populate the database. Run the following command in the <code>psql</code> shell:</li>
+</ul>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>Make sure you did previous steps carefully so that you have selected the correct search_path.</p>
+</details>
+<pre><code>sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
+</code></pre>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>Depending on your hardware or VM performance, this process can take anywhere
+from a few seconds to several minutes. Please be patient and avoid cancelling the operation.</p>
+</details>
+<ul>
+<li>Monitor the progress as the script runs. You will see output similar to:</li>
+</ul>
+<pre><code class="language-sql">zabbix=&gt; \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+...
+...
+...
+INSERT 0 10444
+DELETE 90352
+COMMIT
+</code></pre>
+<p>Once the script completes and you return to the <code>zabbix=#</code> prompt, the database
+should be successfully populated with all the required tables, schemas,
+images, and other elements needed for Zabbix.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If you encounter the following error during the SQL import: 
+<code>vbnet psql:/usr/share/zabbix/sql-scripts/postgresql/server.sql:7: ERROR: no
+schema has been selected to create in</code> It indicates that the search_path setting
+might not have been correctly applied. This setting is crucial because it specifies
+the schema where the tables and other objects should be created. By correctly
+setting the search path, you ensure that the SQL script will create tables
+and other objects in the intended schema.</p>
+</details>
+<p>To ensure that the Zabbix tables were created successfully and have the correct
+permissions, you can verify the table list and their ownership using the <code>psql</code> command:</p>
+<ul>
+<li>List the Tables: Use the following command to list all tables in the <code>zabbix_server</code> schema:</li>
+</ul>
+<pre><code>sql zabbix=# \dt
+</code></pre>
+<p>You should see a list of tables with their schema, name, type, and owner.
+For example:</p>
+<pre><code class="language-sql">zabbix=&gt; \dt
+                        List of relations
+    Schema     |            Name            | Type  |   Owner
+---------------+----------------------------+-------+------------
+ zabbix_server | acknowledges               | table | zabbix-srv
+ zabbix_server | actions                    | table | zabbix-srv
+ zabbix_server | alerts                     | table | zabbix-srv
+ zabbix_server | auditlog                   | table | zabbix-srv
+ zabbix_server | autoreg_host               | table | zabbix-srv
+ zabbix_server | changelog                  | table | zabbix-srv
+ zabbix_server | conditions                 | table | zabbix-srv
+...
+...
+...
+ zabbix_server | valuemap                   | table | zabbix-srv
+ zabbix_server | valuemap_mapping           | table | zabbix-srv
+ zabbix_server | widget                     | table | zabbix-srv
+ zabbix_server | widget_field               | table | zabbix-srv
+(203 rows)
+</code></pre>
+<ul>
+<li>Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
+the necessary permissions. You can check permissions for specific tables using
+the \dp command:</li>
+</ul>
+<pre><code class="language-sql">sql zabbix=# \dp zabbix_server.*
+</code></pre>
+<p>This will display the access privileges for all tables in the <code>zabbix_server</code>
+schema. Ensure that <code>zabbix-srv</code> has the required privileges.</p>
+<p>If everything looks correct, your tables are properly created and the <code>zabbix-srv</code>
+user has the appropriate ownership and permissions. If you need to adjust any
+permissions, you can do so using the GRANT commands as needed.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If you prefer not to set the search path manually each time you log in as the
+<code>zabbix-srv</code> user, you can configure PostgreSQL to automatically use the desired
+search path. Run the following SQL command to set the default search path for
+the <code>zabbix-srv</code> role:</p>
+<p>sql zabbix=&gt; ALTER ROLE "zabbix-srv" SET search_path = "$user", public, zabbix_server;</p>
+<p>This command ensures that every time the <code>zabbix-srv</code> user connects to the
+database, the <code>search_path</code> is automatically set to include <code>$user</code>, <code>public</code>, and <code>zabbix_server</code>.</p>
+</details>
+<p>If you are ready you can exit the database and return as user root.</p>
+<pre><code>zabbix=&gt; \q
+</code></pre>
+<h2 id="ch1-zabbix-components-basic-installation-installing-the-zabbix-server">Installing the Zabbix server<a class="headerlink" href="#ch1-zabbix-components-basic-installation-installing-the-zabbix-server" title="Permanent link">&para;</a></h2>
+<h2 id="ch1-zabbix-components-basic-installation-installing-the-frontend">Installing the frontend<a class="headerlink" href="#ch1-zabbix-components-basic-installation-installing-the-frontend" title="Permanent link">&para;</a></h2></section><section class="print-page" id="ch1-zabbix-components-ha-setup"><h1 id="ch1-zabbix-components-ha-setup-ha-setup">HA Setup<a class="headerlink" href="#ch1-zabbix-components-ha-setup-ha-setup" title="Permanent link">&para;</a></h1></section><h1 class='nav-section-title-end'>Ended: Chapter 1 : Zabbix components</h1>
+                        <h1 class='nav-section-title' id='section-chapter-2-installation'>
+                            Chapter 2 : Installation <a class='headerlink' href='#section-chapter-2-installation' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch2-zabbix-installation-chapter"><h1 id="ch2-zabbix-installation-chapter-getting-started-with-the-zabbix-installation">Getting started with the Zabbix installation<a class="headerlink" href="#ch2-zabbix-installation-chapter-getting-started-with-the-zabbix-installation" title="Permanent link">&para;</a></h1>
+<p>We begin this chapter with a <strong>deep dive into the Zabbix frontend</strong>, the central hub
+where all monitoring and configuration tasks come together. Alongside the basic
+introduction to navigating the frontend, this chapter also covers <strong>user and group
+setup</strong>, focusing on creating a secure and efficient user management system.</p>
+<p>We'll walk through setting up <strong>internal authentication</strong> with best practices for
+security, including <strong>dual-factor authentication</strong>. For those needing advanced integration,
+we'll explore options like <strong>SAML, LDAP</strong>, and other external authentication methods.</p>
+<p>This chapter strikes a balance between a straightforward overview “this is the frontend”
+and a more in depth look at the <strong>advanced choices</strong> you can make to enhance your system's
+security and manageability. Whether you're just getting started or looking to implement
+robust security measures, there's something here for everyone.</p>
+<p>By the end, you'll be well equipped to navigate the Zabbix frontend with confidence
+and set up a secure, scalable user management system tailored to your organization's needs.</p></section><section class="print-page" id="ch2-zabbix-installation-frontend"><h1 id="ch2-zabbix-installation-frontend-frontend-explained">Frontend explained<a class="headerlink" href="#ch2-zabbix-installation-frontend-frontend-explained" title="Permanent link">&para;</a></h1></section><section class="print-page" id="ch2-zabbix-installation-host-groups"><h1 id="ch2-zabbix-installation-host-groups-host-groups">Host groups<a class="headerlink" href="#ch2-zabbix-installation-host-groups-host-groups" title="Permanent link">&para;</a></h1></section><section class="print-page" id="ch2-zabbix-installation-user-groups"><h1 id="ch2-zabbix-installation-user-groups-user-groups">User groups<a class="headerlink" href="#ch2-zabbix-installation-user-groups-user-groups" title="Permanent link">&para;</a></h1></section><section class="print-page" id="ch2-zabbix-installation-external-authentication"><h1 id="ch2-zabbix-installation-external-authentication-external-authentication">External authentication<a class="headerlink" href="#ch2-zabbix-installation-external-authentication-external-authentication" title="Permanent link">&para;</a></h1>
+<h2 id="ch2-zabbix-installation-external-authentication-http">HTTP<a class="headerlink" href="#ch2-zabbix-installation-external-authentication-http" title="Permanent link">&para;</a></h2>
+<h2 id="ch2-zabbix-installation-external-authentication-ldap-ad">LDAP / AD<a class="headerlink" href="#ch2-zabbix-installation-external-authentication-ldap-ad" title="Permanent link">&para;</a></h2>
+<h2 id="ch2-zabbix-installation-external-authentication-saml">SAML<a class="headerlink" href="#ch2-zabbix-installation-external-authentication-saml" title="Permanent link">&para;</a></h2>
+<h3 id="ch2-zabbix-installation-external-authentication-google">Google<a class="headerlink" href="#ch2-zabbix-installation-external-authentication-google" title="Permanent link">&para;</a></h3>
+<h3 id="ch2-zabbix-installation-external-authentication-ms-cloud">MS Cloud<a class="headerlink" href="#ch2-zabbix-installation-external-authentication-ms-cloud" title="Permanent link">&para;</a></h3>
+<h3 id="ch2-zabbix-installation-external-authentication-okta">Okta<a class="headerlink" href="#ch2-zabbix-installation-external-authentication-okta" title="Permanent link">&para;</a></h3></section><h1 class='nav-section-title-end'>Ended: Chapter 2 : Installation</h1>
+                        <h1 class='nav-section-title' id='section-chapter-3-proxies-and-webcomponents'>
+                            Chapter 3 : Proxies and Webcomponents <a class='headerlink' href='#section-chapter-3-proxies-and-webcomponents' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch3-zabbix-proxies-chapter"><h1 id="ch3-zabbix-proxies-chapter-proxies-and-the-web-services-component">Proxies and the Web services component<a class="headerlink" href="#ch3-zabbix-proxies-chapter-proxies-and-the-web-services-component" title="Permanent link">&para;</a></h1>
+<p>Proxies are often regarded as an advanced topic in Zabbix, but in reality,
+they are a fundamental part of many installations and one of the first components
+we set up for numerous customers. In this chapter, we'll make proxies the third
+subject we cover, encouraging you to consider them from the very beginning of your
+Zabbix journey.</p>
+<p>We'll start with a basic proxy setup, providing straightforward steps to get you
+up and running quickly. Then, we'll take a deep dive into the mechanics of proxies
+how they operate within the Zabbix ecosystem, their benefits, and the critical
+role they play in distributing monitoring load and enhancing system scalability.</p>
+<p>Understanding proxies from the start can significantly improve your architecture,
+especially in distributed or large scale environments. Whether you're new to Zabbix
+or looking to refine your existing setup, this chapter will offer valuable insights
+into why proxies should be an integral part of your monitoring strategy from the start.</p>
+<p>By the end, you'll not only know how to set up a basic proxy but also have a clear
+understanding of their underlying workings and strategic advantages,
+ensuring you make informed decisions as you scale your Zabbix installation.</p></section><section class="print-page" id="ch3-zabbix-proxies-passive-proxies"><h1 id="ch3-zabbix-proxies-passive-proxies-passive-proxies">Passive Proxies<a class="headerlink" href="#ch3-zabbix-proxies-passive-proxies-passive-proxies" title="Permanent link">&para;</a></h1></section><section class="print-page" id="ch3-zabbix-proxies-active-proxies"><h1 id="ch3-zabbix-proxies-active-proxies-active-proxies">Active proxies<a class="headerlink" href="#ch3-zabbix-proxies-active-proxies-active-proxies" title="Permanent link">&para;</a></h1></section><section class="print-page" id="ch3-zabbix-proxies-web-services"><h1 id="ch3-zabbix-proxies-web-services-web-services">Web services<a class="headerlink" href="#ch3-zabbix-proxies-web-services-web-services" title="Permanent link">&para;</a></h1></section><h1 class='nav-section-title-end'>Ended: Chapter 3 : Proxies and Webcomponents</h1>
+                        <h1 class='nav-section-title' id='section-chapter-4-collecting-data-'>
+                            Chapter 4 : Collecting data  <a class='headerlink' href='#section-chapter-4-collecting-data-' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch4-zabbix-collecting-data-chapter"><h1 id="ch4-zabbix-collecting-data-chapter-collecting-data-with-your-zabbix-environment">Collecting data with your Zabbix environment<a class="headerlink" href="#ch4-zabbix-collecting-data-chapter-collecting-data-with-your-zabbix-environment" title="Permanent link">&para;</a></h1>
+<p>In this chapter, we'll take a <strong>detailed journey through Zabbix data flow</strong>,
+showing how to progress from an empty setup to a fully functioning system capable
+of sending timely notifications. We’ll break down each step, giving you a clear
+understanding of how data moves through Zabbix.</p>
+<p>We'll then explore the <strong>various protocols</strong> used in Zabbix, how they function,
+their compatibility with different components, and how to configure them effectively.
+This will provide you with a comprehensive overview of the communication backbone
+that powers Zabbix monitoring capabilities.</p>
+<p>Next, we'll cover the essentials like <strong>hosts, host groups, host interfaces</strong>,
+and <strong>items</strong>, ensuring you understand their roles and how to set them up correctly. </p>
+<p>For now, we'll hold off on <strong>custom scripts and external check items</strong>, focusing
+instead on the core elements. When we touch on <strong>active agents</strong>, we'll reference
+the chapter on auto-registration, guiding you to more detailed discussions on
+that topic later.</p>
+<p>By the end of this chapter, you'll have a strong grasp of Zabbix data flow and
+the protocols that enable seamless monitoring and notifications, preparing you
+for more advanced configurations and integrations.</p></section><section class="print-page" id="ch4-zabbix-collecting-data-dataflow"><h1 id="ch4-zabbix-collecting-data-dataflow-dataflow">Dataflow<a class="headerlink" href="#ch4-zabbix-collecting-data-dataflow-dataflow" title="Permanent link">&para;</a></h1></section><section class="print-page" id="ch4-zabbix-collecting-data-protocols"><h1 id="ch4-zabbix-collecting-data-protocols-protocols">Protocols<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-protocols" title="Permanent link">&para;</a></h1>
+<h2 id="ch4-zabbix-collecting-data-protocols-zabbix-agent">Zabbix Agent<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-zabbix-agent" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-zabbix-agent-active">Zabbix Agent (Active)<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-zabbix-agent-active" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-simple-check">Simple check<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-simple-check" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-snmp-agent">SNMP Agent<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-snmp-agent" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-snmp-trap">SNMP trap<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-snmp-trap" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-zabbix-internal">Zabbix Internal<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-zabbix-internal" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-zabbix-trapper">Zabbix trapper<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-zabbix-trapper" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-external-check">External check<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-external-check" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-database-monitor">Database monitor<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-database-monitor" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-http-agent">HTTP Agent<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-http-agent" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-ipmi-agent">IPMI Agent<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-ipmi-agent" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-ssh-telnet-agent">SSH / Telnet Agent<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-ssh-telnet-agent" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-jmx-agent">JMX Agent<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-jmx-agent" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-calculated">Calculated<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-calculated" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-dependent-item">Dependent item<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-dependent-item" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-script">Script<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-script" title="Permanent link">&para;</a></h2>
+<h2 id="ch4-zabbix-collecting-data-protocols-browser">Browser<a class="headerlink" href="#ch4-zabbix-collecting-data-protocols-browser" title="Permanent link">&para;</a></h2></section><section class="print-page" id="ch4-zabbix-collecting-data-hosts"><h1 id="ch4-zabbix-collecting-data-hosts-hosts">Hosts<a class="headerlink" href="#ch4-zabbix-collecting-data-hosts-hosts" title="Permanent link">&para;</a></h1>
+<h2 id="ch4-zabbix-collecting-data-hosts-host-interfaces">Host Interfaces<a class="headerlink" href="#ch4-zabbix-collecting-data-hosts-host-interfaces" title="Permanent link">&para;</a></h2>
+<h3 id="ch4-zabbix-collecting-data-hosts-zbx">ZBX<a class="headerlink" href="#ch4-zabbix-collecting-data-hosts-zbx" title="Permanent link">&para;</a></h3>
+<h3 id="ch4-zabbix-collecting-data-hosts-snmp">SNMP<a class="headerlink" href="#ch4-zabbix-collecting-data-hosts-snmp" title="Permanent link">&para;</a></h3>
+<h3 id="ch4-zabbix-collecting-data-hosts-ipmi">IPMI<a class="headerlink" href="#ch4-zabbix-collecting-data-hosts-ipmi" title="Permanent link">&para;</a></h3>
+<h3 id="ch4-zabbix-collecting-data-hosts-jmx">JMX<a class="headerlink" href="#ch4-zabbix-collecting-data-hosts-jmx" title="Permanent link">&para;</a></h3></section><h1 class='nav-section-title-end'>Ended: Chapter 4 : Collecting data </h1>
+                        <h1 class='nav-section-title' id='section-chapter-5-triggers'>
+                            Chapter 5 : Triggers <a class='headerlink' href='#section-chapter-5-triggers' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch5-zabbix-triggers-chapter"><h1 id="ch5-zabbix-triggers-chapter-setting-up-triggers">Setting up triggers<a class="headerlink" href="#ch5-zabbix-triggers-chapter-setting-up-triggers" title="Permanent link">&para;</a></h1>
+<p>In this chapter, we'll <strong>explore triggers in depth</strong>, starting with the basics
+of setting up step triggers and progressively moving into <strong>advanced trigger configurations</strong>.
+You'll gain a thorough understanding of how triggers work, ensuring you can leverage
+them effectively to monitor your infrastructure.</p>
+<p>We'll take a <strong>deep dive into the mechanics of triggers</strong>, examining how they evaluate
+conditions and generate alerts. This section will also address the important topic
+of <strong>monitoring and alerting fatigue</strong>, providing strategies to fine-tune your triggers
+to reduce unnecessary alerts while maintaining optimal system oversight.</p>
+<p>By the end, you'll have the knowledge to set up both simple and complex triggers,
+helping you maintain a well balanced monitoring system that minimizes noise and
+focuses on what truly matters.</p></section><section class="print-page" id="ch5-zabbix-triggers-triggers"><h1 id="ch5-zabbix-triggers-triggers-triggers">Triggers<a class="headerlink" href="#ch5-zabbix-triggers-triggers-triggers" title="Permanent link">&para;</a></h1></section><section class="print-page" id="ch5-zabbix-triggers-advanced-triggers"><h1 id="ch5-zabbix-triggers-advanced-triggers-advanced-triggers">Advanced triggers<a class="headerlink" href="#ch5-zabbix-triggers-advanced-triggers-advanced-triggers" title="Permanent link">&para;</a></h1></section><h1 class='nav-section-title-end'>Ended: Chapter 5 : Triggers</h1>
+                        <h1 class='nav-section-title' id='section-chapter-6-templates'>
+                            Chapter 6 : Templates <a class='headerlink' href='#section-chapter-6-templates' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch6-zabbix-templates-chapter"><h1 id="ch6-zabbix-templates-chapter-building-and-using-templates">Building and using templates<a class="headerlink" href="#ch6-zabbix-templates-chapter-building-and-using-templates" title="Permanent link">&para;</a></h1>
+<p>A great way to guide users towards a <strong>deeper understanding of Zabbix</strong> is by
+initially holding off on templates and gradually introducing them much like in
+formal training. In this chapter, we'll start by explaining the <strong>basic usage
+of default templates</strong> and how to find new ones, helping you get up and running
+with minimal effort.</p>
+<p>Once you're comfortable with default templates, we’ll dive into <strong>building your
+own templates</strong>, offering detailed instructions on customization and best practices.
+We’ll also cover how to <strong>share your templates</strong> within the Zabbix community,
+fostering collaboration and knowledge exchange.</p>
+<p>To round off, we'll feature <strong>Tags and Macros</strong>, explaining their roles within
+templates and why they're most effective when understood in the context of
+template usage. This structured approach will ensure you grasp the full potential
+of templates and their associated features in Zabbix.</p>
+<p>By the end of this chapter, you'll be well versed in both using and creating templates,
+equipped to enhance your monitoring setup and contribute to the broader Zabbix ecosystem.</p></section><h1 class='nav-section-title-end'>Ended: Chapter 6 : Templates</h1>
+                        <h1 class='nav-section-title' id='section-chapter-7-alerting'>
+                            Chapter 7 : Alerting <a class='headerlink' href='#section-chapter-7-alerting' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch7-zabbix-alerts-chapter"><h1 id="ch7-zabbix-alerts-chapter-sending-out-alerts-with-zabbix">Sending out alerts with Zabbix<a class="headerlink" href="#ch7-zabbix-alerts-chapter-sending-out-alerts-with-zabbix" title="Permanent link">&para;</a></h1>
+<p>After delving into templates, it's time to <strong>return to the data flow</strong> and bring
+everything together by exploring integrations with powerful external services.
+In this chapter, we’ll <strong>complete the data flow journey</strong>, showing how to extend
+Zabbix capabilities through seamless connections with third-party tools
+and platforms.</p>
+<p>We'll guide you through setting up <strong>integrations</strong> that enhance your monitoring
+system, covering various use cases from alerting to data visualization and
+automation. By integrating Zabbix with external services, you'll unlock new
+levels of functionality, making your monitoring setup more dynamic and adaptable.</p>
+<p>By the end, you'll have a well-rounded understanding of how to fully utilize
+Zabbix data flow, augmented by strategic integrations that add value to your
+infrastructure management.</p></section><h1 class='nav-section-title-end'>Ended: Chapter 7 : Alerting</h1>
+                        <h1 class='nav-section-title' id='section-chapter-8-lld'>
+                            Chapter 8 : LLD <a class='headerlink' href='#section-chapter-8-lld' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch8-zabbix-lld-chapter"><h1 id="ch8-zabbix-lld-chapter-using-low-level-discovery-to-automate">Using Low level discovery to automate<a class="headerlink" href="#ch8-zabbix-lld-chapter-using-low-level-discovery-to-automate" title="Permanent link">&para;</a></h1>
+<p>In this chapter, we'll dive into <strong>Low-Level Discovery (LLD)</strong>, covering everything
+there is to know about this powerful feature in Zabbix. LLD automates the creation
+of hosts, items, triggers, and more, simplifying the management of large and
+dynamic environments.</p>
+<p>We'll also explain how to work with <strong>custom JSON</strong> in the context of LLD, showing
+you how to tailor discovery rules to fit your unique needs. By mastering these
+techniques, you'll be able to create highly adaptable monitoring setups that
+respond to changes in your infrastructure with minimal manual intervention.</p>
+<p>By the end of this chapter, you'll have a deep understanding of LLD, from basic
+concepts to advanced customization, enabling you to leverage its full potential
+in your Zabbix deployment.</p></section><h1 class='nav-section-title-end'>Ended: Chapter 8 : LLD</h1>
+                        <h1 class='nav-section-title' id='section-chapter-9-extending-zabbix'>
+                            Chapter 9 : Extending Zabbix <a class='headerlink' href='#section-chapter-9-extending-zabbix' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch9-zabbix-extending-chapter"><h1 id="ch9-zabbix-extending-chapter-leveraging-custom-items-for-extending-the-zabbix-environment">Leveraging custom items for extending the Zabbix environment<a class="headerlink" href="#ch9-zabbix-extending-chapter-leveraging-custom-items-for-extending-the-zabbix-environment" title="Permanent link">&para;</a></h1>
+<p>In this chapter, we'll take a <strong>deep dive into extending Zabbix functionality</strong>
+beyond its default item options. We'll cover the <strong>script item</strong>, <strong>external checks</strong>,
+<strong>remote commands</strong>, <strong>user parameters</strong>, and other advanced features that allow
+you to customize and expand your monitoring capabilities.</p>
+<p>You'll learn how to use these tools to <strong>integrate custom logic</strong>, monitor external
+applications, and automate tasks, making Zabbix an even more powerful and flexible
+solution tailored to your specific needs. </p>
+<p>By the end, you'll have the skills to push Zabbix beyond its default configuration,
+unlocking new possibilities for complex and unique monitoring scenarios.</p></section><h1 class='nav-section-title-end'>Ended: Chapter 9 : Extending Zabbix</h1>
+                        <h1 class='nav-section-title' id='section-chapter-10-discovery'>
+                            Chapter 10 : Discovery <a class='headerlink' href='#section-chapter-10-discovery' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch10-zabbix-discovery-chapter"><h1 id="ch10-zabbix-discovery-chapter-automating-your-monitoring-with-auto-discovery-and-active-agent-auto-registration">Automating Your Monitoring with Auto Discovery and Active Agent Auto Registration<a class="headerlink" href="#ch10-zabbix-discovery-chapter-automating-your-monitoring-with-auto-discovery-and-active-agent-auto-registration" title="Permanent link">&para;</a></h1>
+<p>In this chapter, we'll explore two powerful automation features in Zabbix:
+<strong>auto discovery</strong> and <strong>active agent auto-registration</strong>. These tools are essential
+for scaling your monitoring efforts by minimizing manual configuration and
+ensuring new devices and services are seamlessly integrated into your Zabbix
+environment.</p>
+<p>We'll begin with <strong>auto discovery</strong>, which enables Zabbix to automatically detect
+and monitor new hosts and services within your network. You'll learn how to
+configure discovery rules, actions, and conditions to automate the onboarding
+process, making your monitoring more dynamic and adaptive to changes in your
+infrastructure.</p>
+<p>Next, we'll dive into <strong>active agent auto registration</strong>, which simplifies the
+management of Zabbix agents, especially in large or rapidly changing environments.
+We'll cover how to set up auto-registration rules that allow agents to register
+themselves with the Zabbix server, reducing administrative overhead and ensuring
+all relevant data is captured efficiently.</p>
+<p>By the end of this chapter, you'll have a thorough understanding of how to leverage
+auto-discovery and auto-registration to create a more automated, scalable, and
+efficient monitoring system.</p></section><h1 class='nav-section-title-end'>Ended: Chapter 10 : Discovery</h1>
+                        <h1 class='nav-section-title' id='section-chapter-11-visualisation'>
+                            Chapter 11 : Visualisation <a class='headerlink' href='#section-chapter-11-visualisation' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch11-zabbix-visualisation-chapter"><h1 id="ch11-zabbix-visualisation-chapter-graphs-dashboards-reports-maps-and-other-visualisation">Graphs, Dashboards, Reports, Maps and other visualisation<a class="headerlink" href="#ch11-zabbix-visualisation-chapter-graphs-dashboards-reports-maps-and-other-visualisation" title="Permanent link">&para;</a></h1>
+<p>In this chapter, we delve into the heart of Zabbix's visualization capabilities,
+where data comes to life through intuitive and powerful visual tools.
+From dynamic graphs that track your system's performance to comprehensive dashboards
+that provide at-a-glance insights, Zabbix offers a rich set of visualization features
+to help you understand and manage your infrastructure.</p>
+<p>We'll start by exploring <strong>graphs</strong>, which allow you to monitor metrics over time,
+helping you spot trends and anomalies with ease. Next, we'll move on to <strong>dashboards</strong>,
+where you can aggregate multiple widgets into a single view for a more holistic
+understanding of your network's health.</p>
+<p>Then, we'll discuss <strong>reports</strong> an essential feature for summarizing and sharing
+insights with your team or stakeholders.
+Finally, we'll cover <strong>maps</strong>, a unique visualization tool that lets you create
+interactive representations of your network topology, making it easier to
+pinpoint issues and understand relationships between different components.</p>
+<p>By the end of this chapter, you'll have a comprehensive understanding of how to
+leverage Zabbix's visualization tools to monitor, analyse, and communicate the
+state of your IT environment effectively. 
+Whether you're a seasoned administrator or just starting with Zabbix, mastering
+these visual tools will enhance your ability to manage complex infrastructures
+and ensure optimal performance.</p>
+<p>Let's dive into the world of Zabbix visualizations and unlock the full potential
+of your monitoring setup.</p></section><h1 class='nav-section-title-end'>Ended: Chapter 11 : Visualisation</h1>
+                        <h1 class='nav-section-title' id='section-chapter-12-zabbix-api'>
+                            Chapter 12 : Zabbix API <a class='headerlink' href='#section-chapter-12-zabbix-api' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch12-zabbix-api-chapter"><h1 id="ch12-zabbix-api-chapter-zabbix-api">Zabbix API<a class="headerlink" href="#ch12-zabbix-api-chapter-zabbix-api" title="Permanent link">&para;</a></h1>
+<p>The Zabbix API is a crucial part for anyone looking to expand the capabilities of their Zabbix environment, automate time-consuming tasks and get information for usage in other systems. In this chapter we will go over various of these capabilities to expand our knowledge of the Zabbix API.</p></section><h1 class='nav-section-title-end'>Ended: Chapter 12 : Zabbix API</h1>
+                        <h1 class='nav-section-title' id='section-chapter-13-real-world-examples'>
+                            Chapter 13 : Real world examples <a class='headerlink' href='#section-chapter-13-real-world-examples' title='Permanent link'>↵</a>
+                        </h1>
+                        <section class="print-page" id="ch13-zabbix-real-world-examples-chapter"><h1 id="ch13-zabbix-real-world-examples-chapter-zabbix-real-world-examples">Zabbix real world examples<a class="headerlink" href="#ch13-zabbix-real-world-examples-chapter-zabbix-real-world-examples" title="Permanent link">&para;</a></h1>
+<p>In this book we have learned a lot about our Zabbix environment, but most of it is building the foundation to start doing it on your own. From time to time you will encounter an implementation in a Zabbix environment that uses out of the box thinking or is just so simple you can't believe you never thought of it.</p>
+<p>This chapter aims to provide you a collection of interesting things people have built and things you absolutely have to know exist. </p></section><h1 class='nav-section-title-end'>Ended: Chapter 13 : Real world examples</h1></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "/zabbix-book/", "features": ["navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+        <script src="../js/print-site.js"></script>
+      
+    
+    
+        
+            
+            
+        
+		
+		
+    
+
+  </body>
+</html>
