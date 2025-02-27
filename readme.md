@@ -1,5 +1,12 @@
 # The Zabbix Book
 
+Please note: The english version is the primary source document.
+Translations are provided for convenience, but this version is considered the
+most accurate.
+
+Please before you start take a look at our most updated license : [License](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
+on Github.
+
 *The Zabbix Book* is a freely accessible resource designed to help users understand
 and master Zabbix. Contributions are highly encouraged to improve and expand its
 content. However, the book is distributed under the
