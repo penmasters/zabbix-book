@@ -19,6 +19,10 @@ van een bloeiende Zabbix-gemeenschap.
 
 ## Licentie
 
+Let op: De Engelse versie is het primaire brondocument.
+Vertalingen worden voor het gemak verstrekt, maar deze versie wordt als de
+meest nauwkeurige beschouwd.
+
 Bekijk alstublieft onze meest recente licentie voordat u begint: [Licentie](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
 op Github.
 
