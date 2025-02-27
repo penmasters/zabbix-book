@@ -132,7 +132,7 @@ RedHat
 ```
 Ubuntu
 ```
-# sudo apt-get update
+# sudo apt update -y && sudo apt upgrade -y
 ```
 
 This command will automatically fetch and install the latest updates available for
