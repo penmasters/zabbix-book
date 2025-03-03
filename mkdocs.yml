@@ -23,6 +23,7 @@ nav:
       - ch01-zabbix-components/chapter.md
       - ch01-zabbix-components/basic-installation.md
       - ch01-zabbix-components/ha-setup.md
+      - ch01-zabbix-components/securing-zabbix.md
   - "Chapter 02 : Installation":
       - ch02-zabbix-installation/chapter.md
       - ch02-zabbix-installation/frontend.md

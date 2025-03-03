@@ -1,4 +1,7 @@
 zabbix
+nginx
+mariadb
+rockylinux
 md
 autoregistration
 mkdocs
@@ -17,7 +20,6 @@ https
 www
 en
 github
-mariadb
 repo
 repos
 log_bin_trust_function_creators
@@ -37,7 +39,6 @@ dp
 hevodata
 schemas
 search_path
-rockylinux
 sql
 zabbix_server
 enablerepo
@@ -49,3 +50,6 @@ db
 redhat
 localhost
 ansible
+url
+ip
+zh

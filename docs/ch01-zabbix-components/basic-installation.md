@@ -46,7 +46,7 @@ Zabbix database.
 
 ???+ note
     A crucial consideration for those managing Zabbix installations is the database
-    backend. Zabbix 7.0 marks the final release to offer support for Oracle Database.
+    back-end. Zabbix 7.0 marks the final release to offer support for Oracle Database.
     Consequently, systems running Zabbix 7.0 or any prior version must undertake a database
     migration to either PostgreSQL, MySQL, or a compatible fork such as MariaDB before
     upgrading to a later Zabbix release. This migration is a mandatory step to
@@ -1041,11 +1041,11 @@ run the following command:
 
 RedHat
 ```
-# dnf install zabbix-server-mysql zabbix-web-mysql -y
+# dnf install zabbix-server-mysql -y
 ```
 Ubuntu
 ```
-# apt install zabbix-server-mysql zabbix-frontend-php
+# apt install zabbix-server-mysql
 ```
 After successfully installing the Zabbix server and frontend packages, we need to
 configure the Zabbix server to connect to the database. This requires modifying the
@@ -1060,6 +1060,7 @@ vi /etc/zabbix/zabbix_server.conf
 ```
 DBHost=<database-host>
 DBName=<database-name>
+DBSchema=<database-schema>
 DBUser=<database-user>
 DBPassword=<database-password>
 ```
@@ -1077,6 +1078,7 @@ For our setup, the configuration will look like this:
 ```
 DBHost=<ip or dns of your MariaDB server>
 DBName=zabbix
+DBSchema=zabbix-server
 DBUser=zabbix-srv
 DBPassword=<your super secret password>
 DBPort=3306
@@ -1223,3 +1225,296 @@ This concludes our chapter on installing and configuring the Zabbix server with 
 
 
 ## Installing the frontend
+
+Before configuring the front-end, you need to install the necessary packages. If the
+Zabbix front-end is hosted on the same server as the Zabbix server, you can install
+the packages on the same server as is in our case. It's also perfectly possible to
+install the front-end on another server. In that case you only need to specify the 
+correct IP addresses and open the correct firewall ports.
+
+
+
+### Installing the frontend with NGINX
+
+RedHat 
+```
+# dnf install zabbix-nginx-conf zabbix-web-mysql -y
+or if you used PostgreSQL
+# dnf install zabbix-web-pgsql
+```
+
+Ubuntu
+```
+todo
+```
+
+This command will install the front-end packages along with the required dependencies
+for Nginx. If you are installing the front-end on a different server, make sure to
+execute this command on that specific machine.
+
+
+If you don't remember how to add the repository, have a look at the topic [Adding the zabbix repository](#adding-the-zabbix-repository)
+
+First thing we have to do is alter the Nginx configuration file so that we don't
+use the standard config.
+
+RedHat
+```
+vi /etc/nginx/nginx.conf
+```
+Ubuntu
+```
+todo
+```
+In this configuration file look for the following block that starts with :
+```
+   server {
+        listen       80;
+        listen       [::]:80;
+        server_name  _;
+        root         /usr/share/nginx/html;
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+```
+Then, comment out the following server block within the configuration file:
+
+```
+    server {
+#        listen       80;
+#        listen       [::]:80;
+#        server_name  _;
+#        root         /usr/share/nginx/html;
+```
+The Zabbix configuration file must now be modified to reflect the current environment.
+Open the following file for editing:
+
+```
+vi /etc/nginx/conf.d/zabbix.conf
+```
+And alter the following lines:
+
+```
+server {
+        listen          8080;
+        server_name     example.com;
+
+        root    /usr/share/zabbix;
+
+        index   index.php;
+```
+Replace the first 2 lines with the correct port and domain for your front-end in
+case you don't have a domain you can replace `servername` with `_;` like in the
+example below:
+
+```
+server {
+#        listen          8080;
+#        server_name     example.com;
+        listen          80;
+        server_name     _;
+
+        root    /usr/share/zabbix;
+
+        index   index.php;
+```
+The web server and PHP-FPM service are now ready for activation and persistent
+startup. Execute the following commands to enable and start them immediately:
+
+RedHat
+```
+systemctl enable php-fpm --now
+systemctl enable nginx --now
+```
+Ubuntu
+```
+todo
+```
+Let's verify if the service is properly started and enabled so that it survives
+our reboot next time.
+
+RedHat and Ubuntu
+
+```
+# systemctl status nginx
+
+● nginx.service - The nginx HTTP and reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
+    Drop-In: /usr/lib/systemd/system/nginx.service.d
+             └─php-fpm.conf
+     Active: active (running) since Mon 2023-11-20 11:42:18 CET; 30min ago
+   Main PID: 1206 (nginx)
+      Tasks: 2 (limit: 12344)
+     Memory: 4.8M
+        CPU: 38ms
+     CGroup: /system.slice/nginx.service
+             ├─1206 "nginx: master process /usr/sbin/nginx"
+             └─1207 "nginx: worker process"
+
+Nov 20 11:42:18 zabbix-srv systemd[1]: Starting The nginx HTTP and reverse proxy server...
+Nov 20 11:42:18 zabbix-srv nginx[1204]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+Nov 20 11:42:18 zabbix-srv nginx[1204]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+Nov 20 11:42:18 zabbix-srv systemd[1]: Started The nginx HTTP and reverse proxy server.
+
+```
+
+With the service operational and configured for automatic startup, the final preparatory
+step involves adjusting the firewall to permit inbound HTTP traffic. Execute the
+following commands:
+
+RedHat
+```
+firewall-cmd --add-service=http --permanent
+firewall-cmd --reload
+```
+
+Ubuntu
+```
+todo
+```
+
+Open your browser and go to the url or ip of your front-end :
+```
+http://<ip or dns of the zabbix frontend server>/
+```
+
+If all goes well you should be greeted with a Zabbix welcome page. In case you
+have an error check the configuration again or have a look at the nginx log file :
+```
+/var/log/nginx/error.log
+```
+or run the following command :
+```
+journalctl -xe
+```
+This should help you in locating the errors you made.
+
+Upon accessing the appropriate URL, a page resembling the one illustrated below
+should appear:
+
+![overview](./basic-installation/ch01-setup.png){ align=left }
+
+The Zabbix frontend presents a limited array of available localizations, as shown.
+
+![overview language](./basic-installation/ch01-setup-language.png){ align=left }
+
+What if we want to install Chinese as language or another language from the list?
+Run the next command to get a list of all locales available for your OS.
+
+RedHat
+```
+dnf list glibc-langpack-*
+```
+Ubuntu
+```
+todo
+```
+
+This will give you on Redhat based systems a list like:
+```
+Installed Packages
+glibc-langpack-en.x86_64
+Available Packages
+glibc-langpack-aa.x86_64
+...
+
+glibc-langpack-zu.x86_64
+```
+
+Let's search for our Chinese locale to see if it is available. As you can see
+the code starts with zh.
+
+RedHat
+```
+# dnf list glibc-langpack-* | grep zh
+
+glibc-langpack-zh.x86_64
+glibc-langpack-lzh.x86_64
+```
+Ubuntu
+```
+todo
+```
+
+The command outputs two lines; however, given the identified language code,
+'zh_CN,' only the first package requires installation.
+
+RedHat
+```
+dnf install glibc-langpack-zh.x86_64 -y
+```
+
+Ubuntu
+```
+todo
+```
+
+When we return now to our front-end we are able to select the Chinese language,
+after a reload of our browser.
+
+![select language](./basic-installation/ch01-select-language.png){ align=left }
+
+???+ note
+    If your preferred language is not available in the Zabbix front-end, don't
+    worry it simply means that the translation is either incomplete or not yet
+    available. Zabbix is an open-source project that relies on community contributions
+    for translations, so you can help improve it by contributing your own translations.
+    
+    Visit the translation page at [https://translate.zabbix.com/](https://translate.zabbix.com/)
+    to assist with the translation efforts. Once your translation is complete and reviewed,
+    it will be included in the next minor patch version of Zabbix.
+    Your contributions help make Zabbix more accessible and improve the overall
+    user experience for everyone.
+
+When you're satisfied with the available translations, click `Next`. You will 
+then be taken to a screen to verify that all prerequisites are satisfied. If any
+prerequisites are not fulfilled, address those issues first. However, if everything
+is in order, you should be able to proceed by clicking `Next`.
+
+![pre-requisites](./basic-installation/ch01-pre-requisites.png){ align=left }
+
+On the next page, you'll configure the database connection parameters:
+
+1. `Select the Database Type`: Choose either MySQL or PostgreSQL depending on your setup.
+2. `Enter the Database Host`: Provide the IP address or DNS name of your database
+   server. Use port 3306 for MariaDB/MySQL or 5432 for PostgreSQL.
+3. `Enter the Database Name`: Specify the name of your database. In our case, it
+   is zabbix. If you are using PostgreSQL, you will also need to provide the schema
+   name, which is zabbix_server in our case.
+4. `Enter the Database User`: Input the database user created for the web front-end,
+   such as zabbix-web. Enter the corresponding password for this user.
+
+Ensure that the `Database TLS encryption` option is not selected, and then click
+`Next step` to proceed.
+
+![dbconnection](./basic-installation/ch01-db-connection.png){ align=left }
+
+You're almost finished with the setup! The final steps involve:
+
+1. `Assigning an Instance Name`: Choose a descriptive name for your Zabbix instance.
+2. `Selecting the Timezone`: Choose the timezone that matches your location or your preferred time zone for the Zabbix interface.
+3. `Setting the Default Time Format`: Select the default time format you prefer to use.
+
+Once these settings are configured, you can complete the setup and proceed with any final configuration steps as needed.
+
+???+ note
+    It's a good practice to set your Zabbix server to the UTC timezone, especially
+    when managing systems across multiple timezones. Using UTC helps ensure consistency
+    in time-sensitive actions and events, as the server’s timezone is often used for
+    calculating and displaying time-related information.
+
+![settings](./basic-installation/ch01-settings.png){ align=left }
+
+After clicking `Next step` again, you'll be taken to a page confirming that the
+configuration was successful. Click `Finish` to complete the setup process.
+
+![settings](./basic-installation/ch01-final.png){ align=left }
+
+We are now ready to login :
+
+![settings](./basic-installation/ch01-login.png)
+
+Login : Admin Password : zabbix
+
+This concludes our topic on setting up the Zabbix server. If you're interested in securing your front-end,
+I recommend checking out the topic Securing Zabbix for additional guidance and best practices.
