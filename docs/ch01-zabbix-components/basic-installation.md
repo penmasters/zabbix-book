@@ -159,7 +159,7 @@ To install the MariaDB server and client, execute the following command:
 
 RedHat
 ```bash
-# dnf install MariaDB-server MariaDB-client
+# dnf install MariaDB-server -y
 ```
 Ubuntu
 ```bash
@@ -428,7 +428,7 @@ RedHat
 ```
 Ubuntu
 ```
-# sudo ufw allow 10051/tcp
+# sudo ufw allow 3306/tcp
 ```
 
 ### Populate the Zabbix DB
@@ -530,6 +530,16 @@ Ubuntu
 ```
 
 todo
+```
+To update your OS, run the following command:
+
+RedHat
+```bash
+# dnf update -y
+```
+Ubuntu
+```
+# sudo apt update -y && sudo apt upgrade -y
 ```
 
 ### Securing the PostgreSQL database
@@ -773,6 +783,19 @@ grant
 zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
 GRANT
 ```
+
+If we want our Zabbix server being able to connect to our DB then we also need to open our firewall port.
+
+RedHat
+```
+# firewall-cmd --add-port=5432/tcp --permanent
+# firewall-cmd --reload
+```
+Ubuntu
+```
+# sudo ufw allow 5432/tcp
+```
+
 ### Populate the Zabbix DB
 
 Now, the `zabbix-web` user has appropriate access to interact with the schema
@@ -887,10 +910,22 @@ If you are ready you can exit the database and return as user root.
 ```
 zabbix=> \q
 ```
+If we want our Zabbix server to be able to connect to our DB then we also need to open our firewall port.
 
+RedHat
+```
+# firewall-cmd --add-port=5432/tcp --permanent
+# firewall-cmd --reload
+```
+Ubuntu
+```
+# sudo ufw allow 5432/tcp
+```
 
-## Installing the Zabbix server
+This concludes our installation of the PostgreSQL database.
 
+## Installing the Zabbix server for MariaDB/Mysql
+ 
 
 Before proceeding with the installation of your Zabbix server, ensure that the server
 is properly configured, as outlined in the previous section [System Requirements](../ch00-getting-started/Requirements.md)
@@ -964,6 +999,7 @@ Policy deny_unknown status:     allowed
 Memory protection checking:     actual (secure)
 Max kernel policy version:      33
 ```
+
 
 ### Adding the Zabbix repository
 
@@ -1222,6 +1258,210 @@ This concludes our chapter on installing and configuring the Zabbix server with 
 
 
 
+## Installing the Zabbix server for PostgreSQL
+
+If not have done already add the Zabbix repository so that you are ready to add 
+the necessary software.
+
+RedHat
+```
+# dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm -y
+```
+Ubuntu
+```
+Todo
+```
+
+We are ready to install both the Zabbix server and the web server. Keep in mind that the
+web server doesn't need to be installed on the same machine as the Zabbix server;
+they can be hosted on separate systems if desired.
+
+To install the Zabbix server and the web server components for PostgreSQL,
+run the following command:
+
+RedHat
+```
+# dnf install zabbix-server-pgsql -y
+```
+Ubuntu
+```
+# apt install zabbix-server-pgsql
+```
+After successfully installing the Zabbix server packages, we need to
+configure the Zabbix server to connect to the database. This requires modifying the
+Zabbix server configuration file. Open the `/etc/zabbix/zabbix_server.conf` file and
+update the following lines to match your database configuration:
+
+RedHat and Ubuntu
+```
+vi /etc/zabbix/zabbix_server.conf
+```
+```
+DBHost=<database-host>
+DBName=<database-name>
+DBSchema=<database-schema>
+DBUser=<database-user>
+DBPassword=<database-password>
+```
+Replace `database-host`, `database-name`, `database-user`,`database-schema` and `database-password` with
+the appropriate values for your setup. This ensures that the Zabbix server can communicate
+with your database.
+
+Ensure that there is no # (comment symbol) in front of the configuration parameters,
+as Zabbix will treat lines beginning with # as comments, ignoring them during execution.
+Additionally, double-check for duplicate configuration lines; if there are multiple
+lines with the same parameter, Zabbix will use the value from the last occurrence.
+
+For our setup, the configuration will look like this:
+
+```
+DBHost=<ip or dns of your PostgreSQL server>
+DBName=zabbix
+DBSchema=zabbix-server
+DBUser=zabbix-srv
+DBPassword=<your super secret password>
+DBPort=5432
+```
+In this example:
+
+- DBHost refers to the host where your database is running (use localhost if it's on the same machine).
+- DBName is the name of the Zabbix database.
+- DBUser is the database user.
+- DBPassword is the password for the database user.
+
+Make sure the settings reflect your environment's database configuration.
+
+???+ note
+    The Zabbix server configuration file offers an option to include additional
+    configuration files for custom parameters. For a production environment, it's
+    often best to avoid altering the original configuration file directly. Instead,
+    you can create and include a separate configuration file for any additional or
+    modified parameters. This approach ensures that your original configuration
+    file remains untouched, which is particularly useful when performing upgrades
+    or managing configurations with tools like Ansible, Puppet, or SaltStack.
+
+To enable this feature, remove the # from the line:
+```bash
+# Include=/usr/local/etc/zabbix_server.conf.d/*.conf
+```
+Ensure the path `/usr/local/etc/zabbix_server.conf.d/` exists and
+create a custom configuration file in this directory.
+This file should be readable by the `zabbix` user. By doing so, you can add
+or modify parameters without modifying the default configuration file,
+making system management and upgrades smoother.
+
+With the Zabbix server configuration updated to connect to your database, you
+can now start and enable the Zabbix server service. Run the following command
+to enable the Zabbix server and ensure it starts automatically on boot:
+
+Redhat
+```bash
+systemctl enable zabbix-server --now
+```
+Ubuntu
+```
+todo
+```
+
+This command will start the Zabbix server service immediately and configure it
+to launch on system startup. To verify that the Zabbix server is running correctly,
+check the log file for any messages. You can view the latest entries in the `Zabbix server`
+log file using:
+
+```bash
+tail /var/log/zabbix/zabbix_server.log
+```
+Look for messages indicating that the server has started successfully. If there
+are any issues, the log file will provide details to help with troubleshooting.
+
+```bash
+12074:20250225:145333.529 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
+12074:20250225:145333.530 ****** Enabled features ******
+12074:20250225:145333.530 SNMP monitoring:           YES
+12074:20250225:145333.530 IPMI monitoring:           YES
+12074:20250225:145333.530 Web monitoring:            YES
+12074:20250225:145333.530 VMware monitoring:         YES
+12074:20250225:145333.530 SMTP authentication:       YES
+12074:20250225:145333.530 ODBC:                      YES
+12074:20250225:145333.530 SSH support:               YES
+12074:20250225:145333.530 IPv6 support:              YES
+12074:20250225:145333.530 TLS support:               YES
+12074:20250225:145333.530 ******************************
+12074:20250225:145333.530 using configuration file: /etc/zabbix/zabbix_server.conf
+12074:20250225:145333.545 current database version (mandatory/optional): 07020000/07020000
+12074:20250225:145333.545 required mandatory version: 07020000
+12075:20250225:145333.557 starting HA manager
+12075:20250225:145333.566 HA manager started in active mode
+12074:20250225:145333.567 server #0 started [main process]
+12076:20250225:145333.567 server #1 started [service manager #1]
+12077:20250225:145333.567 server #2 started [configuration syncer #1]
+12078:20250225:145333.718 server #3 started [alert manager #1]
+12079:20250225:145333.719 server #4 started [alerter #1]
+12080:20250225:145333.719 server #5 started [alerter #2]
+12081:20250225:145333.719 server #6 started [alerter #3]
+12082:20250225:145333.719 server #7 started [preprocessing manager #1]
+12083:20250225:145333.719 server #8 started [lld manager #1]
+```
+If there was an error and the server was not able to connect to the database you
+would see something like this in the server log file :
+
+```bash
+12068:20250225:145309.018 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
+12068:20250225:145309.018 ****** Enabled features ******
+12068:20250225:145309.018 SNMP monitoring:           YES
+12068:20250225:145309.018 IPMI monitoring:           YES
+12068:20250225:145309.018 Web monitoring:            YES
+12068:20250225:145309.018 VMware monitoring:         YES
+12068:20250225:145309.018 SMTP authentication:       YES
+12068:20250225:145309.018 ODBC:                      YES
+12068:20250225:145309.018 SSH support:               YES
+12068:20250225:145309.018 IPv6 support:              YES
+12068:20250225:145309.018 TLS support:               YES
+12068:20250225:145309.018 ******************************
+12068:20250225:145309.018 using configuration file: /etc/zabbix/zabbix_server.conf
+12068:20250225:145309.027 [Z3005] query failed: [1146] Table 'zabbix.users' doesn't exist [select userid from users limit 1]
+12068:20250225:145309.027 cannot use database "zabbix": database is not a Zabbix database
+```
+
+Let's check the Zabbix server service to see if it's enabled so that it survives a reboot
+
+```bash
+# systemctl status zabbix-server
+● zabbix-server.service - Zabbix Server
+     Loaded: loaded (/usr/lib/systemd/system/zabbix-server.service; enabled; preset: disabled)
+     Active: active (running) since Tue 2025-02-25 14:53:33 CET; 26min ago
+   Main PID: 12074 (zabbix_server)
+      Tasks: 77 (limit: 24744)
+     Memory: 71.5M
+        CPU: 18.535s
+     CGroup: /system.slice/zabbix-server.service
+             ├─12074 /usr/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
+             ├─12075 "/usr/sbin/zabbix_server: ha manager"
+             ├─12076 "/usr/sbin/zabbix_server: service manager #1 [processed 0 events, updated 0 event tags, deleted 0 problems, synced 0 service updates, idle 5.027667 sec during 5.042628 sec]"
+             ├─12077 "/usr/sbin/zabbix_server: configuration syncer [synced configuration in 0.051345 sec, idle 10 sec]"
+             ├─12078 "/usr/sbin/zabbix_server: alert manager #1 [sent 0, failed 0 alerts, idle 5.030391 sec during 5.031944 sec]"
+             ├─12079 "/usr/sbin/zabbix_server: alerter #1 started"
+             ├─12080 "/usr/sbin/zabbix_server: alerter #2 started"
+             ├─12081 "/usr/sbin/zabbix_server: alerter #3 started"
+             ├─12082 "/usr/sbin/zabbix_server: preprocessing manager #1 [queued 0, processed 0 values, idle 5.023818 sec during 5.024830 sec]"
+             ├─12083 "/usr/sbin/zabbix_server: lld manager #1 [processed 0 LLD rules, idle 5.017278sec during 5.017574 sec]"
+             ├─12084 "/usr/sbin/zabbix_server: lld worker #1 [processed 1 LLD rules, idle 21.031209 sec during 21.063879 sec]"
+             ├─12085 "/usr/sbin/zabbix_server: lld worker #2 [processed 1 LLD rules, idle 43.195541 sec during 43.227934 sec]"
+             ├─12086 "/usr/sbin/zabbix_server: housekeeper [startup idle for 30 minutes]"
+             ├─12087 "/usr/sbin/zabbix_server: timer #1 [updated 0 hosts, suppressed 0 events in 0.017595 sec, idle 59 sec]"
+             ├─12088 "/usr/sbin/zabbix_server: http poller #1 [got 0 values in 0.000071 sec, idle 5 sec]"
+             ├─12089 "/usr/sbin/zabbix_server: browser poller #1 [got 0 values in 0.000066 sec, idle 5 sec]"
+             ├─12090 "/usr/sbin/zabbix_server: discovery manager #1 [processing 0 rules, 0 unsaved checks]"
+             ├─12091 "/usr/sbin/zabbix_server: history syncer #1 [processed 4 values, 3 triggers in 0.027382 sec, idle 1 sec]"
+             ├─12092 "/usr/sbin/zabbix_server: history syncer #2 [processed 0 values, 0 triggers in 0.000077 sec, idle 1 sec]"
+             ├─12093 "/usr/sbin/zabbix_server: history syncer #3 [processed 0 values, 0 triggers in 0.000076 sec, idle 1 sec]"
+             ├─12094 "/usr/sbin/zabbix_server: history syncer #4 [processed 0 values, 0 triggers in 0.000020 sec, idle 1 sec]"
+             ├─12095 "/usr/sbin/zabbix_server: escalator #1 [processed 0 escalations in 0.011627 sec, idle 3 sec]"
+             ├─12096 "/usr/sbin/zabbix_server: proxy poller #1 [exchanged data with 0 proxies in 0.000081 sec, idle 5 sec]"
+             ├─12097 "/usr/sbin/zabbix_server: self-monitoring [processed data in 0.000068 sec, idle 1 sec]"
+```
+
+This concludes our chapter on installing and configuring the Zabbix server with PostgreSQL.
 
 
 ## Installing the frontend
@@ -1240,7 +1480,7 @@ RedHat
 ```
 # dnf install zabbix-nginx-conf zabbix-web-mysql -y
 or if you used PostgreSQL
-# dnf install zabbix-web-pgsql
+# dnf install zabbix-nginx-conf zabbix-web-pgsql -y
 ```
 
 Ubuntu
@@ -1518,3 +1758,20 @@ Login : Admin Password : zabbix
 
 This concludes our topic on setting up the Zabbix server. If you're interested in securing your front-end,
 I recommend checking out the topic Securing Zabbix for additional guidance and best practices.
+
+???+ note
+    If you are not able to safe your configuration at the end make sure SeLinux
+    is disabled. It is possible that it will block access to certain files or even the database.
+
+
+# Conclusion
+
+Todo
+
+# Questions
+
+Todo
+
+# Useful URLs 
+
+Todo
