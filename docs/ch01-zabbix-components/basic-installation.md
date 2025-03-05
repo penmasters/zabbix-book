@@ -514,6 +514,20 @@ Install the repository RPM:
 Disable the built-in PostgreSQL module:
 # sudo dnf -qy module disable postgresql
 ```
+Ubuntu
+```
+# Import the repository signing key:
+sudo apt install curl ca-certificates
+sudo install -d /usr/share/postgresql-common/pgdg
+sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+# Create the repository configuration file:
+sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+# Update the package lists:
+sudo apt update
+
+```
 
 ### Install the PostgreSQL databases
 
@@ -528,8 +542,7 @@ Initialize the database and enable automatic start:
 ```
 Ubuntu
 ```
-
-todo
+sudo apt -y install postgresql-17
 ```
 To update your OS, run the following command:
 
@@ -558,14 +571,13 @@ from where, and what encryption method is used for authentication.
 
 Add the following lines, the order here is important.
 
-```bash
 Redhat
-
+```bash
 # vi /var/lib/pgsql/17/data/pg_hba.conf
-
+```
 Ubuntu
-
-Todo
+```bash
+# sudo vi /etc/postgresql/17/main/pg_hba.conf
 ```
 
 The result should look like : 
@@ -590,8 +602,7 @@ RedHat
 ```
 Ubuntu
 ```bash
-
-todo
+# vi /etc/postgresql/17/main/postgresql.conf
 ```
 
 To configure PostgreSQL to listen on all network interfaces, you need to modify
@@ -606,17 +617,19 @@ listen_addresses = '*'
 ```
 
 This will enable PostgreSQL to accept connections from any network interface,
-not just the local machine. After making this change, restart the PostgreSQL service
+not just the local machine. In production it's probably a good idea to limit 
+who can connect to the DB. After making this change, restart the PostgreSQL service
 to apply the new settings:
 
-```bash
 Redhat
+```bash
 # systemctl restart postgresql-17
-
-Ubuntu
-
-todo
 ```
+Ubuntu
+```bash
+sudo systemctl restart postgresql
+```
+
 If the service fails to restart, review the pg_hba.conf file for any syntax errors,
 as incorrect entries here may prevent PostgreSQL from starting.
 
@@ -630,21 +643,24 @@ Zabbix application.
 
 To begin, add the Zabbix repository to your system by running the following commands:
 
-```bash
 RedHat
+```bash
 # dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm -y
 # dnf install zabbix-sql-scripts -y 
-
+```
 Ubuntu
-
-todo
+```bash
+# sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo apt update -y
+# sudo apt install zabbix-sql-scripts -y
 ```
 With the necessary packages installed, you are now ready to create the Zabbix users for both the server and frontend.
 
 First, switch to the `postgres` user and create the Zabbix server database user:
 
 ```
-# su - postgres
+# sudo su - postgres
 # createuser --pwprompt zabbix-srv
 Enter password for new role: <server-password>
 Enter it again: <server-password>
@@ -658,15 +674,15 @@ Enter it again: <frontend-password>
 ```
 
 After creating the users, you need to prepare the database schema. As the root
-user, unzip the necessary schema files by running the following command:
+or your regular user, unzip the necessary schema files by running the following command:
 
-```bash
 RedHat
+```bash
 # gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
-
+```
 Ubuntu
-
-todo
+```bash
+# sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
 ```
 
 ???+ note
@@ -680,16 +696,19 @@ Now that the users are created, the next step is to create the Zabbix database.
 First, switch to the `postgres` user and execute the following command to create
 the database with the owner set to zabbix-srv:
 
-```bash
 RedHat
+```bash
 # su - postgres
 # createdb -E Unicode -O zabbix-srv zabbix
 # exit
-
-Ubuntu
-
-Todo
 ```
+Ubuntu
+```bash
+# sudo su - postgres
+# createdb -E Unicode -O zabbix-srv zabbix
+# exit
+```
+
 Once the database is created, you should verify the connection and ensure that
 the correct user session is active. To do this, log into the zabbix database using
 the zabbix-srv user:
@@ -738,7 +757,6 @@ the `zabbix-srv` user:
 
 ```
 zabbix=> CREATE SCHEMA zabbix_server AUTHORIZATION "zabbix-srv";
-CREATE SCHEMA
 ```
 Next, we set the `search path` to `zabbix_server` schema so that it's the default
 for the current session:
@@ -749,7 +767,7 @@ zabbix=> SET search_path TO "zabbix_server";
 
 To confirm the schema setup, you can list the existing schemas:
 
-```
+```psql
 zabbix=> \dn
           List of schemas
      Name      |       Owner
@@ -763,9 +781,8 @@ At this point, the `zabbix-srv` user has full access to the schema, but the `zab
 user still needs appropriate permissions to connect and interact with the database.
 First, we grant `USAGE` privileges on the schema to allow `zabbix-web` to connect:
 
-```
+```psql
 zabbix=# GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
-GRANT
 ```
 
 However, `zabbix-web` still cannot perform any operations on the tables or sequences.
@@ -775,26 +792,13 @@ following permissions:
 - For tables: SELECT, INSERT, UPDATE, and DELETE.
 - For sequences: SELECT and UPDATE.
 
-```
+```psql
 zabbix=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server TO "zabbix-web";
-grant
 ```
-```
+```psql
 zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
-GRANT
 ```
 
-If we want our Zabbix server being able to connect to our DB then we also need to open our firewall port.
-
-RedHat
-```
-# firewall-cmd --add-port=5432/tcp --permanent
-# firewall-cmd --reload
-```
-Ubuntu
-```
-# sudo ufw allow 5432/tcp
-```
 
 ### Populate the Zabbix DB
 
@@ -1044,9 +1048,9 @@ RedHat
 ```
 Ubuntu
 ```
-# wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# apt update
+# sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo apt update
 ```
 This will refresh the repository metadata and prepare the system for Zabbix installation.
 
@@ -1081,7 +1085,7 @@ RedHat
 ```
 Ubuntu
 ```
-# apt install zabbix-server-mysql
+# sudo apt install zabbix-server-mysql
 ```
 After successfully installing the Zabbix server and frontend packages, we need to
 configure the Zabbix server to connect to the database. This requires modifying the
@@ -1375,9 +1379,9 @@ RedHat
 ```
 Ubuntu
 ```
-# wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# apt update
+# sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo apt update
 ```
 This will refresh the repository metadata and prepare the system for Zabbix installation.
 
@@ -1412,7 +1416,7 @@ RedHat
 ```
 Ubuntu
 ```
-# apt install zabbix-server-pgsql
+# sudo apt install zabbix-server-pgsql
 ```
 After successfully installing the Zabbix server packages, we need to
 configure the Zabbix server to connect to the database. This requires modifying the
@@ -1421,7 +1425,7 @@ update the following lines to match your database configuration:
 
 RedHat and Ubuntu
 ```
-vi /etc/zabbix/zabbix_server.conf
+#sudo vi /etc/zabbix/zabbix_server.conf
 ```
 ```
 DBHost=<database-host>
@@ -1444,7 +1448,7 @@ For our setup, the configuration will look like this:
 ```
 DBHost=<ip or dns of your PostgreSQL server>
 DBName=zabbix
-DBSchema=zabbix-server
+DBSchema=zabbix_server
 DBUser=zabbix-srv
 DBPassword=<your super secret password>
 DBPort=5432
@@ -1487,7 +1491,7 @@ systemctl enable zabbix-server --now
 ```
 Ubuntu
 ```
-todo
+sudo systemctl enable zabbix-server --now
 ```
 
 This command will start the Zabbix server service immediately and configure it
@@ -1612,7 +1616,7 @@ or if you used PostgreSQL
 
 Ubuntu
 ```
-todo
+# sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
 ```
 
 This command will install the front-end packages along with the required dependencies
@@ -1627,11 +1631,7 @@ use the standard config.
 
 RedHat
 ```
-vi /etc/nginx/nginx.conf
-```
-Ubuntu
-```
-todo
+# vi /etc/nginx/nginx.conf
 ```
 In this configuration file look for the following block that starts with :
 ```
@@ -1688,6 +1688,26 @@ server {
 The web server and PHP-FPM service are now ready for activation and persistent
 startup. Execute the following commands to enable and start them immediately:
 
+Ubuntu
+```bash
+# vi /etc/zabbix/nginx.conf
+```
+
+replace the Following lines:
+```
+
+```
+with :
+```bash
+server {
+        listen          80;
+        server_name     xxx.xxx.xxx.xxx;
+
+```
+
+where xxx.xxxx.xxx.xxx is your IP or DNS name.
+
+
 RedHat
 ```
 systemctl enable php-fpm --now
@@ -1695,7 +1715,8 @@ systemctl enable nginx --now
 ```
 Ubuntu
 ```
-todo
+sudo systemctl enable nginx php8.3-fpm
+sudo systemctl restart nginx php8.3-fpm
 ```
 Let's verify if the service is properly started and enabled so that it survives
 our reboot next time.
@@ -1737,7 +1758,7 @@ firewall-cmd --reload
 
 Ubuntu
 ```
-todo
+# sudo ufw allow 3306/tcp
 ```
 
 Open your browser and go to the url or ip of your front-end :
@@ -1774,7 +1795,7 @@ dnf list glibc-langpack-*
 ```
 Ubuntu
 ```
-todo
+apt-cache search language-pack
 ```
 
 This will give you on Redhat based systems a list like:
@@ -1786,6 +1807,20 @@ glibc-langpack-aa.x86_64
 ...
 
 glibc-langpack-zu.x86_64
+
+
+On Ubuntu it will look like 
+language-pack-kab - translation updates for language Kabyle
+language-pack-kab-base - translations for language Kabyle
+language-pack-kn - translation updates for language Kannada
+language-pack-kn-base - translations for language Kannada
+...
+
+language-pack-ko - translation updates for language Korean
+language-pack-ko-base - translations for language Korean
+language-pack-ku - translation updates for language Kurdish
+language-pack-ku-base - translations for language Kurdish
+language-pack-lt - translation updates for language Lithuanian
 ```
 
 Let's search for our Chinese locale to see if it is available. As you can see
@@ -1800,7 +1835,7 @@ glibc-langpack-lzh.x86_64
 ```
 Ubuntu
 ```
-todo
+apt-cache search language-pack | grep -i zh
 ```
 
 The command outputs two lines; however, given the identified language code,
@@ -1808,12 +1843,13 @@ The command outputs two lines; however, given the identified language code,
 
 RedHat
 ```
-dnf install glibc-langpack-zh.x86_64 -y
+# dnf install glibc-langpack-zh.x86_64 -y
 ```
 
 Ubuntu
 ```
-todo
+# sudo apt install language-pack-zh-hans
+# sudo systemctl restart nginx php8.3-fpm
 ```
 
 When we return now to our front-end we are able to select the Chinese language,
