@@ -1,0 +1,3504 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="An open-source Zabbix book">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/ch01-zabbix-components/basic-installation/">
+      
+      
+        <link rel="prev" href="../chapter/">
+      
+      
+        <link rel="next" href="../ha-setup/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+    
+    
+      
+        <title>Basic installation - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../assets/external/fonts.googleapis.com/css.af67bdb9.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Nunito"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings2.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings3.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings4.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings5.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-enum-headings6.css">
+    
+      <link rel="stylesheet" href="../../css/print-site.css">
+    
+      <link rel="stylesheet" href="../../css/print-site-material.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#basic-installation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Select version";
+        const gGMC_TRANSLATE_CTA = "Support us and translate!";
+        const gGMC_PAGE_LOCALE = "en";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Basic installation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../fr/ch01-zabbix-components/basic-installation/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../de/ch01-zabbix-components/basic-installation/" hreflang="de" class="md-select__link">
+              German
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../it/ch01-zabbix-components/basic-installation/" hreflang="it" class="md-select__link">
+              Italian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../nl/ch01-zabbix-components/basic-installation/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../pt/ch01-zabbix-components/basic-installation/" hreflang="pt" class="md-select__link">
+              Portuguese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../es/ch01-zabbix-components/basic-installation/" hreflang="es" class="md-select__link">
+              Spanish
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../th/ch01-zabbix-components/basic-installation/" hreflang="th" class="md-select__link">
+              ภาษาไทย
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../zh/ch01-zabbix-components/basic-installation/" hreflang="zh" class="md-select__link">
+              中国人
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../ru/ch01-zabbix-components/basic-installation/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guidlines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Getting started
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Chapter 01 : Zabbix components
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Chapter 01 : Zabbix components
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Zabbix components, basic functions and installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Basic installation
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Basic installation
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-mariadb-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the MariaDB database
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the MariaDB database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-the-mariadb-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add the MariaDB repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-the-mariadb-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install the MariaDB database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#securing-the-mariadb-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Securing the MariaDB Database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-zabbix-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create the Zabbix database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#populate-the-zabbix-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      Populate the Zabbix DB
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-postgresql-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the PostgreSQL database
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the PostgreSQL database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-the-postgresql-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add the PostgreSQL repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-the-postgresql-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install the PostgreSQL databases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#securing-the-postgresql-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Securing the PostgreSQL database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-zabbix-database_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create the Zabbix database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#populate-the-zabbix-db_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Populate the Zabbix DB
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-zabbix-server-for-mariadbmysql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the Zabbix server for MariaDB/Mysql
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the Zabbix server for MariaDB/Mysql">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-the-zabbix-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding the Zabbix repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-the-zabbix-server-for-mysqlmariadb" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring the Zabbix server for MySQL/MariaDB
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-zabbix-server-for-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the Zabbix server for PostgreSQL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the Zabbix server for PostgreSQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-the-zabbix-repository_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding the Zabbix repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-the-zabbix-server-for-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring the Zabbix server for PostgreSQL.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installing-the-frontend-with-nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the frontend with NGINX
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ha-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HA Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../securing-zabbix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 02 : Installation
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 03 : Proxies and Webcomponents
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 05 : Triggers
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 06 : Templates
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 07 : Alerting
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 08 : LLD
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 09 : Extending Zabbix
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch10-zabbix-discovery/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 10 : Discovery
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch11-zabbix-visualisation/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 11 : Visualisation
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 12 : Zabbix API
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../ch13-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapter 13 : Real world examples
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-mariadb-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the MariaDB database
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the MariaDB database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-the-mariadb-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add the MariaDB repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-the-mariadb-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install the MariaDB database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#securing-the-mariadb-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Securing the MariaDB Database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-zabbix-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create the Zabbix database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#populate-the-zabbix-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      Populate the Zabbix DB
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-postgresql-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the PostgreSQL database
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the PostgreSQL database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-the-postgresql-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add the PostgreSQL repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-the-postgresql-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install the PostgreSQL databases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#securing-the-postgresql-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Securing the PostgreSQL database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-zabbix-database_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create the Zabbix database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#populate-the-zabbix-db_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Populate the Zabbix DB
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-zabbix-server-for-mariadbmysql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the Zabbix server for MariaDB/Mysql
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the Zabbix server for MariaDB/Mysql">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-the-zabbix-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding the Zabbix repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-the-zabbix-server-for-mysqlmariadb" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring the Zabbix server for MySQL/MariaDB
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-zabbix-server-for-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the Zabbix server for PostgreSQL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the Zabbix server for PostgreSQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-the-zabbix-repository_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding the Zabbix repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-the-zabbix-server-for-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring the Zabbix server for PostgreSQL.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installing-the-frontend-with-nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the frontend with NGINX
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch01-zabbix-components/basic-installation.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="basic-installation">Basic installation<a class="headerlink" href="#basic-installation" title="Permanent link">&para;</a></h1>
+<p>In this chapter, we will walk through the process of installing the Zabbix server.
+There are many different ways to setup a Zabbix server. We will cover the most
+common setups with MariaDB and PostgreSQL on Ubuntu and on Rocky Linux.</p>
+<p>Before beginning the installation, it is important to understand the architecture
+of Zabbix.
+The Zabbix server is structured in a modular fashion, composed of three main components,
+which we will discuss in detail.</p>
+<ul>
+<li>The Zabbix server</li>
+<li>The Zabbix web server</li>
+<li>The Zabbix database</li>
+</ul>
+<p><img align="left" alt="overview" src="zabbix-server.png" />
+<em>1.1 Zabbix basic split installation</em></p>
+<p>All of these components can either be installed on a single server or distributed
+across three separate servers. The core of the system is the Zabbix server, often
+referred to as the "brain." This component is responsible for processing trigger
+calculations and sending alerts. The database serves as the storage for the Zabbix
+server's configuration and all the data it collects. The web server provides the
+user interface (front-end) for interacting with the system. It is important to note
+that the Zabbix API is part of the front-end component, not the Zabbix server itself.</p>
+<p>These components must function together seamlessly, as illustrated in the diagram
+above. The Zabbix server must read configurations and store monitoring data in the
+database, while the front-end needs access to read and write configuration data.
+Furthermore, the front-end must be able to check the status of the Zabbix server
+and retrieve additional necessary information to ensure smooth operation.</p>
+<p>For our setup, we will be using two virtual machines (VMs): one VM will host both
+the Zabbix server and the Zabbix web front-end, while the second VM will host the
+Zabbix database.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>It's perfect possible to install all components on 1 single VM or every component
+on a separate VM.
+Reason we split the DB as an example is because the database will probably be the
+first component giving you performance headaches. It's also the component that
+needs some extra attention when we split it so for this reason we have chosen
+in this example to split the database from the rest of the setup.</p>
+</details>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>A crucial consideration for those managing Zabbix installations is the database
+back-end. Zabbix 7.0 marks the final release to offer support for Oracle Database.
+Consequently, systems running Zabbix 7.0 or any prior version must undertake a database
+migration to either PostgreSQL, MySQL, or a compatible fork such as MariaDB before
+upgrading to a later Zabbix release. This migration is a mandatory step to
+ensure continued functionality and compatibility with future Zabbix versions.</p>
+</details>
+<p>We will cover the following topics:</p>
+<ul>
+<li>Install our Database based on MariaDB.</li>
+<li>Install our Database based on PostgreSQL.</li>
+<li>Installing the Zabbix server.</li>
+<li>Install the frontend.</li>
+</ul>
+<h2 id="installing-the-mariadb-database">Installing the MariaDB database<a class="headerlink" href="#installing-the-mariadb-database" title="Permanent link">&para;</a></h2>
+<p>To begin the installation process for the MariaDB server, the first step involves
+manually creating a repository configuration file. This file, mariadb.repo on Rocky,
+must be placed in the /etc/yum.repos.d/ directory. The repository file will allow
+your package manager to locate and install the necessary MariaDB components.
+For Ubuntu we need to import the repository keys and create a file for example
+'/etc/apt/sources.list.d/mariadb.sources'.</p>
+<h3 id="add-the-mariadb-repository">Add the MariaDB repository<a class="headerlink" href="#add-the-mariadb-repository" title="Permanent link">&para;</a></h3>
+<p>To create the MariaDB repository file, execute the following command in your terminal:</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># vi /etc/yum.repos.d/mariadb.repo
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo apt-get install apt-transport-https curl
+# sudo mkdir -p /etc/apt/keyrings
+# sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+
+# sudo vi /etc/apt/sources.list.d/mariadb.sources
+</code></pre>
+<p>This will open a text editor where you can input the repository configuration details.
+Once the repository is configured, you can proceed with the installation of MariaDB
+using your package manager.</p>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>Always check Zabbix documentation for the latest supported versions.</p>
+</details>
+<p>The latest config can be found here:
+https://mariadb.org/download/?t=repo-config</p>
+<p>Here's the configuration you need to add into the file:</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-02-21 10:15 UTC
+# https://mariadb.org/download/
+[mariadb]
+name = MariaDB
+# rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+# baseurl = https://rpm.mariadb.org/11.4/rhel/$releasever/$basearch
+baseurl = https://mirror.bouwhuis.network/mariadb/yum/11.4/rhel/$releasever/$basearch
+# gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgkey = https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
+gpgcheck = 1
+</code></pre>
+<p>Ubuntu</p>
+<pre><code class="language-bash"># MariaDB 11.4 repository list - created 2025-02-21 11:42 UTC
+# https://mariadb.org/download/
+X-Repolib-Name: MariaDB
+Types: deb
+# deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+# URIs: https://deb.mariadb.org/11.4/ubuntu
+URIs: https://mirror.bouwhuis.network/mariadb/repo/11.4/ubuntu
+Suites: noble
+Components: main main/debug
+Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+</code></pre>
+<p>After saving the file, ensure that everything is properly set up and that your
+MariaDB version is compatible with your Zabbix version to avoid potential
+integration issues.</p>
+<p>Before proceeding with the MariaDB installation, it's a best practice to ensure
+your operating system is up-to-date with the latest patches and security fixes.
+This will help maintain system stability and compatibility with the software you're
+about to install.</p>
+<p>To update your OS, run the following command:</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># dnf update -y
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo apt update -y &amp;&amp; sudo apt upgrade -y
+</code></pre>
+<p>This command will automatically fetch and install the latest updates available for
+your system, applying security patches, performance improvements, and bug fixes.
+Once the update process is complete, you can move forward with the MariaDB installation.</p>
+<h3 id="install-the-mariadb-database">Install the MariaDB database<a class="headerlink" href="#install-the-mariadb-database" title="Permanent link">&para;</a></h3>
+<p>With the operating system updated and the MariaDB repository configured, you are
+now ready to install the MariaDB server and client packages. This will provide the
+necessary components to run and manage your database.</p>
+<p>To install the MariaDB server and client, execute the following command:</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># dnf install MariaDB-server
+</code></pre>
+<p>Ubuntu</p>
+<pre><code class="language-bash"># sudo apt-get install mariadb-server
+</code></pre>
+<p>This command will download and install both the server and client packages, enabling
+you to set up, configure, and interact with your MariaDB database. Once the
+installation is complete, you can proceed to start and configure the MariaDB service.</p>
+<p>Now that MariaDB is installed, we need to enable the service to start automatically
+upon boot and start it immediately. Use the following command to accomplish this:</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># systemctl enable mariadb --now
+</code></pre>
+<p>This command will both enable and start the MariaDB service. Once the service is
+running, you can verify that the installation was successful by checking the
+version of MariaDB using the following command:</p>
+<p>RedHat and Ubuntu</p>
+<pre><code class="language-bash"># sudo mariadb -V
+</code></pre>
+<p>The expected output should resemble this:</p>
+<pre><code>mariadb from 11.4.5-MariaDB, client 15.2 for Linux (aarch64) using  EditLine wrapper
+</code></pre>
+<p>To ensure that the MariaDB service is running properly, you can check its status
+with the following command:</p>
+<pre><code class="language-bash">RedHat and Ubuntu
+# sudo systemctl status mariadb
+</code></pre>
+<p>You should see an output similar to this, indicating that the MariaDB service
+is active and running:</p>
+<pre><code class="language-bash">mariadb.service - MariaDB 11.4.5 database server
+     Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
+    Drop-In: /etc/systemd/system/mariadb.service.d
+             └─migrated-from-my.cnf-settings.conf
+     Active: active (running) since Fri 2025-02-21 11:22:59 CET; 2min 8s ago
+       Docs: man:mariadbd(8)
+             https://mariadb.com/kb/en/library/systemd/
+    Process: 23147 ExecStartPre=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
+    Process: 23148 ExecStartPre=/bin/sh -c [ ! -e /usr/bin/galera_recovery ] &amp;&amp; VAR= ||   VAR=`/usr/bin/galera_recovery`; [ $? -eq 0 ]   &amp;&amp; systemctl set-enviro&gt;
+    Process: 23168 ExecStartPost=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
+   Main PID: 23156 (mariadbd)
+     Status: &quot;Taking your SQL requests now...&quot;
+      Tasks: 7 (limit: 30620)
+     Memory: 281.7M
+        CPU: 319ms
+     CGroup: /system.slice/mariadb.service
+             └─23156 /usr/sbin/mariadbd
+
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Plugin 'FEEDBACK' is disabled.
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Plugin 'wsrep-provider' is disabled.
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] InnoDB: Buffer pool(s) load completed at 250221 11:22:58
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Server socket created on IP: '0.0.0.0'.
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Server socket created on IP: '::'.
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] mariadbd: Event Scheduler: Loaded 0 events
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] /usr/sbin/mariadbd: ready for connections.
+Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: Version: '11.4.5-MariaDB'  socket: '/var/lib/mysql/mysql.sock'  port: 3306  MariaDB Server
+Feb 21 11:22:59 localhost.localdomain systemd[1]: Started MariaDB 11.4.5 database server.
+</code></pre>
+<p>This confirms that your MariaDB server is up and running, ready for further configuration.</p>
+<h3 id="securing-the-mariadb-database">Securing the MariaDB Database<a class="headerlink" href="#securing-the-mariadb-database" title="Permanent link">&para;</a></h3>
+<p>To enhance the security of your MariaDB server, it's essential to remove unnecessary
+test databases, anonymous users, and set a root password. This can be done using the
+mariadb-secure-installation script, which provides a step-by-step guide to securing
+your database.</p>
+<p>Run the following command:</p>
+<p>RedHat and Ubuntu</p>
+<pre><code class="language-bash"># sudo mariadb-secure-installation
+</code></pre>
+<pre><code>NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
+      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
+
+In order to log into MariaDB to secure it, we'll need the current
+password for the root user. If you've just installed MariaDB, and
+haven't set the root password yet, you should just press enter here.
+
+Enter current password for root (enter for none):
+OK, successfully used password, moving on...
+
+Setting the root password or using the unix_socket ensures that nobody
+can log into the MariaDB root user without the proper authorisation.
+
+You already have your root account protected, so you can safely answer 'n'.
+
+Switch to unix_socket authentication [Y/n] n
+ ... skipping.
+
+You already have your root account protected, so you can safely answer 'n'.
+
+Change the root password? [Y/n] y
+New password:
+Re-enter new password:
+Password updated successfully!
+Reloading privilege tables..
+ ... Success!
+
+
+By default, a MariaDB installation has an anonymous user, allowing anyone
+to log into MariaDB without having to have a user account created for
+them.  This is intended only for testing, and to make the installation
+go a bit smoother.  You should remove them before moving into a
+production environment.
+
+Remove anonymous users? [Y/n] y
+ ... Success!
+
+Normally, root should only be allowed to connect from 'localhost'.  This
+ensures that someone cannot guess at the root password from the network.
+
+Disallow root login remotely? [Y/n] y
+ ... Success!
+
+By default, MariaDB comes with a database named 'test' that anyone can
+access.  This is also intended only for testing, and should be removed
+before moving into a production environment.
+
+Remove test database and access to it? [Y/n] y
+ - Dropping test database...
+ ... Success!
+ - Removing privileges on test database...
+ ... Success!
+
+Reloading the privilege tables will ensure that all changes made so far
+will take effect immediately.
+
+Reload privilege tables now? [Y/n] y
+ ... Success!
+
+Cleaning up...
+
+All done!  If you've completed all of the above steps, your MariaDB
+installation should now be secure.
+
+Thanks for using MariaDB!
+</code></pre>
+<p>The mariadb-secure-installation script will guide you through several key steps:</p>
+<ol>
+<li>Set a root password if one isn't already set.</li>
+<li>Remove anonymous users.</li>
+<li>Disallow remote root logins.</li>
+<li>Remove the test database.</li>
+<li>Reload the privilege tables to ensure the changes take effect.</li>
+</ol>
+<p>Once complete, your MariaDB instance will be significantly more secure. You are
+now ready to configure the database for Zabbix.</p>
+<h3 id="create-the-zabbix-database">Create the Zabbix database<a class="headerlink" href="#create-the-zabbix-database" title="Permanent link">&para;</a></h3>
+<p>With MariaDB now set up and secured, we can move on to creating the database for
+Zabbix. This database will store all the necessary data related to your Zabbix server,
+including configuration information and monitoring data.</p>
+<p>Follow these steps to create the Zabbix database:</p>
+<p>Log in to the MariaDB shell as the root user:
+You'll be prompted to enter the root password that you set during the mariadb-secure-installation
+process.</p>
+<p>RedHat and Ubuntu</p>
+<pre><code class="language-bash"># mariadb -uroot -p
+</code></pre>
+<p>Once you're logged into the MariaDB shell, run the following command to create a
+database for Zabbix:</p>
+<pre><code class="language-bash">MariaDB [(none)]&gt; CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+</code></pre>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>utf8mb4 is a proper implementation of UTF-8 in MySQL/MariaDB, supporting all
+Unicode characters, including emojis. The older utf8 charset in MySQL/MariaDB
+only supports up to three bytes per character and is not a true UTF-8 implementation,
+which is why utf8mb4 is recommended.</p>
+</details>
+<p>This command creates a new database named zabbix with the UTF-8 character set,
+which is required for Zabbix.</p>
+<p>Create a dedicated user for Zabbix and grant the necessary privileges: Next, you
+need to create a user that Zabbix will use to access the database. Replace password
+with a strong password of your choice.</p>
+<pre><code class="language-sql">MariaDB [(none)]&gt; CREATE USER 'zabbix-web'@'&lt;zabbix server ip&gt;' IDENTIFIED BY '&lt;password&gt;';
+MariaDB [(none)]&gt; CREATE USER 'zabbix-srv'@'&lt;zabbix server ip&gt;' IDENTIFIED BY '&lt;password&gt;';
+MariaDB [(none)]&gt; GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix-srv'@'&lt;zabbix server ip&gt;';
+MariaDB [(none)]&gt; GRANT SELECT, UPDATE, DELETE, INSERT ON zabbix.* TO 'zabbix-web'@'&lt;zabbix server ip&gt;';
+MariaDB [(none)]&gt; FLUSH PRIVILEGES;
+</code></pre>
+<p>This creates new users for zabbix-web and zabbix-srv, grants them access to the
+zabbix database, and ensures that the privileges are applied immediately.</p>
+<p>In some cases, especially when setting up Zabbix with MariaDB, you might encounter
+issues related to stored functions and triggers if binary logging is enabled.
+To address this, you need to set the log_bin_trust_function_creators option to 1
+in the MariaDB configuration file. This allows non-root users to create stored
+functions and triggers without requiring SUPER privileges, which are restricted
+when binary logging is enabled.</p>
+<pre><code class="language-sql">MariaDB [(none)]&gt; SET GLOBAL log_bin_trust_function_creators = 1;
+MariaDB [(none)]&gt; QUIT
+</code></pre>
+<p>At this point, your Zabbix database is ready, and you can proceed with configuring
+the Zabbix server to connect to the database.</p>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>In the Zabbix documentation, it is explicitly stated that deterministic
+triggers need to be created during the schema import. On MySQL and MariaDB
+systems, this requires setting GLOBAL log_bin_trust_function_creators = 1
+if binary logging is enabled, and you lack superuser privileges.</p>
+<p>If the log_bin_trust_function_creators option is not set in the MySQL
+configuration file, it will block the creation of these triggers during
+schema import. This is essential because, without superuser access,
+non-root users cannot create triggers or stored functions unless this setting is applied.</p>
+<p>To summarize:</p>
+<ul>
+<li>
+<p>Binary logging enabled: If binary logging is enabled and the user does not
+  have superuser privileges, the creation of necessary Zabbix triggers will
+  fail unless log_bin_trust_function_creators = 1 is set.</p>
+</li>
+<li>
+<p>Solution: Add log_bin_trust_function_creators = 1 to the [mysqld] section
+  in your MySQL/MariaDB configuration file or temporarily set it at runtime
+  with SET GLOBAL log_bin_trust_function_creators = 1 if you have sufficient
+  permissions.</p>
+</li>
+</ul>
+<p>This ensures that Zabbix can successfully create the required triggers during
+schema import without encountering privilege-related errors.</p>
+</details>
+<p>If we want our Zabbix server to connect to our DB then we also need to open our firewall port.</p>
+<p>RedHat</p>
+<pre><code># firewall-cmd --add-port=3306/tcp --permanent
+# firewall-cmd --reload
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo ufw allow 3306/tcp
+</code></pre>
+<h3 id="populate-the-zabbix-db">Populate the Zabbix DB<a class="headerlink" href="#populate-the-zabbix-db" title="Permanent link">&para;</a></h3>
+<p>With the users and permissions set up correctly, you can now populate the database
+with the Zabbix schema created and other required elements. Follow these steps:</p>
+<p>One of the first things we need to do is add the Zabbix repository to our machine.
+This may sound weird but actually makes sense because we need to populate our DB
+with our Zabbix schemas.</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
+# dnf clean all
+# dnf install zabbix-sql-scripts -y
+</code></pre>
+<p>Ubuntu</p>
+<pre><code class="language-bash"># sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo apt update
+# sudo apt install zabbix-sql-scripts
+</code></pre>
+<p>Now lets upload the data from zabbix (db structure, images, user, ... )
+for this we make use of the user <code>zabbix-srv</code> and we upload it all in our DB <code>zabbix</code>.</p>
+<p>RedHat and Ubuntu</p>
+<pre><code class="language-bash"># sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
+</code></pre>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Depending on the speed of your hardware or virtual machine, the process may
+take anywhere from a few seconds to several minutes. Please be patient and
+avoid cancelling the operation; just wait for the prompt to appear.</p>
+</details>
+<p>Log back into your MySQL Database as root</p>
+<pre><code class="language-bash"># mariadb -uroot -p
+</code></pre>
+<p>Once the import of the Zabbix schema is complete and you no longer need the
+log_bin_trust_function_creators global parameter, it is a good practice to remove
+it for security reasons.</p>
+<p>To revert the change and set the global parameter back to 0, use the following
+command in the MariaDB shell:</p>
+<pre><code class="language-sql">mysql&gt; SET GLOBAL log_bin_trust_function_creators = 0;
+Query OK, 0 rows affected (0.001 sec)
+</code></pre>
+<p>This command will disable the setting, ensuring that the servers security
+posture remains robust.</p>
+<p>This concludes our installation of the MariaDB</p>
+<h2 id="installing-the-postgresql-database">Installing the PostgreSQL database<a class="headerlink" href="#installing-the-postgresql-database" title="Permanent link">&para;</a></h2>
+<p>For our DB setup with PostgreSQL we need to add our PostgreSQL repository first
+to the system. As of writing PostgreSQL 13-17 are supported but best is to have
+a look before you install it as new versions may be supported and older maybe
+unsupported both by Zabbix and PostgreSQL. Usually it's a good idea to go with
+the latest version that is supported by Zabbix. Zabbix also supports the extension
+TimescaleDB this is something we will talk later about. As you will see the setup
+from PostgreSQL is very different from MySQL not only the installation but
+also securing the DB.</p>
+<p>The table of compatibility can be found <a href="https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/">https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/</a></p>
+<h3 id="add-the-postgresql-repository">Add the PostgreSQL repository<a class="headerlink" href="#add-the-postgresql-repository" title="Permanent link">&para;</a></h3>
+<p>So let us start first setting up our PostgreSQL repository with the following commands.</p>
+<p>RedHat</p>
+<pre><code class="language-bash">Install the repository RPM:
+# sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+
+Disable the built-in PostgreSQL module:
+# sudo dnf -qy module disable postgresql
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># Import the repository signing key:
+sudo apt install curl ca-certificates
+sudo install -d /usr/share/postgresql-common/pgdg
+sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+# Create the repository configuration file:
+sudo sh -c 'echo &quot;deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main&quot; &gt; /etc/apt/sources.list.d/pgdg.list'
+
+# Update the package lists:
+sudo apt update
+
+</code></pre>
+<h3 id="install-the-postgresql-databases">Install the PostgreSQL databases<a class="headerlink" href="#install-the-postgresql-databases" title="Permanent link">&para;</a></h3>
+<p>RedHat</p>
+<pre><code class="language-bash"># Install PostgreSQL:
+sudo dnf install -y postgresql17-server
+
+Initialize the database and enable automatic start:
+# sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
+# sudo systemctl enable postgresql-17 --now
+</code></pre>
+<p>Ubuntu</p>
+<pre><code>sudo apt -y install postgresql-17
+</code></pre>
+<p>To update your OS, run the following command:</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># dnf update -y
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo apt update -y &amp;&amp; sudo apt upgrade -y
+</code></pre>
+<h3 id="securing-the-postgresql-database">Securing the PostgreSQL database<a class="headerlink" href="#securing-the-postgresql-database" title="Permanent link">&para;</a></h3>
+<p>PostgreSQL handles access permissions differently from MySQL and MariaDB.
+PostgreSQL relies on a file called pg_hba.conf to manage who can access the database,
+from where, and what encryption method is used for authentication.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Client authentication in PostgreSQL is configured through the pg_hba.conf
+file, where "HBA" stands for Host-Based Authentication. This file specifies
+which users can access the database, from which hosts, and how they are authenticated.
+For further details, you can refer to the official PostgreSQL documentation."
+<a href="https://www.postgresql.org/docs/current/auth-pg-hba-conf.html">https://www.postgresql.org/docs/current/auth-pg-hba-conf.html</a></p>
+</details>
+<p>Add the following lines, the order here is important.</p>
+<p>Redhat</p>
+<pre><code class="language-bash"># vi /var/lib/pgsql/17/data/pg_hba.conf
+</code></pre>
+<p>Ubuntu</p>
+<pre><code class="language-bash"># sudo vi /etc/postgresql/17/main/pg_hba.conf
+</code></pre>
+<p>The result should look like : </p>
+<pre><code># &quot;local&quot; is for Unix domain socket connections only
+local    zabbix     zabbix-srv                                                              scram-sha-256
+local    all            all                                                                            peer
+# IPv4 local connections
+host     zabbix     zabbix-srv          &lt;ip from zabbix server/24&gt;     scram-sha-256
+host     zabbix     zabbix-web        &lt;ip from zabbix server/24&gt;     scram-sha-256
+host     all            all                         127.0.0.1/32                            scram-sha-256
+</code></pre>
+<p>After we changed the pg_hba file don't forget to restart postgres else the settings
+will not be applied. But before we restart let us also edit the file postgresql.conf
+and allow our database to listen on our network interface for incoming connections
+from the zabbix server. Postgresql will standard only allow connections from the socket.</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># vi /var/lib/pgsql/17/data/postgresql.conf
+</code></pre>
+<p>Ubuntu</p>
+<pre><code class="language-bash"># vi /etc/postgresql/17/main/postgresql.conf
+</code></pre>
+<p>To configure PostgreSQL to listen on all network interfaces, you need to modify
+the <code>postgresql.conf</code> file. Locate the following line:</p>
+<pre><code class="language-bash">#listen_addresses = 'localhost'
+</code></pre>
+<p>and replace it with:</p>
+<pre><code>listen_addresses = '*'
+</code></pre>
+<p>This will enable PostgreSQL to accept connections from any network interface,
+not just the local machine. In production it's probably a good idea to limit 
+who can connect to the DB. After making this change, restart the PostgreSQL service
+to apply the new settings:</p>
+<p>Redhat</p>
+<pre><code class="language-bash"># systemctl restart postgresql-17
+</code></pre>
+<p>Ubuntu</p>
+<pre><code class="language-bash">sudo systemctl restart postgresql
+</code></pre>
+<p>If the service fails to restart, review the pg_hba.conf file for any syntax errors,
+as incorrect entries here may prevent PostgreSQL from starting.</p>
+<p>Next, to prepare your PostgreSQL instance for Zabbix, you'll need to create the
+necessary database tables. Begin by installing the Zabbix repository, as you did
+for the Zabbix server. Then, install the appropriate Zabbix package that contains
+the predefined tables, images, icons, and other database elements needed for the
+Zabbix application.</p>
+<h3 id="create-the-zabbix-database_1">Create the Zabbix database<a class="headerlink" href="#create-the-zabbix-database_1" title="Permanent link">&para;</a></h3>
+<p>To begin, add the Zabbix repository to your system by running the following commands:</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm -y
+# dnf install zabbix-sql-scripts -y 
+</code></pre>
+<p>Ubuntu</p>
+<pre><code class="language-bash"># sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo apt update -y
+# sudo apt install zabbix-sql-scripts -y
+</code></pre>
+<p>With the necessary packages installed, you are now ready to create the Zabbix users for both the server and frontend.</p>
+<p>First, switch to the <code>postgres</code> user and create the Zabbix server database user:</p>
+<pre><code># sudo su - postgres
+# createuser --pwprompt zabbix-srv
+Enter password for new role: &lt;server-password&gt;
+Enter it again: &lt;server-password&gt;
+</code></pre>
+<p>Next, create the Zabbix frontend user, which will be used to connect to the database:</p>
+<pre><code># createuser --pwprompt zabbix-web
+Enter password for new role: &lt;frontend-password&gt;
+Enter it again: &lt;frontend-password&gt;
+</code></pre>
+<p>After creating the users, you need to prepare the database schema. As the root
+or your regular user, unzip the necessary schema files by running the following command:</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+</code></pre>
+<p>Ubuntu</p>
+<pre><code class="language-bash"># sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+</code></pre>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Zabbix seems to like to change the locations of the script to populate the
+DB every version or in between versions. If you encounter an error take a
+look at the Zabbix documentation there is a good chance that some location was changed.</p>
+</details>
+<p>This will extract the database schema required for the Zabbix server.</p>
+<p>Now that the users are created, the next step is to create the Zabbix database. 
+First, switch to the <code>postgres</code> user and execute the following command to create
+the database with the owner set to zabbix-srv:</p>
+<p>RedHat</p>
+<pre><code class="language-bash"># su - postgres
+# createdb -E Unicode -O zabbix-srv zabbix
+# exit
+</code></pre>
+<p>Ubuntu</p>
+<pre><code class="language-bash"># sudo su - postgres
+# createdb -E Unicode -O zabbix-srv zabbix
+# exit
+</code></pre>
+<p>Once the database is created, you should verify the connection and ensure that
+the correct user session is active. To do this, log into the zabbix database using
+the zabbix-srv user:</p>
+<pre><code># psql -d zabbix -U zabbix-srv
+</code></pre>
+<p>After logging in, run the following SQL query to confirm that both the <code>session_user</code>
+and <code>current_user</code> are set to <code>zabbix-srv</code>:</p>
+<pre><code>zabbix=&gt; SELECT session_user, current_user;
+ session_user | current_user
+--------------+--------------
+ zabbix-srv   | zabbix-srv
+(1 row)
+</code></pre>
+<p>If the output matches, you are successfully connected to the database with the correct user.</p>
+<p>PostgreSQL indeed differs significantly from MySQL or MariaDB in several aspects,
+and one of the key features that sets it apart is its use of schemas. Unlike MySQL,
+where databases are more standalone, PostgreSQL's schema system provides a structured,
+multi-user environment within a single database.</p>
+<p>Schemas act as logical containers within a database, enabling multiple users or
+applications to access and manage data independently without conflicts. This feature
+is especially valuable in environments where several users or applications need to
+interact with the same database concurrently. Each user or application can have
+its own schema, preventing accidental interference with each other's data.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>PostgreSQL comes with a default schema, typically called public, but it's in
+general best practice to create custom schemas to better organize and separate
+database objects, especially in complex or multi-user environments.</p>
+<p>For more in-depth information, I recommend checking out the detailed guide at
+this URI, <a href="https://hevodata.com/learn/postgresql-schema/#schema">https://hevodata.com/learn/postgresql-schema/#schema</a>
+which explains the benefits and use cases for schemas in PostgreSQL.</p>
+</details>
+<p>To finalize the database setup for Zabbix, we need to configure schema permissions
+for both the <code>zabbix-srv</code> and <code>zabbix-web</code> users.</p>
+<p>First, we create a custom schema named <code>zabbix_server</code> and assign ownership to
+the <code>zabbix-srv</code> user:</p>
+<pre><code>zabbix=&gt; CREATE SCHEMA zabbix_server AUTHORIZATION &quot;zabbix-srv&quot;;
+</code></pre>
+<p>Next, we set the <code>search path</code> to <code>zabbix_server</code> schema so that it's the default
+for the current session:</p>
+<pre><code>zabbix=&gt; SET search_path TO &quot;zabbix_server&quot;;
+</code></pre>
+<p>To confirm the schema setup, you can list the existing schemas:</p>
+<pre><code class="language-psql">zabbix=&gt; \dn
+          List of schemas
+     Name      |       Owner
+---------------+-------------------
+ public        | pg_database_owner
+ zabbix_server | zabbix-srv
+(2 rows)
+</code></pre>
+<p>At this point, the <code>zabbix-srv</code> user has full access to the schema, but the <code>zabbix-web</code>
+user still needs appropriate permissions to connect and interact with the database.
+First, we grant <code>USAGE</code> privileges on the schema to allow <code>zabbix-web</code> to connect:</p>
+<pre><code class="language-psql">zabbix=# GRANT USAGE ON SCHEMA zabbix_server TO &quot;zabbix-web&quot;;
+</code></pre>
+<p>However, <code>zabbix-web</code> still cannot perform any operations on the tables or sequences.
+To allow basic data interaction without giving too many privileges, grant the
+following permissions:</p>
+<ul>
+<li>For tables: SELECT, INSERT, UPDATE, and DELETE.</li>
+<li>For sequences: SELECT and UPDATE.</li>
+</ul>
+<pre><code class="language-psql">zabbix=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server TO &quot;zabbix-web&quot;;
+</code></pre>
+<pre><code class="language-psql">zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO &quot;zabbix-web&quot;;
+</code></pre>
+<h3 id="populate-the-zabbix-db_1">Populate the Zabbix DB<a class="headerlink" href="#populate-the-zabbix-db_1" title="Permanent link">&para;</a></h3>
+<p>Now, the <code>zabbix-web</code> user has appropriate access to interact with the schema
+while maintaining security by limiting permissions to essential operations.</p>
+<p>With the users and permissions set up correctly, you can now populate the database
+with the Zabbix schema created and other required elements. Follow these steps:</p>
+<ul>
+<li>Execute the SQL file to populate the database. Run the following command in the <code>psql</code> shell:</li>
+</ul>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>Make sure you did previous steps carefully so that you have selected the correct search_path.</p>
+</details>
+<pre><code>sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
+</code></pre>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>Depending on your hardware or VM performance, this process can take anywhere
+from a few seconds to several minutes. Please be patient and avoid cancelling the operation.</p>
+</details>
+<ul>
+<li>Monitor the progress as the script runs. You will see output similar to:</li>
+</ul>
+<pre><code class="language-sql">zabbix=&gt; \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+...
+...
+...
+INSERT 0 10444
+DELETE 90352
+COMMIT
+</code></pre>
+<p>Once the script completes and you return to the <code>zabbix=#</code> prompt, the database
+should be successfully populated with all the required tables, schemas,
+images, and other elements needed for Zabbix.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If you encounter the following error during the SQL import: 
+<code>vbnet psql:/usr/share/zabbix/sql-scripts/postgresql/server.sql:7: ERROR: no
+schema has been selected to create in</code> It indicates that the search_path setting
+might not have been correctly applied. This setting is crucial because it specifies
+the schema where the tables and other objects should be created. By correctly
+setting the search path, you ensure that the SQL script will create tables
+and other objects in the intended schema.</p>
+</details>
+<p>To ensure that the Zabbix tables were created successfully and have the correct
+permissions, you can verify the table list and their ownership using the <code>psql</code> command:</p>
+<ul>
+<li>List the Tables: Use the following command to list all tables in the <code>zabbix_server</code> schema:</li>
+</ul>
+<pre><code>sql zabbix=# \dt
+</code></pre>
+<p>You should see a list of tables with their schema, name, type, and owner.
+For example:</p>
+<pre><code class="language-sql">zabbix=&gt; \dt
+                        List of relations
+    Schema     |            Name            | Type  |   Owner
+---------------+----------------------------+-------+------------
+ zabbix_server | acknowledges               | table | zabbix-srv
+ zabbix_server | actions                    | table | zabbix-srv
+ zabbix_server | alerts                     | table | zabbix-srv
+ zabbix_server | auditlog                   | table | zabbix-srv
+ zabbix_server | autoreg_host               | table | zabbix-srv
+ zabbix_server | changelog                  | table | zabbix-srv
+ zabbix_server | conditions                 | table | zabbix-srv
+...
+...
+...
+ zabbix_server | valuemap                   | table | zabbix-srv
+ zabbix_server | valuemap_mapping           | table | zabbix-srv
+ zabbix_server | widget                     | table | zabbix-srv
+ zabbix_server | widget_field               | table | zabbix-srv
+(203 rows)
+</code></pre>
+<ul>
+<li>Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
+the necessary permissions. You can check permissions for specific tables using
+the \dp command:</li>
+</ul>
+<pre><code class="language-sql">sql zabbix=# \dp zabbix_server.*
+</code></pre>
+<p>This will display the access privileges for all tables in the <code>zabbix_server</code>
+schema. Ensure that <code>zabbix-srv</code> has the required privileges.</p>
+<p>If everything looks correct, your tables are properly created and the <code>zabbix-srv</code>
+user has the appropriate ownership and permissions. If you need to adjust any
+permissions, you can do so using the GRANT commands as needed.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If you prefer not to set the search path manually each time you log in as the
+<code>zabbix-srv</code> user, you can configure PostgreSQL to automatically use the desired
+search path. Run the following SQL command to set the default search path for
+the <code>zabbix-srv</code> role:</p>
+<p>sql zabbix=&gt; ALTER ROLE "zabbix-srv" SET search_path = "$user", public, zabbix_server;</p>
+<p>This command ensures that every time the <code>zabbix-srv</code> user connects to the
+database, the <code>search_path</code> is automatically set to include <code>$user</code>, <code>public</code>, and <code>zabbix_server</code>.</p>
+</details>
+<p>If you are ready you can exit the database and return as user root.</p>
+<pre><code>zabbix=&gt; \q
+</code></pre>
+<p>If we want our Zabbix server to be able to connect to our DB then we also need to open our firewall port.</p>
+<p>RedHat</p>
+<pre><code># firewall-cmd --add-port=5432/tcp --permanent
+# firewall-cmd --reload
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo ufw allow 5432/tcp
+</code></pre>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Make sure your DB is listening on the correct IP and not on 127.0.0.1.
+You could add the following files to your config file. This would allow MariaDB
+to listen on all interfaces. Best to limit it only to the needed IP.</p>
+<p>/etc/mysql/mariadb.cnf</p>
+<p>[mariadb]
+log_error=/var/log/mysql/mariadb.err
+log_warnings=3
+bind-address = 0.0.0.0</p>
+</details>
+<p>This concludes our installation of the PostgreSQL database.</p>
+<h2 id="installing-the-zabbix-server-for-mariadbmysql">Installing the Zabbix server for MariaDB/Mysql<a class="headerlink" href="#installing-the-zabbix-server-for-mariadbmysql" title="Permanent link">&para;</a></h2>
+<p>Before proceeding with the installation of your Zabbix server, ensure that the server
+is properly configured, as outlined in the previous section <a href="../../ch00-getting-started/Requirements/">System Requirements</a></p>
+<p>Another critical step at this stage if you use RedHat based systems is disabling
+SELinux, which can interfere with the installation and operation of Zabbix.
+We will revisit SELinux at the end of this chapter once our installation is finished.</p>
+<p>To check the current status of SELinux, you can use the following command: `sestatus``</p>
+<pre><code># sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+</code></pre>
+<p>As shown, the system is currently in enforcing mode. To temporarily disable SELinux,
+you can run the following command: <code>setenforce 0</code></p>
+<pre><code># setenforce 0
+# sestatus
+
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   permissive
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+</code></pre>
+<p>Now, as you can see, the mode is switched to permissive. However, this change
+is not persistent across reboots. To make it permanent, you need to modify the
+SELinux configuration file located at <code>/etc/selinux/config</code>. Open the file and
+replace enforcing with <code>permissive</code>.</p>
+<p>Alternatively, you can achieve the same result more easily by running the
+following command:</p>
+<p>RedHat</p>
+<pre><code># sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
+</code></pre>
+<p>This line will alter the configuration file for you. So when we run <code>sestatus</code>
+again we will see that we are in <code>permissive</code> mode and that our configuration
+file is also in permissive mode.</p>
+<pre><code># sestatus
+
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   permissive
+Mode from config file:          permissive
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+</code></pre>
+<h3 id="adding-the-zabbix-repository">Adding the Zabbix repository<a class="headerlink" href="#adding-the-zabbix-repository" title="Permanent link">&para;</a></h3>
+<p>From the Zabbix Download page <a href="https://www.zabbix.com/download">https://www.zabbix.com/download</a>,
+select the appropriate Zabbix version you wish to install. In this case, we will
+be using Zabbix 8.0 LTS. Additionally, ensure you choose the correct OS distribution
+for your environment, which will be Rocky Linux 9 or Ubuntu 24.04 in our case.</p>
+<p>We will be installing the Zabbix Server along with NGINX as the web server for
+the front-end. Make sure to download the relevant packages for your chosen configuration.</p>
+<p><img alt="ch1-zabbix-download.png" src="ch1-zabbix-download.png" /></p>
+<p>If you make use of a RHEL based system like Rocky then the first step is to disable
+the Zabbix packages provided by the EPEL repository, if it's installed on your system.
+To do this, edit the <code>/etc/yum.repos.d/epel.repo</code> file and add the following statement
+to disable the EPEL repository by default:</p>
+<p>RedHat</p>
+<pre><code>[epel]
+...
+excludepkgs=zabbix*
+</code></pre>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>It's considered bad practice to keep the EPEL repository enabled all the time,
+as it may cause conflicts by unintentionally overwriting or installing unwanted
+packages. Instead, it's safer to enable the repository only when needed, by using
+the following command during installations: dnf install --enablerepo=epel <package-name>
+This ensures that EPEL is only enabled when explicitly required.</p>
+</details>
+<p>Next, we will install the Zabbix repository on our operating system. After adding
+the Zabbix repository, it is recommended to perform a repository cleanup to remove
+old cache files and ensure the repository metadata is up to date. You can do this
+by running:</p>
+<p>RedHat</p>
+<pre><code># rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
+# dnf clean all
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo apt update
+</code></pre>
+<p>This will refresh the repository metadata and prepare the system for Zabbix installation.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>A repository in Linux is a configuration that allows you to access and install
+software packages. You can think of it like an "app store" where you find and
+download software from a trusted source, in this case, the Zabbix repository.
+Many repositories are available, but it's important to only add those you trust.
+The safest practice is to stick to the repositories provided by your operating 
+system and only add additional ones when you're sure they are both trusted and necessary.</p>
+<p>For our installation, the Zabbix repository is provided by the vendor itself,
+making it a trusted source. Another popular and safe repository for
+RedHat-based systems is EPEL (Extra Packages for Enterprise Linux), which is
+commonly used in enterprise environments.
+However, always exercise caution when adding new repositories to ensure
+system security and stability.</p>
+</details>
+<h3 id="configuring-the-zabbix-server-for-mysqlmariadb">Configuring the Zabbix server for MySQL/MariaDB<a class="headerlink" href="#configuring-the-zabbix-server-for-mysqlmariadb" title="Permanent link">&para;</a></h3>
+<p>Now that we've added the Zabbix repository with the necessary software, we are
+ready to install both the Zabbix server and the web server. Keep in mind that the
+web server doesn't need to be installed on the same machine as the Zabbix server;
+they can be hosted on separate systems if desired.</p>
+<p>To install the Zabbix server and the web server components for MySQL/MariaDB,
+run the following command:</p>
+<p>RedHat</p>
+<pre><code># dnf install zabbix-server-mysql -y
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo apt install zabbix-server-mysql
+</code></pre>
+<p>After successfully installing the Zabbix server and frontend packages, we need to
+configure the Zabbix server to connect to the database. This requires modifying the
+Zabbix server configuration file. Open the <code>/etc/zabbix/zabbix_server.conf</code> file and
+update the following lines to match your database configuration:</p>
+<p>RedHat and Ubuntu</p>
+<pre><code>sudo vi /etc/zabbix/zabbix_server.conf
+</code></pre>
+<pre><code>DBHost=&lt;database-host&gt;
+DBName=&lt;database-name&gt;
+DBUser=&lt;database-user&gt;
+DBPassword=&lt;database-password&gt;
+</code></pre>
+<p>Replace <database-host>, <database-name>, <database-user>, and <database-password> with
+the appropriate values for your setup. This ensures that the Zabbix server can communicate
+with your database.</p>
+<p>Ensure that there is no # (comment symbol) in front of the configuration parameters,
+as Zabbix will treat lines beginning with # as comments, ignoring them during execution.
+Additionally, double-check for duplicate configuration lines; if there are multiple
+lines with the same parameter, Zabbix will use the value from the last occurrence.</p>
+<p>For our setup, the configuration will look like this:</p>
+<pre><code>DBHost=&lt;ip or dns of your MariaDB server&gt;
+DBName=zabbix
+DBUser=zabbix-srv
+DBPassword=&lt;your super secret password&gt;
+DBPort=3306
+</code></pre>
+<p>In this example:</p>
+<ul>
+<li>DBHost refers to the host where your database is running (use localhost if it's on the same machine).</li>
+<li>DBName is the name of the Zabbix database.</li>
+<li>DBUser is the database user.</li>
+<li>DBPassword is the password for the database user.</li>
+</ul>
+<p>Make sure the settings reflect your environment's database configuration.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>The Zabbix server configuration file offers an option to include additional
+configuration files for custom parameters. For a production environment, it's
+often best to avoid altering the original configuration file directly. Instead,
+you can create and include a separate configuration file for any additional or
+modified parameters. This approach ensures that your original configuration
+file remains untouched, which is particularly useful when performing upgrades
+or managing configurations with tools like Ansible, Puppet, or SaltStack. </p>
+</details>
+<p>To enable this feature, remove the # from the line:</p>
+<pre><code class="language-bash"># Include=/usr/local/etc/zabbix_server.conf.d/*.conf
+</code></pre>
+<p>Ensure the path <code>/usr/local/etc/zabbix_server.conf.d/</code> exists and
+create a custom configuration file in this directory.
+This file should be readable by the <code>zabbix</code> user. By doing so, you can add
+or modify parameters without modifying the default configuration file,
+making system management and upgrades smoother.</p>
+<p>With the Zabbix server configuration updated to connect to your database, you
+can now start and enable the Zabbix server service. Run the following command
+to enable the Zabbix server and ensure it starts automatically on boot:</p>
+<p>Redhat and Ubuntu</p>
+<pre><code class="language-bash"># sudo systemctl enable zabbix-server --now
+</code></pre>
+<p>This command will start the Zabbix server service immediately and configure it
+to launch on system startup. To verify that the Zabbix server is running correctly,
+check the log file for any messages. You can view the latest entries in the <code>Zabbix server</code>
+log file using:</p>
+<pre><code class="language-bash">tail /var/log/zabbix/zabbix_server.log
+</code></pre>
+<p>Look for messages indicating that the server has started successfully. If there
+are any issues, the log file will provide details to help with troubleshooting.</p>
+<pre><code class="language-bash">12074:20250225:145333.529 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
+12074:20250225:145333.530 ****** Enabled features ******
+12074:20250225:145333.530 SNMP monitoring:           YES
+12074:20250225:145333.530 IPMI monitoring:           YES
+12074:20250225:145333.530 Web monitoring:            YES
+12074:20250225:145333.530 VMware monitoring:         YES
+12074:20250225:145333.530 SMTP authentication:       YES
+12074:20250225:145333.530 ODBC:                      YES
+12074:20250225:145333.530 SSH support:               YES
+12074:20250225:145333.530 IPv6 support:              YES
+12074:20250225:145333.530 TLS support:               YES
+12074:20250225:145333.530 ******************************
+12074:20250225:145333.530 using configuration file: /etc/zabbix/zabbix_server.conf
+12074:20250225:145333.545 current database version (mandatory/optional): 07020000/07020000
+12074:20250225:145333.545 required mandatory version: 07020000
+12075:20250225:145333.557 starting HA manager
+12075:20250225:145333.566 HA manager started in active mode
+12074:20250225:145333.567 server #0 started [main process]
+12076:20250225:145333.567 server #1 started [service manager #1]
+12077:20250225:145333.567 server #2 started [configuration syncer #1]
+12078:20250225:145333.718 server #3 started [alert manager #1]
+12079:20250225:145333.719 server #4 started [alerter #1]
+12080:20250225:145333.719 server #5 started [alerter #2]
+12081:20250225:145333.719 server #6 started [alerter #3]
+12082:20250225:145333.719 server #7 started [preprocessing manager #1]
+12083:20250225:145333.719 server #8 started [lld manager #1]
+</code></pre>
+<p>If there was an error and the server was not able to connect to the database you
+would see something like this in the server log file :</p>
+<pre><code class="language-bash">12068:20250225:145309.018 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
+12068:20250225:145309.018 ****** Enabled features ******
+12068:20250225:145309.018 SNMP monitoring:           YES
+12068:20250225:145309.018 IPMI monitoring:           YES
+12068:20250225:145309.018 Web monitoring:            YES
+12068:20250225:145309.018 VMware monitoring:         YES
+12068:20250225:145309.018 SMTP authentication:       YES
+12068:20250225:145309.018 ODBC:                      YES
+12068:20250225:145309.018 SSH support:               YES
+12068:20250225:145309.018 IPv6 support:              YES
+12068:20250225:145309.018 TLS support:               YES
+12068:20250225:145309.018 ******************************
+12068:20250225:145309.018 using configuration file: /etc/zabbix/zabbix_server.conf
+12068:20250225:145309.027 [Z3005] query failed: [1146] Table 'zabbix.users' doesn't exist [select userid from users limit 1]
+12068:20250225:145309.027 cannot use database &quot;zabbix&quot;: database is not a Zabbix database
+</code></pre>
+<p>Let's check the Zabbix server service to see if it's enabled so that it survives a reboot</p>
+<pre><code class="language-bash"># systemctl status zabbix-server
+● zabbix-server.service - Zabbix Server
+     Loaded: loaded (/usr/lib/systemd/system/zabbix-server.service; enabled; preset: disabled)
+     Active: active (running) since Tue 2025-02-25 14:53:33 CET; 26min ago
+   Main PID: 12074 (zabbix_server)
+      Tasks: 77 (limit: 24744)
+     Memory: 71.5M
+        CPU: 18.535s
+     CGroup: /system.slice/zabbix-server.service
+             ├─12074 /usr/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
+             ├─12075 &quot;/usr/sbin/zabbix_server: ha manager&quot;
+             ├─12076 &quot;/usr/sbin/zabbix_server: service manager #1 [processed 0 events, updated 0 event tags, deleted 0 problems, synced 0 service updates, idle 5.027667 sec during 5.042628 sec]&quot;
+             ├─12077 &quot;/usr/sbin/zabbix_server: configuration syncer [synced configuration in 0.051345 sec, idle 10 sec]&quot;
+             ├─12078 &quot;/usr/sbin/zabbix_server: alert manager #1 [sent 0, failed 0 alerts, idle 5.030391 sec during 5.031944 sec]&quot;
+             ├─12079 &quot;/usr/sbin/zabbix_server: alerter #1 started&quot;
+             ├─12080 &quot;/usr/sbin/zabbix_server: alerter #2 started&quot;
+             ├─12081 &quot;/usr/sbin/zabbix_server: alerter #3 started&quot;
+             ├─12082 &quot;/usr/sbin/zabbix_server: preprocessing manager #1 [queued 0, processed 0 values, idle 5.023818 sec during 5.024830 sec]&quot;
+             ├─12083 &quot;/usr/sbin/zabbix_server: lld manager #1 [processed 0 LLD rules, idle 5.017278sec during 5.017574 sec]&quot;
+             ├─12084 &quot;/usr/sbin/zabbix_server: lld worker #1 [processed 1 LLD rules, idle 21.031209 sec during 21.063879 sec]&quot;
+             ├─12085 &quot;/usr/sbin/zabbix_server: lld worker #2 [processed 1 LLD rules, idle 43.195541 sec during 43.227934 sec]&quot;
+             ├─12086 &quot;/usr/sbin/zabbix_server: housekeeper [startup idle for 30 minutes]&quot;
+             ├─12087 &quot;/usr/sbin/zabbix_server: timer #1 [updated 0 hosts, suppressed 0 events in 0.017595 sec, idle 59 sec]&quot;
+             ├─12088 &quot;/usr/sbin/zabbix_server: http poller #1 [got 0 values in 0.000071 sec, idle 5 sec]&quot;
+             ├─12089 &quot;/usr/sbin/zabbix_server: browser poller #1 [got 0 values in 0.000066 sec, idle 5 sec]&quot;
+             ├─12090 &quot;/usr/sbin/zabbix_server: discovery manager #1 [processing 0 rules, 0 unsaved checks]&quot;
+             ├─12091 &quot;/usr/sbin/zabbix_server: history syncer #1 [processed 4 values, 3 triggers in 0.027382 sec, idle 1 sec]&quot;
+             ├─12092 &quot;/usr/sbin/zabbix_server: history syncer #2 [processed 0 values, 0 triggers in 0.000077 sec, idle 1 sec]&quot;
+             ├─12093 &quot;/usr/sbin/zabbix_server: history syncer #3 [processed 0 values, 0 triggers in 0.000076 sec, idle 1 sec]&quot;
+             ├─12094 &quot;/usr/sbin/zabbix_server: history syncer #4 [processed 0 values, 0 triggers in 0.000020 sec, idle 1 sec]&quot;
+             ├─12095 &quot;/usr/sbin/zabbix_server: escalator #1 [processed 0 escalations in 0.011627 sec, idle 3 sec]&quot;
+             ├─12096 &quot;/usr/sbin/zabbix_server: proxy poller #1 [exchanged data with 0 proxies in 0.000081 sec, idle 5 sec]&quot;
+             ├─12097 &quot;/usr/sbin/zabbix_server: self-monitoring [processed data in 0.000068 sec, idle 1 sec]&quot;
+</code></pre>
+<p>This concludes our chapter on installing and configuring the Zabbix server with Mariadb. </p>
+<h2 id="installing-the-zabbix-server-for-postgresql">Installing the Zabbix server for PostgreSQL<a class="headerlink" href="#installing-the-zabbix-server-for-postgresql" title="Permanent link">&para;</a></h2>
+<p>Before proceeding with the installation of your Zabbix server, ensure that the server
+is properly configured, as outlined in the previous section <a href="../../ch00-getting-started/Requirements/">System Requirements</a></p>
+<p>Another critical step at this stage if you use RedHat based systems is disabling
+SELinux, which can interfere with the installation and operation of Zabbix.
+We will revisit SELinux at the end of this chapter once our installation is finished.</p>
+<p>To check the current status of SELinux, you can use the following command: `sestatus``</p>
+<pre><code># sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+</code></pre>
+<p>As shown, the system is currently in enforcing mode. To temporarily disable SELinux,
+you can run the following command: <code>setenforce 0</code></p>
+<pre><code># setenforce 0
+# sestatus
+
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   permissive
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+</code></pre>
+<p>Now, as you can see, the mode is switched to permissive. However, this change
+is not persistent across reboots. To make it permanent, you need to modify the
+SELinux configuration file located at <code>/etc/selinux/config</code>. Open the file and
+replace enforcing with <code>permissive</code>.</p>
+<p>Alternatively, you can achieve the same result more easily by running the
+following command:</p>
+<p>RedHat</p>
+<pre><code># sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
+</code></pre>
+<p>This line will alter the configuration file for you. So when we run <code>sestatus</code>
+again we will see that we are in <code>permissive</code> mode and that our configuration
+file is also in permissive mode.</p>
+<pre><code># sestatus
+
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   permissive
+Mode from config file:          permissive
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+</code></pre>
+<h3 id="adding-the-zabbix-repository_1">Adding the Zabbix repository<a class="headerlink" href="#adding-the-zabbix-repository_1" title="Permanent link">&para;</a></h3>
+<p>From the Zabbix Download page <a href="https://www.zabbix.com/download">https://www.zabbix.com/download</a>,
+select the appropriate Zabbix version you wish to install. In this case, we will
+be using Zabbix 8.0 LTS. Additionally, ensure you choose the correct OS distribution
+for your environment, which will be Rocky Linux 9 or Ubuntu 24.04 in our case.</p>
+<p>We will be installing the Zabbix Server along with NGINX as the web server for
+the front-end. Make sure to download the relevant packages for your chosen configuration.</p>
+<p><img alt="ch1-zabbix-download.png" src="ch1-zabbix-download.png" /></p>
+<p>If you make use of a RHEL based system like Rocky then the first step is to disable
+the Zabbix packages provided by the EPEL repository, if it's installed on your system.
+To do this, edit the <code>/etc/yum.repos.d/epel.repo</code> file and add the following statement
+to disable the EPEL repository by default:</p>
+<p>RedHat</p>
+<pre><code>[epel]
+...
+excludepkgs=zabbix*
+</code></pre>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>It's considered bad practice to keep the EPEL repository enabled all the time,
+as it may cause conflicts by unintentionally overwriting or installing unwanted
+packages. Instead, it's safer to enable the repository only when needed, by using
+the following command during installations: dnf install --enablerepo=epel <package-name>
+This ensures that EPEL is only enabled when explicitly required.</p>
+</details>
+<p>Next, we will install the Zabbix repository on our operating system. After adding
+the Zabbix repository, it is recommended to perform a repository cleanup to remove
+old cache files and ensure the repository metadata is up to date. You can do this
+by running:</p>
+<p>RedHat</p>
+<pre><code># rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
+# dnf clean all
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo apt update
+</code></pre>
+<p>This will refresh the repository metadata and prepare the system for Zabbix installation.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>A repository in Linux is a configuration that allows you to access and install
+software packages. You can think of it like an "app store" where you find and
+download software from a trusted source, in this case, the Zabbix repository.
+Many repositories are available, but it's important to only add those you trust.
+The safest practice is to stick to the repositories provided by your operating
+system and only add additional ones when you're sure they are both trusted and necessary.</p>
+<p>For our installation, the Zabbix repository is provided by the vendor itself,
+making it a trusted source. Another popular and safe repository for
+RedHat-based systems is EPEL (Extra Packages for Enterprise Linux), which is
+commonly used in enterprise environments.
+However, always exercise caution when adding new repositories to ensure
+system security and stability.</p>
+</details>
+<h3 id="configuring-the-zabbix-server-for-postgresql">Configuring the Zabbix server for PostgreSQL.<a class="headerlink" href="#configuring-the-zabbix-server-for-postgresql" title="Permanent link">&para;</a></h3>
+<p>We are ready to install both the Zabbix server and the web server. Keep in mind that the
+web server doesn't need to be installed on the same machine as the Zabbix server;
+they can be hosted on separate systems if desired.</p>
+<p>To install the Zabbix server and the web server components for PostgreSQL,
+run the following command:</p>
+<p>RedHat</p>
+<pre><code># dnf install zabbix-server-pgsql -y
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo apt install zabbix-server-pgsql
+</code></pre>
+<p>After successfully installing the Zabbix server packages, we need to
+configure the Zabbix server to connect to the database. This requires modifying the
+Zabbix server configuration file. Open the <code>/etc/zabbix/zabbix_server.conf</code> file and
+update the following lines to match your database configuration:</p>
+<p>RedHat and Ubuntu</p>
+<pre><code>#sudo vi /etc/zabbix/zabbix_server.conf
+</code></pre>
+<pre><code>DBHost=&lt;database-host&gt;
+DBName=&lt;database-name&gt;
+DBSchema=&lt;database-schema&gt;
+DBUser=&lt;database-user&gt;
+DBPassword=&lt;database-password&gt;
+</code></pre>
+<p>Replace <code>database-host</code>, <code>database-name</code>, <code>database-user</code>,<code>database-schema</code> and <code>database-password</code> with
+the appropriate values for your setup. This ensures that the Zabbix server can communicate
+with your database.</p>
+<p>Ensure that there is no # (comment symbol) in front of the configuration parameters,
+as Zabbix will treat lines beginning with # as comments, ignoring them during execution.
+Additionally, double-check for duplicate configuration lines; if there are multiple
+lines with the same parameter, Zabbix will use the value from the last occurrence.</p>
+<p>For our setup, the configuration will look like this:</p>
+<pre><code>DBHost=&lt;ip or dns of your PostgreSQL server&gt;
+DBName=zabbix
+DBSchema=zabbix_server
+DBUser=zabbix-srv
+DBPassword=&lt;your super secret password&gt;
+DBPort=5432
+</code></pre>
+<p>In this example:</p>
+<ul>
+<li>DBHost refers to the host where your database is running (use localhost if it's on the same machine).</li>
+<li>DBName is the name of the Zabbix database.</li>
+<li>DBUser is the database user.</li>
+<li>DBPassword is the password for the database user.</li>
+</ul>
+<p>Make sure the settings reflect your environment's database configuration.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>The Zabbix server configuration file offers an option to include additional
+configuration files for custom parameters. For a production environment, it's
+often best to avoid altering the original configuration file directly. Instead,
+you can create and include a separate configuration file for any additional or
+modified parameters. This approach ensures that your original configuration
+file remains untouched, which is particularly useful when performing upgrades
+or managing configurations with tools like Ansible, Puppet, or SaltStack.</p>
+</details>
+<p>To enable this feature, remove the # from the line:</p>
+<pre><code class="language-bash"># Include=/usr/local/etc/zabbix_server.conf.d/*.conf
+</code></pre>
+<p>Ensure the path <code>/usr/local/etc/zabbix_server.conf.d/</code> exists and
+create a custom configuration file in this directory.
+This file should be readable by the <code>zabbix</code> user. By doing so, you can add
+or modify parameters without modifying the default configuration file,
+making system management and upgrades smoother.</p>
+<p>With the Zabbix server configuration updated to connect to your database, you
+can now start and enable the Zabbix server service. Run the following command
+to enable the Zabbix server and ensure it starts automatically on boot:</p>
+<p>Redhat</p>
+<pre><code class="language-bash">systemctl enable zabbix-server --now
+</code></pre>
+<p>Ubuntu</p>
+<pre><code>sudo systemctl enable zabbix-server --now
+</code></pre>
+<p>This command will start the Zabbix server service immediately and configure it
+to launch on system startup. To verify that the Zabbix server is running correctly,
+check the log file for any messages. You can view the latest entries in the <code>Zabbix server</code>
+log file using:</p>
+<pre><code class="language-bash">tail /var/log/zabbix/zabbix_server.log
+</code></pre>
+<p>Look for messages indicating that the server has started successfully. If there
+are any issues, the log file will provide details to help with troubleshooting.</p>
+<pre><code class="language-bash">12074:20250225:145333.529 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
+12074:20250225:145333.530 ****** Enabled features ******
+12074:20250225:145333.530 SNMP monitoring:           YES
+12074:20250225:145333.530 IPMI monitoring:           YES
+12074:20250225:145333.530 Web monitoring:            YES
+12074:20250225:145333.530 VMware monitoring:         YES
+12074:20250225:145333.530 SMTP authentication:       YES
+12074:20250225:145333.530 ODBC:                      YES
+12074:20250225:145333.530 SSH support:               YES
+12074:20250225:145333.530 IPv6 support:              YES
+12074:20250225:145333.530 TLS support:               YES
+12074:20250225:145333.530 ******************************
+12074:20250225:145333.530 using configuration file: /etc/zabbix/zabbix_server.conf
+12074:20250225:145333.545 current database version (mandatory/optional): 07020000/07020000
+12074:20250225:145333.545 required mandatory version: 07020000
+12075:20250225:145333.557 starting HA manager
+12075:20250225:145333.566 HA manager started in active mode
+12074:20250225:145333.567 server #0 started [main process]
+12076:20250225:145333.567 server #1 started [service manager #1]
+12077:20250225:145333.567 server #2 started [configuration syncer #1]
+12078:20250225:145333.718 server #3 started [alert manager #1]
+12079:20250225:145333.719 server #4 started [alerter #1]
+12080:20250225:145333.719 server #5 started [alerter #2]
+12081:20250225:145333.719 server #6 started [alerter #3]
+12082:20250225:145333.719 server #7 started [preprocessing manager #1]
+12083:20250225:145333.719 server #8 started [lld manager #1]
+</code></pre>
+<p>If there was an error and the server was not able to connect to the database you
+would see something like this in the server log file :</p>
+<pre><code class="language-bash">12068:20250225:145309.018 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
+12068:20250225:145309.018 ****** Enabled features ******
+12068:20250225:145309.018 SNMP monitoring:           YES
+12068:20250225:145309.018 IPMI monitoring:           YES
+12068:20250225:145309.018 Web monitoring:            YES
+12068:20250225:145309.018 VMware monitoring:         YES
+12068:20250225:145309.018 SMTP authentication:       YES
+12068:20250225:145309.018 ODBC:                      YES
+12068:20250225:145309.018 SSH support:               YES
+12068:20250225:145309.018 IPv6 support:              YES
+12068:20250225:145309.018 TLS support:               YES
+12068:20250225:145309.018 ******************************
+12068:20250225:145309.018 using configuration file: /etc/zabbix/zabbix_server.conf
+12068:20250225:145309.027 [Z3005] query failed: [1146] Table 'zabbix.users' doesn't exist [select userid from users limit 1]
+12068:20250225:145309.027 cannot use database &quot;zabbix&quot;: database is not a Zabbix database
+</code></pre>
+<p>Let's check the Zabbix server service to see if it's enabled so that it survives a reboot</p>
+<pre><code class="language-bash"># systemctl status zabbix-server
+● zabbix-server.service - Zabbix Server
+     Loaded: loaded (/usr/lib/systemd/system/zabbix-server.service; enabled; preset: disabled)
+     Active: active (running) since Tue 2025-02-25 14:53:33 CET; 26min ago
+   Main PID: 12074 (zabbix_server)
+      Tasks: 77 (limit: 24744)
+     Memory: 71.5M
+        CPU: 18.535s
+     CGroup: /system.slice/zabbix-server.service
+             ├─12074 /usr/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
+             ├─12075 &quot;/usr/sbin/zabbix_server: ha manager&quot;
+             ├─12076 &quot;/usr/sbin/zabbix_server: service manager #1 [processed 0 events, updated 0 event tags, deleted 0 problems, synced 0 service updates, idle 5.027667 sec during 5.042628 sec]&quot;
+             ├─12077 &quot;/usr/sbin/zabbix_server: configuration syncer [synced configuration in 0.051345 sec, idle 10 sec]&quot;
+             ├─12078 &quot;/usr/sbin/zabbix_server: alert manager #1 [sent 0, failed 0 alerts, idle 5.030391 sec during 5.031944 sec]&quot;
+             ├─12079 &quot;/usr/sbin/zabbix_server: alerter #1 started&quot;
+             ├─12080 &quot;/usr/sbin/zabbix_server: alerter #2 started&quot;
+             ├─12081 &quot;/usr/sbin/zabbix_server: alerter #3 started&quot;
+             ├─12082 &quot;/usr/sbin/zabbix_server: preprocessing manager #1 [queued 0, processed 0 values, idle 5.023818 sec during 5.024830 sec]&quot;
+             ├─12083 &quot;/usr/sbin/zabbix_server: lld manager #1 [processed 0 LLD rules, idle 5.017278sec during 5.017574 sec]&quot;
+             ├─12084 &quot;/usr/sbin/zabbix_server: lld worker #1 [processed 1 LLD rules, idle 21.031209 sec during 21.063879 sec]&quot;
+             ├─12085 &quot;/usr/sbin/zabbix_server: lld worker #2 [processed 1 LLD rules, idle 43.195541 sec during 43.227934 sec]&quot;
+             ├─12086 &quot;/usr/sbin/zabbix_server: housekeeper [startup idle for 30 minutes]&quot;
+             ├─12087 &quot;/usr/sbin/zabbix_server: timer #1 [updated 0 hosts, suppressed 0 events in 0.017595 sec, idle 59 sec]&quot;
+             ├─12088 &quot;/usr/sbin/zabbix_server: http poller #1 [got 0 values in 0.000071 sec, idle 5 sec]&quot;
+             ├─12089 &quot;/usr/sbin/zabbix_server: browser poller #1 [got 0 values in 0.000066 sec, idle 5 sec]&quot;
+             ├─12090 &quot;/usr/sbin/zabbix_server: discovery manager #1 [processing 0 rules, 0 unsaved checks]&quot;
+             ├─12091 &quot;/usr/sbin/zabbix_server: history syncer #1 [processed 4 values, 3 triggers in 0.027382 sec, idle 1 sec]&quot;
+             ├─12092 &quot;/usr/sbin/zabbix_server: history syncer #2 [processed 0 values, 0 triggers in 0.000077 sec, idle 1 sec]&quot;
+             ├─12093 &quot;/usr/sbin/zabbix_server: history syncer #3 [processed 0 values, 0 triggers in 0.000076 sec, idle 1 sec]&quot;
+             ├─12094 &quot;/usr/sbin/zabbix_server: history syncer #4 [processed 0 values, 0 triggers in 0.000020 sec, idle 1 sec]&quot;
+             ├─12095 &quot;/usr/sbin/zabbix_server: escalator #1 [processed 0 escalations in 0.011627 sec, idle 3 sec]&quot;
+             ├─12096 &quot;/usr/sbin/zabbix_server: proxy poller #1 [exchanged data with 0 proxies in 0.000081 sec, idle 5 sec]&quot;
+             ├─12097 &quot;/usr/sbin/zabbix_server: self-monitoring [processed data in 0.000068 sec, idle 1 sec]&quot;
+</code></pre>
+<p>This concludes our chapter on installing and configuring the Zabbix server with PostgreSQL.</p>
+<h2 id="installing-the-frontend">Installing the frontend<a class="headerlink" href="#installing-the-frontend" title="Permanent link">&para;</a></h2>
+<p>Before configuring the front-end, you need to install the necessary packages. If the
+Zabbix front-end is hosted on the same server as the Zabbix server, you can install
+the packages on the same server as is in our case. It's also perfectly possible to
+install the front-end on another server. In that case you only need to specify the 
+correct IP addresses and open the correct firewall ports.</p>
+<h3 id="installing-the-frontend-with-nginx">Installing the frontend with NGINX<a class="headerlink" href="#installing-the-frontend-with-nginx" title="Permanent link">&para;</a></h3>
+<p>RedHat </p>
+<pre><code># dnf install zabbix-nginx-conf zabbix-web-mysql -y
+or if you used PostgreSQL
+# dnf install zabbix-nginx-conf zabbix-web-pgsql -y
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
+or if you use PostgreSQL
+# sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
+</code></pre>
+<p>This command will install the front-end packages along with the required dependencies
+for Nginx. If you are installing the front-end on a different server, make sure to
+execute this command on that specific machine.</p>
+<p>If you don't remember how to add the repository, have a look at the topic <a href="#adding-the-zabbix-repository">Adding the zabbix repository</a></p>
+<p>First thing we have to do is alter the Nginx configuration file so that we don't
+use the standard config.</p>
+<p>RedHat</p>
+<pre><code># vi /etc/nginx/nginx.conf
+</code></pre>
+<p>In this configuration file look for the following block that starts with :</p>
+<pre><code>   server {
+        listen       80;
+        listen       [::]:80;
+        server_name  _;
+        root         /usr/share/nginx/html;
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+</code></pre>
+<p>Then, comment out the following server block within the configuration file:</p>
+<pre><code>    server {
+#        listen       80;
+#        listen       [::]:80;
+#        server_name  _;
+#        root         /usr/share/nginx/html;
+</code></pre>
+<p>The Zabbix configuration file must now be modified to reflect the current environment.
+Open the following file for editing:</p>
+<pre><code>vi /etc/nginx/conf.d/zabbix.conf
+</code></pre>
+<p>And alter the following lines:</p>
+<pre><code>server {
+        listen          8080;
+        server_name     example.com;
+
+        root    /usr/share/zabbix;
+
+        index   index.php;
+</code></pre>
+<p>Replace the first 2 lines with the correct port and domain for your front-end in
+case you don't have a domain you can replace <code>servername</code> with <code>_;</code> like in the
+example below:</p>
+<pre><code>server {
+#        listen          8080;
+#        server_name     example.com;
+        listen          80;
+        server_name     _;
+
+        root    /usr/share/zabbix;
+
+        index   index.php;
+</code></pre>
+<p>The web server and PHP-FPM service are now ready for activation and persistent
+startup. Execute the following commands to enable and start them immediately:</p>
+<p>Ubuntu</p>
+<pre><code class="language-bash"># sudo vi /etc/zabbix/nginx.conf
+</code></pre>
+<p>replace the Following lines:</p>
+<pre><code>server {
+#        listen          8080;
+#        server_name     example.com;
+</code></pre>
+<p>with :</p>
+<pre><code class="language-bash">server {
+        listen          80;
+        server_name     xxx.xxx.xxx.xxx;
+
+</code></pre>
+<p>where xxx.xxxx.xxx.xxx is your IP or DNS name.</p>
+<p>RedHat</p>
+<pre><code>systemctl enable php-fpm --now
+systemctl enable nginx --now
+</code></pre>
+<p>Ubuntu</p>
+<pre><code>sudo systemctl enable nginx php8.3-fpm
+sudo systemctl restart nginx php8.3-fpm
+</code></pre>
+<p>Let's verify if the service is properly started and enabled so that it survives
+our reboot next time.</p>
+<p>RedHat and Ubuntu</p>
+<pre><code># systemctl status nginx
+
+● nginx.service - The nginx HTTP and reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
+    Drop-In: /usr/lib/systemd/system/nginx.service.d
+             └─php-fpm.conf
+     Active: active (running) since Mon 2023-11-20 11:42:18 CET; 30min ago
+   Main PID: 1206 (nginx)
+      Tasks: 2 (limit: 12344)
+     Memory: 4.8M
+        CPU: 38ms
+     CGroup: /system.slice/nginx.service
+             ├─1206 &quot;nginx: master process /usr/sbin/nginx&quot;
+             └─1207 &quot;nginx: worker process&quot;
+
+Nov 20 11:42:18 zabbix-srv systemd[1]: Starting The nginx HTTP and reverse proxy server...
+Nov 20 11:42:18 zabbix-srv nginx[1204]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+Nov 20 11:42:18 zabbix-srv nginx[1204]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+Nov 20 11:42:18 zabbix-srv systemd[1]: Started The nginx HTTP and reverse proxy server.
+
+</code></pre>
+<p>With the service operational and configured for automatic startup, the final preparatory
+step involves adjusting the firewall to permit inbound HTTP traffic. Execute the
+following commands:</p>
+<p>RedHat</p>
+<pre><code>firewall-cmd --add-service=http --permanent
+firewall-cmd --reload
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo ufw allow 80/tcp
+</code></pre>
+<p>Open your browser and go to the url or ip of your front-end :</p>
+<pre><code>http://&lt;ip or dns of the zabbix frontend server&gt;/
+</code></pre>
+<p>If all goes well you should be greeted with a Zabbix welcome page. In case you
+have an error check the configuration again or have a look at the nginx log file :</p>
+<pre><code>/var/log/nginx/error.log
+</code></pre>
+<p>or run the following command :</p>
+<pre><code>journalctl -xe
+</code></pre>
+<p>This should help you in locating the errors you made.</p>
+<p>Upon accessing the appropriate URL, a page resembling the one illustrated below
+should appear:</p>
+<p><img align="left" alt="overview" src="ch01-setup.png" /></p>
+<p>The Zabbix frontend presents a limited array of available localizations, as shown.</p>
+<p><img align="left" alt="overview language" src="ch01-setup-language.png" /></p>
+<p>What if we want to install Chinese as language or another language from the list?
+Run the next command to get a list of all locales available for your OS.</p>
+<p>RedHat</p>
+<pre><code>dnf list glibc-langpack-*
+</code></pre>
+<p>Ubuntu</p>
+<pre><code>apt-cache search language-pack
+</code></pre>
+<p>This will give you on Redhat based systems a list like:</p>
+<pre><code>Installed Packages
+glibc-langpack-en.x86_64
+Available Packages
+glibc-langpack-aa.x86_64
+...
+
+glibc-langpack-zu.x86_64
+
+
+On Ubuntu it will look like 
+language-pack-kab - translation updates for language Kabyle
+language-pack-kab-base - translations for language Kabyle
+language-pack-kn - translation updates for language Kannada
+language-pack-kn-base - translations for language Kannada
+...
+
+language-pack-ko - translation updates for language Korean
+language-pack-ko-base - translations for language Korean
+language-pack-ku - translation updates for language Kurdish
+language-pack-ku-base - translations for language Kurdish
+language-pack-lt - translation updates for language Lithuanian
+</code></pre>
+<p>Let's search for our Chinese locale to see if it is available. As you can see
+the code starts with zh.</p>
+<p>RedHat</p>
+<pre><code># dnf list glibc-langpack-* | grep zh
+
+glibc-langpack-zh.x86_64
+glibc-langpack-lzh.x86_64
+</code></pre>
+<p>Ubuntu</p>
+<pre><code>apt-cache search language-pack | grep -i zh
+</code></pre>
+<p>The command outputs two lines; however, given the identified language code,
+'zh_CN,' only the first package requires installation.</p>
+<p>RedHat</p>
+<pre><code># dnf install glibc-langpack-zh.x86_64 -y
+</code></pre>
+<p>Ubuntu</p>
+<pre><code># sudo apt install language-pack-zh-hans
+# sudo systemctl restart nginx php8.3-fpm
+</code></pre>
+<p>When we return now to our front-end we are able to select the Chinese language,
+after a reload of our browser.</p>
+<p><img align="left" alt="select language" src="ch01-select-language.png" /></p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If your preferred language is not available in the Zabbix front-end, don't
+worry it simply means that the translation is either incomplete or not yet
+available. Zabbix is an open-source project that relies on community contributions
+for translations, so you can help improve it by contributing your own translations.</p>
+<p>Visit the translation page at <a href="https://translate.zabbix.com/">https://translate.zabbix.com/</a>
+to assist with the translation efforts. Once your translation is complete and reviewed,
+it will be included in the next minor patch version of Zabbix.
+Your contributions help make Zabbix more accessible and improve the overall
+user experience for everyone.</p>
+</details>
+<p>When you're satisfied with the available translations, click <code>Next</code>. You will 
+then be taken to a screen to verify that all prerequisites are satisfied. If any
+prerequisites are not fulfilled, address those issues first. However, if everything
+is in order, you should be able to proceed by clicking <code>Next</code>.</p>
+<p><img align="left" alt="pre-requisites" src="ch01-pre-requisites.png" /></p>
+<p>On the next page, you'll configure the database connection parameters:</p>
+<ol>
+<li><code>Select the Database Type</code>: Choose either MySQL or PostgreSQL depending on your setup.</li>
+<li><code>Enter the Database Host</code>: Provide the IP address or DNS name of your database
+   server. Use port 3306 for MariaDB/MySQL or 5432 for PostgreSQL.</li>
+<li><code>Enter the Database Name</code>: Specify the name of your database. In our case, it
+   is zabbix. If you are using PostgreSQL, you will also need to provide the schema
+   name, which is zabbix_server in our case.</li>
+<li><code>Enter the Database User</code>: Input the database user created for the web front-end,
+   such as zabbix-web. Enter the corresponding password for this user.</li>
+</ol>
+<p>Ensure that the <code>Database TLS encryption</code> option is not selected, and then click
+<code>Next step</code> to proceed.</p>
+<p><img align="left" alt="dbconnection" src="ch01-db-connection.png" /></p>
+<p>You're almost finished with the setup! The final steps involve:</p>
+<ol>
+<li><code>Assigning an Instance Name</code>: Choose a descriptive name for your Zabbix instance.</li>
+<li><code>Selecting the Timezone</code>: Choose the timezone that matches your location or your preferred time zone for the Zabbix interface.</li>
+<li><code>Setting the Default Time Format</code>: Select the default time format you prefer to use.</li>
+</ol>
+<p>Once these settings are configured, you can complete the setup and proceed with any final configuration steps as needed.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>It's a good practice to set your Zabbix server to the UTC timezone, especially
+when managing systems across multiple timezones. Using UTC helps ensure consistency
+in time-sensitive actions and events, as the server’s timezone is often used for
+calculating and displaying time-related information.</p>
+</details>
+<p><img align="left" alt="settings" src="ch01-settings.png" /></p>
+<p>After clicking <code>Next step</code> again, you'll be taken to a page confirming that the
+configuration was successful. Click <code>Finish</code> to complete the setup process.</p>
+<p><img align="left" alt="settings" src="ch01-final.png" /></p>
+<p>We are now ready to login :</p>
+<p><img alt="settings" src="ch01-login.png" /></p>
+<p>Login : Admin Password : zabbix</p>
+<p>This concludes our topic on setting up the Zabbix server. If you're interested in securing your front-end,
+I recommend checking out the topic Securing Zabbix for additional guidance and best practices.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If you are not able to safe your configuration at the end make sure SeLinux
+is disabled. It is possible that it will block access to certain files or even the database.</p>
+</details>
+<h1 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h1>
+<p>With this, we conclude our journey through setting up Zabbix and configuring it
+with MySQL or PostgreSQL on RHEL-based systems and Ubuntu. We have walked through
+the essential steps of preparing the environment, installing the necessary components,
+and ensuring a fully functional Zabbix server. From database selection to web frontend
+configuration with Nginx, each decision has been aimed at creating a robust and
+efficient monitoring solution.</p>
+<p>At this stage, your Zabbix instance is operational, providing the foundation for
+advanced monitoring and alerting. In the upcoming chapters, we will delve into
+fine-tuning Zabbix, optimizing performance, and exploring key features that transform
+it into a powerful observability platform.</p>
+<p>Now that your Zabbix environment is up and running, let’s take it to the next level.</p>
+<h1 id="questions">Questions<a class="headerlink" href="#questions" title="Permanent link">&para;</a></h1>
+<ol>
+<li>Should I choose MySQL or PostgreSQL as the database backend? Why?</li>
+<li>What version of Zabbix should I install for compatibility and stability?</li>
+<li>What port does my DB use ?</li>
+<li>What Zabbix logs should I check for troubleshooting common issues?</li>
+</ol>
+<h1 id="useful-urls">Useful URLs<a class="headerlink" href="#useful-urls" title="Permanent link">&para;</a></h1>
+<ul>
+<li>https://www.zabbix.com/download</li>
+<li>https://www.zabbix.com/documentation/current/en/manual</li>
+<li>https://www.zabbix.com/documentation/current/en/manual/installation/requirements</li>
+<li>https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages</li>
+</ul>
+<p>Todo</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+    
+    
+        
+            
+            
+        
+		
+		
+    
+
+  </body>
+</html>
