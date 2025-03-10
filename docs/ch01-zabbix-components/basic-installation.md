@@ -925,6 +925,18 @@ Ubuntu
 ```
 # sudo ufw allow 5432/tcp
 ```
+???+ note
+    Make sure your DB is listening on the correct IP and not on 127.0.0.1.
+    You could add the following files to your config file. This would allow MariaDB
+    to listen on all interfaces. Best to limit it only to the needed IP.
+
+    /etc/mysql/mariadb.cnf
+
+    [mariadb]
+    log_error=/var/log/mysql/mariadb.err
+    log_warnings=3
+    bind-address = 0.0.0.0
+
 
 This concludes our installation of the PostgreSQL database.
 
@@ -1095,7 +1107,7 @@ update the following lines to match your database configuration:
 RedHat and Ubuntu
 
 ```
-vi /etc/zabbix/zabbix_server.conf
+sudo vi /etc/zabbix/zabbix_server.conf
 ```
 ```
 DBHost=<database-host>
@@ -1155,7 +1167,7 @@ to enable the Zabbix server and ensure it starts automatically on boot:
 
 Redhat and Ubuntu
 ```bash
-systemctl enable zabbix-server --now
+# sudo systemctl enable zabbix-server --now
 ```
 This command will start the Zabbix server service immediately and configure it
 to launch on system startup. To verify that the Zabbix server is running correctly,
@@ -1616,6 +1628,8 @@ or if you used PostgreSQL
 
 Ubuntu
 ```
+# sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
+or if you use PostgreSQL
 # sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
 ```
 
@@ -1690,14 +1704,17 @@ startup. Execute the following commands to enable and start them immediately:
 
 Ubuntu
 ```bash
-# vi /etc/zabbix/nginx.conf
+# sudo vi /etc/zabbix/nginx.conf
 ```
 
 replace the Following lines:
 ```
-
+server {
+#        listen          8080;
+#        server_name     example.com;
 ```
 with :
+
 ```bash
 server {
         listen          80;
@@ -1758,7 +1775,7 @@ firewall-cmd --reload
 
 Ubuntu
 ```
-# sudo ufw allow 3306/tcp
+# sudo ufw allow 80/tcp
 ```
 
 Open your browser and go to the url or ip of your front-end :
@@ -1929,12 +1946,32 @@ I recommend checking out the topic Securing Zabbix for additional guidance and b
 
 # Conclusion
 
-Todo
+With this, we conclude our journey through setting up Zabbix and configuring it
+with MySQL or PostgreSQL on RHEL-based systems and Ubuntu. We have walked through
+the essential steps of preparing the environment, installing the necessary components,
+and ensuring a fully functional Zabbix server. From database selection to web frontend
+configuration with Nginx, each decision has been aimed at creating a robust and
+efficient monitoring solution.
+
+At this stage, your Zabbix instance is operational, providing the foundation for
+advanced monitoring and alerting. In the upcoming chapters, we will delve into
+fine-tuning Zabbix, optimizing performance, and exploring key features that transform
+it into a powerful observability platform.
+
+Now that your Zabbix environment is up and running, let’s take it to the next level.
 
 # Questions
 
-Todo
+1. Should I choose MySQL or PostgreSQL as the database backend? Why?
+2. What version of Zabbix should I install for compatibility and stability?
+3. What port does my DB use ?
+4. What Zabbix logs should I check for troubleshooting common issues?
 
 # Useful URLs 
+
+- https://www.zabbix.com/download
+- https://www.zabbix.com/documentation/current/en/manual
+- https://www.zabbix.com/documentation/current/en/manual/installation/requirements
+- https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages
 
 Todo
