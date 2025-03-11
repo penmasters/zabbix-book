@@ -1944,7 +1944,7 @@ I recommend checking out the topic Securing Zabbix for additional guidance and b
     is disabled. It is possible that it will block access to certain files or even the database.
 
 
-# Conclusion
+## Conclusion
 
 With this, we conclude our journey through setting up Zabbix and configuring it
 with MySQL or PostgreSQL on RHEL-based systems and Ubuntu. We have walked through
@@ -1960,18 +1960,17 @@ it into a powerful observability platform.
 
 Now that your Zabbix environment is up and running, let’s take it to the next level.
 
-# Questions
+## Questions
 
 1. Should I choose MySQL or PostgreSQL as the database back-end? Why?
 2. What version of Zabbix should I install for compatibility and stability?
 3. What port does my DB use ?
 4. What Zabbix logs should I check for troubleshooting common issues?
 
-# Useful URLs 
+## Useful URLs 
 
 - https://www.zabbix.com/download
 - https://www.zabbix.com/documentation/current/en/manual
 - https://www.zabbix.com/documentation/current/en/manual/installation/requirements
 - https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages
 
-Todo
