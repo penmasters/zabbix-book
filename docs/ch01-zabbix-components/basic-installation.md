@@ -1722,7 +1722,7 @@ server {
 
 ```
 
-where xxx.xxxx.xxx.xxx is your IP or DNS name.
+where xxx.xxx.xxx.xxx is your IP or DNS name.
 
 
 RedHat
@@ -1962,7 +1962,7 @@ Now that your Zabbix environment is up and running, let’s take it to the next 
 
 # Questions
 
-1. Should I choose MySQL or PostgreSQL as the database backend? Why?
+1. Should I choose MySQL or PostgreSQL as the database back-end? Why?
 2. What version of Zabbix should I install for compatibility and stability?
 3. What port does my DB use ?
 4. What Zabbix logs should I check for troubleshooting common issues?
