@@ -1,6 +1,6 @@
 # System Requirements
 
-# Requirements
+## Requirements
 
 Zabbix has specific hardware and software requirements that must be met,
 and these requirements may change over time. They also depend on the size of your
@@ -61,12 +61,16 @@ The first step is to ensure that the firewall is installed and configured.
 
 To install and enable the firewall, run the following command:
 
-```bash
 RedHat
+
+```bash
 # dnf install firewalld
 # systemctl enable firewalld --now
+```
 
 Ubuntu
+
+```bash
 # sudo apt install ufw -y
 # sudo ufw enable
 ```
@@ -76,11 +80,15 @@ For Zabbix, we need to allow access to port `10051/tcp`, which is where the
 Zabbix trapper listens for incoming data. Use the following command to open
 this port in the firewall:
 
-```bash
 RedHat
+
+```bash
 # firewall-cmd --add-service=zabbix-server --permanent
+```
 
 Ubuntu
+
+```
 # sudo ufw allow 10051/tcp
 ```
 
@@ -98,6 +106,52 @@ refer to your OS documentation for the appropriate firewall configuration steps.
 Ubuntu makes use of UFW and is merely a frontend for iptables.
 ///
 
+Another option is to add individual firewall zones for example
+
+```bash
+# firewall-cmd --new-zone=postgresql-access --permanent
+```
+
+You can verify if the zone was created by running :
+
+```bash
+# firewall-cmd --get-zones
+    block dmz drop external home internal nm-shared postgresql-access public
+    trusted work
+```
+
+Using zones in firewalld to configure firewall rules for PostgreSQL provides several
+advantages in terms of security, flexibility, and ease of management.
+Here’s why zones are beneficial:
+
+- Granular Access Control
+  - firewalld zones allow different levels of trust for different network interfaces
+    and IP ranges. You can define which systems are allowed to connect to PostgreSQL
+    based on their trust level.
+- Simplified Rule management
+  - Instead of manually defining complex iptables rules, zones provide an organized
+    way to group and manage firewall rules based on usage scenarios.
+- Enhanced security
+  - By restricting PostgreSQL access to a specific zone, you prevent unauthorized
+    connections from other interfaces or networks.
+- Dynamic configuration
+  - firewalld supports runtime and permanent rule configurations, allowing changes
+    without disrupting existing connections.
+- Multi-Interface support
+  - If the server has multiple network interfaces, zones allow different security
+    policies for each interface.
+
+Bringing everything together it would look like this:
+
+```bash
+firewall-cmd --new-zone=db_zone --permanent
+firewall-cmd --zone=db_zone --add-service=postgresql --permanent
+firewall-cmd --zone=db_zone --add-source=xxx.xxx.xxx.xxx/32 --permanent
+firewall-cmd --reload
+```
+
+Where our `source IP` is the only IP that is allowed to connect to our DB.
+
 ---
 
 ### Time Server
@@ -112,20 +166,25 @@ than it actually did.
 
 To install and enable chrony, our NTP client, use the following command:
 
-```bash
 RedHat
+
+```bash
 # dnf install chrony
 # systemctl enable chronyd --now
+```
 
 Ubuntu
+
+```
 # sudo apt install chrony -y
 ```
 
 Once installed, you can verify that Chrony is enabled and running by checking
 its status:
 
-```bash
 RedHat
+
+```bash
 # systemctl status chronyd
 ```
 
