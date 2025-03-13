@@ -59,3 +59,4 @@ cnf
 install_from_packages
 log_error
 log_warnings
+failover
