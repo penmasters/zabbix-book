@@ -38,20 +38,19 @@ Zabbix database.
 
     It's perfect possible to install all components on 1 single VM or every component
     on a separate VM.
-    Reason we split the DB as an example is because the database will probably be the
-    first component giving you performance headaches. It's also the component that
-    needs some extra attention when we split it so for this reason we have chosen
-    in this example to split the database from the rest of the setup.
-
+    Reason we split the DB as an example is because the database will probably be
+    the first component giving you performance headaches. It's also the component
+    that needs some extra attention when we split it so for this reason we have
+    chosen in this example to split the database from the rest of the setup.
 
 ???+ note
     A crucial consideration for those managing Zabbix installations is the database
     back-end. Zabbix 7.0 marks the final release to offer support for Oracle Database.
-    Consequently, systems running Zabbix 7.0 or any prior version must undertake a database
-    migration to either PostgreSQL, MySQL, or a compatible fork such as MariaDB before
-    upgrading to a later Zabbix release. This migration is a mandatory step to
-    ensure continued functionality and compatibility with future Zabbix versions.
-
+    Consequently, systems running Zabbix 7.0 or any prior version must undertake
+    a database migration to either PostgreSQL, MySQL, or a compatible fork such
+    as MariaDB before upgrading to a later Zabbix release. This migration is a
+    mandatory step to ensure continued functionality and compatibility with future
+    Zabbix versions.
 
 We will cover the following topics:
 
@@ -74,10 +73,13 @@ For Ubuntu we need to import the repository keys and create a file for example
 To create the MariaDB repository file, execute the following command in your terminal:
 
 RedHat
+
 ```bash
 # vi /etc/yum.repos.d/mariadb.repo
 ```
+
 Ubuntu
+
 ```
 # sudo apt-get install apt-transport-https curl
 # sudo mkdir -p /etc/apt/keyrings
@@ -94,11 +96,12 @@ using your package manager.
     Always check Zabbix documentation for the latest supported versions.
 
 The latest config can be found here:
-https://mariadb.org/download/?t=repo-config
+<https://mariadb.org/download/?t=repo-config>
 
 Here's the configuration you need to add into the file:
 
 RedHat
+
 ```bash
 # MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-02-21 10:15 UTC
 # https://mariadb.org/download/
@@ -111,7 +114,9 @@ baseurl = https://mirror.bouwhuis.network/mariadb/yum/11.4/rhel/$releasever/$bas
 gpgkey = https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
 gpgcheck = 1
 ```
+
 Ubuntu
+
 ```bash
 # MariaDB 11.4 repository list - created 2025-02-21 11:42 UTC
 # https://mariadb.org/download/
@@ -137,10 +142,13 @@ about to install.
 To update your OS, run the following command:
 
 RedHat
+
 ```bash
 # dnf update -y
 ```
+
 Ubuntu
+
 ```
 # sudo apt update -y && sudo apt upgrade -y
 ```
@@ -158,10 +166,13 @@ necessary components to run and manage your database.
 To install the MariaDB server and client, execute the following command:
 
 RedHat
+
 ```bash
 # dnf install MariaDB-server
 ```
+
 Ubuntu
+
 ```bash
 # sudo apt-get install mariadb-server
 ```
@@ -174,6 +185,7 @@ Now that MariaDB is installed, we need to enable the service to start automatica
 upon boot and start it immediately. Use the following command to accomplish this:
 
 RedHat
+
 ```bash
 # systemctl enable mariadb --now
 ```
@@ -183,6 +195,7 @@ running, you can verify that the installation was successful by checking the
 version of MariaDB using the following command:
 
 RedHat and Ubuntu
+
 ```bash
 # sudo mariadb -V
 ```
@@ -235,7 +248,6 @@ Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: Version: '11.4.5-MariaDB'
 Feb 21 11:22:59 localhost.localdomain systemd[1]: Started MariaDB 11.4.5 database server.
 ```
 
-
 This confirms that your MariaDB server is up and running, ready for further configuration.
 
 ### Securing the MariaDB Database
@@ -248,6 +260,7 @@ your database.
 Run the following command:
 
 RedHat and Ubuntu
+
 ```bash
 # sudo mariadb-secure-installation
 ```
@@ -344,6 +357,7 @@ You'll be prompted to enter the root password that you set during the mariadb-se
 process.
 
 RedHat and Ubuntu
+
 ```bash
 # mariadb -uroot -p
 ```
@@ -422,16 +436,19 @@ the Zabbix server to connect to the database.
 If we want our Zabbix server to connect to our DB then we also need to open our firewall port.
 
 RedHat
+
 ```
 # firewall-cmd --add-port=3306/tcp --permanent
 # firewall-cmd --reload
 ```
+
 Ubuntu
+
 ```
 # sudo ufw allow 3306/tcp
 ```
 
-### Populate the Zabbix DB
+### Populate the Zabbix Maria DB
 
 With the users and permissions set up correctly, you can now populate the database
 with the Zabbix schema created and other required elements. Follow these steps:
@@ -441,6 +458,7 @@ This may sound weird but actually makes sense because we need to populate our DB
 with our Zabbix schemas.
 
 RedHat
+
 ```bash
 # rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
 # dnf clean all
@@ -448,19 +466,23 @@ RedHat
 ```
 
 Ubuntu
+
 ```bash
 # sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
 # sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
 # sudo apt update
 # sudo apt install zabbix-sql-scripts
 ```
+
 Now lets upload the data from zabbix (db structure, images, user, ... )
 for this we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
 
 RedHat and Ubuntu
+
 ```bash
 # sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
 ```
+
 ???+ note
     Depending on the speed of your hardware or virtual machine, the process may
     take anywhere from a few seconds to several minutes. Please be patient and
@@ -471,6 +493,7 @@ Log back into your MySQL Database as root
 ```bash
 # mariadb -uroot -p
 ```
+
 Once the import of the Zabbix schema is complete and you no longer need the
 log_bin_trust_function_creators global parameter, it is a good practice to remove
 it for security reasons.
@@ -482,11 +505,11 @@ command in the MariaDB shell:
 mysql> SET GLOBAL log_bin_trust_function_creators = 0;
 Query OK, 0 rows affected (0.001 sec)
 ```
+
 This command will disable the setting, ensuring that the servers security
 posture remains robust.
 
 This concludes our installation of the MariaDB
-
 
 ## Installing the PostgreSQL database
 
@@ -501,12 +524,12 @@ also securing the DB.
 
 The table of compatibility can be found [https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/](https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/)
 
-
 ### Add the PostgreSQL repository
 
 So let us start first setting up our PostgreSQL repository with the following commands.
 
 RedHat
+
 ```bash
 Install the repository RPM:
 # sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
@@ -514,7 +537,9 @@ Install the repository RPM:
 Disable the built-in PostgreSQL module:
 # sudo dnf -qy module disable postgresql
 ```
+
 Ubuntu
+
 ```
 # Import the repository signing key:
 sudo apt install curl ca-certificates
@@ -532,6 +557,7 @@ sudo apt update
 ### Install the PostgreSQL databases
 
 RedHat
+
 ```bash
 # Install PostgreSQL:
 sudo dnf install -y postgresql17-server
@@ -540,17 +566,23 @@ Initialize the database and enable automatic start:
 # sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
 # sudo systemctl enable postgresql-17 --now
 ```
+
 Ubuntu
+
 ```
 sudo apt -y install postgresql-17
 ```
+
 To update your OS, run the following command:
 
 RedHat
+
 ```bash
 # dnf update -y
 ```
+
 Ubuntu
+
 ```
 # sudo apt update -y && sudo apt upgrade -y
 ```
@@ -568,19 +600,22 @@ from where, and what encryption method is used for authentication.
     For further details, you can refer to the official PostgreSQL documentation."
     [https://www.postgresql.org/docs/current/auth-pg-hba-conf.html](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
 
-
 Add the following lines, the order here is important.
 
 Redhat
+
 ```bash
 # vi /var/lib/pgsql/17/data/pg_hba.conf
 ```
+
 Ubuntu
+
 ```bash
 # sudo vi /etc/postgresql/17/main/pg_hba.conf
 ```
 
-The result should look like : 
+The result should look like :
+
 ```
 # "local" is for Unix domain socket connections only
 local    zabbix     zabbix-srv                                                              scram-sha-256
@@ -597,10 +632,13 @@ and allow our database to listen on our network interface for incoming connectio
 from the zabbix server. Postgresql will standard only allow connections from the socket.
 
 RedHat
+
 ```bash
 # vi /var/lib/pgsql/17/data/postgresql.conf
 ```
+
 Ubuntu
+
 ```bash
 # vi /etc/postgresql/17/main/postgresql.conf
 ```
@@ -611,21 +649,26 @@ the `postgresql.conf` file. Locate the following line:
 ```bash
 #listen_addresses = 'localhost'
 ```
+
 and replace it with:
+
 ```
 listen_addresses = '*'
 ```
 
 This will enable PostgreSQL to accept connections from any network interface,
-not just the local machine. In production it's probably a good idea to limit 
+not just the local machine. In production it's probably a good idea to limit
 who can connect to the DB. After making this change, restart the PostgreSQL service
 to apply the new settings:
 
 Redhat
+
 ```bash
 # systemctl restart postgresql-17
 ```
+
 Ubuntu
+
 ```bash
 sudo systemctl restart postgresql
 ```
@@ -644,17 +687,21 @@ Zabbix application.
 To begin, add the Zabbix repository to your system by running the following commands:
 
 RedHat
+
 ```bash
 # dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm -y
 # dnf install zabbix-sql-scripts -y 
 ```
+
 Ubuntu
+
 ```bash
 # sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
 # sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
 # sudo apt update -y
 # sudo apt install zabbix-sql-scripts -y
 ```
+
 With the necessary packages installed, you are now ready to create the Zabbix users for both the server and frontend.
 
 First, switch to the `postgres` user and create the Zabbix server database user:
@@ -665,6 +712,7 @@ First, switch to the `postgres` user and create the Zabbix server database user:
 Enter password for new role: <server-password>
 Enter it again: <server-password>
 ```
+
 Next, create the Zabbix frontend user, which will be used to connect to the database:
 
 ```
@@ -677,10 +725,13 @@ After creating the users, you need to prepare the database schema. As the root
 or your regular user, unzip the necessary schema files by running the following command:
 
 RedHat
+
 ```bash
 # gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
 ```
+
 Ubuntu
+
 ```bash
 # sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
 ```
@@ -692,17 +743,20 @@ Ubuntu
 
 This will extract the database schema required for the Zabbix server.
 
-Now that the users are created, the next step is to create the Zabbix database. 
+Now that the users are created, the next step is to create the Zabbix database.
 First, switch to the `postgres` user and execute the following command to create
 the database with the owner set to zabbix-srv:
 
 RedHat
+
 ```bash
 # su - postgres
 # createdb -E Unicode -O zabbix-srv zabbix
 # exit
 ```
+
 Ubuntu
+
 ```bash
 # sudo su - postgres
 # createdb -E Unicode -O zabbix-srv zabbix
@@ -713,20 +767,21 @@ Once the database is created, you should verify the connection and ensure that
 the correct user session is active. To do this, log into the zabbix database using
 the zabbix-srv user:
 
-```
+```bash
 # psql -d zabbix -U zabbix-srv
 ```
 
 After logging in, run the following SQL query to confirm that both the `session_user`
 and `current_user` are set to `zabbix-srv`:
 
-```
+```bash
 zabbix=> SELECT session_user, current_user;
  session_user | current_user
 --------------+--------------
  zabbix-srv   | zabbix-srv
 (1 row)
 ```
+
 If the output matches, you are successfully connected to the database with the correct user.
 
 PostgreSQL indeed differs significantly from MySQL or MariaDB in several aspects,
@@ -755,13 +810,14 @@ for both the `zabbix-srv` and `zabbix-web` users.
 First, we create a custom schema named `zabbix_server` and assign ownership to
 the `zabbix-srv` user:
 
-```
+```psql
 zabbix=> CREATE SCHEMA zabbix_server AUTHORIZATION "zabbix-srv";
 ```
+
 Next, we set the `search path` to `zabbix_server` schema so that it's the default
 for the current session:
 
-```
+```psql
 zabbix=> SET search_path TO "zabbix_server";
 ```
 
@@ -789,18 +845,31 @@ However, `zabbix-web` still cannot perform any operations on the tables or seque
 To allow basic data interaction without giving too many privileges, grant the
 following permissions:
 
-- For tables: SELECT, INSERT, UPDATE, and DELETE.
-- For sequences: SELECT and UPDATE.
+* For tables: SELECT, INSERT, UPDATE, and DELETE.
+* For sequences: SELECT and UPDATE.
 
 ```psql
 zabbix=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server TO "zabbix-web";
 ```
+
 ```psql
 zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
 ```
 
+Verify if the rights are correct on the schema :
 
-### Populate the Zabbix DB
+```psql
+zabbix=> \dn+
+                                           List of schemas
+     Name      |       Owner       |           Access privileges            |      Description
+---------------+-------------------+----------------------------------------+------------------------
+ public        | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
+               |                   | =U/pg_database_owner                   |
+ zabbix_server | zabbix-srv        | "zabbix-srv"=UC/"zabbix-srv"          +|
+               |                   | "zabbix-web"=U/"zabbix-srv"            |
+```
+
+### Populate the Zabbix PostgreSQL DB
 
 Now, the `zabbix-web` user has appropriate access to interact with the schema
 while maintaining security by limiting permissions to essential operations.
@@ -808,10 +877,11 @@ while maintaining security by limiting permissions to essential operations.
 With the users and permissions set up correctly, you can now populate the database
 with the Zabbix schema created and other required elements. Follow these steps:
 
-- Execute the SQL file to populate the database. Run the following command in the `psql` shell:
+* Execute the SQL file to populate the database. Run the following command in the `psql` shell:
 
 ???+ warning
     Make sure you did previous steps carefully so that you have selected the correct search_path.
+
 ```
 sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
 ```
@@ -820,7 +890,7 @@ sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
     Depending on your hardware or VM performance, this process can take anywhere
     from a few seconds to several minutes. Please be patient and avoid cancelling the operation.
 
-- Monitor the progress as the script runs. You will see output similar to:
+* Monitor the progress as the script runs. You will see output similar to:
 
 ```sql
 zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
@@ -842,7 +912,7 @@ should be successfully populated with all the required tables, schemas,
 images, and other elements needed for Zabbix.
 
 ???+ note
-    If you encounter the following error during the SQL import: 
+    If you encounter the following error during the SQL import:
     `vbnet psql:/usr/share/zabbix/sql-scripts/postgresql/server.sql:7: ERROR: no
     schema has been selected to create in` It indicates that the search_path setting
     might not have been correctly applied. This setting is crucial because it specifies
@@ -853,7 +923,7 @@ images, and other elements needed for Zabbix.
 To ensure that the Zabbix tables were created successfully and have the correct
 permissions, you can verify the table list and their ownership using the `psql` command:
 
-- List the Tables: Use the following command to list all tables in the `zabbix_server` schema:
+* List the Tables: Use the following command to list all tables in the `zabbix_server` schema:
 
 ```
 sql zabbix=# \dt
@@ -883,7 +953,8 @@ zabbix=> \dt
  zabbix_server | widget_field               | table | zabbix-srv
 (203 rows)
 ```
-- Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
+
+* Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
 the necessary permissions. You can check permissions for specific tables using
 the \dp command:
 
@@ -914,17 +985,22 @@ If you are ready you can exit the database and return as user root.
 ```
 zabbix=> \q
 ```
+
 If we want our Zabbix server to be able to connect to our DB then we also need to open our firewall port.
 
 RedHat
+
 ```
 # firewall-cmd --add-port=5432/tcp --permanent
 # firewall-cmd --reload
 ```
+
 Ubuntu
+
 ```
 # sudo ufw allow 5432/tcp
 ```
+
 ???+ note
     Make sure your DB is listening on the correct IP and not on 127.0.0.1.
     You could add the following files to your config file. This would allow MariaDB
@@ -937,11 +1013,9 @@ Ubuntu
     log_warnings=3
     bind-address = 0.0.0.0
 
-
 This concludes our installation of the PostgreSQL database.
 
 ## Installing the Zabbix server for MariaDB/Mysql
- 
 
 Before proceeding with the installation of your Zabbix server, ensure that the server
 is properly configured, as outlined in the previous section [System Requirements](../ch00-getting-started/Requirements.md)
@@ -951,7 +1025,6 @@ SELinux, which can interfere with the installation and operation of Zabbix.
 We will revisit SELinux at the end of this chapter once our installation is finished.
 
 To check the current status of SELinux, you can use the following command: `sestatus``
-
 
 ```
 # sestatus
@@ -966,9 +1039,9 @@ Policy deny_unknown status:     allowed
 Memory protection checking:     actual (secure)
 Max kernel policy version:      33
 ```
+
 As shown, the system is currently in enforcing mode. To temporarily disable SELinux,
 you can run the following command: `setenforce 0`
-
 
 ```
 # setenforce 0
@@ -985,6 +1058,7 @@ Policy deny_unknown status:     allowed
 Memory protection checking:     actual (secure)
 Max kernel policy version:      33
 ```
+
 Now, as you can see, the mode is switched to permissive. However, this change
 is not persistent across reboots. To make it permanent, you need to modify the
 SELinux configuration file located at `/etc/selinux/config`. Open the file and
@@ -994,9 +1068,11 @@ Alternatively, you can achieve the same result more easily by running the
 following command:
 
 RedHat
+
 ```
 # sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
 ```
+
 This line will alter the configuration file for you. So when we run `sestatus`
 again we will see that we are in `permissive` mode and that our configuration
 file is also in permissive mode.
@@ -1016,7 +1092,6 @@ Memory protection checking:     actual (secure)
 Max kernel policy version:      33
 ```
 
-
 ### Adding the Zabbix repository
 
 From the Zabbix Download page [https://www.zabbix.com/download](https://www.zabbix.com/download),
@@ -1035,6 +1110,7 @@ To do this, edit the `/etc/yum.repos.d/epel.repo` file and add the following sta
 to disable the EPEL repository by default:
 
 RedHat
+
 ```
 [epel]
 ...
@@ -1054,16 +1130,20 @@ old cache files and ensure the repository metadata is up to date. You can do thi
 by running:
 
 RedHat
+
 ```
 # rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
 # dnf clean all
 ```
+
 Ubuntu
+
 ```
 # sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
 # sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
 # sudo apt update
 ```
+
 This will refresh the repository metadata and prepare the system for Zabbix installation.
 
 ???+ note
@@ -1071,7 +1151,7 @@ This will refresh the repository metadata and prepare the system for Zabbix inst
     software packages. You can think of it like an "app store" where you find and
     download software from a trusted source, in this case, the Zabbix repository.
     Many repositories are available, but it's important to only add those you trust.
-    The safest practice is to stick to the repositories provided by your operating 
+    The safest practice is to stick to the repositories provided by your operating
     system and only add additional ones when you're sure they are both trusted and necessary.
 
     For our installation, the Zabbix repository is provided by the vendor itself,
@@ -1092,13 +1172,17 @@ To install the Zabbix server and the web server components for MySQL/MariaDB,
 run the following command:
 
 RedHat
+
 ```
 # dnf install zabbix-server-mysql -y
 ```
+
 Ubuntu
+
 ```
 # sudo apt install zabbix-server-mysql
 ```
+
 After successfully installing the Zabbix server and frontend packages, we need to
 configure the Zabbix server to connect to the database. This requires modifying the
 Zabbix server configuration file. Open the `/etc/zabbix/zabbix_server.conf` file and
@@ -1109,12 +1193,14 @@ RedHat and Ubuntu
 ```
 sudo vi /etc/zabbix/zabbix_server.conf
 ```
+
 ```
 DBHost=<database-host>
 DBName=<database-name>
 DBUser=<database-user>
 DBPassword=<database-password>
 ```
+
 Replace <database-host>, <database-name>, <database-user>, and <database-password> with
 the appropriate values for your setup. This ensures that the Zabbix server can communicate
 with your database.
@@ -1133,12 +1219,13 @@ DBUser=zabbix-srv
 DBPassword=<your super secret password>
 DBPort=3306
 ```
+
 In this example:
 
-- DBHost refers to the host where your database is running (use localhost if it's on the same machine).
-- DBName is the name of the Zabbix database.
-- DBUser is the database user.
-- DBPassword is the password for the database user.
+* DBHost refers to the host where your database is running (use localhost if it's on the same machine).
+* DBName is the name of the Zabbix database.
+* DBUser is the database user.
+* DBPassword is the password for the database user.
 
 Make sure the settings reflect your environment's database configuration.
 
@@ -1149,12 +1236,14 @@ Make sure the settings reflect your environment's database configuration.
     you can create and include a separate configuration file for any additional or
     modified parameters. This approach ensures that your original configuration
     file remains untouched, which is particularly useful when performing upgrades
-    or managing configurations with tools like Ansible, Puppet, or SaltStack. 
+    or managing configurations with tools like Ansible, Puppet, or SaltStack.
 
 To enable this feature, remove the # from the line:
+
 ```bash
 # Include=/usr/local/etc/zabbix_server.conf.d/*.conf
 ```
+
 Ensure the path `/usr/local/etc/zabbix_server.conf.d/` exists and
 create a custom configuration file in this directory.
 This file should be readable by the `zabbix` user. By doing so, you can add
@@ -1165,10 +1254,19 @@ With the Zabbix server configuration updated to connect to your database, you
 can now start and enable the Zabbix server service. Run the following command
 to enable the Zabbix server and ensure it starts automatically on boot:
 
+???+ note
+    Before restarting the Zabbix server after modifying its configuration, it is
+    considered best practice to validate the configuration to prevent potential
+    issues. Running a configuration check ensures that any errors are detected
+    beforehand, avoiding downtime caused by an invalid configuration. This can
+    be accomplished using the following command: `zabbix-server -T`
+
 Redhat and Ubuntu
+
 ```bash
 # sudo systemctl enable zabbix-server --now
 ```
+
 This command will start the Zabbix server service immediately and configure it
 to launch on system startup. To verify that the Zabbix server is running correctly,
 check the log file for any messages. You can view the latest entries in the `Zabbix server`
@@ -1177,6 +1275,7 @@ log file using:
 ```bash
 tail /var/log/zabbix/zabbix_server.log
 ```
+
 Look for messages indicating that the server has started successfully. If there
 are any issues, the log file will provide details to help with troubleshooting.
 
@@ -1208,6 +1307,7 @@ are any issues, the log file will provide details to help with troubleshooting.
 12082:20250225:145333.719 server #7 started [preprocessing manager #1]
 12083:20250225:145333.719 server #8 started [lld manager #1]
 ```
+
 If there was an error and the server was not able to connect to the database you
 would see something like this in the server log file :
 
@@ -1267,10 +1367,7 @@ Let's check the Zabbix server service to see if it's enabled so that it survives
              ├─12097 "/usr/sbin/zabbix_server: self-monitoring [processed data in 0.000068 sec, idle 1 sec]"
 ```
 
-This concludes our chapter on installing and configuring the Zabbix server with Mariadb. 
-
-
-
+This concludes our chapter on installing and configuring the Zabbix server with Mariadb.
 
 ## Installing the Zabbix server for PostgreSQL
 
@@ -1282,7 +1379,6 @@ SELinux, which can interfere with the installation and operation of Zabbix.
 We will revisit SELinux at the end of this chapter once our installation is finished.
 
 To check the current status of SELinux, you can use the following command: `sestatus``
-
 
 ```
 # sestatus
@@ -1297,9 +1393,9 @@ Policy deny_unknown status:     allowed
 Memory protection checking:     actual (secure)
 Max kernel policy version:      33
 ```
+
 As shown, the system is currently in enforcing mode. To temporarily disable SELinux,
 you can run the following command: `setenforce 0`
-
 
 ```
 # setenforce 0
@@ -1316,6 +1412,7 @@ Policy deny_unknown status:     allowed
 Memory protection checking:     actual (secure)
 Max kernel policy version:      33
 ```
+
 Now, as you can see, the mode is switched to permissive. However, this change
 is not persistent across reboots. To make it permanent, you need to modify the
 SELinux configuration file located at `/etc/selinux/config`. Open the file and
@@ -1325,9 +1422,11 @@ Alternatively, you can achieve the same result more easily by running the
 following command:
 
 RedHat
+
 ```
 # sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
 ```
+
 This line will alter the configuration file for you. So when we run `sestatus`
 again we will see that we are in `permissive` mode and that our configuration
 file is also in permissive mode.
@@ -1347,7 +1446,6 @@ Memory protection checking:     actual (secure)
 Max kernel policy version:      33
 ```
 
-
 ### Adding the Zabbix repository
 
 From the Zabbix Download page [https://www.zabbix.com/download](https://www.zabbix.com/download),
@@ -1366,6 +1464,7 @@ To do this, edit the `/etc/yum.repos.d/epel.repo` file and add the following sta
 to disable the EPEL repository by default:
 
 RedHat
+
 ```
 [epel]
 ...
@@ -1385,16 +1484,20 @@ old cache files and ensure the repository metadata is up to date. You can do thi
 by running:
 
 RedHat
+
 ```
 # rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
 # dnf clean all
 ```
+
 Ubuntu
+
 ```
 # sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
 # sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
 # sudo apt update
 ```
+
 This will refresh the repository metadata and prepare the system for Zabbix installation.
 
 ???+ note
@@ -1412,8 +1515,7 @@ This will refresh the repository metadata and prepare the system for Zabbix inst
     However, always exercise caution when adding new repositories to ensure
     system security and stability.
 
-### Configuring the Zabbix server for PostgreSQL.
-
+### Configuring the Zabbix server for PostgreSQL
 
 We are ready to install both the Zabbix server and the web server. Keep in mind that the
 web server doesn't need to be installed on the same machine as the Zabbix server;
@@ -1423,22 +1525,28 @@ To install the Zabbix server and the web server components for PostgreSQL,
 run the following command:
 
 RedHat
+
 ```
 # dnf install zabbix-server-pgsql -y
 ```
+
 Ubuntu
+
 ```
 # sudo apt install zabbix-server-pgsql
 ```
+
 After successfully installing the Zabbix server packages, we need to
 configure the Zabbix server to connect to the database. This requires modifying the
 Zabbix server configuration file. Open the `/etc/zabbix/zabbix_server.conf` file and
 update the following lines to match your database configuration:
 
 RedHat and Ubuntu
+
 ```
 #sudo vi /etc/zabbix/zabbix_server.conf
 ```
+
 ```
 DBHost=<database-host>
 DBName=<database-name>
@@ -1446,6 +1554,7 @@ DBSchema=<database-schema>
 DBUser=<database-user>
 DBPassword=<database-password>
 ```
+
 Replace `database-host`, `database-name`, `database-user`,`database-schema` and `database-password` with
 the appropriate values for your setup. This ensures that the Zabbix server can communicate
 with your database.
@@ -1465,12 +1574,13 @@ DBUser=zabbix-srv
 DBPassword=<your super secret password>
 DBPort=5432
 ```
+
 In this example:
 
-- DBHost refers to the host where your database is running (use localhost if it's on the same machine).
-- DBName is the name of the Zabbix database.
-- DBUser is the database user.
-- DBPassword is the password for the database user.
+* DBHost refers to the host where your database is running (use localhost if it's on the same machine).
+* DBName is the name of the Zabbix database.
+* DBUser is the database user.
+* DBPassword is the password for the database user.
 
 Make sure the settings reflect your environment's database configuration.
 
@@ -1484,9 +1594,11 @@ Make sure the settings reflect your environment's database configuration.
     or managing configurations with tools like Ansible, Puppet, or SaltStack.
 
 To enable this feature, remove the # from the line:
+
 ```bash
 # Include=/usr/local/etc/zabbix_server.conf.d/*.conf
 ```
+
 Ensure the path `/usr/local/etc/zabbix_server.conf.d/` exists and
 create a custom configuration file in this directory.
 This file should be readable by the `zabbix` user. By doing so, you can add
@@ -1498,10 +1610,13 @@ can now start and enable the Zabbix server service. Run the following command
 to enable the Zabbix server and ensure it starts automatically on boot:
 
 Redhat
+
 ```bash
 systemctl enable zabbix-server --now
 ```
+
 Ubuntu
+
 ```
 sudo systemctl enable zabbix-server --now
 ```
@@ -1514,6 +1629,7 @@ log file using:
 ```bash
 tail /var/log/zabbix/zabbix_server.log
 ```
+
 Look for messages indicating that the server has started successfully. If there
 are any issues, the log file will provide details to help with troubleshooting.
 
@@ -1545,6 +1661,7 @@ are any issues, the log file will provide details to help with troubleshooting.
 12082:20250225:145333.719 server #7 started [preprocessing manager #1]
 12083:20250225:145333.719 server #8 started [lld manager #1]
 ```
+
 If there was an error and the server was not able to connect to the database you
 would see something like this in the server log file :
 
@@ -1606,20 +1723,18 @@ Let's check the Zabbix server service to see if it's enabled so that it survives
 
 This concludes our chapter on installing and configuring the Zabbix server with PostgreSQL.
 
-
 ## Installing the frontend
 
 Before configuring the front-end, you need to install the necessary packages. If the
 Zabbix front-end is hosted on the same server as the Zabbix server, you can install
 the packages on the same server as is in our case. It's also perfectly possible to
-install the front-end on another server. In that case you only need to specify the 
+install the front-end on another server. In that case you only need to specify the
 correct IP addresses and open the correct firewall ports.
-
-
 
 ### Installing the frontend with NGINX
 
-RedHat 
+RedHat
+
 ```
 # dnf install zabbix-nginx-conf zabbix-web-mysql -y
 or if you used PostgreSQL
@@ -1627,6 +1742,7 @@ or if you used PostgreSQL
 ```
 
 Ubuntu
+
 ```
 # sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
 or if you use PostgreSQL
@@ -1637,17 +1753,19 @@ This command will install the front-end packages along with the required depende
 for Nginx. If you are installing the front-end on a different server, make sure to
 execute this command on that specific machine.
 
-
 If you don't remember how to add the repository, have a look at the topic [Adding the zabbix repository](#adding-the-zabbix-repository)
 
 First thing we have to do is alter the Nginx configuration file so that we don't
 use the standard config.
 
 RedHat
+
 ```
 # vi /etc/nginx/nginx.conf
 ```
+
 In this configuration file look for the following block that starts with :
+
 ```
    server {
         listen       80;
@@ -1658,6 +1776,7 @@ In this configuration file look for the following block that starts with :
         # Load configuration files for the default server block.
         include /etc/nginx/default.d/*.conf;
 ```
+
 Then, comment out the following server block within the configuration file:
 
 ```
@@ -1667,12 +1786,14 @@ Then, comment out the following server block within the configuration file:
 #        server_name  _;
 #        root         /usr/share/nginx/html;
 ```
+
 The Zabbix configuration file must now be modified to reflect the current environment.
 Open the following file for editing:
 
 ```
 vi /etc/nginx/conf.d/zabbix.conf
 ```
+
 And alter the following lines:
 
 ```
@@ -1684,6 +1805,7 @@ server {
 
         index   index.php;
 ```
+
 Replace the first 2 lines with the correct port and domain for your front-end in
 case you don't have a domain you can replace `servername` with `_;` like in the
 example below:
@@ -1699,20 +1821,24 @@ server {
 
         index   index.php;
 ```
+
 The web server and PHP-FPM service are now ready for activation and persistent
 startup. Execute the following commands to enable and start them immediately:
 
 Ubuntu
+
 ```bash
 # sudo vi /etc/zabbix/nginx.conf
 ```
 
 replace the Following lines:
+
 ```
 server {
 #        listen          8080;
 #        server_name     example.com;
 ```
+
 with :
 
 ```bash
@@ -1724,17 +1850,20 @@ server {
 
 where xxx.xxx.xxx.xxx is your IP or DNS name.
 
-
 RedHat
+
 ```
 systemctl enable php-fpm --now
 systemctl enable nginx --now
 ```
+
 Ubuntu
+
 ```
 sudo systemctl enable nginx php8.3-fpm
 sudo systemctl restart nginx php8.3-fpm
 ```
+
 Let's verify if the service is properly started and enabled so that it survives
 our reboot next time.
 
@@ -1768,30 +1897,37 @@ step involves adjusting the firewall to permit inbound HTTP traffic. Execute the
 following commands:
 
 RedHat
+
 ```
 firewall-cmd --add-service=http --permanent
 firewall-cmd --reload
 ```
 
 Ubuntu
+
 ```
 # sudo ufw allow 80/tcp
 ```
 
 Open your browser and go to the url or ip of your front-end :
+
 ```
 http://<ip or dns of the zabbix frontend server>/
 ```
 
 If all goes well you should be greeted with a Zabbix welcome page. In case you
 have an error check the configuration again or have a look at the nginx log file :
+
 ```
 /var/log/nginx/error.log
 ```
+
 or run the following command :
+
 ```
 journalctl -xe
 ```
+
 This should help you in locating the errors you made.
 
 Upon accessing the appropriate URL, a page resembling the one illustrated below
@@ -1807,15 +1943,19 @@ What if we want to install Chinese as language or another language from the list
 Run the next command to get a list of all locales available for your OS.
 
 RedHat
+
 ```
 dnf list glibc-langpack-*
 ```
+
 Ubuntu
+
 ```
 apt-cache search language-pack
 ```
 
 This will give you on Redhat based systems a list like:
+
 ```
 Installed Packages
 glibc-langpack-en.x86_64
@@ -1844,13 +1984,16 @@ Let's search for our Chinese locale to see if it is available. As you can see
 the code starts with zh.
 
 RedHat
+
 ```
 # dnf list glibc-langpack-* | grep zh
 
 glibc-langpack-zh.x86_64
 glibc-langpack-lzh.x86_64
 ```
+
 Ubuntu
+
 ```
 apt-cache search language-pack | grep -i zh
 ```
@@ -1859,11 +2002,13 @@ The command outputs two lines; however, given the identified language code,
 'zh_CN,' only the first package requires installation.
 
 RedHat
+
 ```
 # dnf install glibc-langpack-zh.x86_64 -y
 ```
 
 Ubuntu
+
 ```
 # sudo apt install language-pack-zh-hans
 # sudo systemctl restart nginx php8.3-fpm
@@ -1879,14 +2024,14 @@ after a reload of our browser.
     worry it simply means that the translation is either incomplete or not yet
     available. Zabbix is an open-source project that relies on community contributions
     for translations, so you can help improve it by contributing your own translations.
-    
+
     Visit the translation page at [https://translate.zabbix.com/](https://translate.zabbix.com/)
     to assist with the translation efforts. Once your translation is complete and reviewed,
     it will be included in the next minor patch version of Zabbix.
     Your contributions help make Zabbix more accessible and improve the overall
     user experience for everyone.
 
-When you're satisfied with the available translations, click `Next`. You will 
+When you're satisfied with the available translations, click `Next`. You will
 then be taken to a screen to verify that all prerequisites are satisfied. If any
 prerequisites are not fulfilled, address those issues first. However, if everything
 is in order, you should be able to proceed by clicking `Next`.
@@ -1943,7 +2088,6 @@ I recommend checking out the topic Securing Zabbix for additional guidance and b
     If you are not able to safe your configuration at the end make sure SeLinux
     is disabled. It is possible that it will block access to certain files or even the database.
 
-
 ## Conclusion
 
 With this, we conclude our journey through setting up Zabbix and configuring it
@@ -1967,10 +2111,9 @@ Now that your Zabbix environment is up and running, let’s take it to the next 
 3. What port does my DB use ?
 4. What Zabbix logs should I check for troubleshooting common issues?
 
-## Useful URLs 
+## Useful URLs
 
-- https://www.zabbix.com/download
-- https://www.zabbix.com/documentation/current/en/manual
-- https://www.zabbix.com/documentation/current/en/manual/installation/requirements
-- https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages
-
+* <https://www.zabbix.com/download>
+* <https://www.zabbix.com/documentation/current/en/manual>
+* <https://www.zabbix.com/documentation/current/en/manual/installation/requirements>
+* <https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages>
