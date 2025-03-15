@@ -160,6 +160,190 @@ You should see:
 Your Zabbix cluster should now be set up with high availability, ensuring continuous
 monitoring even if one of the servers fails.
 
-## Installing the frontends
+## Installing the frontend
 
-Todo
+Before proceeding with the installation and configuration of the web server, it
+is essential to install Keepalived. Keepalived enables the use of a Virtual IP
+(VIP) for frontend services, ensuring seamless failover and service continuity.
+It provides a robust framework for both load balancing and high availability,
+making it a critical component in maintaining a resilient infrastructure.
+
+### Setting up keepalived
+
+So let's get started. On both our servers we have to install keepalived.
+
+Redhat
+
+```bash
+# dnf install keepalived
+```
+
+Ubuntu
+
+```bash
+todo
+```
+
+Next, we need to modify the Keepalived configuration on both servers. While the
+configurations will be similar, each server requires slight adjustments. We will
+begin with Server 1. To edit the Keepalived configuration file, use the following
+command:
+
+Redhat
+
+```bash
+# vi /etc/keepalived/keepalived.conf
+```
+
+Ubuntu
+
+```bash
+todo
+```
+
+Delete all content in the file and replace it with the following lines:
+
+```bash
+vrrp_track_process track_nginx {
+    process nginx
+    weight 10
+}
+
+vrrp_instance VI_1 {
+    state MASTER
+    interface enp0s1
+    virtual_router_id 51
+    priority 244
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 12345
+    }
+    virtual_ipaddress {
+        192.168.0.135
+    }
+    track_process {
+         track_nginx
+      }
+}
+```
+
+???+ warning
+    Replace `enp0s1` with the interface name of your machine and replace the `password`
+    with something secure. For the virual_ipaddress use a free IP from your network.
+    This will be used as our VIP.
+
+We can now do the same modification on our `second` Zabbix server. Delete everything
+again in the same file like we did before and replace it with the following lines:
+
+```bash
+vrrp_track_process track_nginx {
+      process nginx
+      weight 10
+}
+
+vrrp_instance VI_1 {
+    state BACKUP
+    interface enp0s1
+    virtual_router_id 51
+    priority 243
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 12345
+    }
+    virtual_ipaddress {
+        192.168.0.135
+    }
+    track_process {
+         track_nginx
+      }
+}
+```
+
+Just as with our 1st Zabbix server, replace `enp0s1` with the interface name of
+your machine and replace the `password` with your password and fill in the
+virual_ipaddress as used before.
+
+This ends the configuration of keepalived. We can now continue adapting the frontend.
+
+### Install and configure the frontend
+
+On both servers we can run the following commands to install our web server and the
+zabbix frontend packages:
+
+RedHat
+
+```bash
+# dnf install nginx zabbix-web-pgsql zabbix-nginx-conf
+```
+
+Ubuntu
+
+```bash
+todo
+```
+
+Additionally, it is crucial to configure the firewall. Proper firewall rules ensure
+seamless communication between the servers and prevent unexpected failures.
+Before proceeding, verify that the necessary ports are open and apply the required
+firewall rules accordingly.
+
+RedHat
+
+```bash
+# firewall-cmd --add-service=http --permanent
+# firewall-cmd --add-service=zabbix-server --permanent
+# firewall-cmd --reload
+```
+
+Ubuntu
+
+```bash
+todo
+```
+
+With the configuration in place and the firewall properly configured, we can now
+start the Keepalived service. Additionally, we should enable it to ensure it
+automatically starts on reboot. Use the following commands to achieve this:
+
+RedHat
+
+```bash
+# systemctl enable keepalived nginx --now
+```
+
+Ubuntu
+
+```bash
+todo
+```
+
+### Configure Zabbix frontend
+
+todo
+
+## Conclusion
+
+In this chapter, we have successfully set up a high-availability (HA) Zabbix
+environment by configuring both the Zabbix server and frontend for redundancy.
+We first established HA for the Zabbix server, ensuring that monitoring services
+remain available even in the event of a failure. Next, we focused on the frontend,
+implementing a Virtual IP (VIP) with Keepalived to provide seamless failover and
+continuous accessibility.  
+
+Additionally, we configured the firewall to allow Keepalived traffic and ensured
+that the service starts automatically after a reboot. With this setup, the Zabbix
+frontend can dynamically switch between servers, minimizing downtime and improving
+reliability.  
+
+While database HA is an important consideration, it falls outside the scope of
+this setup. However, this foundation provides a robust starting point for building
+a resilient monitoring infrastructure that can be further enhanced as needed.
+
+## Questions
+
+## Useful URLs
+
+- <https://www.redhat.com/sysadmin/advanced-keepalived>
+- <https://keepalived.readthedocs.io/en/latest/introduction.html>

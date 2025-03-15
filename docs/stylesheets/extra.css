@@ -32,7 +32,19 @@ td {
 
 /* dark mode alternating table bg colors */
 [data-md-color-scheme="slate"] .md-typeset__table tr:nth-child(2n) {
-  background-color: hsla(var(--md-hue), 25%, 25%, 1)
+  background-color: hsla(var(--md-hue), 25%, 25%, 1) 
+}
+
+/* dark mode alternating table bg colors */
+[data-md-color-scheme="slate"] .md-typeset__table tr td:first-child {
+  background-color: hsla(var(--md-hue), 25%, 25%, 1) 
+}
+
+/* dark mode table header bg colors */
+[data-md-color-scheme="slate"] .md-typeset__table thead th {
+  text-align: left;
+  background-color: hsla(var(--md-hue), 50%, 50%, 2) ;
+  color: white
 }
 
 img[alt$=">"] {
