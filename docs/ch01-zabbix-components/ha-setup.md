@@ -319,9 +319,28 @@ Ubuntu
 todo
 ```
 
-### Configure Zabbix frontend
+### Configure the web server
 
-todo
+The setup process for the frontend follows the same steps outlined in the
+`Basic Installation` section under [Installing the Frontend](basic-installation.md/#installing-the-frontend). By adhering to these
+established procedures, we ensure consistency and reliability in the deployment.
+
+### Verify the correct working
+
+To verify that the setup is functioning correctly, access your `Zabbix server`
+using the Virtual IP (VIP). Navigate to Reports → System Information in the menu.
+At the bottom of the page, you should see a list of servers, with at least one
+marked as active. The number of servers displayed will depend on the total configured
+in your HA setup.
+
+![1st active frontend](ha-setup/ch01-HA-check1.png)
+
+Shut down or reboot the active frontend server and observe that the `Zabbix frontend`
+remains accessible. Upon reloading the page, you will notice that the other `frontend server`
+has taken over as the active instance, ensuring an almost seamless failover and
+high availability.
+
+![2st active frontend](ha-setup/ch01-HA-check2.png)
 
 ## Conclusion
 

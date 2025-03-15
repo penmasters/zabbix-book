@@ -36,6 +36,12 @@ For simplicity, take note of the server details:
     repositories.
     Always check if a binary uses a dash or an underscore when troubleshooting.
 
+???+ note
+    Starting from Zabbix 7.2, only MySQL (including its forks) and PostgreSQL are
+    supported as back-end databases. Earlier versions of Zabbix also included support
+    for Oracle Database; however, this support was discontinued with Zabbix 7.0 LTS,
+    making it the last LTS version to officially support Oracle DB.
+
 ---
 
 ## Basic OS Configuration
