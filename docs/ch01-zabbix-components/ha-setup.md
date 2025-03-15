@@ -160,6 +160,6 @@ You should see:
 Your Zabbix cluster should now be set up with high availability, ensuring continuous
 monitoring even if one of the servers fails.
 
-## Installing the frontends
+## Installing the frontend
 
 Todo
