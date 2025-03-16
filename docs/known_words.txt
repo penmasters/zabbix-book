@@ -65,3 +65,5 @@ readthedocs
 virual_ipaddress
 io
 ha
+fqdn
+server_name
