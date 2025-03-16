@@ -129,7 +129,7 @@ After configuring both servers, enable and start the zabbix-server service on ea
 ???+ note
     The `NodeAddress` must match the IP or FQDN name of the Zabbix server node.
     Without this parameter the Zabbix front-end is unable to connect to the active
-    nodde. The result will be that the frontend is unable to display the status
+    node. The result will be that the frontend is unable to display the status
     the queue and other information.
 
 ### Verifying the Configuration
@@ -335,7 +335,7 @@ established procedures, we ensure consistency and reliability in the deployment.
     Don't forget to configure both front-ends. Also this is a new setup. Keep in
     mind that with an existing setup we need to comment out the lines  `$ZBX_SERVER`
     and `$ZBX_SERVER_PORT`. Our frontend will check what node is active by reading
-    fhe node table in the database.
+    the node table in the database.
 
 ```SQL
 zabbix=# select * from ha_node;
