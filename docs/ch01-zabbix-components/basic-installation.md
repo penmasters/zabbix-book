@@ -640,7 +640,7 @@ RedHat
 Ubuntu
 
 ```bash
-# vi /etc/postgresql/17/main/postgresql.conf
+# sudo vi /etc/postgresql/17/main/postgresql.conf
 ```
 
 To configure PostgreSQL to listen on all network interfaces, you need to modify
@@ -841,34 +841,6 @@ First, we grant `USAGE` privileges on the schema to allow `zabbix-web` to connec
 zabbix=# GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
 ```
 
-However, `zabbix-web` still cannot perform any operations on the tables or sequences.
-To allow basic data interaction without giving too many privileges, grant the
-following permissions:
-
-* For tables: SELECT, INSERT, UPDATE, and DELETE.
-* For sequences: SELECT and UPDATE.
-
-```psql
-zabbix=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server TO "zabbix-web";
-```
-
-```psql
-zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
-```
-
-Verify if the rights are correct on the schema :
-
-```psql
-zabbix=> \dn+
-                                           List of schemas
-     Name      |       Owner       |           Access privileges            |      Description
----------------+-------------------+----------------------------------------+------------------------
- public        | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
-               |                   | =U/pg_database_owner                   |
- zabbix_server | zabbix-srv        | "zabbix-srv"=UC/"zabbix-srv"          +|
-               |                   | "zabbix-web"=U/"zabbix-srv"            |
-```
-
 ### Populate the Zabbix PostgreSQL DB
 
 Now, the `zabbix-web` user has appropriate access to interact with the schema
@@ -911,6 +883,34 @@ Once the script completes and you return to the `zabbix=#` prompt, the database
 should be successfully populated with all the required tables, schemas,
 images, and other elements needed for Zabbix.
 
+However, `zabbix-web` still cannot perform any operations on the tables or sequences.
+To allow basic data interaction without giving too many privileges, grant the
+following permissions:
+
+* For tables: SELECT, INSERT, UPDATE, and DELETE.
+* For sequences: SELECT and UPDATE.
+
+```psql
+zabbix=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server TO "zabbix-web";
+```
+
+```psql
+zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
+```
+
+Verify if the rights are correct on the schema :
+
+```psql
+zabbix=> \dn+
+                                           List of schemas
+     Name      |       Owner       |           Access privileges            |      Description
+---------------+-------------------+----------------------------------------+------------------------
+ public        | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
+               |                   | =U/pg_database_owner                   |
+ zabbix_server | zabbix-srv        | "zabbix-srv"=UC/"zabbix-srv"          +|
+               |                   | "zabbix-web"=U/"zabbix-srv"            |
+```
+
 ???+ note
     If you encounter the following error during the SQL import:
     `vbnet psql:/usr/share/zabbix/sql-scripts/postgresql/server.sql:7: ERROR: no
@@ -925,7 +925,7 @@ permissions, you can verify the table list and their ownership using the `psql` 
 
 * List the Tables: Use the following command to list all tables in the `zabbix_server` schema:
 
-```
+```sql
 sql zabbix=# \dt
 ```
 
@@ -960,6 +960,19 @@ the \dp command:
 
 ```sql
 sql zabbix=# \dp zabbix_server.*
+```
+
+```sql
+                                                     Access privileges
+    Schema     |            Name            |   Type   |         Access privileges          | Column privileges | Policies
+---------------+----------------------------+----------+------------------------------------+-------------------+----------
+ zabbix_server | acknowledges               | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+               |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+ zabbix_server | actions                    | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+               |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+ zabbix_server | alerts                     | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+               |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+ zabbix_server | auditlog                   | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
 ```
 
 This will display the access privileges for all tables in the `zabbix_server`
@@ -1843,12 +1856,16 @@ with :
 
 ```bash
 server {
-        listen          80;
-        server_name     xxx.xxx.xxx.xxx;
+        listen          xxx.xxx.xxx.xxx:80;
+        server_name     "";
 
 ```
 
 where xxx.xxx.xxx.xxx is your IP or DNS name.
+
+???+ note
+    server_name is normally replaced with the fqdn name of your machine. If you
+    have no fqdn you can keep it open like in this example.
 
 RedHat
 
