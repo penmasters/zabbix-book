@@ -60,9 +60,9 @@ Redhat
 Ubuntu
 
 ```bash
-# wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# apt update
+# sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+# sudo apt update
 ```
 
 Once this is done we can install the zabbix server packages.
@@ -78,9 +78,9 @@ or if your database is MariaDB
 Ubuntu
 
 ```bash
-# apt install zabbix-server-pgsql -y
+# sudo apt install zabbix-server-pgsql -y
 or if your databqse is MariaDB
-# apt install zabbix-server-mysql -y
+# sudo apt install zabbix-server-mysql -y
 ```
 
 ### Configuring Zabbix Server 1
@@ -88,7 +88,7 @@ or if your databqse is MariaDB
 Edit the Zabbix server configuration file,
 
 ```bash
-# vi /etc/zabbix/zabbix_server.conf
+# sudo vi /etc/zabbix/zabbix_server.conf
 ```
 
 Update the following lines to connect to the database:
@@ -123,7 +123,7 @@ and `NodeAddress` as necessary for this server.
 After configuring both servers, enable and start the zabbix-server service on each:
 
 ```bash
-# systemctl enable zabbix-server --now
+# sudo systemctl enable zabbix-server --now
 ```
 
 ???+ note
@@ -140,7 +140,7 @@ are operating in their respective HA modes.
 On the first server:
 
 ```bash
-# grep HA /var/log/zabbix/zabbix_server.log
+# sudo grep HA /var/log/zabbix/zabbix_server.log
 ```
 
 You should see:
@@ -181,13 +181,13 @@ So let's get started. On both our servers we have to install keepalived.
 Redhat
 
 ```bash
-# dnf install keepalived
+# dnf install keepalived -y
 ```
 
 Ubuntu
 
 ```bash
-todo
+# sudo apt install keepalived -y
 ```
 
 Next, we need to modify the Keepalived configuration on both servers. While the
@@ -195,16 +195,10 @@ configurations will be similar, each server requires slight adjustments. We will
 begin with Server 1. To edit the Keepalived configuration file, use the following
 command:
 
-Redhat
+Redhat and Ubuntu
 
 ```bash
-# vi /etc/keepalived/keepalived.conf
-```
-
-Ubuntu
-
-```bash
-todo
+# sudo vi /etc/keepalived/keepalived.conf
 ```
 
 Delete all content in the file and replace it with the following lines:
@@ -287,7 +281,7 @@ RedHat
 Ubuntu
 
 ```bash
-todo
+sudo apt install nginx zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
 ```
 
 Additionally, it is crucial to configure the firewall. Proper firewall rules ensure
@@ -306,23 +300,18 @@ RedHat
 Ubuntu
 
 ```bash
-todo
+sudo ufw allow 10051/tcp
+sudo ufw allow 80/tcp
 ```
 
 With the configuration in place and the firewall properly configured, we can now
 start the Keepalived service. Additionally, we should enable it to ensure it
 automatically starts on reboot. Use the following commands to achieve this:
 
-RedHat
+RedHat and Ubuntu
 
 ```bash
-# systemctl enable keepalived nginx --now
-```
-
-Ubuntu
-
-```bash
-todo
+# sudo systemctl enable keepalived nginx --now
 ```
 
 ### Configure the web server
@@ -330,6 +319,10 @@ todo
 The setup process for the frontend follows the same steps outlined in the
 `Basic Installation` section under [Installing the Frontend](basic-installation.md/#installing-the-frontend). By adhering to these
 established procedures, we ensure consistency and reliability in the deployment.
+
+???+ warning
+    Ubuntu users need to use the VIP in the setup of Nginx, together with the local
+    IP in the listen directive of the config.
 
 ???+ note
     Don't forget to configure both front-ends. Also this is a new setup. Keep in
