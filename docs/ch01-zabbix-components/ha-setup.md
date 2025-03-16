@@ -126,6 +126,12 @@ After configuring both servers, enable and start the zabbix-server service on ea
 # systemctl enable zabbix-server --now
 ```
 
+???+ note
+    The `NodeAddress` must match the IP or FQDN name of the Zabbix server node.
+    Without this parameter the Zabbix front-end is unable to connect to the active
+    nodde. The result will be that the frontend is unable to display the status
+    the queue and other information.
+
 ### Verifying the Configuration
 
 Check the log files on both servers to ensure they have started correctly and
@@ -325,6 +331,30 @@ The setup process for the frontend follows the same steps outlined in the
 `Basic Installation` section under [Installing the Frontend](basic-installation.md/#installing-the-frontend). By adhering to these
 established procedures, we ensure consistency and reliability in the deployment.
 
+???+ note
+    Don't forget to configure both front-ends. Also this is a new setup. Keep in
+    mind that with an existing setup we need to comment out the lines  `$ZBX_SERVER`
+    and `$ZBX_SERVER_PORT`. Our frontend will check what node is active by reading
+    fhe node table in the database.
+
+```SQL
+zabbix=# select * from ha_node;
+         ha_nodeid         |  name   |   address       | port  | lastaccess | status |       ha_sessionid
+---------------------------+---------+-----------------+-------+------------+--------+---------------------------
+ cm8agwr2b0001h6kzzsv19ng6 | zabbix1 | xxx.xxx.xxx.xxx | 10051 | 1742133911 |      0 | cm8apvb0c0000jkkzx1ojuhst
+ cm8agyv830001ell0m2nq5o6n | zabbix2 | localhost       | 10051 | 1742133911 |      3 | cm8ap7b8u0000jil0845p0w51
+(2 rows)
+```
+
+In this instance, the node `zabbix2` is identified as the active node, as indicated by its status value of `3`, which designates an active state. The possible status values are as follows:  
+
+- `0` – Multiple nodes can remain in standby mode.  
+- `1` – A previously detected node has been shut down.  
+- `2` – A node was previously detected but became unavailable without a proper shutdown.  
+- `3` – The node is currently active.  
+
+This classification allows for effective monitoring and state management within the cluster.
+
 ### Verify the correct working
 
 To verify that the setup is functioning correctly, access your `Zabbix server`
@@ -341,6 +371,39 @@ has taken over as the active instance, ensuring an almost seamless failover and
 high availability.
 
 ![2st active frontend](ha-setup/ch01-HA-check2.png)
+
+In addition to monitoring the status of HA nodes, Zabbix provides several runtime
+commands that allow administrators to manage failover settings and remove inactive
+nodes dynamically.
+
+One such command is:
+
+```bash
+zabbix_server -R ha_set_failover_delay=10m
+```
+
+This command adjusts the failover delay, which defines how long Zabbix waits before
+promoting a standby node to active status. The delay can be set within a range of
+**10 seconds** to **15 minutes**.
+
+To remove a node that is either **stopped** or **unreachable**, the following
+runtime command must be used:
+
+```bash
+zabbix_server -R ha_remove_node=`zabbix1`
+```
+
+Executing this command removes the node from the HA cluster. Upon successful
+removal, the output confirms the action:
+
+```bash
+Removed node "zabbix1" with ID "cm8agwr2b0001h6kzzsv19ng6"
+```
+
+If the removed node becomes available again, it can be added back automatically
+when it reconnects to the cluster. These runtime commands provide flexibility for
+managing high availability in Zabbix without requiring a full restart of the
+`zabbix_server` process.
 
 ## Conclusion
 
@@ -362,7 +425,13 @@ a resilient monitoring infrastructure that can be further enhanced as needed.
 
 ## Questions
 
+1. What is Zabbix High Availability (HA), and why is it important?
+2. How does Zabbix determine which node is active in an HA setup?
+3. Can multiple Zabbix nodes be active simultaneously in an HA cluster? Why or why not?
+4. What configuration file(s) are required to enable HA in Zabbix?
+
 ## Useful URLs
 
 - <https://www.redhat.com/sysadmin/advanced-keepalived>
 - <https://keepalived.readthedocs.io/en/latest/introduction.html>
+- <https://www.zabbix.com/documentation/7.2/en/manual/concepts/server/ha>
