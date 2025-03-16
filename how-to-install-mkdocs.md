@@ -22,20 +22,25 @@ pip install --upgrade pip
 ```
 
 ## Install MkDocs and extensions
-```
+
+```bash
 pip install mkdocs
 pip install mkdocs-material
 pip install mkdocs-print-site-plugin
 pip install mkdocs-static-i18n
 pip install 'mkdocs-spellcheck[all]'
+pip install mkdocs-autolinks-plugin
 ```
+
 ## Install extra pip packages
 
 ```
 pip install idna
 ```
+
 ```
 ```
+
 ## Build your site local and test it
 
 ```
