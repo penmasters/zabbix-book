@@ -104,13 +104,12 @@ If the service is not recognized, you can manually specify the port:
 # firewall-cmd --add-port=10051/tcp --permanent
 ```
 
-/// note | firewalld
-"Firewalld is the replacement for iptables in RHEL-based systems and allows
-changes to take effect immediately without needing to restart the service.
-If your distribution does not use [Firewalld](https://www.firewalld.org),
-refer to your OS documentation for the appropriate firewall configuration steps."
-Ubuntu makes use of UFW and is merely a frontend for iptables.
-///
+???+ note | firewalld
+    "Firewalld is the replacement for iptables in RHEL-based systems and allows
+    changes to take effect immediately without needing to restart the service.
+    If your distribution does not use [Firewalld](https://www.firewalld.org),
+    refer to your OS documentation for the appropriate firewall configuration steps."
+    Ubuntu makes use of UFW and is merely a frontend for iptables.
 
 Another option is to add individual firewall zones for example
 

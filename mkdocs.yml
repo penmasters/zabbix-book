@@ -213,10 +213,13 @@ plugins:
 
 # extensions
 markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.blocks.caption
   - tables
   - attr_list
   - md_in_html
-  - pymdownx.blocks.caption
   - def_list
   - pymdownx.tasklist:
       custom_checkbox: true
