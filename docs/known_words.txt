@@ -67,3 +67,17 @@ io
 ha
 fqdn
 server_name
+php
+idp
+saml
+web_interface
+crt
+your_idp_id
+your_request
+your_zabbix_server
+idpid
+hostname
+frontend_sections
+gmail
+offboarding
+backend
