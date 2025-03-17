@@ -71,6 +71,7 @@ theme:
   icon:
     logo: material/library
   features:
+    - content.code.select
 #    - navigation.tabs #add navigation to the top
     - navigation.expand
     - navigation.prune
@@ -213,6 +214,13 @@ plugins:
 
 # extensions
 markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
   - admonition
   - pymdownx.details
   - pymdownx.superfences
@@ -223,4 +231,3 @@ markdown_extensions:
   - def_list
   - pymdownx.tasklist:
       custom_checkbox: true
-

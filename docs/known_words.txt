@@ -81,3 +81,6 @@ frontend_sections
 gmail
 offboarding
 backend
+dmz
+nm
+chronyd

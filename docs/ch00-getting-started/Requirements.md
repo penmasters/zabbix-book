@@ -67,95 +67,94 @@ The first step is to ensure that the firewall is installed and configured.
 
 To install and enable the firewall, run the following command:
 
-RedHat
-
-```bash
-# dnf install firewalld
-# systemctl enable firewalld --now
-```
-
-Ubuntu
-
-```bash
-# sudo apt install ufw -y
-# sudo ufw enable
-```
+!!! info "Install and enable the firewall"
+    RedHat
+    ``` {bash}
+    # dnf install firewalld
+    # systemctl enable firewalld --now
+    ```
+    Ubuntu
+    ``` {bash}
+    # sudo apt install ufw -y
+    # sudo ufw enable
+    ```
 
 Once installed, you can configure the necessary ports.
 For Zabbix, we need to allow access to port `10051/tcp`, which is where the
 Zabbix trapper listens for incoming data. Use the following command to open
 this port in the firewall:
 
-RedHat
-
-```bash
-# firewall-cmd --add-service=zabbix-server --permanent
-```
-
-Ubuntu
-
-```
-# sudo ufw allow 10051/tcp
-```
+!!! info "Allow Zabbix trapper access"
+    RedHat
+    ``` bash
+    firewall-cmd --add-service=zabbix-server --permanent
+    ```
+    Ubuntu
+    ```
+    sudo ufw allow 10051/tcp
+    ```
 
 If the service is not recognized, you can manually specify the port:
 
-```bash
-# firewall-cmd --add-port=10051/tcp --permanent
-```
+!!! info "Add port instead of the service name"
+    ``` bash
+    firewall-cmd --add-port=10051/tcp --permanent
+    ```
 
-???+ note | firewalld
+???+ note
     "Firewalld is the replacement for iptables in RHEL-based systems and allows
     changes to take effect immediately without needing to restart the service.
     If your distribution does not use [Firewalld](https://www.firewalld.org),
     refer to your OS documentation for the appropriate firewall configuration steps."
     Ubuntu makes use of UFW and is merely a frontend for iptables.
 
-Another option is to add individual firewall zones for example
+An alternative approach is to define dedicated firewall zones for specific use cases. For example...
 
-```bash
-# firewall-cmd --new-zone=postgresql-access --permanent
-```
+!!! info "Create a firewalld zone"
+    ``` bash
+    firewall-cmd --new-zone=postgresql-access --permanent
+    ```
+You can confirm the creation of the zone by executing the following command:
 
-You can verify if the zone was created by running :
-
-```bash
-# firewall-cmd --get-zones
+!!! info "Verify the zone creation"
+    ``` bash
+    firewall-cmd --get-zones
+    ```
     block dmz drop external home internal nm-shared postgresql-access public
     trusted work
-```
 
 Using zones in firewalld to configure firewall rules for PostgreSQL provides several
 advantages in terms of security, flexibility, and ease of management.
 Here’s why zones are beneficial:
 
-- Granular Access Control
-  - firewalld zones allow different levels of trust for different network interfaces
-    and IP ranges. You can define which systems are allowed to connect to PostgreSQL
-    based on their trust level.
-- Simplified Rule management
-  - Instead of manually defining complex iptables rules, zones provide an organized
-    way to group and manage firewall rules based on usage scenarios.
-- Enhanced security
-  - By restricting PostgreSQL access to a specific zone, you prevent unauthorized
-    connections from other interfaces or networks.
-- Dynamic configuration
-  - firewalld supports runtime and permanent rule configurations, allowing changes
-    without disrupting existing connections.
-- Multi-Interface support
-  - If the server has multiple network interfaces, zones allow different security
-    policies for each interface.
+- **Granular Access Control :**
+    - firewalld zones allow different levels of trust for different network interfaces
+      and IP ranges. You can define which systems are allowed to connect to PostgreSQL
+      based on their trust level.
+- **Simplified Rule management:**
+    - Instead of manually defining complex iptables rules, zones provide an organized
+      way to group and manage firewall rules based on usage scenarios.
+- **Enhanced security:**
+    - By restricting PostgreSQL access to a specific zone, you prevent unauthorized
+      connections from other interfaces or networks.
+- **Dynamic configuration:**
+    - firewalld supports runtime and permanent rule configurations, allowing changes
+      without disrupting existing connections.
+- **Multi-Interface support:**
+    - If the server has multiple network interfaces, zones allow different security
+      policies for each interface.
 
 Bringing everything together it would look like this:
 
-```bash
-firewall-cmd --new-zone=db_zone --permanent
-firewall-cmd --zone=db_zone --add-service=postgresql --permanent
-firewall-cmd --zone=db_zone --add-source=xxx.xxx.xxx.xxx/32 --permanent
-firewall-cmd --reload
-```
+!!! info "Firewalld with zone config"
+    ``` bash
+    firewall-cmd --new-zone=db_zone --permanent
+    firewall-cmd --zone=db_zone --add-service=postgresql --permanent
+    firewall-cmd --zone=db_zone --add-source=xxx.xxx.xxx.xxx/32 --permanent
+    firewall-cmd --reload
+    ```
 
-Where our `source IP` is the only IP that is allowed to connect to our DB.
+Where the `source IP` is the only address permitted to establish a connection to the database.
 
 ---
 
@@ -171,76 +170,78 @@ than it actually did.
 
 To install and enable chrony, our NTP client, use the following command:
 
-RedHat
+!!! info "Install NTP client"
+    RedHat
+    ``` bash
+    dnf install chrony
+    systemctl enable chronyd --now
+    ```
+    Ubuntu
+    ```
+    sudo apt install chrony -y
+    ```
 
-```bash
-# dnf install chrony
-# systemctl enable chronyd --now
-```
+After installation, verify that Chrony is enabled and running by checking it's
+status with the following command:
 
-Ubuntu
+!!! info "Check status chronyd"
+    ``` bash
+    systemctl status chronyd
+    ```
 
-```
-# sudo apt install chrony -y
-```
+???+ note "what is apt or dnf"
+    "dnf is a package manager used in Red Hat-based systems. If you're using another
+     distribution, replace `dnf` with your appropriate package manager, such as `zyper`,
+    `apt`, or `yum`. Chrony is a modern replacement for `ntpd`, offering faster and
+    more accurate time synchronization.
+    If your OS does not support [Chrony](https://chrony-project.org/), consider using
+    `ntpd` instead."
 
-Once installed, you can verify that Chrony is enabled and running by checking
-its status:
+Once Chrony is installed, the next step is to ensure the correct time zone is set.
+You can view your current time configuration using the `timedatectl` command:
 
-RedHat
-
-```bash
-# systemctl status chronyd
-```
-
-/// note | dnf
-"dnf is a package manager used in Red Hat-based systems. If you're using another
-distribution, replace `dnf` with your appropriate package manager, such as `zyper`,
-`apt`, or `yum`. Chrony is a modern replacement for `ntpd`, offering faster and
-more accurate time synchronization.
-If your OS does not support [Chrony](https://chrony-project.org/), consider using
-`ntpd` instead."
-///
-
-Once Chrony is installed, the next step is to ensure the correct time zone is set. You can view your current time configuration using the `timedatectl` command:
-
-```bash
-# timedatectl
-               Local time: Thu 2023-11-16 15:09:14 UTC
-           Universal time: Thu 2023-11-16 15:09:14 UTC
-                 RTC time: Thu 2023-11-16 15:09:15
-                Time zone: UTC (UTC, +0000)
-System clock synchronized: yes
-              NTP service: active
-          RTC in local TZ: no
-```
+!!! info "check the time config"
+    ``` bash
+    timedatectl
+    ```
+    ``` bash
+    Local time: Thu 2023-11-16 15:09:14 UTC
+    Universal time: Thu 2023-11-16 15:09:14 UTC
+    RTC time: Thu 2023-11-16 15:09:15
+    Time zone: UTC (UTC, +0000)
+    System clock synchronized: yes
+    NTP service: active
+    RTC in local TZ: no
+    ```
 
 Ensure that the Chrony service is active (refer to the previous steps if needed).
 To set the correct time zone, first, you can list all available time zones with
 the following command:
 
-```bash
-# timedatectl list-timezones
-```
+!!! info "list the timezones"
+    ``` bash
+    timedatectl list-timezones
+    ```
+This command will display a list of available time zones, allowing you to select
+the one closest to your location. For example:
 
-This will display a list of time zones, from which you can select the one closest
-to your location, for example:
-
-```bash
-Africa/Abidjan
-Africa/Accra
-...
-Pacific/Tongatapu
-Pacific/Wake
-Pacific/Wallis
-UTC
-```
+!!! info "List of all the timezones available"
+    ``` bash
+    Africa/Abidjan
+    Africa/Accra
+    ...
+    Pacific/Tongatapu
+    Pacific/Wake
+    Pacific/Wallis
+    UTC
+    ```
 
 Once you've identified your time zone, configure it using the following command:
 
-```bash
-# timedatectl set-timezone Europe/Brussels
-```
+!!! info "Set the timezone"
+    ``` bash
+    timedatectl set-timezone Europe/Brussels
+    ```
 
 To verify that the time zone has been configured correctly, use the `timedatectl`
 command again:
