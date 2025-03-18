@@ -183,23 +183,23 @@ upon boot and start it immediately. Use the following command to accomplish this
 
 !!! info "Enable mariadb service"
     RedHat
-   ``` yaml
-   systemctl enable mariadb --now
-   ```
+    ``` yaml
+    systemctl enable mariadb --now
+    ```
 
 This command will both enable and start the MariaDB service. Once the service is
 running, you can verify that the installation was successful by checking the
 version of MariaDB using the following command:
 
-RedHat and Ubuntu
-
-```bash
-# sudo mariadb -V
-```
+!!! info "Check Mariadb version"
+    RedHat and Ubuntu
+    ```bash
+    sudo mariadb -V
+    ```
 
 The expected output should resemble this:
-
-```
+!!! info ""
+``` yaml
 mariadb from 11.4.5-MariaDB, client 15.2 for Linux (aarch64) using  EditLine wrapper
 ```
 
