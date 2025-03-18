@@ -69,14 +69,14 @@ To install and enable the firewall, run the following command:
 
 !!! info "Install and enable the firewall"
     RedHat
-    ``` {bash}
-    # dnf install firewalld
-    # systemctl enable firewalld --now
+    ``` yaml
+    dnf install firewalld
+    systemctl enable firewalld --now
     ```
     Ubuntu
-    ``` {bash}
-    # sudo apt install ufw -y
-    # sudo ufw enable
+    ``` yaml
+    sudo apt install ufw -y
+    sudo ufw enable
     ```
 
 Once installed, you can configure the necessary ports.
@@ -86,18 +86,18 @@ this port in the firewall:
 
 !!! info "Allow Zabbix trapper access"
     RedHat
-    ``` bash
+    ``` yaml
     firewall-cmd --add-service=zabbix-server --permanent
     ```
     Ubuntu
-    ```
+    ``` yaml
     sudo ufw allow 10051/tcp
     ```
 
 If the service is not recognized, you can manually specify the port:
 
 !!! info "Add port instead of the service name"
-    ``` bash
+    ``` yaml
     firewall-cmd --add-port=10051/tcp --permanent
     ```
 
@@ -111,13 +111,13 @@ If the service is not recognized, you can manually specify the port:
 An alternative approach is to define dedicated firewall zones for specific use cases. For example...
 
 !!! info "Create a firewalld zone"
-    ``` bash
+    ``` yaml
     firewall-cmd --new-zone=postgresql-access --permanent
     ```
 You can confirm the creation of the zone by executing the following command:
 
 !!! info "Verify the zone creation"
-    ``` bash
+    ``` yaml
     firewall-cmd --get-zones
     ```
     block dmz drop external home internal nm-shared postgresql-access public
@@ -147,7 +147,7 @@ Here’s why zones are beneficial:
 Bringing everything together it would look like this:
 
 !!! info "Firewalld with zone config"
-    ``` bash
+    ``` yaml
     firewall-cmd --new-zone=db_zone --permanent
     firewall-cmd --zone=db_zone --add-service=postgresql --permanent
     firewall-cmd --zone=db_zone --add-source=xxx.xxx.xxx.xxx/32 --permanent
@@ -172,12 +172,12 @@ To install and enable chrony, our NTP client, use the following command:
 
 !!! info "Install NTP client"
     RedHat
-    ``` bash
+    ``` yaml
     dnf install chrony
     systemctl enable chronyd --now
     ```
     Ubuntu
-    ```
+    ``` yaml
     sudo apt install chrony -y
     ```
 
@@ -185,7 +185,7 @@ After installation, verify that Chrony is enabled and running by checking it's
 status with the following command:
 
 !!! info "Check status chronyd"
-    ``` bash
+    ``` yaml
     systemctl status chronyd
     ```
 
@@ -201,10 +201,11 @@ Once Chrony is installed, the next step is to ensure the correct time zone is se
 You can view your current time configuration using the `timedatectl` command:
 
 !!! info "check the time config"
-    ``` bash
+    ```
     timedatectl
     ```
-    ``` bash
+
+    ``` yaml
     Local time: Thu 2023-11-16 15:09:14 UTC
     Universal time: Thu 2023-11-16 15:09:14 UTC
     RTC time: Thu 2023-11-16 15:09:15
@@ -219,14 +220,14 @@ To set the correct time zone, first, you can list all available time zones with
 the following command:
 
 !!! info "list the timezones"
-    ``` bash
+    ``` yaml
     timedatectl list-timezones
     ```
 This command will display a list of available time zones, allowing you to select
 the one closest to your location. For example:
 
 !!! info "List of all the timezones available"
-    ``` bash
+    ``` yaml
     Africa/Abidjan
     Africa/Accra
     ...
@@ -239,23 +240,27 @@ the one closest to your location. For example:
 Once you've identified your time zone, configure it using the following command:
 
 !!! info "Set the timezone"
-    ``` bash
+    ``` yaml
     timedatectl set-timezone Europe/Brussels
     ```
 
 To verify that the time zone has been configured correctly, use the `timedatectl`
 command again:
 
-```bash
-# timedatectl
-               Local time: Thu 2023-11-16 16:13:35 CET
-           Universal time: Thu 2023-11-16 15:13:35 UTC
-                 RTC time: Thu 2023-11-16 15:13:36
-                Time zone: Europe/Brussels (CET, +0100)
-System clock synchronized: yes
-              NTP service: active
-          RTC in local TZ: no
-```
+!!! info "Check the time and zone"
+    ``` yaml
+    timedatectl
+    ```
+
+    ``` yaml
+    Local time: Thu 2023-11-16 16:13:35 CET
+    Universal time: Thu 2023-11-16 15:13:35 UTC
+    RTC time: Thu 2023-11-16 15:13:36
+    **Time zone: Europe/Brussels (CET, +0100)**
+    System clock synchronized: yes
+    NTP service: active
+    RTC in local TZ: no
+    ```
 
 ???+ note
     Some administrators prefer installing all servers in the UTC time zone to
@@ -271,43 +276,47 @@ System clock synchronized: yes
 To ensure that Chrony is synchronizing with the correct time servers, you can
 run the following command:
 
-```bash
-# chronyc
-```
+!!! info "Verify chrony"
+    ``` yaml
+    chronyc
+    ```
 
 The output should resemble:
 
-```bash
-chrony version 4.2
-Copyright (C) 1997-2003, 2007, 2009-2021 Richard P. Curnow and others
-chrony comes with ABSOLUTELY NO WARRANTY.  This is free software, and
-you are welcome to redistribute it under certain conditions.  See the
-GNU General Public License version 2 for details.
-
-chronyc>
-```
+!!! info "Verify your chrony output"
+    ``` yaml
+    chrony version 4.2
+    Copyright (C) 1997-2003, 2007, 2009-2021 Richard P. Curnow and others
+    chrony comes with ABSOLUTELY NO WARRANTY.  This is free software, and
+    you are welcome to redistribute it under certain conditions.  See the
+    GNU General Public License version 2 for details.
+    
+    chronyc>
+    ```
 
 Once inside the Chrony prompt, type the following to check the sources:
 
-```bash
-chronyc> sources
-```
+!!! info ""
+    ``` yaml
+    chronyc> sources
+    ```
 
 Example output:
 
-```bash
-MS Name/IP address         Stratum Poll Reach LastRx Last sample
-===============================================================================
-^- 51-15-20-83.rev.poneytel>     2   9   377   354   +429us[ +429us] +/-  342ms
-^- 5.255.99.180                  2  10   377   620  +7424us[+7424us] +/-   37ms
-^- hachi.paina.net               2  10   377   412   +445us[ +445us] +/-   39ms
-^* leontp1.office.panq.nl        1  10   377   904  +6806ns[ +171us] +/- 2336us
-```
+!!! info "Check your time server sources"
+    ```bash
+    MS Name/IP address         Stratum Poll Reach LastRx Last sample
+    ===============================================================================
+    ^- 51-15-20-83.rev.poneytel>     2   9   377   354   +429us[ +429us] +/-  342ms
+    ^- 5.255.99.180                  2  10   377   620  +7424us[+7424us] +/-   37ms
+    ^- hachi.paina.net               2  10   377   412   +445us[ +445us] +/-   39ms
+    ^* leontp1.office.panq.nl        1  10   377   904  +6806ns[ +171us] +/- 2336us
+    ```
 
 In this example, the NTP servers in use are located outside your local region.
 It is recommended to switch to time servers in your country or, if available,
-to a dedicated company time server. You can find local NTP servers
-[here](https://www.ntppool.org/).
+to a dedicated company time server. You can find local NTP servers here: 
+[www.ntppool.org](https://www.ntppool.org/).
 
 ---
 
@@ -318,43 +327,47 @@ NTP server with one closer to your location.
 
 Example of the current configuration:
 
-```bash
-# Use public servers from the pool.ntp.org project.
-# Please consider joining the pool (http://www.pool.ntp.org/join.html).
-pool 2.centos.pool.ntp.org iburst
-```
-
-Change the pools you want to a local time server:
-
-```bash
-# Use public servers from the pool.ntp.org project.
-# Please consider joining the pool (http://www.pool.ntp.org/join.html).
-pool be.pool.ntp.org iburst
-```
+!!! info "example ntp pool config"
+    ``` yaml
+    # Use public servers from the pool.ntp.org project.
+    # Please consider joining the pool (http://www.pool.ntp.org/join.html).
+    pool 2.centos.pool.ntp.org iburst
+    ```
+    
+    Change the pools you want to a local time server:
+    
+    ``` yaml
+    # Use public servers from the pool.ntp.org project.
+    # Please consider joining the pool (http://www.pool.ntp.org/join.html).
+    pool be.pool.ntp.org iburst
+    ```
 
 After making this change, restart the Chrony service to apply the new configuration:
 
-```bash
-# systemctl restart chronyd
-```
+!!! info "restart the chrony service"
+    ``` yaml
+    systemctl restart chronyd
+    ```
 
 ### Verifying Updated Time Servers
 
 Check the time sources again to ensure that the new local servers are in use:
 
-```bash
-chronyc> sources
-```
+!!! info "Check chrony sources"
+    ``` yaml
+    chronyc> sources
+    ```
 
 Example of expected output with local servers:
 
-```bash
-MS Name/IP address         Stratum Poll Reach LastRx Last sample
-===============================================================================
-^- ntp1.unix-solutions.be        2   6    17    43   -375us[ -676us] +/-   28ms
-^* ntp.devrandom.be              2   6    17    43   -579us[ -880us] +/- 2877us
-^+ time.cloudflare.com           3   6    17    43   +328us[  +27us] +/- 2620us
-^+ time.cloudflare.com           3   6    17    43
-```
+!!! info "Example output"
+    ``` yaml
+    MS Name/IP address         Stratum Poll Reach LastRx Last sample
+    ===============================================================================
+    ^- ntp1.unix-solutions.be        2   6    17    43   -375us[ -676us] +/-   28ms
+    ^* ntp.devrandom.be              2   6    17    43   -579us[ -880us] +/- 2877us
+    ^+ time.cloudflare.com           3   6    17    43   +328us[  +27us] +/- 2620us
+    ^+ time.cloudflare.com           3   6    17    43
+    ```
 
 This confirms that the system is now using local time servers.

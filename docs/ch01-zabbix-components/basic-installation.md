@@ -72,21 +72,21 @@ For Ubuntu we need to import the repository keys and create a file for example
 
 To create the MariaDB repository file, execute the following command in your terminal:
 
-RedHat
+!!! info "create mariadb repository"
 
-```bash
-# vi /etc/yum.repos.d/mariadb.repo
-```
+    RedHat
+    ``` yaml
+    vi /etc/yum.repos.d/mariadb.repo
+    ```
 
-Ubuntu
-
-```
-# sudo apt-get install apt-transport-https curl
-# sudo mkdir -p /etc/apt/keyrings
-# sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
-
-# sudo vi /etc/apt/sources.list.d/mariadb.sources
-```
+    Ubuntu
+    ``` yaml
+    # sudo apt-get install apt-transport-https curl
+    # sudo mkdir -p /etc/apt/keyrings
+    # sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+    
+    # sudo vi /etc/apt/sources.list.d/mariadb.sources
+    ```
 
 This will open a text editor where you can input the repository configuration details.
 Once the repository is configured, you can proceed with the installation of MariaDB
@@ -100,35 +100,34 @@ The latest config can be found here:
 
 Here's the configuration you need to add into the file:
 
-RedHat
+!!! info "Mariadb repository"
+    RedHat
+    ``` yaml
+    # MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-02-21 10:15 UTC
+    # https://mariadb.org/download/
+    [mariadb]
+    name = MariaDB
+    # rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+    # baseurl = https://rpm.mariadb.org/11.4/rhel/$releasever/$basearch
+    baseurl = https://mirror.bouwhuis.network/mariadb/yum/11.4/rhel/$releasever/$basearch
+    # gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+    gpgkey = https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
+    gpgcheck = 1
+    ```
+    Ubuntu
 
-```bash
-# MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-02-21 10:15 UTC
-# https://mariadb.org/download/
-[mariadb]
-name = MariaDB
-# rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-# baseurl = https://rpm.mariadb.org/11.4/rhel/$releasever/$basearch
-baseurl = https://mirror.bouwhuis.network/mariadb/yum/11.4/rhel/$releasever/$basearch
-# gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
-gpgkey = https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
-gpgcheck = 1
-```
-
-Ubuntu
-
-```bash
-# MariaDB 11.4 repository list - created 2025-02-21 11:42 UTC
-# https://mariadb.org/download/
-X-Repolib-Name: MariaDB
-Types: deb
-# deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-# URIs: https://deb.mariadb.org/11.4/ubuntu
-URIs: https://mirror.bouwhuis.network/mariadb/repo/11.4/ubuntu
-Suites: noble
-Components: main main/debug
-Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
-```
+    ``` yaml
+    # MariaDB 11.4 repository list - created 2025-02-21 11:42 UTC
+    # https://mariadb.org/download/
+    X-Repolib-Name: MariaDB
+    Types: deb
+    # deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+    # URIs: https://deb.mariadb.org/11.4/ubuntu
+    URIs: https://mirror.bouwhuis.network/mariadb/repo/11.4/ubuntu
+    Suites: noble
+    Components: main main/debug
+    Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+    ```
 
 After saving the file, ensure that everything is properly set up and that your
 MariaDB version is compatible with your Zabbix version to avoid potential
@@ -141,17 +140,16 @@ about to install.
 
 To update your OS, run the following command:
 
-RedHat
+!!! info "Update OS"
+    RedHat
+    ``` yaml
+    dnf update -y
+    ```
 
-```bash
-# dnf update -y
-```
-
-Ubuntu
-
-```
-# sudo apt update -y && sudo apt upgrade -y
-```
+    Ubuntu
+    ``` yaml
+    sudo apt update -y && sudo apt upgrade -y
+    ```
 
 This command will automatically fetch and install the latest updates available for
 your system, applying security patches, performance improvements, and bug fixes.
@@ -165,17 +163,16 @@ necessary components to run and manage your database.
 
 To install the MariaDB server and client, execute the following command:
 
-RedHat
-
-```bash
-# dnf install MariaDB-server
-```
-
-Ubuntu
-
-```bash
-# sudo apt-get install mariadb-server
-```
+!!! info "Install Mariadb"
+    RedHat
+    ``` yaml
+    dnf install MariaDB-server
+    ```
+    Ubuntu
+    
+    ``` yaml
+    sudo apt-get install mariadb-server
+    ```
 
 This command will download and install both the server and client packages, enabling
 you to set up, configure, and interact with your MariaDB database. Once the
@@ -184,25 +181,25 @@ installation is complete, you can proceed to start and configure the MariaDB ser
 Now that MariaDB is installed, we need to enable the service to start automatically
 upon boot and start it immediately. Use the following command to accomplish this:
 
-RedHat
-
-```bash
-# systemctl enable mariadb --now
-```
+!!! info "Enable mariadb service"
+    RedHat
+    ``` yaml
+    systemctl enable mariadb --now
+    ```
 
 This command will both enable and start the MariaDB service. Once the service is
 running, you can verify that the installation was successful by checking the
 version of MariaDB using the following command:
 
-RedHat and Ubuntu
-
-```bash
-# sudo mariadb -V
-```
+!!! info "Check Mariadb version"
+    RedHat and Ubuntu
+    ```bash
+    sudo mariadb -V
+    ```
 
 The expected output should resemble this:
-
-```
+!!! info ""
+``` yaml
 mariadb from 11.4.5-MariaDB, client 15.2 for Linux (aarch64) using  EditLine wrapper
 ```
 
