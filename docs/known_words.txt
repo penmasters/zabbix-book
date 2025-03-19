@@ -89,3 +89,12 @@ ntp
 log_bin_trust
 ddl
 selinux
+yaml
+sudo
+postgresqldpkg
+wget
+epelrepo
+pgsql
+dpkg
+
+
