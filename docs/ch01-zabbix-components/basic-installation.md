@@ -724,8 +724,8 @@ First, switch to the `postgres` user and create the Zabbix server database user:
 
 !!! info "create server users"
     ``` sql
-    # sudo su - postgres
-    # createuser --pwprompt zabbix-srv
+    sudo su - postgres
+    createuser --pwprompt zabbix-srv
     Enter password for new role: <server-password>
     Enter it again: <server-password>
     ```
@@ -734,7 +734,7 @@ Next, create the Zabbix frontend user, which will be used to connect to the data
 
 !!! info "Create front-end user"
     ``` sql
-    # createuser --pwprompt zabbix-web
+    createuser --pwprompt zabbix-web
     Enter password for new role: <frontend-password>
     Enter it again: <frontend-password>
     ```
@@ -766,40 +766,43 @@ Now that the users are created, the next step is to create the Zabbix database.
 First, switch to the `postgres` user and execute the following command to create
 the database with the owner set to zabbix-srv:
 
-RedHat
-
-```bash
-# su - postgres
-# createdb -E Unicode -O zabbix-srv zabbix
-# exit
-```
-
-Ubuntu
-
-```bash
-# sudo su - postgres
-# createdb -E Unicode -O zabbix-srv zabbix
-# exit
-```
+!!! info "Create DB"
+    RedHat
+    
+    ``` yaml
+    su - postgres
+    createdb -E Unicode -O zabbix-srv zabbix
+    exit
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo su - postgres
+    createdb -E Unicode -O zabbix-srv zabbix
+    exit
+    ```
 
 Once the database is created, you should verify the connection and ensure that
 the correct user session is active. To do this, log into the zabbix database using
 the zabbix-srv user:
 
-```bash
-# psql -d zabbix -U zabbix-srv
-```
+!!! info "Login as user zabbix-srv"
+    ``` yaml
+    psql -d zabbix -U zabbix-srv
+    ```
 
 After logging in, run the following SQL query to confirm that both the `session_user`
 and `current_user` are set to `zabbix-srv`:
 
-```bash
-zabbix=> SELECT session_user, current_user;
- session_user | current_user
---------------+--------------
- zabbix-srv   | zabbix-srv
-(1 row)
-```
+!!! info ""
+    ``` yaml
+    zabbix=> SELECT session_user, current_user;
+     session_user | current_user
+    --------------+--------------
+     zabbix-srv   | zabbix-srv
+    (1 row)
+    ```
 
 If the output matches, you are successfully connected to the database with the correct user.
 
@@ -829,36 +832,40 @@ for both the `zabbix-srv` and `zabbix-web` users.
 First, we create a custom schema named `zabbix_server` and assign ownership to
 the `zabbix-srv` user:
 
-```psql
-zabbix=> CREATE SCHEMA zabbix_server AUTHORIZATION "zabbix-srv";
-```
+!!! info "create the db schema"
+    ``` psql
+    zabbix=> CREATE SCHEMA zabbix_server AUTHORIZATION "zabbix-srv";
+    ```
 
 Next, we set the `search path` to `zabbix_server` schema so that it's the default
 for the current session:
 
-```psql
-zabbix=> SET search_path TO "zabbix_server";
-```
+!!! info "Set search path"
+    ``` psql
+    zabbix=> SET search_path TO "zabbix_server";
+    ```
 
 To confirm the schema setup, you can list the existing schemas:
 
-```psql
-zabbix=> \dn
-          List of schemas
-     Name      |       Owner
----------------+-------------------
- public        | pg_database_owner
- zabbix_server | zabbix-srv
-(2 rows)
-```
+!!! info "verify schema access"
+    ``` psql
+    zabbix=> \dn
+              List of schemas
+         Name      |       Owner
+    ---------------+-------------------
+     public        | pg_database_owner
+     zabbix_server | zabbix-srv
+    (2 rows)
+    ```
 
 At this point, the `zabbix-srv` user has full access to the schema, but the `zabbix-web`
 user still needs appropriate permissions to connect and interact with the database.
 First, we grant `USAGE` privileges on the schema to allow `zabbix-web` to connect:
 
-```psql
-zabbix=# GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
-```
+!!! info "Grant access to schema for user zabbix-web"
+    ``` psql
+    zabbix=# GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
+    ```
 
 ### Populate the Zabbix PostgreSQL DB
 
@@ -873,9 +880,10 @@ with the Zabbix schema created and other required elements. Follow these steps:
 ???+ warning
     Make sure you did previous steps carefully so that you have selected the correct search_path.
 
-```
-sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
-```
+!!! info "upload the DB schema to db zabbix"
+    ``` sql
+    sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
+    ```
 
 ???+ warning
     Depending on your hardware or VM performance, this process can take anywhere
@@ -883,20 +891,21 @@ sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
 
 * Monitor the progress as the script runs. You will see output similar to:
 
-```sql
-zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
-CREATE TABLE
-CREATE INDEX
-CREATE TABLE
-CREATE INDEX
-CREATE TABLE
-...
-...
-...
-INSERT 0 10444
-DELETE 90352
-COMMIT
-```
+!!! info "Output example"
+    ```sql
+    zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
+    CREATE TABLE
+    CREATE INDEX
+    CREATE TABLE
+    CREATE INDEX
+    CREATE TABLE
+    ...
+    ...
+    ...
+    INSERT 0 10444
+    DELETE 90352
+    COMMIT
+    ```
 
 Once the script completes and you return to the `zabbix=#` prompt, the database
 should be successfully populated with all the required tables, schemas,
@@ -909,26 +918,25 @@ following permissions:
 * For tables: SELECT, INSERT, UPDATE, and DELETE.
 * For sequences: SELECT and UPDATE.
 
-```psql
-zabbix=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server TO "zabbix-web";
-```
-
-```psql
-zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
-```
+!!! info "Grant rights on the schema to user zabbix-web"
+    ``` psql
+    zabbix=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server TO "zabbix-web";
+    zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
+    ```
 
 Verify if the rights are correct on the schema :
 
-```psql
-zabbix=> \dn+
-                                           List of schemas
-     Name      |       Owner       |           Access privileges            |      Description
----------------+-------------------+----------------------------------------+------------------------
- public        | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
-               |                   | =U/pg_database_owner                   |
- zabbix_server | zabbix-srv        | "zabbix-srv"=UC/"zabbix-srv"          +|
-               |                   | "zabbix-web"=U/"zabbix-srv"            |
-```
+!!! info "Example schema rights"
+    ``` psql
+    zabbix=> \dn+
+                                               List of schemas
+         Name      |       Owner       |           Access privileges            |      Description
+    ---------------+-------------------+----------------------------------------+------------------------
+     public        | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
+                   |                   | =U/pg_database_owner                   |
+     zabbix_server | zabbix-srv        | "zabbix-srv"=UC/"zabbix-srv"          +|
+                   |                   | "zabbix-web"=U/"zabbix-srv"            |
+    ```
 
 ???+ note
     If you encounter the following error during the SQL import:
@@ -944,55 +952,58 @@ permissions, you can verify the table list and their ownership using the `psql` 
 
 * List the Tables: Use the following command to list all tables in the `zabbix_server` schema:
 
-```sql
-sql zabbix=# \dt
-```
+!!! info "List tables"
+    ``` sql
+    sql zabbix=# \dt
+    ```
 
 You should see a list of tables with their schema, name, type, and owner.
 For example:
 
-```sql
-zabbix=> \dt
-                        List of relations
-    Schema     |            Name            | Type  |   Owner
----------------+----------------------------+-------+------------
- zabbix_server | acknowledges               | table | zabbix-srv
- zabbix_server | actions                    | table | zabbix-srv
- zabbix_server | alerts                     | table | zabbix-srv
- zabbix_server | auditlog                   | table | zabbix-srv
- zabbix_server | autoreg_host               | table | zabbix-srv
- zabbix_server | changelog                  | table | zabbix-srv
- zabbix_server | conditions                 | table | zabbix-srv
-...
-...
-...
- zabbix_server | valuemap                   | table | zabbix-srv
- zabbix_server | valuemap_mapping           | table | zabbix-srv
- zabbix_server | widget                     | table | zabbix-srv
- zabbix_server | widget_field               | table | zabbix-srv
-(203 rows)
-```
+!!! info "List table with relations"
+    ``` sql
+    zabbix=> \dt
+                            List of relations
+        Schema     |            Name            | Type  |   Owner
+    ---------------+----------------------------+-------+------------
+     zabbix_server | acknowledges               | table | zabbix-srv
+     zabbix_server | actions                    | table | zabbix-srv
+     zabbix_server | alerts                     | table | zabbix-srv
+     zabbix_server | auditlog                   | table | zabbix-srv
+     zabbix_server | autoreg_host               | table | zabbix-srv
+     zabbix_server | changelog                  | table | zabbix-srv
+     zabbix_server | conditions                 | table | zabbix-srv
+    ...
+    ...
+    ...
+     zabbix_server | valuemap                   | table | zabbix-srv
+     zabbix_server | valuemap_mapping           | table | zabbix-srv
+     zabbix_server | widget                     | table | zabbix-srv
+     zabbix_server | widget_field               | table | zabbix-srv
+    (203 rows)
+    ```
 
 * Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
 the necessary permissions. You can check permissions for specific tables using
 the \dp command:
 
-```sql
-sql zabbix=# \dp zabbix_server.*
-```
-
-```sql
-                                                     Access privileges
-    Schema     |            Name            |   Type   |         Access privileges          | Column privileges | Policies
----------------+----------------------------+----------+------------------------------------+-------------------+----------
- zabbix_server | acknowledges               | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-               |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
- zabbix_server | actions                    | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-               |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
- zabbix_server | alerts                     | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-               |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
- zabbix_server | auditlog                   | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-```
+!!! info ""
+    ``` sql
+    sql zabbix=# \dp zabbix_server.*
+    ```
+    
+    ```sql
+                                                         Access privileges
+        Schema     |            Name            |   Type   |         Access privileges          | Column privileges | Policies
+    ---------------+----------------------------+----------+------------------------------------+-------------------+----------
+     zabbix_server | acknowledges               | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+     zabbix_server | actions                    | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+     zabbix_server | alerts                     | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+     zabbix_server | auditlog                   | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+    ```
 
 This will display the access privileges for all tables in the `zabbix_server`
 schema. Ensure that `zabbix-srv` has the required privileges.
@@ -1014,24 +1025,27 @@ permissions, you can do so using the GRANT commands as needed.
 
 If you are ready you can exit the database and return as user root.
 
-```
-zabbix=> \q
-```
+!!! info "Exit the database"
+    ``` sql
+    zabbix=> \q
+    ```
 
 If we want our Zabbix server to be able to connect to our DB then we also need to open our firewall port.
 
-RedHat
+!!! info ""
 
-```
-# firewall-cmd --add-port=5432/tcp --permanent
-# firewall-cmd --reload
-```
-
-Ubuntu
-
-```
-# sudo ufw allow 5432/tcp
-```
+    RedHat
+    
+    ``` yaml
+    firewall-cmd --add-port=5432/tcp --permanent
+    firewall-cmd --reload
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo ufw allow 5432/tcp
+    ```
 
 ???+ note
     Make sure your DB is listening on the correct IP and not on 127.0.0.1.
@@ -1058,38 +1072,43 @@ We will revisit SELinux at the end of this chapter once our installation is fini
 
 To check the current status of SELinux, you can use the following command: `sestatus``
 
-```
-# sestatus
-SELinux status:                 enabled
-SELinuxfs mount:                /sys/fs/selinux
-SELinux root directory:         /etc/selinux
-Loaded policy name:             targeted
-Current mode:                   enforcing
-Mode from config file:          enforcing
-Policy MLS status:              enabled
-Policy deny_unknown status:     allowed
-Memory protection checking:     actual (secure)
-Max kernel policy version:      33
-```
+!!! info "Selinux status"
+    ``` yaml
+    sestatus
+    ```
+    ```
+    SELinux status:                 enabled
+    SELinuxfs mount:                /sys/fs/selinux
+    SELinux root directory:         /etc/selinux
+    Loaded policy name:             targeted
+    Current mode:                   enforcing
+    Mode from config file:          enforcing
+    Policy MLS status:              enabled
+    Policy deny_unknown status:     allowed
+    Memory protection checking:     actual (secure)
+    Max kernel policy version:      33
+    ```
 
 As shown, the system is currently in enforcing mode. To temporarily disable SELinux,
 you can run the following command: `setenforce 0`
 
-```
-# setenforce 0
-# sestatus
-
-SELinux status:                 enabled
-SELinuxfs mount:                /sys/fs/selinux
-SELinux root directory:         /etc/selinux
-Loaded policy name:             targeted
-Current mode:                   permissive
-Mode from config file:          enforcing
-Policy MLS status:              enabled
-Policy deny_unknown status:     allowed
-Memory protection checking:     actual (secure)
-Max kernel policy version:      33
-```
+!!! info "Disable SeLinux"
+    ``` yaml
+    setenforce 0
+    sestatus
+    ```
+    ```
+    SELinux status:                 enabled
+    SELinuxfs mount:                /sys/fs/selinux
+    SELinux root directory:         /etc/selinux
+    Loaded policy name:             targeted
+    Current mode:                   permissive
+    Mode from config file:          enforcing
+    Policy MLS status:              enabled
+    Policy deny_unknown status:     allowed
+    Memory protection checking:     actual (secure)
+    Max kernel policy version:      33
+    ```
 
 Now, as you can see, the mode is switched to permissive. However, this change
 is not persistent across reboots. To make it permanent, you need to modify the
@@ -1099,30 +1118,33 @@ replace enforcing with `permissive`.
 Alternatively, you can achieve the same result more easily by running the
 following command:
 
-RedHat
-
-```
-# sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
-```
+!!! info "Disable SeLinux permanent"
+    RedHat
+    
+    ``` yaml
+    sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
+    ```
 
 This line will alter the configuration file for you. So when we run `sestatus`
 again we will see that we are in `permissive` mode and that our configuration
 file is also in permissive mode.
 
-```
-# sestatus
-
-SELinux status:                 enabled
-SELinuxfs mount:                /sys/fs/selinux
-SELinux root directory:         /etc/selinux
-Loaded policy name:             targeted
-Current mode:                   permissive
-Mode from config file:          permissive
-Policy MLS status:              enabled
-Policy deny_unknown status:     allowed
-Memory protection checking:     actual (secure)
-Max kernel policy version:      33
-```
+!!! info "Verify selinux status again"
+    ``` yaml
+    sestatus
+    ```
+    ```
+    SELinux status:                 enabled
+    SELinuxfs mount:                /sys/fs/selinux
+    SELinux root directory:         /etc/selinux
+    Loaded policy name:             targeted
+    Current mode:                   permissive
+    Mode from config file:          permissive
+    Policy MLS status:              enabled
+    Policy deny_unknown status:     allowed
+    Memory protection checking:     actual (secure)
+    Max kernel policy version:      33
+    ```
 
 ### Adding the Zabbix repository
 
@@ -2149,6 +2171,7 @@ Now that your Zabbix environment is up and running, let’s take it to the next 
 
 ## Useful URLs
 
+* <https://www.postgresql.org/docs/current/ddl-priv.html>
 * <https://www.zabbix.com/download>
 * <https://www.zabbix.com/documentation/current/en/manual>
 * <https://www.zabbix.com/documentation/current/en/manual/installation/requirements>
