@@ -14,52 +14,52 @@ docs_dir: docs
 
 # Navigation
 nav:
-  - "Welcome": "index.md"
-  - "Guidlines": "Guidelines.md"
-  - "Getting started":
-      - ch00-getting-started/initial-steps.md
-      - ch00-getting-started/Requirements.md
-  - "Chapter 01 : Zabbix components":
-      - ch01-zabbix-components/chapter.md
-      - ch01-zabbix-components/basic-installation.md
-      - ch01-zabbix-components/ha-setup.md
-      - ch01-zabbix-components/securing-zabbix.md
-  - "Chapter 02 : Installation":
-      - ch02-zabbix-installation/chapter.md
-      - ch02-zabbix-installation/frontend.md
-      - ch02-zabbix-installation/host-groups.md
-      - ch02-zabbix-installation/user-groups.md
-      - ch02-zabbix-installation/external-authentication.md
-  - "Chapter 03 : Proxies and Webcomponents": 
-      - ch03-zabbix-proxies/chapter.md
-      - ch03-zabbix-proxies/passive-proxies.md
-      - ch03-zabbix-proxies/active-proxies.md
-      - ch03-zabbix-proxies/web-services.md
-  - "Chapter 04 : Collecting data ":
-      - ch04-zabbix-collecting-data/chapter.md
-      - ch04-zabbix-collecting-data/dataflow.md
-      - ch04-zabbix-collecting-data/protocols.md
-      - ch04-zabbix-collecting-data/hosts.md
-  - "Chapter 05 : Triggers":
-      - ch05-zabbix-triggers/chapter.md
-      - ch05-zabbix-triggers/triggers.md
-      - ch05-zabbix-triggers/advanced-triggers.md
-  - "Chapter 06 : Templates":
-      - ch06-zabbix-templates/chapter.md
-  - "Chapter 07 : Alerting": 
-      - ch07-zabbix-alerts/chapter.md
-  - "Chapter 08 : LLD":
-      - ch08-zabbix-lld/chapter.md
-  - "Chapter 09 : Extending Zabbix": 
-      - ch09-zabbix-extending/chapter.md
-  - "Chapter 10 : Discovery": 
-      - ch10-zabbix-discovery/chapter.md
-  - "Chapter 11 : Visualisation":
-      - ch11-zabbix-visualisation/chapter.md
-  - "Chapter 12 : Zabbix API":
-      - ch12-zabbix-api/chapter.md
-  - "Chapter 13 : Real world examples":
-      - ch13-zabbix-real-world-examples/chapter.md
+    - Welcome: index.md
+    - Guidlines: Guidelines.md
+    - Getting started:
+        - Initial steps: ch00-getting-started/initial-steps.md
+        - System Requirements: ch00-getting-started/Requirements.md
+    - "Chapter 01 : Zabbix components":
+        - Zabbix components: ch01-zabbix-components/chapter.md
+        - Basic Installation: ch01-zabbix-components/basic-installation.md
+        - HA Setup: ch01-zabbix-components/ha-setup.md
+        - Security: ch01-zabbix-components/securing-zabbix.md
+    - "Chapter 02 : Installation":
+        - ch02-zabbix-installation/chapter.md
+        - ch02-zabbix-installation/frontend.md
+        - ch02-zabbix-installation/host-groups.md
+        - ch02-zabbix-installation/user-groups.md
+        - ch02-zabbix-installation/external-authentication.md
+    - "Chapter 03 : Proxies and Webcomponents": 
+        - ch03-zabbix-proxies/chapter.md
+        - ch03-zabbix-proxies/passive-proxies.md
+        - ch03-zabbix-proxies/active-proxies.md
+        - ch03-zabbix-proxies/web-services.md
+    - "Chapter 04 : Collecting data ":
+        - ch04-zabbix-collecting-data/chapter.md
+        - ch04-zabbix-collecting-data/dataflow.md
+        - ch04-zabbix-collecting-data/protocols.md
+        - ch04-zabbix-collecting-data/hosts.md
+    - "Chapter 05 : Triggers":
+        - ch05-zabbix-triggers/chapter.md
+        - ch05-zabbix-triggers/triggers.md
+        - ch05-zabbix-triggers/advanced-triggers.md
+    - "Chapter 06 : Templates":
+        - ch06-zabbix-templates/chapter.md
+    - "Chapter 07 : Alerting": 
+        - ch07-zabbix-alerts/chapter.md
+    - "Chapter 08 : LLD":
+        - ch08-zabbix-lld/chapter.md
+    - "Chapter 09 : Extending Zabbix": 
+        - ch09-zabbix-extending/chapter.md
+    - "Chapter 10 : Discovery": 
+        - ch10-zabbix-discovery/chapter.md
+    - "Chapter 11 : Visualisation":
+        - ch11-zabbix-visualisation/chapter.md
+    - "Chapter 12 : Zabbix API":
+        - ch12-zabbix-api/chapter.md
+    - "Chapter 13 : Real world examples":
+        - ch13-zabbix-real-world-examples/chapter.md
 
 theme:
   language: en
@@ -71,7 +71,7 @@ theme:
   icon:
     logo: material/library
   features:
-    - content.code.select
+#    - content.code.select #seems to be not working for some reason
 #    - navigation.tabs #add navigation to the top
     - navigation.expand
     - navigation.prune
@@ -100,6 +100,7 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
+  - stylesheets/linewrap.css
 
 # Plugins
 plugins:
@@ -193,24 +194,19 @@ plugins:
           default: true
           name: English
           build: true
-
   - print-site:
-      add_to_navigation: false
-      print_page_title: "Print Book"
-      # Table of contents
+      add_to_navigation: true
+      add_full_urls: false
       add_table_of_contents: true
       toc_title: "Table of Contents"
       toc_depth: 6
-      # Content-related
-      add_full_urls: false
-      enumerate_headings: false
+      enumerate_headings: true
       enumerate_figures: true
-      add_cover_page: true
+      add_cover_page: false
       cover_page_template: "docs/assets/templates/custom_cover_page.tpl"
       path_to_pdf: ""
-      include_css: true
+      include_css: false # dont put true else no toc
       enabled: true
-      exclude:
 
 # extensions
 markdown_extensions:

@@ -15,8 +15,6 @@ us to further expand and enhance the resources and support we offer. This is mor
 than just a book; it's a testament to the power of shared knowledge and a commitment
 to fostering a thriving Zabbix community."
 
----
-
 ## License
 
 Please note: The english version is the primary source document.

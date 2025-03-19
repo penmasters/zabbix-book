@@ -81,11 +81,11 @@ To create the MariaDB repository file, execute the following command in your ter
 
     Ubuntu
     ``` yaml
-    # sudo apt-get install apt-transport-https curl
-    # sudo mkdir -p /etc/apt/keyrings
-    # sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+    sudo apt-get install apt-transport-https curl
+    sudo mkdir -p /etc/apt/keyrings
+    sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
     
-    # sudo vi /etc/apt/sources.list.d/mariadb.sources
+    sudo vi /etc/apt/sources.list.d/mariadb.sources
     ```
 
 This will open a text editor where you can input the repository configuration details.
@@ -168,8 +168,8 @@ To install the MariaDB server and client, execute the following command:
     ``` yaml
     dnf install MariaDB-server
     ```
+
     Ubuntu
-    
     ``` yaml
     sudo apt-get install mariadb-server
     ```
@@ -193,57 +193,59 @@ version of MariaDB using the following command:
 
 !!! info "Check Mariadb version"
     RedHat and Ubuntu
-    ```bash
+    ``` yaml
     sudo mariadb -V
     ```
 
 The expected output should resemble this:
 !!! info ""
-``` yaml
-mariadb from 11.4.5-MariaDB, client 15.2 for Linux (aarch64) using  EditLine wrapper
-```
+    ``` yaml
+    mariadb from 11.4.5-MariaDB, client 15.2 for Linux (aarch64) using  EditLine wrapper
+    ```
 
 To ensure that the MariaDB service is running properly, you can check its status
 with the following command:
 
-```bash
-RedHat and Ubuntu
-# sudo systemctl status mariadb
-```
+!!! info "Get mariadb status"
+    RedHat and Ubuntu
+    ``` yaml
+    sudo systemctl status mariadb
+    ```
 
 You should see an output similar to this, indicating that the MariaDB service
 is active and running:
 
-```bash
-mariadb.service - MariaDB 11.4.5 database server
-     Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
-    Drop-In: /etc/systemd/system/mariadb.service.d
-             └─migrated-from-my.cnf-settings.conf
-     Active: active (running) since Fri 2025-02-21 11:22:59 CET; 2min 8s ago
-       Docs: man:mariadbd(8)
-             https://mariadb.com/kb/en/library/systemd/
-    Process: 23147 ExecStartPre=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
-    Process: 23148 ExecStartPre=/bin/sh -c [ ! -e /usr/bin/galera_recovery ] && VAR= ||   VAR=`/usr/bin/galera_recovery`; [ $? -eq 0 ]   && systemctl set-enviro>
-    Process: 23168 ExecStartPost=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
-   Main PID: 23156 (mariadbd)
-     Status: "Taking your SQL requests now..."
-      Tasks: 7 (limit: 30620)
-     Memory: 281.7M
-        CPU: 319ms
-     CGroup: /system.slice/mariadb.service
-             └─23156 /usr/sbin/mariadbd
-
-Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
-Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Plugin 'FEEDBACK' is disabled.
-Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Plugin 'wsrep-provider' is disabled.
-Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] InnoDB: Buffer pool(s) load completed at 250221 11:22:58
-Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Server socket created on IP: '0.0.0.0'.
-Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Server socket created on IP: '::'.
-Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] mariadbd: Event Scheduler: Loaded 0 events
-Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] /usr/sbin/mariadbd: ready for connections.
-Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: Version: '11.4.5-MariaDB'  socket: '/var/lib/mysql/mysql.sock'  port: 3306  MariaDB Server
-Feb 21 11:22:59 localhost.localdomain systemd[1]: Started MariaDB 11.4.5 database server.
-```
+!!! info "mariadb service status example"
+    ``` yaml
+    mariadb.service - MariaDB 11.4.5 database server
+         Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
+        Drop-In: /etc/systemd/system/mariadb.service.d
+                 └─migrated-from-my.cnf-settings.conf
+         Active: active (running) since Fri 2025-02-21 11:22:59 CET; 2min 8s ago
+           Docs: man:mariadbd(8)
+                 https://mariadb.com/kb/en/library/systemd/
+        Process: 23147 ExecStartPre=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
+        Process: 23148 ExecStartPre=/bin/sh -c [ ! -e /usr/bin/galera_recovery ] && VAR= ||   VAR=`/usr/bin/galera_recovery`; [ $? -eq 0 ]   && systemctl set-enviro>
+        Process: 23168 ExecStartPost=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
+       Main PID: 23156 (mariadbd)
+         Status: "Taking your SQL requests now..."
+          Tasks: 7 (limit: 30620)
+         Memory: 281.7M
+            CPU: 319ms
+         CGroup: /system.slice/mariadb.service
+                 └─23156 /usr/sbin/mariadbd
+    
+    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Plugin 'FEEDBACK' is disabled.
+    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Plugin 'wsrep-provider' is disabled.
+    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] InnoDB: Buffer pool(s) load completed at 250221 11:22:58
+    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Server socket created on IP: '0.0.0.0'.
+    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Server socket created on IP: '::'.
+    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] mariadbd: Event Scheduler: Loaded 0 events
+    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] /usr/sbin/mariadbd: ready for connections.
+    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: Version: '11.4.5-MariaDB'  socket: '/var/lib/mysql/mysql.sock'  port: 3306  MariaDB Server
+    Feb 21 11:22:59 localhost.localdomain systemd[1]: Started MariaDB 11.4.5 database server.
+    ```
 
 This confirms that your MariaDB server is up and running, ready for further configuration.
 
@@ -255,80 +257,80 @@ mariadb-secure-installation script, which provides a step-by-step guide to secur
 your database.
 
 Run the following command:
+!!! info "Secure Mariadb setup"
+    RedHat and Ubuntu
+    ``` yaml
+    sudo mariadb-secure-installation
+    ```
+!!! info ""
 
-RedHat and Ubuntu
-
-```bash
-# sudo mariadb-secure-installation
-```
-
-```
-NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
-      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
-
-In order to log into MariaDB to secure it, we'll need the current
-password for the root user. If you've just installed MariaDB, and
-haven't set the root password yet, you should just press enter here.
-
-Enter current password for root (enter for none):
-OK, successfully used password, moving on...
-
-Setting the root password or using the unix_socket ensures that nobody
-can log into the MariaDB root user without the proper authorisation.
-
-You already have your root account protected, so you can safely answer 'n'.
-
-Switch to unix_socket authentication [Y/n] n
- ... skipping.
-
-You already have your root account protected, so you can safely answer 'n'.
-
-Change the root password? [Y/n] y
-New password:
-Re-enter new password:
-Password updated successfully!
-Reloading privilege tables..
- ... Success!
-
-
-By default, a MariaDB installation has an anonymous user, allowing anyone
-to log into MariaDB without having to have a user account created for
-them.  This is intended only for testing, and to make the installation
-go a bit smoother.  You should remove them before moving into a
-production environment.
-
-Remove anonymous users? [Y/n] y
- ... Success!
-
-Normally, root should only be allowed to connect from 'localhost'.  This
-ensures that someone cannot guess at the root password from the network.
-
-Disallow root login remotely? [Y/n] y
- ... Success!
-
-By default, MariaDB comes with a database named 'test' that anyone can
-access.  This is also intended only for testing, and should be removed
-before moving into a production environment.
-
-Remove test database and access to it? [Y/n] y
- - Dropping test database...
- ... Success!
- - Removing privileges on test database...
- ... Success!
-
-Reloading the privilege tables will ensure that all changes made so far
-will take effect immediately.
-
-Reload privilege tables now? [Y/n] y
- ... Success!
-
-Cleaning up...
-
-All done!  If you've completed all of the above steps, your MariaDB
-installation should now be secure.
-
-Thanks for using MariaDB!
-```
+    ```
+    NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
+          SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
+    
+    In order to log into MariaDB to secure it, we'll need the current
+    password for the root user. If you've just installed MariaDB, and
+    haven't set the root password yet, you should just press enter here.
+    
+    Enter current password for root (enter for none):
+    OK, successfully used password, moving on...
+    
+    Setting the root password or using the unix_socket ensures that nobody
+    can log into the MariaDB root user without the proper authorisation.
+    
+    You already have your root account protected, so you can safely answer 'n'.
+    
+    Switch to unix_socket authentication [Y/n] n
+     ... skipping.
+    
+    You already have your root account protected, so you can safely answer 'n'.
+    
+    Change the root password? [Y/n] y
+    New password:
+    Re-enter new password:
+    Password updated successfully!
+    Reloading privilege tables..
+     ... Success!
+    
+    
+    By default, a MariaDB installation has an anonymous user, allowing anyone
+    to log into MariaDB without having to have a user account created for
+    them.  This is intended only for testing, and to make the installation
+    go a bit smoother.  You should remove them before moving into a
+    production environment.
+    
+    Remove anonymous users? [Y/n] y
+     ... Success!
+    
+    Normally, root should only be allowed to connect from 'localhost'.  This
+    ensures that someone cannot guess at the root password from the network.
+    
+    Disallow root login remotely? [Y/n] y
+     ... Success!
+    
+    By default, MariaDB comes with a database named 'test' that anyone can
+    access.  This is also intended only for testing, and should be removed
+    before moving into a production environment.
+    
+    Remove test database and access to it? [Y/n] y
+     - Dropping test database...
+     ... Success!
+     - Removing privileges on test database...
+     ... Success!
+    
+    Reloading the privilege tables will ensure that all changes made so far
+    will take effect immediately.
+    
+    Reload privilege tables now? [Y/n] y
+     ... Success!
+    
+    Cleaning up...
+    
+    All done!  If you've completed all of the above steps, your MariaDB
+    installation should now be secure.
+    
+    Thanks for using MariaDB!
+    ```
 
 The mariadb-secure-installation script will guide you through several key steps:
 
@@ -353,11 +355,11 @@ Log in to the MariaDB shell as the root user:
 You'll be prompted to enter the root password that you set during the mariadb-secure-installation
 process.
 
-RedHat and Ubuntu
-
-```bash
-# mariadb -uroot -p
-```
+!!! info "Enter Mariadb as user root"
+    RedHat and Ubuntu
+    ``` yaml
+    mariadb -uroot -p
+    ```
 
 Once you're logged into the MariaDB shell, run the following command to create a
 database for Zabbix:
@@ -379,13 +381,14 @@ Create a dedicated user for Zabbix and grant the necessary privileges: Next, you
 need to create a user that Zabbix will use to access the database. Replace password
 with a strong password of your choice.
 
-```sql
-MariaDB [(none)]> CREATE USER 'zabbix-web'@'<zabbix server ip>' IDENTIFIED BY '<password>';
-MariaDB [(none)]> CREATE USER 'zabbix-srv'@'<zabbix server ip>' IDENTIFIED BY '<password>';
-MariaDB [(none)]> GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix-srv'@'<zabbix server ip>';
-MariaDB [(none)]> GRANT SELECT, UPDATE, DELETE, INSERT ON zabbix.* TO 'zabbix-web'@'<zabbix server ip>';
-MariaDB [(none)]> FLUSH PRIVILEGES;
-```
+!!! info "Create users and grant privileges"
+    ``` sql
+    MariaDB [(none)]> CREATE USER 'zabbix-web'@'<zabbix server ip>' IDENTIFIED BY '<password>';
+    MariaDB [(none)]> CREATE USER 'zabbix-srv'@'<zabbix server ip>' IDENTIFIED BY '<password>';
+    MariaDB [(none)]> GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix-srv'@'<zabbix server ip>';
+    MariaDB [(none)]> GRANT SELECT, UPDATE, DELETE, INSERT ON zabbix.* TO 'zabbix-web'@'<zabbix server ip>';
+    MariaDB [(none)]> FLUSH PRIVILEGES;
+    ```
 
 This creates new users for zabbix-web and zabbix-srv, grants them access to the
 zabbix database, and ensures that the privileges are applied immediately.
@@ -397,10 +400,11 @@ in the MariaDB configuration file. This allows non-root users to create stored
 functions and triggers without requiring SUPER privileges, which are restricted
 when binary logging is enabled.
 
-```sql
-MariaDB [(none)]> SET GLOBAL log_bin_trust_function_creators = 1;
-MariaDB [(none)]> QUIT
-```
+!!! info "Activate temporarily extra privileges for non root users"
+    ``` sql
+    MariaDB [(none)]> SET GLOBAL log_bin_trust_function_creators = 1;
+    MariaDB [(none)]> QUIT
+    ```
 
 At this point, your Zabbix database is ready, and you can proceed with configuring
 the Zabbix server to connect to the database.
@@ -432,18 +436,18 @@ the Zabbix server to connect to the database.
 
 If we want our Zabbix server to connect to our DB then we also need to open our firewall port.
 
-RedHat
+!!! info "Add firewall rules"
 
-```
-# firewall-cmd --add-port=3306/tcp --permanent
-# firewall-cmd --reload
-```
-
-Ubuntu
-
-```
-# sudo ufw allow 3306/tcp
-```
+    RedHat
+    ``` yaml
+    firewall-cmd --add-port=3306/tcp --permanent
+    firewall-cmd --reload
+    ```
+    
+    Ubuntu
+    ``` yaml
+    sudo ufw allow 3306/tcp
+    ```
 
 ### Populate the Zabbix Maria DB
 
@@ -454,31 +458,32 @@ One of the first things we need to do is add the Zabbix repository to our machin
 This may sound weird but actually makes sense because we need to populate our DB
 with our Zabbix schemas.
 
-RedHat
+!!! info "Add Zabbix repo and install scripts"
 
-```bash
-# rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
-# dnf clean all
-# dnf install zabbix-sql-scripts -y
-```
-
-Ubuntu
-
-```bash
-# sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# sudo apt update
-# sudo apt install zabbix-sql-scripts
-```
+    RedHat
+    ``` yaml
+    rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
+    dnf clean all
+    dnf install zabbix-sql-scripts -y
+    ```
+    
+    Ubuntu
+    ``` yaml
+    sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+    sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+    sudo apt update
+    sudo apt install zabbix-sql-scripts
+    ```
 
 Now lets upload the data from zabbix (db structure, images, user, ... )
 for this we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
 
-RedHat and Ubuntu
+!!! info "Populate the database"
 
-```bash
-# sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
-```
+    RedHat and Ubuntu
+    ``` yaml
+    sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
+    ```
 
 ???+ note
     Depending on the speed of your hardware or virtual machine, the process may
