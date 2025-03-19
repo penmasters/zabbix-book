@@ -86,3 +86,4 @@ nm
 chronyd
 ntppool
 ntp
+log_bin_trust

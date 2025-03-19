@@ -492,9 +492,10 @@ for this we make use of the user `zabbix-srv` and we upload it all in our DB `za
 
 Log back into your MySQL Database as root
 
-```bash
-# mariadb -uroot -p
-```
+!!! info "Enter mariadb as user root"
+    ```
+    mariadb -uroot -p
+    ```
 
 Once the import of the Zabbix schema is complete and you no longer need the
 log_bin_trust_function_creators global parameter, it is a good practice to remove
@@ -503,10 +504,11 @@ it for security reasons.
 To revert the change and set the global parameter back to 0, use the following
 command in the MariaDB shell:
 
-```sql
-mysql> SET GLOBAL log_bin_trust_function_creators = 0;
-Query OK, 0 rows affected (0.001 sec)
-```
+!!! info "Disable function log_bin_trust again"
+    ``` sql
+    mysql> SET GLOBAL log_bin_trust_function_creators = 0;
+    Query OK, 0 rows affected (0.001 sec)
+    ```
 
 This command will disable the setting, ensuring that the servers security
 posture remains robust.
@@ -530,64 +532,66 @@ The table of compatibility can be found [https://docs.timescale.com/self-hosted/
 
 So let us start first setting up our PostgreSQL repository with the following commands.
 
-RedHat
+!!! info "Add PostgreSQL repo"
 
-```bash
-Install the repository RPM:
-# sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    RedHat
+    ``` yaml
+    Install the repository RPM:
+    dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    
+    Disable the built-in PostgreSQL module:
+    dnf -qy module disable postgresql
+    ```
+    
+    Ubuntu
+    ```
+    # Import the repository signing key:
+    sudo apt install curl ca-certificates
+    sudo install -d /usr/share/postgresql-common/pgdg
+    sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    
+    # Create the repository configuration file:
+    sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    
+    # Update the package lists:
+    sudo apt update
+    ```
 
-Disable the built-in PostgreSQL module:
-# sudo dnf -qy module disable postgresql
-```
-
-Ubuntu
-
-```
-# Import the repository signing key:
-sudo apt install curl ca-certificates
-sudo install -d /usr/share/postgresql-common/pgdg
-sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
-
-# Create the repository configuration file:
-sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-
-# Update the package lists:
-sudo apt update
-
-```
 
 ### Install the PostgreSQL databases
 
-RedHat
-
-```bash
-# Install PostgreSQL:
-sudo dnf install -y postgresql17-server
-
-Initialize the database and enable automatic start:
-# sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
-# sudo systemctl enable postgresql-17 --now
-```
-
-Ubuntu
-
-```
-sudo apt -y install postgresql-17
-```
+!!! info "Install the Postgres server"
+    RedHat
+    
+    ``` yaml
+    # Install Postgres server:
+    dnf install -y postgresql17-server
+    
+    # Initialize the database and enable automatic start:
+    /usr/pgsql-17/bin/postgresql-17-setup initdb
+    systemctl enable postgresql-17 --now
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo apt -y install postgresql-17
+    ```
 
 To update your OS, run the following command:
 
-RedHat
-
-```bash
-# dnf update -y
-```
-
-Ubuntu
-
-```
-# sudo apt update -y && sudo apt upgrade -y
-```
+!!! info "update the OS"
+    RedHat
+    
+    ``` yaml
+    dnf update -y
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo apt update -y && sudo apt upgrade -y
+    ```
 
 ### Securing the PostgreSQL database
 
@@ -604,76 +608,85 @@ from where, and what encryption method is used for authentication.
 
 Add the following lines, the order here is important.
 
-Redhat
-
-```bash
-# vi /var/lib/pgsql/17/data/pg_hba.conf
-```
-
-Ubuntu
-
-```bash
-# sudo vi /etc/postgresql/17/main/pg_hba.conf
-```
+!!! info "Edit the pg_hba file"
+    Redhat
+    
+    ``` yaml
+    vi /var/lib/pgsql/17/data/pg_hba.conf
+    ```
+    
+    Ubuntu
+    
+    ``` yanl
+    sudo vi /etc/postgresql/17/main/pg_hba.conf
+    ```
 
 The result should look like :
 
-```
-# "local" is for Unix domain socket connections only
-local    zabbix     zabbix-srv                                                              scram-sha-256
-local    all            all                                                                            peer
-# IPv4 local connections
-host     zabbix     zabbix-srv          <ip from zabbix server/24>     scram-sha-256
-host     zabbix     zabbix-web        <ip from zabbix server/24>     scram-sha-256
-host     all            all                         127.0.0.1/32                            scram-sha-256
-```
+!!! info "pg_hba example"
+
+    ``` yaml
+    # "local" is for Unix domain socket connections only
+    local    zabbix     zabbix-srv                                                              scram-sha-256
+    local    all            all                                                                            peer
+    # IPv4 local connections
+    host     zabbix     zabbix-srv          <ip from zabbix server/24>     scram-sha-256
+    host     zabbix     zabbix-web        <ip from zabbix server/24>     scram-sha-256
+    host     all            all                         127.0.0.1/32                            scram-sha-256
+    ```
 
 After we changed the pg_hba file don't forget to restart postgres else the settings
 will not be applied. But before we restart let us also edit the file postgresql.conf
 and allow our database to listen on our network interface for incoming connections
 from the zabbix server. Postgresql will standard only allow connections from the socket.
 
-RedHat
+!!! info "Edit postgresql.conf file"
+    RedHat
 
-```bash
-# vi /var/lib/pgsql/17/data/postgresql.conf
-```
-
-Ubuntu
-
-```bash
-# sudo vi /etc/postgresql/17/main/postgresql.conf
-```
+    ``` yaml
+    vi /var/lib/pgsql/17/data/postgresql.conf
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo vi /etc/postgresql/17/main/postgresql.conf
+    ```
 
 To configure PostgreSQL to listen on all network interfaces, you need to modify
 the `postgresql.conf` file. Locate the following line:
 
-```bash
-#listen_addresses = 'localhost'
-```
+!!! info ""
+    ``` yaml
+    #listen_addresses = 'localhost'
+    ```
 
 and replace it with:
 
-```
-listen_addresses = '*'
-```
+!!! info ""
+    ```
+    listen_addresses = '*'
+    ```
 
-This will enable PostgreSQL to accept connections from any network interface,
-not just the local machine. In production it's probably a good idea to limit
-who can connect to the DB. After making this change, restart the PostgreSQL service
-to apply the new settings:
+???+ note
+    This will enable PostgreSQL to accept connections from any network interface,
+    not just the local machine. In production it's probably a good idea to limit
+    who can connect to the DB.
 
-Redhat
+After making this change, restart the PostgreSQL service to apply the new settings:
 
-```bash
-# systemctl restart postgresql-17
-```
-
-Ubuntu
-
-```bash
-sudo systemctl restart postgresql
-```
+!!! info "restart the DB server"
+    Redhat
+    
+    ``` yaml
+    systemctl restart postgresql-17
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo systemctl restart postgresql
+    ```
 
 If the service fails to restart, review the pg_hba.conf file for any syntax errors,
 as incorrect entries here may prevent PostgreSQL from starting.
@@ -688,55 +701,59 @@ Zabbix application.
 
 To begin, add the Zabbix repository to your system by running the following commands:
 
-RedHat
-
-```bash
-# dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm -y
-# dnf install zabbix-sql-scripts -y 
-```
-
-Ubuntu
-
-```bash
-# sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# sudo apt update -y
-# sudo apt install zabbix-sql-scripts -y
-```
+!!! info "Add zabbix schema repos package"
+    RedHat
+    
+    ``` yaml
+    dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm -y
+    dnf install zabbix-sql-scripts -y 
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+    sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+    sudo apt update -y
+    sudo apt install zabbix-sql-scripts -y
+    ```
 
 With the necessary packages installed, you are now ready to create the Zabbix users for both the server and frontend.
 
 First, switch to the `postgres` user and create the Zabbix server database user:
 
-```
-# sudo su - postgres
-# createuser --pwprompt zabbix-srv
-Enter password for new role: <server-password>
-Enter it again: <server-password>
-```
+!!! info "create server users"
+    ``` sql
+    # sudo su - postgres
+    # createuser --pwprompt zabbix-srv
+    Enter password for new role: <server-password>
+    Enter it again: <server-password>
+    ```
 
 Next, create the Zabbix frontend user, which will be used to connect to the database:
 
-```
-# createuser --pwprompt zabbix-web
-Enter password for new role: <frontend-password>
-Enter it again: <frontend-password>
-```
+!!! info "Create front-end user"
+    ``` sql
+    # createuser --pwprompt zabbix-web
+    Enter password for new role: <frontend-password>
+    Enter it again: <frontend-password>
+    ```
 
 After creating the users, you need to prepare the database schema. As the root
 or your regular user, unzip the necessary schema files by running the following command:
 
-RedHat
-
-```bash
-# gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
-```
-
-Ubuntu
-
-```bash
-# sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
-```
+!!! info "Unzip the DB patch"
+    RedHat
+    
+    ``` yaml
+    gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+    ```
 
 ???+ note
     Zabbix seems to like to change the locations of the script to populate the
