@@ -1258,9 +1258,9 @@ update the following lines to match your database configuration:
     DBPassword=<database-password>
     ```
 
-Replace <database-host>, <database-name>, <database-user>, and <database-password> with
-the appropriate values for your setup. This ensures that the Zabbix server can communicate
-with your database.
+Replace `<database-host>`, `<database-name>`, `<database-user>`, and `<database-password>`
+with the appropriate values for your setup. This ensures that the Zabbix server
+can communicate with your database.
 
 Ensure that there is no # (comment symbol) in front of the configuration parameters,
 as Zabbix will treat lines beginning with # as comments, ignoring them during execution.

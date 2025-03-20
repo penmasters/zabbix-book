@@ -50,68 +50,78 @@ Add the Zabbix Repositories to your servers.
 
 First, add the Zabbix repository to both of your Zabbix servers:
 
-Redhat
-
-```bash
-# rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
-# dnf clean all
-```
-
-Ubuntu
-
-```bash
-# sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
-# sudo apt update
-```
+!!! info "add zabbix repository"
+    Redhat
+    
+    ``` yaml
+    rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
+    dnf clean all
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+    sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+    sudo apt update
+    ```
 
 Once this is done we can install the zabbix server packages.
 
-Redhat
-
-```bash
-# dnf install zabbix-server-pgsql -y
-or if your database is MariaDB
-# dnf install zabbix-server-mysql -y
-```
-
-Ubuntu
-
-```bash
-# sudo apt install zabbix-server-pgsql -y
-or if your databqse is MariaDB
-# sudo apt install zabbix-server-mysql -y
-```
+!!! info "install zabbix server packages"
+    Redhat
+    
+    ``` yaml
+    dnf install zabbix-server-pgsql -y
+    ```
+    or if your database is MySQL or MariaDB
+    ```
+    dnf install zabbix-server-mysql -y
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo apt install zabbix-server-pgsql -y
+    ```
+    or if your database is MySQL or MariaDB
+    ``` yaml
+    sudo apt install zabbix-server-mysql -y
+    ```
 
 ### Configuring Zabbix Server 1
 
 Edit the Zabbix server configuration file,
 
-```bash
-# sudo vi /etc/zabbix/zabbix_server.conf
-```
+!!! info "edit the server config file"
+    ``` yaml
+    sudo vi /etc/zabbix/zabbix_server.conf
+    ```
 
 Update the following lines to connect to the database:
 
-```bash
-DBHost=<zabbix db ip>
-DBName=<name of the zabbix DB>
-DBUser=<name of the db user>
-DBSchema=<db schema for the PostgreSQL DB>
-DBPassword=<your secret password>
-```
+!!! info ""
+    ``` yaml
+    DBHost=<zabbix db ip>
+    DBName=<name of the zabbix DB>
+    DBUser=<name of the db user>
+    DBSchema=<db schema for the PostgreSQL DB>
+    DBPassword=<your secret password>
+    ```
 
 Configure the HA parameters for this server:
 
-```bash
-HANodeName=zabbix1 (or choose a name you prefer)
-```
+!!! info ""
+    ``` yaml
+    HANodeName=zabbix1 (or choose a name you prefer)
+    ```
 
 Specify the frontend node address for failover scenarios:
 
-```bash
-NodeAddress=<Zabbix server 1 ip>:10051
-```
+!!! info ""
+    ``` yaml
+    NodeAddress=<Zabbix server 1 ip>:10051
+    ```
 
 ### Configuring Zabbix Server 2
 
@@ -122,9 +132,10 @@ and `NodeAddress` as necessary for this server.
 
 After configuring both servers, enable and start the zabbix-server service on each:
 
-```bash
-# sudo systemctl enable zabbix-server --now
-```
+!!! info "restart zabbix-server service"
+    ```
+    sudo systemctl enable zabbix-server --now
+    ```
 
 ???+ note
     The `NodeAddress` must match the IP or FQDN name of the Zabbix server node.
@@ -139,32 +150,49 @@ are operating in their respective HA modes.
 
 On the first server:
 
-```bash
-# sudo grep HA /var/log/zabbix/zabbix_server.log
-```
+!!! info "check logs for HA messages"
+    ``` yaml
+    sudo grep HA /var/log/zabbix/zabbix_server.log
+    ```
 
-You should see:
+In the system logs, you should observe the following entries, indicating the initialization
+of the High Availability (HA) manager:
 
-```bash
-22597:20240309:155230.353 starting HA manager
-22597:20240309:155230.362 HA manager started in active mode
-```
+!!! info ""
+    ``` yaml
+    22597:20240309:155230.353 starting HA manager
+    22597:20240309:155230.362 HA manager started in active mode
+    ```
+These log messages confirm that the HA manager process has started and assumed
+the active role. This means that the Zabbix instance is now the primary node in
+the HA cluster, handling all monitoring operations. If a failover event occurs,
+another standby node will take over based on the configured HA strategy.
 
 On the second server (and any additional nodes):
 
-```bash
-# grep HA /var/log/zabbix/zabbix_server.log
-```
+!!! info ""
+    ``` yaml
+    grep HA /var/log/zabbix/zabbix_server.log
+    ```
 
-You should see:
+In the system logs, the following entries indicate the initialization of the High
+Availability (HA) manager:
 
-```bash
-22304:20240309:155331.163 starting HA manager
-22304:20240309:155331.174 HA manager started in standby mode
-```
+!!! info ""
+    ``` yaml 
+    22304:20240309:155331.163 starting HA manager
+    22304:20240309:155331.174 HA manager started in standby mode
+    ```
+These messages confirm that the HA manager process was invoked and 
+successfully launched in standby mode. This suggests that the node is operational 
+but not currently acting as the active HA instance, awaiting further state transitions
+based on the configured HA strategy.
 
-Your Zabbix cluster should now be set up with high availability, ensuring continuous
-monitoring even if one of the servers fails.
+At this stage, your Zabbix cluster is successfully configured for High Availability (HA).
+The system logs confirm that the HA manager has been initialized and is running in
+standby mode, indicating that failover mechanisms are in place. This setup ensures
+uninterrupted monitoring, even in the event of a server failure, by allowing automatic
+role transitions based on the HA configuration.
 
 ## Installing the frontend
 
@@ -178,55 +206,59 @@ making it a critical component in maintaining a resilient infrastructure.
 
 So let's get started. On both our servers we have to install keepalived.
 
-Redhat
-
-```bash
-# dnf install keepalived -y
-```
-
-Ubuntu
-
-```bash
-# sudo apt install keepalived -y
-```
+!!! info "install keepalived"
+    Redhat
+    
+    ``` yaml
+    dnf install keepalived -y
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo apt install keepalived -y
+    ```
 
 Next, we need to modify the Keepalived configuration on both servers. While the
 configurations will be similar, each server requires slight adjustments. We will
 begin with Server 1. To edit the Keepalived configuration file, use the following
 command:
 
-Redhat and Ubuntu
+!!! info "edit the keepalived config"
+    RedHat and Ubuntu
 
-```bash
-# sudo vi /etc/keepalived/keepalived.conf
-```
+    ``` yaml
+    sudo vi /etc/keepalived/keepalived.conf
+    ```
 
-Delete all content in the file and replace it with the following lines:
+If the file contains any existing content, it should be cleared and replaced
+with the following lines :
 
-```bash
-vrrp_track_process track_nginx {
-    process nginx
-    weight 10
-}
-
-vrrp_instance VI_1 {
-    state MASTER
-    interface enp0s1
-    virtual_router_id 51
-    priority 244
-    advert_int 1
-    authentication {
-        auth_type PASS
-        auth_pass 12345
+!!! info ""
+    ``` yaml
+    vrrp_track_process track_nginx {
+        process nginx
+        weight 10
     }
-    virtual_ipaddress {
-        192.168.0.135
+    
+    vrrp_instance VI_1 {
+        state MASTER
+        interface enp0s1
+        virtual_router_id 51
+        priority 244
+        advert_int 1
+        authentication {
+            auth_type PASS
+            auth_pass 12345
+        }
+        virtual_ipaddress {
+            xxx.xxx.xxx.xxx
+        }
+        track_process {
+             track_nginx
+          }
     }
-    track_process {
-         track_nginx
-      }
-}
-```
+    ```
 
 ???+ warning
     Replace `enp0s1` with the interface name of your machine and replace the `password`
@@ -236,30 +268,31 @@ vrrp_instance VI_1 {
 We can now do the same modification on our `second` Zabbix server. Delete everything
 again in the same file like we did before and replace it with the following lines:
 
-```bash
-vrrp_track_process track_nginx {
-      process nginx
-      weight 10
-}
-
-vrrp_instance VI_1 {
-    state BACKUP
-    interface enp0s1
-    virtual_router_id 51
-    priority 243
-    advert_int 1
-    authentication {
-        auth_type PASS
-        auth_pass 12345
+!!! info ""
+    ``` yaml
+    vrrp_track_process track_nginx {
+          process nginx
+          weight 10
     }
-    virtual_ipaddress {
-        192.168.0.135
+    
+    vrrp_instance VI_1 {
+        state BACKUP
+        interface enp0s1
+        virtual_router_id 51
+        priority 243
+        advert_int 1
+        authentication {
+            auth_type PASS
+            auth_pass 12345
+        }
+        virtual_ipaddress {
+           xxx.xxx.xxx.xxx 
+        }
+        track_process {
+             track_nginx
+          }
     }
-    track_process {
-         track_nginx
-      }
-}
-```
+    ```
 
 Just as with our 1st Zabbix server, replace `enp0s1` with the interface name of
 your machine and replace the `password` with your password and fill in the
@@ -267,52 +300,57 @@ virual_ipaddress as used before.
 
 This ends the configuration of keepalived. We can now continue adapting the frontend.
 
+
 ### Install and configure the frontend
 
 On both servers we can run the following commands to install our web server and the
 zabbix frontend packages:
 
-RedHat
-
-```bash
-# dnf install nginx zabbix-web-pgsql zabbix-nginx-conf
-```
-
-Ubuntu
-
-```bash
-sudo apt install nginx zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
-```
+!!! info "install web server and config"
+    RedHat
+    
+    ``` yaml
+    dnf install nginx zabbix-web-pgsql zabbix-nginx-conf
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo apt install nginx zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
+    ```
 
 Additionally, it is crucial to configure the firewall. Proper firewall rules ensure
 seamless communication between the servers and prevent unexpected failures.
 Before proceeding, verify that the necessary ports are open and apply the required
 firewall rules accordingly.
 
-RedHat
-
-```bash
-# firewall-cmd --add-service=http --permanent
-# firewall-cmd --add-service=zabbix-server --permanent
-# firewall-cmd --reload
-```
-
-Ubuntu
-
-```bash
-sudo ufw allow 10051/tcp
-sudo ufw allow 80/tcp
-```
+!!! info "configure the firewall"
+    RedHat
+    
+    ``` yaml
+    firewall-cmd --add-service=http --permanent
+    firewall-cmd --add-service=zabbix-server --permanent
+    firewall-cmd --reload
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo ufw allow 10051/tcp
+    sudo ufw allow 80/tcp
+    ```
 
 With the configuration in place and the firewall properly configured, we can now
 start the Keepalived service. Additionally, we should enable it to ensure it
 automatically starts on reboot. Use the following commands to achieve this:
 
-RedHat and Ubuntu
+!!! info "start and enable keepalived"
+    RedHat and Ubuntu
+    
+    ``` yaml
+    sudo systemctl enable keepalived nginx --now
+    ```
 
-```bash
-# sudo systemctl enable keepalived nginx --now
-```
 
 ### Configure the web server
 
@@ -330,14 +368,18 @@ established procedures, we ensure consistency and reliability in the deployment.
     and `$ZBX_SERVER_PORT`. Our frontend will check what node is active by reading
     the node table in the database.
 
-```SQL
-zabbix=# select * from ha_node;
-         ha_nodeid         |  name   |   address       | port  | lastaccess | status |       ha_sessionid
----------------------------+---------+-----------------+-------+------------+--------+---------------------------
- cm8agwr2b0001h6kzzsv19ng6 | zabbix1 | xxx.xxx.xxx.xxx | 10051 | 1742133911 |      0 | cm8apvb0c0000jkkzx1ojuhst
- cm8agyv830001ell0m2nq5o6n | zabbix2 | localhost       | 10051 | 1742133911 |      3 | cm8ap7b8u0000jil0845p0w51
-(2 rows)
-```
+!!! info ""
+    ```
+    select * from ha_node;
+    ```
+    ``` sql
+    zabbix=# select * from ha_node;
+             ha_nodeid         |  name   |   address       | port  | lastaccess | status |       ha_sessionid
+    ---------------------------+---------+-----------------+-------+------------+--------+---------------------------
+     cm8agwr2b0001h6kzzsv19ng6 | zabbix1 | xxx.xxx.xxx.xxx | 10051 | 1742133911 |      0 | cm8apvb0c0000jkkzx1ojuhst
+     cm8agyv830001ell0m2nq5o6n | zabbix2 | localhost       | 10051 | 1742133911 |      3 | cm8ap7b8u0000jil0845p0w51
+    (2 rows)
+    ```
 
 In this instance, the node `zabbix2` is identified as the active node, as indicated by its status value of `3`, which designates an active state. The possible status values are as follows:  
 
@@ -371,9 +413,10 @@ nodes dynamically.
 
 One such command is:
 
-```bash
-zabbix_server -R ha_set_failover_delay=10m
-```
+!!! info ""
+    ``` yaml
+    zabbix_server -R ha_set_failover_delay=10m
+    ```
 
 This command adjusts the failover delay, which defines how long Zabbix waits before
 promoting a standby node to active status. The delay can be set within a range of
@@ -382,16 +425,18 @@ promoting a standby node to active status. The delay can be set within a range o
 To remove a node that is either **stopped** or **unreachable**, the following
 runtime command must be used:
 
-```bash
-zabbix_server -R ha_remove_node=`zabbix1`
-```
+!!! info ""
+    ``` yaml
+    zabbix_server -R ha_remove_node=`zabbix1`
+    ```
 
 Executing this command removes the node from the HA cluster. Upon successful
 removal, the output confirms the action:
 
-```bash
-Removed node "zabbix1" with ID "cm8agwr2b0001h6kzzsv19ng6"
-```
+!!! info ""
+    ``` yaml
+    Removed node "zabbix1" with ID "cm8agwr2b0001h6kzzsv19ng6"
+    ```
 
 If the removed node becomes available again, it can be added back automatically
 when it reconnects to the cluster. These runtime commands provide flexibility for
