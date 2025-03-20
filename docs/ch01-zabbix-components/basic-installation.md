@@ -1819,21 +1819,22 @@ correct IP addresses and open the correct firewall ports.
 
 ### Installing the frontend with NGINX
 
-RedHat
-
-```
-# dnf install zabbix-nginx-conf zabbix-web-mysql -y
-or if you used PostgreSQL
-# dnf install zabbix-nginx-conf zabbix-web-pgsql -y
-```
-
-Ubuntu
-
-```
-# sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
-or if you use PostgreSQL
-# sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
-```
+!!! info "install frontend packages"
+    RedHat
+    
+    ``` yaml
+    # dnf install zabbix-nginx-conf zabbix-web-mysql -y
+    or if you used PostgreSQL
+    # dnf install zabbix-nginx-conf zabbix-web-pgsql -y
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    # sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
+    or if you use PostgreSQL
+    # sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
+    ```
 
 This command will install the front-end packages along with the required dependencies
 for Nginx. If you are installing the front-end on a different server, make sure to
@@ -1844,95 +1845,104 @@ If you don't remember how to add the repository, have a look at the topic [Addin
 First thing we have to do is alter the Nginx configuration file so that we don't
 use the standard config.
 
-RedHat
-
-```
-# vi /etc/nginx/nginx.conf
-```
+!!! info "edit nginx config for RedHat"
+    
+    ``` yaml
+    vi /etc/nginx/nginx.conf
+    ```
 
 In this configuration file look for the following block that starts with :
 
-```
-   server {
-        listen       80;
-        listen       [::]:80;
-        server_name  _;
-        root         /usr/share/nginx/html;
-
-        # Load configuration files for the default server block.
-        include /etc/nginx/default.d/*.conf;
-```
+!!! info "original config"
+    ``` yaml
+       server {
+            listen       80;
+            listen       [::]:80;
+            server_name  _;
+            root         /usr/share/nginx/html;
+    
+            # Load configuration files for the default server block.
+            include /etc/nginx/default.d/*.conf;
+    ```
 
 Then, comment out the following server block within the configuration file:
 
-```
-    server {
-#        listen       80;
-#        listen       [::]:80;
-#        server_name  _;
-#        root         /usr/share/nginx/html;
-```
+!!! info "config after edit"
+    ``` yaml
+        server {
+    #        listen       80;
+    #        listen       [::]:80;
+    #        server_name  _;
+    #        root         /usr/share/nginx/html;
+    ```
 
 The Zabbix configuration file must now be modified to reflect the current environment.
 Open the following file for editing:
 
-```
-vi /etc/nginx/conf.d/zabbix.conf
-```
+!!! info "edit zabbix config for nginx"
+    ``` yaml
+    vi /etc/nginx/conf.d/zabbix.conf
+    ```
 
 And alter the following lines:
 
-```
-server {
-        listen          8080;
-        server_name     example.com;
-
-        root    /usr/share/zabbix;
-
-        index   index.php;
-```
+!!! info "original config"
+    ``` yaml
+    server {
+            listen          8080;
+            server_name     example.com;
+    
+            root    /usr/share/zabbix;
+    
+            index   index.php;
+    ```
 
 Replace the first 2 lines with the correct port and domain for your front-end in
 case you don't have a domain you can replace `servername` with `_;` like in the
 example below:
 
-```
-server {
-#        listen          8080;
-#        server_name     example.com;
-        listen          80;
-        server_name     _;
-
-        root    /usr/share/zabbix;
-
-        index   index.php;
-```
+!!! info "config after the edit"
+    ``` yaml
+    server {
+    #        listen          8080;
+    #        server_name     example.com;
+            listen          80;
+            server_name     _;
+    
+            root    /usr/share/zabbix;
+    
+            index   index.php;
+    ```
 
 The web server and PHP-FPM service are now ready for activation and persistent
 startup. Execute the following commands to enable and start them immediately:
 
-Ubuntu
+!!! info "edit nginx config for ubuntu"
 
-```bash
-# sudo vi /etc/zabbix/nginx.conf
-```
+    
+    ``` yaml
+    sudo vi /etc/zabbix/nginx.conf
+    ```
 
 replace the Following lines:
 
-```
-server {
-#        listen          8080;
-#        server_name     example.com;
-```
+!!! info "original config"
+
+    ``` yaml
+    server {
+    #        listen          8080;
+    #        server_name     example.com;
+    ```
 
 with :
 
-```bash
-server {
-        listen          xxx.xxx.xxx.xxx:80;
-        server_name     "";
-
-```
+!!! info "config after edit"
+    ``` yaml
+    server {
+            listen          xxx.xxx.xxx.xxx:80;
+            server_name     "";
+    
+    ```
 
 where xxx.xxx.xxx.xxx is your IP or DNS name.
 
@@ -1940,83 +1950,87 @@ where xxx.xxx.xxx.xxx is your IP or DNS name.
     server_name is normally replaced with the fqdn name of your machine. If you
     have no fqdn you can keep it open like in this example.
 
-RedHat
+!!! info "restart the front-end services"
 
-```
-systemctl enable php-fpm --now
-systemctl enable nginx --now
-```
-
-Ubuntu
-
-```
-sudo systemctl enable nginx php8.3-fpm
-sudo systemctl restart nginx php8.3-fpm
-```
+    RedHat
+    
+    ``` yaml
+    systemctl enable php-fpm --now
+    systemctl enable nginx --now
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo systemctl enable nginx php8.3-fpm
+    sudo systemctl restart nginx php8.3-fpm
+    ```
 
 Let's verify if the service is properly started and enabled so that it survives
 our reboot next time.
 
-RedHat and Ubuntu
-
-```
-# systemctl status nginx
-
-● nginx.service - The nginx HTTP and reverse proxy server
-     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
-    Drop-In: /usr/lib/systemd/system/nginx.service.d
-             └─php-fpm.conf
-     Active: active (running) since Mon 2023-11-20 11:42:18 CET; 30min ago
-   Main PID: 1206 (nginx)
-      Tasks: 2 (limit: 12344)
-     Memory: 4.8M
-        CPU: 38ms
-     CGroup: /system.slice/nginx.service
-             ├─1206 "nginx: master process /usr/sbin/nginx"
-             └─1207 "nginx: worker process"
-
-Nov 20 11:42:18 zabbix-srv systemd[1]: Starting The nginx HTTP and reverse proxy server...
-Nov 20 11:42:18 zabbix-srv nginx[1204]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-Nov 20 11:42:18 zabbix-srv nginx[1204]: nginx: configuration file /etc/nginx/nginx.conf test is successful
-Nov 20 11:42:18 zabbix-srv systemd[1]: Started The nginx HTTP and reverse proxy server.
-
-```
+!!! info "check if the service is running"
+    ``` yaml
+    # systemctl status nginx
+    
+    ● nginx.service - The nginx HTTP and reverse proxy server
+         Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
+        Drop-In: /usr/lib/systemd/system/nginx.service.d
+                 └─php-fpm.conf
+         Active: active (running) since Mon 2023-11-20 11:42:18 CET; 30min ago
+       Main PID: 1206 (nginx)
+          Tasks: 2 (limit: 12344)
+         Memory: 4.8M
+            CPU: 38ms
+         CGroup: /system.slice/nginx.service
+                 ├─1206 "nginx: master process /usr/sbin/nginx"
+                 └─1207 "nginx: worker process"
+    
+    Nov 20 11:42:18 zabbix-srv systemd[1]: Starting The nginx HTTP and reverse proxy server...
+    Nov 20 11:42:18 zabbix-srv nginx[1204]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+    Nov 20 11:42:18 zabbix-srv nginx[1204]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+    Nov 20 11:42:18 zabbix-srv systemd[1]: Started The nginx HTTP and reverse proxy server.
+    ```
 
 With the service operational and configured for automatic startup, the final preparatory
 step involves adjusting the firewall to permit inbound HTTP traffic. Execute the
 following commands:
 
-RedHat
-
-```
-firewall-cmd --add-service=http --permanent
-firewall-cmd --reload
-```
-
-Ubuntu
-
-```
-# sudo ufw allow 80/tcp
-```
+!!! info "configure the firewall"
+    RedHat
+    
+    ``` yaml
+    firewall-cmd --add-service=http --permanent
+    firewall-cmd --reload
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo ufw allow 80/tcp
+    ```
 
 Open your browser and go to the url or ip of your front-end :
 
-```
-http://<ip or dns of the zabbix frontend server>/
-```
+!!! info "front-end configuration"
+    ``` yaml
+    http://<ip or dns of the zabbix frontend server>/
+    ```
 
 If all goes well you should be greeted with a Zabbix welcome page. In case you
 have an error check the configuration again or have a look at the nginx log file :
 
-```
-/var/log/nginx/error.log
-```
+!!! info ""
+    ``` yaml
+    /var/log/nginx/error.log
+    ```
 
 or run the following command :
 
-```
-journalctl -xe
-```
+!!! info ""
+    ``` yaml
+    journalctl -xe
+    ```
 
 This should help you in locating the errors you made.
 
@@ -2032,77 +2046,82 @@ The Zabbix frontend presents a limited array of available localizations, as show
 What if we want to install Chinese as language or another language from the list?
 Run the next command to get a list of all locales available for your OS.
 
-RedHat
-
-```
-dnf list glibc-langpack-*
-```
-
-Ubuntu
-
-```
-apt-cache search language-pack
-```
+!!! info "install language packs"
+    RedHat
+    
+    ``` yaml
+    dnf list glibc-langpack-*
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    apt-cache search language-pack
+    ```
 
 This will give you on Redhat based systems a list like:
 
-```
-Installed Packages
-glibc-langpack-en.x86_64
-Available Packages
-glibc-langpack-aa.x86_64
-...
-
-glibc-langpack-zu.x86_64
-
-
-On Ubuntu it will look like 
-language-pack-kab - translation updates for language Kabyle
-language-pack-kab-base - translations for language Kabyle
-language-pack-kn - translation updates for language Kannada
-language-pack-kn-base - translations for language Kannada
-...
-
-language-pack-ko - translation updates for language Korean
-language-pack-ko-base - translations for language Korean
-language-pack-ku - translation updates for language Kurdish
-language-pack-ku-base - translations for language Kurdish
-language-pack-lt - translation updates for language Lithuanian
-```
+!!! info ""
+    ``` yaml
+    Installed Packages
+    glibc-langpack-en.x86_64
+    Available Packages
+    glibc-langpack-aa.x86_64
+    ...
+    
+    glibc-langpack-zu.x86_64
+    ```
+!!! info "on Ubuntu it will look like :"    
+    ``` yaml
+    language-pack-kab - translation updates for language Kabyle
+    language-pack-kab-base - translations for language Kabyle
+    language-pack-kn - translation updates for language Kannada
+    language-pack-kn-base - translations for language Kannada
+    ...
+    
+    language-pack-ko - translation updates for language Korean
+    language-pack-ko-base - translations for language Korean
+    language-pack-ku - translation updates for language Kurdish
+    language-pack-ku-base - translations for language Kurdish
+    language-pack-lt - translation updates for language Lithuanian
+    ```
 
 Let's search for our Chinese locale to see if it is available. As you can see
 the code starts with zh.
 
-RedHat
-
-```
-# dnf list glibc-langpack-* | grep zh
-
-glibc-langpack-zh.x86_64
-glibc-langpack-lzh.x86_64
-```
-
-Ubuntu
-
-```
-apt-cache search language-pack | grep -i zh
-```
+!!! info "search for language pack"
+    RedHat
+    
+    ``` yaml
+    dnf list glibc-langpack-* | grep zh
+    ```
+    ```
+    glibc-langpack-zh.x86_64
+    glibc-langpack-lzh.x86_64
+    ```
+    
+    Ubuntu
+    
+    ```
+    sudo apt-cache search language-pack | grep -i zh
+    ```
 
 The command outputs two lines; however, given the identified language code,
 'zh_CN,' only the first package requires installation.
 
-RedHat
-
-```
-# dnf install glibc-langpack-zh.x86_64 -y
-```
-
-Ubuntu
-
-```
-# sudo apt install language-pack-zh-hans
-# sudo systemctl restart nginx php8.3-fpm
-```
+!!! info "install the package"
+    RedHat
+    
+    ``` yaml
+    dnf install glibc-langpack-zh.x86_64 -y
+    ```
+    
+    Ubuntu
+    
+    ``` yaml
+    sudo apt install language-pack-zh-hans
+    sudo systemctl restart nginx php8.3-fpm
+    ```
 
 When we return now to our front-end we are able to select the Chinese language,
 after a reload of our browser.
