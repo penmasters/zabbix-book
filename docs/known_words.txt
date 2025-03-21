@@ -105,4 +105,8 @@ virtual_ipaddress
 virtual_router_id
 vrrp_instance
 vrrp_track_process
-
+systemd
+json
+sh
+ex
+xfs
