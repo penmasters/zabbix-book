@@ -110,3 +110,7 @@ json
 sh
 ex
 xfs
+userparameter
+userparameters
+ok
+lld
