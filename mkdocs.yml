@@ -50,6 +50,7 @@ nav:
         - ch07-zabbix-alerts/chapter.md
     - "Chapter 08 : LLD":
         - ch08-zabbix-lld/chapter.md
+        - Custom LLD: ch08-zabbix-lld/custom.md
     - "Chapter 09 : Extending Zabbix": 
         - ch09-zabbix-extending/chapter.md
     - "Chapter 10 : Discovery": 
