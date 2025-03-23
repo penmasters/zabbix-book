@@ -13,7 +13,7 @@ Those three parts of the Zabbix dataflow in our Zabbix environment can be easily
 
 But when we look at **Items** specifically, it's also possible to alter our data before storing the metrics in Zabbix. This is something we do with a process called pre-processing, which will take the collected data and change it before storing it in the Zabbix database. Our dataflow in the end then looks as such:
 
-![Basic dataflow](./dataflow/dataflow-basic.png){ align=left }
+![Basic dataflow](./datacollection/ch04-dataflow-basic.png){ align=left }
 *4.1 Zabbix basic dataflow*
 
 This gives us a very basic understanding of what steps we have to go through in Zabbix to get from data being collected to alerts being sent out. Very important to us Zabbix administrators, as we need to go through these steps each time we want to end up with a certain type of monitoring.
@@ -65,7 +65,7 @@ As you can imagine, the conditions will be very important to make sure that oper
 
 To summarize, all the steps in the dataflow work together to make sure that you can build the perfect Zabbix environment. When we put the entire dataflow together it looks like the image below.
 
-![Detailed dataflow](./dataflow/dataflow-detailed.png){ align=left }
+![Detailed dataflow](./datacollection/ch04-dataflow-detailed.png){ align=left }
 *4.2 Zabbix detailed dataflow*
 
 Here we can see the various steps coming together.
