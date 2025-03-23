@@ -8,8 +8,8 @@ Example :
 - **First** : my first item
 - **Second** : my second item
 
-3. When wat to place special emphasis on a word use ` before and after the word so it looks like
-    `my special word`.
+3. When wat to place special emphasis on a word use \` before and after the word so it looks like
+   `my special word`.
 5. When you create a table always try to align the text in the table to the left.
    This can be doen with :---- as can be seen in next example
 
