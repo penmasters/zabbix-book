@@ -32,6 +32,7 @@ Often times, Zabbix users and administrators make the misconception here that a 
 But we cannot stop there with **Items** just yet, as we also mentioned an additional part of our dataflow. It is possible to change the collected metric on an item before storing it into the Zabbix database. We do this with a process called preprocessing. 
 
 Preprocessing is something we add onto our items when creating the configuration of such items. It is a part of the item, but not mandatory on every single item. General rule:
+
 - Collect metric and store as-is in the database? **No preprocessing**
 - Collect metric and change before storing in the database? **Add preprocessing**
 
@@ -41,6 +42,7 @@ We will discuss this in more detail later on in the book as well.
 With all of the collected metrics, we can now also start to create triggers if we would want to. A trigger is Zabbix is nothing more than a bit of configuration on our host, which we will use to define thresholds using metrics collected on items. 
 
 A trigger can be setup to use the data collected on an item in a logical expression. This logical expression will define the threshold and when data is received on the item(s) used in the logical expression the trigger can go or stay in on of two states:
+
 - PROBLEM: When the logical expression is TRUE
 - OK: When the logical expression is FALSE
 
@@ -48,6 +50,7 @@ This is how we define if our data is in a good or a bad state.
 
 ### Events
 When we discuss triggers however, we cannot skip past the Events. Whenever a trigger changes state, for example it was in OK state and goes into the PROBLEM state, then Zabbix will create a new Event. There's three types of these events created by our triggers:
+
 - Problem event: When the trigger goes from OK to PROBLEM
 - Problem resolution event: When the trigger goes from PROBLEM to OK
 - Problem update event: When someone manually updates a problem
@@ -69,6 +72,7 @@ To summarize, all the steps in the dataflow work together to make sure that you 
 *4.2 Zabbix detailed dataflow*
 
 Here we can see the various steps coming together.
+
 - We have our **Hosts** container our **Items** and **Triggers**. 
 - Our **Items** are collecting metrics
 - The **Triggers** are using data from **Items** to detected problems and create problem **Events**
