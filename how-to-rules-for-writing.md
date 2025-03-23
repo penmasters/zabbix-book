@@ -1,7 +1,7 @@
 # Some guidlines when writing chapters
 
 1. Always start with # followed by the name of the chapter.
-2. When creating lists use `**` before and after so it's in bold
+2. When creating lists use `**` before and after so it's in ***bold***
 
 Example :
 
@@ -19,3 +19,5 @@ Example :
 
 5. When writing sentences try to keep them at a maximum lenght of `80` charcaters
    for visability.
+6. If you need to use colors you can use html like : <span style="color:blue">some *blue* text</span>
+   but try to avoid unless it really helps for visibility
