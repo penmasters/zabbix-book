@@ -16,6 +16,7 @@ docs_dir: docs
 nav:
     - Welcome: index.md
     - Guidlines: Guidelines.md
+    - Supporters and contributors: Supporters-Contributors.md
     - Getting started:
         - Initial steps: ch00-getting-started/initial-steps.md
         - System Requirements: ch00-getting-started/Requirements.md

@@ -25,4 +25,4 @@
   - cleanup your branch
     - git branch -d "<your branch name\>"
 - Create a pull requests so that we can merge it :)
-- Follow these [guidlines](../how-to-rules-for-writing.md) when you write a topic.
+- Follow these [guidelines](https://github.com/penmasters/zabbix-book/how-to-rules-for-writing.md) when you write a topic.
