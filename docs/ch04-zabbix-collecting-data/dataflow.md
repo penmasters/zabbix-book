@@ -76,6 +76,6 @@ Here we can see the various steps coming together.
 
 Important to note here is that if an item is collecting metrics, it doesn't necessarily need to have a trigger attached to it. The trigger expression is a separate configuration where we can choose which items we want to define thresholds on. In the end, not ever item needs to start creating problems. We can also see that we can use several items or event several items from different hosts in a single trigger.
 
-The same is the case for our events. Not every event will match the conditions on an action. In practice, this means that some problems will only show up in your Zabbix frontend, while other might go on to send you an alert message or even execute commands or scripts.
+The same is the case for our events. Not every event will match the conditions on an action. In practice, this means that some problems will only show up in your Zabbix frontend, while other might go on to send you an alert message or even execute commands or scripts. A single event can also match the conditions on multiple actions, since we mentioned that all events are always send to all action for evaluation. This can be useful, for example if you want to split you messaging and your script execution in different action to keep things organised.
 
 Now that we understand the various parts of our Zabbix dataflow we can dive deeper into creating the configuration for the steps in the dataflow. 
