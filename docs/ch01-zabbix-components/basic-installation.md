@@ -81,7 +81,7 @@ To create the MariaDB repository file, execute the following command in your ter
 
     Ubuntu
     ``` yaml
-    sudo apt-get install apt-transport-https curl
+    sudo apt install apt-transport-https curl
     sudo mkdir -p /etc/apt/keyrings
     sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
     
@@ -171,7 +171,7 @@ To install the MariaDB server and client, execute the following command:
 
     Ubuntu
     ``` yaml
-    sudo apt-get install mariadb-server
+    sudo apt install mariadb-server
     ```
 
 This command will download and install both the server and client packages, enabling
