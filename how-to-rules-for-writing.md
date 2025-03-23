@@ -19,5 +19,3 @@ Example :
 
 5. When writing sentences try to keep them at a maximum lenght of `80` charcaters
    for visability.
-6. If you need to use colors you can use html like : <font color='gold'>yellow</font>
-   but try to avoid unless it really helps for visibility
