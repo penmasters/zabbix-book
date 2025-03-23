@@ -12,8 +12,8 @@ support to help bring this book to life. Their contributions have enabled us to
 maintain high-quality content, support open-source initiatives, and ensure that
 this book remains accessible to as many people as possible.
 
-- **OICTS** : https://oicts.com/
-- **ZABBIX** : https://www.zabbix.com/
+- **OICTS** : [https://oicts.com/](https://oicts.com/)
+- **ZABBIX** : [https://www.zabbix.com/](https://www.zabbix.com/)
 
 ---
 
