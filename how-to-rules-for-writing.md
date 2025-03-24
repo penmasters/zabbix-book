@@ -24,7 +24,7 @@ Example :
    
 6. If you like to add images just create a folder under the chapter folder with
    the name of your topic and place the `.png` file it. To reference to your image
-   just add the name like `\!\[image name]\(name.png)` in your document. mkdocs will find
+   just add the name like **\!\[image name]\(name.png)** in your document. mkdocs will find
     the image by itself
    
 7. Naming your images. Always use the following naming convention: `chxx-topic-imagename.png`.
