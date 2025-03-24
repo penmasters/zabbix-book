@@ -13,7 +13,7 @@ which we will discuss in detail.
 * The Zabbix web server
 * The Zabbix database
 
-![overview](./basic-installation/zabbix-server.png){ align=left }
+![overview](ch01-basic-installation-zabbixserver.png){ align=left }
 *1.1 Zabbix basic split installation*
 
 All of these components can either be installed on a single server or distributed
@@ -1156,7 +1156,8 @@ for your environment, which will be Rocky Linux 9 or Ubuntu 24.04 in our case.
 We will be installing the Zabbix Server along with NGINX as the web server for
 the front-end. Make sure to download the relevant packages for your chosen configuration.
 
-![ch1-zabbix-download.png](basic-installation/ch1-zabbix-download.png)
+![Zabbix Download](./basic-installation/ch01-basic-installation-zabbixdownload.png)
+*1.2 Zabbix download*
 
 If you make use of a RHEL based system like Rocky then the first step is to disable
 the Zabbix packages provided by the EPEL repository, if it's installed on your system.
@@ -1528,7 +1529,8 @@ for your environment, which will be Rocky Linux 9 or Ubuntu 24.04 in our case.
 We will be installing the Zabbix Server along with NGINX as the web server for
 the front-end. Make sure to download the relevant packages for your chosen configuration.
 
-![ch1-zabbix-download.png](basic-installation/ch1-zabbix-download.png)
+![zabbix-download](ch01-basic-installation-zabbixdownload.png)
+*1.3 Zabbix download*
 
 If you make use of a RHEL based system like Rocky then the first step is to disable
 the Zabbix packages provided by the EPEL repository, if it's installed on your system.
@@ -2037,11 +2039,13 @@ This should help you in locating the errors you made.
 Upon accessing the appropriate URL, a page resembling the one illustrated below
 should appear:
 
-![overview](./basic-installation/ch01-setup.png){ align=left }
+![overview](ch01-basic-installation-setup.png){ align=left }
+*1.4 Zabbix welcome*
 
 The Zabbix frontend presents a limited array of available localizations, as shown.
 
-![overview language](./basic-installation/ch01-setup-language.png){ align=left }
+![overview language](ch01-basic-installation-setuplanguage.png){ align=left }
+*!.5 Zabbix welcome language choice*
 
 What if we want to install Chinese as language or another language from the list?
 Run the next command to get a list of all locales available for your OS.
@@ -2126,7 +2130,8 @@ The command outputs two lines; however, given the identified language code,
 When we return now to our front-end we are able to select the Chinese language,
 after a reload of our browser.
 
-![select language](./basic-installation/ch01-select-language.png){ align=left }
+![select language](ch01-basic-installation-selectlanguage.png){ align=left }
+*1.6 Zabbix select language*
 
 ???+ note
     If your preferred language is not available in the Zabbix front-end, don't
@@ -2145,7 +2150,8 @@ then be taken to a screen to verify that all prerequisites are satisfied. If any
 prerequisites are not fulfilled, address those issues first. However, if everything
 is in order, you should be able to proceed by clicking `Next`.
 
-![pre-requisites](./basic-installation/ch01-pre-requisites.png){ align=left }
+![pre-requisites](ch01-basic-installation-prerequisites.png){ align=left }
+*1.7 Zabbix pre-requisites*
 
 On the next page, you'll configure the database connection parameters:
 
@@ -2161,7 +2167,8 @@ On the next page, you'll configure the database connection parameters:
 Ensure that the `Database TLS encryption` option is not selected, and then click
 `Next step` to proceed.
 
-![dbconnection](./basic-installation/ch01-db-connection.png){ align=left }
+![dbconnection](ch01-basic-installation-dbconnection.png){ align=left }
+*1.8 Zabbix connections*
 
 You're almost finished with the setup! The final steps involve:
 
@@ -2177,16 +2184,19 @@ Once these settings are configured, you can complete the setup and proceed with 
     in time-sensitive actions and events, as the server’s timezone is often used for
     calculating and displaying time-related information.
 
-![settings](./basic-installation/ch01-settings.png){ align=left }
+![settings](ch01-basic-installation-settings.png){ align=left }
+*1.9 Zabbix summary*
 
 After clicking `Next step` again, you'll be taken to a page confirming that the
 configuration was successful. Click `Finish` to complete the setup process.
 
-![settings](./basic-installation/ch01-final.png){ align=left }
+![settings](ch01-basic-installation-final.png){ align=left }
+*1.10 Zabbix install*
 
 We are now ready to login :
 
-![settings](./basic-installation/ch01-login.png)
+![settings](ch01-basic-installation-login.png)
+*1.11 Zabbix login*
 
 Login : Admin Password : zabbix
 
