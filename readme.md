@@ -49,6 +49,7 @@ Read the book here : <https://penmasters.github.io/zabbix-book/>
 
 Thanks for your contribution to the project!
 
+![Contributors Count](https://img.shields.io/github/contributors/penmasters/zabbix-book)
 
 [![Contributors Avatars](https://contrib.rocks/image?repo=penmasters/zabbix-book)](https://github.com/penmasters/zabbix-book/graphs/contributors)
 
