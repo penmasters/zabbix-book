@@ -52,6 +52,7 @@ nav:
     - "Chapter 08 : LLD":
         - ch08-zabbix-lld/chapter.md
         - Custom LLD: ch08-zabbix-lld/custom.md
+        - Dependent LLD: ch08-zabbix-lld/lld-with-dependent-items.md
     - "Chapter 09 : Extending Zabbix": 
         - ch09-zabbix-extending/chapter.md
     - "Chapter 10 : Discovery": 
