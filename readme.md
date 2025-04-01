@@ -43,3 +43,13 @@ Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 [cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
 
 Read the book here : <https://penmasters.github.io/zabbix-book/>
+
+
+## Contributors
+
+Thanks for your contribution to the project!
+
+![Contributors Count](https://img.shields.io/github/contributors/penmasters/zabbix-book)
+
+[![Contributors Avatars](https://contrib.rocks/image?repo=penmasters/zabbix-book)](https://github.com/penmasters/zabbix-book/graphs/contributors)
+
