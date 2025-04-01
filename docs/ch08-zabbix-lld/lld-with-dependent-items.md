@@ -391,17 +391,69 @@ Fill in the following values :
 
 ![Filter macros](ch08-dependent-lld-create-filter-macro.png)
 
-Now we can execute our discovery rule and sent some updated values to Zabbix when we go to `latest data` the device will not be visible anymore.
-When we go to the items on our host we will see that the item is `Disabled` with an orange exclamation mark behind it when we move our mouse over it we will see following notification.
-`The item is not discovered anymore and has been disabled, will be deleted in 6d 23h 36m.`
+After executing our discovery rule and sending updated values to Zabbix, we can
+verify the filter's effectiveness by checking the `Latest data` view, where the
+excluded device no longer appears.
 
-This behaviour can be changed in our Discovery rule.
+When navigating to the `Items` section of our host, we'll observe that the previously
+discovered item for the filtered device now displays a `Disabled` status with an
+accompanying orange exclamation mark icon. Hovering over this icon reveals the
+system notification: `The item is not discovered anymore and has been disabled, will be deleted in 6d 23h 36m.`
 
+This automatic cleanup behavior for undiscovered items follows Zabbix's default
+retention policy, which can be customized by modifying the `Keep lost resources period`
+parameter in the Discovery rule settings to align with your organization's monitoring
+governance requirements.
+
+This concludes our chapter.
 
 # Conclusion
 
+Low-Level Discovery in Zabbix represents a powerful approach to dynamic monitoring
+that scales efficiently with your infrastructure. Through this chapter, we've explored
+how the combination of LLD with dependent items and discovery filters creates a robust
+framework for automated monitoring that remains both comprehensive and manageable.
+
+By implementing dependent items within discovery rules, we've seen how to build
+sophisticated monitoring relationships without the performance overhead of multiple
+direct checks. This approach not only reduces the load on monitored systems but
+also simplifies the overall monitoring architecture by establishing clear parent-child
+relationships between metrics.
+
+The strategic application of LLD filters, as demonstrated in our examples, transforms
+raw discovery data into precisely targeted monitoring. Instead of drowning in irrelevant
+metrics, your Zabbix instance now focuses only on what matters to your organization's
+specific needs. Whether filtering by regex patterns, system types, or operational
+states, these filters act as the gatekeepers that maintain monitoring relevance
+as your environment expands.
+
+Perhaps most importantly, the techniques covered in this chapter enable truly scalable
+monitoring that grows automatically with your infrastructure. New servers, applications,
+or network devices are seamlessly incorporated into your monitoring framework without
+manual intervention, ensuring that visibility expands in lockstep with your environment.
+
+As you implement these concepts in your own Zabbix deployments, remember that effective
+monitoring is about balance and capturing sufficient detail while avoiding data overload.
+The combination of LLD, dependent items, and thoughtful filtering provides exactly
+this balance, giving you the tools to build monitoring systems that scale without
+sacrificing depth or precision.
+
+With these techniques at your disposal, your Zabbix implementation can evolve from
+a basic monitoring tool to an intelligent system that adapts to your changing infrastructure,
+providing actionable insights without constant reconfiguration.
+
 # Questions
 
+- How do LLD filters change the monitoring paradigm from "collect everything" to a more targeted approach?
+- How does Zabbix LLD fundamentally differ from traditional static monitoring approaches ?
+- Break down the components of the JSONPath expression $.data..[?(@.name=='{#PRINTER.NAME}')].status.first()
+  and explain how each part contributes to extracting the correct data.
+- How would you modify the example to monitor printer ink levels in addition to printer status?
+
 # Useful URLs
-https://www.jsonquerytool.com/
-https://regex101.com/
+
+- https://www.jsonquerytool.com/
+- https://regex101.com/
+- https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery#filter
+- https://blog.zabbix.com/lld-filtering-with-macros/24959/
+
