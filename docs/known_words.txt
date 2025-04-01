@@ -125,3 +125,4 @@ uytterhoeven
 preprocessing
 txt
 vfs
+jsonquerytool
