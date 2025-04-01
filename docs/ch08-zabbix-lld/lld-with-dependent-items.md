@@ -371,8 +371,32 @@ a status will be processed.
    new value.
    ```
 
-Lets see now how we can remove the device `his is not a printer` from our list
+Lets see now how we can remove the device `this is not a printer` from our list
 since we don't want to monitor this one.
+
+Let's go back to our LLD discovery rule this time to the tab Filters and add the
+following to the fields:
+
+- **Label** : {#PRINTER.NAME} `does not match`
+- ** regular expression** : `{$PRINTERS.NOT.TO.DETECT}`
+
+![LLD Filters](ch08-dependent-lld-create-filters.png)
+
+Press update and go to our Host and click on the tab `Macros`. Here we will create
+our macro and link it with a regular expression. 
+Fill in the following values :
+
+- **Macro**: {$PRINTERS.NOT.TO.DETECT}
+- **Value** : ^This is not a printer$
+
+![Filter macros](ch08-dependent-lld-create-filter-macro.png)
+
+Now we can execute our discovery rule and sent some updated values to Zabbix when we go to `latest data` the device will not be visible anymore.
+When we go to the items on our host we will see that the item is `Disabled` with an orange exclamation mark behind it when we move our mouse over it we will see following notification.
+`The item is not discovered anymore and has been disabled, will be deleted in 6d 23h 36m.`
+
+This behaviour can be changed in our Discovery rule.
+
 
 # Conclusion
 
