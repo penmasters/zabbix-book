@@ -5,7 +5,7 @@ different from using regular LLD. You might even be surprised how easy it is and
 how many times it will be useful to know how to do
 
 ???+ note
-    For this chapter we start with a working system without Zabbix agent. You can
+    For this chapter we start with a working system with a passive Zabbix agent. You can
     always refer to Chapter 01 if you like to know how to setup Zabbix.
 
 
