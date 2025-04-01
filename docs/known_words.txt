@@ -123,3 +123,7 @@ liefting
 oicts
 uytterhoeven
 preprocessing
+txt
+vfs
+jsonquerytool
+low_level_discovery
