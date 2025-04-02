@@ -1,31 +1,28 @@
 # Low Level Discovery with Dependent items.
 
-Low level discovery can also be done using dependent items. Actually it's not very
-different from using regular LLD. You might even be surprised how easy it is and
-how many times it will be useful to know how to do
+Efficiency in monitoring isn't just about automation it's also about minimizing
+resource usage. Low-Level Discovery (LLD) with dependent items in Zabbix offers
+a powerful way to reduce agent load and database overhead by collecting data once
+and extracting multiple metrics from it.
+
+Instead of creating separate item queries for each discovered entity, dependent
+items allow you to process a single data source such as a JSON response, log entry,
+or SNMP bulk data and extract relevant metrics dynamically. This approach significantly
+optimizes performance while maintaining full automation.
+
+In this chapter, we'll explore how to implement LLD with dependent items, configure
+preprocessing rules, and leverage this technique to make your Zabbix monitoring
+more efficient, scalable, and resource friendly by using a practical example.
+
+Let’s get started!
+
+---
 
 ???+ note
     For this chapter we start with a working system with a passive Zabbix agent. You can
     always refer to Chapter 01 if you like to know how to setup Zabbix.
-
-
-
-In modern IT environments, automation is key to efficient monitoring. Zabbix's
-`Low-Level Discovery (LLD)` simplifies the process by automatically detecting
-and creating items, triggers, and graphs for dynamic components like network interfaces,
-disks, or services.  
-
-It can be a good start to have a look at our previous topic `Custom LLD` to get
-a better understanding on how LLD works.
-
-One powerful yet often overlooked optimization is using `dependent items` within
-an LLD rule. Instead of polling each discovered item separately leading to unnecessary
-load on the system. You can leverage a single master item to collect structured data
-and extract relevant values using `preprocessing rules` in Zabbix. This reduces
-query overhead, improves performance, and ensures efficient data processing.
-
-In this chapter, we will explore how to configure LLD using dependent items, walking
-through a practical example to streamline monitoring while minimizing system impact.  
+    It can be a good start to have a look at our previous topic `Custom LLD` to get
+    a better understanding on how LLD works.
 
 
 ## Creating our custom data.
@@ -369,12 +366,10 @@ If the status from the device changes again zabbix will create an update for the
 a status will be processed.
 
 ???+ note
-   ```
    Low Level will work in 2 steps first step is the detection of the new devices
    and second step is populating the items with the correct data. Remember that
    we did an item interval of 1m so it can take up to 1m before our items gets a
    new value.
-   ```
 
 Lets see now how we can remove the device `this is not a printer` from our list
 since we don't want to monitor this one.
