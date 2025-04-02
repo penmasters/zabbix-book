@@ -1,5 +1,19 @@
 # Custom Low Level Discovery
 
+Zabbix's Low-Level Discovery (LLD) plays a crucial role in dynamically detecting
+and managing monitored entities. While Zabbix provides built-in discovery rules,
+real-world environments often demand more flexibility and customization.
+
+In this chapter, we will explore custom LLD techniques, allowing you to create powerful,
+tailored discovery mechanisms that go beyond standard templates. You'll learn how
+to use scripts and custom rules to automatically detect and monitor services,
+network interfaces, and other dynamic components within your infrastructure.
+
+Whether you're monitoring cloud environments, network devices, or application-specific
+metrics, mastering custom LLD will help you reduce manual work, improve accuracy,
+and scale your monitoring effortlessly. Let’s dive in!
+
+
 ???+ note 
     For this chapter we start with a working system with a proper configured agent
     in passive mode. If you have no clue how to do this go back to chapter 01.
