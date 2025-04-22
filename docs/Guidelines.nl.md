@@ -1,20 +1,20 @@
-# Guidelines
+# Richtlijnen
 
-## How to contribute
+## Hoe u kunt bijdragen
 
 
-- Sign the [deed of transfer](./files/form deed of transfer Book Zabbix.pdf)
-  preferable electronically
+- Onderteken de [akte van overdracht](./files/form deed of transfer Book
+  Zabbix.pdf)bij voorkeur elektronisch
 - Kloon dit project naar uw Github account
 - Kloon de repository naar uw pc
 
-- Install the needed software for Mkdocs to work, check the file in the root
-  folder how-to-install-mkdocs.md
+- Installeer de benodigde software om Mkdocs te laten werken. Controleer het
+  bestand in de hoofdmap how-to-install-mkdocs.md
   - Maak een nieuwe branch om uw wijzigingen door te voeren
-    - git branch "<your branch name\>"
-    - git checkout "<your branch name\>"
-  - Make the changes you want and commit them
-    - git add "files you changed"
+    - git branch ""
+    - git checkout ""
+  - Maak de gewenste wijzigingen en commit ze
+    - git add "bestanden die je hebt gewijzigd"
     - git commit -m "add useful commit info"
   - Return back to the main branch
     - git checkout main
