@@ -5,12 +5,12 @@
 
 - Sign the [deed of transfer](./files/form deed of transfer Book Zabbix.pdf)
   preferable electronically
-- Clone this project to your Github account
-- Clone the repository to you pc
+- Kloon dit project naar uw Github account
+- Kloon de repository naar uw pc
 
 - Install the needed software for Mkdocs to work, check the file in the root
   folder how-to-install-mkdocs.md
-  - Create a new branch to make your changes
+  - Maak een nieuwe branch om uw wijzigingen door te voeren
     - git branch "<your branch name\>"
     - git checkout "<your branch name\>"
   - Make the changes you want and commit them
