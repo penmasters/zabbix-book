@@ -1,60 +1,67 @@
-# Welkom
-Dit boek is geboren uit een eenvoudig verlangen: **iets teruggeven aan de community**.
-Na jarenlang met Zabbix te hebben gewerkt, en het schrijven van vele andere publicaties
-over het product, voelden Patrik en Nathan een sterke drang om hun kennis te delen
-op een manier die toegankelijk was voor iedereen. Zo ontstond het initiële idee van
-een gratis, online Zabbix-bron – **een door de gemeenschap gedreven project gericht op het versterken van gebruikers**.
+# Welcome
 
-Naarmate de online bron groeide, groeide ook de visie. We erkenden het potentieel
-om iets nog impactvoller te creëren. Dit leidde tot de oprichting van een stichting,
-toegewijd aan het waarborgen van de duurzaamheid en groei van deze gemeenschapsinspanning
-op lange termijn. Dit boek, een tastbare culminatie van die visie, vertegenwoordigt
-de volgende stap. Alle winst die uit de verkoop ervan wordt gegenereerd, zal opnieuw
-in de gemeenschap worden geïnvesteerd, waardoor we de bronnen en ondersteuning die we
-bieden verder kunnen uitbreiden en verbeteren. Dit is meer dan alleen een boek;
-het is een bewijs van de kracht van gedeelde kennis en een toewijding aan het bevorderen
-van een bloeiende Zabbix-gemeenschap.
+This book is born from a simple desire: **to give back**. After years of working
+with Zabbix, and authoring previous many other publications about the platform,
+Patrik and Nathan felt a strong pull to share their knowledge in a way that was
+accessible to everyone. That's how the initial idea of a free, online Zabbix
+resource was conceived – **a community-driven project dedicated to empowering
+users**.
 
----
+As the online resource grew, so did the vision. We recognized the potential to
+create something even more impactful. This led to the formation of a foundation,
+dedicated to ensuring the long-term sustainability and growth of this community
+effort. This book, a tangible culmination of that vision, represents the next
+step. All profits generated from its sales will be reinvested back into the
+community, enabling us to further expand and enhance the resources and support
+we offer. This is more than just a book; it's a testament to the power of shared
+knowledge and a commitment to fostering a thriving Zabbix community."
 
-## Licentie
+## License
 
-Let op: De Engelse versie is het primaire brondocument.
-Vertalingen worden voor het gemak verstrekt, maar deze versie wordt als de
-meest nauwkeurige beschouwd.
+Please note: The english version is the primary source document. Translations
+are provided for convenience, but this version is considered the most accurate.
 
-Bekijk alstublieft onze meest recente licentie voordat u begint: [Licentie](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
-op Github.
 
-Het Zabbix Boek is een vrij toegankelijke bron die is ontworpen om gebruikers te
-helpen Zabbix te begrijpen en te beheersen. Bijdragen worden sterk aangemoedigd
-om de inhoud te verbeteren en uit te breiden. Het boek wordt echter verspreid onder de
-Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)
-licentie, wat betekent dat het alleen gratis is voor niet-commercieel gebruik.
+Please before you start take a look at our most updated license :
+[License](https://github.com/penmasters/zabbix-book/blob/main/readme.md) on
+Github.
 
-Bijdragers moeten zich ervan bewust zijn dat:
+*The Zabbix Book* is a freely accessible resource designed to help users
+understand and master Zabbix. Contributions are highly encouraged to improve and
+expand its content. However, the book is distributed under the **Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)** license,
+meaning it is free for non-commercial use only.
 
-- Door bij te dragen aan dit werk, u onherroepelijk alle rechten, titels en belangen
-in uw bijdragen overdraagt aan De Monitoring Penmasters Stichting, inclusief alle
-bijbehorende intellectuele eigendomsrechten, voor zover toegestaan door de wet.
-- De Monitoring Penmasters Stichting behoudt zich het recht voor om bijgedragen
-materiaal in elke vorm te gebruiken, te reproduceren, te wijzigen, te verspreiden
-en commercieel te exploiteren, inclusief maar niet beperkt tot de publicatie van
-fysieke en digitale boeken. 
-- Alle bijdragers moeten een Akte van Overdracht van
-Intellectuele Eigendomsrechten ondertekenen voordat ze bijdragen leveren, om de
-correcte overdracht van rechten en de behandeling van de inhoud door De 
-Monitoring Penmasters Stichting te waarborgen. Bijdragen zonder een ondertekende Akte
-van Overdracht van Intellectuele Eigendomsrechten kunnen niet worden geaccepteerd.
-- Alle gegenereerde winst zal door De Monitoring Penmasters Stichting worden gebruikt
-om operationele kosten te dekken en om andere open-source projecten te sponsoren,
-zoals bepaald door de stichting. 
+Contributors should be aware that:
 
-Uw bijdragen zijn van onschatbare waarde en zullen
-helpen om Het Zabbix Boek een nog grotere bron voor de hele gemeenschap te maken!
+- By contributing to this work, you irrevocably assign and transfer all rights,
+  title, and interest in your contributions to **The Monitoring Penmasters
+  Foundation**, including any associated intellectual property rights, to the
+  fullest extent permitted by law.
+- **The Monitoring Penmasters Foundation** reserves the right to use, reproduce,
+  modify, distribute, and commercially exploit any contributed material in any
+  form, including but not limited to the publication of physical and digital
+  books.
+- All contributors must sign a **Deed of Transfer of Intellectual Property
+  Rights** before making any contributions, ensuring the proper transfer of
+  rights and handling of the content by **The Monitoring Penmasters
+  Foundation**. Any contributions without a signed **Deed of Transfer of
+  Intellectual Property Rights** cannot be accepted.
+- All profits generated will be used by The Monitoring Penmasters Foundation to
+  cover operational expenses and to sponsor other open-source projects, as
+  determined by the foundation.
+
+Your contributions are invaluable and will help make *The Zabbix Book* an even
+greater resource for the entire community!
 
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
-[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+License][cc-by-nc-sa].
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
+
+[cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
+[cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
+[cc-by-nc-sa-shield]:
+https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
