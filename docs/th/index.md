@@ -1,56 +1,67 @@
-# Welcome / ยินดีต้อนรับ
+# Welcome
 
-หนังสือเล่มนี้จัดทำขึ้นด้วยความตั้งใจ เพื่อเป็นการตอบแทน หลังจากทำงานกับ Zabbix มาหลายปี 
+This book is born from a simple desire: **to give back**. After years of working
+with Zabbix, and authoring previous many other publications about the platform,
+Patrik and Nathan felt a strong pull to share their knowledge in a way that was
+accessible to everyone. That's how the initial idea of a free, online Zabbix
+resource was conceived – **a community-driven project dedicated to empowering
+users**.
 
-และ ได้เขียนสิ่งพิมพ์ต่างๆ หลากหลาย Platform นี้ กระผม Mr. Patrik และ Mr. Nathan จึงตัดสินใจเขียนหนังสือเล่มนี้ขึ้นมา
-ด้วยจุดประสงค์ที่จะแบ่งปันความรู้และช่วยเหลือผู้อ่านทุกท่านได้สามารถเข้าถึงได้ง่าย และเป็นจุดเริ่มต้นแนวคิดของพวกเราในการสร้างแหล่งข้อมูล
-Zabbix ออนไลน์ฟรี - **โครงการที่ขับเคลื่อนโดยชุมชนและมุ่งมั่นเสริมศักยภาพให้กับผู้ใช้**
+As the online resource grew, so did the vision. We recognized the potential to
+create something even more impactful. This led to the formation of a foundation,
+dedicated to ensuring the long-term sustainability and growth of this community
+effort. This book, a tangible culmination of that vision, represents the next
+step. All profits generated from its sales will be reinvested back into the
+community, enabling us to further expand and enhance the resources and support
+we offer. This is more than just a book; it's a testament to the power of shared
+knowledge and a commitment to fostering a thriving Zabbix community."
 
+## License
 
-
-ในขณะเดียวกันแหล่งข้อมูลออนไลน์ในปัจจุบันได้เติมโตและพัฒนาก้าวไกลไปมากขึ้น อย่างไรก็ตาม เราเห็นศักยภาพในการสร้างสิ่งที่ทรงพลังในการทำงาน
-เราจึงก่อตั้งมูลนิธิขึ้นมาเพื่อให้โครงการนี้สามารถเติบโตและดำเนินต่อไปได้ในระยะยาว หนังสือเล่มนี้เป็นผลลัพธ์ของวิสัยทัศน์
-และเป็นก้าวสำคัญในการเดินหน้าต่อไป รายได้ทั้งหมดจากการจำหน่ายหนังสือจะถูกนำกลับไปพัฒนาชุมชน เพื่อขยายและเพิ่มทรัพยากร
-รวมถึงการสนับสนุนที่เรามอบให้ นี่ไม่ใช่แค่หนังสือธรรมดา แต่เป็นสัญลักษณ์ของพลังแห่งการแบ่งปันแชร์ความรู้ให้
-และความมุ่งมั่นในการสร้างชุมชน Zabbix ที่แข็งแกร่งและเติบโตยิ่งขึ้น
-
-
----
-
-## ใบอนุญาต (License) 
-
-
-*หมายเหตุ: เอกสารต้นฉบับจัดทำขึ้นเป็นภาษาอังกฤษ ส่วนฉบับแปลภาษาไทยมีไว้เพื่อความสะดวก กระชับ
-และเข้าใจง่าย อย่างไรก็ตาม เวอร์ชันภาษาอังกฤษยังคงเป็นต้นฉบับที่ถูกต้องและเป็นทางการที่สุด*
-
-ก่อนเริ่มต้น โปรดตรวจสอบ ใบอนุญาตเวอร์ชันล่าสุด ของเราได้ที่ [License on Github](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
-
-The Zabbix Book เป็นแหล่งข้อมูลเปิดที่สร้างขึ้นเพื่อช่วยให้ผู้อ่านเข้าใจและเชี่ยวชาญการใช้งาน Zabbix ได้ดียิ่งขึ้นไป
-เราขอเชิญชวนให้ทุกคนร่วมแบ่งปันองค์ความรู้ เพื่อพัฒนาและขยายเนื้อหาให้สมบูรณ์ยิ่งขึ้น
-
-อย่างไรก็ตาม หนังสือเล่มนี้เผยแพร่ภายใต้ สัญญาอนุญาต Creative Commons Attribution-NonCommercial-ShareAlike
-4.0 (CC BY-NC-SA 4.0) ซึ่งหมายความว่าสามารถใช้งานได้ฟรี แต่จำกัดเฉพาะการใช้งานที่ไม่แสวงหาผลกำไรเท่านั้น
-
-ข้อควรทราบสำหรับผู้ร่วมสร้างสรรค์ผลงาน : 
-
-- การส่งผลงานเพื่อร่วมพัฒนาเนื้อหาถือเป็นการโอนสิทธิ์อย่างถาวรให้กับ The Monitoring Penmasters Foundation
-  ซึ่งรวมถึงสิทธิ์ทั้งหมดในทรัพย์สินทางปัญญาที่เกี่ยวข้อง ตามขอบเขตที่กฎหมายอนุญาตสูงสุด
-- The Monitoring Penmasters Foundation มีสิทธิ์ในการใช้ ทำซ้ำ ดัดแปลง เผยแพร่ และนำเนื้อหาที่ได้รับไปใช้ในเชิงพาณิชย์ได้ในทุกรูปแบบ
-  ไม่ว่าจะเป็นหนังสือฉบับพิมพ์หรือดิจิทัล
-- ผู้ร่วมสร้างสรรค์ทุกท่านต้องลงนามใน หนังสือโอนสิทธิ์ในทรัพย์สินทางปัญญา (Deed of Transfer of Intellectual Property Rights)
-  ก่อนการส่งผลงาน หากไม่มีเอกสารนี้ ทางมูลนิธิไม่สามารถรับเนื้อหาดังกล่าวได้
-- รายได้ทั้งหมดจากหนังสือจะถูกนำไปใช้สำหรับค่าใช้จ่ายในการดำเนินงานของ The Monitoring Penmasters Foundation
-  และสนับสนุนโครงการซอฟต์แวร์โอเพ่นซอร์สอื่น ๆ ตามที่มูลนิธิพิจารณา
-
-**การมีส่วนร่วมของคุณเป็นสิ่งล้ำค่า และจะช่วยให้ The Zabbix Book เป็นแหล่งข้อมูลที่ทรงพลังยิ่งขึ้น และเติบโตสำหรับผู้อ่านและทุกคนในชุมชน!**
+Please note: The english version is the primary source document. Translations
+are provided for convenience, but this version is considered the most accurate.
 
 
-สัญลักษณ์: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
+Please before you start take a look at our most updated license :
+[License](https://github.com/penmasters/zabbix-book/blob/main/readme.md) on
+Github.
 
-[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
+*The Zabbix Book* is a freely accessible resource designed to help users
+understand and master Zabbix. Contributions are highly encouraged to improve and
+expand its content. However, the book is distributed under the **Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)** license,
+meaning it is free for non-commercial use only.
+
+Contributors should be aware that:
+
+- By contributing to this work, you irrevocably assign and transfer all rights,
+  title, and interest in your contributions to **The Monitoring Penmasters
+  Foundation**, including any associated intellectual property rights, to the
+  fullest extent permitted by law.
+- **The Monitoring Penmasters Foundation** reserves the right to use, reproduce,
+  modify, distribute, and commercially exploit any contributed material in any
+  form, including but not limited to the publication of physical and digital
+  books.
+- All contributors must sign a **Deed of Transfer of Intellectual Property
+  Rights** before making any contributions, ensuring the proper transfer of
+  rights and handling of the content by **The Monitoring Penmasters
+  Foundation**. Any contributions without a signed **Deed of Transfer of
+  Intellectual Property Rights** cannot be accepted.
+- All profits generated will be used by The Monitoring Penmasters Foundation to
+  cover operational expenses and to sponsor other open-source projects, as
+  determined by the foundation.
+
+Your contributions are invaluable and will help make *The Zabbix Book* an even
+greater resource for the entire community!
+
+Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
+
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+License][cc-by-nc-sa].
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
 
 [cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
 [cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
-[cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
+[cc-by-nc-sa-shield]:
+https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg

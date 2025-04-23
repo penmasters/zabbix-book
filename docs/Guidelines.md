@@ -3,7 +3,7 @@
 ## How to contribute
 
 
-- Sign the [deed of transfer](./files/form deed of transfer Book Zabbix.pdf) preferable electronically
+- Sign the [deed of transfer](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf) preferable electronically
 - Clone this project to your Github account
 - Clone the repository to you pc
 
