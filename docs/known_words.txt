@@ -127,3 +127,6 @@ txt
 vfs
 jsonquerytool
 low_level_discovery
+nvps
+misconfigurations
+roadmap
