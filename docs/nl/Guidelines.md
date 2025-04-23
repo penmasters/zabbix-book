@@ -3,8 +3,9 @@
 ## Hoe u kunt bijdragen
 
 
-- Onderteken de [akte van overdracht](./files/form deed of transfer Book
-  Zabbix.pdf)bij voorkeur elektronisch
+- Sign the [deed of
+  transfer](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf)
+  preferable electronically
 - Kloon dit project naar uw Github account
 - Kloon de repository naar uw pc
 
