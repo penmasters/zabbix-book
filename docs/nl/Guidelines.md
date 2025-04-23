@@ -15,10 +15,11 @@
     - git checkout ""
   - Maak de gewenste wijzigingen en commit ze
     - git add "bestanden die je hebt gewijzigd"
-    - git commit -m "add useful commit info"
-  - Return back to the main branch
+    - git commit -m "voeg nuttige commit info toe"
+  - Terug naar de hoofdtak
     - git checkout main
-  - Make sure you have the latest changes merged from main
+  - Zorg ervoor dat je de laatste wijzigingen hebt samengevoegd vanuit het
+    hoofdgedeelte
     - git pull origin main
   - Merge your branch into the main branch
     - git merge "<your branch name\>"
