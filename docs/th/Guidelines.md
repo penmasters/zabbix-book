@@ -1,6 +1,6 @@
-# Guidelines
+# แนวปฏิบัติ
 
-## How to contribute
+## วิธีการมีส่วนร่วม
 
 
 - Sign the [deed of
