@@ -154,6 +154,7 @@ plugins:
       - th/*
       - zh/*
       - ru/*
+      - Guidelines.*.md
     # - credits.md
     #- coverage.md
     #- reference/* 
