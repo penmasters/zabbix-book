@@ -12,8 +12,8 @@
 - Installeer de benodigde software om Mkdocs te laten werken. Controleer het
   bestand in de hoofdmap how-to-install-mkdocs.md
   - Maak een nieuwe branch om uw wijzigingen door te voeren
-    - git branch ""
-    - git checkout ""
+    - git branch "<jouw branch naam\>"
+    - git checkout "<jouw branch naam\>"
   - Maak de gewenste wijzigingen en commit ze
     - git add "bestanden die je hebt gewijzigd"
     - git commit -m "voeg nuttige commit info toe"
@@ -23,10 +23,10 @@
     hoofdgedeelte
     - git pull origin main
   - Voeg uw branch samen met de hoofdbranch
-    - git merge ""
+    - git merge "<jouw branch naam\>"
     - git push
   - je branch opschonen
-    - git branch -d ""
+    - git branch -d "<jouw branch naam\>"
 - Maak een pull-verzoek zodat we het kunnen samenvoegen :)
 - Volg deze
   [richtlijnen](https://github.com/penmasters/zabbix-book/how-to-rules-for-writing.md)
