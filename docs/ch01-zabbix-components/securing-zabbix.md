@@ -45,13 +45,14 @@ For SELinux to actually provide security protection, it needs to be set to "enfo
 
 You can check the current SELinux mode with the getenforce command:
 ```yaml
-# getenforce
-Enforcing
+getenforce
 ```
+This should return : Enforcing
+
 To properly secure Zabbix with SELinux, the system should be in "Enforcing" mode. If it's not, you can change it temporarily:
 
 ##### Set to enforcing immediately (until reboot)
-``` yaml
+
 ```yaml
 sudo setenforce 1
 ```
