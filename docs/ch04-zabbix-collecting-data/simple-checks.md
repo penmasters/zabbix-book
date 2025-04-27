@@ -16,6 +16,7 @@ new host navigate to `Items`. You should see a `Create item` button in the top r
 on this button and lets have a look at the item creation modal popup window:
 
 ![Empty Item creation](ch04.5-empty-item-creation.png){ align=left }
+
 *4.5 Empty Item creation window*
 
 Make sure to change the `Type` to `Simple check` to get a similar result. We can see there are
@@ -108,13 +109,15 @@ the parameter instead.
 The item will now look like this:
 
 ![ICMP Ping item](ch04.7-icmpping-item.png){ align=left }
+
 *4.7 ICMP Ping item*
 
 It's also best practise to add a tag with the name `component` to every item we create. Let's switch
 to the `Tags` tab on the item creation window, and create the tag `component:system`.
 
 ![ICMP Ping item tags](ch04.8-icmpping-item-tags.png){ align=left }
-*4.7 ICMP Ping item tags*
+
+*4.8 ICMP Ping item tags*
 
 Zabbix utilises the fping utility, installed on the Zabbix server and/or proxy, to execute
 ICMP Ping checks. By default, Zabbix adds a repository containing the tool and installs

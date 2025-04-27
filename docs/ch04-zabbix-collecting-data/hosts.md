@@ -77,9 +77,11 @@ simply start typing the host group name into the `Host groups` field and it will
 you want to create the host group.
 
 ![Host creation - new host group](ch04.4-host-creation-new-group.png){ align=left }
+
 *4.4 Host creation - new host group*
 
 Let's add the host `simple-checks` in the `Linux/Servers` host group.
+
 
 ???+ note
 
