@@ -11,7 +11,7 @@ They contain our `Items`, `Triggers`, `graphs`, `Low Level Discovery` rules and 
 At this point, we should create our first monitoring host in Zabbix. Navigate to `Data collection` | `Hosts` 
 and in the top right corner click on the `Create host` button. This will open up the following modal window:
 
-![Host creation empty](./datacollection/ch04.3-empty-host-creation.png){ align=left }
+![Host creation empty](ch04.3-empty-host-creation.png){ align=left }
 *4.3 Empty host creation window*
 
 There are a lot of fields we can fill in, but few are important to note here specifically. 
@@ -76,7 +76,7 @@ It's also possible to create a host straight from the host creation window. To d
 simply start typing the host group name into the `Host groups` field and it will ask you if
 you want to create the host group.
 
-![Host creation - new host group](./datacollection/ch04.4-host-creation-new-group.png){ align=left }
+![Host creation - new host group](ch04.4-host-creation-new-group.png){ align=left }
 *4.4 Host creation - new host group*
 
 Let's add the host `simple-checks` in the `Linux/Servers` host group.
