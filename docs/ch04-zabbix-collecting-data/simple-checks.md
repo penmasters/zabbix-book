@@ -108,15 +108,13 @@ the parameter instead.
 
 The item will now look like this:
 
-![ICMP Ping item](ch04.7-icmpping-item.png){ align=left }
-
+![ICMP Ping item](ch04.7-icmpping-item.png){ align=center }
 *4.7 ICMP Ping item*
 
 It's also best practise to add a tag with the name `component` to every item we create. Let's switch
 to the `Tags` tab on the item creation window, and create the tag `component:system`.
 
-![ICMP Ping item tags](ch04.8-icmpping-item-tags.png){ align=left }
-
+![ICMP Ping item tags](ch04.8-icmpping-item-tags.png){ align=center }
 *4.8 ICMP Ping item tags*
 
 Zabbix utilises the fping utility, installed on the Zabbix server and/or proxy, to execute
@@ -127,8 +125,9 @@ Zabbix server/proxy configuration file:
 
 !!! info "create mariadb repository"
 
-    RedHat
+    
     ``` FpingLocation=/usr/sbin/fping
+    
     Fping6Location=/usr/sbin/fping6
     ```
 
