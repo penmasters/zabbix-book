@@ -147,3 +147,9 @@ ls
 te
 zabbix_t
 booleans
+perf
+sbin
+tcp
+udp
+usr
+thezabbixbook

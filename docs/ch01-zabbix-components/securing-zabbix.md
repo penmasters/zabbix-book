@@ -49,7 +49,7 @@ getenforce
 ```
 This should return : Enforcing
 
-To properly secure Zabbix with SELinux, the system should be in "Enforcing" mode. If it's not, you can change it temporarily:
+To properly secure Zabbix with SELinux, the system should be in `Enforcing` mode. If it's not, you can change it temporarily:
 
 ##### Set to enforcing immediately (until reboot)
 
@@ -98,22 +98,31 @@ policy rules.
 
 ### Viewing Contexts
 
-You can view the contexts of files using:
-ls -Z /path/to/zabbix/files
+!!! info "You can view the contexts of files using:"
 
-And for processes:
-``` yaml
-# ps -eZ | grep zabbix
-system_u:system_r:unconfined_service_t:s0 691 ?  00:02:20 zabbix_agent2
-system_u:system_r:zabbix_t:s0       707 ?        00:00:59 zabbix_server
-system_u:system_r:zabbix_t:s0      1203 ?        00:02:00 zabbix_server
-```
+    ```yaml
+    ls -Z /path/to/zabbix/files
+    ```
 
-And for log files
-``` yaml
-# ls -alZ /var/log/zabbix/zabbix_server.log
--rw-rw-r--. 1 zabbix zabbix system_u:object_r:zabbix_log_t:s0 11857 Apr 26 22:02 /var/log/zabbix/zabbix_server.log
-```
+
+!!! info  "And for the processes:"
+
+    ```yaml
+    ps -eZ | grep zabbix"
+    ```
+    ``` yaml
+    system_u:system_r:unconfined_service_t:s0 691 ?  00:02:20 zabbix_agent2
+    system_u:system_r:zabbix_t:s0       707 ?        00:00:59 zabbix_server
+    system_u:system_r:zabbix_t:s0      1203 ?        00:02:00 zabbix_server
+    ```
+
+!!! info "And for log files"
+
+    ``` yaml
+    ls -alZ /var/log/zabbix/zabbix_server.log
+    ```yaml
+    -rw-rw-r--. 1 zabbix zabbix system_u:object_r:zabbix_log_t:s0 11857 Apr 26 22:02 /var/log/zabbix/zabbix_server.log
+    ```
 
 ### Zabbix-selinux-policy Package
 
@@ -122,25 +131,25 @@ specifically for Zabbix deployments. It provides pre-configured SELinux policies
 that allow Zabbix components to function properly while running in an SELinux enforced
 environment.
 
-Key Functions of the Package
+Key Functions of the Package:
 
 - **Pre-defined Contexts** : Contains proper SELinux context definitions for Zabbix
   binaries, configuration files, log directories, and other resources.
 - **Port Definitions** : Registers standard Zabbix ports (like 10050 for agent, 10051 for server)
   in the SELinux policy so they can be used without triggering denials.
-- **Access Rules: Defines which operations Zabbix processes can perform, like writing
+- **Access Rules**: Defines which operations Zabbix processes can perform, like writing
   to log files, connecting to databases, and communicating over networks.
-- **Boolean Toggles: Provides SELinux boolean settings specific to Zabbix that can
+- **Boolean Toggles**: Provides SELinux boolean settings specific to Zabbix that can
   enable/disable certain functionalities without having to write custom policies.
 
-Benefits of Using the Package
+Benefits of Using the Package:
 
 - **Simplified Deployment** : Reduces the need for manual SELinux policy adjustments when
 installing Zabbix.
 - **Security by Default**: Ensures Zabbix operates with minimal required permissions rather than running in permissive mode.
 - **Maintained Compatibility**: The package is updated alongside Zabbix to ensure compatibility with new features.
 
-Installation and Usage
+#### Installation and Usage
 
 The package is typically installed alongside other Zabbix components:
 ``` yaml
@@ -170,7 +179,7 @@ This combination creates defense-in-depth by ensuring that even if Zabbix is com
 the attacker remains constrained by SELinux policies, limiting potential damage to
 your systems.
 
-### Zabbix SELinux Boolean
+#### Zabbix SELinux Boolean
 One of the most convenient aspects of the SELinux implementation for Zabbix is the
 use of "booleans". simple on/off switches that control specific permissions. These
 allow you to fine-tune SELinux policies without needing to understand complex policy
@@ -180,12 +189,11 @@ writing. Key Zabbix booleans include:
 - **httpd_can_connect_zabbix**: Controls whether the web server can connect to Zabbix
 - **zabbix_run_sudo**: Controls whether Zabbix can execute sudo commands
 
-You can view these settings with:
-
-``` yaml
-getsebool -a | grep zabbix
-```
-And toggle them as needed:
+!!! info "You can view these settings with:"
+    ``` yaml
+    getsebool -a | grep zabbix
+    ```
+And you can toggle them as needed with setsebool.
 
 ### Enable Zabbix network connections (persistent across reboots)
 ```yaml
@@ -215,14 +223,17 @@ First, capture the denial events from the audit log:
 sudo grep zabbix /var/log/audit/audit.log | grep fping | audit2allow -M zabbix_fping
 ```
 
-Install the generated policy module:
-```yaml
-sudo semodule -i zabbix_fping.pp
-```
-Apply the correct SELinux context to the fping binary:
-```yaml
-sudo chcon -t fping_exec_t /usr/sbin/fping
-```
+!!! info "Install the generated policy module:"
+
+    ```yaml
+    sudo semodule -i zabbix_fping.pp
+    ```
+
+!!! info "Apply the correct SELinux context to the fping binary:"
+
+    ```yaml
+    sudo chcon -t fping_exec_t /usr/sbin/fping
+    ```
 
 
 - **Method 2: Manual Policy Creation :**
@@ -246,18 +257,23 @@ require {
 allow zabbix_t fping_exec_t:file { execute execute_no_trans getattr open read };
 allow zabbix_t self:capability net_raw;
 ```
-Compile the policy module:
-```yaml
-checkmodule -M -m -o zabbix_fping.mod zabbix_fping.te
-```
-Package the compiled module:
-```yaml
-semodule_package -o zabbix_fping.pp -m zabbix_fping.mod
-```
-Install the policy module:
-```yaml
-semodule -i zabbix_fping.pp
-```
+!!! info "Compile the policy module:"
+
+    ```yaml
+    checkmodule -M -m -o zabbix_fping.mod zabbix_fping.te
+    ```
+
+!!! info "Package the compiled module:"
+
+    ```yaml
+    semodule_package -o zabbix_fping.pp -m zabbix_fping.mod
+    ```
+
+!!! info "Install the policy module:"
+
+    ```yaml
+    semodule -i zabbix_fping.pp
+    ```
 
 
 ## Securing zabbix admin
@@ -267,3 +283,22 @@ semodule -i zabbix_fping.pp
 ## DB certs
 
 
+
+
+
+
+## Conclusion
+
+## Questions
+
+- Why does SELinux prevent Zabbix from executing fping by default?
+- In what situations might you need to create custom SELinux policies for other Zabbix monitoring tools?
+- What are the key differences between using audit2allow and manually creating a custom policy module?
+
+
+## Useful URLs
+
+- https://www.zabbix.com/documentation/7.2/en/manual/installation/install_from_packages/rhel?hl=SELinux#selinux-configuration
+- https://www.systutorials.com/docs/linux/man/8-zabbix_selinux/
+- https://man.linuxreviews.org/man8/zabbix_agent_selinux.8.html
+- https://phoenixnap.com/kb/selinux
