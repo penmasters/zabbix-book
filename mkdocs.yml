@@ -39,8 +39,26 @@ nav:
     - "Chapter 04 : Collecting data ":
         - ch04-zabbix-collecting-data/chapter.md
         - ch04-zabbix-collecting-data/dataflow.md
-        - ch04-zabbix-collecting-data/protocols.md
         - ch04-zabbix-collecting-data/hosts.md
+        - ch04-zabbix-collecting-data/simple-checks.md
+        - ch04-zabbix-collecting-data/host-interfaces.md
+        - ch04-zabbix-collecting-data/zabbix-agent-passive.md
+        - ch04-zabbix-collecting-data/zabbix-agent-active.md
+        - ch04-zabbix-collecting-data/snmp-polling.md
+        - ch04-zabbix-collecting-data/dependent.md
+        - ch04-zabbix-collecting-data/snmp-trapping.md
+        - ch04-zabbix-collecting-data/ssh-telnet.md
+        - ch04-zabbix-collecting-data/http.md
+        - ch04-zabbix-collecting-data/script.md
+        - ch04-zabbix-collecting-data/jmx.md
+        - ch04-zabbix-collecting-data/ipmi.md
+        - ch04-zabbix-collecting-data/database-odbc.md
+        - ch04-zabbix-collecting-data/database-agent.md
+        - ch04-zabbix-collecting-data/zabbix-trapper.md
+        - ch04-zabbix-collecting-data/external-checks.md
+        - ch04-zabbix-collecting-data/browser.md
+        - ch04-zabbix-collecting-data/calculated.md
+        - ch04-zabbix-collecting-data/zabbix-internal.md
     - "Chapter 05 : Triggers":
         - ch05-zabbix-triggers/chapter.md
         - ch05-zabbix-triggers/triggers.md
