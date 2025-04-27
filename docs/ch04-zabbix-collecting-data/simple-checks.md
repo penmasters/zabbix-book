@@ -15,7 +15,7 @@ let's create the host `simple-checks` in the host group `Servers/Linux`. Then, f
 new host navigate to `Items`. You should see a `Create item` button in the top right corner. Click
 on this button and lets have a look at the item creation modal popup window:
 
-![Empty Item creation](./datacollection/ch04.5-empty-item-creation.png){ align=left }
+![Empty Item creation](ch04.5-empty-item-creation.png){ align=left }
 *4.5 Empty Item creation window*
 
 Make sure to change the `Type` to `Simple check` to get a similar result. We can see there are
@@ -55,7 +55,7 @@ My final and favourite tip is: **Remember: Zabbix uses alphabetical sorting in a
 is this important, well let's look at the `Monitoring` | `Latest data` page with a host using a 
 default template:
 
-![MEM-CPU sorting](./datacollection/ch04.6-latest-data-memcpu-sorting.png){ align=left }
+![MEM-CPU sorting](ch04.6-latest-data-memcpu-sorting.png){ align=left }
 *4.5 Latest data Memory and CPU items sorting*
 
 If this template had used CPU and Memory as a prefix for all respective items. Then this page
@@ -107,13 +107,13 @@ the parameter instead.
 
 The item will now look like this:
 
-![ICMP Ping item](./datacollection/ch04.7-icmpping-item.png){ align=left }
+![ICMP Ping item](ch04.7-icmpping-item.png){ align=left }
 *4.7 ICMP Ping item*
 
 It's also best practise to add a tag with the name `component` to every item we create. Let's switch
 to the `Tags` tab on the item creation window, and create the tag `component:system`.
 
-![ICMP Ping item tags](./datacollection/ch04.8-icmpping-item-tags.png){ align=left }
+![ICMP Ping item tags](ch04.8-icmpping-item-tags.png){ align=left }
 *4.7 ICMP Ping item tags*
 
 Zabbix utilises the fping utility, installed on the Zabbix server and/or proxy, to execute
