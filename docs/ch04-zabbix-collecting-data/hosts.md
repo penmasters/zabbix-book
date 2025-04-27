@@ -11,7 +11,7 @@ They contain our `Items`, `Triggers`, `graphs`, `Low Level Discovery` rules and 
 At this point, we should create our first monitoring host in Zabbix. Navigate to `Data collection` | `Hosts` 
 and in the top right corner click on the `Create host` button. This will open up the following modal window:
 
-![Host creation empty](./datacollection/ch04-empty-host-creation.png){ align=left }
+![Host creation empty](./datacollection/ch04.3-empty-host-creation.png){ align=left }
 *4.3 Empty host creation window*
 
 There are a lot of fields we can fill in, but few are important to note here specifically. 
@@ -22,7 +22,7 @@ There are a lot of fields we can fill in, but few are important to note here spe
 These are the only two mandatory fields in the host creation window. If we fill these two, 
 we can create our host. 
 
-**Host name** 
+### Host name
 The `Host name` is very important. It functions as both the technical name of the host we will
 use in various different locations, but it is also used as the `Visible name` by default. This 
 means that we will work with this name to find through filters this host with its associated data.
@@ -40,7 +40,7 @@ Whether that is a physical or virtual server, a website, a database server or
 a specific database on that database server. Every host in Zabbix is a monitoring target, 
 i.e. something you are trying to monitor.
 
-**Visible name**
+### Visible name
 Now, we didn't mention it as it is not a mandatory field. Nevertheless, we need to discuss
 the `Visible name` field before we continue with the `Host groups`. Although not mandatory,
 as I mentioned, the `Host name` is automatically used as the visible name when not filled in.
@@ -66,7 +66,7 @@ special character. Keep in mind however, that this can create confusion. You now
 two different names for the same host. As such, visible names are only recommended when you really need
 them or if you are trying to work around something. Otherwise, there is not need to use them.
 
-**Host groups**
+### Host groups
 In Chapter 02 of the book, we had a deep dive into setting up various different host groups to keep
 our Zabbix environment structured. When we create a host, we can now start using on of
 our created host groups. Keep in mind, to only add the host to the lowest level of the subgroups. For
@@ -76,7 +76,12 @@ It's also possible to create a host straight from the host creation window. To d
 simply start typing the host group name into the `Host groups` field and it will ask you if
 you want to create the host group.
 
-![Host creation - new host group](./datacollection/ch04-host-creation-new-group.png){ align=left }
+![Host creation - new host group](./datacollection/ch04.4-host-creation-new-group.png){ align=left }
 *4.4 Host creation - new host group*
 
 Let's add the host `simple-checks` in the `Linux/Servers` host group.
+
+???+ note
+
+    It's recommended to read the simple checks recipe from here, as it 
+    contains useful tips on creating good items.
