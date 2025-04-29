@@ -150,3 +150,9 @@ to define which TCP port to check. Zabbix will connect to the port and tell us t
 or the connection speed if we use `net.tcp.service.perf`. If we fill in the `service` parameter with
 `ssh, ldap, smtp, ftp, pop, nntp, imap, tcp, https, telnet` it will use the correct (default) port
 automatically, as well as do an additional check to make sure the port is actually being used by that service.
+
+## Conclusion
+
+## Questions
+
+## Useful URLs

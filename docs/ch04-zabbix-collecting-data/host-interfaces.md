@@ -8,3 +8,9 @@ As you might have noticed in the host creation window, there are also various ot
 ### IPMI
 
 ### JMX
+
+## Conclusion
+
+## Questions
+
+## Useful URLs

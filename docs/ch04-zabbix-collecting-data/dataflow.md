@@ -113,7 +113,7 @@ As you can imagine, the conditions will be very important to make sure that oper
 on that action are only executed when we specifically want it to. We do not want to
 for example reboot a host without the right problem being first detected.
 
-## Summary
+## Conclusion
 
 To summarize, all the steps in the dataflow work together to make sure that you can
 build the perfect Zabbix environment. When we put the entire dataflow together it
@@ -143,4 +143,9 @@ since we mentioned that all events are always send to all action for evaluation.
 This can be useful, for example if you want to split you messaging and your script
 execution in different action to keep things organised.
 
-Now that we understand the various parts of our Zabbix dataflow we can dive deeper into creating the configuration for the steps in the dataflow. 
+Now that we understand the various parts of our Zabbix dataflow we can dive deeper into creating the configuration for the steps in the dataflow.
+
+
+## Questions
+
+## Useful URLs
