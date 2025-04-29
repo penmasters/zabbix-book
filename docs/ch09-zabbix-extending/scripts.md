@@ -22,9 +22,29 @@ For this example we will make use of a frontend script I made to put hosts in
 maintenance mode. This allow us with frontend scripts to create an option to execute
 this script from our GUI and place the host in maintenance. it can be downloaded
 from my GitHub page here :
-(https://github.com/Trikke76/Zabbix/blob/master/maintenance/zabbix-maintenance.py)[https://github.com/Trikke76/Zabbix/blob/master/maintenance/zabbix-maintenance.py]
+[https://github.com/Trikke76/Zabbix/blob/master/maintenance/zabbix-maintenance.py](https://github.com/Trikke76/Zabbix/blob/master/maintenance/zabbix-maintenance.py)
 
-Download this script and place it in `/usr/bin/` 
+!!! info "Download this script and place it in `/usr/bin/` "
+    ```
+    cd /usr/bin/
+    dnf install wget -y
+    wget https://raw.githubusercontent.com/Trikke76/Zabbix/refs/heads/master/maintenance/zabbix-maintenance.py -P /usr/bin/
+    dnf install python3-requests
+    chmod +x /usr/bin/zabbix-maintenance.py
+    ```
+The next step is to edit our script and change some of the variable:
+
+!!! info "Replace variables"
+    ```
+    vi /usr/bin/zabbix-maintenance.py
+    
+    ZABBIX_API_URL = "https://zabbix-url.be/api_jsonrpc.php"
+    ZABBIX_API_TOKEN = "API TOKEN"
+    ```
+???+ note
+    For the user you can use the user `Admin` or you can create a new user. but
+    make sure this user has enough permissions to create a maintenance mode.
+    It's best practice to create a dedicated user for this in production.
 
 
 

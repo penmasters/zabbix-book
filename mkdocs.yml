@@ -67,13 +67,13 @@ nav:
         - ch06-zabbix-templates/chapter.md
     - "Chapter 07 : Alerting": 
         - ch07-zabbix-alerts/chapter.md
-        - ch07-zabbix-alerts/scripts.md
     - "Chapter 08 : LLD":
         - ch08-zabbix-lld/chapter.md
         - Custom LLD: ch08-zabbix-lld/custom.md
         - Dependent LLD: ch08-zabbix-lld/lld-with-dependent-items.md
     - "Chapter 09 : Extending Zabbix": 
         - ch09-zabbix-extending/chapter.md
+        - ch09-zabbix-extending/scripts.md
     - "Chapter 10 : Discovery": 
         - ch10-zabbix-discovery/chapter.md
     - "Chapter 11 : Visualisation":
