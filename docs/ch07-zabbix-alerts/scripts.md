@@ -1,4 +1,4 @@
-# Scripts
+# Frontend Scripts
 
 So, you're diving into the world of Zabbix frontend scripts, and you're in for 
 a treat! These little powerhouses unlock a whole new level of flexibility within
@@ -15,6 +15,18 @@ Ultimately, frontend scripts empower you to extend Zabbix far beyond it's out-of
 capabilities. They provide that crucial extra layer of customization, allowing you
 to seamlessly integrate your own scripts and workflows directly into the Zabbix
 frontend. Get ready to harness this power and tailor Zabbix precisely to your needs!
+
+## Creating a frontend scripts
+
+For this example we will make use of a frontend script I made to put hosts in
+maintenance mode. This allow us with frontend scripts to create an option to execute
+this script from our GUI and place the host in maintenance. it can be downloaded
+from my GitHub page here :
+(https://github.com/Trikke76/Zabbix/blob/master/maintenance/zabbix-maintenance.py)[https://github.com/Trikke76/Zabbix/blob/master/maintenance/zabbix-maintenance.py]
+
+Download this script and place it in `/usr/bin/` 
+
+
 
 
 
