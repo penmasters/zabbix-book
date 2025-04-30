@@ -73,6 +73,7 @@ nav:
         - Dependent LLD: ch08-zabbix-lld/lld-with-dependent-items.md
     - "Chapter 09 : Extending Zabbix": 
         - ch09-zabbix-extending/chapter.md
+        - ch09-zabbix-extending/scripts.md
     - "Chapter 10 : Discovery": 
         - ch10-zabbix-discovery/chapter.md
     - "Chapter 11 : Visualisation":

@@ -87,3 +87,11 @@ Let's add the host `simple-checks` in the `Linux/Servers` host group.
 
     It's recommended to read the simple checks recipe from here, as it 
     contains useful tips on creating good items.
+
+
+
+## Conclusion
+
+## Questions
+
+## Useful URLs
