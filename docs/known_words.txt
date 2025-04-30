@@ -155,3 +155,15 @@ usr
 thezabbixbook
 dropdown
 py
+odbc
+zabbix_selinux
+zabbix_agent_selinux
+setsebool
+rhel
+systutorials
+hl
+kb
+linuxreviews
+phoenixnap
+prd
+

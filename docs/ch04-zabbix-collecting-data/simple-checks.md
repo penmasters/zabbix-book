@@ -7,7 +7,7 @@ checks we can do, executed from the Zabbix server or proxy towards our monitorin
 checks contain protocol checks such as `ICMP Ping`, `TCP/UDP` but also built in `VMware` monitoring.
 
 Without further ado, let's set up our first items. Please keep in mind that we will be building
-everyhting on a host level for now. Check out Chapter 06 to learn how to do this properly on a template.
+everything on a host level for now. Check out Chapter 06 to learn how to do this properly on a template.
 
 ## Building the item
 We shall start with a simple ICMP Ping check. If you haven't already, at `Data collection` | `Hosts`
@@ -87,7 +87,7 @@ of the uniqueness of the item keys. For example:
 - **agent.version** a `Zabbix agent` item key doesn't accept parameters and only serves one purpose. To
 get the version of the Zabbix agent installed.
 - **net.tcp.service[service,<ip>,<port>]** a `Simple check` item key that accepts 3 parameters,
-each parameter diveded by a comma(`,`). Optional parameters are marked by the `<>` signs, whereas
+each parameter divided by a comma(`,`). Optional parameters are marked by the `<>` signs, whereas
 mandatory parameters have no pre/suffix.
 
 
@@ -153,6 +153,39 @@ automatically, as well as do an additional check to make sure the port is actual
 
 ## Conclusion
 
+Congratulations! You've reached the end of this journey into Zabbix frontend scripts.
+By now, you should have a solid understanding of how to create, implement, and
+manage these tools to extend Zabbix's functionality.
+
+We've covered a lot of ground, from the initial steps of crafting your own scripts
+to seamlessly integrating them into the Zabbix frontend. You've learned how to
+gather user input to make your scripts more dynamic and versatile, and, crucially,
+how to configure user and host permissions to maintain a secure and controlled
+Zabbix environment.
+
+The ability to tailor Zabbix to your specific needs with frontend scripts is
+a significant advantage. It allows you to automate repetitive tasks, streamline
+workflows, and gain deeper insights into your infrastructure. Whether you're
+automating routine checks, creating custom dashboards, or integrating with external
+systems, the knowledge you've gained here will enable you to effectively leverage Zabbix.
+
+Remember, the examples and techniques presented in this book provide a foundation.
+The true power of Zabbix frontend scripts lies in their flexibility and your ability
+to adapt them to your specific needs. As you continue to explore and experiment,
+you'll discover new ways to enhance your monitoring capabilities and optimize your
+Zabbix setup.
+
+
 ## Questions
 
+- What is the primary function of Zabbix frontend scripts?
+- Why is it important to configure user and host permissions when using Zabbix frontend scripts?
+- What are some ways Zabbix frontend scripts can help automate tasks?
+
+
 ## Useful URLs
+
+- https://github.com/Trikke76/Zabbix/tree/master/maintenance
+- https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/alerts/scripts
+- https://blog.zabbix.com/setting-up-manual-ticket-creation-using-zabbix-frontend-scripts/15550/
+
