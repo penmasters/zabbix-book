@@ -195,8 +195,37 @@ to certain `Host groups` and `User groups`.
 
 ## Conclusion
 
+Congratulations! You've reached the end of this journey into Zabbix frontend scripts.
+By now, you should have a solid understanding of how to create, implement, and manage
+these tools to extend Zabbix's functionality.
+
+We've covered a lot of ground, from the initial steps of crafting your own scripts
+to seamlessly integrating them into the Zabbix frontend. You've learned how to gather
+user input to make your scripts more dynamic and versatile, and, crucially, how to
+configure user and host permissions to maintain a secure and controlled Zabbix environment.
+
+The ability to tailor Zabbix to your specific needs with frontend scripts is a
+significant advantage. It allows you to automate repetitive tasks, streamline workflows,
+and gain deeper insights into your infrastructure. Whether you're automating routine
+checks, creating custom dashboards, or integrating with external systems, the
+knowledge you've gained here will enable you to effectively leverage Zabbix.
+
+Remember, the examples and techniques presented in this book provide a foundation.
+The true power of Zabbix frontend scripts lies in their flexibility and your ability
+to adapt them to your specific needs. As you continue to explore and experiment,
+you'll discover new ways to enhance your monitoring capabilities and optimize
+your Zabbix setup.
+
 ## Questions
 
+- Why are Zabbix frontend scripts useful?
+- What are some ways Zabbix frontend scripts can help automate tasks?
+- Why is it important to configure user and host permissions when using Zabbix frontend scripts?
+
 ## Useful URLs
+
+- https://blog.zabbix.com/setting-up-manual-ticket-creation-using-zabbix-frontend-scripts/15550/
+- https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/administration/scripts
+- https://github.com/Trikke76/Zabbix/tree/master/maintenance
 
 
