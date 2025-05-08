@@ -1,11 +1,11 @@
-# Welcome
+# Welkom
 
-This book is born from a simple desire: **to give back**. After years of working
-with Zabbix, and authoring previous many other publications about the platform,
-Patrik and Nathan felt a strong pull to share their knowledge in a way that was
-accessible to everyone. That's how the initial idea of a free, online Zabbix
-resource was conceived – **a community-driven project dedicated to empowering
-users**.
+Dit boek is geboren uit een eenvoudig verlangen: **om terug te geven**. Na jaren
+werken met Zabbix en het schrijven van vele andere publicaties over het
+platform, voelden Patrik en Nathan een sterke drang om hun kennis te delen op
+een manier die toegankelijk was voor iedereen. Zo ontstond het initiële idee
+voor een gratis, online Zabbix-bron. **een project gedreven door de community,
+toegewijd aan het versterken van gebruikers.**
 
 As the online resource grew, so did the vision. We recognized the potential to
 create something even more impactful. This led to the formation of a foundation,
