@@ -81,7 +81,8 @@ So, let’s start with our history_uint table:
 
 !!! info "Prepare history partitioning (assuming today is May 10th 2025)"
 
-    ```ALTER TABLE history_uint PARTITION BY RANGE ( clock)
+    ```
+    ALTER TABLE history_uint PARTITION BY RANGE ( clock)
 
     (PARTITION p2025_03_26 VALUES LESS THAN (UNIX_TIMESTAMP("2025-03-27 00:00:00")) ENGINE = InnoDB,
 
@@ -126,7 +127,8 @@ Now, create this `ALTER TABLE` commands with the partitions for all history tabl
 
 !!! info "Prepare trends partitioning (assuming today is May 10th 2025)"
 
-    ```ALTER TABLE trends_uint PARTITION BY RANGE ( clock)
+    ```
+    ALTER TABLE trends_uint PARTITION BY RANGE ( clock)
 
     (PARTITION p2024_12 VALUES LESS THAN (UNIX_TIMESTAMP("2025-01-01 00:00:00")) ENGINE = InnoDB,
 
@@ -182,7 +184,8 @@ There are a few lines here we need to edit to make sure the script works. Let's 
 
 !!! info "Add login details to the script"
 
-    ```my $dsn = 'DBI:mysql:'.$db_schema.':mysql_socket=/var/lib/mysql/mysql.sock';
+    ```
+    my $dsn = 'DBI:mysql:'.$db_schema.':mysql_socket=/var/lib/mysql/mysql.sock';
 
     my $db_user_name = 'zabbix';
 
@@ -198,7 +201,8 @@ Next up, we should edit the settings related to how long we want our data to be 
 
 !!! info "Add login details to the script"
 
-    ```my $tables = {  'history' => { 'period' => 'day', 'keep_history' => '31'},
+    ```
+    my $tables = {  'history' => { 'period' => 'day', 'keep_history' => '31'},
 
                     'history_log' => { 'period' => 'day', 'keep_history' => '31'},
                     
@@ -294,12 +298,12 @@ We also need to install some Perl dependencies to make sure we can execute the s
 
 !!! info "Install dependencies"
 
-    ```
     Redhat-Based
+    ```
     dnf install perl-DateTime perl-Sys-Syslog
     ```
-    ```
     Debian-based
+    ```
     apt-get install libdatetime-perl liblogger-syslog-perl
     ```
 
@@ -308,20 +312,16 @@ If perl-DateTime isn't available on your RedHat 7.x installation make sure to in
 !!! info Install correct repository""
 
     RedHat 7.x based
-    ```
-    yum config-manager --set-enabled powertools
+    ```yum config-manager --set-enabled powertools
     ```
     RedHat 9.x based
-    ```
-    dnf config-manager --enable crb
+    ```dnf config-manager --enable crb
     ```
     Genuine RedHat
-    ```
-    subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms
+    ```subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms
     ```
     Oracle Linux
-    ```
-    dnf config-manager --set-enabled ol8_codeready_builder
+    ```dnf config-manager --set-enabled ol8_codeready_builder
     ```
 
 Then the last step is to add a cronjob to execute the script everyday.
