@@ -311,18 +311,21 @@ If perl-DateTime isn't available on your RedHat 7.x installation make sure to in
 
 !!! info "Install correct repository"
 
-    RedHat 7.x based
+    RedHat 7 based
     ```
     yum config-manager --set-enabled powertools
     ```
-    RedHat 9.x based
+
+    RedHat 9 based
     ```
     dnf config-manager --enable crb
     ```
+
     Genuine RedHat
     ```
     subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms
     ```
+    
     Oracle Linux
     ```
     dnf config-manager --set-enabled ol8_codeready_builder
