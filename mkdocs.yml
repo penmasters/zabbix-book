@@ -25,6 +25,7 @@ nav:
         - Basic Installation: ch01-zabbix-components/basic-installation.md
         - HA Setup: ch01-zabbix-components/ha-setup.md
         - Security: ch01-zabbix-components/securing-zabbix.md
+        - Partitioning MariaDB: ch01-zabbix-components/partitioning-database.md
     - "Chapter 02 : Installation":
         - ch02-zabbix-installation/chapter.md
         - ch02-zabbix-installation/frontend.md
