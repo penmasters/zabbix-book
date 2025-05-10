@@ -309,7 +309,7 @@ We also need to install some Perl dependencies to make sure we can execute the s
 
 If perl-DateTime isn't available on your RedHat 7.x installation make sure to install the powertools repo.
 
-!!! info Install correct repository""
+!!! info "Install correct repository"
 
     RedHat 7.x based
     ```yum config-manager --set-enabled powertools
