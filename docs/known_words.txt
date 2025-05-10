@@ -166,4 +166,5 @@ kb
 linuxreviews
 phoenixnap
 prd
-
+tmux
+uncomment
