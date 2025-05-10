@@ -171,7 +171,7 @@ Then make the script executable, so we can create a cronjob later to execute it.
     ```chmod 750 /usr/lib/zabbix/mysql_zbx_part.pl
     ```
 
-Now, let's make sure all the settings in the script are set-up correctly. Edit the script with your favorite editor (yes, nano is also an option).
+Now, let's make sure all the settings in the script are set-up correctly. Edit the script with your favourite editor (yes, nano is also an option).
 
 !!! info "Edit the script"
 
