@@ -311,17 +311,24 @@ If perl-DateTime isn't available on your RedHat 7.x installation make sure to in
 
 !!! info "Install correct repository"
 
-    RedHat 7.x based
-    ```yum config-manager --set-enabled powertools
+    RedHat 7 based
     ```
-    RedHat 9.x based
-    ```dnf config-manager --enable crb
+    yum config-manager --set-enabled powertools
     ```
+
+    RedHat 9 based
+    ```
+    dnf config-manager --enable crb
+    ```
+
     Genuine RedHat
-    ```subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms
     ```
+    subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms
+    ```
+    
     Oracle Linux
-    ```dnf config-manager --set-enabled ol8_codeready_builder
+    ```
+    dnf config-manager --set-enabled ol8_codeready_builder
     ```
 
 Then the last step is to add a cronjob to execute the script everyday.
