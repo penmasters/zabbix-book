@@ -39,10 +39,12 @@ This is why I always run partitioning in a `tmux` session. If `tmux` hasn't been
 
 !!! info "Check disk space availability"
 
-    ``` RedHat-based
+    RedHat-based
+    ```
     dnf install tmux
     ```
-    ``` Debian-based
+    Debian-based
+    ```
     apt install tmux
     ```
 
@@ -50,7 +52,8 @@ Now we can issue the tmux command to open a new tmux session:
 
 !!! info "Open tmux session"
 
-    ``` tmux
+    ```
+    tmux
     ```
 
 This opens up an terminal session that will remain active even if our SSH session times out.
@@ -79,21 +82,37 @@ So, let’s start with our history_uint table:
 !!! info "Prepare history partitioning (assuming today is May 10th 2025)"
 
     ```ALTER TABLE history_uint PARTITION BY RANGE ( clock)
+
     (PARTITION p2025_03_26 VALUES LESS THAN (UNIX_TIMESTAMP("2025-03-27 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_03_27 VALUES LESS THAN (UNIX_TIMESTAMP("2025-03-28 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_03_28 VALUES LESS THAN (UNIX_TIMESTAMP("2025-03-29 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_03_29 VALUES LESS THAN (UNIX_TIMESTAMP("2025-03-30 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_03_30 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-01 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04_01 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-02 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04_02 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-03 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04_03 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-04 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04_04 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-05 00:00:00")) ENGINE = InnoDB,
+    
     PARTITION p2025_04_05 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-06 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04_06 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-07 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04_07 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-08 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04_08 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-09 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04_09 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-10 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04_10 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-11 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04_11 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-12 00:00:00")) ENGINE = InnoDB);
     ```
 As you can see, I only created `16` partitions here. I could have created `31`, which would have been better perhaps. `MariaDB` will now add all my older than 2025-03-26 data in that single partition. No problem, but it will take longer for my disk space to free up this bigger partitioning, after which is will only keep 1 day worth of data from that point.
@@ -108,11 +127,17 @@ Now, create this `ALTER TABLE` commands with the partitions for all history tabl
 !!! info "Prepare trends partitioning (assuming today is May 10th 2025)"
 
     ```ALTER TABLE trends_uint PARTITION BY RANGE ( clock)
+
     (PARTITION p2024_12 VALUES LESS THAN (UNIX_TIMESTAMP("2025-01-01 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_01 VALUES LESS THAN (UNIX_TIMESTAMP("2025-02-01 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_02 VALUES LESS THAN (UNIX_TIMESTAMP("2025-03-01 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_03 VALUES LESS THAN (UNIX_TIMESTAMP("2025-04-01 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_04 VALUES LESS THAN (UNIX_TIMESTAMP("2025-05-01 00:00:00")) ENGINE = InnoDB,
+
     PARTITION p2025_05 VALUES LESS THAN (UNIX_TIMESTAMP("2025-06-01 00:00:00")) ENGINE = InnoDB);
     ```
 
@@ -158,7 +183,9 @@ There are a few lines here we need to edit to make sure the script works. Let's 
 !!! info "Add login details to the script"
 
     ```my $dsn = 'DBI:mysql:'.$db_schema.':mysql_socket=/var/lib/mysql/mysql.sock';
+
     my $db_user_name = 'zabbix';
+
     my $db_password = 'password';
     ```
 
@@ -172,12 +199,19 @@ Next up, we should edit the settings related to how long we want our data to be 
 !!! info "Add login details to the script"
 
     ```my $tables = {  'history' => { 'period' => 'day', 'keep_history' => '31'},
+
                     'history_log' => { 'period' => 'day', 'keep_history' => '31'},
+                    
                     'history_str' => { 'period' => 'day', 'keep_history' => '31'},
+
                     'history_text' => { 'period' => 'day', 'keep_history' => '31'},
+
                     'history_uint' => { 'period' => 'day', 'keep_history' => '31'},
+
                     'history_bin' => { 'period' => 'day', 'keep_history' => '31'},
+
                     'trends' => { 'period' => 'month', 'keep_history' => '15'},
+
                     'trends_uint' => { 'period' => 'month', 'keep_history' => '15'},
     ```
 
@@ -197,27 +231,40 @@ The script is already out of the box configured for `MariaDB`, so we don't need 
 For the `MySQL 8.x` users comment the following `MariaDB` lines.
 !!! info "Comment MariaDB"
 
-    ```# MySQL 5.6 + MariaDB
+    ```
+    # MySQL 5.6 + MariaDB
+
         #my $sth = $dbh->prepare(qq{SELECT plugin_status FROM information_schema.plugins WHERE plugin_name = 'partition'});
+
 
         #$sth->execute();
 
+
         #my $row = $sth->fetchrow_array();
 
+
         #$sth->finish();
+
         #    return 1 if $row eq 'ACTIVE';
     ```
 
 And uncomment the `MySQL 8.x` lines.
 !!! info "Uncomment MySQL 8.x"
 
-    ```# MySQL 8.x (NOT MariaDB!)
+    ```
+    # MySQL 8.x (NOT MariaDB!)
+
         	my $sth = $dbh->prepare(qq{select version();});
+
         	$sth->execute();
+
         	my $row = $sth->fetchrow_array();
+
         
         	$sth->finish();
+
                return 1 if $row >= 8;
+               
         
         # End of MySQL 8.x
     ```
@@ -228,8 +275,11 @@ For Zabbix 5.4 and OLDER versions also make sure to uncomment the indicated line
 
 !!! info "Uncomment for Zabbix 5.4 and older only"
 
-    ```# Uncomment the following line for Zabbix 5.4 and earlier
+    ```
+    # Uncomment the following line for Zabbix 5.4 and earlier
+
         #	$dbh->do("DELETE FROM auditlog_details WHERE NOT EXISTS (SELECT NULL FROM auditlog WHERE auditlog.auditid = auditlog_details.auditid)");
+
         }
     ```
 
@@ -244,10 +294,12 @@ We also need to install some Perl dependencies to make sure we can execute the s
 
 !!! info "Install dependencies"
 
-    ```Redhat-Based
+    ```
+    Redhat-Based
     dnf install perl-DateTime perl-Sys-Syslog
     ```
-    ```Debian-based
+    ```
+    Debian-based
     apt-get install libdatetime-perl liblogger-syslog-perl
     ```
 
@@ -255,16 +307,20 @@ If perl-DateTime isn't available on your RedHat 7.x installation make sure to in
 
 !!! info Install correct repository""
 
-    ```RedHat 7.x based
+    RedHat 7.x based
+    ```
     yum config-manager --set-enabled powertools
     ```
-    ```RedHat 9.x based
+    RedHat 9.x based
+    ```
     dnf config-manager --enable crb
     ```
-    ```Genuine RedHat
+    Genuine RedHat
+    ```
     subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms
     ```
-    ```Oracle Linux
+    Oracle Linux
+    ```
     dnf config-manager --set-enabled ol8_codeready_builder
     ```
 
