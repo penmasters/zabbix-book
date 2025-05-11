@@ -19,8 +19,8 @@ Example :
 | :----    | :----    | :----    |
 |          |          |          |
 
-5. When writing sentences try to keep them at a maximum lenght of `80` charcaters
-   for visability.
+5. When writing sentences try to keep them at a maximum lenght of `80` characters
+   for visibility.
    
 6. If you like to add images just create a folder under the chapter folder with
    the name of your topic and place the `.png` file it. To reference to your image
