@@ -63,7 +63,7 @@ log_warnings
 failover
 keepalived
 readthedocs
-virual_ipaddress
+virtual_ipaddress
 io
 ha
 fqdn
@@ -102,7 +102,6 @@ auth_pass
 auth_type
 track_nginx
 track_process
-virtual_ipaddress
 virtual_router_id
 vrrp_instance
 vrrp_track_process
@@ -168,3 +167,10 @@ phoenixnap
 prd
 tmux
 uncomment
+ipaddress
+cronjob
+crontab
+nano
+opensource
+powertools
+uint
