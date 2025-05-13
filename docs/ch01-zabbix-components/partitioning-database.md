@@ -1,9 +1,9 @@
 # Partitioning a Zabbix MariaDB (MySQL) database with Perl
-As your Zabbix environment grows, you’ll eventually notice that the built-in housekeeper struggles to keep up. This happens because the Zabbix housekeeper works by scanning the database for each history or trend entry that exceeds its configured retention period and deletes them row by row. While this works for smaller setups, as the database grows your housekeeper process will reach a limit as to what it can delete in time.
+As your Zabbix environment grows, you'll eventually notice that the built-in housekeeper struggles to keep up. This happens because the Zabbix housekeeper works by scanning the database for each history or trend entry that exceeds its configured retention period and deletes them row by row. While this works for smaller setups, as the database grows your housekeeper process will reach a limit as to what it can delete in time.
 
-You can usually see this issue happening when the housekeeper process runs at 100% continuously and the database keeps growing larger. This indicated that the cleanup can’t keep pace with incoming data.
+You can usually see this issue happening when the housekeeper process runs at 100% continuously and the database keeps growing larger. This indicated that the cleanup can't keep pace with incoming data.
 
-PostgreSQL users can use the native TimescaleDB plugin in Zabbix, which handles historical data retention more efficiently. `MariaDB` (or MySQL) doesn’t have a similar built-in option.
+PostgreSQL users can use the native TimescaleDB plugin in Zabbix, which handles historical data retention more efficiently. `MariaDB` (or MySQL) doesn't have a similar built-in option.
 
 This is where `MariaDB` partitioning comes in.
 
@@ -12,7 +12,7 @@ This is where `MariaDB` partitioning comes in.
     It's recommended to do partitioning right after setting up your Zabbix database. This process is a lot easier on a clean database, than it is on a database that is already is use.
 
 ## Preparing the database
-To begin implementing `MariaDB` partitioning, you’ll need access with super privileges to your Zabbix database server. Before starting however, if you are going to partition an existing zabbix database make sure to create a backup of your database. We can do this in various ways and with various tools, but the built-in `mariadb-dump` tool will work perfectly fine.
+To begin implementing `MariaDB` partitioning, you'll need access with super privileges to your Zabbix database server. Before starting however, if you are going to partition an existing zabbix database make sure to create a backup of your database. We can do this in various ways and with various tools, but the built-in `mariadb-dump` tool will work perfectly fine.
 
 <https://mariadb.com/kb/en/mariadb-dump/>
 
@@ -359,4 +359,4 @@ Then we can check and see if it worked.
     ```journalctl -t mysql_zbx_part
     ```
 
-This will give you back a list of created and deleted partitions if you’ve done everything right. Make sure to check this command again tomorrow, to make sure the cronjob is working as expected.
+This will give you back a list of created and deleted partitions if you've done everything right. Make sure to check this command again tomorrow, to make sure the cronjob is working as expected.

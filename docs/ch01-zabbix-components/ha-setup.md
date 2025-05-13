@@ -262,7 +262,7 @@ with the following lines :
 
 ???+ warning
     Replace `enp0s1` with the interface name of your machine and replace the `password`
-    with something secure. For the virual_ipaddress use a free IP from your network.
+    with something secure. For the virtual_ipaddress use a free IP from your network.
     This will be used as our VIP.
 
 We can now do the same modification on our `second` Zabbix server. Delete everything
@@ -296,7 +296,7 @@ again in the same file like we did before and replace it with the following line
 
 Just as with our 1st Zabbix server, replace `enp0s1` with the interface name of
 your machine and replace the `password` with your password and fill in the
-virual_ipaddress as used before.
+virtual_ipaddress as used before.
 
 This ends the configuration of keepalived. We can now continue adapting the frontend.
 
