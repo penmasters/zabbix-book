@@ -151,12 +151,14 @@ status with the following command:
 
 !!! info "Check status chronyd" ``` yaml systemctl status chronyd ```
 
-???+ note "what is apt or dnf" "dnf is a package manager used in Red Hat-based
+???+ note "what is apt or dnf" 
+dnf is a package manager used in Red Hat-based
 systems. If you're using another distribution, replace `dnf` with your
-appropriate package manager, such as `zyper`, `apt`, or `yum`. Chrony is a
-modern replacement for `ntpd`, offering faster and more accurate time
-synchronization. If your OS does not support
-[Chrony](https://chrony-project.org/), consider using `ntpd` instead."
+appropriate package manager, such as `zyper`, `apt`, or `yum`. 
+
+???+ note "what is chrony" 
+Chrony is a modern replacement for `ntpd`, offering faster and more accurate time
+synchronization. If your OS does not support [Chrony](https://chrony-project.org/), consider using `ntpd` instead.
 
 Once Chrony is installed, the next step is to ensure the correct time zone is
 set. You can view your current time configuration using the `timedatectl`
