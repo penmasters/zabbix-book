@@ -175,3 +175,9 @@ opensource
 powertools
 uint
 mfa
+history_log
+history_bin
+history_str
+history_text
+history_uint
+trends_uint
