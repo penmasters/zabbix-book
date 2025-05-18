@@ -48,6 +48,6 @@ python3 -m mkdocs serve
 python3 -m mkdocs build
 ```
 
-## Some guidlines
+## Some guidelines
 
 To-Do

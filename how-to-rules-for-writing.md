@@ -1,4 +1,4 @@
-# Some guidlines when writing chapters
+# Some guidelines when writing chapters
 
 1. Always start with # followed by the name of the chapter.
    
