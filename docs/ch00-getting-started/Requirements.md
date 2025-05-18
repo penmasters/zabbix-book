@@ -68,7 +68,7 @@ The first step is to ensure that the firewall is installed and configured.
 To install and enable the firewall, run the following command:
 
 !!! info "Install and enable the firewall"
-    RedHat
+    Red Hat
     ``` yaml
     dnf install firewalld
     systemctl enable firewalld --now
@@ -85,7 +85,7 @@ Zabbix trapper listens for incoming data. Use the following command to open
 this port in the firewall:
 
 !!! info "Allow Zabbix trapper access"
-    RedHat
+    Red Hat
     ``` yaml
     firewall-cmd --add-service=zabbix-server --permanent
     ```
@@ -171,7 +171,7 @@ than it actually did.
 To install and enable chrony, our NTP client, use the following command:
 
 !!! info "Install NTP client"
-    RedHat
+    Red Hat
     ``` yaml
     dnf install chrony
     systemctl enable chronyd --now
@@ -181,7 +181,7 @@ To install and enable chrony, our NTP client, use the following command:
     sudo apt install chrony -y
     ```
 
-After installation, verify that Chrony is enabled and running by checking it's
+After installation, verify that Chrony is enabled and running by checking its
 status with the following command:
 
 !!! info "Check status chronyd"
@@ -191,7 +191,7 @@ status with the following command:
 
 ???+ note "what is apt or dnf"
      dnf is a package manager used in Red Hat-based systems. If you're using another
-     distribution, replace `dnf` with your appropriate package manager, such as `zyper`,
+     distribution, replace `dnf` with your appropriate package manager, such as `zypper`,
      `apt`, or `yum`. 
 
 ???+ note "what is Chrony"
@@ -325,7 +325,7 @@ to a dedicated company time server. You can find local NTP servers here:
 
 ### Updating Time Servers
 
-To update the time servers, modify the `/etc/chrony.conf` file under RedHat based systems if you use Ubuntu edit `/etc/chrony/chrony.conf` . Replace the existing
+To update the time servers, modify the `/etc/chrony.conf` file for Red Hat-based systems, and if you use Ubuntu edit `/etc/chrony/chrony.conf` . Replace the existing
 NTP server with one closer to your location.
 
 Example of the current configuration:
