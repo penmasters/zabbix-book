@@ -34,9 +34,8 @@ nav:
         - ch02-zabbix-installation/external-authentication.md
     - "Chapter 03 : Proxies and Webcomponents": 
         - ch03-zabbix-proxies/chapter.md
-        - ch03-zabbix-proxies/proxies-installation.md
-        - ch03-zabbix-proxies/passive-proxies.md
-        - ch03-zabbix-proxies/active-proxies.md
+        - ch03-zabbix-proxies/proxy-basics.md
+        - ch03-zabbix-proxies/active-passive-proxies.md
         - ch03-zabbix-proxies/web-services.md
     - "Chapter 04 : Collecting data ":
         - ch04-zabbix-collecting-data/chapter.md

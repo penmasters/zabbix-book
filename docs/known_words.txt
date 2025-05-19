@@ -181,3 +181,4 @@ history_str
 history_text
 history_uint
 trends_uint
+zabbix_proxy
