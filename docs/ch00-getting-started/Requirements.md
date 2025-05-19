@@ -375,7 +375,7 @@ Example of expected output with local servers:
 
 This confirms that the system is now using local time servers.
 
-## Conclustion
+## Conclusion
 
 As we have seen, before even considering the Zabbix packages, attention must be
 paid to the environment in which it will reside. A properly configured operating
