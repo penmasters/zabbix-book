@@ -1,6 +1,6 @@
-# Proxy Installation
+# Proxy basics
 
-In this chapter we will cover the installation of our proxies. We won't pay
+In this chapter we will cover the basic needs for our proxies. We won't pay
 attention to active or passive proxies yet this is something we cover later
 in the next chapters.
 
@@ -22,19 +22,19 @@ So in short a Zabbix proxy can be used to:
 - Simplify the maintenance and management
 
 
-??? +note
-    Imagine that you need to restart your Zabbix server and that all proxies start
-    to push the data they have gathered during the downtime of the Zabbix server.
-    This would create a huge amount of data being sent at once to the Zabbix server
-    and bring it to its knees in no time. Since Zabbix 6 Zabbix has added protection
-    for overload. When Zabbix server history cache is full the history cache write
-    access is being throttled. Zabbix server will stop accepting data from proxies
-    when history cache usage reaches 80%. Instead those proxies will be put on a
-    throttling list. This will continue until the cache usage falls down to 60%.
-    Now server will start accepting data from proxies one by one, defined by the
-    throttling list. This means the first proxy that attempted to upload data during
-    the throttling period will be served first and until it's done the server will
-    not accept data from other proxies.
+???+ note
+     Imagine that you need to restart your Zabbix server and that all proxies start
+     to push the data they have gathered during the downtime of the Zabbix server.
+     This would create a huge amount of data being sent at once to the Zabbix server
+     and bring it to its knees in no time. Since Zabbix 6 Zabbix has added protection
+     for overload. When Zabbix server history cache is full the history cache write
+     access is being throttled. Zabbix server will stop accepting data from proxies
+     when history cache usage reaches 80%. Instead those proxies will be put on a
+     throttling list. This will continue until the cache usage falls down to 60%.
+     Now server will start accepting data from proxies one by one, defined by the
+     throttling list. This means the first proxy that attempted to upload data during
+     the throttling period will be served first and until it's done the server will
+     not accept data from other proxies.
 
 This table gives you an overview of how and when throttling works in Zabbix.
 
@@ -56,3 +56,9 @@ so we have to choose the way of the communication when we install a proxy. Just
 remember that choosing the proxy mode `active` or `passive` has no impact on how
 Zabbix agents can communicate with our proxy. It's perfectly fine to have an `active proxy`
 and a `passive agent` working together.
+
+???+ warning
+     Before you continue with the setup of your active or passive proxy make sure
+     your OS is properly configure like explained in our chapter `Getting Started` 
+     => `System Requirements`. As it's very important to have your firewall and
+     time server properly configured.
