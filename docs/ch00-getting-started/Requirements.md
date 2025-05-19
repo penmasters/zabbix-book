@@ -374,3 +374,27 @@ Example of expected output with local servers:
     ```
 
 This confirms that the system is now using local time servers.
+
+## Conclustion
+
+As we have seen, before even considering the Zabbix packages, attention must be
+paid to the environment in which it will reside. A properly configured operating
+system, an open path through the firewall, and accurate timekeeping are not mere
+suggestions, but essential building blocks. Having laid this groundwork, we can
+now proceed with confidence to the Zabbix installation, knowing that the underlying
+system is prepared for the task.
+
+## Questions
+
+- Why do you think accurate time synchronization is so crucial for a monitoring
+  system like Zabbix?
+- Now that the groundwork is laid, what do you anticipate will be the first step
+  in the actual Zabbix installation process?
+- As we move towards installing Zabbix, let's think about network communication.
+  What key ports do you anticipate needing to allow through the firewall for the
+  Zabbix server and agents to interact effectively?
+
+## Useful URLs
+
+- https://www.ntppool.org/zone
+- https://www.redhat.com/en/blog/beginners-guide-firewalld

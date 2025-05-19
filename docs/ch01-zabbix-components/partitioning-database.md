@@ -39,7 +39,7 @@ This is why I always run partitioning in a `tmux` session. If `tmux` hasn't been
 
 !!! info "Check disk space availability"
 
-    RedHat-based
+    Red Hat-based
     ```
     dnf install tmux
     ```
@@ -298,7 +298,7 @@ We also need to install some Perl dependencies to make sure we can execute the s
 
 !!! info "Install dependencies"
 
-    Redhat-Based
+    Red Hat-Based
     ```
     dnf install perl-DateTime perl-Sys-Syslog
     ```
@@ -307,21 +307,21 @@ We also need to install some Perl dependencies to make sure we can execute the s
     apt-get install libdatetime-perl liblogger-syslog-perl
     ```
 
-If perl-DateTime isn't available on your RedHat 7.x installation make sure to install the powertools repo.
+If perl-DateTime isn't available on your Red Hat 7.x installation make sure to install the powertools repo.
 
 !!! info "Install correct repository"
 
-    RedHat 7 based
+    Red Hat 7 based
     ```
     yum config-manager --set-enabled powertools
     ```
 
-    RedHat 9 based
+    Red Hat 9 based
     ```
     dnf config-manager --enable crb
     ```
 
-    Genuine RedHat
+    Genuine Red Hat
     ```
     subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms
     ```

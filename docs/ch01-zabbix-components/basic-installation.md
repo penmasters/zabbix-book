@@ -74,7 +74,7 @@ To create the MariaDB repository file, execute the following command in your ter
 
 !!! info "create mariadb repository"
 
-    RedHat
+    Red Hat
     ``` yaml
     vi /etc/yum.repos.d/mariadb.repo
     ```
@@ -101,7 +101,7 @@ The latest config can be found here:
 Here's the configuration you need to add into the file:
 
 !!! info "Mariadb repository"
-    RedHat
+    Red Hat
     ``` yaml
     # MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-02-21 10:15 UTC
     # https://mariadb.org/download/
@@ -141,7 +141,7 @@ about to install.
 To update your OS, run the following command:
 
 !!! info "Update OS"
-    RedHat
+    Red Hat
     ``` yaml
     dnf update -y
     ```
@@ -164,7 +164,7 @@ necessary components to run and manage your database.
 To install the MariaDB server and client, execute the following command:
 
 !!! info "Install Mariadb"
-    RedHat
+    Red Hat
     ``` yaml
     dnf install MariaDB-server
     ```
@@ -182,7 +182,7 @@ Now that MariaDB is installed, we need to enable the service to start automatica
 upon boot and start it immediately. Use the following command to accomplish this:
 
 !!! info "Enable mariadb service"
-    RedHat
+    Red Hat
     ``` yaml
     systemctl enable mariadb --now
     ```
@@ -192,7 +192,7 @@ running, you can verify that the installation was successful by checking the
 version of MariaDB using the following command:
 
 !!! info "Check Mariadb version"
-    RedHat and Ubuntu
+    Red Hat and Ubuntu
     ``` yaml
     sudo mariadb -V
     ```
@@ -207,7 +207,7 @@ To ensure that the MariaDB service is running properly, you can check its status
 with the following command:
 
 !!! info "Get mariadb status"
-    RedHat and Ubuntu
+    Red Hat and Ubuntu
     ``` yaml
     sudo systemctl status mariadb
     ```
@@ -258,7 +258,7 @@ your database.
 
 Run the following command:
 !!! info "Secure Mariadb setup"
-    RedHat and Ubuntu
+    Red Hat and Ubuntu
     ``` yaml
     sudo mariadb-secure-installation
     ```
@@ -356,7 +356,7 @@ You'll be prompted to enter the root password that you set during the mariadb-se
 process.
 
 !!! info "Enter Mariadb as user root"
-    RedHat and Ubuntu
+    Red Hat and Ubuntu
     ``` yaml
     mariadb -uroot -p
     ```
@@ -438,7 +438,7 @@ If we want our Zabbix server to connect to our DB then we also need to open our 
 
 !!! info "Add firewall rules"
 
-    RedHat
+    Red Hat
     ``` yaml
     firewall-cmd --add-port=3306/tcp --permanent
     firewall-cmd --reload
@@ -460,7 +460,7 @@ with our Zabbix schemas.
 
 !!! info "Add Zabbix repo and install scripts"
 
-    RedHat
+    Red Hat
     ``` yaml
     rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
     dnf clean all
@@ -480,7 +480,7 @@ for this we make use of the user `zabbix-srv` and we upload it all in our DB `za
 
 !!! info "Populate the database"
 
-    RedHat and Ubuntu
+    Red Hat and Ubuntu
     ``` yaml
     sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
     ```
@@ -534,7 +534,7 @@ So let us start first setting up our PostgreSQL repository with the following co
 
 !!! info "Add PostgreSQL repo"
 
-    RedHat
+    Red Hat
     ``` yaml
     Install the repository RPM:
     dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
@@ -561,7 +561,7 @@ So let us start first setting up our PostgreSQL repository with the following co
 ### Install the PostgreSQL databases
 
 !!! info "Install the Postgres server"
-    RedHat
+    Red Hat
     
     ``` yaml
     # Install Postgres server:
@@ -581,7 +581,7 @@ So let us start first setting up our PostgreSQL repository with the following co
 To update your OS, run the following command:
 
 !!! info "update the OS"
-    RedHat
+    Red Hat
     
     ``` yaml
     dnf update -y
@@ -609,7 +609,7 @@ from where, and what encryption method is used for authentication.
 Add the following lines, the order here is important.
 
 !!! info "Edit the pg_hba file"
-    Redhat
+    Red hat
     
     ``` yaml
     vi /var/lib/pgsql/17/data/pg_hba.conf
@@ -641,7 +641,7 @@ and allow our database to listen on our network interface for incoming connectio
 from the zabbix server. Postgresql will standard only allow connections from the socket.
 
 !!! info "Edit postgresql.conf file"
-    RedHat
+    Red Hat
 
     ``` yaml
     vi /var/lib/pgsql/17/data/postgresql.conf
@@ -676,7 +676,7 @@ and replace it with:
 After making this change, restart the PostgreSQL service to apply the new settings:
 
 !!! info "restart the DB server"
-    Redhat
+    Red Hat
     
     ``` yaml
     systemctl restart postgresql-17
@@ -702,7 +702,7 @@ Zabbix application.
 To begin, add the Zabbix repository to your system by running the following commands:
 
 !!! info "Add zabbix schema repos package"
-    RedHat
+    Red Hat
     
     ``` yaml
     dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm -y
@@ -743,7 +743,7 @@ After creating the users, you need to prepare the database schema. As the root
 or your regular user, unzip the necessary schema files by running the following command:
 
 !!! info "Unzip the DB patch"
-    RedHat
+    Red Hat
     
     ``` yaml
     gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
@@ -767,7 +767,7 @@ First, switch to the `postgres` user and execute the following command to create
 the database with the owner set to zabbix-srv:
 
 !!! info "Create DB"
-    RedHat
+    Red Hat
     
     ``` yaml
     su - postgres
@@ -1034,7 +1034,7 @@ If we want our Zabbix server to be able to connect to our DB then we also need t
 
 !!! info ""
 
-    RedHat
+    Red Hat
     
     ``` yaml
     firewall-cmd --add-port=5432/tcp --permanent
@@ -1066,7 +1066,7 @@ This concludes our installation of the PostgreSQL database.
 Before proceeding with the installation of your Zabbix server, ensure that the server
 is properly configured, as outlined in the previous section [System Requirements](../ch00-getting-started/Requirements.md)
 
-Another critical step at this stage if you use RedHat based systems is disabling
+Another critical step at this stage if you use Red Hat based systems is disabling
 SELinux, which can interfere with the installation and operation of Zabbix.
 We will revisit SELinux at the end of this chapter once our installation is finished.
 
@@ -1119,7 +1119,7 @@ Alternatively, you can achieve the same result more easily by running the
 following command:
 
 !!! info "Disable SeLinux permanent"
-    RedHat
+    Red Hat
     
     ``` yaml
     sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
@@ -1165,7 +1165,7 @@ To do this, edit the `/etc/yum.repos.d/epel.repo` file and add the following sta
 to disable the EPEL repository by default:
 
 !!! info "exclude packages"
-    RedHat
+    Red Hat
     
     ``` yaml
     [epel]
@@ -1186,7 +1186,7 @@ old cache files and ensure the repository metadata is up to date. You can do thi
 by running:
 
 !!! info "Add the zabbix repo"
-    RedHat
+    Red Hat
 
     ``` yaml
     rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
@@ -1213,7 +1213,7 @@ This will refresh the repository metadata and prepare the system for Zabbix inst
 
     For our installation, the Zabbix repository is provided by the vendor itself,
     making it a trusted source. Another popular and safe repository for
-    RedHat-based systems is EPEL (Extra Packages for Enterprise Linux), which is
+    Red Hat-based systems is EPEL (Extra Packages for Enterprise Linux), which is
     commonly used in enterprise environments.
     However, always exercise caution when adding new repositories to ensure
     system security and stability.
@@ -1229,7 +1229,7 @@ To install the Zabbix server and the web server components for MySQL/MariaDB,
 run the following command:
 
 !!! info "Install the zabbix server"
-    RedHat
+    Red Hat
     
     ``` yaml
     dnf install zabbix-server-mysql -y
@@ -1247,7 +1247,7 @@ Zabbix server configuration file. Open the `/etc/zabbix/zabbix_server.conf` file
 update the following lines to match your database configuration:
 
 !!! info "Edit zabbix server config"
-    RedHat and Ubuntu
+    Red Hat and Ubuntu
     
     ``` yaml
     sudo vi /etc/zabbix/zabbix_server.conf
@@ -1320,7 +1320,7 @@ to enable the Zabbix server and ensure it starts automatically on boot:
     be accomplished using the following command: `zabbix-server -T`
 
 !!! info "enable and start zabbix-server service"
-    Redhat and Ubuntu
+    Red Hat and Ubuntu
 
     ``` yaml
     sudo systemctl enable zabbix-server --now
@@ -1438,7 +1438,7 @@ This concludes our chapter on installing and configuring the Zabbix server with 
 Before proceeding with the installation of your Zabbix server, ensure that the server
 is properly configured, as outlined in the previous section [System Requirements](../ch00-getting-started/Requirements.md)
 
-Another critical step at this stage if you use RedHat based systems is disabling
+Another critical step at this stage if you use Red Hat based systems is disabling
 SELinux, which can interfere with the installation and operation of Zabbix.
 We will revisit SELinux at the end of this chapter once our installation is finished.
 
@@ -1492,7 +1492,7 @@ Alternatively, you can achieve the same result more easily by running the
 following command:
 
 !!! info "Adapt selinux config permanently"
-    RedHat
+    Red Hat
     
     ``` yaml
     sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
@@ -1538,7 +1538,7 @@ To do this, edit the `/etc/yum.repos.d/epel.repo` file and add the following sta
 to disable the EPEL repository by default:
 
 !!! info "Add exclude to epelrepo for zabbix"
-    RedHat
+    Red Hat
     
     ``` yaml
     [epel]
@@ -1559,7 +1559,7 @@ old cache files and ensure the repository metadata is up to date. You can do thi
 by running:
 
 !!! info "add the repo"
-    RedHat
+    Red Hat
     
     ``` yaml
     rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
@@ -1586,7 +1586,7 @@ This will refresh the repository metadata and prepare the system for Zabbix inst
 
     For our installation, the Zabbix repository is provided by the vendor itself,
     making it a trusted source. Another popular and safe repository for
-    RedHat-based systems is EPEL (Extra Packages for Enterprise Linux), which is
+    Red Hat-based systems is EPEL (Extra Packages for Enterprise Linux), which is
     commonly used in enterprise environments.
     However, always exercise caution when adding new repositories to ensure
     system security and stability.
@@ -1601,7 +1601,7 @@ To install the Zabbix server and the web server components for PostgreSQL,
 run the following command:
 
 !!! info "install zabbix server"
-    RedHat
+    Red Hat
     
     ``` yaml
     dnf install zabbix-server-pgsql -y
@@ -1620,7 +1620,7 @@ update the following lines to match your database configuration:
 
 !!! info "Edit zabbix server config"
 
-    RedHat and Ubuntu
+    Red Hat and Ubuntu
     
     ``` yaml
     #sudo vi /etc/zabbix/zabbix_server.conf
@@ -1691,7 +1691,7 @@ can now start and enable the Zabbix server service. Run the following command
 to enable the Zabbix server and ensure it starts automatically on boot:
 
 !!! info "enable zabbix server service and start"
-    Redhat
+    Red Hat
     
     ``` yaml
     systemctl enable zabbix-server --now
@@ -1822,7 +1822,7 @@ correct IP addresses and open the correct firewall ports.
 ### Installing the frontend with NGINX
 
 !!! info "install frontend packages"
-    RedHat
+    Red Hat
     
     ``` yaml
     # dnf install zabbix-nginx-conf zabbix-web-mysql -y
@@ -1847,7 +1847,7 @@ If you don't remember how to add the repository, have a look at the topic [Addin
 First thing we have to do is alter the Nginx configuration file so that we don't
 use the standard config.
 
-!!! info "edit nginx config for RedHat"
+!!! info "edit nginx config for Red Hat"
     
     ``` yaml
     vi /etc/nginx/nginx.conf
@@ -1954,7 +1954,7 @@ where xxx.xxx.xxx.xxx is your IP or DNS name.
 
 !!! info "restart the front-end services"
 
-    RedHat
+    Red Hat
     
     ``` yaml
     systemctl enable php-fpm --now
@@ -1999,7 +1999,7 @@ step involves adjusting the firewall to permit inbound HTTP traffic. Execute the
 following commands:
 
 !!! info "configure the firewall"
-    RedHat
+    Red Hat
     
     ``` yaml
     firewall-cmd --add-service=http --permanent
@@ -2051,7 +2051,7 @@ What if we want to install Chinese as language or another language from the list
 Run the next command to get a list of all locales available for your OS.
 
 !!! info "install language packs"
-    RedHat
+    Red Hat
     
     ``` yaml
     dnf list glibc-langpack-*
@@ -2063,7 +2063,7 @@ Run the next command to get a list of all locales available for your OS.
     apt-cache search language-pack
     ```
 
-This will give you on Redhat based systems a list like:
+This will give you on Red Hat based systems a list like:
 
 !!! info ""
     ``` yaml
@@ -2094,7 +2094,7 @@ Let's search for our Chinese locale to see if it is available. As you can see
 the code starts with zh.
 
 !!! info "search for language pack"
-    RedHat
+    Red Hat
     
     ``` yaml
     dnf list glibc-langpack-* | grep zh
@@ -2114,7 +2114,7 @@ The command outputs two lines; however, given the identified language code,
 'zh_CN,' only the first package requires installation.
 
 !!! info "install the package"
-    RedHat
+    Red Hat
     
     ``` yaml
     dnf install glibc-langpack-zh.x86_64 -y

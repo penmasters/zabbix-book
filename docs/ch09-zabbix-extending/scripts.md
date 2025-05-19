@@ -36,7 +36,7 @@ Our Python script relies on an additional package that needs to be installed bef
 running. Make sure you have this dependency set up on your system before executing the script.
 
 !!! info "install python3-requests"
-    Redhat
+    Red Hat
     ```
     dnf install python3-requests
     ```
