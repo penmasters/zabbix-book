@@ -187,3 +187,5 @@ log_level_decrease
 snmp_cache_reload
 housekeeper_execute
 diaginfo
+pollers
+

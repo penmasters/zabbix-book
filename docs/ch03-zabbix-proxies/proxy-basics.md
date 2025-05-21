@@ -100,14 +100,50 @@ will be used to retrieve new configuration changes. So it's best practice to con
      => `System Requirements`. As it's very important to have your firewall and
      time server properly configured.
 
-### Active proxy
+### Passive proxy
 
 A proxy in passive mode will have all settings controlled by the `Zabbix server`.
 
+The most important options for a passive proxy that we need to remember are changed
+in the `Zabbix server` configuration file and the `Zabbix proxy` as it is the server
+that controls when and how proxy data is requested by making use of pollers.
 
+The most important setting we can find back in the `proxy` configuration file are :
 
+- **ProxyMode:**1 (passive)
+- **Server:** IP or DNS of the `Zabbix server`
+- **ProxyLocalBuffer:** How long we like to keep data in the DB (in hours) even
+  we have sent it already to the `Zabbix server`.
+- **ProxyLocalBuffer:** How long we like to keep data in the DB (in hours) even
+  we have sent it already to the `Zabbix server`.
 
+And finally the config settings we need to change on our `Zabbix server`:
 
+- **StartProxyPollers:** The number of pollers to contact proxies 
+- **ProxyConfigFrequency:** Replaces ConfigFrequency and defines how often `Zabbix server`
+  will sent configuration changes to our proxies.
+- **ProxyDataFrequency:** How often `Zabbix server` will request data from our proxies.
+
+![Passive proxy communication](ch03-passive-communication.png)
+
+*3.2 Passive proxy communication*
+
+### Proxy configuration changes
+
+Before Zabbix 7.0, a full configuration synchronization was performed by proxies every
+3600 seconds (1 hour) by default. With the introduction of Zabbix 7.0, this behavior
+changed significantly. Now, configuration synchronization occurs much more frequently,
+every 10 seconds by default, but it's an incremental update. This means that instead
+of transferring the entire configuration, only the modified entities are synchronized,
+greatly improving efficiency and reducing network overhead.
+
+Upon initial proxy startup, a full configuration synchronization is still performed.
+Subsequently, both the server and the proxy maintain a revision of the configuration.
+When a change is made on the server, only the differences, based on these revision
+numbers, are applied to the proxy's configuration, rather than a complete replacement
+of the entire configuration as in older versions. This incremental approach allows
+for near real-time propagation of configuration changes while minimizing resource
+consumption.
 
 ### Proxy runtime control options
 
