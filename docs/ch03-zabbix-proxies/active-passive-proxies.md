@@ -14,7 +14,7 @@ those steps is adding the proxy in the frontend of Zabbix. So from the menu let'
 
 ![Create proxy](ch03-add-active-proxy.png)
 
-*3.1 Create proxy*
+*3.3 Create proxy*
 
 Once pressed a new modal form will pop-up where we need to fill in some information.
 For active proxies we only need to enter the `Proxy name` field. Here we will enter
@@ -29,7 +29,7 @@ field you could enter some text to make it even more clear that this is an activ
 
 ![Active proxy](ch03-new-active-proxy.png)
 
-*3.2 New proxy*
+*3.4 New proxy*
 
 Our next step involves installing the proxy binaries on our OS. If you don't
 remember how to this or aren't sure then let's have a look at `Chapter 01` =>
@@ -167,18 +167,49 @@ online. Zabbix will also show the version of our proxy and the last seen age.
 
 ![ProxyA ready](ch03-active-proxy-installed.png)
 
-*3.3 Active proxy configured*
+*3.5 Active proxy configured*
 
 
 
 ## Passive Proxy
 
-
+TODO
 
 
 
 
 ## Conclusion
+
+This chapter has demonstrated the indispensable role of Zabbix proxies in building
+robust, scalable, and distributed monitoring infrastructures. We've explored the
+fundamental distinction between `active` and `passive proxy` modes, highlighting how
+each serves different deployment scenarios and network topologies. Understanding
+their individual strengths, from simplified firewall configurations with `active proxies`
+to the server-initiated control of `passive proxies`, is crucial for optimal system design.
+
+We delved into the comprehensive settings that govern proxy behavior, emphasizing how
+proper configuration of parameters like agent polling intervals and data senders,
+directly impacts performance and data accuracy. The evolution of data storage mechanisms
+within the proxy, from purely memory-based approaches to the flexible options of
+disk and hybrid storage, empowers administrators to finely tune resource utilization
+and data persistence based on their specific needs and the volume of monitored data.
+
+Finally, we examined the critical advancements in configuration synchronization,
+particularly the significant improvements introduced with Zabbix 7.0. The shift
+towards more efficient and streamlined config sync processes, moving beyond the
+limitations of earlier versions, underscores Zabbix's continuous commitment to
+enhancing operational efficiency and simplifying large-scale deployments.
+
+In essence, Zabbix proxies are far more than simple data forwarders; they are intelligent
+intermediaries that offload significant processing from the central Zabbix server,
+reduce network traffic, and enhance the resilience of your monitoring solution.
+By carefully selecting the appropriate proxy type, meticulously configuring its
+settings, and leveraging the latest features in data storage and configuration
+management, you can unlock the full potential of Zabbix to monitor even the most
+complex and geographically dispersed environments with unparalleled efficiency and
+reliability. The knowledge gained in this chapter will be instrumental in designing
+and maintaining a Zabbix infrastructure that is not only robust today but also adaptable
+to future monitoring challenges.
 
 ## Questions
 
