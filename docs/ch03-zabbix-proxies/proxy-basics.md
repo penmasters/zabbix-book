@@ -57,8 +57,66 @@ remember that choosing the proxy mode `active` or `passive` has no impact on how
 Zabbix agents can communicate with our proxy. It's perfectly fine to have an `active proxy`
 and a `passive agent` working together.
 
+### Active proxy
+
+A proxy in active mode will be the one in control of all the settings like the when it looks
+for new configuration changes and pushes new data to the server.
+In a standard setup the active proxy will sent it's data every second to the `Zabbix server`
+reload it's config every 10 seconds.
+
+The most important options for an active proxy that we need to remember are changed
+in the `Zabbix proxy` configuration file only.
+
+- **ProxyMode:** 0
+- **Server:** IP or DNS of the Zabbix server
+- **Hostname:** Proxy name this needs to be exact the same as configured in the
+  frontend.
+- **ProxyOfflineBuffer:** How long we like to keep data in the DB (in hours) if
+  we can' contact the `Zabbix server`.
+- **ProxyLocalBuffer:** How long we like to keep data in the DB (in hours) even
+  we have sent it already to the `Zabbix server`.
+- **ProxyConfigFrequency:** Replaces ConfigFrequency and defines how often we
+  request configuration updates (every 10 seconds) from the `Zabbix server`.
+- **DataSenderFrequency: How often data is sent to `Zabbix server` (every second)**
+
+When it comes to configuring the needed resources for the `Active proxy` we have
+to realise that the proxy can use up to 2 trapper items on the `Zabbix server`
+when it tries to connect. One will be used to sent the actual data and the other trapper
+will be used to retrieve new configuration changes. So it's best practice to configure
+2 trappers per `Active proxy` on the server side.
+
+![Active proxy communication](ch03-active-communication.png)
+
+*3.1 Active proxy communication*
+
+???+ info
+     Before Zabbix 7.0 a proxy would reload it's configuration once every 3600
+     seconds. This has been changed since Zabbix 7.0 as they way proxies handle
+     updates have been optimized.
+
 ???+ warning
      Before you continue with the setup of your active or passive proxy make sure
      your OS is properly configure like explained in our chapter `Getting Started` 
      => `System Requirements`. As it's very important to have your firewall and
      time server properly configured.
+
+### Active proxy
+
+A proxy in passive mode will have all settings controlled by the `Zabbix server`.
+
+
+
+
+
+
+### Proxy runtime control options
+
+Just like the `Zabbix server` our proxy supports runtime control options always
+check latest options with the --help option. But here is a short overview of
+options available to use.
+
+- zabbix_proxy --runtime-control housekeeper_execute
+- zabbix_proxy --runtime-control log_level_increase=target
+- zabbix_proxy --runtime-control log_level_decrease=target
+- zabbix_proxy --runtime-control snmp_cache_reload
+- zabbix_proxy --runtime-control diaginfo=section

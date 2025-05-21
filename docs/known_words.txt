@@ -182,3 +182,8 @@ history_text
 history_uint
 trends_uint
 zabbix_proxy
+log_level_increase
+log_level_decrease
+snmp_cache_reload
+housekeeper_execute
+diaginfo
