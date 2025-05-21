@@ -14,7 +14,7 @@ those steps is adding the proxy in the frontend of Zabbix. So from the menu let'
 
 ![Create proxy](ch03-add-active-proxy.png)
 
-**3.1 Create proxy**
+*3.1 Create proxy*
 
 Once pressed a new modal form will pop-up where we need to fill in some information.
 For active proxies we only need to enter the `Proxy name` field. Here we will enter
@@ -29,7 +29,7 @@ field you could enter some text to make it even more clear that this is an activ
 
 ![Active proxy](ch03-new-active-proxy.png)
 
-**3.2 New proxy**
+*3.2 New proxy*
 
 Our next step involves installing the proxy binaries on our OS. If you don't
 remember how to this or aren't sure then let's have a look at `Chapter 01` =>
@@ -167,7 +167,7 @@ online. Zabbix will also show the version of our proxy and the last seen age.
 
 ![ProxyA ready](ch03-active-proxy-installed.png)
 
-**3.3 Active proxy configured**
+*3.3 Active proxy configured*
 
 
 
