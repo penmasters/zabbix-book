@@ -156,3 +156,16 @@ options available to use.
 - zabbix_proxy --runtime-control log_level_decrease=target
 - zabbix_proxy --runtime-control snmp_cache_reload
 - zabbix_proxy --runtime-control diaginfo=section
+
+### Proxy firewall
+
+Our proxies work like small `Zabbix servers` so when it comes to the ports to connect to
+agents, SNMP, ... nothing changes all ports need to be configured same as on your server.
+
+When it comes to port for the proxy it depends on our proxy being `active` or `passive`.
+
+- **Active Proxy:** Zabbix server needs to have port `10051/tcp` open so proxy can connect.
+- **Passive Proxy:** Needs to have port `10051/tcp` open on the proxy so that the
+  `server` can connect to the proxy.
+
+
