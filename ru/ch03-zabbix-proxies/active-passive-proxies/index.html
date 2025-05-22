@@ -1,0 +1,2036 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="An open-source Zabbix book">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/ru/ch03-zabbix-proxies/active-passive-proxies/">
+      
+      
+        <link rel="prev" href="../proxy-basics/">
+      
+      
+        <link rel="next" href="../proxy-groups/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Active and Passive proxies - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.af67bdb9.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Nunito"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#active-and-passive-proxies" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Эта страница еще не переведена на ЯЗЫК, поэтому она отображается на английском языке.
+            <a href="/gmc/ru/contribute/#translations">Поддержите нас и переведите!</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Выберите версию";
+        const gGMC_TRANSLATE_CTA = "Поддержите нас и переведите!";
+        const gGMC_PAGE_LOCALE = "ru";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Active and Passive proxies
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch03-zabbix-proxies/active-passive-proxies/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../de/ch03-zabbix-proxies/active-passive-proxies/" hreflang="de" class="md-select__link">
+              German
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../it/ch03-zabbix-proxies/active-passive-proxies/" hreflang="it" class="md-select__link">
+              Italian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch03-zabbix-proxies/active-passive-proxies/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt/ch03-zabbix-proxies/active-passive-proxies/" hreflang="pt" class="md-select__link">
+              Portuguese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../es/ch03-zabbix-proxies/active-passive-proxies/" hreflang="es" class="md-select__link">
+              Spanish
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../th/ch03-zabbix-proxies/active-passive-proxies/" hreflang="th" class="md-select__link">
+              ภาษาไทย
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../zh/ch03-zabbix-proxies/active-passive-proxies/" hreflang="zh" class="md-select__link">
+              中国人
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch03-zabbix-proxies/active-passive-proxies/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Guidelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Supporters and contributors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Getting started
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 01 : Zabbix components
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 02 : Installation
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Chapter 03 : Proxies and Webcomponents
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Chapter 03 : Proxies and Webcomponents
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Proxies and the Web services component
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../proxy-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Proxy basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Active and Passive proxies
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Active and Passive proxies
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#active-proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Active proxies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Active proxies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zabbix-gui-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zabbix GUI configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-the-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the proxy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passive-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Passive Proxy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passive Proxy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zabbix-gui-configuration_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zabbix GUI configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-the-proxy_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the proxy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful URLs
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../proxy-groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    proxy groups
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../web-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 05 : Triggers
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 06 : Templates
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 07 : Alerting
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 08 : LLD
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 09 : Extending Zabbix
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 10 : Discovery
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 11 : Visualisation
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 12 : Zabbix API
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 13 : Real world examples
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Print Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#active-proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Active proxies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Active proxies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zabbix-gui-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zabbix GUI configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-the-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the proxy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passive-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Passive Proxy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passive Proxy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zabbix-gui-configuration_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zabbix GUI configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-the-proxy_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing the proxy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful URLs
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch03-zabbix-proxies/active-passive-proxies.md" title="Посмотреть исходный код страницы" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="active-and-passive-proxies">Active and Passive proxies</h1>
+<h2 id="active-proxies">Active proxies</h2>
+<p>Let's first start with the setup of an active Proxy. Things should be very simple
+to setup. The only thing we need to have for now is a working Zabbix installation.
+The underlying OS is not important.</p>
+<h3 id="zabbix-gui-configuration">Zabbix GUI configuration</h3>
+<p>There are 2 things we need to to when we like to setup a Zabbix proxy and one of
+those steps is adding the proxy in the frontend of Zabbix. So from the menu let's select
+<code>Administration</code> =&gt; <code>Proxies</code> and click in the upper right corner on <code>Create proxy</code>.</p>
+<p><img alt="Create proxy" src="../../../ch03-zabbix-proxies/active-passive-proxies/ch03-add-active-proxy.png" /></p>
+<p><em>3.3 Create proxy</em></p>
+<p>Once pressed a new modal form will pop-up where we need to fill in some information.
+For active proxies we only need to enter the <code>Proxy name</code> field. Here we will enter
+<code>ProxyA</code> to remind us this will be an active proxy.
+Don't worry about the other fields we will cover them later. In the <code>Description</code>
+field you could enter some text to make it even more clear that this is an active proxy.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>For Zabbix active proxies, you only need to specify the hostname during configuration.
+ This hostname acts as the unique identifier that the Zabbix server uses to distinguish
+ between different active proxies and manage their data correctly.</p>
+</details>
+<p><img alt="Active proxy" src="../../../ch03-zabbix-proxies/active-passive-proxies/ch03-new-active-proxy.png" /></p>
+<p><em>3.4 New proxy</em></p>
+<p>Our next step involves installing the proxy binaries on our OS. If you don't
+remember how to this or aren't sure then let's have a look at <code>Chapter 01</code> =&gt;
+<code>Basic Installation</code>.</p>
+<h3 id="installing-the-proxy">Installing the proxy</h3>
+<p>Next up, we need to get the Zabbix proxy software onto your system. If you're not
+sure how to do this or need a reminder, take a quick peek at <code>Chapter 1</code>, called
+<code>Basic Installation.</code> It walks you through the whole process.</p>
+<p>Now that your system knows where to find the Zabbix software, we can actually install
+it. It's pretty simple, but there's one thing we need to decide upfront. Zabbix proxies
+need a place to store their information, and they can use one of three options:
+MySQL, PostgreSQL, or SQLite3.</p>
+<p>We will only cover SQlite as MySQL and PostgreSQL are basically already covered
+in <code>Chapter 1</code>, the <code>Basic installation</code>.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>The only thing that is a bit different when you setup a proxy with MySQL or
+ PostgreSQL are the scripts you need to setup the DB structure. for MySQL they
+ are located under <code>/usr/share/zabbix/sql-scripts/mysql/proxy.sql</code> for PostgreSQL
+ they can be found at <code>/usr/share/zabbix/sql-scripts/postgresql/proxy.sql</code>.
+ Make sure you always check the correct Zabbix documentation for your version
+ as they have been moved to different locations over time even. 
+ https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/rhel#proxy-installation</p>
+</details>
+<div class="admonition info">
+<p class="admonition-title">Install zabbix-proxy-sqlite3</p>
+<p>Red Hat
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo dnf install zabbix-proxy-sqlite3
+</span></code></pre></div></p>
+<p>Ubuntu
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo apt install zabbix-proxy-sqlite3
+</span></code></pre></div></p>
+</div>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If you want to use MySQL or PostgreSQL then you can use the package <code>zabbix-proxy-mysql</code>
+ or <code>zabbix-proxy-pgsql</code> depending on your needs.</p>
+</details>
+<p>Now that we have installed the needed package we still have to do a few configuration
+changes. Let's edit our file <code>/etc/zabbix/zabbix_proxy.conf</code> with your favourite editor.
+There are only a few lines we need to alter. The first option we will have to check
+is <code>ProxyMode</code>. Since we want to configure our proxy as active it needs to have
+value <code>0</code> lucky for us this is the default value.</p>
+<p>The other option that is important is the option <code>Server</code> this is standard <code>127.0.0.1</code>
+and we need to replace this with the IP or DNS name of our <code>zabbix server</code>.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>You can fill in multiple servers here in case you have more then 1 <code>zabbix server</code>
+ connecting to your proxy. Also the port can be added here in case your server
+ listens on another port then the standard port 10051. Just be careful to not
+ add the IP and DNS name for the same server as this can return double values.</p>
+</details>
+<p>Another important option is <code>Hostname</code> remember in our frontend we gave our proxy
+the name <code>ProxyA</code> now we have to fill in the exact same name here for hostname.
+Just like a <code>zabbix agent</code> in active mode <code>Zabbix server</code> will use the name as a
+unique identifier.</p>
+<p>The last parameter that we need to set is <code>DBName</code> this is the name for our database
+and since we work with SQLite3 there is no need to create a database, Zabbix can
+handle this for us. Let's use the following configuration <code>DBName=/home/zabbix/zabbix_proxy</code>.</p>
+<p>Before we can start our proxy we need to create the correct folder.
+<code>sudo mkdir /home/zabbix</code> and add the correct rights. <code>sudo chown zabbix: /home/zabbix/</code></p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>A list of all configuration options can be found in the Zabbix documentation.
+ <img alt="https://www.zabbix.com/documentation/current/en/manual/appendix/config/zabbix_proxy" src="../../../assets/external/www.zabbix.com/documentation/current/en/manual/appendix/config/zabbix_proxy"></p>
+</details>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>One important new configuration parameter that was added in <code>7.0</code> is <code>ProxyBufferMode</code>.
+ In Proxies that where installed before <code>7.0</code> the data was first written to
+ disk in the database and then sent to the <code>Zabbix server</code>. For these installations
+ when we upgrade this remains the default behavior after upgrading to Zabbix 7.x or higher.
+ It's now recommended for performance reasons to use the new setting <code>hybrid</code>
+ and to define the <code>ProxyMemoryBufferSize</code>.</p>
+</details>
+<p>The Zabbix proxy uses a temporary space to hold data before sending it to the main
+server. There are two ways this works.</p>
+<ul>
+<li>
+<p><strong>In 'hybrid' mode:</strong> this temporary space has a safety feature. If the proxy stops,
+  if the space gets full, or if the data has been there for too long, the proxy
+  will save everything to the database to prevent any loss. After saving, it goes
+  back to its normal temporary holding.</p>
+</li>
+<li>
+<p><strong>In 'memory' mode:</strong> it only uses this temporary space without the extra saving
+  step. This is faster, but it means that if the proxy stops or the temporary space
+  overflows, any data that hasn't been sent yet will be lost.</p>
+</li>
+</ul>
+<p>Once you have made all the changes you need in the config file besides the once
+  we have covered we only need to enable the service and start our proxy.
+  Of course don't forget to open the firewall port <code>10051</code> on your <code>Zabbix server</code>
+  side as this is an active proxy.</p>
+<p>!!! info "enable and start the proxy service"</p>
+<div class="language-text highlight"><pre><span></span><code>  Red Hat &amp; Ubuntu
+  ```
+  sudo systemctl enable zabbix-proxy --now
+  ```
+</code></pre></div>
+<p>If all goes well we can check the log file from our proxy and we will see that Zabbix has created the database by itself.</p>
+<p><code>sudo tail -f /var/log/zabbix/zabbix_proxy.log</code></p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a> 11134:20250519:152232.419 Starting Zabbix Proxy (active) [Zabbix proxy]. Zabbix 7.4.0beta2 (revision 7cd11a01d42).
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a> 11134:20250519:152232.419 **** Enabled features ****
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a> 11134:20250519:152232.419 SNMP monitoring:       YES
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a> 11134:20250519:152232.419 IPMI monitoring:       YES
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a> 11134:20250519:152232.419 Web monitoring:        YES
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a> 11134:20250519:152232.419 VMware monitoring:     YES
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a> 11134:20250519:152232.419 ODBC:                  YES
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a> 11134:20250519:152232.419 SSH support:           YES
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a> 11134:20250519:152232.419 IPv6 support:          YES
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a> 11134:20250519:152232.419 TLS support:           YES
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a> 11134:20250519:152232.419 **************************
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a> 11134:20250519:152232.419 using configuration file: /etc/zabbix/zabbix_proxy.conf
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a> 11134:20250519:152232.419 cannot open database file &quot;/home/zabbix/zabbix_proxy&quot;: [2] No such file or directory
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a> 11134:20250519:152232.419 creating database ...
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a> 11134:20250519:152232.478 current database version (mandatory/optional): 07030032/07030032
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a> 11134:20250519:152232.478 required mandatory version: 07030032
+</span></code></pre></div>
+Going back to our frontend once everything is properly configured and started on
+our proxy side we should be able to see in the frontend that our active proxy is
+online. Zabbix will also show the version of our proxy and the last seen age.</p>
+<p>You are now ready. Your proxy will behave like the Zabbix server from now on all
+hosts will need to connect to the proxy with their config instead of the <code>Zabbix server</code>.</p>
+<p><img alt="ProxyA ready" src="../../../ch03-zabbix-proxies/active-passive-proxies/ch03-active-proxy-installed.png" /></p>
+<p><em>3.5 Active proxy configured</em></p>
+<h2 id="passive-proxy">Passive Proxy</h2>
+<p>Just like with the setup of our active proxy we need a working Zabbix server and
+a extra VM with Ubuntu or Rocky so we can install a proxy.</p>
+<h3 id="zabbix-gui-configuration_1">Zabbix GUI configuration</h3>
+<p>There are 2 things we need to to when we like to setup a Zabbix proxy and one of
+those steps is adding the proxy in the frontend of Zabbix. So from the menu let's select
+<code>Administration</code> =&gt; <code>Proxies</code> and click in the upper right corner on <code>Create proxy</code>.</p>
+<p><img alt="Create proxy" src="../../../ch03-zabbix-proxies/active-passive-proxies/ch03-add-active-proxy.png" /></p>
+<p>3.6 Create proxy</p>
+<p>Once pressed a new modal form will pop-up where we need to fill in some information.
+For active proxies we only need to enter the <code>Proxy name</code> field. Here we will enter
+<code>ProxyP</code> to remind us this will be a passive proxy.
+For the passive proxy we also need to specify the <code>Interface</code> field. Here we add 
+the IP of the host where our proxy runs on. You also notice that we use the same port
+<code>10051</code> as the <code>Zabbix server</code> to communicate with our proxy.
+Don't worry about the other fields we will cover them later. In the <code>Description</code>
+field you could enter some text to make it even more clear that this is a passive proxy.</p>
+<p><img alt="Passive proxy" src="../../../ch03-zabbix-proxies/active-passive-proxies/ch03-new-passive-proxy.png" /></p>
+<p><em>3.7 New passive proxy</em></p>
+<p>Our next step involves installing the proxy binaries on our OS. If you don't
+remember how to this or aren't sure then let's have a look at <code>Chapter 01</code> =&gt;
+<code>Basic Installation</code>.</p>
+<h3 id="installing-the-proxy_1">Installing the proxy</h3>
+<p>Next up, we need to get the Zabbix proxy software onto your system. If you're not
+sure how to do this or need a reminder, take a quick peek at <code>Chapter 1</code>, called
+<code>Basic Installation.</code> It walks you through the whole process.</p>
+<p>Now that your system knows where to find the Zabbix software, we can actually install
+it. It's pretty simple, but there's one thing we need to decide upfront. Zabbix proxies
+need a place to store their information, and they can use one of three options:
+MySQL, PostgreSQL, or SQLite3.</p>
+<p>We will only cover SQlite as MySQL and PostgreSQL are basically already covered
+in <code>Chapter 1</code>, the <code>Basic installation</code>.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>The only thing that is a bit different when you setup a proxy with MySQL or
+ PostgreSQL are the scripts you need to setup the DB structure. for MySQL they
+ are located under <code>/usr/share/zabbix/sql-scripts/mysql/proxy.sql</code> for PostgreSQL
+ they can be found at <code>/usr/share/zabbix/sql-scripts/postgresql/proxy.sql</code>.
+ Make sure you always check the correct Zabbix documentation for your version
+ as they have been moved to different locations over time even. 
+ https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/rhel#proxy-installation</p>
+</details>
+<div class="admonition info">
+<p class="admonition-title">Install zabbix-proxy-sqlite3</p>
+<p>Red Hat
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo dnf install zabbix-proxy-sqlite3
+</span></code></pre></div></p>
+<p>Ubuntu
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo apt install zabbix-proxy-sqlite3
+</span></code></pre></div></p>
+</div>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If you want to use MySQL or PostgreSQL then you can use the package <code>zabbix-proxy-mysql</code>
+ or <code>zabbix-proxy-pgsql</code> depending on your needs.</p>
+</details>
+<p>Now that we have installed the needed package we still have to do a few configuration
+changes. Let's edit our file <code>/etc/zabbix/zabbix_proxy.conf</code> with your favourite editor.
+There are only a few lines we need to alter. The first option we will have to check
+is <code>ProxyMode</code>. Since we want to configure our proxy as passive it needs to have
+value <code>1</code>. Note that the default value is <code>0</code> for Active.</p>
+<p>The other option that is important is the option <code>Server</code> this is standard <code>127.0.0.1</code>
+and we need to replace this with the IP or DNS name of our <code>zabbix server</code>.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>You can fill in multiple servers here in case you have more then 1 <code>zabbix server</code>
+ connecting to your proxy. Also the port can be added here in case your server
+ listens on another port then the standard port 10051. Just be careful to not
+ add the IP and DNS name for the same server as this can return double values</p>
+</details>
+<p>Another important option is <code>Hostname</code> remember in our frontend we gave our proxy
+the name <code>ProxyP</code> now we have to fill in the exact same name here for hostname.</p>
+<p>The last parameter that we need to set is <code>DBName</code> this is the name for our database
+and since we work with SQLite3 there is no need to create a database, Zabbix can
+handle this for us. Let use the following configuration <code>DBName=/home/zabbix/zabbix_proxyP</code>.</p>
+<p>Before we can start our proxy we need to create the correct folder.
+<code>sudo mkdir /home/zabbix</code> and add the correct rights. <code>sudo chown zabbix: /home/zabbix/</code></p>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>One important new configuration parameter that was added in <code>7.0</code> is <code>ProxyBufferMode</code>.
+ In Proxies that where installed before <code>7.0</code> the data was first written to
+ disk in the database and then sent to the <code>Zabbix server</code>. For these installations
+ when we upgrade this remains the default behavior after upgrading to Zabbix 7.x or higher.
+ It's now recommended for performance reasons to use the new setting <code>hybrid</code>
+ and to define the <code>ProxyMemoryBufferSize</code>.</p>
+</details>
+<p>The Zabbix proxy uses a temporary space to hold data before sending it to the main
+server. There are two ways this works.</p>
+<ul>
+<li>
+<p><strong>In 'hybrid' mode:</strong> this temporary space has a safety feature. If the proxy stops,
+  if the space gets full, or if the data has been there for too long, the proxy
+  will save everything to the database to prevent any loss. After saving, it goes
+  back to its normal temporary holding.</p>
+</li>
+<li>
+<p><strong>In 'memory' mode:</strong> it only uses this temporary space without the extra saving
+  step. This is faster, but it means that if the proxy stops or the temporary space
+  overflows, any data that hasn't been sent yet will be lost.</p>
+</li>
+</ul>
+<p>Once you have made all the changes you need in the config file besides the once
+  we have covered we only need to enable the service and start our proxy.</p>
+<p>!!! info "enable and start the proxy service"
+     Red Hat &amp; Ubuntu
+     <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo systemctl enable zabbix-proxy --now
+</span></code></pre></div></p>
+<div class="language-text highlight"><pre><span></span><code> If all goes well we can check the log file from our proxy and we will see that Zabbix has created the database by itself.
+</code></pre></div>
+<p><code>sudo tail -f /var/log/zabbix/zabbix_proxy.log</code></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a> 11134:20250519:152232.419 Starting Zabbix Proxy (passive) [ProyP]. Zabbix 7.4.0beta2 (revision 7cd11a01d42).
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a> 11134:20250519:152232.419 **** Enabled features ****
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a> 11134:20250519:152232.419 SNMP monitoring:       YES
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a> 11134:20250519:152232.419 IPMI monitoring:       YES
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a> 11134:20250519:152232.419 Web monitoring:        YES
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a> 11134:20250519:152232.419 VMware monitoring:     YES
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a> 11134:20250519:152232.419 ODBC:                  YES
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a> 11134:20250519:152232.419 SSH support:           YES
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a> 11134:20250519:152232.419 IPv6 support:          YES
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a> 11134:20250519:152232.419 TLS support:           YES
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a> 11134:20250519:152232.419 **************************
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a> 11134:20250519:152232.419 using configuration file: /etc/zabbix/zabbix_proxy.conf
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a> 11134:20250519:152232.419 cannot open database file &quot;/home/zabbix/zabbix_proxy&quot;: [2] No such file or directory
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a> 11134:20250519:152232.419 creating database ...
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a> 11134:20250519:152232.478 current database version (mandatory/optional): 07030032/07030032
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a> 11134:20250519:152232.478 required mandatory version: 07030032
+</span></code></pre></div>
+<p>However if we go to our frontend nothing seems to be working at all even we have
+configured everything correct on our proxy.</p>
+<p><img alt="Passive Proxy not working" src="../../../ch03-zabbix-proxies/active-passive-proxies/ch03-passive-not-working.png" /></p>
+<p><em>3.8 Proxy not working</em></p>
+<p>The explanation is rather easy as we run a passive proxy, the <code>Zabbix server</code> needs
+to poll our proxy. But we didn't configured our Server yet. So next step is to add
+the needed proxy pollers in our server config file.
+Use your preferred editor to open the <code>zabbix server</code> configuration file.</p>
+<div class="admonition info">
+<p class="admonition-title">/etc/zabbix/zabbix_server.conf</p>
+<p>Look for the option <code>StartproxyPollers</code> and remove the <code>#</code> sign in front and
+give it value 2. Save the file and exit.
+Now we have to restart the zabbix server with <code>systemctl restart zabbix-server</code></p>
+</div>
+<p>If you look back in the frontend we see that it's still not working and this makes
+sense as we still need to open the firewall on our proxy.</p>
+<div class="admonition info">
+<p class="admonition-title">Open firewall port 10051/tcp</p>
+<p>Red Hat
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo firewall-cmd --add-port=10051/tcp --permanent`
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>sudo firewall-cmd --reload
+</span></code></pre></div>
+Ubuntu
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo ufw allow 10051/tcp
+</span></code></pre></div></p>
+</div>
+<p>If we now look at our proxy interface in the frontend we will see that our <code>passive proxy</code>
+becomes available. If it's not green give it a few seconds or check all steps again
+and verify your log files.</p>
+<p><img alt="Passive Proxy working" src="../../../ch03-zabbix-proxies/active-passive-proxies/ch03-passive-working.png" /></p>
+<p><em>3.8 Proxy working</em></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>This chapter has demonstrated the indispensable role of Zabbix proxies in building
+robust, scalable, and distributed monitoring infrastructures. We've explored the
+fundamental distinction between <code>active</code> and <code>passive proxy</code> modes, highlighting how
+each serves different deployment scenarios and network topologies. Understanding
+their individual strengths, from simplified firewall configurations with <code>active proxies</code>
+to the server-initiated control of <code>passive proxies</code>, is crucial for optimal system design.</p>
+<p>We delved into the comprehensive settings that govern proxy behavior, emphasizing how
+proper configuration of parameters like agent polling intervals and data senders,
+directly impacts performance and data accuracy. The evolution of data storage mechanisms
+within the proxy, from purely memory-based approaches to the flexible options of
+disk and hybrid storage, empowers administrators to finely tune resource utilization
+and data persistence based on their specific needs and the volume of monitored data.</p>
+<p>Finally, we examined the critical advancements in configuration synchronization,
+particularly the significant improvements introduced with Zabbix 7.0. The shift
+towards more efficient and streamlined config sync processes, moving beyond the
+limitations of earlier versions, underscores Zabbix's continuous commitment to
+enhancing operational efficiency and simplifying large-scale deployments.</p>
+<p>In essence, Zabbix proxies are far more than simple data forwarders; they are intelligent
+intermediaries that offload significant processing from the central Zabbix server,
+reduce network traffic, and enhance the resilience of your monitoring solution.
+By carefully selecting the appropriate proxy type, meticulously configuring its
+settings, and leveraging the latest features in data storage and configuration
+management, you can unlock the full potential of Zabbix to monitor even the most
+complex and geographically dispersed environments with unparalleled efficiency and
+reliability. The knowledge gained in this chapter will be instrumental in designing
+and maintaining a Zabbix infrastructure that is not only robust today but also adaptable
+to future monitoring challenges.</p>
+<h2 id="questions">Questions</h2>
+<h2 id="useful-urls">Useful URLs</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+    
+    
+        
+            
+            
+        
+		
+		
+    
+
+  </body>
+</html>
