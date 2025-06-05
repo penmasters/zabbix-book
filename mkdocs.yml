@@ -26,6 +26,7 @@ nav:
         - HA Setup: ch01-zabbix-components/ha-setup.md
         - Security: ch01-zabbix-components/securing-zabbix.md
         - Partitioning MariaDB: ch01-zabbix-components/partitioning-database.md
+        - Partitioning PostgreSQL with TimescaleDB: ch01-zabbix-components/partitioning-postgresql-database.md
     - "Chapter 02 : Installation":
         - ch02-zabbix-installation/chapter.md
         - ch02-zabbix-installation/frontend.md
