@@ -85,14 +85,14 @@ the following tables:
 
 | Table name   | Purpose                                                                             | Data type |
 | ------------ | ----------------------------------------------------------------------------------- | --------- |
-| history      | Stores numeric floating point values                                                |
-| history_uint | Stores numeric unsigned values                                                      |
-| history_str  | Stores text values up to 255 characters                                             |
-| history_text | Stores text values values up to 64kB                                                |
-| history_log  | Stores text values up to 64kB with additional log related properties like timestamp |
-| history_bin  | Stores binary image data                                                            |
-| trends       | Stores the min/avg/max/count trends of numeric floating point data                  |
-| trends_uint  | Stores the min/avg/max/count trends of numeric unsigned data                        |
+| history      | Stores numeric floating point values                                                |           |
+| history_uint | Stores numeric unsigned values                                                      |           |
+| history_str  | Stores text values up to 255 characters                                             |           |
+| history_text | Stores text values values up to 64kB                                                |           |
+| history_log  | Stores text values up to 64kB with additional log related properties like timestamp |           |
+| history_bin  | Stores binary image data                                                            |           |
+| trends       | Stores the min/avg/max/count trends of numeric floating point data                  |           |
+| trends_uint  | Stores the min/avg/max/count trends of numeric unsigned data                        |           |
 
 We first will have first have to determine how long we want to store the information
 per table. MariaDB partitioning will take over the history and trend storage periods
