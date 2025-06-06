@@ -189,3 +189,6 @@ housekeeper_execute
 diaginfo
 pollers
 snmp
+fpm
+systemctl
+
