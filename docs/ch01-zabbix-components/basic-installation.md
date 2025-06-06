@@ -2234,7 +2234,7 @@ You're almost finished with the setup! The final steps involve:
 2. `Selecting the Timezone`: Choose the timezone that matches your location or your preferred time zone for the Zabbix interface.
 3. `Setting the Default Time Format`: Select the default time format you prefer to use.
 4. **Encrypt connections from Web interface**: I marked this box but you should
-   not. This box is to encrypt communictions between Zabbix frontend and your
+   not. This box is to encrypt communications between Zabbix frontend and your
    browser. We will cover this later.
    Once these settings are configured, you can complete the setup and proceed with any final configuration steps as needed.
 

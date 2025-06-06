@@ -1,32 +1,4 @@
-# Security
-
-
-In today's interconnected IT landscape, monitoring systems like Zabbix have become
-critical infrastructure components, offering visibility into the health and performance
-of entire networks. However, these powerful monitoring tools also represent potential
-security vulnerabilities if not properly secured. This chapter will explores the
-essential combination of SELinux and security best practices to harden your Zabbix
-deployment against modern threats.
-
-Security is not an optional feature but a fundamental requirement for any monitoring
-solution. Zabbix, with its extensive reach across your infrastructure, has access
-to sensitive system information and often operates with elevated privileges.
-Without proper security controls, a compromised monitoring system can become a
-launchpad for lateral movement across your network, potentially exposing critical
-business data and systems.
-
-We'll explore how SELinux's mandatory access control framework provides an additional
-security layer beyond traditional permissions, and how proper configuration can
-dramatically reduce your attack surface. You'll learn practical, implementable
-security measures that balance protection with functionality, ensuring your monitoring
-capabilities remain intact while defending against both external and internal threats.
-
-Whether you're a system administrator, security professional, or IT manager, understanding
-these security principles will help you transform your Zabbix deployment from a
-potential liability into a secure asset within your security architecture.
-
-
-## SELinux and Zabbix
+# SELinux and Zabbix
 
 SELinux (Security-Enhanced Linux) provides mandatory access control for Zabbix by
 enforcing security policies that restrict what the Zabbix processes can do, even
@@ -37,6 +9,7 @@ Think of contexts as labels that are assigned to every object in the system (fil
 These labels determine what can interact with what.
 
 ### SELinux Enforcement Mode
+
 For SELinux to actually provide security protection, it needs to be set to "enforcing" mode. There are three possible modes for SELinux:
 
 - **Enforcing** - SELinux security policy is enforced. Actions that violate policy are blocked and logged.
@@ -44,9 +17,11 @@ For SELinux to actually provide security protection, it needs to be set to "enfo
 - **Disabled** - SELinux is completely turned off.
 
 You can check the current SELinux mode with the getenforce command:
+
 ```yaml
 getenforce
 ```
+
 This should return : Enforcing
 
 To properly secure Zabbix with SELinux, the system should be in `Enforcing` mode. If it's not, you can change it temporarily:
@@ -56,8 +31,10 @@ To properly secure Zabbix with SELinux, the system should be in `Enforcing` mode
 ```yaml
 sudo setenforce 1
 ```
+
 For permanent configuration, edit /etc/selinux/config and set:
-``` yaml
+
+```yaml
 SELINUX=Enforcing
 ```
 
@@ -104,8 +81,7 @@ policy rules.
     ls -Z /path/to/zabbix/files
     ```
 
-
-!!! info  "And for the processes:"
+!!! info "And for the processes:"
 
     ```yaml
     ps -eZ | grep zabbix"
@@ -145,16 +121,18 @@ Key Functions of the Package:
 Benefits of Using the Package:
 
 - **Simplified Deployment** : Reduces the need for manual SELinux policy adjustments when
-installing Zabbix.
+  installing Zabbix.
 - **Security by Default**: Ensures Zabbix operates with minimal required permissions rather than running in permissive mode.
 - **Maintained Compatibility**: The package is updated alongside Zabbix to ensure compatibility with new features.
 
 #### Installation and Usage
 
 The package is typically installed alongside other Zabbix components:
-``` yaml
+
+```yaml
 dnf install zabbix-selinux-policy
 ```
+
 After installation, the SELinux contexts are automatically applied to standard Zabbix
 paths and ports. If you use non-standard configurations, you may still need to make
 manual adjustments.
@@ -180,29 +158,31 @@ the attacker remains constrained by SELinux policies, limiting potential damage 
 your systems.
 
 #### Zabbix SELinux Boolean
+
 One of the most convenient aspects of the SELinux implementation for Zabbix is the
 use of "booleans". simple on/off switches that control specific permissions. These
 allow you to fine-tune SELinux policies without needing to understand complex policy
 writing. Key Zabbix booleans include:
 
-- **zabbix_can_network**:  Controls whether Zabbix can initiate network connections
+- **zabbix_can_network**: Controls whether Zabbix can initiate network connections
 - **httpd_can_connect_zabbix**: Controls whether the web server can connect to Zabbix
 - **zabbix_run_sudo**: Controls whether Zabbix can execute sudo commands
 
 !!! info "You can view these settings with:"
-    ``` yaml
+`yaml
     getsebool -a | grep zabbix
-    ```
+   `
 And you can toggle them as needed with setsebool.
 
 ### Enable Zabbix network connections (persistent across reboots)
+
 ```yaml
 setsebool -P zabbix_can_network on
 ```
+
 These booleans make it much easier to securely deploy Zabbix while maintaining SELinux
 protection, as you can enable only the specific capabilities that your Zabbix implementation
 needs without compromising overall system security.
-
 
 ### Creating custom rules
 
@@ -219,6 +199,7 @@ The most straightforward approach is to use the audit2allow utility to analyse
 SELinux denial messages and generate appropriate policies:
 
 First, capture the denial events from the audit log:
+
 ```yaml
 sudo grep zabbix /var/log/audit/audit.log | grep fping | audit2allow -M zabbix_fping
 ```
@@ -235,13 +216,13 @@ sudo grep zabbix /var/log/audit/audit.log | grep fping | audit2allow -M zabbix_f
     sudo chcon -t fping_exec_t /usr/sbin/fping
     ```
 
-
 - **Method 2: Manual Policy Creation :**
 
 For more control or in situations where audit logs aren't available, you can manually
 create a custom policy:
 
 Create a policy file named zabbix_fping.te with the following content:
+
 ```yaml
 module zabbix_fping 1.0;
 
@@ -257,6 +238,7 @@ require {
 allow zabbix_t fping_exec_t:file { execute execute_no_trans getattr open read };
 allow zabbix_t self:capability net_raw;
 ```
+
 !!! info "Compile the policy module:"
 
     ```yaml
@@ -275,17 +257,11 @@ allow zabbix_t self:capability net_raw;
     semodule -i zabbix_fping.pp
     ```
 
-
 ## Securing zabbix admin
 
-## HTTPS 
+## HTTPS
 
 ## DB certs
-
-
-
-
-
 
 ## Conclusion
 
@@ -294,7 +270,6 @@ allow zabbix_t self:capability net_raw;
 - Why does SELinux prevent Zabbix from executing fping by default?
 - In what situations might you need to create custom SELinux policies for other Zabbix monitoring tools?
 - What are the key differences between using audit2allow and manually creating a custom policy module?
-
 
 ## Useful URLs
 
