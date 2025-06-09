@@ -34,6 +34,7 @@ nav:
       - ch03-zabbix-proxies/chapter.md
       - ch03-zabbix-proxies/proxy-basics.md
       - ch03-zabbix-proxies/active-passive-proxies.md
+      - ch03-zabbix-proxies/proxies-as-container.md
       - ch03-zabbix-proxies/proxy-groups.md
       - ch03-zabbix-proxies/web-services.md
   - "Chapter 04 : Collecting data ":
