@@ -166,7 +166,7 @@ the following content.
 
 ```ini
 # Zabbix proxy hostname as it appears in the Zabbix frontend
-ZBX_PROXY_NAME=ProxyA
+ZBX_HOSTNAME=ProxyA
 
 # IP address or DNS name of the Zabbix server
 ZBX_SERVER_HOST=<DNS or IP>
