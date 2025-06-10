@@ -7,7 +7,7 @@ in containerized environments. This chapter provides a step-by-step guide on dep
 a Zabbix proxy within a container, outlining configuration options and best practices
 for optimal performance and maintainability.
 
-## Setting up containers under RedHat
+## Setting up containers
 
 We will begin by demonstrating how to set up containerized environments on Red Hat-based
 systems using Podman. Podman is the recommended container engine on Red Hat distributions
@@ -40,30 +40,36 @@ with the Zabbix server.
 Next, we begin configuring Podman on the host system where the Zabbix proxy container
 will be installed and managed.
 
-```yaml
-dnf install podman -y
-dnf install policycoreutils-python-utils -y
-useradd podman
-su - podman
-```
+???+ info "Install podman and needed tools"
+
+    ```
+    Red Hat
+    dnf install podman -y
+    dnf install policycoreutils-python-utils -y
+    useradd podman
+    su - podman
+
+    Ubuntu
+    sudo adduser podman
+    sudo su - podman
+    ```
 
 Still as user podman create the following folders
 
-```yaml
-mkdir -p ~/.local/share/containers
-```
+???+ info "Run on both RedHat and Ubuntu"
 
-and
+    ```yaml
+    mkdir -p ~/.local/share/containers
+    mkdir -p ~/.config/containers/systemd/
+    ```
 
-```yaml
-mkdir -p ~/.config/containers/systemd/
-```
+Once done become to user `root` and execute the following commands.
 
-Once done return to user `root` and execute the following commands.
+???+ info "Only if your system uses SELinux"
 
-```yaml
-semanage fcontext -a -e /var/lib/containers /home/podman/.local/share/containers
-```
+    ```yaml
+    semanage fcontext -a -e /var/lib/containers /home/podman/.local/share/containers
+    ```
 
 This command adds a SELinux file context mapping by creating an equivalence (-e)
 between the default container storage directory /var/lib/containers and the user’s
@@ -72,9 +78,11 @@ it tells SELinux to treat files in the user's container storage the same way it
 treats files in the default system container storage, ensuring proper access
 permissions under SELinux policy.
 
-```yaml
-restorecon -R -v /home/podman/.local/share/containers
-```
+???+ info "Only if your system uses SELinux"
+
+    ```yaml
+    restorecon -R -v /home/podman/.local/share/containers
+    ```
 
 After defining new SELinux contexts, this command recursively (-R) applies
 the correct SELinux security contexts to the files in the specified directory.
@@ -82,9 +90,11 @@ The -v flag enables verbose output, showing what changes are made. This ensures
 that all files in the container storage directory have the correct SELinux labels
 as defined by the previous semanage commands.
 
-```yaml
-loginctl enable-linger podman
-```
+???+ info "On both RedHat and Ubuntu"
+
+    ```yaml
+    loginctl enable-linger podman
+    ```
 
 This command enables “linger” for the user podman. Linger allows user services
 (such as containers managed by systemd) to continue running even when the user
@@ -92,9 +102,11 @@ is not actively logged in. This is useful for running Podman containers in the
 background and ensures that containerized proxies or other services remain active
 after logout or system reboots.
 
-```yaml
-echo export XDG_RUNTIME_DIR="/run/user/$(id -u podman)" >> ~/.bash_profile
-```
+???+ info "On both RedHat and Ubuntu"
+
+    ```yaml
+    echo export XDG_RUNTIME_DIR="/run/user/$(id -u podman)" >> ~/.bash_profile
+    ```
 
 This line ensures that the XDG_RUNTIME_DIR environment variable is correctly set
 for the podman user. This variable points to the location where user-specific runtime
@@ -108,28 +120,30 @@ file should be placed in the directory ~/.config/containers/systemd/. For exampl
 we will create a file named `zabbix-proxy-sqlite.container`, which will define the
 configuration for running the Zabbix proxy container under systemd using Podman.
 
-```yaml
-su - podman
-vi ~/.config/containers/systemd/zabbix-proxy-sqlite.container
-```
+???+ info "On both RedHat and Ubuntu"
 
-```ini
-[Unit]
-Description=ZabbixProxy
+    ```yaml
+    su - podman
+    vi ~/.config/containers/systemd/zabbix-proxy-sqlite.container
+    ```
 
-[Container]
-Image=docker.io/zabbix/zabbix-proxy-sqlite3:trunk-centos
-ContainerName=ZabbixProxySqlite-Quadlet
-AutoUpdate=registry
-EnvironmentFile=ZabbixProxy.env
-PublishPort=10051:10051
+    ```ini
+    [Unit]
+    Description=ZabbixProxy
 
-[Service]
-Restart=always
+    [Container]
+    Image=docker.io/zabbix/zabbix-proxy-sqlite3:trunk-centos
+    ContainerName=ZabbixProxySqlite-Quadlet
+    AutoUpdate=registry
+    EnvironmentFile=ZabbixProxy.env
+    PublishPort=10051:10051
 
-[Install]
-WantedBy=default.target
-```
+    [Service]
+    Restart=always
+
+    [Install]
+    WantedBy=default.target
+    ```
 
 The container image for the Zabbix proxy using SQLite can be sourced from Docker
 Hub. Specifically, we will use the image tagged trunk-centos, which is maintained
@@ -164,65 +178,81 @@ and declarative way to tailor the proxy’s behavior to your environment.
 Let's create the file `~/.config/containers/systemd/ZabbixProxy.env` and add
 the following content.
 
-```ini
-# Zabbix proxy hostname as it appears in the Zabbix frontend
-ZBX_HOSTNAME=ProxyA
+???+ info "On both RedHat and Ubuntu"
 
-# IP address or DNS name of the Zabbix server
-ZBX_SERVER_HOST=<DNS or IP>
+    ```ini
+    # Zabbix proxy hostname as it appears in the Zabbix frontend
+    ZBX_HOSTNAME=ProxyA
 
-# Proxy mode: 0 = active, 1 = passive
-ZBX_PROXYMODE=0
-```
+    # IP address or DNS name of the Zabbix server
+    ZBX_SERVER_HOST=<DNS or IP>
+
+    # Proxy mode: 0 = active, 1 = passive
+    ZBX_PROXYMODE=0
+    ```
 
 With our configuration complete, the final step is to reload the systemd user daemon
 so it recognizes the new Quadlet unit. This can be done using the following command:
 
-```bash
-systemctl --user daemon-reload
-```
+???+ info "On both RedHat and Ubuntu run :"
+
+    ``` bash
+    systemctl --user daemon-reload
+    ```
 
 If everything is set up correctly, systemd will automatically generate a service
 unit for the container based on the `.container` file. You can verify that the
 unit has been registered by running:
 
-```bash
-systemctl --user list-unit-files | grep zabbix
-```
+???+ info "On both RedHat and Ubuntu"
+
+    ``` yaml
+    systemctl --user list-unit-files | grep zabbix
+    ```
 
 You should see output similar to:
 
-```
-zabbix-proxy-sqlite.service             generated
-```
+???+ info "On both RedHat and Ubuntu"
+
+    ``` yaml
+    zabbix-proxy-sqlite.service             generated
+    ```
 
 To start the container, use the following command (replacing the service name if
 you used a different one):
 
-```bash
-systemctl --user start zabbix-proxy-sqlite.service
-```
+???+ info "On both RedHat and Ubuntu"
+
+    ```bash
+    systemctl --user start zabbix-proxy-sqlite.service
+    ```
 
 To verify that the container started correctly, you can inspect the running containers
 with:
 
-```bash
-podman ps
-```
+???+ info "On both RedHat and Ubuntu"
+
+    ```bash
+    podman ps
+    ```
 
 This will return output like the example below:
 
-```bash
-CONTAINER ID  IMAGE                                               COMMAND               CREATED       STATUS       PORTS                     NAMES
-b5716f8f379d  docker.io/zabbix/zabbix-proxy-sqlite3:trunk-centos  /usr/sbin/zabbix_...  2 hours ago   Up 2 hours   0.0.0.0:10051->10051/tcp  ZabbixProxySqlite-Quadlet
-```
+???+ info "On both RedHat and Ubuntu"
+
+    ```bash
+    CONTAINER ID  IMAGE                                               COMMAND               CREATED       STATUS       PORTS                     NAMES
+    b5716f8f379d  docker.io/zabbix/zabbix-proxy-sqlite3:trunk-centos  /usr/sbin/zabbix_...  2 hours ago   Up 2 hours   0.0.0.0:10051->10051/tcp  ZabbixProxySqlite-Quadlet
+    ```
 
 Take note of the `CONTAINER ID`—in this example, it is `b5716f8f379d`. You can
 then retrieve the container's logs using:
 
-```bash
-podman logs b5716f8f379d
-```
+???+ info "On both RedHat and Ubuntu"
+
+    ```bash
+    podman logs b5716f8f379d
+    ```
 
 This command will return the startup and runtime logs for the container, which
 are helpful for troubleshooting and verifying that the Zabbix proxy has started
