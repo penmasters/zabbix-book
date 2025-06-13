@@ -379,7 +379,9 @@ process.
 Once you're logged into the MariaDB shell, run the following command to create a
 database for Zabbix:
 
-`MariaDB [(none)]> CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;`
+!!! info "Create the database"
+
+    `MariaDB [(none)]> CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;`
 
 ???+ note
 
