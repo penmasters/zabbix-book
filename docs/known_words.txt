@@ -201,3 +201,4 @@ quadlets
 quadlet
 proxys
 env
+timescaledb
