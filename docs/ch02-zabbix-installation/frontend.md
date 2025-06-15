@@ -23,26 +23,30 @@ our `main menu` marked in
 <font color='red'>red</font> and our `links` marked in <font color='gold'>yellow</font>.
 
 ![Overview](ch02-frontend-overview.png)
-*2.1 Overview*
 
-The main menu can be hidden by collapsing it completely or to reduce it to a set of small icons.
-When we click on the button with the 2 arrows to the left:
+_2.1
+Overview_
+
+The main menu can be hidden by collapsing it completely or to reduce it to a set
+of small icons. When we click on the button with the 2 arrows to the left:
 
 ![Collapse](ch02-frontend-collapse.png)
 
-*2.2 Collapse*
+_2.2
+Collapse_
 
 You will see that the menu collapses to a set of small icons. Pressing ">>" will
-bring the `main menu` back to it's original state. 
+bring the `main menu` back to it's original state.
 
 When you click on the icon that looks like a box with an arrow sticking out, next
 to the "<<" button will hide the `main menu` completely.
 
 ![Hide](ch02-frontend-hide.png)
 
-*2.3 Hide*
+_2.3
+Hide_
 
-To bring back our `main menu`  is rather easy, we just look for the button on the
+To bring back our `main menu` is rather easy, we just look for the button on the
 left with three horizontal lines and click on it. This will show the `main menu`
 but it won't stay. When we click on the box with the arrow now pointing to the bottom
 right it will keep the `main menu` back in it's position.
@@ -55,42 +59,47 @@ to focus on.
 
 ![Expand](ch02-frontend-expand.png)
 
-*2.4 Expand*
+_2.4
+Expand_
 
 When we want to leave the kiosk mode, the button will be changed to 2 arrows pointing
-to the inside of the screen. Pressing this button will revert us back to the original state.
+to the inside of the screen. Pressing this button will revert us back to the original
+state.
 
 ![Expand](ch02-frontend-shrink.png)
 
-*2.5 Shrink*
+_2.5
+Shrink_
 
 ???+ tip
+
     We can also enter and exit kiosk mode by making use of parameters in our Zabbix
     url: `/zabbix.php?action=dashboard.view&kiosk=1` - activate kiosk mode or
     `/zabbix.php?action=dashboard.view&kiosk=0` - activate normal mode.
 
 ???+ note
-    There are many other page parameters we can use. A full list can be found [here](https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters)
+
+    There are many other page parameters we can use. A full list can be found at
+    [https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters](https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters)
     Zabbix also has a global search menu that we can use to find hosts, host groups
     and templates.
 
 If we type in the search box the word `server` you will see that we get an overview
-of all `templates`, `host groups` and `hosts` with the name server in it. That's why
-this is called the `global search` box.
-
+of all `templates`, `host groups` and `hosts` with the name server in it. That's
+why this is called the `global search` box.
 
 ![Global search](ch02-global-search.png)
 
-*2.6 Global search*
+_2.6 Global
+search_
 
 This is our result after we looked for the word `server`. If you have a standard
 Zabbix setup your page should look more or less the same.
 
 ![Global search result](ch02-global-search-result.png)
 
-*2.7 Global search result*
-
-
+_2.7 Global search
+result_
 
 ---
 
@@ -123,17 +132,18 @@ for user access.
 | Menu name     | Details                                                                                                                                                                                                                                                |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Support       | This brings us to the technical support page that you can buy from Zabbix. Remember that your local partner is also able to sell these contracts and can help you in your own language. [Your local distributors](https://www.zabbix.com/distributors) |
-| Integrations  | The official zabbix [integration page](https://www.zabbix.com/integrations)                                                                                                                                                                           |
+| Integrations  | The official zabbix [integration page](https://www.zabbix.com/integrations)                                                                                                                                                                            |
 | Help          | The link to the documentation of your [Zabbix version](https://www.zabbix.com/documentation/7.0/)                                                                                                                                                      |
 | User settings | The user profile settings.                                                                                                                                                                                                                             |
 | Sign out      | Log out of the current session.                                                                                                                                                                                                                        |
 
-A few interactive elements remains to be addressed on the right-hand portion of the display.
-
+A few interactive elements remains to be addressed on the right-hand portion of the
+display.
 
 ![Edit dashboard](ch02-edit-dashboard.png)
 
-*2.8 Edit dashboard*
+_2.8 Edit
+dashboard_
 
 The `Edit dashboard` button facilitates modification of the user's dashboard configuration,
 a feature that will be elaborated upon in subsequent sections. Located on the extreme
@@ -142,7 +152,6 @@ the Zabbix documentation portal providing comprehensive details regarding
 dashboard functionalities. Conversely, the control situated on the right margin,
 represented by three horizontal lines, provides access to operations such as sharing,
 renaming, and deletion of user defined dashboards.
-
 
 ---
 
@@ -157,38 +166,39 @@ interpretation is crucial for system comprehension.
 
 ![System Information](ch02-system-information.png)
 
-*2.9 System Information*
+_2.9 System
+Information_
 
-| Parameter                                         | Value                                                                                                                                                                                                                                        | Details                                                                                                                                                                                                                                                                         |
-| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Zabbix server is running                          | The status of our zabbix server if it is running yes or no and if it is running on our localhost or another IP and on what port the zabbix server is listening. If no trapper is listening the rest of the information can not be displayed  | IP and port of the Zabbix server                                                                                                                                                                                                                                                |
-| Zabbix server version                             | This shows us the version of the `Zabbix server` so the version you see at the bottom of your screen is the one from the Zabbix frontend and can be different but should be in the same major version.                                         | Version Number                                                                                                                                                                                                                                                                  |
-| Zabbix frontend version                           | This is the version of the frontend and should match with what you see at the bottom of your screen.                                                                                                                                         | Version Number                                                                                                                                                                                                                                                                  |
-| Number of hosts (enabled/disabled)                | The total number of hosts configured on our system                                                                                                                                                                                           | How many of those are enabled and disabled                                                                                                                                                                                                                                      |
-| Number of templates                               | The number of templates installed on our Zabbix server.                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |
-| Number of items (enabled/disabled/not supported)  | This line shows us the number of items we have configured in total in this case 99                                                                                                                                                           | 90 are enabled and 0 are disabled but 9 of them are unsupported. This last number is important as those are items not working. We will look into this later why it happens and how to fix it. For now remember that a high number of unsupported items is not a good idea.      |
-| Number of triggers (Enabled/disabled[problem/ok]) | The number of triggers configured                                                                                                                                                                                                              | Number of enabled and disabled triggers. Just as with items we also see if there are triggers that are in a problem state or ok state. A trigger in a problem state is a non working trigger something we need to monitor and fix. We will cover this also later.               |
-| Number of users (online)                          | Here we see the number of users that are configured on our system                                                                                                                                                                            | The number of users currently online.                                                                                                                                                                                                                                           |
-| Required server performance, nvps                 | The number of new values per second that Zabbix will process per second.                                                                                                                                                                     | This is just an estimated number as some values we get are unknown so the real value is probably higher. So we can have some indication about how many IOPS we need and how busy our database is. A better indication is probably the internal item `zabbix[wcache,values,all]`   |
-| Global scripts on Zabbix server	                  | It notifies us that the Global scripts are enabled or disabled in the server config.                                                                                                                                                         | Global scripts can be used in our frontend, actions, ... but need to be activated first                                                                                                                                                                                         |
-| High availability cluster                          | It will show us if Zabbix HA cluster is disabled or not                                                                                                                                                                                      | Failover delay once HA is activated                                                                                                                                                                                                                                             |
-
+| Parameter                                         | Value                                                                                                                                                                                                                                       | Details                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Zabbix server is running                          | The status of our zabbix server if it is running yes or no and if it is running on our localhost or another IP and on what port the zabbix server is listening. If no trapper is listening the rest of the information can not be displayed | IP and port of the Zabbix server                                                                                                                                                                                                                                                |
+| Zabbix server version                             | This shows us the version of the `Zabbix server` so the version you see at the bottom of your screen is the one from the Zabbix frontend and can be different but should be in the same major version.                                      | Version Number                                                                                                                                                                                                                                                                  |
+| Zabbix frontend version                           | This is the version of the frontend and should match with what you see at the bottom of your screen.                                                                                                                                        | Version Number                                                                                                                                                                                                                                                                  |
+| Number of hosts (enabled/disabled)                | The total number of hosts configured on our system                                                                                                                                                                                          | How many of those are enabled and disabled                                                                                                                                                                                                                                      |
+| Number of templates                               | The number of templates installed on our Zabbix server.                                                                                                                                                                                     |                                                                                                                                                                                                                                                                                 |
+| Number of items (enabled/disabled/not supported)  | This line shows us the number of items we have configured in total in this case 99                                                                                                                                                          | 90 are enabled and 0 are disabled but 9 of them are unsupported. This last number is important as those are items not working. We will look into this later why it happens and how to fix it. For now remember that a high number of unsupported items is not a good idea.      |
+| Number of triggers (Enabled/disabled[problem/ok]) | The number of triggers configured                                                                                                                                                                                                           | Number of enabled and disabled triggers. Just as with items we also see if there are triggers that are in a problem state or ok state. A trigger in a problem state is a non working trigger something we need to monitor and fix. We will cover this also later.               |
+| Number of users (online)                          | Here we see the number of users that are configured on our system                                                                                                                                                                           | The number of users currently online.                                                                                                                                                                                                                                           |
+| Required server performance, nvps                 | The number of new values per second that Zabbix will process per second.                                                                                                                                                                    | This is just an estimated number as some values we get are unknown so the real value is probably higher. So we can have some indication about how many IOPS we need and how busy our database is. A better indication is probably the internal item `zabbix[wcache,values,all]` |
+| Global scripts on Zabbix server                   | It notifies us that the Global scripts are enabled or disabled in the server config.                                                                                                                                                        | Global scripts can be used in our frontend, actions, ... but need to be activated first                                                                                                                                                                                         |
+| High availability cluster                         | It will show us if Zabbix HA cluster is disabled or not                                                                                                                                                                                     | Failover delay once HA is activated                                                                                                                                                                                                                                             |
 
 ???+ note
+
     `Global script` execution on Zabbix server can be enabled by going to the
     zabbix server configuration file and setting `EnableGlobalScripts=1`. For new
     installations, since Zabbix 7.0, global script execution on Zabbix server is
     disabled by default.
 
 ???+ Tip
-     System information may display some additional warnings like when your database doesn't
-     have the correct character set or collation UTF-8.
+
+     System information may display some additional warnings like when your database
+     doesn't have the correct character set or collation UTF-8.
      Also when the database you used is lower or higher then the recommended version
      or when there are misconfigurations on housekeeper or TimescaleDB.
      Another warning you can see is about database history tables that aren't
      upgraded or primary keys that have not been set. This is possible if you are
      coming from an older version before Zabbix 6 and never did the upgrade.
-
 
 ---
 
@@ -202,7 +212,8 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 
 ![Main Menu sections](ch02-main-menu.png){ width=20% }
 
-*2.10 Main menu sections*
+_2.10 Main
+menu sections_
 
 - A `Zabbix User` will only see the <font color='red'>red</font> part of our
   `main menu` and will only be able to see our collected data.
@@ -211,11 +222,12 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 - A `Zabbix Super Admin` will see the complete `main menu` and so is able
   to change the configuration and all the global settings.
 
-  ---
+  ***
 
   ![Monitoring Menu](ch02-monitoring-menu.png){ width=20% }
 
-*2.11 Monitoring menu*
+_2.11 Monitoring
+menu_
 
 - **Problems**: This page will give us an overview of all the problems.
   With filter we can look at recent problems past problems and problems
@@ -233,7 +245,8 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 
 ![Services menu](ch02-services-menu.png){ width="20%" }
 
-*2.12 Services menu*
+_2.12 Services
+menu_
 
 - **Services**: This page will give us a high level overview of all services
   configured in Zabbix.
@@ -244,7 +257,8 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 
 ![Inventory menu](ch02-inventory-menu.png){ width="20%" }
 
-*2.13 Inventory menu*
+_2.13 Inventory
+menu_
 
 - **Overview**: A place where we can watch all our inventory data that
   we have retrieved from our hosts.
@@ -255,7 +269,8 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 
 ![Reports menu](ch02-reports-menu.png){ width="20%" }
 
-*2.14 Inventory menu*
+_2.14 Inventory
+menu_
 
 - **System information**: System information is a summary of key Zabbix server
   and system data.
@@ -269,25 +284,27 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
   Useful if we want to know who did what and when.
 - **Action log**: A detailed overview of our actions can be found here.
   What mail was sent to who and when ...?
-- **Notifications**: A quick overview of the number of notifications sent to each user.
+- **Notifications**: A quick overview of the number of notifications sent to each
+  user.
 
 ---
 
 ![Data collection](ch02-datacollection-menu.png){ width="20%" }
 
-*2.15 Data collection*
+_2.15 Data
+collection_
 
-- **Template groups**: A place to logical group all templates together in different groups.
-  Before it was mixed together with hosts in host groups.
+- **Template groups**: A place to logical group all templates together in different
+  groups. Before it was mixed together with hosts in host groups.
 - **Host groups**: A logical collection of different hosts put together.
   Host groups are used for our permissions.
 - **Templates**: A set off entities like items and triggers can be grouped together
   on a template, A template can be applied to one or more hosts.
 - **Hosts**: What we need in Zabbix to monitor A host, application, service ...
-- **Maintenance**: The place to configure our maintenance windows. A maintenance can
-  be planned in this location.
-- **Event correlation**: When we have multiple events that fires triggers related we
-  can configure correlations in this place.
+- **Maintenance**: The place to configure our maintenance windows. A maintenance
+  can be planned in this location.
+- **Event correlation**: When we have multiple events that fires triggers related
+  we can configure correlations in this place.
 - **Discovery**: Sometimes we like to use Zabbix to discover devices, services,...
   on our network. This can be done here.
 
@@ -295,13 +312,14 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 
 ![Alerts menu](ch02-alerts-menu.png){ width="20%" }
 
-*2.16 Alerts menu*
+_2.16 Alerts
+menu_
 
 - **Actions**: This menu allows us to configure actions based on `events` in
   Zabbix. We can create such actions for triggers, services, discovery,
   autoregistration and internal events.
-- **Media types**: Zabbix can sent messages, emails etc ... based on the actions we
-  have configured. Those media types need templates and need to be activated.
+- **Media types**: Zabbix can sent messages, emails etc ... based on the actions
+  we have configured. Those media types need templates and need to be activated.
 - **Scripts**: In Zabbix it's possible to make use of scripts in our actions and
   frontend. Those actions need to be created here first and configured.
 
@@ -309,7 +327,8 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 
 ![Users menu](ch02-users-menu.png){ width="20%" }
 
-*2.17 Users menu*
+_2.17 Users
+menu_
 
 - **User groups**: The `User groups` menu section enables the creation and management of user groupings for streamlined access and permission control.
 - **User roles**: The `User roles` menu section defines sets of permissions that can be assigned to individual users, limiting their allowed actions based on the user type they have within the system.
@@ -321,7 +340,8 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 
 ![Administration menu](ch02-administration-menu.png){ width="20%" }
 
-*2.18 Administration menu*
+_2.18 Administration
+menu_
 
 - **General**: The `General` menu section within administration allows configuration of core system-wide settings and parameters.
 - **Audit log**: The `Audit log` menu section provides a chronological record of system activities and user actions for security monitoring and troubleshooting.
@@ -332,17 +352,25 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 
 ---
 
-
 ???+ info
+
     More information can be found in the online Zabbix documentation [here](https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections)
 
 ???+ info
+
     You will see that Zabbix is using the modal forms in the frontend on many places.
     The problem is that they are not movable. [This](https://github.com/gr8b/zabbix-module-uitwix/)
     module created by one of the Zabbix developers `UI Twix` will solve this problem
     for you.
 
 ???+ Note
+
     At time of writing there is no Dashboard import/export functionality in zabbix.
     So when upgrading dashboards it needs to be created by hand. It was on the roadmap
     for 7 but didn't made it so feel free to vote <https://support.zabbix.com/browse/ZBXNEXT-5419>
+
+## Conclusion
+
+## Questions
+
+## Useful URLs
