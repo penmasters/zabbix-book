@@ -29,6 +29,7 @@ For simplicity, take note of the server details:
 | Web Server      |            |
 
 ???+ tip
+
     Zabbix package names often use dashes (`-`) in their names, such as `zabbix-get`
     or `zabbix-sender`, but the binaries themselves may use underscores (`_`),
     like `zabbix_sender` or `zabbix_server`. This naming discrepancy can sometimes
@@ -37,6 +38,7 @@ For simplicity, take note of the server details:
     Always check if a binary uses a dash or an underscore when troubleshooting.
 
 ???+ note
+
     Starting from Zabbix 7.2, only MySQL (including its forks) and PostgreSQL are
     supported as back-end databases. Earlier versions of Zabbix also included support
     for Oracle Database; however, this support was discontinued with Zabbix 7.0 LTS,
@@ -68,13 +70,15 @@ The first step is to ensure that the firewall is installed and configured.
 To install and enable the firewall, run the following command:
 
 !!! info "Install and enable the firewall"
+
     Red Hat
-    ``` yaml
+    ```yaml
     dnf install firewalld
     systemctl enable firewalld --now
     ```
+
     Ubuntu
-    ``` yaml
+    ```yaml
     sudo apt install ufw -y
     sudo ufw enable
     ```
@@ -85,76 +89,87 @@ Zabbix trapper listens for incoming data. Use the following command to open
 this port in the firewall:
 
 !!! info "Allow Zabbix trapper access"
+
     Red Hat
-    ``` yaml
+    ```yaml
     firewall-cmd --add-service=zabbix-server --permanent
     ```
+
     Ubuntu
-    ``` yaml
+    ```yaml
     sudo ufw allow 10051/tcp
     ```
 
 If the service is not recognized, you can manually specify the port:
 
 !!! info "Add port instead of the service name"
-    ``` yaml
+
+    ```yaml
     firewall-cmd --add-port=10051/tcp --permanent
     ```
 
 ???+ note
+
     "Firewalld is the replacement for iptables in RHEL-based systems and allows
     changes to take effect immediately without needing to restart the service.
     If your distribution does not use [Firewalld](https://www.firewalld.org),
     refer to your OS documentation for the appropriate firewall configuration steps."
     Ubuntu makes use of UFW and is merely a frontend for iptables.
 
-An alternative approach is to define dedicated firewall zones for specific use cases. For example...
+An alternative approach is to define dedicated firewall zones for specific use cases.
+For example...
 
 !!! info "Create a firewalld zone"
-    ``` yaml
+
+    ```yaml
     firewall-cmd --new-zone=postgresql-access --permanent
     ```
+
 You can confirm the creation of the zone by executing the following command:
 
 !!! info "Verify the zone creation"
-    ``` yaml
+
+    ```yaml
     firewall-cmd --get-zones
     ```
-    block dmz drop external home internal nm-shared postgresql-access public
-    trusted work
+
+block dmz drop external home internal nm-shared postgresql-access public
+trusted work
 
 Using zones in firewalld to configure firewall rules for PostgreSQL provides several
 advantages in terms of security, flexibility, and ease of management.
 Here’s why zones are beneficial:
 
 - **Granular Access Control :**
-    - firewalld zones allow different levels of trust for different network interfaces
-      and IP ranges. You can define which systems are allowed to connect to PostgreSQL
-      based on their trust level.
+  - firewalld zones allow different levels of trust for different network interfaces
+    and IP ranges. You can define which systems are allowed to connect to PostgreSQL
+    based on their trust level.
 - **Simplified Rule management:**
-    - Instead of manually defining complex iptables rules, zones provide an organized
-      way to group and manage firewall rules based on usage scenarios.
+  - Instead of manually defining complex iptables rules, zones provide an organized
+    way to group and manage firewall rules based on usage scenarios.
 - **Enhanced security:**
-    - By restricting PostgreSQL access to a specific zone, you prevent unauthorized
-      connections from other interfaces or networks.
+  - By restricting PostgreSQL access to a specific zone, you prevent unauthorized
+    connections from other interfaces or networks.
 - **Dynamic configuration:**
-    - firewalld supports runtime and permanent rule configurations, allowing changes
-      without disrupting existing connections.
+  - firewalld supports runtime and permanent rule configurations, allowing changes
+    without disrupting existing connections.
 - **Multi-Interface support:**
-    - If the server has multiple network interfaces, zones allow different security
-      policies for each interface.
+  - If the server has multiple network interfaces, zones allow different security
+    policies for each interface.
 
 Bringing everything together it would look like this:
 
 !!! info "Firewalld with zone config"
-    ``` yaml
+
+    ```yaml
     firewall-cmd --new-zone=db_zone --permanent
     firewall-cmd --zone=db_zone --add-service=postgresql --permanent
     firewall-cmd --zone=db_zone --add-source=xxx.xxx.xxx.xxx/32 --permanent
     firewall-cmd --reload
     ```
 
-Where the `source IP` is the only address permitted to establish a connection to the database.
+Where the `source IP` is the only address permitted to establish a connection to
+the database.
 
 ---
 
@@ -171,13 +186,15 @@ than it actually did.
 To install and enable chrony, our NTP client, use the following command:
 
 !!! info "Install NTP client"
+
     Red Hat
-    ``` yaml
+    ```yaml
     dnf install chrony
     systemctl enable chronyd --now
     ```
+
     Ubuntu
-    ``` yaml
+    ```yaml
     sudo apt install chrony -y
     ```
 
@@ -185,26 +202,30 @@ After installation, verify that Chrony is enabled and running by checking its
 status with the following command:
 
 !!! info "Check status chronyd"
-    ``` yaml
+
+    ```yaml
     systemctl status chronyd
     ```
 
 ???+ note "what is apt or dnf"
-     dnf is a package manager used in Red Hat-based systems. If you're using another
-     distribution, replace `dnf` with your appropriate package manager, such as `zypper`,
-     `apt`, or `yum`. 
+
+    dnf is a package manager used in Red Hat-based systems. If you're using another
+    distribution, replace `dnf` with your appropriate package manager, such as `zypper`,
+    `apt`, or `yum`.
 
 ???+ note "what is Chrony"
-     Chrony is a modern replacement for `ntpd`, offering faster and
-     more accurate time synchronization. If your OS does not support
-     [Chrony](https://chrony-project.org/), consider using
-     `ntpd` instead.
+
+    Chrony is a modern replacement for `ntpd`, offering faster and
+    more accurate time synchronization. If your OS does not support
+    [Chrony](https://chrony-project.org/), consider using
+    `ntpd` instead.
 
 Once Chrony is installed, the next step is to ensure the correct time zone is set.
 You can view your current time configuration using the `timedatectl` command:
 
 !!! info "check the time config"
-    ```
+
+    ```yaml
     timedatectl
     ```
 
@@ -223,14 +244,17 @@ To set the correct time zone, first, you can list all available time zones with
 the following command:
 
 !!! info "list the timezones"
-    ``` yaml
+
+    ```yaml
     timedatectl list-timezones
     ```
+
 This command will display a list of available time zones, allowing you to select
 the one closest to your location. For example:
 
 !!! info "List of all the timezones available"
-    ``` yaml
+
+    ```yaml
     Africa/Abidjan
     Africa/Accra
     ...
@@ -243,7 +267,8 @@ the one closest to your location. For example:
 Once you've identified your time zone, configure it using the following command:
 
 !!! info "Set the timezone"
-    ``` yaml
+
+    ```yaml
     timedatectl set-timezone Europe/Brussels
     ```
 
@@ -251,7 +276,8 @@ To verify that the time zone has been configured correctly, use the `timedatectl
 command again:
 
 !!! info "Check the time and zone"
-    ``` yaml
+
+    ```yaml
     timedatectl
     ```
 
@@ -266,6 +292,7 @@ command again:
     ```
 
 ???+ note
+
     Some administrators prefer installing all servers in the UTC time zone to
     ensure that server logs across global deployments are synchronized.
     Zabbix supports user-based time zone settings, which allows the server to
@@ -280,33 +307,37 @@ To ensure that Chrony is synchronizing with the correct time servers, you can
 run the following command:
 
 !!! info "Verify chrony"
-    ``` yaml
+
+    ```yaml
     chronyc
     ```
 
 The output should resemble:
 
 !!! info "Verify your chrony output"
-    ``` yaml
+
+    ```yaml
     chrony version 4.2
     Copyright (C) 1997-2003, 2007, 2009-2021 Richard P. Curnow and others
-    chrony comes with ABSOLUTELY NO WARRANTY.  This is free software, and
-    you are welcome to redistribute it under certain conditions.  See the
+    chrony comes with ABSOLUTELY NO WARRANTY. This is free software, and
+    you are welcome to redistribute it under certain conditions. See the
     GNU General Public License version 2 for details.
-    
+
     chronyc>
     ```
 
 Once inside the Chrony prompt, type the following to check the sources:
 
 !!! info ""
-    ``` yaml
+
+    ```yaml
     chronyc> sources
     ```
 
 Example output:
 
 !!! info "Check your time server sources"
+
     ```bash
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
     ===============================================================================
@@ -318,28 +349,30 @@ Example output:
 
 In this example, the NTP servers in use are located outside your local region.
 It is recommended to switch to time servers in your country or, if available,
-to a dedicated company time server. You can find local NTP servers here: 
+to a dedicated company time server. You can find local NTP servers here:
 [www.ntppool.org](https://www.ntppool.org/).
 
 ---
 
 ### Updating Time Servers
 
-To update the time servers, modify the `/etc/chrony.conf` file for Red Hat-based systems, and if you use Ubuntu edit `/etc/chrony/chrony.conf` . Replace the existing
+To update the time servers, modify the `/etc/chrony.conf` file for Red Hat based
+systems, and if you use Ubuntu edit `/etc/chrony/chrony.conf`. Replace the existing
 NTP server with one closer to your location.
 
 Example of the current configuration:
 
 !!! info "example ntp pool config"
-    ``` yaml
+
+    ```yaml
     # Use public servers from the pool.ntp.org project.
     # Please consider joining the pool (http://www.pool.ntp.org/join.html).
     pool 2.centos.pool.ntp.org iburst
     ```
-    
+
     Change the pools you want to a local time server:
-    
-    ``` yaml
+
+    ```yaml
     # Use public servers from the pool.ntp.org project.
     # Please consider joining the pool (http://www.pool.ntp.org/join.html).
     pool be.pool.ntp.org iburst
@@ -348,7 +381,8 @@ Example of the current configuration:
 After making this change, restart the Chrony service to apply the new configuration:
 
 !!! info "restart the chrony service"
-    ``` yaml
+
+    ```yaml
     systemctl restart chronyd
     ```
 
@@ -357,14 +391,16 @@ After making this change, restart the Chrony service to apply the new configurat
 Check the time sources again to ensure that the new local servers are in use:
 
 !!! info "Check chrony sources"
-    ``` yaml
+
+    ```yaml
     chronyc> sources
     ```
 
 Example of expected output with local servers:
 
 !!! info "Example output"
-    ``` yaml
+
+    ```yaml
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
     ===============================================================================
     ^- ntp1.unix-solutions.be        2   6    17    43   -375us[ -676us] +/-   28ms
@@ -396,5 +432,5 @@ system is prepared for the task.
 
 ## Useful URLs
 
-- https://www.ntppool.org/zone
-- https://www.redhat.com/en/blog/beginners-guide-firewalld
+- [https://www.ntppool.org/zone](https://www.ntppool.org/zone)
+- [https://www.redhat.com/en/blog/beginners-guide-firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
