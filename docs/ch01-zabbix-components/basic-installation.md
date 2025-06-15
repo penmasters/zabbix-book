@@ -14,7 +14,9 @@ which we will discuss in detail.
 - The Zabbix database
 
 ![overview](ch01-basic-installation-zabbixserver.png){ align=left }
-_1.1 Zabbix basic split installation_
+
+_1.1 Zabbix basic
+split installation_
 
 All of these components can either be installed on a single server or distributed
 across three separate servers. The core of the system is the Zabbix server, often
@@ -158,6 +160,8 @@ To update your OS, run the following command:
 This command will automatically fetch and install the latest updates available for
 your system, applying security patches, performance improvements, and bug fixes.
 Once the update process is complete, you can move forward with the MariaDB installation.
+
+---
 
 ### Install the MariaDB database
 
@@ -357,6 +361,8 @@ The mariadb-secure-installation script will guide you through several key steps:
 Once complete, your MariaDB instance will be significantly more secure. You are
 now ready to configure the database for Zabbix.
 
+---
+
 ### Create the Zabbix database
 
 With MariaDB now set up and secured, we can move on to creating the database for
@@ -468,6 +474,8 @@ If we want our Zabbix server to connect to our DB then we also need to open our 
     sudo ufw allow 3306/tcp
     ```
 
+---
+
 ### Populate the Zabbix Maria DB
 
 With the users and permissions set up correctly, you can now populate the database
@@ -535,6 +543,8 @@ posture remains robust.
 
 This concludes our installation of the MariaDB
 
+---
+
 ## Installing the PostgreSQL database
 
 For our DB setup with PostgreSQL we need to add our PostgreSQL repository first
@@ -547,6 +557,8 @@ from PostgreSQL is very different from MySQL not only the installation but
 also securing the DB.
 
 The table of compatibility can be found [https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/](https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/)
+
+---
 
 ### Add the PostgreSQL repository
 
@@ -609,6 +621,8 @@ To update your OS, run the following command:
     ``` yaml
     sudo apt update -y && sudo apt upgrade -y
     ```
+
+---
 
 ### Securing the PostgreSQL database
 
@@ -713,7 +727,9 @@ for the Zabbix server. Then, install the appropriate Zabbix package that contain
 the predefined tables, images, icons, and other database elements needed for the
 Zabbix application.
 
-### Create the Zabbix database
+---
+
+### Create the Zabbix database with PostgreSQL
 
 To begin, add the Zabbix repository to your system by running the following commands:
 
@@ -733,7 +749,8 @@ To begin, add the Zabbix repository to your system by running the following comm
     sudo apt install zabbix-sql-scripts -y
     ```
 
-With the necessary packages installed, you are now ready to create the Zabbix users for both the server and frontend.
+With the necessary packages installed, you are now ready to create the Zabbix users
+for both the server and frontend.
 
 First, switch to the `postgres` user and create the Zabbix server database user:
 
@@ -775,7 +792,8 @@ or your regular user, unzip the necessary schema files by running the following 
 
     Zabbix seems to like to change the locations of the script to populate the
     DB every version or in between versions. If you encounter an error take a
-    look at the Zabbix documentation there is a good chance that some location was changed.
+    look at the Zabbix documentation there is a good chance that some location was
+    changed.
 
 This will extract the database schema required for the Zabbix server.
 
@@ -822,7 +840,8 @@ and `current_user` are set to `zabbix-srv`:
     (1 row)
     ```
 
-If the output matches, you are successfully connected to the database with the correct user.
+If the output matches, you are successfully connected to the database with the correct
+user.
 
 PostgreSQL indeed differs significantly from MySQL or MariaDB in several aspects,
 and one of the key features that sets it apart is its use of schemas. Unlike MySQL,
@@ -890,6 +909,8 @@ First, we grant `USAGE` privileges on the schema to allow `zabbix-web` to connec
     zabbix=# GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
     ```
 
+---
+
 ### Populate the Zabbix PostgreSQL DB
 
 Now, the `zabbix-web` user has appropriate access to interact with the schema
@@ -898,7 +919,8 @@ while maintaining security by limiting permissions to essential operations.
 With the users and permissions set up correctly, you can now populate the database
 with the Zabbix schema created and other required elements. Follow these steps:
 
-- Execute the SQL file to populate the database. Run the following command in the `psql` shell:
+- Execute the SQL file to populate the database. Run the following command in the
+  `psql` shell:
 
 ???+ warning
 
@@ -1068,7 +1090,8 @@ If you are ready you can exit the database and return as user root.
     zabbix=> \q
     ```
 
-If we want our Zabbix server to be able to connect to our DB then we also need to open our firewall port.
+If we want our Zabbix server to be able to connect to our DB then we also need to
+open our firewall port.
 
 !!! info ""
 
@@ -1097,6 +1120,8 @@ If we want our Zabbix server to be able to connect to our DB then we also need t
     bind-address = 0.0.0.0
 
 This concludes our installation of the PostgreSQL database.
+
+---
 
 ## Installing the Zabbix server for MariaDB/Mysql
 
@@ -1186,6 +1211,8 @@ file is also in permissive mode.
     Max kernel policy version:      33
     ```
 
+---
+
 ### Adding the Zabbix repository
 
 From the Zabbix Download page [https://www.zabbix.com/download](https://www.zabbix.com/download),
@@ -1197,7 +1224,9 @@ We will be installing the Zabbix Server along with NGINX as the web server for
 the front-end. Make sure to download the relevant packages for your chosen configuration.
 
 ![Zabbix Download](./basic-installation/ch01-basic-installation-zabbixdownload.png)
-_1.2 Zabbix download_
+
+_1.2 Zabbix
+download_
 
 If you make use of a RHEL based system like Rocky then the first step is to disable
 the Zabbix packages provided by the EPEL repository, if it's installed on your system.
@@ -1259,6 +1288,8 @@ This will refresh the repository metadata and prepare the system for Zabbix inst
     However, always exercise caution when adding new repositories to ensure
     system security and stability.
 
+---
+
 ### Configuring the Zabbix server for MySQL/MariaDB
 
 Now that we've added the Zabbix repository with the necessary software, we are
@@ -1283,8 +1314,8 @@ run the following command:
 
 After successfully installing the Zabbix server and frontend packages, we need to
 configure the Zabbix server to connect to the database. This requires modifying the
-Zabbix server configuration file. Open the `/etc/zabbix/zabbix_server.conf` file and
-update the following lines to match your database configuration:
+Zabbix server configuration file. Open the `/etc/zabbix/zabbix_server.conf` file
+and update the following lines to match your database configuration:
 
 !!! info "Edit zabbix server config"
 
@@ -1322,7 +1353,8 @@ For our setup, the configuration will look like this:
 
 In this example:
 
-- DBHost refers to the host where your database is running (use localhost if it's on the same machine).
+- DBHost refers to the host where your database is running (use localhost if it's
+  on the same machine).
 - DBName is the name of the Zabbix database.
 - DBUser is the database user.
 - DBPassword is the password for the database user.
@@ -1374,8 +1406,8 @@ to enable the Zabbix server and ensure it starts automatically on boot:
 
 This command will start the Zabbix server service immediately and configure it
 to launch on system startup. To verify that the Zabbix server is running correctly,
-check the log file for any messages. You can view the latest entries in the `Zabbix server`
-log file using:
+check the log file for any messages. You can view the latest entries in the
+`Zabbix server` log file using:
 
 !!! info "Check the log file"
 
@@ -1440,7 +1472,8 @@ would see something like this in the server log file :
     12068:20250225:145309.027 cannot use database "zabbix": database is not a Zabbix database
     ```
 
-Let's check the Zabbix server service to see if it's enabled so that it survives a reboot
+Let's check the Zabbix server service to see if it's enabled so that it survives
+a reboot
 
 !!! info "check status of zabbix-server service"
 
@@ -1483,6 +1516,8 @@ Let's check the Zabbix server service to see if it's enabled so that it survives
     ```
 
 This concludes our chapter on installing and configuring the Zabbix server with Mariadb.
+
+---
 
 ## Installing the Zabbix server for PostgreSQL
 
@@ -1570,6 +1605,8 @@ file is also in permissive mode.
     Max kernel policy version:      33
     ```
 
+---
+
 ### Adding the Zabbix repository
 
 From the Zabbix Download page [https://www.zabbix.com/download](https://www.zabbix.com/download),
@@ -1581,7 +1618,9 @@ We will be installing the Zabbix Server along with NGINX as the web server for
 the front-end. Make sure to download the relevant packages for your chosen configuration.
 
 ![zabbix-download](ch01-basic-installation-zabbixdownload.png)
-_1.3 Zabbix download_
+
+_1.3 Zabbix
+download_
 
 If you make use of a RHEL based system like Rocky then the first step is to disable
 the Zabbix packages provided by the EPEL repository, if it's installed on your system.
@@ -1644,11 +1683,13 @@ This will refresh the repository metadata and prepare the system for Zabbix inst
     However, always exercise caution when adding new repositories to ensure
     system security and stability.
 
+---
+
 ### Configuring the Zabbix server for PostgreSQL
 
-We are ready to install both the Zabbix server and the web server. Keep in mind that the
-web server doesn't need to be installed on the same machine as the Zabbix server;
-they can be hosted on separate systems if desired.
+We are ready to install both the Zabbix server and the web server. Keep in mind that
+the web server doesn't need to be installed on the same machine as the Zabbix
+server; they can be hosted on separate systems if desired.
 
 To install the Zabbix server and the web server components for PostgreSQL,
 run the following command:
@@ -1669,8 +1710,8 @@ run the following command:
 
 After successfully installing the Zabbix server packages, we need to
 configure the Zabbix server to connect to the database. This requires modifying the
-Zabbix server configuration file. Open the `/etc/zabbix/zabbix_server.conf` file and
-update the following lines to match your database configuration:
+Zabbix server configuration file. Open the `/etc/zabbix/zabbix_server.conf` file
+and update the following lines to match your database configuration:
 
 !!! info "Edit zabbix server config"
 
@@ -1687,9 +1728,9 @@ update the following lines to match your database configuration:
     DBPassword=<database-password>
     ```
 
-Replace `database-host`, `database-name`, `database-user`,`database-schema` and `database-password` with
-the appropriate values for your setup. This ensures that the Zabbix server can communicate
-with your database.
+Replace `database-host`, `database-name`, `database-user`,`database-schema` and
+`database-password` with the appropriate values for your setup. This ensures that
+the Zabbix server can communicate with your database.
 
 Ensure that there is no # (comment symbol) in front of the configuration parameters,
 as Zabbix will treat lines beginning with # as comments, ignoring them during execution.
@@ -1711,7 +1752,8 @@ For our setup, the configuration will look like this:
 
 In this example:
 
-- DBHost refers to the host where your database is running (use localhost if it's on the same machine).
+- DBHost refers to the host where your database is running (use localhost if it's
+  on the same machine).
 - DBName is the name of the Zabbix database.
 - DBUser is the database user.
 - DBPassword is the password for the database user.
@@ -1758,8 +1800,8 @@ to enable the Zabbix server and ensure it starts automatically on boot:
 
 This command will start the Zabbix server service immediately and configure it
 to launch on system startup. To verify that the Zabbix server is running correctly,
-check the log file for any messages. You can view the latest entries in the `Zabbix server`
-log file using:
+check the log file for any messages. You can view the latest entries in the
+`Zabbix server` log file using:
 
 !!! info "check the zabbix log file"
 
@@ -1868,13 +1910,17 @@ Let's check the Zabbix server service to see if it's enabled so that it survives
 
 This concludes our chapter on installing and configuring the Zabbix server with PostgreSQL.
 
+---
+
 ## Installing the frontend
 
-Before configuring the front-end, you need to install the necessary packages. If the
-Zabbix front-end is hosted on the same server as the Zabbix server, you can install
-the packages on the same server as is in our case. It's also perfectly possible to
-install the front-end on another server. In that case you only need to specify the
-correct IP addresses and open the correct firewall ports.
+Before configuring the front-end, you need to install the necessary packages. If
+the Zabbix front-end is hosted on the same server as the Zabbix server, you can
+install the packages on the same server as is in our case. It's also perfectly
+possible to install the front-end on another server. In that case you only need
+to specify the correct IP addresses and open the correct firewall ports.
+
+---
 
 ### Installing the frontend with NGINX
 
@@ -2078,7 +2124,7 @@ Open your browser and go to the url or ip of your front-end :
     ```
 
 If all goes well you should be greeted with a Zabbix welcome page. In case you
-have an error check the configuration again or have a look at the nginx log file :
+have an error check the configuration again or have a look at the nginx log file:
 
 !!! info ""
 
@@ -2100,12 +2146,16 @@ Upon accessing the appropriate URL, a page resembling the one illustrated below
 should appear:
 
 ![overview](ch01-basic-installation-setup.png){ align=left }
-_1.4 Zabbix welcome_
+
+_1.4 Zabbix
+welcome_
 
 The Zabbix frontend presents a limited array of available localizations, as shown.
 
 ![overview language](ch01-basic-installation-setuplanguage.png){ align=left }
-_!.5 Zabbix welcome language choice_
+
+_!.5 Zabbix welcome language
+choice_
 
 What if we want to install Chinese as language or another language from the list?
 Run the next command to get a list of all locales available for your OS.
@@ -2190,7 +2240,9 @@ When we return now to our front-end we are able to select the Chinese language,
 after a reload of our browser.
 
 ![select language](ch01-basic-installation-selectlanguage.png){ align=left }
-_1.6 Zabbix select language_
+
+_1.6 Zabbix select
+language_
 
 ???+ note
 
@@ -2211,11 +2263,14 @@ prerequisites are not fulfilled, address those issues first. However, if everyth
 is in order, you should be able to proceed by clicking `Next`.
 
 ![pre-requisites](ch01-basic-installation-prerequisites.png){ align=left }
-_1.7 Zabbix pre-requisites_
+
+_1.7 Zabbix
+pre-requisites_
 
 On the next page, you'll configure the database connection parameters:
 
-1. `Select the Database Type`: Choose either MySQL or PostgreSQL depending on your setup.
+1. `Select the Database Type`: Choose either MySQL or PostgreSQL depending on your
+   setup.
 2. `Enter the Database Host`: Provide the IP address or DNS name of your database
    server. Use port 3306 for MariaDB/MySQL or 5432 for PostgreSQL.
 3. `Enter the Database Name`: Specify the name of your database. In our case, it
@@ -2228,7 +2283,9 @@ Ensure that the `Database TLS encryption` option is not selected, and then click
 `Next step` to proceed.
 
 ![dbconnection](ch01-basic-installation-dbconnection.png){ align=left }
-_1.8 Zabbix connections_
+
+_1.8 Zabbix
+connections_
 
 You're almost finished with the setup! The final steps involve:
 
@@ -2248,20 +2305,27 @@ You're almost finished with the setup! The final steps involve:
     calculating and displaying time-related information.
 
 ![settings](ch01-basic-installation-settings.png){ align=left }
-_1.9 Zabbix summary_
+
+_1.9 Zabbix
+summary_
 
 After clicking `Next step` again, you'll be taken to a page confirming that the
 configuration was successful. Click `Finish` to complete the setup process.
 
 ![settings](ch01-basic-installation-final.png){ align=left }
-_1.10 Zabbix install_
+
+_1.10 Zabbix
+install_
 
 We are now ready to login :
 
 ![settings](ch01-basic-installation-login.png)
-_1.11 Zabbix login_
 
-Login : Admin Password : zabbix
+_1.11 Zabbix
+login_
+
+- Login : Admin
+- Password : zabbix
 
 This concludes our topic on setting up the Zabbix server. If you're interested in
 securing your front-end, I recommend checking out the topic Securing Zabbix for
