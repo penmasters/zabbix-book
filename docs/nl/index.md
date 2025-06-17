@@ -7,61 +7,65 @@ een manier die toegankelijk was voor iedereen. Zo ontstond het initiële idee
 voor een gratis, online Zabbix-bron. **een project gedreven door de community,
 toegewijd aan het versterken van gebruikers.**
 
-As the online resource grew, so did the vision. We recognized the potential to
-create something even more impactful. This led to the formation of a foundation,
-dedicated to ensuring the long-term sustainability and growth of this community
-effort. This book, a tangible culmination of that vision, represents the next
-step. All profits generated from its sales will be reinvested back into the
-community, enabling us to further expand and enhance the resources and support
-we offer. This is more than just a book; it's a testament to the power of shared
-knowledge and a commitment to fostering a thriving Zabbix community."
+Naarmate de online bron groeide, groeide ook de visie. We zagen het potentieel
+om iets te creëren dat nog meer impact zou hebben. Dit leidde tot de oprichting
+van een stichting, toegewijd om de duurzaamheid en groei van deze
+gemeenschapsinspanning op lange termijn te garanderen. Dit boek, een tastbaar
+resultaat van die visie, vertegenwoordigt de volgende stap. Alle winst die wordt
+gegenereerd met de verkoop van dit boek zal weer worden geïnvesteerd in de
+gemeenschap, zodat we de middelen en ondersteuning die we bieden verder kunnen
+uitbreiden en verbeteren. Dit is meer dan alleen een boek; het is een bewijs van
+de kracht van gedeelde kennis en een toewijding aan het stimuleren van een
+bloeiende Zabbix-gemeenschap."
 
-## License
+## Licentie
 
-Please note: The english version is the primary source document. Translations
-are provided for convenience, but this version is considered the most accurate.
+Let op: De engelse versie is het primaire brondocument. Vertalingen worden voor
+het gemak gegeven, maar deze versie wordt als de meest nauwkeurige beschouwd.
 
 
-Please before you start take a look at our most updated license :
-[License](https://github.com/penmasters/zabbix-book/blob/main/readme.md) on
+Bekijk voordat je begint onze meest bijgewerkte licentie:
+[Licentie](https://github.com/penmasters/zabbix-book/blob/main/readme.md) op
 Github.
 
-*The Zabbix Book* is a freely accessible resource designed to help users
-understand and master Zabbix. Contributions are highly encouraged to improve and
-expand its content. However, the book is distributed under the **Creative
-Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)** license,
-meaning it is free for non-commercial use only.
+*Het Zabbix Boek* is een vrij toegankelijke bron ontworpen om gebruikers te
+helpen Zabbix te begrijpen en te beheersen. Bijdragen worden ten zeerste
+aangemoedigd om de inhoud te verbeteren en uit te breiden. Het boek wordt echter
+verspreid onder de **Creative Commons
+Naamsvermelding-NietCommercieel-GelijkDelen 4.0 (CC BY-NC-SA 4.0)** licentie,
+wat betekent dat het alleen vrij is voor niet-commercieel gebruik.
 
-Contributors should be aware that:
+Bijdragers moeten zich ervan bewust zijn dat:
 
-- By contributing to this work, you irrevocably assign and transfer all rights,
-  title, and interest in your contributions to **The Monitoring Penmasters
-  Foundation**, including any associated intellectual property rights, to the
-  fullest extent permitted by law.
-- **The Monitoring Penmasters Foundation** reserves the right to use, reproduce,
-  modify, distribute, and commercially exploit any contributed material in any
-  form, including but not limited to the publication of physical and digital
-  books.
-- All contributors must sign a **Deed of Transfer of Intellectual Property
-  Rights** before making any contributions, ensuring the proper transfer of
-  rights and handling of the content by **The Monitoring Penmasters
-  Foundation**. Any contributions without a signed **Deed of Transfer of
-  Intellectual Property Rights** cannot be accepted.
-- All profits generated will be used by The Monitoring Penmasters Foundation to
-  cover operational expenses and to sponsor other open-source projects, as
-  determined by the foundation.
+- Door bij te dragen aan dit werk, draagt u onherroepelijk alle rechten,
+  aanspraken en belangen in uw bijdragen over aan **The Monitoring Penmasters
+  Foundation**, inclusief alle bijbehorende intellectuele eigendomsrechten, voor
+  zover wettelijk toegestaan.
+- **De Stichting Monitoring Penmasters** behoudt zich het recht voor om
+  bijgedragen materiaal te gebruiken, reproduceren, wijzigen, distribueren en
+  commercieel te exploiteren in welke vorm dan ook, inclusief maar niet beperkt
+  tot de publicatie van fysieke en digitale boeken.
+- Alle bijdragers moeten een **Akte van Overdracht van Intellectuele
+  Eigendomsrechten** ondertekenen voordat ze bijdragen leveren, om de juiste
+  overdracht van rechten en behandeling van de inhoud door **The Monitoring
+  Penmasters Foundation** te waarborgen. Bijdragen zonder een ondertekende
+  **Akte van overdracht van intellectuele eigendomsrechten** kunnen niet worden
+  geaccepteerd.
+- Alle winst die wordt gegenereerd zal worden gebruikt door The Monitoring
+  Penmasters Foundation om operationele kosten te dekken en om andere
+  open-source projecten te sponsoren, zoals bepaald door de stichting.
 
-Your contributions are invaluable and will help make *The Zabbix Book* an even
-greater resource for the entire community!
+Jullie bijdragen zijn van onschatbare waarde en zullen helpen om *The Zabbix
+Book* een nog grotere bron te maken voor de hele gemeenschap!
 
-Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
+Schild: [![CC BY-NC-SA 4.0][cc-door-nc-sa-schild]][cc-door-nc-sa]
 
-[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-License][cc-by-nc-sa].
+[Creative Commons Naamsvermelding-NietCommercieel-GelijkDelen 4.0 Internationale
+Licentie][cc-door-nc-sa].
 
-[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
+[![CC BY-NC-SA 4.0][cc-door-nc-sa-beeld]][cc-door-nc-sa]
 
-[cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
-[cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
-[cc-by-nc-sa-shield]:
+[cc-door-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
+[cc-door-nc-sa-beeld]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
+[cc-door-nc-sa-schild]:
 https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
