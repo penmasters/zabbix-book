@@ -1,25 +1,27 @@
-# System Requirements
+# Systeemvereisten
 
-## Requirements
+## Vereisten
 
-Zabbix has specific hardware and software requirements that must be met, and
-these requirements may change over time. They also depend on the size of your
-setup and the software stack you select. Before purchasing hardware or
-installing a database version, it's essential to consult the Zabbix
-documentation for the most up-to-date requirements for the version you plan to
-install. You can find the latest requirements
+Zabbix heeft specifieke hardware- en softwarevereisten waaraan voldaan moet
+worden, en deze vereisten kunnen na verloop van tijd veranderen. Ze zijn ook
+afhankelijk van de grootte van je installatie en de softwarestack die je kiest.
+Voordat je hardware aanschaft of een databaseversie installeert, is het
+essentieel om de Zabbix documentatie te raadplegen voor de meest recente
+vereisten voor de versie die je van plan bent te installeren. Je kunt de meest
+recente vereisten vinden
 [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements).
-Make sure to select the correct Zabbix version from the list.
+Zorg ervoor dat je de juiste Zabbix-versie uit de lijst selecteert.
 
-For smaller or test setups, Zabbix can comfortably run on a system with 2 CPUs
-and 8 GB of RAM. However, your setup size, the number of items you monitor, the
-triggers you create, and how long you plan to retain data will impact resource
-requirements. In today's virtualised environments, my advice is to start small
-and scale up as needed.
+Voor kleinere of testopstellingen kan Zabbix gemakkelijk draaien op een systeem
+met 2 CPU's en 8 GB RAM. Echter, de grootte van je setup, het aantal items dat
+je monitort, de triggers die je aanmaakt en hoe lang je van plan bent gegevens
+te bewaren, zullen invloed hebben op de benodigde bronnen. In de
+gevirtualiseerde omgevingen van vandaag is mijn advies om klein te beginnen en
+zo nodig op te schalen.
 
-You can install all components (Zabbix server, database, web server) on a single
-machine or distribute them across multiple servers. For simplicity, take note of
-the server details:
+Je kunt alle componenten (Zabbix server, database, webserver) op één machine
+installeren of verdelen over meerdere servers. Noteer voor de eenvoud de
+servergegevens:
 
 | Component       | IP Address |
 | --------------- | ---------- |
