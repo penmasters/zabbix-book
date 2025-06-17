@@ -2076,9 +2076,11 @@ our reboot next time.
 
 !!! info "check if the service is running"
 
-    ```yaml # systemctl status nginx
-
-     ● nginx.service - The nginx HTTP and reverse proxy server
+    ```yaml
+    systemctl status nginx
+    ```
+    ```
+    ● nginx.service - The nginx HTTP and reverse proxy server
           Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
          Drop-In: /usr/lib/systemd/system/nginx.service.d
                   └─php-fpm.conf
@@ -2170,6 +2172,17 @@ Run the next command to get a list of all locales available for your OS.
     Ubuntu
     ```yaml
     apt-cache search language-pack
+    ```
+
+Users on Ubuntu will probably notice following error `"Locale for language "en_US"
+is not found on the web server."``
+
+!!! info "This can be solved easy with the following commands."
+
+    ```
+    sudo locale-gen en_US.UTF-8
+    sudo update-locale
+    sudo systemctl restart nginx php8.3-fpm
     ```
 
 This will give you on Red Hat based systems a list like:
