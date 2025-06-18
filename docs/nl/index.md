@@ -4,8 +4,8 @@ Dit boek is geboren uit een eenvoudig verlangen: **om terug te geven**. Na jaren
 werken met Zabbix en het schrijven van vele andere publicaties over het
 platform, voelden Patrik en Nathan een sterke drang om hun kennis te delen op
 een manier die toegankelijk was voor iedereen. Zo ontstond het initiële idee
-voor een gratis, online Zabbix-bron. **een project gedreven door de community,
-toegewijd aan het versterken van gebruikers.**
+voor een gratis, online Zabbix-bron - **een community-gedreven project gewijd
+aan het empoweren van gebruikers**.
 
 Naarmate de online bron groeide, groeide ook de visie. We zagen het potentieel
 om iets te creëren dat nog meer impact zou hebben. Dit leidde tot de oprichting
@@ -31,9 +31,9 @@ Github.
 *Het Zabbix Boek* is een vrij toegankelijke bron ontworpen om gebruikers te
 helpen Zabbix te begrijpen en te beheersen. Bijdragen worden ten zeerste
 aangemoedigd om de inhoud te verbeteren en uit te breiden. Het boek wordt echter
-verspreid onder de **Creative Commons
-Naamsvermelding-NietCommercieel-GelijkDelen 4.0 (CC BY-NC-SA 4.0)** licentie,
-wat betekent dat het alleen vrij is voor niet-commercieel gebruik.
+verspreid onder de **Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+(CC BY-NC-SA 4.0)** licentie, wat betekent dat het alleen vrij is voor
+niet-commercieel gebruik.
 
 Bijdragers moeten zich ervan bewust zijn dat:
 
@@ -58,14 +58,14 @@ Bijdragers moeten zich ervan bewust zijn dat:
 Jullie bijdragen zijn van onschatbare waarde en zullen helpen om *The Zabbix
 Book* een nog grotere bron te maken voor de hele gemeenschap!
 
-Schild: [![CC BY-NC-SA 4.0][cc-door-nc-sa-schild]][cc-door-nc-sa]
+Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
-[Creative Commons Naamsvermelding-NietCommercieel-GelijkDelen 4.0 Internationale
-Licentie][cc-door-nc-sa].
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+License][cc-by-nc-sa].
 
-[![CC BY-NC-SA 4.0][cc-door-nc-sa-beeld]][cc-door-nc-sa]
+[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
 
-[cc-door-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
-[cc-door-nc-sa-beeld]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
-[cc-door-nc-sa-schild]:
+[cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
+[cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
+[cc-by-nc-sa-shield]:
 https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
