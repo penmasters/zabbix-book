@@ -57,8 +57,7 @@ essential for efficient long term data storage and performance in larger environ
     ```
     Ubuntu
     ```
-    echo "deb https://packagecloud.io/timescale/timescaledb/ubuntu/ $(lsb_release -c -s)
-     main" | sudo tee /etc/apt/sources.list.d/timescaledb.list
+    echo "deb https://packagecloud.io/timescale/timescaledb/ubuntu/ $(lsb_release -c -s) main" | sudo tee /etc/apt/sources.list.d/timescaledb.list
     ```
     ```
     wget --quiet -O - https://packagecloud.io/timescale/timescaledb/gpgkey |
@@ -110,6 +109,30 @@ essential for efficient long term data storage and performance in larger environ
     automatic updates.
     ```
 
+!!! info "Check for specific versions"
+
+    Red Hat
+    ```
+    dnf list timescaledb-2-postgresql-17 --showduplicates
+    ```
+    Ubuntu
+    ```
+    apt-cache policy timescaledb-2-postgresql-17
+    ```
+
+!!! info "installing a specific version and lock the version"
+
+    Red Hat
+    ```
+    sudo dnf install timescaledb-2-postgresql-17-2.19.3
+    sudo dnf versionlock add timescaledb-2-postgresql-17
+    ```
+    Ubuntu
+    ```
+    sudo apt install timescaledb-2-postgresql-17=2.19.3~ubuntu24.04 timescaledb-2-loader-postgresql-17=2.19.3~ubuntu24.04
+    sudo apt-mark hold timescaledb-2-postgresql-17
+    ```
+
 ### Configure TimescaleDB
 
 The next step is to load the TimescaleDB extension into your PostgreSQL database
@@ -158,7 +181,10 @@ At a minimum, make sure to add the following line at the end of the file:
     ```
     Ubuntu
     ```
-    ToDo
+    echo "shared_preload_libraries = 'timescaledb'" | sudo tee -a /etc/postgresql/17/main/postgresql.conf
+    ```
+    ```
+    sudo systemctl restart postgresql
     ```
 
 ### Configure Zabbix for timescaledb
@@ -171,14 +197,14 @@ could otherwise cause locks or unexpected behavior.
 
 !!! info "Stop Zabbix server"
 
-    RedHat and Ubuntu
-    ```
-    systemct stop zabbix-server
+    Red Hat and Ubuntu
+    ```bash
+    sudo systemctl stop zabbix-server
     ```
 
 !!! info "Create timescaledb extension"
 
-    Red Hat
+    Red Hat and Ubuntu
     ```bash
     psql -Uzabbix-srv zabbix -W
     ```
@@ -187,10 +213,6 @@ could otherwise cause locks or unexpected behavior.
     Type "help" for help.
 
     zabbix=> CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
-    ```
-    Ubuntu
-    ```
-    ToDo
     ```
 
 Make sure the extension is installed by running `\dx`.
@@ -203,7 +225,7 @@ Make sure the extension is installed by running `\dx`.
     Name     | Version |   Schema   |                                      Description
     -------------+---------+------------+---------------------------------------------------------------------------------------
      plpgsql     | 1.0     | pg_catalog | PL/pgSQL procedural language
-     timescaledb | 2.20.3  | public     | Enables scalable inserts and complex queries for time-series data (Community Edition)
+     timescaledb | 2.19.3  | public     | Enables scalable inserts and complex queries for time-series data (Community Edition)
     (2 rows)
 
     zabbix=>
@@ -239,6 +261,14 @@ In addition, the script sets two TimescaleDB specific parameters:
 - Compress records older than 7 days
 
 These settings help reduce the size of historical data and improve long term performance.
+Let's start our zabbix server again before we continue
+
+!!! info "start Zabbbix server"
+
+    RedHat and Ubuntu
+    ```
+    sudo systemctl start zabbix-server
+    ```
 
 Let's have a look at them go in our menu to **Administration** -> **Housekeeping**
 
