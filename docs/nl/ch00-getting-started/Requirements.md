@@ -23,11 +23,11 @@ Je kunt alle componenten (Zabbix server, database, webserver) op één machine
 installeren of verdelen over meerdere servers. Noteer voor de eenvoud de
 servergegevens:
 
-| Component       | IP Address |
-| --------------- | ---------- |
-| Zabbix Server   |            |
-| Database Server |            |
-| Web Server      |            |
+| Component      | IP-adres |
+| -------------- | -------- |
+| Zabbix server  |          |
+| Databaseserver |          |
+| Webserver      |          |
 
 ???+ tip
 
@@ -47,31 +47,32 @@ servergegevens:
 
 ---
 
-## Basic OS Configuration
+## Basis OS-configuratie
 
-Operating systems, so many choices, each with its own advantages and loyal user
-base. While Zabbix can be installed on a wide range of platforms, documenting
-the process for every available OS would be impractical. To keep this book
-focused and efficient, we have chosen to cover only the most widely used
-options: Ubuntu and Red Hat based distributions.
+Besturingssystemen, zoveel keuzes, elk met zijn eigen voordelen en trouwe
+gebruikers. Hoewel Zabbix op een groot aantal platformen geïnstalleerd kan
+worden, zou het onpraktisch zijn om het proces voor elk beschikbaar
+besturingssysteem te documenteren. Om dit boek doelgericht en efficiënt te
+houden, hebben we ervoor gekozen om alleen de meest gebruikte opties te
+behandelen: Ubuntu en Red Hat gebaseerde distributies.
 
-Since not everyone has access to a Red Hat Enterprise Linux (RHEL) subscription
-even though a developer account provides limited access we have opted for Rocky
-Linux as a readily available alternative. For this book, we will be using Rocky
-Linux 9.x and Ubuntu LTS 24.04.x.
+Omdat niet iedereen toegang heeft tot een Red Hat Enterprise Linux (RHEL)
+abonnement, ook al biedt een ontwikkelaarsaccount beperkte toegang, hebben we
+gekozen voor Rocky Linux als een gemakkelijk beschikbaar alternatief. Voor dit
+boek gebruiken we Rocky Linux 9.x en Ubuntu LTS 24.04.x.
 
 - <https://rockylinux.org/>
 - <https://ubuntu.com/>
 
 ### Firewall
 
-Before installing Zabbix, it's essential to properly prepare the operating
-system. The first step is to ensure that the firewall is installed and
-configured.
+Voordat je Zabbix installeert, is het essentieel om het besturingssysteem goed
+voor te bereiden. De eerste stap is ervoor zorgen dat de firewall is
+geïnstalleerd en geconfigureerd.
 
-To install and enable the firewall, run the following command:
+Voer het volgende commando uit om de firewall te installeren en in te schakelen:
 
-!!! info "Install and enable the firewall"
+Info "Installeer en schakel de firewall in".
 
     Red Hat
     ```yaml
@@ -85,11 +86,12 @@ To install and enable the firewall, run the following command:
     sudo ufw enable
     ```
 
-Once installed, you can configure the necessary ports. For Zabbix, we need to
-allow access to port `10051/tcp`, which is where the Zabbix trapper listens for
-incoming data. Use the following command to open this port in the firewall:
+Eenmaal geïnstalleerd, kun je de nodige poorten configureren. Voor Zabbix moeten
+we toegang toestaan tot poort `10051/tcp`, waar de Zabbix trapper luistert naar
+inkomende gegevens. Gebruik het volgende commando om deze poort te openen in de
+firewall:
 
-!!! info "Allow Zabbix trapper access"
+Info "Zabbix trapper toegang verlenen".
 
     Red Hat
     ```yaml
@@ -101,9 +103,9 @@ incoming data. Use the following command to open this port in the firewall:
     sudo ufw allow 10051/tcp
     ```
 
-If the service is not recognized, you can manually specify the port:
+Als de service niet wordt herkend, kun je de poort handmatig opgeven:
 
-!!! info "Add port instead of the service name"
+Info "Voeg poort toe in plaats van de servicenaam".
 
     ```yaml
     firewall-cmd --add-port=10051/tcp --permanent
@@ -117,18 +119,19 @@ If the service is not recognized, you can manually specify the port:
     refer to your OS documentation for the appropriate firewall configuration steps."
     Ubuntu makes use of UFW and is merely a frontend for iptables.
 
-An alternative approach is to define dedicated firewall zones for specific use
-cases. For example...
+Een alternatieve aanpak is om speciale firewallzones te definiëren voor
+specifieke gebruikssituaties. Bijvoorbeeld...
 
-!!! info "Create a firewalld zone"
+Info "Creëer een firewalld zone".
 
     ```yaml
     firewall-cmd --new-zone=postgresql-access --permanent
     ```
 
-You can confirm the creation of the zone by executing the following command:
+Je kunt het aanmaken van de zone bevestigen door het volgende commando uit te
+voeren:
 
-!!! info "Verify the zone creation"
+Info "De aanmaak van de zone verifiëren".
 
     ```yaml
     firewall-cmd --get-zones
@@ -137,15 +140,16 @@ You can confirm the creation of the zone by executing the following command:
 block dmz drop external home internal nm-shared postgresql-access public trusted
 work
 
-Using zones in firewalld to configure firewall rules for PostgreSQL provides
-several advantages in terms of security, flexibility, and ease of management.
-Here’s why zones are beneficial:
+Het gebruik van zones in firewalld om firewall regels voor PostgreSQL te
+configureren biedt verschillende voordelen op het gebied van beveiliging,
+flexibiliteit en beheergemak. Hier lees je waarom zones nuttig zijn:
 
-- **Granular Access Control :**
-  - firewalld zones allow different levels of trust for different network
-    interfaces and IP ranges. You can define which systems are allowed to
-    connect to PostgreSQL based on their trust level.
-- **Simplified Rule management:**
+- **Granulaire toegangscontrole :**
+  - firewalld zones staan verschillende vertrouwensniveaus toe voor
+    verschillende netwerkinterfaces en IP bereiken. Je kunt definiëren welke
+    systemen verbinding mogen maken met PostgreSQL op basis van hun
+    vertrouwensniveau.
+- **Vereenvoudigd regelbeheer:**
   - Instead of manually defining complex iptables rules, zones provide an
     organized way to group and manage firewall rules based on usage scenarios.
 - **Enhanced security:**
@@ -264,18 +268,19 @@ the one closest to your location. For example:
     UTC
     ```
 
-Once you've identified your time zone, configure it using the following command:
+Zodra je je tijdzone hebt geïdentificeerd, configureer je deze met het volgende
+commando:
 
-!!! info "Set the timezone"
+!!! info "Tijdzone instellen"
 
     ```yaml
     timedatectl set-timezone Europe/Brussels
     ```
 
-To verify that the time zone has been configured correctly, use the
-`timedatectl` command again:
+Gebruik het commando `timedatectl` opnieuw om te controleren of de tijdzone
+juist is ingesteld:
 
-!!! info "Check the time and zone"
+!!! info "Controleer de tijd en zone"
 
     ```yaml
     timedatectl
@@ -301,20 +306,20 @@ To verify that the time zone has been configured correctly, use the
 
 ---
 
-### Verifying Chrony Synchronization
+### Chrony-synchronisatie controleren
 
-To ensure that Chrony is synchronizing with the correct time servers, you can
-run the following command:
+Om ervoor te zorgen dat Chrony met de juiste tijdservers synchroniseert, kunt u
+het volgende commando uitvoeren:
 
-!!! info "Verify chrony"
+!!! info "chrony verifiëren"
 
     ```yaml
     chronyc
     ```
 
-The output should resemble:
+De uitvoer moet lijken op:
 
-!!! info "Verify your chrony output"
+!!! Info "Controleer uw chrony uitvoer"
 
     ```yaml
     chrony version 4.2
@@ -326,7 +331,7 @@ The output should resemble:
     chronyc>
     ```
 
-Once inside the Chrony prompt, type the following to check the sources:
+Eenmaal in de Chrony prompt, typ het volgende om de bronnen te controleren:
 
 !!! info ""
 
@@ -334,9 +339,9 @@ Once inside the Chrony prompt, type the following to check the sources:
     chronyc> sources
     ```
 
-Example output:
+Voorbeelduitvoer:
 
-!!! info "Check your time server sources"
+!!! info "Controleer de bronnen van uw tijdserver"
 
     ```bash
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
@@ -347,22 +352,23 @@ Example output:
     ^* leontp1.office.panq.nl        1  10   377   904  +6806ns[ +171us] +/- 2336us
     ```
 
-In this example, the NTP servers in use are located outside your local region.
-It is recommended to switch to time servers in your country or, if available, to
-a dedicated company time server. You can find local NTP servers here:
-[www.ntppool.org](https://www.ntppool.org/).
+In dit voorbeeld bevinden de gebruikte NTP-servers zich buiten je lokale regio.
+Het wordt aanbevolen om over te schakelen naar tijdservers in je eigen land of,
+indien beschikbaar, naar een speciale bedrijfstijdserver. U kunt lokale
+NTP-servers hier vinden: [www.ntppool.org](https://www.ntppool.org/).
 
 ---
 
-### Updating Time Servers
+### Tijdservers bijwerken
 
-To update the time servers, modify the `/etc/chrony.conf` file for Red Hat based
-systems, and if you use Ubuntu edit `/etc/chrony/chrony.conf`. Replace the
-existing NTP server with one closer to your location.
+Om de tijdservers bij te werken, wijzig je het bestand `/etc/chrony.conf` voor
+Red Hat gebaseerde systemen, en als je Ubuntu gebruikt bewerk je
+`/etc/chrony/chrony.conf`. Vervang de bestaande NTP-server door een die dichter
+bij je locatie staat.
 
-Example of the current configuration:
+Voorbeeld van de huidige configuratie:
 
-!!! info "example ntp pool config"
+!!! info "voorbeeld ntp pool configuratie"
 
     ```yaml
     # Use public servers from the pool.ntp.org project.
