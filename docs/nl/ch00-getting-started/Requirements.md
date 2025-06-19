@@ -72,7 +72,7 @@ geïnstalleerd en geconfigureerd.
 
 Voer het volgende commando uit om de firewall te installeren en in te schakelen:
 
-Info "Installeer en schakel de firewall in".
+!!! info "Installeer en schakel de firewall in"
 
     Red Hat
     ```yaml
@@ -91,7 +91,7 @@ we toegang toestaan tot poort `10051/tcp`, waar de Zabbix trapper luistert naar
 inkomende gegevens. Gebruik het volgende commando om deze poort te openen in de
 firewall:
 
-Info "Zabbix trapper toegang verlenen".
+!!! info "Zabbix trapper toegang verlenen"
 
     Red Hat
     ```yaml
