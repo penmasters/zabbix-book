@@ -145,7 +145,7 @@ settings to optimize performance. On Red Hat based systems, you can run:
 !!! info ""
 
     ```bash
-    sudo timescaledb tune --pg config=/usr/pgsql/17/bin/pg_config
+    sudo timescaledb-tune --pg-config=/usr/pgsql/17/bin/pg_config
     ```
 
 For Ubuntu and Debian based systems, simply run:
@@ -173,8 +173,7 @@ At a minimum, make sure to add the following line at the end of the file:
 
     Red Hat
     ```
-    echo "shared_preload_libraries = 'timescaledb'" >>\
-    /var/lib/pgsql/17/data/postgresql.conf
+    echo "shared_preload_libraries = 'timescaledb'" | sudo tee -a /var/lib/pgsql/17/data/postgresql.conf
     ```
     ```
     systemctl restart postgresql-17
