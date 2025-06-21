@@ -92,7 +92,7 @@ Once again, for security purposes `MD2` and `MD5` are not recommended. As well a
 For the `Privilege level` it is recommended to use either `Callback` or `User` in most scenarios. `Callback` will allow us to access alerts, `User` will also allow us to access monitoring data. If need higher privilege levels to execute commands on the `BMC` as well, this is possible. But keep in mind, write access from your monitoring system comes with additional security risks.
 
 ## Interface availability
-All four interface types, also come with an icon that can turn `Green`, `Orange`, `Red` or `Grey`. This color determines the interface its availability.
+All four interface types, also come with an icon that can turn <span style="color: green;">Green</span>, <span style="color: orange;">Orange</span>, <span style="color: red;">Red</span> or <span style="color: grey;">`Grey</span>. This color determines the interface its availability.
 
 
 ...
