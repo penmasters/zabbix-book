@@ -56,8 +56,8 @@ My final and favourite tip is: **Remember: Zabbix uses alphabetical sorting in a
 is this important, well let's look at the `Monitoring` | `Latest data` page with a host using a 
 default template:
 
-![MEM-CPU sorting](ch04.6-latest-data-memcpu-sorting.png){ align=left }
-*4.5 Latest data Memory and CPU items sorting*
+![MEM-CPU sorting](ch04.6-latest-data-memcpu-sorting.png){ align=center }
+*4.6 Latest data Memory and CPU items sorting*
 
 If this template had used CPU and Memory as a prefix for all respective items. Then this page
 would have nicely sorted them together. While right now, there are CPU items right between the
@@ -150,3 +150,14 @@ to define which TCP port to check. Zabbix will connect to the port and tell us t
 or the connection speed if we use `net.tcp.service.perf`. If we fill in the `service` parameter with
 `ssh, ldap, smtp, ftp, pop, nntp, imap, tcp, https, telnet` it will use the correct (default) port
 automatically, as well as do an additional check to make sure the port is actually being used by that service.
+
+## Conclusion
+The simple checks are mainly used for ICMP ping and Port checks, which means they are quite useful for almost every host. It's always a good idea to do some basic network availability checks on your hosts.
+
+Keep in mind that Zabbix will apply alphabetical sorting in many places when you create things like items. Keeping things structured in your environment means that you and your colleagues will have an easier time using your monitoring and observability platform.
+
+## Questions
+
+## Useful URLs
+[https://www.youtube.com/watch?v=5etxbNPrygU](https://www.youtube.com/watch?v=5etxbNPrygU)
+
