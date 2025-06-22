@@ -150,21 +150,22 @@ flexibiliteit en beheergemak. Hier lees je waarom zones nuttig zijn:
     systemen verbinding mogen maken met PostgreSQL op basis van hun
     vertrouwensniveau.
 - **Vereenvoudigd regelbeheer:**
-  - Instead of manually defining complex iptables rules, zones provide an
-    organized way to group and manage firewall rules based on usage scenarios.
+  - In plaats van het handmatig definiëren van complexe iptable regels, bieden
+    zones een georganiseerde manier om firewall regels te groeperen en te
+    beheren op basis van gebruiksscenario's.
 - **Enhanced security:**
-  - By restricting PostgreSQL access to a specific zone, you prevent
-    unauthorized connections from other interfaces or networks.
-- **Dynamic configuration:**
-  - firewalld supports runtime and permanent rule configurations, allowing
-    changes without disrupting existing connections.
-- **Multi-Interface support:**
-  - If the server has multiple network interfaces, zones allow different
-    security policies for each interface.
+  - Door PostgreSQL toegang te beperken tot een specifieke zone, voorkom je
+    ongeautoriseerde verbindingen vanaf andere interfaces of netwerken.
+- **Dynamische configuratie:**
+  - firewalld ondersteunt runtime en permanente regelconfiguraties, waardoor
+    veranderingen mogelijk zijn zonder bestaande verbindingen te verstoren.
+- **Ondersteuning voor meerdere interfaces:**
+  - Als de server meerdere netwerkinterfaces heeft, staan zones een verschillend
+    beveiligingsbeleid toe voor elke interface.
 
-Bringing everything together it would look like this:
+Alles bij elkaar zou het er als volgt uitzien:
 
-!!! info "Firewalld with zone config"
+!!! info "Firewall met zoneconfiguratie"
 
     ```yaml
     firewall-cmd --new-zone=db_zone --permanent
@@ -178,17 +179,19 @@ the database.
 
 ---
 
-### Time Server
+### Tijdserver
 
-Another crucial step is configuring the time server and syncing the Zabbix
-server using an NTP client. Accurate time synchronization is vital for Zabbix,
-both for the server and the devices it monitors. If one of the hosts has an
-incorrect time zone, it could lead to confusion, such as investigating an issue
-in Zabbix that appears to have happened hours earlier than it actually did.
+Een andere cruciale stap is het configureren van de tijdserver en het
+synchroniseren van de Zabbix server met behulp van een NTP client. Nauwkeurige
+tijdsynchronisatie is van vitaal belang voor Zabbix, zowel voor de server als
+voor de apparaten die het bewaakt. Als een van de hosts een onjuiste tijdzone
+heeft, kan dat tot verwarring leiden, zoals het onderzoeken van een probleem in
+Zabbix dat uren eerder lijkt te zijn gebeurd dan in werkelijkheid het geval was.
 
-To install and enable chrony, our NTP client, use the following command:
+Gebruik het volgende commando om chrony, onze NTP-cliënt, te installeren en in
+te schakelen:
 
-!!! info "Install NTP client"
+!!! info "NTP-cliënt installeren"
 
     Red Hat
     ```yaml
@@ -204,13 +207,13 @@ To install and enable chrony, our NTP client, use the following command:
 After installation, verify that Chrony is enabled and running by checking its
 status with the following command:
 
-!!! info "Check status chronyd"
+!!! info "Controleer status chronyd"
 
     ```yaml
     systemctl status chronyd
     ```
 
-???+ note "what is apt or dnf"
+???+ note "wat is apt of dnf"
 
     dnf is a package manager used in Red Hat-based systems. If you're using another
     distribution, replace `dnf` with your appropriate package manager, such as `zypper`,
