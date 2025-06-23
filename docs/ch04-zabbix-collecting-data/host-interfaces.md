@@ -77,7 +77,7 @@ For `IPMI agent` type items we want to add the `IPMI` type interface. We can use
 
 We have the same settings for `IP`, `DNS` and `Port` again, but in the case of IPMI we do not define credentials on the interface level. Instead these are provided on a different tab on the host configuration settings.
 
-![IPMI host settings](ch04.13-ipmi-setting.png){ align=center }
+![IPMI host settings](ch04.13-ipmi-settings.png){ align=center }
 *4.13 IPMI host settings*
 
 For a host in Zabbix we can only define one IPMI use for authentication, regardless of the amount of interfaces we add. 
