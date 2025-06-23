@@ -59,8 +59,8 @@ Ce que les contributeurs doivent savoir :
   Foundation** pour couvrir les dépenses opérationnelles et pour encourager
   d'autres projets open-source, comme déterminé par la fondation.
 
-Your contributions are invaluable and will help make *The Zabbix Book* an even
-greater resource for the entire community!
+Vos contributions sont inestimables et aideront à créer *The Zabbix Book* une
+ressource encore plus importante pour l'ensemble de la communauté !
 
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
