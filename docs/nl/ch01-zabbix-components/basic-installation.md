@@ -1,12 +1,13 @@
-# Basic installation
+# Basisinstallatie
 
-In this chapter, we will walk through the process of installing the Zabbix
-server. There are many different ways to setup a Zabbix server. We will cover
-the most common setups with MariaDB and PostgreSQL on Ubuntu and on Rocky Linux.
+In dit hoofdstuk doorlopen we het installatieproces van de Zabbix server. Er
+zijn veel verschillende manieren om een Zabbix server op te zetten. We
+behandelen de meest voorkomende opstellingen met MariaDB en PostgreSQL op Ubuntu
+en op Rocky Linux.
 
-Before beginning the installation, it is important to understand the
-architecture of Zabbix. The Zabbix server is structured in a modular fashion,
-composed of three main components, which we will discuss in detail.
+Voordat je begint met de installatie, is het belangrijk om de architectuur van
+Zabbix te begrijpen. De Zabbix server is modulair opgebouwd en bestaat uit drie
+hoofdcomponenten, die we in detail zullen bespreken.
 
 - The Zabbix server
 - The Zabbix web server
@@ -55,7 +56,7 @@ host the Zabbix database.
     mandatory step to ensure continued functionality and compatibility with future
     Zabbix versions.
 
-We will cover the following topics:
+We behandelen de volgende onderwerpen:
 
 - Install our Database based on MariaDB.
 - Install our Database based on PostgreSQL.
