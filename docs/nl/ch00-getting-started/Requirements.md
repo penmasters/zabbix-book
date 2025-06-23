@@ -105,7 +105,7 @@ firewall:
 
 Als de service niet wordt herkend, kun je de poort handmatig opgeven:
 
-Info "Voeg poort toe in plaats van de servicenaam".
+!!! info "Voeg poort toe in plaats van de servicenaam"
 
     ```yaml
     firewall-cmd --add-port=10051/tcp --permanent
@@ -122,7 +122,7 @@ Info "Voeg poort toe in plaats van de servicenaam".
 Een alternatieve aanpak is om speciale firewallzones te definiëren voor
 specifieke gebruikssituaties. Bijvoorbeeld...
 
-Info "Creëer een firewalld zone".
+!!! info "Creëer een firewalld zone"
 
     ```yaml
     firewall-cmd --new-zone=postgresql-access --permanent
@@ -131,7 +131,7 @@ Info "Creëer een firewalld zone".
 Je kunt het aanmaken van de zone bevestigen door het volgende commando uit te
 voeren:
 
-Info "De aanmaak van de zone verifiëren".
+!!! info "De aanmaak van de zone verifiëren"
 
     ```yaml
     firewall-cmd --get-zones
@@ -153,7 +153,7 @@ flexibiliteit en beheergemak. Hier lees je waarom zones nuttig zijn:
   - In plaats van het handmatig definiëren van complexe iptable regels, bieden
     zones een georganiseerde manier om firewall regels te groeperen en te
     beheren op basis van gebruiksscenario's.
-- **Enhanced security:**
+- **Verbeterde beveiliging:**
   - Door PostgreSQL toegang te beperken tot een specifieke zone, voorkom je
     ongeautoriseerde verbindingen vanaf andere interfaces of netwerken.
 - **Dynamische configuratie:**
@@ -174,8 +174,8 @@ Alles bij elkaar zou het er als volgt uitzien:
     firewall-cmd --reload
     ```
 
-Where the `source IP` is the only address permitted to establish a connection to
-the database.
+Waarbij het `bron IP` het enige adres is dat een verbinding met de database tot
+stand mag brengen.
 
 ---
 
@@ -204,8 +204,8 @@ te schakelen:
     sudo apt install chrony -y
     ```
 
-After installation, verify that Chrony is enabled and running by checking its
-status with the following command:
+Controleer na de installatie of Chrony is ingeschakeld en draait door de status
+te controleren met het volgende commando:
 
 !!! info "Controleer status chronyd"
 
@@ -219,18 +219,18 @@ status with the following command:
     distribution, replace `dnf` with your appropriate package manager, such as `zypper`,
     `apt`, or `yum`.
 
-???+ note "what is Chrony"
+???+ note "Wat is Chrony"
 
     Chrony is a modern replacement for `ntpd`, offering faster and
     more accurate time synchronization. If your OS does not support
     [Chrony](https://chrony-project.org/), consider using
     `ntpd` instead.
 
-Once Chrony is installed, the next step is to ensure the correct time zone is
-set. You can view your current time configuration using the `timedatectl`
-command:
+Zodra Chrony geïnstalleerd is, is de volgende stap ervoor te zorgen dat de
+juiste tijdzone ingesteld is. U kan uw huidige tijdsconfiguratie bekijken met
+het commando `timedatectl`:
 
-!!! info "check the time config"
+!!! info "controleer de tijdconfiguratie"
 
     ```yaml
     timedatectl
@@ -246,20 +246,20 @@ command:
     RTC in local TZ: no
     ```
 
-Ensure that the Chrony service is active (refer to the previous steps if
-needed). To set the correct time zone, first, you can list all available time
-zones with the following command:
+Zorg ervoor dat de Chrony service actief is (raadpleeg indien nodig de vorige
+stappen). Om de juiste tijdzone in te stellen, kunt u eerst alle beschikbare
+tijdzones oplijsten met het volgende commando:
 
-!!! info "list the timezones"
+!!! info "lijst de tijdzones"
 
     ```yaml
     timedatectl list-timezones
     ```
 
-This command will display a list of available time zones, allowing you to select
-the one closest to your location. For example:
+Deze opdracht toont een lijst met beschikbare tijdzones, zodat je de tijdzone
+kunt selecteren die het dichtst bij je locatie ligt. Bijvoorbeeld:
 
-!!! info "List of all the timezones available"
+!!! info "Lijst van alle beschikbare tijdzones"
 
     ```yaml
     Africa/Abidjan
@@ -387,28 +387,29 @@ Voorbeeld van de huidige configuratie:
     pool be.pool.ntp.org iburst
     ```
 
-After making this change, restart the Chrony service to apply the new
-configuration:
+Herstart de Chrony service na deze wijziging om de nieuwe configuratie toe te
+passen:
 
-!!! info "restart the chrony service"
+!!! info "De chrony service opnieuw starten"
 
     ```yaml
     systemctl restart chronyd
     ```
 
-### Verifying Updated Time Servers
+### Bijgewerkte tijdservers controleren
 
-Check the time sources again to ensure that the new local servers are in use:
+Controleer de tijdbronnen opnieuw om er zeker van te zijn dat de nieuwe lokale
+servers in gebruik zijn:
 
-!!! info "Check chrony sources"
+!!! info "Controleer chrony bronnen"
 
     ```yaml
     chronyc> sources
     ```
 
-Example of expected output with local servers:
+Voorbeeld van verwachte uitvoer met lokale servers:
 
-!!! info "Example output"
+!!! info "Voorbeeld uitvoer"
 
     ```yaml
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
@@ -419,28 +420,30 @@ Example of expected output with local servers:
     ^+ time.cloudflare.com           3   6    17    43
     ```
 
-This confirms that the system is now using local time servers.
+Dit bevestigt dat het systeem nu lokale tijdservers gebruikt.
 
-## Conclusion
+## Conclusie
 
-As we have seen, before even considering the Zabbix packages, attention must be
-paid to the environment in which it will reside. A properly configured operating
-system, an open path through the firewall, and accurate timekeeping are not mere
-suggestions, but essential building blocks. Having laid this groundwork, we can
-now proceed with confidence to the Zabbix installation, knowing that the
-underlying system is prepared for the task.
+Zoals we hebben gezien, moet er, voordat er over de Zabbix pakketten wordt
+nagedacht, aandacht worden besteed aan de omgeving waarin het zich zal bevinden.
+Een goed geconfigureerd besturingssysteem, een open pad door de firewall en
+nauwkeurige tijdregistratie zijn niet slechts suggesties, maar essentiële
+bouwstenen. Nu we deze basis gelegd hebben, kunnen we met vertrouwen verder gaan
+met de installatie van Zabbix, wetende dat het onderliggende systeem voorbereid
+is op de taak.
 
-## Questions
+## Vragen
 
-- Why do you think accurate time synchronization is so crucial for a monitoring
-  system like Zabbix?
-- Now that the groundwork is laid, what do you anticipate will be the first step
-  in the actual Zabbix installation process?
-- As we move towards installing Zabbix, let's think about network communication.
-  What key ports do you anticipate needing to allow through the firewall for the
-  Zabbix server and agents to interact effectively?
+- Waarom denk je dat nauwkeurige tijdsynchronisatie zo cruciaal is voor een
+  monitoringsysteem als Zabbix?
+- Nu de basis is gelegd, wat is volgens jullie de eerste stap in het
+  daadwerkelijke Zabbix installatieproces?
+- Als we Zabbix gaan installeren, laten we dan eens nadenken over
+  netwerkcommunicatie. Welke belangrijke poorten moet je door de firewall
+  toestaan zodat de Zabbix server en agents effectief met elkaar kunnen
+  communiceren?
 
-## Useful URLs
+## Nuttige URL's
 
 - [https://www.ntppool.org/zone](https://www.ntppool.org/zone)
 - [https://www.redhat.com/en/blog/beginners-guide-firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
