@@ -6,7 +6,7 @@
 - Sign the [deed of
   transfer](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf)
   preferable electronically
-- Clone this project to your Github account
+- โคลนโครงการนี้ไปยังบัญชี Github ของคุณ
 - Clone the repository to you pc
 
 - Install the needed software for Mkdocs to work, check the file in the root
