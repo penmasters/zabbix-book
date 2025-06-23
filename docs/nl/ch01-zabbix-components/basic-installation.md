@@ -9,8 +9,8 @@ Voordat je begint met de installatie, is het belangrijk om de architectuur van
 Zabbix te begrijpen. De Zabbix server is modulair opgebouwd en bestaat uit drie
 hoofdcomponenten, die we in detail zullen bespreken.
 
-- The Zabbix server
-- The Zabbix web server
+- De Zabbix server
+- De Zabbix webserver
 - The Zabbix database
 
 ![overview](ch01-basic-installation-zabbixserver.png){ align=left }
