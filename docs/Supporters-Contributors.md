@@ -24,8 +24,10 @@ shared by our contributors. From writing and reviewing content to providing feed
 and sharing expertise, your efforts have helped shape this resource into something
 valuable for the monitoring and open-source communities.
 
-- **Patrik Uytterhoeven** : http://github.com/Trikke76
-- **Nathan Liefting** : https://github.com/larcorba
+- **Patrik Uytterhoeven** : [http://github.com/Trikke76](http://github.com/Trikke76)
+- **Nathan Liefting** : [https://github.com/larcorba](https://github.com/larcorba)
+- Evgeny Yurchenko: [https://github.com/BGmot](https://github.com/BGmot)
+- Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
 
 ---
 
@@ -42,6 +44,7 @@ book a reality.
 ---
 
 ## Every Contribution Matters
+
 Open-source thrives on collaboration, and even the smallest contributions help
 make a difference. Whether it was reporting a typo, suggesting an improvement,
 opening an issue, or simply sharing feedback, we appreciate everyone who took
@@ -51,6 +54,7 @@ are a valuable part of this project. Check out [Everyone who created an issue](h
 ---
 
 ## Join the Community
+
 We welcome new contributors and supporters! If you'd like to get involved whether
 by contributing content, providing feedback, or supporting this initiative you can
 find more details on how to participate at [Guidelines](./Guidelines.md).
