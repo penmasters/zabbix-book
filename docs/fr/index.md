@@ -8,49 +8,56 @@ ainsi qu'est née l'idée initiale d'une ressource Zabbix gratuite et en ligne -
 **un projet communautaire ayant pour but de rendre les utilisateurs plus
 autonomes**.
 
-As the online resource grew, so did the vision. We recognized the potential to
-create something even more impactful. This led to the formation of a foundation,
-dedicated to ensuring the long-term sustainability and growth of this community
-effort. This book, a tangible culmination of that vision, represents the next
-step. All profits generated from its sales will be reinvested back into the
-community, enabling us to further expand and enhance the resources and support
-we offer. This is more than just a book; it's a testament to the power of shared
-knowledge and a commitment to fostering a thriving Zabbix community."
+Au fur et à mesure que la ressource en ligne s'est développée, notre vision
+s'est élargie. Nous avons reconnu le potentiel de créer quelque chose qui marque
+encore plus les esprits. Cela a conduit à la création d'une fondation, destinée
+à assurer la durabilité et la croissance à long terme de cet effort
+communautaire. Ce livre, aboutissement tangible de cette vision, représente
+l'étape suivante. Tous les bénéfices générés par sa vente seront réinvestis dans
+la communauté, ce qui nous permettra d'élargir et d'améliorer les ressources et
+le soutien que nous offrons. C'est plus qu'un simple livre ; c'est un témoignage
+de la puissance du partage des connaissances et un engagement à favoriser une
+communauté Zabbix prospère."
 
-## License
+## Licence
 
-Please note: The english version is the primary source document. Translations
-are provided for convenience, but this version is considered the most accurate.
+Remarque : la version originale de ce document est en anglais. Des traductions
+sont fournies pour faciliter l'utilisation, mais la version anglaise reste la
+référence.
 
 
-Please before you start take a look at our most updated license :
-[License](https://github.com/penmasters/zabbix-book/blob/main/readme.md) on
+Avant de commencer, merci de consulter notre licence d'utilisation la plus
+récente :
+[License](https://github.com/penmasters/zabbix-book/blob/main/readme.md) sur
 Github.
 
-*The Zabbix Book* is a freely accessible resource designed to help users
-understand and master Zabbix. Contributions are highly encouraged to improve and
-expand its content. However, the book is distributed under the **Creative
-Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)** license,
-meaning it is free for non-commercial use only.
+*The Zabbix Book* est une ressource librement accessible conçue pour aider les
+utilisateurs à comprendre et à maîtriser Zabbix. Les contributions sont vivement
+encouragées afin d'améliorer et d'étendre son contenu. Cependant, le livre est
+distribué sous la licence **Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)**, ce qui signifie
+qu'il est gratuit pour une utilisation non commerciale uniquement.
 
-Contributors should be aware that:
+Ce que les contributeurs doivent savoir :
 
-- By contributing to this work, you irrevocably assign and transfer all rights,
-  title, and interest in your contributions to **The Monitoring Penmasters
-  Foundation**, including any associated intellectual property rights, to the
-  fullest extent permitted by law.
-- **The Monitoring Penmasters Foundation** reserves the right to use, reproduce,
-  modify, distribute, and commercially exploit any contributed material in any
-  form, including but not limited to the publication of physical and digital
-  books.
-- All contributors must sign a **Deed of Transfer of Intellectual Property
-  Rights** before making any contributions, ensuring the proper transfer of
-  rights and handling of the content by **The Monitoring Penmasters
-  Foundation**. Any contributions without a signed **Deed of Transfer of
-  Intellectual Property Rights** cannot be accepted.
-- All profits generated will be used by The Monitoring Penmasters Foundation to
-  cover operational expenses and to sponsor other open-source projects, as
-  determined by the foundation.
+- En contribuant à ce projet, vous accordez et transférez de manière irrévocable
+  tous les droits, titres et intérêts liés à vos contributions à **The
+  Monitoring Penmasters Foundation**, y compris tous les droits de propriété
+  intellectuelle associés, dans toute la mesure permise par la loi.
+- **La Fondation Monitoring Penmasters** se réserve le droit d'utiliser, de
+  reproduire, de modifier, de distribuer et d'exploiter commercialement tout
+  matériel fourni sous quelque forme que ce soit, y compris, mais sans s'y
+  limiter, la publication de livres physiques et numériques.
+- Tous les contributeurs doivent signer un **Deed of Transfer of Intellectual
+  Property Rights (acte de transfert des droits de propriété intellectuelle)**
+  avant d'effectuer toute contribution, afin de garantir le bon transfert des
+  droits et le traitement du contenu par **The Monitoring Penmasters
+  Foundation**. Toute contribution non accompagnée d'un **Deed of Transfer of
+  Intellectual Property Rights (acte de transfert des droits de propriété
+  intellectuelle)** signé ne peut être acceptée.
+- Tous les bénéfices générés seront utilisés par **The Monitoring Penmasters
+  Foundation** pour couvrir les dépenses opérationnelles et pour encourager
+  d'autres projets open-source, comme déterminé par la fondation.
 
 Your contributions are invaluable and will help make *The Zabbix Book* an even
 greater resource for the entire community!
