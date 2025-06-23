@@ -1,29 +1,33 @@
-# Getting Started with Zabbix – Unlocking the Power of Monitoring
+# Aan de slag met Zabbix - De kracht van monitoring ontsluiten
 
-Welcome to the world of **Zabbix**, a powerful open-source monitoring solution
-designed to give you comprehensive insights into your IT infrastructure. Whether
-you're managing a small network or overseeing a large-scale enterprise system,
-Zabbix provides the tools you need to monitor performance, detect issues, and
-ensure the smooth operation of your services.
+Welkom in de wereld van **Zabbix**, een krachtige open-source monitoring
+oplossing ontworpen om u uitgebreide inzichten te geven in uw IT-infrastructuur.
+Of je nu een klein netwerk beheert of toezicht houdt op een grootschalig
+bedrijfssysteem, Zabbix biedt de tools die je nodig hebt om de prestaties te
+bewaken, problemen op te sporen en een soepele werking van je diensten te
+garanderen.
 
-In this book, we focus on **Zabbix LTS 8.0**, the long-term support version that
-ensures stability and reliability for your monitoring needs. We'll explore its
-extensive feature set, including the newly introduced **reporting
-functionality** and **built-in web monitoring** based on the Selenium driver,
-which allows for sophisticated end-user experience monitoring through automated
-browser interactions.
+In dit boek richten we ons op **Zabbix LTS 8.0**, de versie met
+langetermijnondersteuning die stabiliteit en betrouwbaarheid garandeert voor uw
+monitoringbehoeften. We verkennen de uitgebreide functieset, inclusief de nieuw
+geïntroduceerde **rapportagefunctionaliteit** en **ingebouwde webmonitoring**
+gebaseerd op de Selenium driver, die geavanceerde monitoring van
+eindgebruikerservaringen mogelijk maakt via geautomatiseerde browserinteracties.
 
-Zabbix is more than just a simple monitoring tool. It offers a wide range of
-features that allow you to:
+Zabbix is meer dan een eenvoudige monitoringtool. Het biedt een breed scala aan
+functies waarmee je:
 
-- **Monitor diverse environments**: Track the performance and availability of
-  servers, virtual machines, network devices, databases, and applications.
-- **Create dynamic visualizations**: Use dashboards, graphs, maps, and screens
-  to visualize data and get an overview of your system's health at a glance.
-- **Set up complex alerting mechanisms**: Define triggers and actions that
-  notify you of potential issues before they become critical, using various
-  channels like email, SMS, and integrations with external services.
-- **Automate monitoring tasks**: Leverage auto-discovery and auto-registration
-  to keep up with changing environments without manual intervention.
-- **Customize and extend**: Build custom scripts, templates, and integrations to
-  tailor Zabbix to your specific needs.
+- **Bewaak diverse omgevingen**: Volg de prestaties en beschikbaarheid van
+  servers, virtuele machines, netwerkapparaten, databases en applicaties.
+- **Maak dynamische visualisaties**: Gebruik dashboards, grafieken, kaarten en
+  schermen om gegevens te visualiseren en in één oogopslag een overzicht te
+  krijgen van de gezondheid van uw systeem.
+- **Stel complexe waarschuwingsmechanismen in**: Definieer triggers en acties
+  die u op de hoogte brengen van potentiële problemen voordat ze kritiek worden,
+  met behulp van verschillende kanalen zoals e-mail, sms en integraties met
+  externe services.
+- **Automatiseer bewakingstaken**: Maak gebruik van auto-discovery en
+  auto-registration om bij te blijven met veranderende omgevingen zonder
+  handmatige tussenkomst.
+- **Aanpassen en uitbreiden**: Bouw aangepaste scripts, sjablonen en integraties
+  om Zabbix aan te passen aan je specifieke behoeften.
