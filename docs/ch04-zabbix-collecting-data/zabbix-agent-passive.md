@@ -5,7 +5,7 @@ At this point we are familiar with the Zabbix dataflow, how to create hosts and,
 
     `Monitoring fatigue` and `Alert fatigue` are two terms heard in monitoring and observability. 
     
-    `Alert fatigue' happens in Zabbix when you configure too many (incorrect) triggers. When you flood your dashboards or even external media like Teams or Signal with too many alerts your users will not respond to them any longer.
+    `Alert fatigue` happens in Zabbix when you configure too many (incorrect) triggers. When you flood your dashboards or even external media like Teams or Signal with too many alerts your users will not respond to them any longer.
 
      `Monitoring fatigue` happens in Zabbix when you misconfigure things like dashboards, items, host groups, tags and other internal systems that keep things structured. The result is that you or your co-workers do not want to use your own system any longer as it does not deliver the right information easily enough.
 
