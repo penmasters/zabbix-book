@@ -137,19 +137,19 @@ If you do not restart, the changes will not take effect.
 On the Zabbix server side we can now create a new host to monitor. Let's call it `zbx-agent-passive-rocky` and let's add the interface. 
 
 ![Zabbix Agent passive Linux host](ch04.15-passive-agent-host.png){ align=left }
-*ch04.15-passive-agent-host.png*
+*4.15 Zabbix Agent passive Linux host*
 
 With the host added, correctly with an interface, we can now start monitoring. To do so, let's create one `Zabbix agent` item type as an example. For your new host `zbx-agent-passive-rocky` in the Zabbix frontend, click on `Items` and then `Create item` in the top right corner. 
 
 Let's create an item `System hostname`, making sure that if we have more system items alphabetical sorting will group them together. For `Passive` Zabbix agent the type `Zabbix agent` is used and we have to specific an `Interface`. We will use the item key `system.hostname`.
 
 ![Zabbix Agent passive Linux host item](ch04.16-passive-agent-item.png){ align=left }
-*ch04.16-passive-agent-item.png*
+*4.16 Zabbix Agent passive Linux host item*
 
 Do not forget to add the standard `Component` tag to the item to follow the best practise.
 
 ![Zabbix Agent passive Linux host item tag](ch04.17-passive-agent-item-tag.png){ align=left }
-*ch04.17-passive-agent-item-tag.png*
+*4.17 Zabbix Agent passive Linux host item tag*
 
 ## Conclusion
 Installing the Zabbix agent can be done with either `Zabbix agent` or `Zabbix agent 2`. By now `Zabbix agent 2` is recommended when available, but `Zabbix agent` is also still fully supported.  Make sure to install the Zabbix agent through the most easily secured method and keep it updated.
