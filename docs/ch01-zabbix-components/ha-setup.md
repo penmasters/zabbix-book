@@ -82,21 +82,21 @@ Once this is done we can install the zabbix server packages.
     Redhat
 
     ``` yaml
-    dnf install zabbix-server-pgsql -y
+    dnf install zabbix-server-pgsql
     ```
     or if your database is MySQL or MariaDB
     ```
-    dnf install zabbix-server-mysql -y
+    dnf install zabbix-server-mysql
     ```
 
     Ubuntu
 
     ``` yaml
-    sudo apt install zabbix-server-pgsql -y
+    sudo apt install zabbix-server-pgsql
     ```
     or if your database is MySQL or MariaDB
     ``` yaml
-    sudo apt install zabbix-server-mysql -y
+    sudo apt install zabbix-server-mysql
     ```
 
 ---
@@ -243,12 +243,12 @@ So let's get started. On both our servers we have to install keepalived.
 
     Redhat
     ``` yaml
-    dnf install keepalived -y
+    dnf install keepalived
     ```
 
     Ubuntu
     ``` yaml
-    sudo apt install keepalived -y
+    sudo apt install keepalived
     ```
 
 Next, we need to modify the Keepalived configuration on both servers. While the
