@@ -1,32 +1,34 @@
-# Guidelines
+# Lignes directrices
 
-## How to contribute
+## Comment contribuer
 
 
-- Sign the [deed of
-  transfer](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf)
-  preferable electronically
-- Clone this project to your Github account
-- Clone the repository to you pc
+- Signer le [transfert de
+  droits](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf),
+  de préférence électroniquement
+- Clonez ce projet sur votre compte Github
+- Clonez le dépôt sur votre PC
 
-- Install the needed software for Mkdocs to work, check the file in the root
-  folder how-to-install-mkdocs.md
-  - Create a new branch to make your changes
-    - git branch "<your branch name\>"
-    - git checkout "<your branch name\>"
-  - Make the changes you want and commit them
-    - git add "files you changed"
-    - git commit -m "add useful commit info"
-  - Return back to the main branch
+- Installez les logiciels nécessaires au bon fonctionnement de Mkdocs et
+  consultez le fichier how-to-install-mkdocs.md dans le dossier racine.
+  - Créez une nouvelle branche pour effectuer vos modifications
+    - git branch "<votre nom de branche\>"
+    - git checkout "<votre nom de branche\>"
+  - Effectuez les modifications souhaitées et validez-les
+    - git add "fichiers modifiés"
+    - git commit -m "ajouter des informations utiles concernant le(s)
+      changement(s)"
+  - Retour à la branche principale
     - git checkout main
-  - Make sure you have the latest changes merged from main
+  - Assurez-vous d'avoir fusionné les derniers changements de la version
+    principale
     - git pull origin main
-  - Merge your branch into the main branch
-    - git merge "<your branch name\>"
+  - Fusionner votre branche dans la branche principale
+    - git merge "<votre nom de branche\>"
     - git push
-  - cleanup your branch
-    - git branch -d "<your branch name\>"
-- Create a pull requests so that we can merge it :)
-- Follow these
-  [guidelines](https://github.com/penmasters/zabbix-book/how-to-rules-for-writing.md)
-  when you write a topic.
+  - nettoyer votre branche
+    - git branch -d "<votre nom de branche\>"
+- Créez une pull requests pour que nous puissions la fusionner :)
+- Suivez ces [lignes
+  directrices](https://github.com/penmasters/zabbix-book/how-to-rules-for-writing.md)
+  lorsque vous rédigez un sujet.
