@@ -44,8 +44,8 @@ will be installed and managed.
 
     ```
     Red Hat
-    dnf install podman -y
-    dnf install policycoreutils-python-utils -y
+    dnf install podman
+    dnf install policycoreutils-python-utils
     useradd podman
     su - podman
 
