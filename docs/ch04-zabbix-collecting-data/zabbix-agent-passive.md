@@ -62,7 +62,7 @@ We will be using the packages on both RedHat-based and Ubuntu to install `Zabbix
 
 After adding the repository, we should be able to install `Zabbix agent 2`.
 
-!!! info "install zabbix server packages"
+!!! info "install Zabbix agent 2 package"
 
     Redhat
 
@@ -74,6 +74,17 @@ After adding the repository, we should be able to install `Zabbix agent 2`.
 
     ``` yaml
     sudo apt install zabbix-agent2
+    ```
+
+After installation make sure to start and enable the Zabbix agent.
+
+!!! info "start Zabbix agent 2"
+
+    Redhat
+
+    ``` yaml
+    systemctl start zabbix-agent2
+    systemctl enable zabbix-agent2
     ```
 
 Your agent is now installed under the `zabbix` user and ready to be configured. On a Linux based system, by default we can find all of the Zabbix configuration files in `/etc/zabbix/`. Specifically we want to edit `/etc/zabbix/zabbix_agent2.conf`.
@@ -107,15 +118,45 @@ Edit your configuration file to include your Zabbix server (or proxy) IP address
 !!! info "edit the Server= parameter"
 
     ``` yaml
-    Server=127.0.0.1,192.168.46.6
+    Server=127.0.0.1,192.168.46.30
     ```
 
-As you can see in the example, I've left `127.0.0.1`. Although not required, this can be useful in certain situations. Through the use of a comma `,` we have indicated that both `127.0.0.1` and `192.168.46.6` are allowed to connect. If you are running Zabbix server in HA mode or if you are using Proxy Groups, make sure to include all entries for the Zabbix components that need to connect.
+As you can see in the example, I've left `127.0.0.1`. Although not required, this can be useful in certain situations. Through the use of a comma `,` we have indicated that both `127.0.0.1` and `192.168.46.30` are allowed to connect. If you are running Zabbix server in HA mode or if you are using Proxy Groups, make sure to include all entries for the Zabbix components that need to connect.
+
+After making changes to the Zabbix agent configuration file, make sure to restart the Windows service. On Linux systems use `sytemctl` to restart.
+
+!!! info "restart Zabbix agent"
+
+    ``` yaml
+    systemctl restart zabbix-agent2
+    ```
+
+If you do not restart, the changes will not take effect.
 
 # Zabbix side configuration
-On the Zabbix server side we 
+On the Zabbix server side we can now create a new host to monitor. Let's call it `zbx-agent-passive-rocky` and let's add the interface. 
+
+![Zabbix Agent passive Linux host](ch04.15-passive-agent-host.png){ align=left }
+*ch04.15-passive-agent-host.png*
+
+With the host added, correctly with an interface, we can now start monitoring. To do so, let's create one `Zabbix agent` item type as an example. For your new host `zbx-agent-passive-rocky` in the Zabbix frontend, click on `Items` and then `Create item` in the top right corner. 
+
+Let's create an item `System hostname`, making sure that if we have more system items alphabetical sorting will group them together. For `Passive` Zabbix agent the type `Zabbix agent` is used and we have to specific an `Interface`. We will use the item key `system.hostname`.
+
+![Zabbix Agent passive Linux host item](ch04.16-passive-agent-item.png){ align=left }
+*ch04.16-passive-agent-item.png*
+
+Do not forget to add the standard `Component` tag to the item to follow the best practise.
+
+![Zabbix Agent passive Linux host item tag](ch04.17-passive-agent-item-tag.png){ align=left }
+*ch04.17-passive-agent-item-tag.png*
 
 ## Conclusion
+Installing the Zabbix agent can be done with either `Zabbix agent` or `Zabbix agent 2`. By now `Zabbix agent 2` is recommended when available, but `Zabbix agent` is also still fully supported.  Make sure to install the Zabbix agent through the most easily secured method and keep it updated.
+
+Once installed, for `Passive` communication we will use the `Server=` parameter to keep our agent secured. We do not want everyone to be able to connect to this agent, even when there might still be a firewall or two in between. 
+
+Last but not least, keep `Active` vs `Passive` in mind. Depending on where the server is located, it might be preferred to open up ports through your firewall(s) incoming our outgoing. Usually we prefere `Active` communication, because it means we do not have to give a central server (Zabbix server and proxy) access to all our servers. But in specific cases `Passive` might be preferred. 
 
 ## Questions
 
