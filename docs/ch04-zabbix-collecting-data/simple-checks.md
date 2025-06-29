@@ -123,10 +123,11 @@ the dependency. If you have a slightly different setup, make sure this utility i
 on your system and that the following two parameters are configured in the
 Zabbix server/proxy configuration file:
 
-!!! info "create mariadb repository"
+!!! Define Fping paths"
 
     
-    ``` FpingLocation=/usr/sbin/fping
+    ```
+    FpingLocation=/usr/sbin/fping
     
     Fping6Location=/usr/sbin/fping6
     ```
