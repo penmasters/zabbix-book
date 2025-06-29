@@ -1,33 +1,38 @@
-# Zabbix components, basic functions and installation
+# Composants de Zabbix, fonctions de base et installation
 
-In this chapter, we expand on the foundational knowledge from the "Getting
-Started" section to provide a comprehensive guide for both beginners who are
-installing Zabbix for the first time and advanced users who seek to optimize
-their setup. We’ll not only cover the essential steps for a basic installation
-but also delve into the finer details of Zabbix architecture, components, and
-best practices.
+Dans ce chapitre, nous développons les connaissances de base de la section "Pour
+commencer" afin de fournir un guide complet aux personnes qui installent Zabbix
+pour la première fois et les utilisateurs avancés qui cherchent à optimiser leur
+installation. Nous ne nous contenterons pas de couvrir les étapes essentielles
+d'une installation de base, mais nous nous pencherons également sur les détails
+les plus fins de l'architecture, des composants et des meilleures pratiques
+concernant Zabbix.
 
-We’ll start by walking through the installation process, ensuring you have a
-solid foundation to build on. From there, we'll move into the core components of
-Zabbix, what each one does, how they interact, and why they are crucial to your
-monitoring solution. You'll learn about subprocesses, their roles, and how they
-contribute to Zabbix efficiency and reliability.
+Nous commencerons par passer en revue le processus d'installation, en nous
+assurant que vous disposez d'une base solide pour continuer. Ensuite, nous
+aborderons les composants principaux de Zabbix, ce que chacun fait, comment ils
+interagissent et pourquoi ils sont cruciaux pour votre solution de surveillance.
+Vous découvrirez les sous-processus, leurs rôles et la manière dont ils
+contribuent à l'efficacité et à la fiabilité de Zabbix.
 
-Additionally, we’ll explore good architectural choices that can make or break
-your monitoring setup. Whether you're managing a small network or a large-scale
-infrastructure, making the right design decisions early on will pay dividends in
-scalability, performance, and maintenance.
+En outre, nous explorerons les bons choix architecturaux qui peuvent faire ou
+endommager votre installation de monitoring. Que vous gériez un petit réseau ou
+une infrastructure à grande échelle, prendre les bonnes décisions de conception
+dès le départ vous permettra d'obtenir des avantages en termes d'évolutivité, de
+performances et de maintenance.
 
-This chapter is designed to cater to a wide range of readers. If you're simply
-looking to get Zabbix up and running, you'll find clear, step-by-step
-instructions. For those wanting to dive deeper, we'll provide detailed insights
-into how Zabbix functions under the hood, helping you make informed choices that
-align with your needs and future growth plans.
+Ce chapitre est conçu pour répondre aux besoins d'un large éventail de lecteurs.
+Si vous cherchez simplement à mettre Zabbix en place et à le faire fonctionner,
+vous trouverez des instructions claires, étape par étape. Pour ceux qui
+souhaitent aller plus loin, nous fournirons des informations détaillées sur la
+façon dont Zabbix fonctionne, afin de vous aider à faire des choix éclairés qui
+correspondent à vos besoins et à vos plans de croissance futurs.
 
-By the end of this chapter, you will have not only a working Zabbix installation
-but also a thorough understanding of its components and architecture, empowering
-you to leverage Zabbix to its fullest potential, regardless of the complexity of
-your environment.
+À la fin de ce chapitre, vous aurez non seulement une installation fonctionnelle
+de Zabbix, mais aussi une compréhension approfondie de ses composants et de son
+architecture, ce qui vous permettra d'exploiter pleinement le potentiel de
+Zabbix, quelle que soit la complexité de votre environnement.
 
-Let’s embark on this detailed journey into Zabbix and equip ourselves with the
-knowledge to both start and optimize a powerful monitoring solution.
+Embarquons pour ce voyage dans les entrailles de Zabbix et abreuvons-nous des
+connaissances nécessaires pour démarrer et optimiser une solution de monitoring
+puissante.
