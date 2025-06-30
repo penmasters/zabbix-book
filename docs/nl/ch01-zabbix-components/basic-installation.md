@@ -151,12 +151,12 @@ To update your OS, run the following command:
 
     Red Hat
     ```yaml
-    dnf update -y
+    dnf update
     ```
 
     Ubuntu
     ``` yaml
-    sudo apt update -y && sudo apt upgrade -y
+    sudo apt update && sudo apt upgrade
     ```
 
 This command will automatically fetch and install the latest updates available
@@ -498,7 +498,7 @@ populate our DB with our Zabbix schemas.
     ``` yaml
     rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
     dnf clean all
-    dnf install zabbix-sql-scripts -y
+    dnf install zabbix-sql-scripts
     ```
 
     Ubuntu
@@ -578,7 +578,7 @@ commands.
     Red Hat
     ``` yaml
     Install the repository RPM:
-    dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    dnf install https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
     Disable the built-in PostgreSQL module:
     dnf -qy module disable postgresql
@@ -605,7 +605,7 @@ commands.
     Red Hat
     ``` yaml
     # Install Postgres server:
-    dnf install -y postgresql17-server
+    dnf install postgresql17-server
 
     # Initialize the database and enable automatic start:
     /usr/pgsql-17/bin/postgresql-17-setup initdb
@@ -614,7 +614,7 @@ commands.
 
     Ubuntu
     ``` yaml
-    sudo apt -y install postgresql-17
+    sudo apt install postgresql-17
     ```
 
 To update your OS, run the following command:
@@ -623,12 +623,12 @@ To update your OS, run the following command:
 
     Red Hat
     ``` yaml
-    dnf update -y
+    dnf update
     ```
 
     Ubuntu
     ``` yaml
-    sudo apt update -y && sudo apt upgrade -y
+    sudo apt update && sudo apt upgrade
     ```
 
 ---
@@ -749,16 +749,16 @@ commands:
 
     Red Hat
     ``` yaml
-    dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm -y
-    dnf install zabbix-sql-scripts -y
+    dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
+    dnf install zabbix-sql-scripts
     ```
 
     Ubuntu
     ``` yaml
     sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
     sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
-    sudo apt update -y
-    sudo apt install zabbix-sql-scripts -y
+    sudo apt update
+    sudo apt install zabbix-sql-scripts
     ```
 
 With the necessary packages installed, you are now ready to create the Zabbix
@@ -1329,7 +1329,7 @@ run the following command:
 
     Red Hat
     ``` yaml
-    dnf install zabbix-server-mysql -y
+    dnf install zabbix-server-mysql
     ```
 
     Ubuntu
@@ -1731,7 +1731,7 @@ the following command:
     Red Hat
 
     ```yaml
-    dnf install zabbix-server-pgsql -y
+    dnf install zabbix-server-pgsql
     ```
 
     Ubuntu
@@ -1962,9 +1962,9 @@ to specify the correct IP addresses and open the correct firewall ports.
 
     Red Hat
     ```yaml
-    # dnf install zabbix-nginx-conf zabbix-web-mysql -y
+    # dnf install zabbix-nginx-conf zabbix-web-mysql
     or if you used PostgreSQL
-    # dnf install zabbix-nginx-conf zabbix-web-pgsql -y
+    # dnf install zabbix-nginx-conf zabbix-web-pgsql
     ```
 
     Ubuntu
@@ -2275,7 +2275,7 @@ The command outputs two lines; however, given the identified language code,
 
     Red Hat
     ```yaml
-    dnf install glibc-langpack-zh.x86_64 -y
+    dnf install glibc-langpack-zh.x86_64
     ```
 
     Ubuntu
