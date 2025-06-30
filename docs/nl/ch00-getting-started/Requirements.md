@@ -82,7 +82,7 @@ Voer het volgende commando uit om de firewall te installeren en in te schakelen:
 
     Ubuntu
     ```yaml
-    sudo apt install ufw -y
+    sudo apt install ufw
     sudo ufw enable
     ```
 
@@ -201,7 +201,7 @@ te schakelen:
 
     Ubuntu
     ```yaml
-    sudo apt install chrony -y
+    sudo apt install chrony
     ```
 
 Controleer na de installatie of Chrony is ingeschakeld en draait door de status

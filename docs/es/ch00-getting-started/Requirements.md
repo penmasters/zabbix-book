@@ -79,7 +79,7 @@ To install and enable the firewall, run the following command:
 
     Ubuntu
     ```yaml
-    sudo apt install ufw -y
+    sudo apt install ufw
     sudo ufw enable
     ```
 
@@ -192,7 +192,7 @@ To install and enable chrony, our NTP client, use the following command:
 
     Ubuntu
     ```yaml
-    sudo apt install chrony -y
+    sudo apt install chrony
     ```
 
 After installation, verify that Chrony is enabled and running by checking its

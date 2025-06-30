@@ -83,7 +83,7 @@ Pour installer et activer le pare-feu, exécutez la commande suivante :
 
     Ubuntu
     ```yaml
-    sudo apt install ufw -y
+    sudo apt install ufw
     sudo ufw enable
     ```
 
@@ -204,7 +204,7 @@ suivante :
 
     Ubuntu
     ```yaml
-    sudo apt install chrony -y
+    sudo apt install chrony
     ```
 
 Après l'installation, vérifiez que Chrony est activé et fonctionne en contrôlant
