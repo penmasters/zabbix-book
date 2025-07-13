@@ -99,6 +99,37 @@ Here you will be presented with the choice to download either `Zabbix agent` or 
 
 Once downloaded, we can open the new `zabbix_agent2-x.x.x-windows-amd64-openssl.msi` file and it will take us to the wizard window. 
 
+![Zabbix Agent Windows install step 1](ch04.15-windows-agent-install-step1.png){ align=center }
+
+*4.15 Zabbix Agent Windows install step 1*
+
+Step 1 is a simple welcome screen, nothing to do here except click on `Next`.
+
+
+![Zabbix Agent Windows install step 1](ch04.16-windows-agent-install-step1.png){ align=center }
+
+*4.15 Zabbix Agent Windows install step 2*
+
+For step 2, make sure to read the `License Agreement` (or don't, we do not give legal advice). Then click `Next`.
+
+![Zabbix Agent Windows install step 1](ch04.17-windows-agent-install-step1.png){ align=center }
+
+*4.15 Zabbix Agent Windows install step 3*
+
+For step 3 we have some more actions to execute. By default the Zabbix agent on Windows `.msi` installer includes `Zabbix sender` and `Zabbix get`. These are separate utilities that we do not need on every Windows server. I will not install them now, but we can always use the `.msi` to install them later. The Zabbix agent will function fine without them.
+
+![Zabbix Agent Windows install step 1](ch04.18-windows-agent-install-step1.png){ align=center }
+
+*4.15 Zabbix Agent Windows install step 4*
+
+Step 4 is our most important step. Here we will already configure our Zabbix agent configuration file, straight from the `.msi` installer. Let's make sure to set the `Hostname`, `Zabbix server IP/DNS` (`192.168.46.6` in our case) and let's also set the `Server or proxy for active checks` parameter. As you can see we could also immediately configure encryption with the `Enable PSK` option, but we will do this later.
+
+![Zabbix Agent Windows install step 1](ch04.19-windows-agent-install-step1.png){ align=center }
+
+*4.15 Zabbix Agent Windows install step 5*
+
+Now there is nothing left to do except press `Install` and our Zabbix agent will be both installed and configured.
+
 ## Agent installation on Unix
 For Unix based systems, simply download the files on the Zabbix download page for either `AIX`, `FreeBSD`, `OpenBSD` or `Solaris`. 
 
@@ -134,26 +165,32 @@ After making changes to the Zabbix agent configuration file, make sure to restar
 
 If you do not restart, the changes will not take effect.
 
-# Zabbix side configuration
-On the Zabbix server side we can now create a new host to monitor. Let's call it `zbx-agent-passive-rocky` and let's add the interface. 
+## Zabbix side configuration
+On the Zabbix server side we can now create a new host to monitor. Let's call it `zbx-agent-passive-rocky` or `zbx-agent-passive-windows` and let's add the interface. 
 
-![Zabbix Agent passive Linux host](ch04.15-passive-agent-host.png){ align=left }
+![Zabbix Agent passive Linux host](ch04.15-passive-agent-linux-host.png){ align=left }
 
-*4.15 Zabbix Agent passive Linux host*
+*4.20 Zabbix Agent passive Linux host*
 
-With the host added, correctly with an interface, we can now start monitoring. To do so, let's create one `Zabbix agent` item type as an example. For your new host `zbx-agent-passive-rocky` in the Zabbix frontend, click on `Items` and then `Create item` in the top right corner. 
+For Windows it looks similar.
+
+![Zabbix Agent passive Windows host](ch04.16-passive-agent-windows-host.png){ align=left }
+
+*4.21 Zabbix Agent passive Windows host*
+
+With the host added, correctly with an interface, we can now start monitoring. To do so, let's create one `Zabbix agent` item type as an example. For your new host `zbx-agent-passive-rocky` or `zbx-agent-passive-windows` in the Zabbix frontend, click on `Items` and then `Create item` in the top right corner. 
 
 Let's create an item `System hostname`, making sure that if we have more system items alphabetical sorting will group them together. For `Passive` Zabbix agent the type `Zabbix agent` is used and we have to specific an `Interface`. We will use the item key `system.hostname`.
 
-![Zabbix Agent passive Linux host item](ch04.16-passive-agent-item.png){ align=left }
+![Zabbix Agent passive host item](ch04.16-passive-agent-item.png){ align=left }
 
-*4.16 Zabbix Agent passive Linux host item*
+*4.22 Zabbix Agent passive host item*
 
 Do not forget to add the standard `Component` tag to the item to follow the best practise.
 
-![Zabbix Agent passive Linux host item tag](ch04.17-passive-agent-item-tag.png){ align=left }
+![Zabbix Agent passive host item tag](ch04.17-passive-agent-item-tag.png){ align=left }
 
-*4.17 Zabbix Agent passive Linux host item tag*
+*4.23 Zabbix Agent passive host item tag*
 
 ## Conclusion
 Installing the Zabbix agent can be done with either `Zabbix agent` or `Zabbix agent 2`. By now `Zabbix agent 2` is recommended when available, but `Zabbix agent` is also still fully supported.  Make sure to install the Zabbix agent through the most easily secured method and keep it updated.
