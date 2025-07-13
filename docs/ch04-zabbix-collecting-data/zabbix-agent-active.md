@@ -3,7 +3,7 @@ In the previous part we installed our Zabbix agent and started monitoring a host
 
 For security reasons this might not be the best course of action. Instead let's look at the Zabbix agent in `Active` mode. In `Active` mode or Zabbix agent will be configured to initiate the connection to the Zabbix server or proxy. It will request its configuration data and receive it back in the same TCP session. After receiving its configuration it can then start sending the item data according to the configuration received. The connection as such is always iniated from the Zabbix agent side, meaning you will alow your many agents to connect to your Zabbix servers or proxies instead. 
 
-![Zabbix Agent active hosts](ch04.18-windows-linux-active-agent.png){ align=center }
+![Zabbix Agent active hosts](ch04.24-windows-linux-active-agent.png){ align=center }
 
 *4.24 Zabbix Agent active hosts*
 
@@ -63,7 +63,7 @@ With this configuration set you can restart the Zabbix agent to make the changes
 
 This finalizes the configuration file changes. Now we need to configure the host in Zabbix.
 
-![Zabbix Agent active hosts in Zabbix](ch04.19-windows-linux-active-agent-host.png){ align=center }
+![Zabbix Agent active hosts in Zabbix](ch04.25-windows-linux-active-agent-host.png){ align=center }
 
 *4.25 Zabbix Agent active hosts in Zabbix*
 
@@ -74,7 +74,7 @@ We also add the host to the correct host group and that is all for now.
 ## Creating active items
 Now that these settings all configured we can now start to create some items on our active agent host in Zabbix frontend. Let's click on `Items` for our host and configure a new Zabbix active type items.
 
-![Zabbix Agent active item](ch04.20-active-agent-item.png){ align=center }
+![Zabbix Agent active item](ch04.26-active-agent-item.png){ align=center }
 
 *4.26 Zabbix Agent active item*
 
@@ -82,7 +82,7 @@ Make sure to set the item `Type` to `Zabbix agent (active)`. Most item keys will
 
 Also, do not forget to add the tag to this item.
 
-![Zabbix Agent active item tag](ch04.21-active-agent-item-tag.png){ align=center }
+![Zabbix Agent active item tag](ch04.27-active-agent-item-tag.png){ align=center }
 
 *4.27 Zabbix Agent active item tag*
 

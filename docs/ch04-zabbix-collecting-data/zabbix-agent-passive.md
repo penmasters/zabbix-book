@@ -106,25 +106,25 @@ Once downloaded, we can open the new `zabbix_agent2-x.x.x-windows-amd64-openssl.
 Step 1 is a simple welcome screen, nothing to do here except click on `Next`.
 
 
-![Zabbix Agent Windows install step 1](ch04.16-windows-agent-install-step1.png){ align=center }
+![Zabbix Agent Windows install step 1](ch04.16-windows-agent-install-step2.png){ align=center }
 
 *4.15 Zabbix Agent Windows install step 2*
 
 For step 2, make sure to read the `License Agreement` (or don't, we do not give legal advice). Then click `Next`.
 
-![Zabbix Agent Windows install step 1](ch04.17-windows-agent-install-step1.png){ align=center }
+![Zabbix Agent Windows install step 1](ch04.17-windows-agent-install-step3.png){ align=center }
 
 *4.15 Zabbix Agent Windows install step 3*
 
 For step 3 we have some more actions to execute. By default the Zabbix agent on Windows `.msi` installer includes `Zabbix sender` and `Zabbix get`. These are separate utilities that we do not need on every Windows server. I will not install them now, but we can always use the `.msi` to install them later. The Zabbix agent will function fine without them.
 
-![Zabbix Agent Windows install step 1](ch04.18-windows-agent-install-step1.png){ align=center }
+![Zabbix Agent Windows install step 1](ch04.18-windows-agent-install-step4.png){ align=center }
 
 *4.15 Zabbix Agent Windows install step 4*
 
 Step 4 is our most important step. Here we will already configure our Zabbix agent configuration file, straight from the `.msi` installer. Let's make sure to set the `Hostname`, `Zabbix server IP/DNS` (`192.168.46.6` in our case) and let's also set the `Server or proxy for active checks` parameter. As you can see we could also immediately configure encryption with the `Enable PSK` option, but we will do this later.
 
-![Zabbix Agent Windows install step 1](ch04.19-windows-agent-install-step1.png){ align=center }
+![Zabbix Agent Windows install step 1](ch04.19-windows-agent-install-step5.png){ align=center }
 
 *4.15 Zabbix Agent Windows install step 5*
 
