@@ -5,7 +5,7 @@ For security reasons this might not be the best course of action. Instead let's 
 
 ![Zabbix Agent active hosts](ch04.18-windows-linux-active-agent.png){ align=center }
 
-*4.18 Zabbix Agent active hosts*
+*4.24 Zabbix Agent active hosts*
 
 ## Setting up the active agent
 It's possible to set-up a Zabbix agent to work in both passive and active mode at the same time. Sometimes, we see this as passive mode was being used but an active only check is added later. The Zabbix agent in active mode can execute all item keys, whereas the passive agent cannot execute log item keys. Another reason to prefer active mode in most cases. For clarity, in our example we will use a different linux and windows server for the active agent. We will call these hosts:
@@ -65,7 +65,7 @@ This finalizes the configuration file changes. Now we need to configure the host
 
 ![Zabbix Agent active hosts in Zabbix](ch04.19-windows-linux-active-agent-host.png){ align=center }
 
-*4.19 Zabbix Agent active hosts in Zabbix*
+*4.25 Zabbix Agent active hosts in Zabbix*
 
 All we need to do here is make sure to match the hostname of what we configured in the Zabbix agent configuration file. Keep in mind that the `Hostname` field has to match the `Hostname=` parameter in the configuration file. The `Visible name` field does not have effect on the active agent functioning.
 
@@ -76,7 +76,7 @@ Now that these settings all configured we can now start to create some items on 
 
 ![Zabbix Agent active item](ch04.20-active-agent-item.png){ align=center }
 
-*4.20 Zabbix Agent active item*
+*4.26 Zabbix Agent active item*
 
 Make sure to set the item `Type` to `Zabbix agent (active)`. Most item keys will be the same between `Passive` and `Active` mode, but the `Type` needs to be set correctly.
 
@@ -84,7 +84,7 @@ Also, do not forget to add the tag to this item.
 
 ![Zabbix Agent active item tag](ch04.21-active-agent-item-tag.png){ align=center }
 
-*4.20 Zabbix Agent active item tag*
+*4.27 Zabbix Agent active item tag*
 
 Your `ZBX` icon for this host should now turn green, even in active mode.
 
