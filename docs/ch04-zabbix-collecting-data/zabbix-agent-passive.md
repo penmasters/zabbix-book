@@ -14,7 +14,7 @@ Now, we are ready to start monitoring an actual system.
 ## Agent basics
 We have prepared an example setup in our Book LAB environment.
 
-![Zabbix Agent passive hosts](ch04.14-windows-linux-agent.png){ align=left }
+![Zabbix Agent passive hosts](ch04.14-windows-linux-agent.png){ align=center }
 
 *4.14 Zabbix Agent passive hosts*
 
