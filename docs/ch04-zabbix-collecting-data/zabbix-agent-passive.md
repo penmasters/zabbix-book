@@ -15,6 +15,7 @@ Now, we are ready to start monitoring an actual system.
 We have prepared an example setup in our Book LAB environment.
 
 ![Zabbix Agent passive hosts](ch04.14-windows-linux-agent.png){ align=left }
+
 *4.14 Zabbix Agent passive hosts*
 
 What we can see here is a setup you might see in any datacenter or office server cabinet. We have a Zabbix server monitoring one Windows server and one Linux server directly (or through a proxy). We call Zabbix a network monitoring solution as it communicates over the network. In Zabbix we have two methods of communication.
@@ -137,6 +138,7 @@ If you do not restart, the changes will not take effect.
 On the Zabbix server side we can now create a new host to monitor. Let's call it `zbx-agent-passive-rocky` and let's add the interface. 
 
 ![Zabbix Agent passive Linux host](ch04.15-passive-agent-host.png){ align=left }
+
 *4.15 Zabbix Agent passive Linux host*
 
 With the host added, correctly with an interface, we can now start monitoring. To do so, let's create one `Zabbix agent` item type as an example. For your new host `zbx-agent-passive-rocky` in the Zabbix frontend, click on `Items` and then `Create item` in the top right corner. 
@@ -144,11 +146,13 @@ With the host added, correctly with an interface, we can now start monitoring. T
 Let's create an item `System hostname`, making sure that if we have more system items alphabetical sorting will group them together. For `Passive` Zabbix agent the type `Zabbix agent` is used and we have to specific an `Interface`. We will use the item key `system.hostname`.
 
 ![Zabbix Agent passive Linux host item](ch04.16-passive-agent-item.png){ align=left }
+
 *4.16 Zabbix Agent passive Linux host item*
 
 Do not forget to add the standard `Component` tag to the item to follow the best practise.
 
 ![Zabbix Agent passive Linux host item tag](ch04.17-passive-agent-item-tag.png){ align=left }
+
 *4.17 Zabbix Agent passive Linux host item tag*
 
 ## Conclusion
