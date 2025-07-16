@@ -55,8 +55,8 @@ Ce que les contributeurs doivent savoir :
   Foundation**. Toute contribution non accompagnée d'un **Deed of Transfer of
   Intellectual Property Rights (acte de transfert des droits de propriété
   intellectuelle)** signé ne peut être acceptée.
-- Tous les bénéfices générés seront utilisés par **The Monitoring Penmasters
-  Foundation** pour couvrir les dépenses opérationnelles et pour encourager
+- Tous les bénéfices générés seront utilisés par "The Monitoring Penmasters
+  Foundation" pour couvrir les dépenses opérationnelles et pour encourager
   d'autres projets open-source, comme déterminé par la fondation.
 
 Vos contributions sont inestimables et aideront à créer *The Zabbix Book* une
