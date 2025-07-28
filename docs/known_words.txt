@@ -202,3 +202,16 @@ quadlet
 proxys
 env
 timescaledb
+powershell
+runtime
+zbx
+nikolas
+yurchenko
+evgeny
+garofil
+ngaro
+unencrypted
+allowlist
+unixtime
+os
+misconfigure

@@ -262,7 +262,7 @@ In addition, the script sets two TimescaleDB specific parameters:
 These settings help reduce the size of historical data and improve long term performance.
 Let's start our zabbix server again before we continue
 
-!!! info "start Zabbbix server"
+!!! info "start Zabbix server"
 
     RedHat and Ubuntu
     ```
