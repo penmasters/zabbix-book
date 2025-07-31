@@ -492,9 +492,10 @@ snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.25.2.3.1.3
 snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.25.3.3.1.2
 ```
 
-??? note
-For SNMPv3 we can do the same. You could adapt the configuration file or just
-go with what we have prepared already in the snmpd.conf file.
+???+ note
+
+    For SNMPv3 we can do the same. You could adapt the configuration file or just
+    go with what we have prepared already in the snmpd.conf file.
 
 ```bash
 vi /etc/snmp/snmpd.conf
