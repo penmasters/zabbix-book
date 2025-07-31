@@ -216,3 +216,10 @@ unixtime
 os
 misconfigure
 subnet
+datagram
+snmpstatus
+uptime
+authpriv
+datagrams
+snmpd
+rm
