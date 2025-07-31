@@ -215,6 +215,69 @@ snmpstatus -v 1 -c [community_string] [IP-address_of_the_device]
 However, remember that using SNMPv1 in a production environment poses a significant
 security risk.
 
+#### Understanding the Output of snmpstatus
+
+Let's take a look at an example output from the `snmpstatus` command. Remember
+this is just an example output it will differ from your result.
+
+```bash
+snmpstatus -v2c -c public 127.0.0.1
+[UDP: [127.0.0.1]:161->[0.0.0.0]:33310]=>[Linux localhost.localdomain 5.14.0-570.28.1.el9_6.aarch64
+#1 SMP PREEMPT_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64] Up: 1:24:36.58
+Interfaces: 2, Recv/Trans packets: 355763/355129 | IP: 37414/35988
+```
+
+This output provides a concise summary of the device's status, indicating a successful
+SNMP query. Let's break down what each part means:
+
+1. **`snmpstatus -v2c -c public 127.0.0.1`**:
+
+   - `-v2c`: Specifies that SNMP version 2c was used.
+   - `-c public`: Indicates that the community string "public" was used for authentication.
+   - `127.0.0.1`: This is the target IP address, in this case, the localhost (the
+     machine on which the command was run).
+
+2. **`[UDP: [127.0.0.1]:161->[0.0.0.0]:33310]`**:
+
+   - This section describes the communication path.
+   - `UDP`: Confirms that the User Datagram Protocol was used, which is standard
+     for SNMP.
+   - `[127.0.0.1]:161`: This is the source of the SNMP request and the standard
+     SNMP port (161) on which the SNMP agent listens.
+   - `->[0.0.0.0]:33310`: This indicates the destination of the response. `0.0.0.0`
+     is a placeholder for "any address," and `33310` is a high-numbered ephemeral
+     port used by the client to receive the response.
+
+3. **`=>[Linux localhost.localdomain 5.14.0-570.28.1.el9_6.aarch64 #1 SMP PREEMPT
+_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64]`**:
+
+   - This is crucial information about the queried device itself.
+   - `Linux localhost.localdomain`: Identifies the operating system as Linux, with
+     the hostname `localhost.localdomain`.
+   - `5.14.0-570.28.1.el9_6.aarch64`: This is the kernel version and architecture
+   - `#1 SMP PREEMPT_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64`: Provides further
+     kernel build details, including the build date and time.
+
+4. **`Up: 1:24:36.58`**:
+
+   - This indicates the **uptime** of the device. The system has been running for
+     1 day, 24 hours, 36 minutes, and 58 seconds.
+
+5. **`Interfaces: 2, Recv/Trans packets: 355763/355129 | IP: 37414/35988`**:
+
+   - **`Interfaces: 2`**: This tells us that the device has detected 2 network interfaces.
+   - **`Recv/Trans packets: 355763/355129`**: These numbers represent the total
+     number of packets received and transmitted across _all_ network interfaces
+     on the device since it was last booted.
+   - **`IP: 37414/35988`**: These figures likely represent the number of IP datagrams
+     received and sent specifically by the IP layer on the device. This provides
+     a more specific metric of IP traffic compared to the total packet count
+     which includes other layer 2 protocols.
+
+In summary, this output from `snmpstatus` quickly provides a clear overview of a
+Linux system's basic health and network activity, confirming that the SNMP agent
+is reachable and responding with the requested information using SNMPv2c.
+
 ---
 
 ### Installing SNMP Agent on a Linux Host
@@ -248,39 +311,135 @@ discovery and testing in Zabbix:
 ```bash
 tee /etc/snmp/snmpd.conf <<EOF
 # --------------------------------------------------------------------------
-# SNMP AGENT CONFIGURATION FOR LAB ENVIRONMENTS
-# Target: Rocky Linux SNMP host used with Zabbix LLD
+# BASIC ACCESS CONTROL
 # --------------------------------------------------------------------------
+# This defines who has access and with which community string.
+# For a LAB ENVIRONMENT, 'public' is acceptable, but EMPHASIZE THAT THIS IS UNSAFE
+# FOR PRODUCTION. In production, use SNMPv3 or restricted IP ranges.
 
-# Basic access control — WARNING: 'public' is insecure and should only be used
-# in isolated lab environments.
+# Read-only community string 'public' for all IP addresses (WARNING: LAB USE ONLY!)
 rocommunity public
+#
+# IMPORTANT NOTE: The 'public' community string is the default and most well-known community string.
+# Using this in a production environment is EXTREMELY INSECURE and makes your device vulnerable.
+# Anyone who knows your device's IP address can query basic information about your system.
+# USE THIS ONLY AND EXCLUSIVELY IN STRICTLY ISOLATED TEST OR LAB ENVIRONMENTS!
+# For production environments:
+# - Use a unique, complex community string (e.g., rocommunity YourSuperSecretString)
+# - STRONGLY CONSIDER implementing SNMPv3 for superior security (authentication and encryption).
+#
 
-# Alternative: Restrict community string access to a specific subnet
-# rocommunity my_secure_community 192.168.56.0/24
+# BETTER FOR LAB (or production with restrictions):
+# rocommunity my_secure_community_string 192.168.56.0/24
+# Replace '192.168.56.0/24' with the subnet where your Zabbix Server is located.
 
-# Optional system metadata
+
+# ============================================
+# SNMPv3 Configuration (Recommended for Production, but here with examples)
+# ============================================
+#
+# This section defines users for SNMPv3, each with a different security level.
+# In a production environment, you would typically ONLY use the 'authPriv' option
+# with strong, unique passwords. This setup is useful for lab and testing purposes.
+
+# --- 1. SNMPv3 User with Authentication and Privacy (authPriv) ---
+# THIS IS THE MOST SECURE AND RECOMMENDED SECURITY LEVEL FOR PRODUCTION.
+# It requires both correct authentication and encryption of the traffic.
+#
+# Syntax: createUser USERNAME AUTH_PROTOCOL "AUTH_PASS" PRIV_PROTOCOL "PRIV_PASS"
+# Example: createUser mysecureuser SHA "StrongAuthP@ss1" AES "SuperPrivP@ss2"
+
+createUser secureuser SHA "AuthP@ssSec#1" AES "PrivP@ssSec#2"
+rouser secureuser authPriv
+
+# --- 2. SNMPv3 User with Authentication Only (authNoPriv) ---
+# This level requires authentication, but the data is NOT encrypted.
+# The content of SNMP packets can be read if traffic is intercepted.
+# NOT RECOMMENDED FOR SENSITIVE DATA OR PRODUCTION ENVIRONMENTS.
+#
+# Syntax: createUser USERNAME AUTH_PROTOCOL "AUTH_PASS"
+# Example: createUser authonlyuser SHA "AuthOnlyP@ss3"
+
+createUser authonlyuser SHA "AuthOnlyP@ss3"
+rouser authonlyuser authNoPriv
+
+# --- 3. SNMPv3 User with [48;32;186;960;2604tNo Authentication and No Privacy (noAuthNoPriv) ---
+# THIS IS THE LEAST SECURE LEVEL AND SHOULD NEVER BE USED IN PRODUCTION!
+# It offers NO SECURITY WHATSOEVER. It's purely for very specific test scenarios
+# where security is not a concern.
+#
+# Syntax: createUser USERNAME
+# Example: createUser insecureuser
+
+createUser insecureuser
+rouser insecureuser noAuthNoPriv
+
+#
+# IMPORTANT SECURITY NOTES FOR ALL SNMPv3 USERS:
+# - Replace the example usernames and passwords with your OWN strong, unique values.
+# - Passwords must be a MINIMUM of 8 characters long.
+# - The passwords for AUTH and PRIV (with authPriv) do not have to be the same.
+# - Restrict access to specific IP addresses (e.g., 'rouser USERNAME authPriv 192.168.1.0/24')
+#   if you want to further tighten access.
+#
+
+
+# --------------------------------------------------------------------------
+# SYSTEM INFORMATION (OPTIONAL)
+# --------------------------------------------------------------------------
+# This information is generally available via SNMP and useful for identification.
 syslocation  "Rocky Linux Zabbix SNMP Lab Server"
 syscontact   "Your Name <your.email@example.com>"
-sysname      "RockySNMPHost01"
+sysname      "RockySNMPHost01" # Often overridden by hostname, but can be specific
 
-# Enable essential MIB modules for Zabbix LLD (Low-Level Discovery)
-view systemview included .1.3.6.1.2.1.1    # SNMPv2-MIB (System info)
-view systemview included .1.3.6.1.2.1.25   # HOST-RESOURCES-MIB
-view systemview included .1.3.6.1.2.1.2    # IF-MIB (Interfaces)
-view systemview included .1.3.6.1.2.1.4    # IP-MIB
-view systemview included .1.3.6.1.2.1.6    # TCP-MIB
-view systemview included .1.3.6.1.2.1.7    # UDP-MIB
+# --------------------------------------------------------------------------
+# ENABLING CRUCIAL MIB MODULES FOR LLD
+# --------------------------------------------------------------------------
+# 'view' statements determine which parts of the MIB tree are visible.
+# 'systemview' is a standard view. We ensure that the most useful OID trees
+# for Zabbix LLD are included here.
 
-# Optional: Extend SNMP with exec commands (custom LLD support)
+# Standard System MIBs (uptime, description, etc.)
+view systemview included .1.3.6.1.2.1.1    # SNMPv2-MIB::sysDescr, sysUptime, etc.
+
+# HOST-RESOURCES-MIB: ESSENTIAL FOR LLD OF HARDWARE/OS COMPONENTS
+# This MIB contains information about storage (filesystems), processors,
+# installed software, running processes, etc.
+view systemview included .1.3.6.1.2.1.25
+
+# IF-MIB: ESSENTIAL FOR LLD OF NETWORK INTERFACES
+# Contains detailed information about network interfaces.
+view systemview included .1.3.6.1.2.1.2
+
+# Other useful MIBs (often standard or optional)
+view systemview included .1.3.6.1.2.1.4
+view systemview included .1.3.6.1.2.1.6
+view systemview included .1.3.6.1.2.1.7
+
+# --------------------------------------------------------------------------
+# EXTENDING SNMPD WITH EXEC COMMANDS (OPTIONAL FOR CUSTOM LLD)
+# --------------------------------------------------------------------------
+# This allows you to make the output of shell commands or scripts available via SNMP.
+# This is ideal for monitoring things not natively available via SNMP.
+# Example: Monitor the number of logged-in users (not LLD, but demonstrates the principle)
+# exec activeUsers /usr/bin/who | wc -l
+
+# Example: A script that generates LLD-like output
+# imagine /opt/scripts/docker_lld.sh returns JSON that Zabbix can parse
 # exec dockerContainers /opt/scripts/docker_lld.sh
+# This requires a custom LLD parser in Zabbix. For an introduction, this
+# might be a bit too advanced, but it's good to mention as a possibility.
 
-# Enable syslog logging
+# --------------------------------------------------------------------------
+# SYSLOGGING
+# --------------------------------------------------------------------------
+# For logging snmpd activities (useful for debugging)
 dontLogTCPWrappers no
 EOF
 ```
 
-Start the SNMP Service and Configure the Firewall
+Let's do some practical tests with this setup we just created. Start the SNMP Service
+and Configure the Firewall
 
 ```bash
 # Start the SNMP daemon
@@ -317,22 +476,64 @@ sudo firewall-cmd --list-services --permanent
 Verifying SNMP Functionality
 From your Zabbix server or any SNMP client system with net-snmp-utils installed:
 
-# General system info (sysDescr, sysUptime, etc.)
+# Repace <IP_ADDRESS> wit the IP of the client where you installed the SNMP
+# config. If localhost you can use 127.0.0.1.
 
+# General system info (sysDescr, sysUptime, etc.)
 snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.1
 
 # List interface names (useful for interface LLD)
-
 snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.2.2.1.2
 
 # List filesystem descriptions
-
 snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.25.2.3.1.3
 
 # Get CPU load per processor core
-
 snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.25.3.3.1.2
 ```
+
+??? note
+For SNMPv3 we can do the same. You could adapt the configuration file or just
+go with what we have prepared already in the snmpd.conf file.
+
+```bash
+vi /etc/snmp/snmpd.conf
+
+# Look for the following lines and adapt them as you like.
+
+createUser authonlyuser SHA "AuthOnlyP@ss3"
+rouser authonlyuser authNoPriv
+
+createUser secureuser SHA "AuthP@ssSec#1" AES "PrivP@ssSec#2"
+rouser secureuser authPriv
+
+createUser insecureuser
+rouser insecureuser noAuthNoPriv
+```
+
+After you have adapted your config don't forget to restart the snmpd service
+
+```bash
+systemctl restart snmpd
+```
+
+You should now be able to test your items with SNMPv3 Let me give you an example
+command for noAuthNoPriv,authNoPriv and the most secure authPriv. This should
+work out of the box with what is already configured in our `snmpd.conf` file.
+
+```bash
+snmpwalk -v3 -l noAuthNoPriv -u insecureuser 127.0.0.1 .1.3.6.1.2.1.2.2.1.2
+snmpwalk -v3 -l authNoPriv -u authonlyuser -a SHA -A AuthOnlyP@ss3 127.0.0.1 .1.3.6.1.2.1.2.2.1.2
+snmpwalk -v3 -l authPriv -u secureuser -a SHA -A AuthP@ssSec#1 -x AES -X PrivP@ssSec#2 127.0.0.1 .1.3.6.1.2.1.2.2.1.2
+```
+
+???+ note
+
+    If you change the config file and adapt the passwords and for some reason
+    they do not get accepted do not worry just restart the service again it things
+    still don't work you can remove the persistent key file
+    sudo rm /var/lib/net-snmp/snmpd.conf
+    It's quite brutal but in our test environment it will help you out.
 
 ## Conclusion
 
