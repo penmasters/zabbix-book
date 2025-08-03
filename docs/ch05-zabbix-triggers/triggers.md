@@ -7,13 +7,13 @@ Triggers in Zabbix work as a way for us to collect a mountain worth of data, whi
 ## Preparing the environment
 In the previous chapter we created some hosts to monitor the active Zabbix agent, which are great for some example triggers. We created this host under the hostname `zbx-agent-active-rocky` or `zbx-agent-active-windows`, either should work for the example. We also should already have an item on this host to monitor the `Zabbix agent ping` with item key `agent.ping`. Let's add one item to our `zbx-agent-active-*` host, specifically to monitor the CPU load in percentage. 
 
-![Zabbix Agent active CPU util](ch05.1-cpu-util-item){ align=center }
+![Zabbix Agent active CPU util](ch05.1-cpu-util-item.png){ align=center }
 
 _5.1 Zabbix Agent active CPU util item_
 
 Let's not forget to add the tag.
 
-![Zabbix Agent active CPU util tag](ch05.2-cpu-util-item-tag){ align=center }
+![Zabbix Agent active CPU util tag](ch05.2-cpu-util-item-tag.png){ align=center }
 
 _5.2 Zabbix Agent active CPU util item tag_
 
@@ -79,7 +79,7 @@ We collect values from an `Item` using a `Function` applied to a number of value
 
 Let's click on the `Add` button now an used the expression builder. For `Item` we select `Zabbix agent ping`, for `Function` we select `nodata`, for `Last of (T)` we set `5m` and for `Result` we set `= 1`. Then press `Insert` to automatically create the expression below.
 
-![Example trigger expression](ch05.4-trigger-expression-example){ align=center }
+![Example trigger expression](ch05.4-trigger-expression-example.png){ align=center }
 
 _5.4 Example trigger expression_
 
@@ -97,7 +97,7 @@ In short:
 
 Our trigger should now look like the image below.
 
-![Zabbix agent not seen for 5m trigger](ch05.5-trigger-01-example){ align=center }
+![Zabbix agent not seen for 5m trigger](ch05.5-trigger-01-example.png){ align=center }
 
 _5.5 Zabbix agent not seen for 5m trigger_
 
@@ -109,7 +109,7 @@ Let's not forget to also add a tag to this trigger. On triggers in Zabbix the be
 - **security**
 - **capacity**
 
-![Zabbix agent not seen for 5m trigger tag](ch05.6-trigger-01-example-tag){ align=center }
+![Zabbix agent not seen for 5m trigger tag](ch05.6-trigger-01-example-tag.png){ align=center }
 
 _5.6 Zabbix agent not seen for 5m trigger tag_
 
@@ -118,7 +118,7 @@ We can now click on the `Add` button at the bottom of the form and our trigger i
 ## Another trigger
 Before we stop our chapter here though, let's go through one more trigger example. We also created a new item to monitor the monitoring target CPU utilization. A perfect example for another trigger. Let's create it like the image below.
 
-![CPU utilization over 90% trigger](ch05.7-trigger-02-example){ align=center }
+![CPU utilization over 90% trigger](ch05.7-trigger-02-example.png){ align=center }
 
 _5.7 CPU utilization over 90% trigger_
 
