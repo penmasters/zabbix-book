@@ -115,15 +115,18 @@ the code in a block with 4 spaces
     ```
 ````
 
+## Links
+
+If you like to add an URL always put the URi between [] followed by the same URi
+again between ().
+This will make it easy to click the links online but also later to see the URi in
+the book.
+
+**Example:**
+
+[https://my-urul.com](https://my-url.com)
+
 ## reference
 
-[https://google.github.io/styleguide/docguide/style.html](https://google.github.io/styleguide/docguide/style.html)
-[https://peps.python.org/pep-0008/](https://peps.python.org/pep-0008/)
-
-```
-
-```
-
-```
-
-```
+- [https://google.github.io/styleguide/docguide/style.html](https://google.github.io/styleguide/docguide/style.html)
+- [https://peps.python.org/pep-0008/](https://peps.python.org/pep-0008/)
