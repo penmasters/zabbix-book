@@ -95,10 +95,11 @@ Always use 4 spaces for code blocks and add what kind of code you used:
 
 **Example:**
 
-`````markdown
-```python
-print("This is a code block")
-```
+````markdown
+    ```python
+    print("This is a code block")
+    ```
+````
 
 When creating info blocks always use ???+ info followed with a white line and
 the code in a block with 4 spaces
@@ -112,10 +113,17 @@ the code in a block with 4 spaces
     Bla bla my very informative
     block of text
     ```
+````
 
 ## reference
 
 [https://google.github.io/styleguide/docguide/style.html](https://google.github.io/styleguide/docguide/style.html)
 [https://peps.python.org/pep-0008/](https://peps.python.org/pep-0008/)
-````
-`````
+
+```
+
+```
+
+```
+
+```
