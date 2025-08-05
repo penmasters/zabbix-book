@@ -320,25 +320,6 @@ with SNMPv3 (depending on your configuration):
 
 ---
 
-### Consider potential network issues
-
-Even if your device is correctly configured, network obstacles can prevent SNMP
-communication. Check for:
-
-**Firewall Blocking:** A firewall (either on your testing machine, the network, or
-the SNMP device itself) might be blocking the UDP port 161, which SNMP typically
-uses. Ensure the necessary ports are open.
-
-**ACL Settings on the Device:** The SNMP device itself might have Access Control
-List (ACL) settings configured to restrict access only to specific IP addresses.
-Verify that your testing machine's IP address is permitted.
-
-**Network Connectivity:** Basic network issues like incorrect IP addresses, subnet
-masks, or routing problems can also prevent communication. Ensure there's a clear
-network path between your testing machine and the SNMP device.
-
----
-
 ### A Note on SNMPv1: Avoid if Possible
 
 While you can technically test with SNMPv1, we strongly advise against using it
