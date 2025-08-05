@@ -1,6 +1,5 @@
 # Project information
 site_name: Zabbix Book
-#site_url: https://penmasters.github.io/zabbix-book/
 site_url: https://thezabbixbook.com/
 site_author: The Monitoring Penmasters
 site_description: An open-source Zabbix book
@@ -253,7 +252,7 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences:
   - pymdownx.superfences:
-        # make exceptions to highlighting of code:
+      # make exceptions to highlighting of code:
       custom_fences:
         - name: mermaid
           class: mermaid
