@@ -232,3 +232,7 @@ ou
 oid
 uid
 dc
+catalog
+snmpget
+snmpwalk
+subtree
