@@ -46,6 +46,7 @@ For now let's take a look at how to configure LDAP authentication.
 
 We believe that it is better to learn this topic by example so we'll be using
 our own LDAP server that you can spin up in a container by executing:
+
 ```
 # Install docker if you don't have it
 # For Ubuntu
@@ -54,23 +55,23 @@ apt install docker-ce
 # Start LDAP server container with pre-loaded data
 docker run -p 3389:389 -p 6636:636 --name openldap-server --detach bgmot42/openldap-server:0.1.1
 ```
+
 All users (including `ldap_search`) in this test LDAP server for simplicity
 have the word `password` as their passwords.
 
 Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
-`user3` is a member of `zabbix-users` LDAP group. 
+`user3` is a member of `zabbix-users` LDAP group.
 
 ???+ Optional
-    To visually see LDAP server data (and add your own configuration like users
-    and groups) you can start this standard container
-    ```
-    docker run -p 8081:80 -p 4443:443 --name phpldapadmin --hostname phpldapadmin --link openldap-server:ldap-host --env PHPLDAPADMIN_LDAP_HOSTS=ldap-host --detach osixia/phpldapadmin:0.9.0
-    ```
-    Now you can access this LDAP server via https://<ip_address>:4443 (or any
-    other port you configure to access this Docker container), click Login,
-    enter “cn=admin,dc=example,dc=org” in Login DN field and “password” in
-    Password field, click Authenticate. You should see the following structure
-    of the LDAP server (picture shows ‘zabbix-admins’ group configuration):
+To visually see LDAP server data (and add your own configuration like users
+and groups) you can start this standard container
+`     docker run -p 8081:80 -p 4443:443 --name phpldapadmin --hostname phpldapadmin --link openldap-server:ldap-host --env PHPLDAPADMIN_LDAP_HOSTS=ldap-host --detach osixia/phpldapadmin:0.9.0
+    `
+Now you can access this LDAP server via https://<ip_address>:4443 (or any
+other port you configure to access this Docker container), click Login,
+enter “cn=admin,dc=example,dc=org” in Login DN field and “password” in
+Password field, click Authenticate. You should see the following structure
+of the LDAP server (picture shows ‘zabbix-admins’ group configuration):
 
     ![LDAP server data](ch02.2-ldap-ldap-server-data.png){ align=center }
 
@@ -92,28 +93,28 @@ Zabbix based on your LDAP server data structure:
 
 _2.4 LDAP server to Zabbix_
 
-“Special” *Distinguished Name* (DN) *cn=ldap_search,dc=example,dc=org* is used
+“Special” _Distinguished Name_ (DN) _cn=ldap_search,dc=example,dc=org_ is used
 for searching, i.e. Zabbix uses this DN to connect to LDAP server and of course
 when you connect to LDAP server you need to be authenticated – this is why you
-need to provide *Bind password*. This DN should have access to a sub-tree in
+need to provide _Bind password_. This DN should have access to a sub-tree in
 LDAP data hierarchy where all your users are configured. In our case all the
-users configured “under” *ou=Users,dc=example,dc=org*, this DN is called base
+users configured “under” _ou=Users,dc=example,dc=org_, this DN is called base
 DN and used by Zabbix as so to say “starting point” to start searching.
 
 ???+ Note
-    technically it is possible to bind to LDAP server anonymously, without
-    providing a password but this is a huge breach in security as the whole
-    users sub-tree becomes available for anonymous (unauthenticated) search,
-    i.e. effectively exposed to any LDAP client that can connect to LDAP server
-    over TCP. The LDAP server we deployed previously in Docker container does
-    not provide this functionality.
+technically it is possible to bind to LDAP server anonymously, without
+providing a password but this is a huge breach in security as the whole
+users sub-tree becomes available for anonymous (unauthenticated) search,
+i.e. effectively exposed to any LDAP client that can connect to LDAP server
+over TCP. The LDAP server we deployed previously in Docker container does
+not provide this functionality.
 
-Click `Test` button and enter `user1` and `password` in respective fields, the
-test should be successful confirming Zabbix can authenticate users agains LDAP
+Click `Test` button and enter `user1` and `password` in the respective fields, the
+test should be successful confirming Zabbix can authenticate users against LDAP
 server.
 
 ???+ Note
-    We can add multiple LDAP servers and use them for different `User groups`.
+We can add multiple LDAP servers and use them for different `User groups`.
 
 To test real users login using LDAP authentication we need to create user
 groups and users in Zabbix. In Zabbix menu select `Users | User groups`. Make
@@ -124,13 +125,13 @@ will make Zabbix to authenticate users belonging to this group against LDAP
 server and in `LDAP server` drop-down select LDAP server we earlier configured
 "Test LDAP server". Click `Add` button to create this User group:
 
-![Add user group in abbix](ch02.5-ldap-add-user-group-in-zabbix.png){ align=center }
+![Add user group in zabbix](ch02.5-ldap-add-user-group-in-zabbix.png){ align=center }
 
-_2.5 Add user group in abbix_
+_2.5 Add user group in zabbix_
 
 Now we need to create our test user. In Zabbix menu select `Users | Users` and
 click `Create user` button. Then enter "user3" in `Username` field. Select
-"Zabbix users" in `Groups` field. What you enter in  `Password` and `Password
+"Zabbix users" in `Groups` field. What you enter in `Password` and `Password
 (once again)` fields does not matter as Zabbix will not try to use this
 password, instead it will go to LDAP server to authenticate this user since
 it's a member of the User group that has authentication method `LDAP`, just
@@ -179,16 +180,16 @@ details about how all this should be configured.
 
 In `Users | Authentication` we need to do two things:
 
-- Set `Default authentication` to *LDAP*. When JIT is turned off then type of
-authentication is defined based on the *User group* a user that tries to login
-belongs to. In case of JIT the user does not exist in ZAbbix yet thus obviously
-does not belong to any *User group* so *Default* method authentication is used
-and we want it to be *LDAP*.
+- Set `Default authentication` to _LDAP_. When JIT is turned off then type of
+  authentication is defined based on the _User group_ a user that tries to login
+  belongs to. In case of JIT the user does not exist in ZAbbix yet thus obviously
+  does not belong to any _User group_ so _Default_ method authentication is used
+  and we want it to be _LDAP_.
 
-- Provide `Deprovisioned users group`. This group must be literally *disabled*
-otherwise you won’t be able to select it here. This is the Zabbix user group
-where all *de-provisioned* users will be put into so effectively will get
-disabled from accessing Zabbix.
+- Provide `Deprovisioned users group`. This group must be literally _disabled_
+  otherwise you won't be able to select it here. This is the Zabbix user group
+  where all _de-provisioned_ users will be put into so effectively will get
+  disabled from accessing Zabbix.
 
   ![Default authentication](ch02.9-ldap-default-authentication.png){ align=center }
 
@@ -196,18 +197,18 @@ disabled from accessing Zabbix.
 
   Click `Update` button`.
 
-- Enable JIT provisioing check-box which obviously needs to be checked for this
-feature to work. It's done in our *Test LDAP server* configuration - select
-`Users | Authentication | LDAP settings` and clickn on our server in `Servers`
-section. After enabling this check-box we'll see some other fields related to
-JIT to be filled in and what we put in there depends on the method we choose to
-perform JIT.
+- Enable JIT provisioning check-box which obviously needs to be checked for this
+  feature to work. It's done in our _Test LDAP server_ configuration - select
+  `Users | Authentication | LDAP settings` and click on our server in `Servers`
+  section. After enabling this check-box we'll see some other fields related to
+  JIT to be filled in and what we put in there depends on the method we choose to
+  perform JIT.
 
 #### Group configuration method “memberOf”
 
-All users in our LDAP server have *memberOf* attribute which defines what LDAP
-groups every user belongs to, e.g. if we perform a LDAP query for *user1* user
-we’ll get that its *memberOf* attribute has this value:
+All users in our LDAP server have _memberOf_ attribute which defines what LDAP
+groups every user belongs to, e.g. if we perform a LDAP query for _user1_ user
+we’ll get that its _memberOf_ attribute has this value:
 
 **memberOf**: cn=**zabbix-admins**,ou=Group,dc=example,dc=org
 
@@ -220,17 +221,17 @@ group membership attribute` field:
 
 _2.10 LDAP groups mapping_
 
-In the picture above we are telling Zabbix to use *memberOf* attribute to
+In the picture above we are telling Zabbix to use _memberOf_ attribute to
 extract DN defining user’s group membership (in this case it is
-*cn=zabbix-admins,out=Group,dc=example,dc=org*) and take only *cn* attribute
-from that DN (in this case it is *zabbix-admins*) to use in searching for a
+_cn=zabbix-admins,out=Group,dc=example,dc=org_) and take only _cn_ attribute
+from that DN (in this case it is _zabbix-admins_) to use in searching for a
 match in User group mapping rules. Then we define as many mapping rules as we
 want. In the picture above we have two rules:
 
-- All users belonging to *zabbix-users* LDAP group will be created in Zabbix as
-members of *Zabbix users group* with *User* role
-- All users belonging to *zabbix-admins* LDAP group will be created in Zabbix
-as members of *Zabbix administrators* group with *Super admin* role
+- All users belonging to _zabbix-users_ LDAP group will be created in Zabbix as
+  members of _Zabbix users group_ with _User_ role
+- All users belonging to _zabbix-admins_ LDAP group will be created in Zabbix
+  as members of _Zabbix administrators_ group with _Super admin_ role
 
 #### Group configuration method “groupOfNames”
 
@@ -245,38 +246,39 @@ It’s easier to explain with pictures depicting an example:
 _2.11 LDAP server groupOfNames_
 
 Firstly we define LDAP “sub-tree” where Zabbix will be searching for LDAP
-groups – note *ou=Group,dc=example,dc=org* in Group base DN field. Then in the
+groups – note _ou=Group,dc=example,dc=org_ in Group base DN field. Then in the
 field `Group name attribute` field we what attribute to use when we search in
-mapping rules (in this case we take *cn*, i.e. only *zabbix-admins* from full
-DN *cn=zabbix-admins,ou=Group,dc=example,dc=org*). Each LDAP group in our LDAP
-server has *member* attribute that has all users that belong to this LDAP group
-(look at the right picture) so we put *member* in `Group member attribute`
+mapping rules (in this case we take _cn_, i.e. only _zabbix-admins_ from full
+DN _cn=zabbix-admins,ou=Group,dc=example,dc=org_). Each LDAP group in our LDAP
+server has _member_ attribute that has all users that belong to this LDAP group
+(look at the right picture) so we put _member_ in `Group member attribute`
 field. Each user’s DN will help us construct `Group filter` field. Now pay
 attention: `Reference attribute` field defines what LDAP user’s attribute
-Zabbix will use in the `Group filter`, i.e. *%{ref}* will be replaced with the
+Zabbix will use in the `Group filter`, i.e. _%{ref}_ will be replaced with the
 value of this attribute (here we are talking about the user’s attributes – we
 already authenticated this user, i.e. got all its attributes from LDAP server).
-To sum up what I’ve said above Zabbix:
-1) Authenticates the user with entered Username and Password against LDAP
-server getting all user’s LDAP attributes
-2) Uses `Reference attribute` and `Group filter` fields to construct a filter
-(when user1 logs in the filter will be (*member=uid=user1,ou=Users,dc=example,
-dc=org*)
-3) Performs LDAP query to get all LDAP groups with member attribute (configured
-in `Group member attribute` field) containing constructed in step 2) filter
-4) Goes through all LDAP groups received in step 3) and picks `cn` attribute
-(configured in `Group name attribute` field) and finds a match in User group
-mapping rules
+To sum up what I've said above Zabbix:
+
+1. Authenticates the user with entered Username and Password against LDAP
+   server getting all user’s LDAP attributes
+2. Uses `Reference attribute` and `Group filter` fields to construct a filter
+   (when user1 logs in the filter will be (_member=uid=user1,ou=Users,dc=example,
+   dc=org_)
+3. Performs LDAP query to get all LDAP groups with member attribute (configured
+   in `Group member attribute` field) containing constructed in step 2) filter
+4. Goes through all LDAP groups received in step 3) and picks `cn` attribute
+   (configured in `Group name attribute` field) and finds a match in User group
+   mapping rules
 
 Looks a bit complicated but all you really need to know is the structure of
 your LDAP data.
 
 #### Ready to test
 
-Now when you login with *user1* or *user2* username then these users will be
-created by Zabbix and put into *Zabbix administrators* user group, when you
-login with *user3* username then this user will be created by Zabbix and put
-into *Zabbix users* user group:
+Now when you login with _user1_ or _user2_ username then these users will be
+created by Zabbix and put into _Zabbix administrators_ user group, when you
+login with _user3_ username then this user will be created by Zabbix and put
+into _Zabbix users_ user group:
 
 ![Test user1](ch02.12-ldap-jit-test-user1.png){ align=center }
 
@@ -310,12 +312,12 @@ directory. However, for environments requiring customized storage locations, the
 zabbix.conf.php configuration file allows for the specification of alternative
 paths.
 
-Let,s create our private key and certificate file.
+Let's create our private key and certificate file.
 
-`bash
+```bash
 cd /usr/share/zabbix/ui/conf/certs/
 openssl req -newkey rsa:2048 -nodes -keyout sp.key -x509 -days 365 -out sp.crt
-`
+```
 
 Following the generation and placement of the Zabbix Service Provider (SP) certificates,
 the next critical phase involves configuring the Identity Provider (IdP). In this
