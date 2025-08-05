@@ -2,7 +2,6 @@
 
 ## How to contribute
 
-
 - Sign the [deed of transfer](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf) preferable electronically
 - Clone this project to your Github account
 - Clone the repository to you pc
@@ -25,4 +24,4 @@
   - cleanup your branch
     - git branch -d "<your branch name\>"
 - Create a pull requests so that we can merge it :)
-- Follow these [guidelines](https://github.com/penmasters/zabbix-book/how-to-rules-for-writing.md) when you write a topic.
+- Follow these [guidelines](https://github.com/Trikke76/the-zabbix-book/blob/main/how-to-rules-for-writing.md) when you write a topic.

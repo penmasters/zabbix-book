@@ -223,3 +223,12 @@ authpriv
 datagrams
 snmpd
 rm
+util
+severities
+ldap
+memberof
+cn
+ou
+oid
+uid
+dc
