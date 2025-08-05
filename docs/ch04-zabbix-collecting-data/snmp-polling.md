@@ -38,8 +38,9 @@ concerns, or simply a desire to reduce system footprint.
 
 Recognizing the ubiquity of SNMP, Zabbix provides native SNMP support. This
 capability is powered by the open-source Net-SNMP suite, available at
-http://net-snmp.sourceforge.net. The integration allows Zabbix to retrieve
-metrics from SNMP-enabled devices using industry-standard mechanisms.
+[http://net-snmp.sourceforge.net](http://net-snmp.sourceforge.net). The integration
+allows Zabbix to retrieve metrics from SNMP-enabled devices using industry standard
+mechanisms.
 
 In this chapter, we will cover the following:
 
@@ -57,6 +58,97 @@ Later in this book, we will build upon this knowledge by exploring Low-Level
 Discovery (LLD) mechanisms using SNMP. LLD allows Zabbix to automatically detect
 and create monitoring items for dynamic or repetitive structures, such as
 network interfaces, power supplies, ...
+
+---
+
+## What is a MIB?
+
+Imagine you have a house full of smart devices: a smart thermostat, a smart lamp,
+and a smart doorbell. All these devices keep track of various types of information.
+The thermostat has the indoor temperature and battery status, the lamp has its
+brightness and color, and the doorbell has a log of who has been at the door.
+
+A MIB (Management Information Base) is the "table of contents" or "catalog" of
+all this information on a network device. Every SNMP enabled device has its own
+MIB, which is structured and organized. Without a MIB, your Zabbix server wouldn't
+know what data is available to monitor. The MIB specifies exactly which metrics
+the device can share.
+
+---
+
+## What is an OID?
+
+To retrieve a specific piece of information from that catalog, you need an address.
+An OID (Object Identifier) is that address.
+
+You can think of an OID as a GPS coordinate or a book's unique ISBN number. It's
+a hierarchical sequence of numbers (for example, 1.3.6.1.2.1.1.3.0) that leads
+you to one specific piece of information, such as a device's uptime or the
+number of network errors on a particular port.
+
+The OID is the exact path to the data within the MIB. Zabbix uses these OIDs
+to know what to request from the device. You configure Zabbix to say: "Request
+the value of this specific OID," and the device returns the requested value.
+
+In short:
+
+- The MIB is the library catalog that describes the structure of all available
+  data.
+- The OID is the specific address that leads you to the book (the data) you're
+  looking for.
+
+When Zabbix wants to monitor a device via SNMP, it uses an OID to send an SNMP
+request. The agent on the device searches its MIB for the data corresponding
+to that OID and sends the value back to Zabbix. This is the foundation of
+SNMP based monitoring.
+
+---
+
+### What Is the OID Tree Structure?
+
+The OID (Object Identifier) structure is a hierarchical tree, much like a family
+tree or a computer's folder structure. This tree is standardized globally. Each
+point on the tree, from the root to the "leaves," is represented by a number.
+
+The tree starts at the root, with a few main branches managed by international
+organizations. The most common branch for network management and SNMP often begins
+with `1.3.6.1`. Let's break down this OID to see how the structure works:
+
+- **1:** This branch is managed by **ISO** (International Organization for Standardization).
+- **1.3:** This branch is for `identified-organization`.
+- **1.3.6:** This is the branch for the U.S. Department of Defense (**DoD**).
+- **1.3.6.1:** This is the **internet** branch, managed by the IETF (Internet
+  Engineering Task Force).
+- ... and so on.
+
+Every branch in this tree is responsible for managing the numbers below it. Companies
+like Cisco or projects like Net-SNMP get their own unique number under a specific
+branch, most commonly under `1.3.6.1.4.1`, which is reserved for private enterprises.
+
+---
+
+### How to Use the OID Tree
+
+For Zabbix, the OID tree is essential for understanding what data is available on
+a device. Instead of remembering long, unreadable strings of numbers, **MIB
+(Management Information Base)** files use text labels to translate the numbers
+into human-readable names.
+
+**Example:**
+
+- The OID for a device's system description is: `1.3.6.1.2.1.1.1.0`.
+- An MIB file translates this to: `sysDescr.0`.
+
+You can use the OID tree to:
+
+1. **Look up data manually**: You can browse MIB files or online OID databases to
+   find the exact OID for the metric you want to monitor.
+2. **Use SNMP commands**: With commands like `snmpwalk`, `snmpget`, or `snmpstatus`,
+   you can use the numeric OIDs or the readable names (if MIBs are loaded) to
+   request data from a device.
+3. **Configure LLD (Low-Level Discovery)**: Zabbix uses OID sub-trees to automatically
+   create monitoring items for dynamic components, such as network interfaces or
+   disk partitions.
 
 ---
 
@@ -87,6 +179,8 @@ Note: If you're using a device already present on your network, ensure:
 - The correct community string is configured, and your IP is included in the SNMP
   access control rules of the device.
 
+Dataflow between Zabbix and the SNMP device.
+
 ```mermaid
 graph TD
     A[Zabbix Server] -->|SNMP Request on port 161/UDP| B(Router, Switch, Printer, ...);
@@ -95,7 +189,12 @@ graph TD
     B -->|SNMP Response| A
 ```
 
----
+Before we start lets go over a few tools that we will use and explain what they
+exactly do.
+
+- **snmpget:** Retrieves the value of a single, specific OID.
+- **snmpwalk:** Walks an entire OID subtree and displays all of its values.
+- **snmpstatus:** Provides a summary of a device's basic status.
 
 ### Testing an SNMP Device: Where to Start?
 
@@ -123,7 +222,7 @@ You can use the `snmpstatus` command for this. Here’s an example of how you mi
 do this in your terminal:
 
 ```bash
-snmpstatus -v 2c -c public [IP-address_of_the_device]
+   snmpstatus -v 2c -c public [IP-address_of_the_device]
 ```
 
 Replace `[IP-address_of_the_device]` with the actual IP address or hostname of the
@@ -166,6 +265,34 @@ Check for:
   masks, or routing problems can also prevent communication. Ensure there's a clear
   network path between your testing machine and the SNMP device.
 
+---
+
+### SNMPv3 Security Levels
+
+SNMPv3 offers significant security enhancements over older, unsecured versions
+(SNMPv1 and SNMPv2c). The protocol has three security levels:
+
+- **noAuthNoPriv (Authentication and encryption off):** This is the least secure
+  level. There's no authentication and no encryption. It's similar to SNMPv1
+  and SNMPv2c and offers no protection. It should only be used in strictly
+  controlled lab environments where security is not a concern.
+
+- **authNoPriv (Authentication on, encryption off):** This level authenticates
+  the user, which guarantees data integrity. It verifies that messages come from
+  a trusted source and haven't been tampered with. However, the data isn't
+  encrypted, so it remains readable if the traffic is intercepted. This level
+  is suitable for non-sensitive data in a relatively secure network. Authentication
+  protocols used here are typically MD5 or SHA.
+
+- **authPriv (Authentication and encryption on):** This is the most secure and
+  recommended level. It provides both authentication and data encryption.
+  Authentication ensures the integrity and origin of the message, while encryption
+  makes the data unreadable to third parties. This is essential for monitoring
+  sensitive information or when communicating over unsecured networks. Encryption
+  protocols used include DES, 3DES, and AES.
+
+---
+
 #### Examples of SNMPv3 Commands
 
 Once you have the necessary information (and have ruled out network issues), you
@@ -175,8 +302,8 @@ with SNMPv3 (depending on your configuration):
 - **Authentication only (no encryption):**
 
   ```bash
-  snmpstatus -v 3 -l authNoPriv -u [username] -a [authentication_protocol] -A [authentication_password]
-  [IP-address_of_the_device]
+     snmpstatus -v 3 -l authNoPriv -u [username] -a [authentication_protocol] -A [authentication_password]
+     [IP-address_of_the_device]
   ```
 
   (Replace `[authentication_protocol]` with `MD5` or `SHA`)
@@ -184,14 +311,16 @@ with SNMPv3 (depending on your configuration):
 - **Authentication and Encryption:**
 
   ```bash
-  snmpstatus -v 3 -l authPriv -u [username] -a [authentication_protocol] -A [authentication_password]
-  -x [privacy_protocol] -X [privacy_wachtwoord] [IP-address_of_the_device]
+     snmpstatus -v 3 -l authPriv -u [username] -a [authentication_protocol] -A [authentication_password]
+     -x [privacy_protocol] -X [privacy_wachtwoord] [IP-address_of_the_device]
   ```
 
   (Replace `[authentication_protocol]` with `MD5` or `SHA` and `[privacy_protocol]`
   with `DES` or `AES`)
 
-#### Next, consider potential network issues
+---
+
+### Consider potential network issues
 
 Even if your device is correctly configured, network obstacles can prevent SNMP
 communication. Check for:
@@ -208,7 +337,9 @@ Verify that your testing machine's IP address is permitted.
 masks, or routing problems can also prevent communication. Ensure there's a clear
 network path between your testing machine and the SNMP device.
 
-#### A Note on SNMPv1: Avoid if Possible
+---
+
+### A Note on SNMPv1: Avoid if Possible
 
 While you can technically test with SNMPv1, we strongly advise against using it
 in production. SNMPv1 is an outdated and insecure protocol version vulnerable to
@@ -217,22 +348,24 @@ certain that the device exclusively supports SNMPv1 and you have no other option
 you can try using it:
 
 ```bash
-snmpstatus -v 1 -c [community_string] [IP-address_of_the_device]
+    snmpstatus -v 1 -c [community_string] [IP-address_of_the_device]
 ```
 
 However, remember that using SNMPv1 in a production environment poses a significant
 security risk.
 
-#### Understanding the Output of snmpstatus
+---
+
+### Understanding the Output of snmpstatus
 
 Let's take a look at an example output from the `snmpstatus` command. Remember
 this is just an example output it will differ from your result.
 
 ```bash
-snmpstatus -v2c -c public 127.0.0.1
-[UDP: [127.0.0.1]:161->[0.0.0.0]:33310]=>[Linux localhost.localdomain 5.14.0-570.28.1.el9_6.aarch64
-#1 SMP PREEMPT_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64] Up: 1:24:36.58
-Interfaces: 2, Recv/Trans packets: 355763/355129 | IP: 37414/35988
+    snmpstatus -v2c -c public 127.0.0.1
+    [UDP: [127.0.0.1]:161->[0.0.0.0]:33310]=>[Linux localhost.localdomain 5.14.0-570.28.1.el9_6.aarch64
+    #1 SMP PREEMPT_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64] Up: 1:24:36.58
+    Interfaces: 2, Recv/Trans packets: 355763/355129 | IP: 37414/35988
 ```
 
 This output provides a concise summary of the device's status, indicating a successful
@@ -290,27 +423,43 @@ is reachable and responding with the requested information using SNMPv2c.
 
 ### Installing SNMP Agent on a Linux Host
 
-To install the SNMP agent and utilities on your Zabbix server or another compatible
-system, follow the steps below.
+Now that we know a bit more about SNMP it's time to start playing next we will
+install the SNMP agent and utilities on our Zabbix server to do some testing.
+Or another compatible system if you prefer.
+
+Follow the steps below to get the SNMP agent installed.
 
 1. Install Required Packages
 
-```bash
-# Optional: Update the package list
-sudo dnf update -y
-```
+!!! info "Update the package list"
 
-```bash
-# Install Net-SNMP agent and utilities
-sudo dnf install -y net-snmp net-snmp-utils
+    Red Hat
+    ``` bash
+    sudo dnf update
+    ```
+
+    Ubuntu:
+    ``` bash
+    sudo apt update && sudo apt upgrade
+    ```
+
+!!! info "Install Net-SNMP agent and utilities"
+
+    Red Hat
+    ```bash
+    sudo dnf install net-snmp net-snmp-utils
+    ```
+
+    Ubuntu
+    ``` bash
+    Todo
+    ```
+
 2. Configure the SNMP Agent
-First, create a clean configuration file for the SNMP daemon:
-```
+   First, create a clean configuration file for the SNMP daemon:
 
 ```bash
-sudo vi /etc/snmp/snmpd.conf
-# Or
-sudo nano /etc/snmp/snmpd.conf
+    sudo vi /etc/snmp/snmpd.conf
 ```
 
 Paste the following example configuration, which is optimized for SNMP-based
