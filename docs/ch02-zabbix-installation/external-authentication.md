@@ -47,7 +47,12 @@ For now let's take a look at how to configure LDAP authentication.
 We believe that it is better to learn this topic by example so we'll be using
 our own LDAP server that you can spin up in a container by executing:
 ```
-docker run -p 3389:389 -p 6636:636 --name openldap-server -env LDAP_PORT_NUMBER=389 --detach bgmot42/openldap-server:0.1.1
+# Install docker if you don't have it
+# For Ubuntu
+apt install docker-ce
+
+# Start LDAP server container with pre-loaded data
+docker run -p 3389:389 -p 6636:636 --name openldap-server --detach bgmot42/openldap-server:0.1.1
 ```
 All users (including `ldap_search`) in this test LDAP server for simplicity
 have the word `password` as their passwords.
