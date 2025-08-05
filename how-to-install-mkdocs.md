@@ -30,6 +30,7 @@ pip install mkdocs-print-site-plugin
 pip install mkdocs-static-i18n
 pip install 'mkdocs-spellcheck[all]'
 pip install mkdocs-autolinks-plugin
+pip install mkdocs-mermaid2-plugin
 ```
 
 ## Install extra pip packages

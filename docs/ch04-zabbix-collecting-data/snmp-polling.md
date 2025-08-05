@@ -87,6 +87,14 @@ Note: If you're using a device already present on your network, ensure:
 - The correct community string is configured, and your IP is included in the SNMP
   access control rules of the device.
 
+```mermaid
+graph TD
+    A[Zabbix Server] -->|SNMP Request on port 161/UDP| B(Router, Switch, Printer, ...);
+    B -->|SNMP Agent| C{"Management Information Base (MIB)"};
+    C -->|Read data via OID's| B;
+    B -->|SNMP Response| A
+```
+
 ---
 
 ### Testing an SNMP Device: Where to Start?

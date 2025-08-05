@@ -134,7 +134,7 @@ click `Create user` button. Then enter "user3" in `Username` field. Select
 (once again)` fields does not matter as Zabbix will not try to use this
 password, instead it will go to LDAP server to authenticate this user since
 it's a member of the User group that has authentication method `LDAP`, just
-make sure you enter the same string in these two fields and it satisifed your
+make sure you enter the same string in these two fields and it satisfied your
 password strength policy defined in `Users | Authentication`.
 
 ![Add user in Zabbix](ch02.6-ldap-add-user-in-zabbix.png){ align=center }
@@ -149,7 +149,7 @@ _2.7 Add user in Zabbix - permissions_
 
 Click `Add` button to create the user.
 
-We are reayd to test our LDAP server authentication! Click `Sign out` in Zabbix
+We are ready to test our LDAP server authentication! Click `Sign out` in Zabbix
 menu and login with "user3" as Username and "password" as `Password`, if you
 carefully followed the steps above you should successfully login with User role
 permissions.
