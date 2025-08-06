@@ -63,15 +63,17 @@ Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
 `user3` is a member of `zabbix-users` LDAP group.
 
 ???+ Optional
-To visually see LDAP server data (and add your own configuration like users
-and groups) you can start this standard container
-`     docker run -p 8081:80 -p 4443:443 --name phpldapadmin --hostname phpldapadmin --link openldap-server:ldap-host --env PHPLDAPADMIN_LDAP_HOSTS=ldap-host --detach osixia/phpldapadmin:0.9.0
-    `
-Now you can access this LDAP server via https://<ip_address>:4443 (or any
-other port you configure to access this Docker container), click Login,
-enter “cn=admin,dc=example,dc=org” in Login DN field and “password” in
-Password field, click Authenticate. You should see the following structure
-of the LDAP server (picture shows ‘zabbix-admins’ group configuration):
+
+    To visually see LDAP server data (and add your own configuration like users
+    and groups) you can start this standard container
+    `docker run -p 8081:80 -p 4443:443 --name phpldapadmin --hostname phpldapadmin\
+    --link openldap-server:ldap-host --env PHPLDAPADMIN_LDAP_HOSTS=ldap-host\
+    --detach osixia/phpldapadmin:0.9.0`
+    Now you can access this LDAP server via https://<ip_address>:4443 (or any
+    other port you configure to access this Docker container), click Login,
+    enter “cn=admin,dc=example,dc=org” in Login DN field and “password” in
+    Password field, click Authenticate. You should see the following structure
+    of the LDAP server (picture shows ‘zabbix-admins’ group configuration):
 
     ![LDAP server data](ch02.2-ldap-ldap-server-data.png){ align=center }
 
@@ -102,19 +104,21 @@ users configured “under” _ou=Users,dc=example,dc=org_, this DN is called bas
 DN and used by Zabbix as so to say “starting point” to start searching.
 
 ???+ Note
-technically it is possible to bind to LDAP server anonymously, without
-providing a password but this is a huge breach in security as the whole
-users sub-tree becomes available for anonymous (unauthenticated) search,
-i.e. effectively exposed to any LDAP client that can connect to LDAP server
-over TCP. The LDAP server we deployed previously in Docker container does
-not provide this functionality.
+
+    technically it is possible to bind to LDAP server anonymously, without
+    providing a password but this is a huge breach in security as the whole
+    users sub-tree becomes available for anonymous (unauthenticated) search,
+    i.e. effectively exposed to any LDAP client that can connect to LDAP server
+    over TCP. The LDAP server we deployed previously in Docker container does
+    not provide this functionality.
 
 Click `Test` button and enter `user1` and `password` in the respective fields, the
 test should be successful confirming Zabbix can authenticate users against LDAP
 server.
 
 ???+ Note
-We can add multiple LDAP servers and use them for different `User groups`.
+
+    We can add multiple LDAP servers and use them for different `User groups`.
 
 To test real users login using LDAP authentication we need to create user
 groups and users in Zabbix. In Zabbix menu select `Users | User groups`. Make
@@ -182,7 +186,7 @@ In `Users | Authentication` we need to do two things:
 
 - Set `Default authentication` to _LDAP_. When JIT is turned off then type of
   authentication is defined based on the _User group_ a user that tries to login
-  belongs to. In case of JIT the user does not exist in ZAbbix yet thus obviously
+  belongs to. In case of JIT the user does not exist in Zabbix yet thus obviously
   does not belong to any _User group_ so _Default_ method authentication is used
   and we want it to be _LDAP_.
 
