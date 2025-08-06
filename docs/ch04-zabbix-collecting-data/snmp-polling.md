@@ -674,6 +674,56 @@ snmpwalk -v3 -l authPriv -u secureuser -a SHA -A AuthP@ssSec#1 -x AES -X PrivP@s
     sudo rm /var/lib/net-snmp/snmpd.conf
     It's quite brutal but in our test environment it will help you out.
 
+---
+
+## **SNMP Monitoring in Zabbix**
+
+Now that we have covered how SNMP works, it's time to put that knowledge into
+practice. We'll start up our Zabbix instance and begin monitoring, but first,
+it's crucial to understand the two different methods Zabbix offers for retrieving
+SNMP information from a device.
+
+---
+
+#### **Legacy SNMP Monitoring**
+
+The traditional method for SNMP monitoring is synchronous. It uses a **single OID**
+placed directly into the item's SNMP OID field. Zabbix will wait for a response
+before it moves on to the next check.
+
+- **OID**: A single textual or numeric OID is used to retrieve a single value synchronously.
+  For example: `1.3.6.1.2.1.31.1.1.1.6.3`.
+- The timeout for these items is governed by the `Timeout` parameter in the **Zabbix
+  server configuration file**. To make this method functional, the `StartPollers`
+  parameter must also be correctly configured.
+
+When we talk about bulk processing in legacy it can be interesting to have a look
+at the Zabbix documentation about this subject.
+[https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing)
+
+---
+
+#### **Asynchronous SNMP Monitoring (Recommended)**
+
+The newer, **recommended** approach is asynchronous and provides much better
+performance. It leverages native SNMP bulk requests (`GetBulkRequest-PDUs`).
+
+- **`walk[OID1, OID2, ...]`**: This retrieves a subtree of values. For
+  **example:** `walk[1.3.6.1.2.1.2.2.1.2,1.3.6.1.2.1.2.2.1.3]`.
+- **`get[OID]`**: This retrieves a single value asynchronously. For **example:**
+  `get[1.3.6.1.2.1.31.1.1.1.6.3]`.
+
+With asynchronous monitoring, timeout settings can be configured per item. It's
+best to set a low timeout value to avoid long delays if a device is unreachable,
+as Zabbix will attempt up to 5 retries. A 3-second timeout, for instance, could
+result in a 15-second wait.
+
+All `walk[OID]` and `get[OID]` items are executed asynchronously, meaning Zabbix
+does not need to wait for one response before starting other checks. DNS resolution
+is also handled asynchronously. The maximum concurrency for these checks is 1000,
+defined by the `MaxConcurrentChecksPerPoller` parameter. The number of SNMP pollers
+dedicated to this method is set by the `StartSNMPPollers` parameter.
+
 ## Conclusion
 
 ## Questions
