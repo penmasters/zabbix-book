@@ -67,6 +67,10 @@ nav:
       - ch06-zabbix-templates/chapter.md
   - "Chapter 07 : Alerting":
       - ch07-zabbix-alerts/chapter.md
+      - ch07-zabbix-alerts/media-types.md
+      - ch07-zabbix-alerts/scripts.md
+      - ch07-zabbix-alerts/maintenance.md
+      - ch07-zabbix-alerts/actions.md
   - "Chapter 08 : LLD":
       - ch08-zabbix-lld/chapter.md
       - Custom LLD: ch08-zabbix-lld/custom.md

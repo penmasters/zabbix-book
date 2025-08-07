@@ -764,8 +764,8 @@ output `IF-MIB::ifInOctets.2 = Counter32: 49954965` appears to be the value
 we need, but this is not the raw OID.
 
 To convert this human-readable output into a numerical OID that Zabbix can use,
-we can add the `-On` flag to our `snmpwalk` command, which converts the outpu
-t to its numerical form.
+we can add the `-On` flag to our `snmpwalk` command, which converts the output
+to its numerical form.
 
 ```bash
 snmpwalk -v2c -c public <IP_ADDRESS> IF-MIB::ifInOctets.2 -On
