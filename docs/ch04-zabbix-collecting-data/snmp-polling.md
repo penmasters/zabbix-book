@@ -744,7 +744,7 @@ to perform a broader `snmpwalk` by removing the last digit from the initial OID.
 snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.2.2.1
 ```
 
-This command returns a more extensi[48;38;144;1140;2016tve list of MIB objects.
+This command returns a more extensive list of MIB objects.
 
 ```bash
 IF-MIB::ifIndex.1 = INTEGER: 1
