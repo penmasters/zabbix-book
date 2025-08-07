@@ -236,3 +236,4 @@ catalog
 snmpget
 snmpwalk
 subtree
+itemtypes

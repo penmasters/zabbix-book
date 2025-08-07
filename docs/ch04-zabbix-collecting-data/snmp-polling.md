@@ -674,6 +674,111 @@ snmpwalk -v3 -l authPriv -u secureuser -a SHA -A AuthP@ssSec#1 -x AES -X PrivP@s
     sudo rm /var/lib/net-snmp/snmpd.conf
     It's quite brutal but in our test environment it will help you out.
 
+---
+
+## **SNMP Monitoring in Zabbix**
+
+Now that we have covered how SNMP works, it's time to put that knowledge into
+practice. We'll start up our Zabbix instance and begin monitoring, but first,
+it's crucial to understand the two different methods Zabbix offers for retrieving
+SNMP information from a device.
+
+---
+
+#### **Legacy SNMP Monitoring**
+
+The traditional method for SNMP monitoring is synchronous. It uses a **single OID**
+placed directly into the item's SNMP OID field. Zabbix will wait for a response
+before it moves on to the next check.
+
+- **OID**: A single textual or numeric OID is used to retrieve a single value synchronously.
+  For example: `1.3.6.1.2.1.31.1.1.1.6.3`.
+- The timeout for these items is governed by the `Timeout` parameter in the **Zabbix
+  server configuration file**. To make this method functional, the `StartPollers`
+  parameter must also be correctly configured.
+
+When we talk about bulk processing in legacy it can be interesting to have a look
+at the Zabbix documentation about this subject.
+[https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing)
+
+---
+
+#### **Asynchronous SNMP Monitoring (Recommended)**
+
+The newer, **recommended** approach is asynchronous and provides much better
+performance. It leverages native SNMP bulk requests (`GetBulkRequest-PDUs`).
+
+- **`walk[OID1, OID2, ...]`**: This retrieves a subtree of values. For
+  **example:** `walk[1.3.6.1.2.1.2.2.1.2,1.3.6.1.2.1.2.2.1.3]`.
+- **`get[OID]`**: This retrieves a single value asynchronously. For **example:**
+  `get[1.3.6.1.2.1.31.1.1.1.6.3]`.
+
+With asynchronous monitoring, timeout settings can be configured per item. It's
+best to set a low timeout value to avoid long delays if a device is unreachable,
+as Zabbix will attempt up to 5 retries. A 3-second timeout, for instance, could
+result in a 15-second wait.
+
+All `walk[OID]` and `get[OID]` items are executed asynchronously, meaning Zabbix
+does not need to wait for one response before starting other checks. DNS resolution
+is also handled asynchronously. The maximum concurrency for these checks is 1000,
+defined by the `MaxConcurrentChecksPerPoller` parameter. The number of SNMP pollers
+dedicated to this method is set by the `StartSNMPPollers` parameter.
+
+---
+
+### **Polling Your First OID in Zabbix**
+
+Let's begin by polling our first OID in Zabbix. As you may recall from a previous
+`snmpwalk` command, querying `.1.3.6.1.2.1.2.2.1.2` returned two results, identifying
+the network interfaces on the device:
+
+- `IF-MIB::ifDescr.1 = STRING: lo`
+- `IF-MIB::ifDescr.2 = STRING: enp0s1`
+
+To find the inbound and outbound octets for the `enp0s1` network card, we need to
+locate the correct OID. While a MIB file would provide a clear map of all available
+OIDs, this isn't always an option. A common method to discover the correct OID is
+to perform a broader `snmpwalk` by removing the last digit from the initial OID.
+
+```bash
+snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.2.2.1
+```
+
+This command returns a more extensive list of MIB objects.
+
+```bash
+IF-MIB::ifIndex.1 = INTEGER: 1
+IF-MIB::ifIndex.2 = INTEGER: 2
+IF-MIB::ifDescr.1 = STRING: lo
+IF-MIB::ifDescr.2 = STRING: enp0s1
+...
+IF-MIB::ifInOctets.1 = Counter32: 697830615
+IF-MIB::ifInOctets.2 = Counter32: 49954965
+...
+```
+
+From this output, we can see that the index for our target network card, `enp0s1`,
+is `2`. This confirms that we can use this index to find the correct data.
+The output `IF-MIB::ifInOctets.2 = Counter32: 49954965` appears to be the value
+we need, but this is not the raw OID.
+
+To convert this human-readable output into a numerical OID that Zabbix can use,
+we can add the `-On` flag to our `snmpwalk` command, which converts the output
+to its numerical form.
+
+```bash
+snmpwalk -v2c -c public <IP_ADDRESS> IF-MIB::ifInOctets.2 -On
+```
+
+The result is the specific OID for the inbound octets on the `enp0s1` interface:
+
+```bash
+.1.3.6.1.2.1.2.2.1.10.2 = Counter32: 50050587
+```
+
+This is the OID you would use to configure an SNMP item in Zabbix to monitor the
+network traffic for this specific interface.
+
 ## Conclusion
 
 ## Questions
