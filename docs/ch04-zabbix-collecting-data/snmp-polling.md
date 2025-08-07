@@ -735,17 +735,16 @@ the network interfaces on the device:
 - `IF-MIB::ifDescr.1 = STRING: lo`
 - `IF-MIB::ifDescr.2 = STRING: enp0s1`
 
-To find the inbound and outbound octets for the `enp0s1` network card, we need
-to locate the correct OID. While a MIB file would provide a clear map of all
-available OIDs, this isn't always an option. A common method to discover the
-correct OID is to perform a broader `snmpwalk` by removing the last digit
-from the initial OID.
+To find the inbound and outbound octets for the `enp0s1` network card, we need to
+locate the correct OID. While a MIB file would provide a clear map of all available
+OIDs, this isn't always an option. A common method to discover the correct OID is
+to perform a broader `snmpwalk` by removing the last digit from the initial OID.
 
 ```bash
 snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.2.2.1
 ```
 
-This command returns a more extensive list of MIB objects.
+This command returns a more extensi[48;38;144;1140;2016tve list of MIB objects.
 
 ```bash
 IF-MIB::ifIndex.1 = INTEGER: 1
@@ -759,8 +758,8 @@ IF-MIB::ifInOctets.2 = Counter32: 49954965
 ```
 
 From this output, we can see that the index for our target network card, `enp0s1`,
-is `2`. This confirms that we can use this index to find the correct data. The
-output `IF-MIB::ifInOctets.2 = Counter32: 49954965` appears to be the value
+is `2`. This confirms that we can use this index to find the correct data.
+The output `IF-MIB::ifInOctets.2 = Counter32: 49954965` appears to be the value
 we need, but this is not the raw OID.
 
 To convert this human-readable output into a numerical OID that Zabbix can use,
