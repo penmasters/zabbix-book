@@ -1,0 +1,2649 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="An open-source Zabbix book">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/fr/ch02-zabbix-installation/external-authentication/">
+      
+      
+        <link rel="prev" href="../user-groups/">
+      
+      
+        <link rel="next" href="../../ch03-zabbix-proxies/chapter/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>External authentication - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.af67bdb9.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Nunito"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#external-authentication" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Cette page n'a pas encore été traduite en Français, elle est donc affichée en anglais.
+            <a href="/gmc/fr/contribute/#translations">Soutenez-nous et traduisez !</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Sélectionner la version";
+        const gGMC_TRANSLATE_CTA = "Soutenez-nous et traduisez !";
+        const gGMC_PAGE_LOCALE = "fr";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              External authentication
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../de/ch02-zabbix-installation/external-authentication/" hreflang="de" class="md-select__link">
+              German
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../it/ch02-zabbix-installation/external-authentication/" hreflang="it" class="md-select__link">
+              Italian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch02-zabbix-installation/external-authentication/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt/ch02-zabbix-installation/external-authentication/" hreflang="pt" class="md-select__link">
+              Portuguese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../es/ch02-zabbix-installation/external-authentication/" hreflang="es" class="md-select__link">
+              Spanish
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../th/ch02-zabbix-installation/external-authentication/" hreflang="th" class="md-select__link">
+              ภาษาไทย
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../zh/ch02-zabbix-installation/external-authentication/" hreflang="zh" class="md-select__link">
+              中国人
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch02-zabbix-installation/external-authentication/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch02-zabbix-installation/external-authentication/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Partager" aria-label="Partager" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Guidelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Supporters and contributors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Getting started
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 01 : Zabbix components
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Chapter 02 : Installation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Chapter 02 : Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting started with the Zabbix installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Frontend explained
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Host Groups
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    User groups
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    External authentication
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    External authentication
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#http" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ldap-ad" class="md-nav__link">
+    <span class="md-ellipsis">
+      LDAP / AD
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LDAP / AD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#users-authentication-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Users authentication mode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-ldap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure LDAP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#just-in-time-user-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Just-in-Time user provisioning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Just-in-Time user provisioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-configuration-method-memberof" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group configuration method “memberOf”
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-configuration-method-groupofnames" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group configuration method “groupOfNames”
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ready-to-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ready to test
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saml" class="md-nav__link">
+    <span class="md-ellipsis">
+      SAML
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SAML">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#google" class="md-nav__link">
+    <span class="md-ellipsis">
+      Google
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Google">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initial-configuration-certificate-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initial Configuration: Certificate Generation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saml-attribute-mapping-and-group-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      SAML Attribute Mapping and Group Authorization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zabbix-saml-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zabbix SAML Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saml-media-type-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      SAML Media Type mappings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-configuration-frontend-configuration-adjustments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Configuration: Frontend Configuration Adjustments
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ms-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      MS Cloud
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#okta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Okta
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-factor-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi factor authentication
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi factor authentication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-based-one-time-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time-based one-time password
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#duo-mfa-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Duo MFA provider
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful URLs
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 03 : Proxies and Webcomponents
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 05 : Triggers
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 06 : Templates
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 07 : Alerting
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 08 : LLD
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 09 : Extending Zabbix
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 10 : Discovery
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 11 : Visualisation
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 12 : Zabbix API
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 13 : Advanced set up and security
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapter 14 : Real world examples
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Print Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#http" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ldap-ad" class="md-nav__link">
+    <span class="md-ellipsis">
+      LDAP / AD
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LDAP / AD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#users-authentication-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Users authentication mode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-ldap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure LDAP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#just-in-time-user-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Just-in-Time user provisioning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Just-in-Time user provisioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-configuration-method-memberof" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group configuration method “memberOf”
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-configuration-method-groupofnames" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group configuration method “groupOfNames”
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ready-to-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ready to test
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saml" class="md-nav__link">
+    <span class="md-ellipsis">
+      SAML
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SAML">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#google" class="md-nav__link">
+    <span class="md-ellipsis">
+      Google
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Google">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initial-configuration-certificate-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initial Configuration: Certificate Generation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saml-attribute-mapping-and-group-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      SAML Attribute Mapping and Group Authorization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zabbix-saml-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zabbix SAML Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saml-media-type-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      SAML Media Type mappings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-configuration-frontend-configuration-adjustments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Configuration: Frontend Configuration Adjustments
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ms-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      MS Cloud
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#okta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Okta
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-factor-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi factor authentication
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi factor authentication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-based-one-time-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time-based one-time password
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#duo-mfa-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Duo MFA provider
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Questions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful URLs
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch02-zabbix-installation/external-authentication.md" title="Consulter la source de cette page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="external-authentication">External authentication</h1>
+<h2 id="http">HTTP</h2>
+<hr />
+<h2 id="ldap-ad">LDAP / AD</h2>
+<p>As any modern system Zabbix can perform users authentication using Lightweight
+Directory Access Protocol (LDAP). In theory LDAP is very well defined open
+protocol that should be vendor independent but its relative complexity plays a
+role in every LDAP server implementation. Zabbix is known to work well with
+Microsoft Active Directory and OpenLDAP server.</p>
+<p>LDAP authentication can be configured in two modes:</p>
+<ul>
+<li>Users authentication</li>
+<li>Users authentication with users provisioning</li>
+</ul>
+<h3 id="users-authentication-mode">Users authentication mode</h3>
+<p>The process of the authenticating users follows this diagram.</p>
+<p><img align="center" alt="LDAP users authentication" src="../../../ch02-zabbix-installation/external-auth/ch02.1-ldap-auth-diagram.png" /></p>
+<p><em>2.1 LDAP users authentication</em></p>
+<p>As shown on the diagram a user that tries to log in must be pre-created in
+Zabbix to be able to log in using LDAP. The database user records do not have
+any fields "saying" that the user will be authenticated via LDAP, it's just
+users' passwords stored in the database are ignored, instead, Zabbix goes to
+a LDAP server to verify whether:</p>
+<ul>
+<li>user with a given username exists</li>
+<li>user provided the correct password</li>
+</ul>
+<p>no other attributes configured for the user on the LDAP server side are taken
+into account.</p>
+<p>So when Zabbix is used by many users and groups, user management becomes not a
+very trivial task as new people join different teams (or leave). This problem
+is addressed by "users provisioning" and we'll cover this topic a bit later.
+For now let's take a look at how to configure LDAP authentication.</p>
+<h3 id="configure-ldap">Configure LDAP</h3>
+<p>We believe that it is better to learn this topic by example so we'll be using
+our own LDAP server that you can spin up in a container by executing:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a># Install docker if you don&#39;t have it
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a># For Ubuntu
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>apt install docker-ce
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a># Start LDAP server container with pre-loaded data
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>docker run -p 3389:389 -p 6636:636 --name openldap-server --detach bgmot42/openldap-server:0.1.1
+</span></code></pre></div>
+<p>All users (including <code>ldap_search</code>) in this test LDAP server for simplicity
+have the word <code>password</code> as their passwords.</p>
+<p>Users <code>user1</code> and <code>user2</code> is a member of <code>zabbix-admins</code> LDAP group. User
+<code>user3</code> is a member of <code>zabbix-users</code> LDAP group.</p>
+<details class="optional" open="open">
+<summary>Optional</summary>
+<p>To visually see LDAP server data (and add your own configuration like users
+and groups) you can start this standard container
+<code>docker run -p 8081:80 -p 4443:443 --name phpldapadmin --hostname phpldapadmin\
+--link openldap-server:ldap-host --env PHPLDAPADMIN_LDAP_HOSTS=ldap-host\
+--detach osixia/phpldapadmin:0.9.0</code>
+Now you can access this LDAP server via https://<ip_address>:4443 (or any
+other port you configure to access this Docker container), click Login,
+enter “cn=admin,dc=example,dc=org” in Login DN field and “password” in
+Password field, click Authenticate. You should see the following structure
+of the LDAP server (picture shows ‘zabbix-admins’ group configuration):</p>
+<p><img align="center" alt="LDAP server data" src="../../../ch02-zabbix-installation/external-auth/ch02.2-ldap-ldap-server-data.png" /></p>
+<p><em>2.2 LDAP server data</em></p>
+</details>
+<p>Let's configure LDAP server settings in Zabbix. In Zabbix menu select
+<code>Users | Authentication | LDAP settings</code>, then check the check-box
+<code>Enable LDAP authentication</code> and click <code>Add</code> under <code>Servers</code> (change IP address
+of your LDAP server and port number according to your set up):</p>
+<p><img align="center" alt="LDAP server settings in Zabbix" src="../../../ch02-zabbix-installation/external-auth/ch02.3-ldap-server-settings-in-zabbix.png" /></p>
+<p><em>2.3 LDAP server settings in Zabbix</em></p>
+<p>Following diagram can help you understand how to configure LDAP server in
+Zabbix based on your LDAP server data structure:</p>
+<p><img align="center" alt="LDAP server to Zabbix" src="../../../ch02-zabbix-installation/external-auth/ch02.4-ldap-server-to-zabbix.png" /></p>
+<p><em>2.4 LDAP server to Zabbix</em></p>
+<p>“Special” <em>Distinguished Name</em> (DN) <em>cn=ldap_search,dc=example,dc=org</em> is used
+for searching, i.e. Zabbix uses this DN to connect to LDAP server and of course
+when you connect to LDAP server you need to be authenticated – this is why you
+need to provide <em>Bind password</em>. This DN should have access to a sub-tree in
+LDAP data hierarchy where all your users are configured. In our case all the
+users configured “under” <em>ou=Users,dc=example,dc=org</em>, this DN is called base
+DN and used by Zabbix as so to say “starting point” to start searching.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>technically it is possible to bind to LDAP server anonymously, without
+providing a password but this is a huge breach in security as the whole
+users sub-tree becomes available for anonymous (unauthenticated) search,
+i.e. effectively exposed to any LDAP client that can connect to LDAP server
+over TCP. The LDAP server we deployed previously in Docker container does
+not provide this functionality.</p>
+</details>
+<p>Click <code>Test</code> button and enter <code>user1</code> and <code>password</code> in the respective fields, the
+test should be successful confirming Zabbix can authenticate users against LDAP
+server.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>We can add multiple LDAP servers and use them for different <code>User groups</code>.</p>
+</details>
+<p>To test real users login using LDAP authentication we need to create user
+groups and users in Zabbix. In Zabbix menu select <code>Users | User groups</code>. Make
+sure <code>Zabbix administrators</code> group exists (we'll need it later) and create new
+group <code>Zabbix users</code> by clicking <code>Create user group</code> button. Enter "Zabbix
+users" in <code>Group name</code> field, select "LDAP" in <code>Frontend access</code> drop-down that
+will make Zabbix to authenticate users belonging to this group against LDAP
+server and in <code>LDAP server</code> drop-down select LDAP server we earlier configured
+"Test LDAP server". Click <code>Add</code> button to create this User group:</p>
+<p><img align="center" alt="Add user group in zabbix" src="../../../ch02-zabbix-installation/external-auth/ch02.5-ldap-add-user-group-in-zabbix.png" /></p>
+<p><em>2.5 Add user group in zabbix</em></p>
+<p>Now we need to create our test user. In Zabbix menu select <code>Users | Users</code> and
+click <code>Create user</code> button. Then enter "user3" in <code>Username</code> field. Select
+"Zabbix users" in <code>Groups</code> field. What you enter in <code>Password</code> and <code>Password
+(once again)</code> fields does not matter as Zabbix will not try to use this
+password, instead it will go to LDAP server to authenticate this user since
+it's a member of the User group that has authentication method <code>LDAP</code>, just
+make sure you enter the same string in these two fields and it satisfied your
+password strength policy defined in <code>Users | Authentication</code>.</p>
+<p><img align="center" alt="Add user in Zabbix" src="../../../ch02-zabbix-installation/external-auth/ch02.6-ldap-add-user-in-zabbix.png" /></p>
+<p><em>2.6 Add user in Zabbix</em></p>
+<p>Then click <code>Permissions</code> tab and select "User role" in <code>Role</code> field:</p>
+<p><img align="center" alt="Add user in Zabbix - permissions" src="../../../ch02-zabbix-installation/external-auth/ch02.7-ldap-add-user-in-zabbix-permissions.png" /></p>
+<p><em>2.7 Add user in Zabbix - permissions</em></p>
+<p>Click <code>Add</code> button to create the user.</p>
+<p>We are ready to test our LDAP server authentication! Click <code>Sign out</code> in Zabbix
+menu and login with "user3" as Username and "password" as <code>Password</code>, if you
+carefully followed the steps above you should successfully login with User role
+permissions.</p>
+<p>Click <code>Sign out</code> again and login as Admin again to proceed.</p>
+<h3 id="just-in-time-user-provisioning">Just-in-Time user provisioning</h3>
+<p>Now let's talk about really cool feature Zabbix provides - "Just-in-Time user
+provisioning (JIT) available since Zabbix 6.4.</p>
+<p>This picture illustrates on high level how it works:
+<img align="center" alt="LDAP JIT explained" src="../../../ch02-zabbix-installation/external-auth/ch02.8-ldap-jit-explained.png" /></p>
+<p><em>2.8 LDAP JIT explained</em></p>
+<p>Here when Zabbix gets a username and password from the Zabbix Login form it
+goes to the LDAP server and gets all the information available for this user
+including his/her LDAP groups membership and e-mail address. Obviously, it
+gets all that only if the correct (from LDAP server perspective) username and
+password were provided. Then Zabbix goes through pre-configured mapping that
+defines users from which <code>LDAP group</code> goes to which <code>Zabbix user group</code>. If at
+least one match is found then a <code>Zabbix user</code> is created in the Zabbix database
+belonging to a <code>Zabbix user group</code> and having a <code>Zabbix user role</code> according to
+configured “match”. So far sounds pretty simple, right? Now let’s go into
+details about how all this should be configured.</p>
+<p>In <code>Users | Authentication</code> we need to do two things:</p>
+<ul>
+<li>
+<p>Set <code>Default authentication</code> to <em>LDAP</em>. When JIT is turned off then type of
+  authentication is defined based on the <em>User group</em> a user that tries to login
+  belongs to. In case of JIT the user does not exist in Zabbix yet thus obviously
+  does not belong to any <em>User group</em> so <em>Default</em> method authentication is used
+  and we want it to be <em>LDAP</em>.</p>
+</li>
+<li>
+<p>Provide <code>Deprovisioned users group</code>. This group must be literally <em>disabled</em>
+  otherwise you won't be able to select it here. This is the Zabbix user group
+  where all <em>de-provisioned</em> users will be put into so effectively will get
+  disabled from accessing Zabbix.</p>
+</li>
+</ul>
+<p><img align="center" alt="Default authentication" src="../../../ch02-zabbix-installation/external-auth/ch02.9-ldap-default-authentication.png" /></p>
+<p><em>2.9 Default authentication</em></p>
+<p>Click <code>Update</code> button`.</p>
+<ul>
+<li>Enable JIT provisioning check-box which obviously needs to be checked for this
+  feature to work. It's done in our <em>Test LDAP server</em> configuration - select
+  <code>Users | Authentication | LDAP settings</code> and click on our server in <code>Servers</code>
+  section. After enabling this check-box we'll see some other fields related to
+  JIT to be filled in and what we put in there depends on the method we choose to
+  perform JIT.</li>
+</ul>
+<h4 id="group-configuration-method-memberof">Group configuration method “memberOf”</h4>
+<p>All users in our LDAP server have <em>memberOf</em> attribute which defines what LDAP
+groups every user belongs to, e.g. if we perform a LDAP query for <em>user1</em> user
+we’ll get that its <em>memberOf</em> attribute has this value:</p>
+<p><strong>memberOf</strong>: cn=<strong>zabbix-admins</strong>,ou=Group,dc=example,dc=org</p>
+<p>Note, that your real LDAP server can have totally different LDAP attribute that
+provides users’ group membership, and of course, you can easily configure what
+attribute to use when searching for user’s LDAP groups by putting it into <code>User
+group membership attribute</code> field:</p>
+<p><img align="center" alt="LDAP groups mapping" src="../../../ch02-zabbix-installation/external-auth/ch02.10-ldap-groups-mapping.png" /></p>
+<p><em>2.10 LDAP groups mapping</em></p>
+<p>In the picture above we are telling Zabbix to use <em>memberOf</em> attribute to
+extract DN defining user’s group membership (in this case it is
+<em>cn=zabbix-admins,out=Group,dc=example,dc=org</em>) and take only <em>cn</em> attribute
+from that DN (in this case it is <em>zabbix-admins</em>) to use in searching for a
+match in User group mapping rules. Then we define as many mapping rules as we
+want. In the picture above we have two rules:</p>
+<ul>
+<li>All users belonging to <em>zabbix-users</em> LDAP group will be created in Zabbix as
+  members of <em>Zabbix users group</em> with <em>User</em> role</li>
+<li>All users belonging to <em>zabbix-admins</em> LDAP group will be created in Zabbix
+  as members of <em>Zabbix administrators</em> group with <em>Super admin</em> role</li>
+</ul>
+<h4 id="group-configuration-method-groupofnames">Group configuration method “groupOfNames”</h4>
+<p>There is another method of finding users’ group membership called
+“groupOfNames” it is not as efficient as “memberOf” method but can provide much
+more flexibility if needed. Here Zabbix is not querying LDAP server for a user
+instead it is searching for LDAP groups based on a given criterion (filter).
+It’s easier to explain with pictures depicting an example:</p>
+<p><img align="center" alt="LDAP server group of names" src="../../../ch02-zabbix-installation/external-auth/ch02.11-ldap-group-of-names.png" /></p>
+<p><em>2.11 LDAP server groupOfNames</em></p>
+<p>Firstly we define LDAP “sub-tree” where Zabbix will be searching for LDAP
+groups – note <em>ou=Group,dc=example,dc=org</em> in Group base DN field. Then in the
+field <code>Group name attribute</code> field we what attribute to use when we search in
+mapping rules (in this case we take <em>cn</em>, i.e. only <em>zabbix-admins</em> from full
+DN <em>cn=zabbix-admins,ou=Group,dc=example,dc=org</em>). Each LDAP group in our LDAP
+server has <em>member</em> attribute that has all users that belong to this LDAP group
+(look at the right picture) so we put <em>member</em> in <code>Group member attribute</code>
+field. Each user’s DN will help us construct <code>Group filter</code> field. Now pay
+attention: <code>Reference attribute</code> field defines what LDAP user’s attribute
+Zabbix will use in the <code>Group filter</code>, i.e. <em>%{ref}</em> will be replaced with the
+value of this attribute (here we are talking about the user’s attributes – we
+already authenticated this user, i.e. got all its attributes from LDAP server).
+To sum up what I've said above Zabbix:</p>
+<ol>
+<li>Authenticates the user with entered Username and Password against LDAP
+   server getting all user’s LDAP attributes</li>
+<li>Uses <code>Reference attribute</code> and <code>Group filter</code> fields to construct a filter
+   (when user1 logs in the filter will be (<em>member=uid=user1,ou=Users,dc=example,
+   dc=org</em>)</li>
+<li>Performs LDAP query to get all LDAP groups with member attribute (configured
+   in <code>Group member attribute</code> field) containing constructed in step 2) filter</li>
+<li>Goes through all LDAP groups received in step 3) and picks <code>cn</code> attribute
+   (configured in <code>Group name attribute</code> field) and finds a match in User group
+   mapping rules</li>
+</ol>
+<p>Looks a bit complicated but all you really need to know is the structure of
+your LDAP data.</p>
+<h4 id="ready-to-test">Ready to test</h4>
+<p>Now when you login with <em>user1</em> or <em>user2</em> username then these users will be
+created by Zabbix and put into <em>Zabbix administrators</em> user group, when you
+login with <em>user3</em> username then this user will be created by Zabbix and put
+into <em>Zabbix users</em> user group:</p>
+<p><img align="center" alt="Test user1" src="../../../ch02-zabbix-installation/external-auth/ch02.12-ldap-jit-test-user1.png" /></p>
+<p><em>2.12 Test user1</em></p>
+<p><img align="center" alt="Test user3" src="../../../ch02-zabbix-installation/external-auth/ch02.13-ldap-jit-test-user3.png" /></p>
+<p><em>2.13 Test user3</em></p>
+<h2 id="saml">SAML</h2>
+<hr />
+<h3 id="google">Google</h3>
+<p>Integrating Security Assertion Markup Language (SAML) for authentication within
+Zabbix presents a non-trivial configuration challenge. This process necessitates
+meticulous management of cryptographic certificates and the precise definition
+of attribute filters. Furthermore, the official Zabbix documentation, while
+comprehensive, can initially appear terse.</p>
+<h4 id="initial-configuration-certificate-generation">Initial Configuration: Certificate Generation</h4>
+<p>The foundational step in SAML integration involves the generation of a <code>private key</code>
+and a corresponding X.509 certificate. These cryptographic assets are critical
+for establishing a secure trust relationship between Zabbix and the Identity Provider
+(IdP).</p>
+<p>By default, Zabbix expects these files to reside within the <code>ui/conf/certs/</code>
+directory. However, for environments requiring customized storage locations, the
+zabbix.conf.php configuration file allows for the specification of alternative
+paths.</p>
+<p>Let's create our private key and certificate file.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>/usr/share/zabbix/ui/conf/certs/
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>openssl<span class="w"> </span>req<span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span>-nodes<span class="w"> </span>-keyout<span class="w"> </span>sp.key<span class="w"> </span>-x509<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span>-out<span class="w"> </span>sp.crt
+</span></code></pre></div>
+<p>Following the generation and placement of the Zabbix Service Provider (SP) certificates,
+the next critical phase involves configuring the Identity Provider (IdP). In this
+context, we will focus on Google Workspace as the IdP.</p>
+<p>Retrieving the IdP Certificate (idp.crt) from Google Workspace:</p>
+<ol>
+<li><strong>Access the Google Workspace Admin Console:</strong> Log in to your Google Workspace
+   administrator account.</li>
+<li><strong>Navigate to Applications:</strong> Within the admin console, locate and select the
+   "Apps" section.</li>
+<li><strong>Access Web and Mobile Apps:</strong> Choose <code>Web and mobile apps</code> from the available
+   options.</li>
+<li><strong>Create a New Application:</strong> Initiate the creation of a new application to
+   facilitate SAML integration. This action will trigger Google Workspace to generate
+   the necessary IdP certificate.
+   <img alt="Add google app" src="../../../ch02-zabbix-installation/external-auth/ch02-add-google-app.png" /></li>
+</ol>
+<p><em>2.22 create
+new application</em></p>
+<ol>
+<li><strong>Download the IdP Certificate:</strong> Within the newly created application's settings,
+   locate and download the idp.crt file. This certificate is crucial for establishing
+   trust between Zabbix and Google Workspace.</li>
+<li><strong>Placement of idp.crt:</strong> Copy the downloaded <code>idp.crt</code> file to the same directory
+   as the SP certificates in Zabbix, under <code>ui/conf/certs/</code>.</li>
+</ol>
+<p><img alt="Add google app" src="../../../ch02-zabbix-installation/external-auth/ch02-saml-download.png" /></p>
+<p><em>2.23 add
+certificate</em></p>
+<hr />
+<h4 id="saml-attribute-mapping-and-group-authorization">SAML Attribute Mapping and Group Authorization</h4>
+<p>A key aspect of SAML configuration is the mapping of attributes between Google
+Workspace and Zabbix. This mapping defines how user information is transferred
+and interpreted.</p>
+<p><strong>Attribute Mapping:</strong></p>
+<ul>
+<li>It is strongly recommended to map the Google Workspace "Primary Email" attribute
+  to the Zabbix "Username" field. This ensures seamless user login using their
+  Google Workspace email addresses.</li>
+<li>Furthermore, mapping relevant Google Workspace group attributes allows for granular
+  control over Zabbix user access. For instance, specific Google Workspace groups
+  can be authorized to access particular Zabbix resources or functionalities.</li>
+</ul>
+<p><strong>Group Authorization:</strong></p>
+<ul>
+<li>Within the Google Workspace application settings, define the groups that are
+  authorized to utilize SAML authentication with Zabbix.</li>
+<li>This configuration enables the administrator to control which users can use
+  SAML to log into Zabbix.</li>
+<li>In Zabbix, you will also need to create matching user groups and configure
+  the authentication to use those groups.</li>
+</ul>
+<p><strong>Configuration Example (Conceptual):</strong></p>
+<ul>
+<li>Google Workspace Attribute: "Primary Email" -&gt; Zabbix Attribute: "Username"</li>
+<li>Google Workspace Attribute: "Group Membership" -&gt; Zabbix Attribute: "User Group"</li>
+</ul>
+<p>This attribute mapping ensures that users can log in using their familiar Google
+Workspace credentials and that their access privileges within Zabbix are determined
+by their Google Workspace group memberships.</p>
+<p><img alt="saml mappings" src="../../../ch02-zabbix-installation/external-auth/ch02-saml-mappings.png" /></p>
+<p><em>2.24 SAML
+mappings</em></p>
+<hr />
+<h4 id="zabbix-saml-configuration">Zabbix SAML Configuration</h4>
+<p>With the IdP certificate and attribute mappings established within Google Workspace,
+the final step involves configuring Zabbix to complete the SAML integration.</p>
+<p><strong>Accessing SAML Settings in Zabbix:</strong></p>
+<ul>
+<li><strong>Navigate to User Management:</strong> Log in to the Zabbix web interface as an administrator.</li>
+<li><strong>Access Authentication Settings:</strong> Go to "Users" -&gt; "Authentication" in the
+  left-hand menu.</li>
+<li><strong>Select SAML Settings:</strong> Choose the "SAML settings" tab.</li>
+</ul>
+<p><strong>Configuring SAML Parameters:</strong></p>
+<p>Within the "SAML settings" tab, the following parameters must be configured:</p>
+<ul>
+<li><strong>IdP Entity ID:</strong> This value uniquely identifies the Identity Provider
+  (Google Workspace in this case). It can be retrieved from the Google Workspace
+  SAML configuration metadata.</li>
+<li><strong>SSO Service URL:</strong> This URL specifies the endpoint where Zabbix should send
+  authentication requests to Google Workspace. This URL is also found within the
+  Google Workspace SAML configuration metadata.</li>
+<li><strong>Retrieving Metadata:</strong> To obtain the IdP entity ID and SSO service URL, within
+    the Google Workspace SAML application configuration, select the option to <code>Download
+metadata</code>. This XML file contains the necessary values.</li>
+<li><strong>Username Attribute:</strong> Set this to "username." This specifies the attribute
+  within the SAML assertion that Zabbix should use to identify the user.</li>
+<li><strong>SP Entity ID:</strong> This value uniquely identifies the Zabbix Service Provider.
+  It should be a URL or URI that matches the Zabbix server's hostname.</li>
+<li><strong>Sign:</strong> Select <code>Assertions</code>. This configures Zabbix to require that the SAML
+  assertions from Google Workspace are digitally signed, ensuring their integrity.</li>
+</ul>
+<p>Example Configuration (Conceptual)</p>
+<ul>
+<li>IdP entity ID: <a href="https://accounts.google.com/o/saml2?idpid=your_idp_id">https://accounts.google.com/o/saml2?idpid=your_idp_id</a></li>
+<li>SSO service URL: <a href="https://accounts.google.com/o/saml2/idp/SSO?idpid=your_idp_id&amp;SAMLRequest=your_request">https://accounts.google.com/o/saml2/idp/SSO?idpid=your_idp_id&amp;SAMLRequest=your_request</a></li>
+<li>Username attribute: username</li>
+<li>SP entity ID: https://your_zabbix_server/zabbix</li>
+<li>Sign: Assertions</li>
+</ul>
+<p><img alt="google saml config" src="../../../ch02-zabbix-installation/external-auth/ch02-saml-zabbix-options.png" /></p>
+<p><em>2.25 SAML
+config</em></p>
+<p><strong>Additional Configuration Options:</strong></p>
+<p>The Zabbix documentation provides a comprehensive overview of additional SAML
+configuration options. Consult the official Zabbix documentation for advanced settings,
+such as attribute mapping customization, session timeouts, and error handling configurations.</p>
+<p><strong>Verification and Testing:</strong></p>
+<p>After configuring the SAML settings, it is crucial to thoroughly test the integration.
+Attempt to log in to Zabbix using your Google Workspace credentials. Verify that
+user attributes are correctly mapped and that group-based access control is
+functioning as expected.</p>
+<p><strong>Troubleshooting:</strong></p>
+<p>If authentication fails, review the Zabbix server logs and the Google Workspace
+audit logs for potential error messages. Ensure that the certificate paths are
+correct, the attribute mappings are accurate, and the network connectivity between
+Zabbix and Google Workspace is stable.</p>
+<h4 id="saml-media-type-mappings">SAML Media Type mappings</h4>
+<p>After successfully configuring SAML authentication, the final step is to integrate
+media type mappings directly within the SAML settings. This ensures that media
+delivery is dynamically determined based on SAML attributes.</p>
+<p><strong>Mapping Media Types within SAML Configuration:</strong></p>
+<ul>
+<li><strong>Navigate to SAML Settings:</strong> In the Zabbix web interface, go to "Users" -&gt;
+  "Authentication" and select the "SAML settings" tab.</li>
+<li><strong>Locate Media Mapping Section:</strong> Within the SAML settings, look for the section
+  related to media type mapping. This section might be labeled "Media mappings"
+  or similar.</li>
+<li><strong>Add Media Mapping:</strong> Click "Add" to create a new media type mapping.</li>
+<li><strong>Select Media Type:</strong> Choose the desired media type, such as "Gmail relay."</li>
+<li><strong>Specify Attribute:</strong> In the attribute field, enter the SAML attribute that
+  contains the user's email address (typically "username," aligning with the
+  primary email attribute mapping).</li>
+<li><strong>Configure Active Period :</strong> Specify the active period for this media type.
+  This allows for time-based control of notifications.</li>
+<li><strong>Configure Severity Levels:</strong> Configure the severity levels for which this
+  media type should be used.</li>
+</ul>
+<p>Example Configuration (Conceptual):</p>
+<ul>
+<li>Media Type: Gmail relay</li>
+<li>Attribute: username</li>
+<li>Active Period: 08:00-17:00 (Monday-Friday)</li>
+<li>Severity Levels: High, Disaster</li>
+</ul>
+<p>Rationale:</p>
+<p>By mapping media types directly within the SAML configuration, Zabbix can dynamically
+determine the appropriate media delivery method based on the SAML attributes received
+from the IdP. This eliminates the need for manual media configuration within individual
+user profiles when SAML authentication is in use.</p>
+<p>Key Considerations:</p>
+<ul>
+<li>Ensure that the SAML attribute used for media mapping accurately corresponds to
+  the user's email address.</li>
+<li>Verify that the chosen media type is correctly configured within Zabbix.</li>
+<li>Consult the Zabbix documentation for specific information about the SAML media
+  mapping functionality, as the exact configuration options may vary depending on
+  the Zabbix version.</li>
+</ul>
+<h4 id="final-configuration-frontend-configuration-adjustments">Final Configuration: Frontend Configuration Adjustments</h4>
+<p>After configuring the SAML settings within the Zabbix backend and Google Workspace,
+the final step involves adjusting the Zabbix frontend configuration. This ensures
+that the frontend correctly handles SAML authentication requests.</p>
+<p>Modifying <code>zabbix.conf.php</code>:</p>
+<ul>
+<li>
+<p><strong>Locate Configuration File</strong>: Access the Zabbix frontend configuration file,
+  typically located at /etc/zabbix/web/zabbix.conf.php.</p>
+</li>
+<li>
+<p><strong>Edit Configuration:</strong> Open the zabbix.conf.php file using a text editor with
+  root or administrative privileges.</p>
+</li>
+<li>
+<p><strong>Configure SAML Settings:</strong> Within the file, locate or add the following
+  configuration directives:</p>
+</li>
+</ul>
+<p><code>php
+// Uncomment to override the default paths to SP private key, SP and IdP X.509 certificates,
+// and to set extra settings.
+$SSO['SP_KEY']                  = 'conf/certs/sp.key';
+$SSO['SP_CERT']                 = 'conf/certs/sp.crt';
+$SSO['IDP_CERT']                = 'conf/certs/idp.crt';
+//$SSO['SETTINGS']              = [];</code></p>
+<hr />
+<h3 id="ms-cloud">MS Cloud</h3>
+<hr />
+<h3 id="okta">Okta</h3>
+<hr />
+<h2 id="multi-factor-authentication">Multi factor authentication</h2>
+<p>We all know that before you can start configuring Zabbix via WebUI you have to
+sign in. Zabbix has several options to provide better security for user passwords
+by configuring password policy:</p>
+<ul>
+<li>Requirement for Minimum password length</li>
+<li>Requirements for password to contain an uppercase and a lowercase Latin letter,
+  a digit, a special character</li>
+<li>Requirement to avoid easy-to-guess passwords</li>
+</ul>
+<p>To secure sign in process even more you can configure multi factor authentication
+(MFA). MFA protects Zabbix by using a second source of validation before granting
+access to its WebUI after a user enters his/her password correctly. Zabbix offers
+to types of MFA - Time-based one-time password (TOTP) and Duo MFA provider.</p>
+<hr />
+<h3 id="time-based-one-time-password">Time-based one-time password</h3>
+<p>In the menu select <code>Users</code> section and then <code>Authentication</code></p>
+<p><img alt="MFA Settings initial" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_settings_initial.png" width="90%" /></p>
+<p>Now in <code>MFA settings</code> tab select the <code>Enable multi-factor authentication</code> check-box,
+then select <code>TOTP</code> in Type drop-down list.</p>
+<p><img alt="MFA Settings TOTP" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_settings_TOTP_new.png" width="90%" /></p>
+<p>In <code>Hash function</code> drop-down list you can choose SHA-1, SHA-256 or SHA-512, the higher
+number is the better security.</p>
+<p>In <code>Code lentgh</code> you can select how many digits will be generated for you by Authenticator
+application on your phone.</p>
+<p>Click <code>Add</code> and then <code>Update</code>. Now you have TOTP MFA configured and it is the default
+method of MFA.</p>
+<p><img alt="MFA Settings TOTP configured" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_settings_TOTP_configured.png" width="90%" /></p>
+<p>Now you need to tell Zabbix for which User group (or groups) to use MFA. Let's create
+a User group that would require MFA.</p>
+<p>In the menu select <code>Users</code> section and then <code>User groups</code>, then click <code>Create user
+group</code> button</p>
+<p><img alt="MFA list of user groups" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_create_user_groups.png" width="90%" /></p>
+<p>In <code>Group name</code> put "test". Note that <code>Multi-factor authentication</code> field is "Default",
+as currently we have only one MFA method configured it does not matter whether we
+select "Default" or "TOTP1" that we created above. You also can disable MFA for
+all users belonging to this User group. Click <code>Add</code> button to create "test" User
+group.</p>
+<p><img alt="MFA new user group" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_new_user_group.png" width="90%" /></p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>MFA method is defined on per User group basis, i.e. MFA method configured for
+a User group will be applied to all users belonging to this group.</p>
+</details>
+<p>Let's add a user to this user group. In the menu select <code>Users</code> section and then
+<code>Users</code>, then click <code>Create user</code> button</p>
+<p><img alt="MFA create user" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_create_user.png" width="90%" /></p>
+<p>Fill in <code>Username</code>, <code>Password</code> and <code>Password (once again)</code> fields. Make sure you
+select <code>test</code> user group in <code>Groups</code> field.</p>
+<p><img alt="MFA new user" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_new_user.png" width="90%" /></p>
+<p>Then switch to <code>Permissions</code> tab and select any role.</p>
+<p><img alt="MFA new user permissions" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_new_user_permissions.png" width="90%" /></p>
+<p>Click <code>Add</code> button to add the user.</p>
+<p>Now we can test how TOTP MFA works. Sign out and then try to sign in as a test user
+you just created. You will be presented with a QR code. That means that the user
+<code>test</code> has not been enrolled in TOTP MFA yet.</p>
+<p><img alt="MFA TOTP QR code" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_totp_qr_code.png" width="30%" /></p>
+<p>On your phone you need to install either "Microsoft authenticator" or "Google authenticator"
+application. The procedure of adding new QR code is quite similar, here is how it
+looks in "Google authenticator". Tap <code>Add a code</code> and then <code>Scan a QR code</code>. You'll
+be immediately presented with a 6 digit code (remember we selected 6 in <code>Code length</code>
+when we configured TOTP MFA?)</p>
+<p><img alt="MFA TOTP auth app1" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_totp_auth_app1.png" width="32%" />
+<img alt="MFA TOTP auth app2" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_totp_auth_app2.png" width="32%" />
+<img alt="MFA TOTP auth app3" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_totp_auth_app3.png" width="32%" /></p>
+<p>Enter this code into <code>Verification code</code> field of your login screen and click
+<code>Sign in</code>, if you did everything right you are logged in into Zabbix at this point.
+At this point the user "test" is considered enrolled into TOTP MFA and Zabbix stores
+a special code used for further authentications in its database. The next time
+user "test" tries to login into Zabbix there will be only a field to enter
+verification code</p>
+<p><img alt="MFA TOTP second login" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_totp_second_login.png" width="32%" /></p>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>For TOTP MFA to work your Zabbix server must have correct time. Sometimes
+it's not the case especially if you are working with containers so pay attention
+to this.</p>
+</details>
+<p>If a user changes (or loses) his/her phone, then Zabbix administrator should reset
+his/her enrolment. To do that in the menu select <code>Users</code> then mark a check-box to
+the left of "test" user and click "Reset TOTP secret" button.</p>
+<p><img alt="MFA TOTP reset password" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_totp_reset_password.png" width="99%" /></p>
+<p>After you reset TOTP secret the "test" user will have to undergo enrolment procedure
+again.</p>
+<hr />
+<h3 id="duo-mfa-provider">Duo MFA provider</h3>
+<p>Duo is a very famous security platform that provides a lot of security related features/products.
+To read more please visit <a href="https://duo.com/">Duo</a>. Here we'll talk about Duo only
+in regards to Zabbix MFA.</p>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>For Duo MFA to work your Zabbix WebUI must be configured to work with HTTPS
+(valid certificate is not required, self-signed certificate will work).</p>
+</details>
+<p>First of all you need to create an account with Duo (it's free to manage up to
+10 users) then login into Duo, you are an admin here. In the menu on the left select
+<code>Applications</code> and click <code>Protect an Application</code> button.</p>
+<p><img alt="MFA DUO applications" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_applications.png" width="99%" /></p>
+<p>Then you will see WebSDK in applications list, click on it</p>
+<p><img alt="MFA DUO applications list" src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_applications_list.png" width="99%" /></p>
+<p>Here you'll see all the data needed for Zabbix.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_data.png" width="99%" /></p>
+<p>Now let's go to Zabbix. First we need to configure Duo MFA method. In the menu select
+<code>Users</code> and click <code>Authentication</code>. Then on <code>MFA settings</code> tab click <code>Add</code> in
+<code>Methods</code> section.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_add_method.png" width="99%" /></p>
+<p>Fill in all the fields with data from Duo Dashboard -&gt; Applications -&gt; Web SDK page
+(see screenshot above) and click <code>Add</code>, then click <code>Update</code> to update Authentication
+settings.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_method_data.png" width="99%" /></p>
+<p>After the MFA method is configured let's switch the "Test" group to use Duo MFA.
+In the menu select <code>Users</code> and click <code>User groups</code>, then click "test" group. In
+the field <code>Multi-factor authentication</code> select "DUO1" and click <code>Update</code>.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_user_group.png" width="99%" /></p>
+<p>Everything is ready. Let's test it. Sign out of Zabbix and sign back in with "test"
+user. You should see a welcome screen from Duo. Click several <code>Next</code> buttons.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_welcome.png" width="32%" />
+<img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_welcome1.png" width="32%" />
+<img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_welcome2.png" width="32%" /></p>
+<p>Then you need to select the method of authentication.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_auth_method.png" width="50%" /></p>
+<p>It is up to you what to select you can experiment with all these methods. Let's
+select "Duo Mobile" (you need to install "Duo mobile" application on your device).
+Click <code>I have a tablet</code> (it's just easier to activate your device this way) and
+confirm that you installed "Duo mobile" on your phone. At this point you should
+see a QR code that you need to scan in "Duo mobile" application.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_duo_app.png" width="32%" />
+<img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_confirm_app_installed.png" width="32%" />
+<img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_scan_qr.png" width="32%" /></p>
+<p>Open "Duo mobile" on your phone. If you did not have this application previously
+installed (thus no accounts enrolled) you will see couple of welcome screens.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_phone_welcome.png" width="48%" />
+<img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_phone_add_account.png" width="48%" /></p>
+<p>Tap on "Use a QR code" and then scan the code presented by Duo in your Zabbix login
+screen. After you do that you will see that the account is enrolled to your Duo
+MFA. Enter account name and tap "Done" and you will see the account in the list
+of all accounts enrolled into Duo MFA on this device. In Zabbix WebUI you will
+also see a confirmation, click "Continue".</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_phone_account_added.png" width="32%" />
+<img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_phone_accounts.png" width="32%" />
+<img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_enrollement_confirmation.png" width="32%" /></p>
+<p>Duo will ask you now whether you want to add another method of authentication,
+click <code>Skip for now</code> and you'll see a confirmation that set up completed. Click
+<code>Login with Duo</code> and a notification will be pushed to your device.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_another_method.png" width="32%" />
+<img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_setup_completed.png" width="32%" />
+<img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_push_sent.png" width="32%" /></p>
+<p>Now just tap on "Approve" on your device and you will be logged in into Zabbix.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_phone_push_notification.png" width="50%" /></p>
+<p>Duo MFA enrolment complete. If you sign out and sign in back then immediately a
+push notification will be sent to your device and all you need is tap on
+"Approve". Also you will see the user "test" in Duo where you can delete the user,
+or deactivate just click on it and experiment.</p>
+<p><img alt="MFA DUO " src="../../../ch02-zabbix-installation/external-auth/ch02-mfa_duo_users.png" width="98%" /></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In conclusion, integrating external authentication mechanisms like SAML with Zabbix
+significantly enhances security and streamlines user management. While the configuration
+process involves meticulous steps across both the Zabbix backend and frontend,
+as well as the external Identity Provider, the benefits are substantial. By centralizing
+authentication, organizations can enforce consistent access policies, simplify
+user onboarding and offboarding, and improve overall security posture. Ultimately,
+external authentication provides a robust and scalable solution for managing user
+access within complex Zabbix environments.</p>
+<h2 id="questions">Questions</h2>
+<h2 id="useful-urls">Useful URLs</h2>
+<p><a href="https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap">https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap</a></p>
+<p><a href="https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/saml">https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/saml</a></p>
+<p><a href="https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/mfa">https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/mfa</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+    
+    
+        
+            
+            
+        
+		
+		
+    
+
+  </body>
+</html>
