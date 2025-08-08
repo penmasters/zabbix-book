@@ -2290,7 +2290,9 @@ On the next page, you'll configure the database connection parameters:
    is zabbix. If you are using PostgreSQL, you will also need to provide the schema
    name, which is zabbix_server in our case.
 4. `Enter the Database User`: Input the database user created for the web front-end,
-   such as zabbix-web. Enter the corresponding password for this user.
+   remember in our basic installation guide we created 2 users zabbix-web and zabbix-srv.
+   One for the frontend and the other one for our zabbix server so here we will use 
+   the user `zabbix-web`. Enter the corresponding password for this user.
 
 Ensure that the `Database TLS encryption` option is not selected, and then click
 `Next step` to proceed.
