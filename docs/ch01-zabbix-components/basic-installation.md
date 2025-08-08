@@ -13,6 +13,17 @@ which we will discuss in detail.
 - The Zabbix web server
 - The Zabbix database
 
+!!! info "Creation of DB users"
+
+    ``` yaml
+    In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
+    zabbix-web user will be used for the frontend to connect to our zabbix database.
+    The zabbix-srv user will be used by our zabbix server to connect to the database.
+    This allows us to limit the permissions for every user to only what is strictly
+    needed.
+    ```
+
+
 ![overview](ch01-basic-installation-zabbixserver.png){ align=left }
 
 _1.1 Zabbix basic
