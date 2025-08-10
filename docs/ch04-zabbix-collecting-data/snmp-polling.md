@@ -1009,10 +1009,44 @@ so add this as the second preprocessing step.
 
 ![ch04.34-snmp-item-preprocessing.png](ch04.34-snmp-item-preprocessing.png)
 
-_preprocessing steps_
+_preprocessing
+steps_
+
+Going now to our latest data page will show use the In and Our traffic for our
+network card but with data gathered in different ways. Both ways use the
+synchronous pollers but the last way will gather all data at once and then
+pre-process it.
+
+After you have added more items you can remove the option to keep history from
+your master items.
 
 ## Conclusion
 
+SNMP polling remains a vital method for monitoring network devices when agents
+aren't an option. With Zabbix's asynchronous polling, checks can run in parallel,
+dramatically improving performance and lowering the load on both your server and
+the network. SNMPv3 should be your go-to choice, delivering authentication and
+encryption to secure sensitive data. The SNMP walk item type adds another advantage
+collecting multiple metrics in bulk with a single request, making discovery and
+ongoing polling faster and more efficient.
+
+By combining these modern features with carefully tuned polling intervals and
+item counts, you can create an SNMP setup that is secure, efficient, and scalable.
+And with asynchronous speed, SNMPv3 security, and bulk walks at your disposal, you're
+ready to monitor more devices, in less time, with greater confidence. Now it's
+time to put these capabilities to work and see just how far your monitoring can
+go.
+
 ## Questions
 
+- Why is it better use SNMPv3 instead of v2c or v1 ?
+- Do I need to configure pollers for SNMP ? If so which pollers ?
+- Can I still use the old style to monitor SNMP ? Should I start using get[]
+  and walk[] instead ?
+
 ## Useful URLs
+
+- https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp
+- https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol
+- https://datatracker.ietf.org/doc/html/rfc3410
+- https://blog.zabbix.com/zabbix-snmp-what-you-need-to-know-and-how-to-configure-it/10345/
