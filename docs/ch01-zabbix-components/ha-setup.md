@@ -126,9 +126,10 @@ Update the following lines to connect to the database:
 Configure the HA parameters for this server:
 
 !!! info ""
-`yaml
+
+    ```yaml
     HANodeName=zabbix1 (or choose a name you prefer)
-   `
+    ```
 
 Specify the frontend node address for failover scenarios:
 
