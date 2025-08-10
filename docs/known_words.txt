@@ -235,5 +235,9 @@ dc
 catalog
 snmpget
 snmpwalk
+snmptable
+snmptranslate
 subtree
 itemtypes
+iftable
+frac
