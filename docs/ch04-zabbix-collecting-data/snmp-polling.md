@@ -189,6 +189,8 @@ graph TD
     B -->|SNMP Response| A
 ```
 
+_4.28 Overview_
+
 Before we start lets go over a few tools that we will use and explain what they
 exactly do.
 
@@ -778,6 +780,236 @@ The result is the specific OID for the inbound octets on the `enp0s1` interface:
 
 This is the OID you would use to configure an SNMP item in Zabbix to monitor the
 network traffic for this specific interface.
+
+Another useful tool that will help here is `snmptranslate` which does the same
+thing and also the other way back.
+
+!!! info "snmptranslate"
+
+    ```
+    snmptranslate -On IF-MIB::ifInOctets.2
+    .1.3.6.1.2.1.2.2.1.10.2
+
+    snmptranslate .1.3.6.1.2.1.2.2.1.10.2
+    IF-MIB::ifInOctets.2
+    ```
+
+There is yet another tool that helps to visualise a SNMP table with the easy to
+remember name ... `snmptable`. This tool allows you to see the data more easy
+then a simple a snmp walk. To stay with our network cards have a look at this
+output.
+
+!!! info "snmptable"
+
+    ``` bash
+    snmptable -v 2c -c public 127.0.0.1 IF-MIB::ifTable
+    SNMP table: IF-MIB::ifTable
+
+     ifIndex ifDescr    ifType           ifMtu  ifSpeed    ifPhysAddress     ifAdminStatus
+       1      lo        softwareLoopback 65536  10000000                     up
+       2  enp0s1        ethernetCsmacd    1500        0    76:ae:5:aa:5f:45  up
+    ```
+
+### Polling a single SNMP item
+
+Ok enough with the theory let's create an actual item in Zabbix. Create a new
+host with the name `SNMP Device` and place it in a group `SNMP Devices`. We also
+need to tell Zabbix where we can find our SNMP device as Zabbix is doing the
+polling (Or if we use a Proxy it will be the proxy.)
+
+So let's add a `SNMP Interface` and give it the IP of the device we would like
+to monitor. If you have been following our steps on the local machine you can
+use ip 127.0.0.1, our own server.
+
+![Host Interface](ch04.29-snmp-host-.png)
+
+_4.29 SNMP Interface_
+
+Once our host is created and saved with the correct interface we have to create
+an item on the host. Click on `items` next to the host `SNMP Device`. On the top
+right click the box `Create item` you will be greeted with another form to fill
+in the item information.
+
+- **Name:** In traffic enp0s1 (A short descriptive name)
+- **Type:** SNMP Agent
+- **Key:** snmp.in (free form short descriptive)
+- **Type of information:** Numeric(Unsigned)
+- **Host interface:** The SNMP interface we created on our host. If you have
+  more then 1 interface just select the one you need.
+- **SNMP OID:** get[oid] to retrieve the information or only the oid but then it
+  will use synchronous polling.
+- **Units:** The data is in bytes so use B.
+
+![ch04.30-snmp-item.png](ch04.30-snmp-item.png)
+
+_04.30 SNMP Item_
+
+Before we safe this item there is one more important step we need to do. Network
+items are usually counters. Meaning the device is just counting the amount of
+traffic that passed the interface. This means the counter will always go up as
+more data passes the interface over time. So we need to calculate a delta.
+
+For this we can use preprocessing steps so let's move to the tab `preprocessing`
+first before we save it.
+
+Add a preprocessing step with the name `Change per second`
+
+![ch04.31-snmp-item-preprocessing.png](ch04.31-snmp-item-preprocessing.png)
+
+_snmp preprocessing_
+
+We can now safe the item and have a look at our latest data page we should have
+a nice graph with our data over time.
+
+If you decide to use the test button before you safe the item (this is always a
+good idea then don't forget that Zabbix needs 2 item values tot calculate the
+difference. ) So you will have to test the `Get value and test` button twice.
+
+Also don't forget to select the `Get value from host` box so Zabbix retrieves it
+from the host.
+
+#### How does change per second work ?
+
+Given a counter value sampled at two different times:
+
+- At time \( t_1 \), the counter value is \( C_1 \).
+- At time \( t_2 \), the counter value is \( C_2 \).
+
+The change per second (rate) is calculated as:
+
+$$
+\text{Rate} = \frac{C_2 - C_1}{t_2 - t_1}
+$$
+
+where \( t_2 - t_1 \) is the time elapsed in seconds.
+
+---
+
+**If the counter rolls over** (i.e., \( C_2 < C_1 \)), and the max counter value is \( M \), then adjust as:
+
+$$
+\text{Rate} = \frac{(M - C_1) + C_2 + 1}{t_2 - t_1}
+$$
+
+### Polling a list of item
+
+Let's do the same for our snmp walk item. This time we will look for the
+information from all our interfaces. For this we need to find our correct OID
+first. This can be done with `snmptranslate` which will convert our table name
+to an OID,
+
+```bash
+snmptranslate -On IF-MIB::ifTable
+.1.3.6.1.2.1.2.2
+```
+
+This is the OID we can use in our item. Let's clone our previous item and make
+some changes.
+
+- **Name:** ifTable (or another descriptive name)
+- **Key:** snmp.ifTable
+- **Type of information:**: Text
+- **SNMP OID:** walk[.1.3.6.1.2.1.2.2]
+
+The rest can stay as is just remove the preprocessing step we added in earlier
+example as this item will return us a whole list of information.
+
+![ch04.32-snmp-walk.png](ch04.32-snmp-walk.png)
+
+_04.32 SNMP Walk_
+
+When we press the `Get value and test` button in the test item screen we get a
+whole list of data.
+
+```bash
+.1.3.6.1.2.1.2.2.1.1.1 = INTEGER: 1
+.1.3.6.1.2.1.2.2.1.1.2 = INTEGER: 2
+.1.3.6.1.2.1.2.2.1.2.1 = STRING: "lo"
+.1.3.6.1.2.1.2.2.1.2.2 = STRING: "enp0s1"
+.1.3.6.1.2.1.2.2.1.3.1 = INTEGER: 24
+.1.3.6.1.2.1.2.2.1.3.2 = INTEGER: 6
+.1.3.6.1.2.1.2.2.1.4.1 = INTEGER: 65536
+.1.3.6.1.2.1.2.2.1.4.2 = INTEGER: 1500
+.1.3.6.1.2.1.2.2.1.5.1 = Gauge32: 10000000
+.1.3.6.1.2.1.2.2.1.5.2 = Gauge32: 0
+.1.3.6.1.2.1.2.2.1.6.1 = STRING: ""
+.1.3.6.1.2.1.2.2.1.6.2 = STRING: "76:ae:5:aa:5f:45"
+.1.3.6.1.2.1.2.2.1.7.1 = INTEGER: 1
+.1.3.6.1.2.1.2.2.1.7.2 = INTEGER: 1
+.1.3.6.1.2.1.2.2.1.8.1 = INTEGER: 1
+.1.3.6.1.2.1.2.2.1.8.2 = INTEGER: 1
+.1.3.6.1.2.1.2.2.1.9.1 = 0
+.1.3.6.1.2.1.2.2.1.9.2 = 0
+.1.3.6.1.2.1.2.2.1.10.1 = Counter32: 69417222
+.1.3.6.1.2.1.2.2.1.10.2 = Counter32: 59215034
+.1.3.6.1.2.1.2.2.1.11.1 = Counter32: 6460587
+.1.3.6.1.2.1.2.2.1.11.2 = Counter32: 113038
+.1.3.6.1.2.1.2.2.1.12.1 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.12.2 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.13.1 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.13.2 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.14.1 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.14.2 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.15.1 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.15.2 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.16.1 = Counter32: 69417222
+.1.3.6.1.2.1.2.2.1.16.2 = Counter32: 44139841
+.1.3.6.1.2.1.2.2.1.17.1 = Counter32: 6460587
+.1.3.6.1.2.1.2.2.1.17.2 = Counter32: 97398
+.1.3.6.1.2.1.2.2.1.18.1 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.18.2 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.19.1 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.19.2 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.20.1 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.20.2 = Counter32: 0
+.1.3.6.1.2.1.2.2.1.21.1 = Gauge32: 0
+.1.3.6.1.2.1.2.2.1.21.2 = Gauge32: 0
+.1.3.6.1.2.1.2.2.1.22.1 = OID: .0.0
+.1.3.6.1.2.1.2.2.1.22.2 = OID: .0.0
+```
+
+So we have the traffic in but we would like to find traffic out as well of
+course. Let's use our walk item to extract the outgoing traffic for this we need
+to create a dependent item.
+
+Go to `Data collection` - `Hosts` and click on `Items`. You should be able to
+see our newly created `ifTable` item and 3 dots before it's name.
+
+Click on those 3 dots and select `Create dependent item` from the list.
+Fill in the new item with the following information.
+
+- **Name:** Out traffic enp0s1
+- **Type:** dependent item
+- **Key:** snmp.out
+- **Type of information:** Unsigned
+- **Master item:** Already filled in but should be our item ifTable that we made
+  before.
+- **Units:** B
+
+![ch04.33-snmp-dependent-item.png](ch04.33-snmp-dependent-item.png)
+
+_Dependent SNMP Item_
+
+This item as is at the moment is an exact copy of our master item so we need to
+add some preprocessing steps first. Let's go to the tab `preprocessing` and add
+our first step.
+
+Add the step `SNMP walk value` and after it paste the OID we want `.1.3.6.1.2.1.2.2.1.16.1`
+and choose `unchanged`.
+
+!!! info "find our correct OID"
+
+    ``` bash
+    snmptranslate IF-MIB::ifOutOctets.1 -On
+    .1.3.6.1.2.1.2.2.1.16.1
+    ```
+
+Remember from our previous item we need to calculate the `Changes per second`
+so add this as the second preprocessing step.
+
+![ch04.34-snmp-item-preprocessing.png](ch04.34-snmp-item-preprocessing.png)
+
+_preprocessing steps_
 
 ## Conclusion
 

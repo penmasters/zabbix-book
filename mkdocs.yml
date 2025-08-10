@@ -244,6 +244,9 @@ plugins:
       include_css: false # dont put true else no toc
       enabled: true
 
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
 # extensions
 markdown_extensions:
   - pymdownx.highlight:
@@ -254,7 +257,6 @@ markdown_extensions:
   - pymdownx.snippets
   - admonition
   - pymdownx.details
-  - pymdownx.superfences:
   - pymdownx.superfences:
       # make exceptions to highlighting of code:
       custom_fences:
