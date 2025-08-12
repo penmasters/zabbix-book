@@ -355,14 +355,12 @@ This output provides a concise summary of the device's status, indicating a succ
 SNMP query. Let's break down what each part means:
 
 1. **`snmpstatus -v2c -c public 127.0.0.1`**:
-
    - `-v2c`: Specifies that SNMP version 2c was used.
    - `-c public`: Indicates that the community string "public" was used for authentication.
    - `127.0.0.1`: This is the target IP address, in this case, the localhost (the
      machine on which the command was run).
 
 2. **`[UDP: [127.0.0.1]:161->[0.0.0.0]:33310]`**:
-
    - This section describes the communication path.
    - `UDP`: Confirms that the User Datagram Protocol was used, which is standard
      for SNMP.
@@ -374,7 +372,6 @@ SNMP query. Let's break down what each part means:
 
 3. **`=>[Linux localhost.localdomain 5.14.0-570.28.1.el9_6.aarch64 #1 SMP PREEMPT
 _DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64]`**:
-
    - This is crucial information about the queried device itself.
    - `Linux localhost.localdomain`: Identifies the operating system as Linux, with
      the hostname `localhost.localdomain`.
@@ -383,12 +380,10 @@ _DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64]`**:
      kernel build details, including the build date and time.
 
 4. **`Up: 1:24:36.58`**:
-
    - This indicates the **uptime** of the device. The system has been running for
      1 day, 24 hours, 36 minutes, and 58 seconds.
 
 5. **`Interfaces: 2, Recv/Trans packets: 355763/355129 | IP: 37414/35988`**:
-
    - **`Interfaces: 2`**: This tells us that the device has detected 2 network interfaces.
    - **`Recv/Trans packets: 355763/355129`**: These numbers represent the total
      number of packets received and transmitted across _all_ network interfaces
@@ -684,6 +679,23 @@ Now that we have covered how SNMP works, it's time to put that knowledge into
 practice. We'll start up our Zabbix instance and begin monitoring, but first,
 it's crucial to understand the two different methods Zabbix offers for retrieving
 SNMP information from a device.
+
+!!! warning
+
+    ```
+    The RFC3411 Specs specify that an EngineID needs to be unique this is very
+    important for monitoring. You will see errors like Bad parse of ASN.1 if you
+    have a conflict.
+
+    Within an administrative domain, an snmpEngineID is the unique and
+    unambiguous identifier of an SNMP engine.  Since there is a one-to-
+    one association between SNMP engines and SNMP entities, it also
+    uniquely and unambiguously identifies the SNMP entity within that
+    administrative domain.  Note that it is possible for SNMP entities in
+    different administrative domains to have the same value for
+    snmpEngineID.  Federation of administrative domains may necessitate
+    assignment of new values.
+    ```
 
 ---
 
@@ -1046,7 +1058,8 @@ go.
 
 ## Useful URLs
 
-- https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp
-- https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol
-- https://datatracker.ietf.org/doc/html/rfc3410
-- https://blog.zabbix.com/zabbix-snmp-what-you-need-to-know-and-how-to-configure-it/10345/
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp)
+- [https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol](https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol)
+- [https://datatracker.ietf.org/doc/html/rfc3410](https://datatracker.ietf.org/doc/html/rfc3410)
+- [https://blog.zabbix.com/zabbix-snmp-what-you-need-to-know-and-how-to-configure-it/10345/](https://blog.zabbix.com/zabbix-snmp-what-you-need-to-know-and-how-to-configure-it/10345/)
+- [https://datatracker.ietf.org/doc/html/rfc3411#section-3.1.1.1](https://datatracker.ietf.org/doc/html/rfc3411#section-3.1.1.1)
