@@ -354,44 +354,41 @@ this is just an example output it will differ from your result.
 This output provides a concise summary of the device's status, indicating a successful
 SNMP query. Let's break down what each part means:
 
-1. **`snmpstatus -v2c -c public 127.0.0.1`**:
-   - `-v2c`: Specifies that SNMP version 2c was used.
-   - `-c public`: Indicates that the community string "public" was used for authentication.
-   - `127.0.0.1`: This is the target IP address, in this case, the localhost (the
-     machine on which the command was run).
+1.  **`snmpstatus -v2c -c public 127.0.0.1`**:
+    - `-v2c`: Specifies that SNMP version 2c was used.
+    - `-c public`: Indicates that the community string "public" was used for authentication.
+    - `127.0.0.1`: This is the target IP address, in this case, the localhost (the
+      machine on which the command was run).
 
-2. **`[UDP: [127.0.0.1]:161->[0.0.0.0]:33310]`**:
-   - This section describes the communication path.
-   - `UDP`: Confirms that the User Datagram Protocol was used, which is standard
-     for SNMP.
-   - `[127.0.0.1]:161`: This is the source of the SNMP request and the standard
-     SNMP port (161) on which the SNMP agent listens.
-   - `->[0.0.0.0]:33310`: This indicates the destination of the response. `0.0.0.0`
-     is a placeholder for "any address," and `33310` is a high-numbered ephemeral
-     port used by the client to receive the response.
+2.  **`[UDP: [127.0.0.1]:161->[0.0.0.0]:33310]`**:
+    - This section describes the communication path.
+    - `UDP`: Confirms that the User Datagram Protocol was used, which is standard
+      for SNMP.
+    - `[127.0.0.1]:161`: This is the source of the SNMP request and the standard
+      SNMP port (161) on which the SNMP agent listens.
+    - `->[0.0.0.0]:33310`: This indicates the destination of the response. `0.0.0.0`
+      is a placeholder for "any address," and `33310` is a high-numbered ephemeral
+      port used by the client to receive the response.
 
-3. **`=>[Linux localhost.localdomain 5.14.0-570.28.1.el9_6.aarch64 #1 SMP PREEMPT
-_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64]`**:
-   - This is crucial information about the queried device itself.
-   - `Linux localhost.localdomain`: Identifies the operating system as Linux, with
-     the hostname `localhost.localdomain`.
-   - `5.14.0-570.28.1.el9_6.aarch64`: This is the kernel version and architecture
-   - `#1 SMP PREEMPT_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64`: Provides further
-     kernel build details, including the build date and time.
+3.  **`[Linux localhost.localdomain 5.14.0-570.28.1.el9_6.aarch64 #1 SMP PREEMPT_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64]`**:
+    - This is crucial information about the queried device itself.
+    - `Linux localhost.localdomain`: Identifies the operating system as Linux, with the hostname `localhost.localdomain`.
+    - `5.14.0-570.28.1.el9_6.aarch64`: This is the kernel version and architecture
+    - `#1 SMP PREEMPT_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64`: Provides further kernel build details, including the build date and time.
 
-4. **`Up: 1:24:36.58`**:
-   - This indicates the **uptime** of the device. The system has been running for
-     1 day, 24 hours, 36 minutes, and 58 seconds.
+4.  **`Up: 1:24:36.58`**:
+    - This indicates the **uptime** of the device. The system has been running for
+      1 day, 24 hours, 36 minutes, and 58 seconds.
 
-5. **`Interfaces: 2, Recv/Trans packets: 355763/355129 | IP: 37414/35988`**:
-   - **`Interfaces: 2`**: This tells us that the device has detected 2 network interfaces.
-   - **`Recv/Trans packets: 355763/355129`**: These numbers represent the total
-     number of packets received and transmitted across _all_ network interfaces
-     on the device since it was last booted.
-   - **`IP: 37414/35988`**: These figures likely represent the number of IP datagrams
-     received and sent specifically by the IP layer on the device. This provides
-     a more specific metric of IP traffic compared to the total packet count
-     which includes other layer 2 protocols.
+5.  **`Interfaces: 2, Recv/Trans packets: 355763/355129 | IP: 37414/35988`**:
+    - **`Interfaces: 2`**: This tells us that the device has detected 2 network interfaces.
+    - **`Recv/Trans packets: 355763/355129`**: These numbers represent the total
+      number of packets received and transmitted across _all_ network interfaces
+      on the device since it was last booted.
+    - **`IP: 37414/35988`**: These figures likely represent the number of IP datagrams
+      received and sent specifically by the IP layer on the device. This provides
+      a more specific metric of IP traffic compared to the total packet count
+      which includes other layer 2 protocols.
 
 In summary, this output from `snmpstatus` quickly provides a clear overview of a
 Linux system's basic health and network activity, confirming that the SNMP agent
