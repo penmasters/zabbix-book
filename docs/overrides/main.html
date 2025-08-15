@@ -3,16 +3,22 @@
 {# Add this new block for LinkedIn / social meta tags #}
 {% block extrahead %}
     {{ super() }}
-    <meta property="og:title" content="The Zabbix Book" />
-    <meta property="og:description" content="An open-source Zabbix book." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.thezabbixbook.com/" />
-    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg" />
+    {# Beschrijving: neem page.meta.description, anders site_description #}
+    {% set desc = (page.meta.description if page and page.meta and page.meta.description
+                   else config.site_description) | striptags | e %}
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="The Zabbix Book" />
-    <meta name="twitter:description" content="An open-source Zabbix book." />
-    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg" />
+    <meta property="og:title" content="{{ page.title if page else config.site_name }}">
+    <meta property="og:description" content="{{ desc }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ page.canonical_url if page else config.site_url }}">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page.title if page else config.site_name }}">
+    <meta name="twitter:description" content="{{ desc }}">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
 {% endblock %}
 
 {% block content %}
