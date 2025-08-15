@@ -1,5 +1,20 @@
 {% extends "base.html" %}
 
+{# Add this new block for LinkedIn / social meta tags #}
+{% block extrahead %}
+    {{ super() }}
+    <meta property="og:title" content="The Zabbix Book" />
+    <meta property="og:description" content="An open-source Zabbix book." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.thezabbixbook.com/" />
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Zabbix Book" />
+    <meta name="twitter:description" content="An open-source Zabbix book." />
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg" />
+{% endblock %}
+
 {% block content %}
 
 {% if page.url_to_print_page %}
