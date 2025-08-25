@@ -97,8 +97,141 @@ flowchart LR
 
 ```
 
+## Setup Tomcat to monitor with Zabbix.
+
+We need a dedicated machine to test JMX monitoring with Zabbix. While you could set
+this up on your Zabbix server, using a separate host more accurately reflects a
+real-world monitoring scenario. For this purpose, we'll use a fresh virtual machine
+running either Rocky or Ubuntu. Our goal is to install and correctly configure
+Tomcat on this machine, which will serve as our JMX-enabled target.
+
+???+ info "Setup Tomcat"
+
+    Red hat
+    ```
+    dnf install tomcat
+    vi /etc/sysconfig/tomcat
+    ```
+    Ubuntu
+    ```
+    ```
+    Add the following config:
+
+    ```yaml
+    JAVA_OPTS="\
+      -Dcom.sun.management.jmxremote=true \
+      -Dcom.sun.management.jmxremote.port=8686 \
+      -Dcom.sun.management.jmxremote.rmi.port=8686 \
+      -Dcom.sun.management.jmxremote.authenticate=false \
+      -Dcom.sun.management.jmxremote.ssl=false \
+      -Djava.rmi.server.hostname=<local ip or hostname>"
+    ```
+
+### Explanation of Each Line
+
+Let's go over the lines we just configured. They are a set of configuration options,
+called **JMX options**, passed to the Java Virtual Machine (JVM) at startup. These
+options enable and configure the Java Management Extensions (JMX) agent, which
+allows for remote monitoring and management of the application, in this case,
+Apache Tomcat.
+
+- **`JAVA_OPTS="... "`**
+  This is a variable used by Tomcat's startup scripts to hold a collection of
+  command-line arguments for the Java process. The backslash (`\`) at the end of
+  each line is a shell syntax feature that allows a single command or variable
+  to span multiple lines, making the configuration easier to read.
+
+- **`-Dcom.sun.management.jmxremote=true`**
+  This is the main switch to enable the JMX remote agent. By setting this to `true`,
+  you're telling the JVM to start the JMX management server.
+
+- **`-Dcom.sun.management.jmxremote.port=8686`**
+  This option specifies the **port number** for the JMX agent to listen on for
+  incoming connections. In this case, it's set to `8686`.
+
+- **`-Dcom.sun.management.jmxremote.rmi.port=8686`**
+  This sets the port for the **RMI (Remote Method Invocation) server**. The JMX
+  agent uses RMI to communicate with remote clients. In this configuration,
+  both the JMX agent and the RMI server are configured to use the same port,
+  simplifying the setup.
+
+- **`-Dcom.sun.management.jmxremote.authenticate=false`**
+  This disables authentication for JMX connections. For production environments,
+  this should be set to `true` to require a username and password. Setting it to
+  `false` is only suitable for development or testing environments.
+
+- **`-Dcom.sun.management.jmxremote.ssl=false`**
+  This disables Secure Sockets Layer (SSL) for JMX connections, meaning communication
+  is not encrypted. Like authentication, this should be set to `true` in a production
+  environment to secure the connection.
+
+- **`-Djava.rmi.server.hostname=<local ip>"`**
+  This is a crucial option that tells the RMI server which **IP address** to announce
+  to clients. Clients will use this hostname to connect to the server. If this
+  is not explicitly set, the RMI server might use the server's internal hostname
+  or a loopback address (`127.0.0.1`), which would prevent external connections.
+  By setting it to `<your local IP>`, you ensure that the JMX port is bound to
+  the correct network interface for remote access.
+
+???+ Note
+
+    ``` bash
+    There isn't a single, universally "standard" port for JMX that is accepted
+    across all applications and vendors. The JMX specification itself does not
+    define a default port, leaving it to the implementer to choose one.
+
+    However, certain ports have become common or de facto standards within the Java
+    ecosystem. The most frequently seen ports for JMX are in the high-number range,
+    typically:
+
+    - 1099: This port is a historic default for the RMI Registry, which JMX often
+      uses for communication. While it's not strictly a JMX port, it's often
+      associated with older JMX configurations.
+
+    - 8686: This port is a well-accepted and formally registered port for JMX with
+      the Internet Assigned Numbers Authority (IANA). The IANA service name for port
+      8686 is sun-as-jmxrmi. This makes it a great choice because it's officially
+      recognized and less likely to conflict with other common services.
+
+    Why Port 8686 is a Good Choice?
+    Port 8686 is a User Port (1024-49151), which means it's available for registered
+    services but isn't a "well known" port that requires a special permission level
+    to use. It's IANA registration as sun-as-jmxrmi makes it a safe and logical
+    choice for JMX monitoring, especially when you need to standardize port assignments
+    across a large infrastructure.
+    ```
+
+## Setup Zabbix to monitor JMX
+
+Now that we've set up a JMX-enabled application, we need to configure Zabbix to
+monitor it. Since Zabbix can't connect directly to JMX endpoints, we need an
+intermediary tool: the **Zabbix Java Gateway**.
+
+This gateway needs to be installed and configured on your Zabbix server or proxy,
+allowing a single gateway to service multiple JMX applications. The gateway operates
+in a passive mode, which means it polls data directly from your JMX application.
+The Zabbix server or proxy then polls the gateway to retrieve this data, completing
+the connection chain.
+
+???+ Info "Install the JAVA Gateway"
+
+    Red Hat
+    ```
+    dnf install zabbix-java-gateway
+    ```
+    Ubuntu
+    ```
+    Todo
+    ```
+
+## Monitoring JMX items
+
 ## Conclusion
 
 ## Questions
 
 ## Useful URLs
+
+- [https://www.youtube.com/watch?v=aKGYa6Y9r60&t=87s](https://www.youtube.com/watch?v=aKGYa6Y9r60&t=87s)
+- [https://docs.oracle.com/javase/1.5.0/docs/guide/management/agent.html](https://docs.oracle.com/javase/1.5.0/docs/guide/management/agent.html)
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/jmx_monitoring](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/jmx_monitoring)
