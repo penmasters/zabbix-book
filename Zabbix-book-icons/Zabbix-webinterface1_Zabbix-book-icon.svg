@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #656565;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="cls-1" d="M36.15,20.01h37.72c2.12,0,3.86,1.73,3.86,3.86v37.11"/>
+    <path class="cls-1" d="M51.48,20.01H13.77c-2.12,0-3.86,1.73-3.86,3.86v37.11"/>
+    <line class="cls-1" x1="77.73" y1="23.51" x2="9.91" y2="23.51"/>
+    <path class="cls-1" d="M72.47,67.99H14.8c-4.1,0-7.59-2.97-8.26-7.01h74.92c-1.04,4.12-4.75,7.01-9,7.01h.01Z"/>
+    <rect class="cls-1" x="30.7" y="60.98" width="26.63" height="3.36"/>
+  </g>
+  <line class="cls-1" x1="44.01" y1="26.91" x2="44.01" y2="57.17"/>
+  <line class="cls-1" x1="14.9" y1="42.04" x2="73.13" y2="42.04"/>
+  <path class="cls-1" d="M26.93,27.3v5.61h-5.61c0,3.1,2.51,5.61,5.61,5.61s5.61-2.51,5.61-5.61-2.51-5.61-5.61-5.61Z"/>
+  <path class="cls-1" d="M26.93,26.4c-3.59,0-6.5,2.91-6.5,6.5h6.5v-6.5Z"/>
+  <rect class="cls-1" x="14.32" y="54.65" width="6.48" height="2.51"/>
+  <rect class="cls-1" x="23.91" y="45.9" width="6.48" height="2.51"/>
+  <rect class="cls-1" x="33.5" y="54.65" width="6.48" height="2.51"/>
+  <line class="cls-1" x1="27.15" y1="49.21" x2="27.15" y2="54.15"/>
+  <polyline class="cls-1" points="17.56 54.65 17.56 51.68 36.74 51.68 36.74 54.65"/>
+  <rect class="cls-1" x="23.91" y="54.65" width="6.48" height="2.51"/>
+  <polyline class="cls-1" points="54.19 50.61 56.88 50.61 59.23 54.06 60.48 47.89 62.2 50.88 64.9 50.88"/>
+  <circle class="cls-1" cx="59.54" cy="50.98" r="6"/>
+  <line class="cls-1" x1="63.77" y1="55.39" x2="67.31" y2="58.94"/>
+  <polyline class="cls-1" points="67.64 30.46 69.64 32.45 72.82 29.28"/>
+  <line class="cls-1" x1="60.04" y1="35.31" x2="64.84" y2="30.5"/>
+  <polyline class="cls-1" points="47.89 36.94 53.44 31.39 57.31 35.25"/>
+  <circle class="cls-1" cx="58.66" cy="36.18" r="1.64"/>
+  <circle class="cls-1" cx="66.23" cy="29.63" r="1.64"/>
+</svg>

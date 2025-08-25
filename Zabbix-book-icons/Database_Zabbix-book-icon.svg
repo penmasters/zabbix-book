@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #656565;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #656565;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <path class="cls-2" d="M44,42.71c9.669,0,18.157-2.499,22.964-6.26"/>
+  <path class="cls-2" d="M44,57.476c9.669,0,18.157-2.499,22.964-6.26"/>
+  <path class="cls-2" d="M43.995,71.909c9.669,0,18.157-2.499,22.964-6.26"/>
+  <path class="cls-2" d="M16.862,51.216c0,7.406,12.15,13.409,27.138,13.409,14.988,0,27.138-6.004,27.138-13.409"/>
+  <path class="cls-2" d="M16.862,37.47v28.178c0,7.406,12.15,13.409,27.138,13.409,14.988,0,27.138-6.004,27.138-13.409v-28.178"/>
+  <ellipse class="cls-2" cx="44" cy="22.352" rx="27.138" ry="13.409"/>
+  <path class="cls-2" d="M71.138,22.352v14.432c0,7.406-12.15,13.409-27.138,13.409-14.988,0-27.138-6.004-27.138-13.409v-14.07"/>
+  <circle class="cls-1" cx="35.192" cy="42.148" r="1.945"/>
+  <circle class="cls-1" cx="35.192" cy="56.782" r="1.945"/>
+  <circle class="cls-1" cx="35.192" cy="71.552" r="1.945"/>
+</svg>
