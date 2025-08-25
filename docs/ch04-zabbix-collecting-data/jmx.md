@@ -213,6 +213,10 @@ in a passive mode, which means it polls data directly from your JMX application.
 The Zabbix server or proxy then polls the gateway to retrieve this data, completing
 the connection chain.
 
+![Zabbix java gateway](ch04.35-jmx-zabbix.png)
+
+_04.35 JMX Gateway_
+
 ???+ Info "Install the JAVA Gateway"
 
     Red Hat
@@ -224,7 +228,73 @@ the connection chain.
     Todo
     ```
 
+## Configuring Zabbix and the JAVA Gateway
+
+After installing the gateway, you'll find its configuration file at `/etc/zabbix/zabbix_java_gateway.conf`.
+The default `LISTEN_IP` is set to 0.0.0.0, which means it listens on all network
+interfaces, though you can change this. The gateway listens on port 10052, a non
+IANA registered port, which can also be adjusted using the `LISTEN_PORT` option
+if needed.
+
+The first setting we'll change is `START_POLLERS`. We need to uncomment this line
+and set a value, for example, `START_POLLERS=5` to define the number of concurrent
+connections. The TIMEOUT option controls network operation timeouts, while
+`PROPERTIES_FILE` allows you to define or override additional key-value properties,
+such as a keystore password, without exposing them in a command line.
+
+For your Zabbix server, you'll need to update the configuration file at `/etc/zabbix/zabbix_server.conf`.
+
+You'll need to modify three key options:
+
+- **JavaGateway:** Uncomment this line and set its value to the IP address of
+  the host running your Java gateway. This will likely be your Zabbix
+  server itself, but it can be on a separate VM or proxy.
+
+- **JavaGatewayPort:** This option should remain at the default `10052` unless
+  you've changed the port in your gateway's configuration.
+
+- **StartJavaPollers:** Uncomment and set this option to define the number of
+  concurrent Java pollers the server will use. A good starting
+  point is to match the number you set on the gateway, for
+  example, 5.
+
+After making the changes to `/etc/zabbix/zabbix_server.conf` and `/etc/zabbix/zabbix_java_gateway.conf`,
+you need to restart the following services:
+
+- Zabbix Java Gateway
+- Zabbix Server
+
+Restarting these two services applies the new configuration, allowing the server
+to communicate with the Java Gateway and begin polling for JMX data. Also don't
+forget to enable the `Zabbix Java Gateway` service.
+
+???+ Info "Restart the services"
+
+    RedHat and Ubuntu
+    ```
+    systemctl enable zabbix-java-gateway --now
+    systemclt restart zabbix-server
+    ```
+
+On the application side don't forget to open the firewall so that our
+`zabbix-java-gateway` can connect to our application.
+
+`firewall-cmd --add-port=8686/tcp --permanent`
+
+`firewall-cmd --reload`
+
 ## Monitoring JMX items
+
+After all the setup, we can now connect to our Java application's JMX port to
+verify everything is working.
+
+For this, we can use JConsole, a monitoring tool that comes with the Java Development
+Kit (JDK). Another great option is VisualVM, which offers a more visual and feature
+rich experience. You can download it from [https://visualvm.github.io/download.html](https://visualvm.github.io/download.html).
+
+Start your preferred application and connect to our JMX port on 8686.
+
+![Jconsole](ch04.36-jconsole.png)
 
 ## Conclusion
 
