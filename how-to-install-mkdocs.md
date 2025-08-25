@@ -15,31 +15,32 @@ brew install python3
 brew install pango
 ```
 
-## Install pip
+## Install pip3
 
 ```
-pip install --upgrade pip
+pip3 install --upgrade pip3
 ```
 
 ## Install MkDocs and extensions
 
 ```bash
-pip install mkdocs
-pip install mkdocs-material
-pip install mkdocs-print-site-plugin
-pip install mkdocs-static-i18n
-pip install 'mkdocs-spellcheck[all]'
-pip install mkdocs-autolinks-plugin
-pip install mkdocs-mermaid2-plugin
+pip3 install mkdocs
+pip3 install mkdocs-material
+pip3 install mkdocs-print-site-plugin
+pip3 install mkdocs-static-i18n
+pip3 install 'mkdocs-spellcheck[all]'
+pip3 install mkdocs-autolinks-plugin
+pip3 install mkdocs-mermaid2-plugin
 ```
 
-## Install extra pip packages
+## Install extra pip3 packages
 
 ```
-pip install idna
+pip3 install idna
 ```
 
 ```
+
 ```
 
 ## Build your site local and test it
