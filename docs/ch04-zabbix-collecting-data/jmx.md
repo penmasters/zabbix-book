@@ -283,9 +283,17 @@ On the application side don't forget to open the firewall so that our
 
 `firewall-cmd --reload`
 
+???+ Warning
+
+    ```
+    Don't forget to place SeLinux in permissive mode before you start else the
+    JAVA gateway will not work. You should fix SeLinux permissions once the setup
+    is working.
+    ```
+
 ## Monitoring JMX items
 
-After all the setup, we can now connect to our Java application's JMX port to
+After having setup everything, we can now connect to our Java application's JMX port to
 verify everything is working.
 
 For this, we can use JConsole, a monitoring tool that comes with the Java Development
@@ -295,6 +303,132 @@ rich experience. You can download it from [https://visualvm.github.io/download.h
 Start your preferred application and connect to our JMX port on 8686.
 
 ![Jconsole](ch04.36-jconsole.png)
+
+_04.36 Jconsole_
+
+After a successful login you should be greeted with a screen like this. Were you
+have a tree view overview of all the Mbeans we can use to gather information
+from.
+
+![ch04.37 Succesful login](ch04.37-jconsole-mbeans-tree.png)
+
+_04.37 Login screen_
+
+Before we can do this we need to create a new host in our Zabbix server. Let's
+go to `Data collection` - `Hosts` and click on `Create host` in the upper right
+corner. Use the following settings to create our host:
+
+- Hostname : Tomcat
+- Host groups: JMX
+- Interfaces: JMX
+    - IP address: IP of your Tomcat server
+    - Port : 8686 or the port you specified in your Tomcat configuration.
+
+Press the `Add` button when ready.
+
+???+ Note
+
+    ```
+    It seems weird that we not specify the JavaGateway here but it's actually
+    normal. Zabbix knows from its configuration file where the gateway is. So we
+    need to specify the IP and the PORT of the JAVA application here that we would
+    like to monitor.
+    ```
+
+### Create our first item
+
+On our host Tomcat create a new item and add the following information.
+
+- *Name:* requestCount
+- *Type:* JMX Agent
+- *Key:* jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\"", "requestCount"]
+- *Type of information:* Numeric(unsigned)
+- *Host interface:* The JMX interface we just created on our host.
+
+![JMX Item](ch04.38-jmx-requestCount-item.png)
+
+_ch04.38 JMX item_
+
+The rest we can keep as is. Before you safe the item you can press the `Test`
+button. When you press `Get value` or `Get value and test` you should get some
+information back in the value field. This indicates our items works so you can
+safe it.
+
+So this was easy but how did we actually go to the item key ? Let me show you.
+
+Open your Jconsole and in the Mbeans tab go to `Catalina` -
+`GlobalRequestProcessor` - `http-nio-8080`. In the field on the right you will
+see ObjectNAme. This is actually the name you need to copy to paste into the
+item key. `Catalina:type=GlobalRequestProcessor,name="http-nio-8080"` the only
+issue with this key and that's why I have chose this key is that the key needs
+to be quoted with " " but we already have double " in the name so we have to
+escape them with a \. So the result will be
+`jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\""]` but this is
+not complete yet we still have to point to the attribute we like to monitor.
+You can choose one of the many attributes maxTime, requestCount, bytesReceived,
+.... and add it at the end of our key between "" separated with a comma.
+
+`jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\"","requestCount"]`
+
+![requestCount item](ch04.39-jconsole-requestCount.png)
+
+_04.39 requestCount item_
+
+The `java.lang.management.Memory` Mbean is also a nice example it has an
+attribute `HeapMemoryUsage`. This MemoryUsage object is an instance of CompositeData,
+a special type in JMX used to represent complex data structures.
+
+Therefore, you're not calling init, used, committed, or max directly on the MBean
+itself, but rather on the MemoryUsage object that is returned when you access the
+HeapMemoryUsage MBean attribute.
+
+For this we would need an item key like `jmx["java.lang:type=Memory","HeapMemoryUsage.max"]`.
+
+![](ch04.40-jconsole-HeapMemory.Max.png)
+
+_04.40 HeapMemoryUsage
+
+To get the tabular data overview double click on the `value` after the
+`attribute value` `HeapMemoryUsage`.
+
+Zabbix has 3 `item keys` that it can use with JMX we use the jmx[] key but there
+is also jmx.get[] and jmx.discovery[] both are used with LLD but the jmx.get can
+also be used as a normal item key with preprocessing.
+
+### Making use of jmx.get[]
+
+jmx.get[] Return a JSON array with MBean objects or their attributes. Compared
+to jmx.discovery it does not define LLD macros but it can be used for LLD.
+
+We will cover these items in the LLD Chapter of this book. But to give you an
+idea already of what jmx.get does, as it can be used with dependent items without LLD.
+
+you could create an item like `jmx.get[attributes,"*:type=GarbageCollector,name=PS MarkSweep"]`
+This would return a JSON with all the info about the attributes of our garbage
+collector `PS MarkSweep` like this:
+
+``` json
+[
+  {
+    "name": "CollectionCount",
+    "description": "java.lang:type=GarbageCollector,name=PS MarkSweep,CollectionCount",
+    "type": "java.lang.Long",
+    "value": "0",
+    "object": "java.lang:type=GarbageCollector,name=PS MarkSweep"
+  },
+  ...
+  ...
+  ...
+  ...
+  {
+    "name": "ObjectName",
+    "description": "java.lang:type=GarbageCollector,name=PS MarkSweep,ObjectName",
+    "type": "javax.management.ObjectName",
+    "value": "java.lang:type=GarbageCollector,name=PS MarkSweep",
+    "object": "java.lang:type=GarbageCollector,name=PS MarkSweep"
+  }
+]
+```
 
 ## Conclusion
 
