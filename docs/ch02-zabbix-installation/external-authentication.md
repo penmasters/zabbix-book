@@ -2,7 +2,156 @@
 
 ## HTTP
 
----
+HTTP authentication is one of external authentication methods provided by
+Zabbix and can be used to additionally secure your Zabbix WebUI with
+basic authentication mechanism at HTTP server level.
+
+Basic HTTP authentication protects Website (Zabbix WebUI) resources with a
+username and password. When a user attempts to access Zabbix WebUI, the
+browser pops up a dialog asking for credentials before sending anything over
+to Zabbix WebUI php code.
+
+An HTTP server has a file with credentials that is used to authenticate users.
+
+???+ note
+
+    IMPORTANT: usernames configured for basic authentication in HTTP server
+    must exit in Zabbix. But only passwords configured in HTTP server are used
+    for users authentication.
+
+First let's see how we can configure basic authentication in HTTP server.
+
+???+ warning
+
+    The examples below provide just minimum set of options to configure
+    basic authentication. Please refer to respective HTTP server documentation
+    for more details
+
+### Basic authentication in Nginx
+
+Find `location / {` block in Nginx configuration file that defines your Zabbix
+WebUI (in my Zabbix deployment it is `/etc/nginx/conf.d/nginx.conf` file) and
+add these two lines:
+
+```
+    location / {
+        ...
+        auth_basic "Basic Auth Protected Site";
+        auth_basic_user_file /etc/nginx/httpauth;
+    }
+```
+
+Do not forget to restart Nginx service after making this change.
+
+Then you need to create `/etc/nginx/httpauth` file which will keep all users'
+password (make sure to restrict access to this file). Format of this file is
+`username:hashed_password`, for example, for
+users `Admin` and `test`:
+
+```
+Admin:$1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
+test:$1$GXoDIOCA$u/n1kkDeFwcI4KhyHkY6p/
+```
+
+To generate hashed_password you can use `openssl` tool enetring the password
+twice:
+```
+openssl passwd
+Password:
+Verifying - Password:
+$1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
+```
+
+### Basic authentication in Apache HTTPD
+
+Find `<Directory "/usr/share/zabbix">` block in Apache HTTPD configuration file
+that defines your Zabbix WebUI (in my case it is `/etc/zabbix/apache.conf`) and
+add these lines:
+
+???+ note
+    By default configuration has `Require all granted`, remove this line.
+
+For Ubuntu/Debian:
+```
+    <Directory "/usr/share/zabbix">
+        ...
+        AuthType Basic
+        AuthName "Restricted Content"
+        AuthUserFile /etc/apache2/.htpasswd
+        Require valid-user
+    </Directory>
+```
+
+For RedHat:
+```
+    <Directory "/usr/share/zabbix">
+        ...
+        AuthType Basic
+        AuthName "Restricted Content"
+        AuthUserFile /etc/httpd/.htpasswd
+        Require valid-user
+    </Directory>
+```
+
+Do not forget to restart apache2 service after making this change.
+
+Create `/etc/apache2/.httpasswd` (`/etc/httpd/.htpassword` for RedHat) file that will have all the users with
+passwords, do it by using `htpasswd` tool, to add user `test` execute:
+
+For Ubuntu/Debian
+```
+sudo htpasswd -c /etc/apache2/.htpasswd test
+New password: 
+Re-type new password: 
+Adding password for user test
+```
+
+For RedHat
+```
+sudo htpasswd -c /etc/httpd/.htpasswd test
+New password: 
+Re-type new password: 
+Adding password for user test
+```
+
+To add more users to the file repeat the command without `-c` flag.
+
+### Zabbix configuration for HTTP authentication
+
+When we have a WEB server configured with basic authentication it is high time
+to configure Zabbix server. In Zabbix menu select `Users | Authentication |
+HTTP settings` and check `Enable HTTP authentication` check-box. Click `Update`
+and confirm the changes by clicking `OK` button.
+
+![HTTP users authentication](ch02.1-http-auth-settings.png){ align=center }
+
+_2.1 HTTP users authentication_
+
+`Remove domain name` field should have a comma separated list of domains that
+Zabbix will remove from provided username, e.g. if a user enters
+"test@myzabbix" or "myzabbix\test" and we have "myzabbix" in this field then
+the user will be logged in with username "test".
+
+Unchecking `Case-sensitive login` check-box will tell Zabbix to not pay
+attention to capital/small letters in usernames, e.g. "tEst" and "test" will
+become equally legitimate usernames even if in Zabbix we have only "test"
+user configured.
+
+Note that `Default login form` is set to "Zabbix login form". Now if you sign
+out you will see "Sign in with HTTP" link below Username and Password fields.
+If you click on the link you will be automatically logged in into Zabbix WebUI
+with the same username you previously used. Or you can enter different
+Username and Password and normally log in into Zabbix WebUI as different user.
+
+![HTTP users authentication login](ch02.2-http-auth-login.png){ align=center }
+
+_2.2 HTTP users authentication login form_
+
+If you select "HTTP login form" in `Default login form` drop-down you won't see
+standard Zabbix login form when you try to log out. You actually won't be able
+to sign out unless your authetnciation session expires. The only way to sign out
+is to clear cookies in your browser. Then you'll have to go through the Web
+server basic authentication procedure again.
 
 ## LDAP / AD
 
@@ -21,9 +170,9 @@ LDAP authentication can be configured in two modes:
 
 The process of the authenticating users follows this diagram.
 
-![LDAP users authentication](ch02.1-ldap-auth-diagram.png){ align=center }
+![LDAP users authentication](ch02.3-ldap-auth-diagram.png){ align=center }
 
-_2.1 LDAP users authentication_
+_2.3 LDAP users authentication_
 
 As shown on the diagram a user that tries to log in must be pre-created in
 Zabbix to be able to log in using LDAP. The database user records do not have
@@ -75,25 +224,25 @@ Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
     Password field, click Authenticate. You should see the following structure
     of the LDAP server (picture shows ‘zabbix-admins’ group configuration):
 
-    ![LDAP server data](ch02.2-ldap-ldap-server-data.png){ align=center }
+    ![LDAP server data](ch02.4-ldap-ldap-server-data.png){ align=center }
 
-    _2.2 LDAP server data_
+    _2.4 LDAP server data_
 
 Let's configure LDAP server settings in Zabbix. In Zabbix menu select
 `Users | Authentication | LDAP settings`, then check the check-box
 `Enable LDAP authentication` and click `Add` under `Servers` (change IP address
 of your LDAP server and port number according to your set up):
 
-![LDAP server settings in Zabbix](ch02.3-ldap-server-settings-in-zabbix.png){ align=center }
+![LDAP server settings in Zabbix](ch02.5-ldap-server-settings-in-zabbix.png){ align=center }
 
-_2.3 LDAP server settings in Zabbix_
+_2.5 LDAP server settings in Zabbix_
 
 Following diagram can help you understand how to configure LDAP server in
 Zabbix based on your LDAP server data structure:
 
-![LDAP server to Zabbix](ch02.4-ldap-server-to-zabbix.png){ align=center }
+![LDAP server to Zabbix](ch02.6-ldap-server-to-zabbix.png){ align=center }
 
-_2.4 LDAP server to Zabbix_
+_2.6 LDAP server to Zabbix_
 
 “Special” _Distinguished Name_ (DN) _cn=ldap_search,dc=example,dc=org_ is used
 for searching, i.e. Zabbix uses this DN to connect to LDAP server and of course
@@ -129,9 +278,9 @@ will make Zabbix to authenticate users belonging to this group against LDAP
 server and in `LDAP server` drop-down select LDAP server we earlier configured
 "Test LDAP server". Click `Add` button to create this User group:
 
-![Add user group in zabbix](ch02.5-ldap-add-user-group-in-zabbix.png){ align=center }
+![Add user group in zabbix](ch02.7-ldap-add-user-group-in-zabbix.png){ align=center }
 
-_2.5 Add user group in zabbix_
+_2.7 Add user group in zabbix_
 
 Now we need to create our test user. In Zabbix menu select `Users | Users` and
 click `Create user` button. Then enter "user3" in `Username` field. Select
@@ -142,15 +291,15 @@ it's a member of the User group that has authentication method `LDAP`, just
 make sure you enter the same string in these two fields and it satisfied your
 password strength policy defined in `Users | Authentication`.
 
-![Add user in Zabbix](ch02.6-ldap-add-user-in-zabbix.png){ align=center }
+![Add user in Zabbix](ch02.8-ldap-add-user-in-zabbix.png){ align=center }
 
-_2.6 Add user in Zabbix_
+_2.8 Add user in Zabbix_
 
 Then click `Permissions` tab and select "User role" in `Role` field:
 
-![Add user in Zabbix - permissions](ch02.7-ldap-add-user-in-zabbix-permissions.png){ align=center }
+![Add user in Zabbix - permissions](ch02.9-ldap-add-user-in-zabbix-permissions.png){ align=center }
 
-_2.7 Add user in Zabbix - permissions_
+_2.9 Add user in Zabbix - permissions_
 
 Click `Add` button to create the user.
 
@@ -167,9 +316,9 @@ Now let's talk about really cool feature Zabbix provides - "Just-in-Time user
 provisioning (JIT) available since Zabbix 6.4.
 
 This picture illustrates on high level how it works:
-![LDAP JIT explained](ch02.8-ldap-jit-explained.png){ align=center }
+![LDAP JIT explained](ch02.10-ldap-jit-explained.png){ align=center }
 
-_2.8 LDAP JIT explained_
+_2.10 LDAP JIT explained_
 
 Here when Zabbix gets a username and password from the Zabbix Login form it
 goes to the LDAP server and gets all the information available for this user
@@ -195,9 +344,9 @@ In `Users | Authentication` we need to do two things:
   where all _de-provisioned_ users will be put into so effectively will get
   disabled from accessing Zabbix.
 
-  ![Default authentication](ch02.9-ldap-default-authentication.png){ align=center }
+  ![Default authentication](ch02.11-ldap-default-authentication.png){ align=center }
 
-  _2.9 Default authentication_
+  _2.11 Default authentication_
 
   Click `Update` button`.
 
@@ -221,9 +370,9 @@ provides users’ group membership, and of course, you can easily configure what
 attribute to use when searching for user’s LDAP groups by putting it into `User
 group membership attribute` field:
 
-![LDAP groups mapping](ch02.10-ldap-groups-mapping.png){ align=center }
+![LDAP groups mapping](ch02.12-ldap-groups-mapping.png){ align=center }
 
-_2.10 LDAP groups mapping_
+_2.12 LDAP groups mapping_
 
 In the picture above we are telling Zabbix to use _memberOf_ attribute to
 extract DN defining user’s group membership (in this case it is
@@ -245,9 +394,9 @@ more flexibility if needed. Here Zabbix is not querying LDAP server for a user
 instead it is searching for LDAP groups based on a given criterion (filter).
 It’s easier to explain with pictures depicting an example:
 
-![LDAP server group of names](ch02.11-ldap-group-of-names.png){ align=center }
+![LDAP server group of names](ch02.13-ldap-group-of-names.png){ align=center }
 
-_2.11 LDAP server groupOfNames_
+_2.13 LDAP server groupOfNames_
 
 Firstly we define LDAP “sub-tree” where Zabbix will be searching for LDAP
 groups – note _ou=Group,dc=example,dc=org_ in Group base DN field. Then in the
@@ -284,13 +433,13 @@ created by Zabbix and put into _Zabbix administrators_ user group, when you
 login with _user3_ username then this user will be created by Zabbix and put
 into _Zabbix users_ user group:
 
-![Test user1](ch02.12-ldap-jit-test-user1.png){ align=center }
+![Test user1](ch02.14-ldap-jit-test-user1.png){ align=center }
 
-_2.12 Test user1_
+_2.14 Test user1_
 
-![Test user3](ch02.13-ldap-jit-test-user3.png){ align=center }
+![Test user3](ch02.15-ldap-jit-test-user3.png){ align=center }
 
-_2.13 Test user3_
+_2.15 Test user3_
 
 ## SAML
 
@@ -338,9 +487,9 @@ Retrieving the IdP Certificate (idp.crt) from Google Workspace:
 4. **Create a New Application:** Initiate the creation of a new application to
    facilitate SAML integration. This action will trigger Google Workspace to generate
    the necessary IdP certificate.
-   ![Add google app](ch02-add-google-app.png)
+   ![Add google app](ch02.16-add-google-app.png)
 
-_2.22 create
+_2.16 create
 new application_
 
 5. **Download the IdP Certificate:** Within the newly created application's settings,
@@ -349,9 +498,9 @@ new application_
 6. **Placement of idp.crt:** Copy the downloaded `idp.crt` file to the same directory
    as the SP certificates in Zabbix, under `ui/conf/certs/`.
 
-![Add google app](ch02-saml-download.png)
+![Add google app](ch02.17-saml-download.png)
 
-_2.23 add
+_2.17 add
 certificate_
 
 ---
@@ -389,9 +538,9 @@ This attribute mapping ensures that users can log in using their familiar Google
 Workspace credentials and that their access privileges within Zabbix are determined
 by their Google Workspace group memberships.
 
-![saml mappings](ch02-saml-mappings.png)
+![saml mappings](ch02.18-saml-mappings.png)
 
-_2.24 SAML
+_2.18 SAML
 mappings_
 
 ---
@@ -436,9 +585,9 @@ Example Configuration (Conceptual)
 - SP entity ID: https://your_zabbix_server/zabbix
 - Sign: Assertions
 
-![google saml config](ch02-saml-zabbix-options.png)
+![google saml config](ch02.19-saml-zabbix-options.png)
 
-_2.25 SAML
+_2.19 SAML
 config_
 
 **Additional Configuration Options:**
@@ -565,12 +714,16 @@ to types of MFA - Time-based one-time password (TOTP) and Duo MFA provider.
 
 In the menu select `Users` section and then `Authentication`
 
-![MFA Settings initial](ch02-mfa_settings_initial.png){ width=90% }
+![MFA Settings initial](ch02.20-mfa_settings_initial.png){ width=90% }
+
+_2.20 Initial MFA settings_
 
 Now in `MFA settings` tab select the `Enable multi-factor authentication` check-box,
 then select `TOTP` in Type drop-down list.
 
-![MFA Settings TOTP](ch02-mfa_settings_TOTP_new.png){ width=90% }
+![MFA Settings TOTP](ch02.21-mfa_settings_TOTP_new.png){ width=90% }
+
+_2.21 New MFA method_
 
 In `Hash function` drop-down list you can choose SHA-1, SHA-256 or SHA-512, the higher
 number is the better security.
@@ -581,7 +734,9 @@ application on your phone.
 Click `Add` and then `Update`. Now you have TOTP MFA configured and it is the default
 method of MFA.
 
-![MFA Settings TOTP configured](ch02-mfa_settings_TOTP_configured.png){ width=90% }
+![MFA Settings TOTP configured](ch02.22-mfa_settings_TOTP_configured.png){ width=90% }
+
+_2.22 New MFA method added_
 
 Now you need to tell Zabbix for which User group (or groups) to use MFA. Let's create
 a User group that would require MFA.
@@ -589,7 +744,9 @@ a User group that would require MFA.
 In the menu select `Users` section and then `User groups`, then click `Create user
 group` button
 
-![MFA list of user groups](ch02-mfa_create_user_groups.png){ width=90% }
+![MFA list of user groups](ch02.23-mfa_create_user_groups.png){ width=90% }
+
+_2.23 Create user group_
 
 In `Group name` put "test". Note that `Multi-factor authentication` field is "Default",
 as currently we have only one MFA method configured it does not matter whether we
@@ -597,7 +754,9 @@ select "Default" or "TOTP1" that we created above. You also can disable MFA for
 all users belonging to this User group. Click `Add` button to create "test" User
 group.
 
-![MFA new user group](ch02-mfa_new_user_group.png){ width=90% }
+![MFA new user group](ch02.24-mfa_new_user_group.png){ width=90% }
+
+_2.24 New user group configuration_
 
 ???+ Note
 
@@ -607,16 +766,22 @@ group.
 Let's add a user to this user group. In the menu select `Users` section and then
 `Users`, then click `Create user` button
 
-![MFA create user](ch02-mfa_create_user.png){ width=90% }
+![MFA create user](ch02.25-mfa_create_user.png){ width=90% }
+
+_2.25 Create user_
 
 Fill in `Username`, `Password` and `Password (once again)` fields. Make sure you
 select `test` user group in `Groups` field.
 
-![MFA new user](ch02-mfa_new_user.png){ width=90% }
+![MFA new user](ch02.26-mfa_new_user.png){ width=90% }
+
+_2.26 New user configuration_
 
 Then switch to `Permissions` tab and select any role.
 
-![MFA new user permissions](ch02-mfa_new_user_permissions.png){ width=90% }
+![MFA new user permissions](ch02ю27-mfa_new_user_permissions.png){ width=90% }
+
+_2.27 New user permissions_
 
 Click `Add` button to add the user.
 
@@ -624,7 +789,9 @@ Now we can test how TOTP MFA works. Sign out and then try to sign in as a test u
 you just created. You will be presented with a QR code. That means that the user
 `test` has not been enrolled in TOTP MFA yet.
 
-![MFA TOTP QR code](ch02-mfa_totp_qr_code.png){ width=30% }
+![MFA TOTP QR code](ch02.28-mfa_totp_qr_code.png){ width=30% }
+
+_2.28 TOTP QR code_
 
 On your phone you need to install either "Microsoft authenticator" or "Google authenticator"
 application. The procedure of adding new QR code is quite similar, here is how it
@@ -632,9 +799,17 @@ looks in "Google authenticator". Tap `Add a code` and then `Scan a QR code`. You
 be immediately presented with a 6 digit code (remember we selected 6 in `Code length`
 when we configured TOTP MFA?)
 
-![MFA TOTP auth app1](ch02-mfa_totp_auth_app1.png){ width=32% }
-![MFA TOTP auth app2](ch02-mfa_totp_auth_app2.png){ width=32% }
-![MFA TOTP auth app3](ch02-mfa_totp_auth_app3.png){ width=32% }
+![MFA TOTP auth app1](ch02.29-mfa_totp_auth_app1.png){ width=32% }
+
+_2.29 Authenticator app, step 1_
+
+![MFA TOTP auth app2](ch02.30-mfa_totp_auth_app2.png){ width=32% }
+
+_2.30 Authenticator app, step 2_
+
+![MFA TOTP auth app3](ch02.31-mfa_totp_auth_app3.png){ width=32% }
+
+_2.31 Authenticator app, step 3_
 
 Enter this code into `Verification code` field of your login screen and click
 `Sign in`, if you did everything right you are logged in into Zabbix at this point.
@@ -643,7 +818,9 @@ a special code used for further authentications in its database. The next time
 user "test" tries to login into Zabbix there will be only a field to enter
 verification code
 
-![MFA TOTP second login](ch02-mfa_totp_second_login.png){ width=32% }
+![MFA TOTP second login](ch02.32-mfa_totp_second_login.png){ width=32% }
+
+_2.32 Verification code request_
 
 ???+ warning
 
@@ -655,7 +832,9 @@ If a user changes (or loses) his/her phone, then Zabbix administrator should res
 his/her enrolment. To do that in the menu select `Users` then mark a check-box to
 the left of "test" user and click "Reset TOTP secret" button.
 
-![MFA TOTP reset password](ch02-mfa_totp_reset_password.png){ width=99% }
+![MFA TOTP reset password](ch02.33-mfa_totp_reset_password.png){ width=99% }
+
+_2.33 Reset TOTP secret_
 
 After you reset TOTP secret the "test" user will have to undergo enrolment procedure
 again.
@@ -677,44 +856,66 @@ First of all you need to create an account with Duo (it's free to manage up to
 10 users) then login into Duo, you are an admin here. In the menu on the left select
 `Applications` and click `Protect an Application` button.
 
-![MFA DUO applications](ch02-mfa_duo_applications.png){ width=99% }
+![MFA DUO applications](ch02.34-mfa_duo_applications.png){ width=99% }
+
+_2.34 DUO Applications menu_
 
 Then you will see WebSDK in applications list, click on it
 
-![MFA DUO applications list](ch02-mfa_duo_applications_list.png){ width=99% }
+![MFA DUO applications list](ch02.35-mfa_duo_applications_list.png){ width=99% }
+
+_2.35 DUO Applications list_
 
 Here you'll see all the data needed for Zabbix.
 
-![MFA DUO ](ch02-mfa_duo_data.png){ width=99% }
+![MFA DUO ](ch02.36-mfa_duo_data.png){ width=99% }
+
+_2.36 DUO WebSDK application settings_
 
 Now let's go to Zabbix. First we need to configure Duo MFA method. In the menu select
 `Users` and click `Authentication`. Then on `MFA settings` tab click `Add` in
 `Methods` section.
 
-![MFA DUO ](ch02-mfa_duo_add_method.png){ width=99% }
+![MFA DUO ](ch02.37-mfa_duo_add_method.png){ width=99% }
+
+_2.37 Add MFA method_
 
 Fill in all the fields with data from Duo Dashboard -> Applications -> Web SDK page
 (see screenshot above) and click `Add`, then click `Update` to update Authentication
 settings.
 
-![MFA DUO ](ch02-mfa_duo_method_data.png){ width=99% }
+![MFA DUO ](ch02.38-mfa_duo_method_data.png){ width=99% }
+
+_2.38 DUO method settings_
 
 After the MFA method is configured let's switch the "Test" group to use Duo MFA.
 In the menu select `Users` and click `User groups`, then click "test" group. In
 the field `Multi-factor authentication` select "DUO1" and click `Update`.
 
-![MFA DUO ](ch02-mfa_duo_user_group.png){ width=99% }
+![MFA DUO ](ch02.39-mfa_duo_user_group.png){ width=99% }
+
+_2.39 DUO MFA authentication method for user group_
 
 Everything is ready. Let's test it. Sign out of Zabbix and sign back in with "test"
 user. You should see a welcome screen from Duo. Click several `Next` buttons.
 
-![MFA DUO ](ch02-mfa_duo_welcome.png){ width=32% }
-![MFA DUO ](ch02-mfa_duo_welcome1.png){ width=32% }
-![MFA DUO ](ch02-mfa_duo_welcome2.png){ width=32% }
+![MFA DUO ](ch02.40-mfa_duo_welcome.png){ width=32% }
+
+_2.40 Enrollling into DUO, step1_
+
+![MFA DUO ](ch02.41-mfa_duo_welcome1.png){ width=32% }
+
+_2.41 Enrollling into DUO, step2_
+
+![MFA DUO ](ch02.42-mfa_duo_welcome2.png){ width=32% }
+
+_2.42 Enrollling into DUO, step3_
 
 Then you need to select the method of authentication.
 
-![MFA DUO ](ch02-mfa_duo_auth_method.png){ width=50% }
+![MFA DUO ](ch02.43-mfa_duo_auth_method.png){ width=50% }
+
+_2.43 Enrollling into DUO, step4_
 
 It is up to you what to select you can experiment with all these methods. Let's
 select "Duo Mobile" (you need to install "Duo mobile" application on your device).
@@ -722,15 +923,28 @@ Click `I have a tablet` (it's just easier to activate your device this way) and
 confirm that you installed "Duo mobile" on your phone. At this point you should
 see a QR code that you need to scan in "Duo mobile" application.
 
-![MFA DUO ](ch02-mfa_duo_duo_app.png){ width=32% }
-![MFA DUO ](ch02-mfa_duo_confirm_app_installed.png){ width=32% }
-![MFA DUO ](ch02-mfa_duo_scan_qr.png){ width=32% }
+![MFA DUO ](ch02.44-mfa_duo_duo_app.png){ width=32% }
+
+_2.44 Enrollling into DUO, step5_
+
+![MFA DUO ](ch02.45-mfa_duo_confirm_app_installed.png){ width=32% }
+
+_2.45 Enrollling into DUO, step6_
+
+![MFA DUO ](ch02.46-mfa_duo_scan_qr.png){ width=32% }
+
+_2.46 Enrollling into DUO, step7_
 
 Open "Duo mobile" on your phone. If you did not have this application previously
 installed (thus no accounts enrolled) you will see couple of welcome screens.
 
-![MFA DUO ](ch02-mfa_duo_phone_welcome.png){ width=48% }
-![MFA DUO ](ch02-mfa_duo_phone_add_account.png){ width=48% }
+![MFA DUO ](ch02.47-mfa_duo_phone_welcome.png){ width=48% }
+
+_2.47 Configure DUO app, step 1_
+
+![MFA DUO ](ch02.48-mfa_duo_phone_add_account.png){ width=48% }
+
+_2.48 Configure DUO app, step 2_
 
 Tap on "Use a QR code" and then scan the code presented by Duo in your Zabbix login
 screen. After you do that you will see that the account is enrolled to your Duo
@@ -738,28 +952,48 @@ MFA. Enter account name and tap "Done" and you will see the account in the list
 of all accounts enrolled into Duo MFA on this device. In Zabbix WebUI you will
 also see a confirmation, click "Continue".
 
-![MFA DUO ](ch02-mfa_duo_phone_account_added.png){ width=32% }
-![MFA DUO ](ch02-mfa_duo_phone_accounts.png){ width=32% }
-![MFA DUO ](ch02-mfa_duo_enrollement_confirmation.png){ width=32% }
+![MFA DUO ](ch02.49-mfa_duo_phone_account_added.png){ width=32% }
+
+_2.49 Configure DUO app, step 3_
+
+![MFA DUO ](ch02.50-mfa_duo_phone_accounts.png){ width=32% }
+
+_2.50 Configure DUO app, step 4_
+
+![MFA DUO ](ch02.51-mfa_duo_enrollement_confirmation.png){ width=32% }
+
+_2.51 Enrollment confirmation_
 
 Duo will ask you now whether you want to add another method of authentication,
 click `Skip for now` and you'll see a confirmation that set up completed. Click
 `Login with Duo` and a notification will be pushed to your device.
 
-![MFA DUO ](ch02-mfa_duo_another_method.png){ width=32% }
-![MFA DUO ](ch02-mfa_duo_setup_completed.png){ width=32% }
-![MFA DUO ](ch02-mfa_duo_push_sent.png){ width=32% }
+![MFA DUO ](ch02.52-mfa_duo_another_method.png){ width=32% }
+
+_2.52 Add another way to login_
+
+![MFA DUO ](ch02.53-mfa_duo_setup_completed.png){ width=32% }
+
+_2.53 MFA DUO set up completed_
+
+![MFA DUO ](ch02.54-mfa_duo_push_sent.png){ width=32% }
+
+_2.54 DUO push notification sent_
 
 Now just tap on "Approve" on your device and you will be logged in into Zabbix.
 
-![MFA DUO ](ch02-mfa_duo_phone_push_notification.png){ width=50% }
+![MFA DUO ](ch02.55-mfa_duo_phone_push_notification.png){ width=50% }
+
+_2.55 DUO push notification on the phone_
 
 Duo MFA enrolment complete. If you sign out and sign in back then immediately a
 push notification will be sent to your device and all you need is tap on
 "Approve". Also you will see the user "test" in Duo where you can delete the user,
 or deactivate just click on it and experiment.
 
-![MFA DUO ](ch02-mfa_duo_users.png){ width=98% }
+![MFA DUO ](ch02.56-mfa_duo_users.png){ width=98% }
+
+_2.56 New user registered in DUO_
 
 ## Conclusion
 
@@ -775,6 +1009,8 @@ access within complex Zabbix environments.
 ## Questions
 
 ## Useful URLs
+
+[https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http)
 
 [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap)
 
