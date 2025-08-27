@@ -2,8 +2,8 @@
 
 One of the neat features that Zabbix offers out of the box is the ability to monitor
 Java applications. To make this happen, Zabbix uses something called the
-`Java Gateway`, which communicates with Java applications via the `Java Management Extensions`
-JMX, for short.
+`Java Gateway`, which communicates with Java applications via the
+`Java Management Extensions` JMX, for short.
 
 `JMX` is a built-in Java technology designed specifically for monitoring and managing
 Java applications and the `Java Virtual Machine` (JVM). It works through components
@@ -47,15 +47,55 @@ Sometimes you need JMX data to speak a different language. Adaptors convert JMX
 info into formats that non-Java tools can understand, like HTTP or SNMP, making
 integration easier with broader monitoring ecosystems.
 
+## JMX Core Architecture
+
+To understand how Zabbix collects data from Java applications, it helps to know
+the basic structure of JMX itself. JMX is built on a three-layer architecture that
+separates how metrics are defined, how they are stored inside the JVM, and how
+external tools can reach them.
+
+- **Instrumentation Layer:** This is where the application exposes its internal
+  state through MBeans (Managed Beans). They can be standard, dynamic, or MXBeans,
+  and represent things like memory usage, thread counts, or application specific
+  metrics.
+
+- **Agent Layer:** – Every JVM contains an MBeanServer, which acts as a registry
+  and makes these MBeans available for management. When you start a JVM with
+  -Dcom.sun.management.jmxremote, you are exposing this server for external access.
+
+- **Remote Management Layer:** This is how outside tools connect to the JVM.
+  Connectors (such as RMI or JMXMP) and adaptors (such as HTTP or SNMP bridges)
+  allow Zabbix and other monitoring systems to fetch the metrics. By default,
+  Zabbix uses an RMI connector via the Java Gateway.
+
+``` mermaid
+flowchart LR
+    A[Application] --> B[MBeans]
+    B --> C[MBeanServer]
+    C --> D[Connector RMI - JMXMP]
+    D --> E[Zabbix Java Gateway]
+    E --> F[Zabbix Server / DB]
+    F --> G[Frontend]
+
+    classDef app fill:#fef3c7,stroke:#111,stroke-width:1px,color:#111;
+    classDef mbean fill:#dbeafe,stroke:#111,stroke-width:1px,color:#111;
+    classDef gateway fill:#fde68a,stroke:#111,stroke-width:1px,color:#111;
+    classDef zabbix fill:#bbf7d0,stroke:#111,stroke-width:1px,color:#111;
+
+    class A app;
+    class B,C mbean;
+    class D,E gateway;
+    class F,G zabbix;
+
+```
+
 ## Where Does the Zabbix Java Gateway Fit in this picture?
 
 The Zabbix Java Gateway is an external component in the Zabbix ecosystem specifically
 designed to handle JMX monitoring. While it's not part of the JMX framework itself,
 it acts as a JMX client that connects to your Java application’s JMX agent and
 collects data from MBeans. So, if we map it to the components we just discussed,
-here's how it fits:
-
-**Category: Connectors (Client-Side)**
+here's how it fits: => **Category: Connectors (Client-Side)**
 
 Why? Because the Zabbix Java Gateway is essentially a remote management application
 that connects to the JMX agent running inside your Java app’s JVM. It uses JMX's
@@ -99,11 +139,12 @@ flowchart LR
 
 ## Setup Tomcat to monitor with Zabbix.
 
-We need a dedicated machine to test JMX monitoring with Zabbix. While you could set
-this up on your Zabbix server, using a separate host more accurately reflects a
-real-world monitoring scenario. For this purpose, we'll use a fresh virtual machine
-running either Rocky or Ubuntu. Our goal is to install and correctly configure
-Tomcat on this machine, which will serve as our JMX-enabled target.
+To ensure accurate testing of JMX monitoring with Zabbix, a dedicated host is essential.
+Although configuration on the Zabbix server is possible, a separate machine provides a
+more realistic representation of a production environment. For our setup, we'll
+use a new virtual machine running either Rocky Linux or Ubuntu. This machine will
+serve as our JMX-enabled target, and we'll install and configure Tomcat on it for
+this purpose.
 
 ???+ info "Setup Tomcat"
 
@@ -349,63 +390,96 @@ On our host Tomcat create a new item and add the following information.
 
 _ch04.38 JMX item_
 
-The rest we can keep as is. Before you safe the item you can press the `Test`
-button. When you press `Get value` or `Get value and test` you should get some
-information back in the value field. This indicates our items works so you can
-safe it.
+???+ Info "Verifying and Saving the Item"
 
-So this was easy but how did we actually go to the item key ? Let me show you.
+    ```
+    Before saving the configured item, use the Test button. Clicking Get value
+    or Get value and test should populate the value field with data, confirming
+    that the item is functional. Once the test is successful, you can save the
+    item.
+    ```
+To understand how we constructed the item key, let's look at the process in JConsole.
 
-Open your Jconsole and in the Mbeans tab go to `Catalina` -
-`GlobalRequestProcessor` - `http-nio-8080`. In the field on the right you will
-see ObjectNAme. This is actually the name you need to copy to paste into the
-item key. `Catalina:type=GlobalRequestProcessor,name="http-nio-8080"` the only
-issue with this key and that's why I have chose this key is that the key needs
-to be quoted with " " but we already have double " in the name so we have to
-escape them with a \. So the result will be
-`jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\""]` but this is
-not complete yet we still have to point to the attribute we like to monitor.
-You can choose one of the many attributes maxTime, requestCount, bytesReceived,
-.... and add it at the end of our key between "" separated with a comma.
+1. Navigate to the MBeans tab and expand Catalina > GlobalRequestProcessor > http-nio-8080.
 
+2. The ObjectNAme field on the right displays the MBean's fully qualified name:
+   `Catalina:type=GlobalRequestProcessor,name="http-nio-8080"`. This is the base
+   for our Zabbix item key.
+
+The primary challenge with this specific key is that it contains double quotes (")
+within the `name` attribute. Zabbix requires the entire JMX key to be enclosed
+in double quotes, which would conflict with the existing quotes. To resolve this,
+we must **escape** the inner double quotes with a backslash (\).
+
+This results in the following structure for the Zabbix item key:
+`jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\""]`.
+
+This key is still incomplete. To specify the metric to be monitored, you must
+append an attribute name, such as maxTime, requestCount, or bytesReceived, at
+the end of the key, separated by a comma.
 `jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\"","requestCount"]`
 
 ![requestCount item](ch04.39-jconsole-requestCount.png)
 
 _04.39 requestCount item_
 
-The `java.lang.management.Memory` Mbean is also a nice example it has an
-attribute `HeapMemoryUsage`. This MemoryUsage object is an instance of CompositeData,
-a special type in JMX used to represent complex data structures.
+The `java.lang.management.Memory` MBean provides a good example of how to handle
+CompositeData types in Zabbix. This MBean has an attribute called `HeapMemoryUsage`,
+which is not a simple value but rather an instance of `CompositeData`. This special
+JMX data type is used to represent complex structures.
 
-Therefore, you're not calling init, used, committed, or max directly on the MBean
-itself, but rather on the MemoryUsage object that is returned when you access the
-HeapMemoryUsage MBean attribute.
+This means that attributes like `init`, `used`, `committed`, or `max` aren't accessed
+directly on the MBean itself. Instead, they are part of the `MemoryUsage` object
+that is returned when you query the `HeapMemoryUsage` attribute.
 
-For this we would need an item key like `jmx["java.lang:type=Memory","HeapMemoryUsage.max"]`.
+To monitor a specific value from this composite object, you must specify the
+attribute name within the `CompositeData` structure. For example, to get the maximum
+heap memory usage, the Zabbix item key would be: `jmx["java.lang:type=Memory","HeapMemoryUsage.max"]`.
 
 ![](ch04.40-jconsole-HeapMemory.Max.png)
 
 _04.40 HeapMemoryUsage
 
-To get the tabular data overview double click on the `value` after the
-`attribute value` `HeapMemoryUsage`.
+#### Viewing Tabular Data
 
-Zabbix has 3 `item keys` that it can use with JMX we use the jmx[] key but there
-is also jmx.get[] and jmx.discovery[] both are used with LLD but the jmx.get can
-also be used as a normal item key with preprocessing.
+To view the detailed breakdown of the `HeapMemoryUsage` attribute, double click on
+its value in the attribute value column. This action displays the composite data
+in a tabular format, making it easier to see individual metrics like `init`, `used`,
+`committed`, and `max`.
+
+#### Zabbix JMX Item Keys
+
+Zabbix offers three primary item keys for JMX monitoring:
+
+- **jmx[]:** This is the standard key used for monitoring a specific JMX attribute.
+  It's the most common key for creating simple, direct checks.
+
+- **jmx.get[]:** This key is used to retrieve a full object from an MBean. It is
+  often paired with Low Level Discovery (LLD) rules and preprocessing steps to
+  extract specific values from the returned data, allowing for more flexible data
+  collection.
+
+- **jmx.discovery[]:** This key is specifically designed for use with Low Level
+  Discovery. It helps Zabbix automatically discover multiple JMX MBeans or attributes
+  on a monitored host, which is essential for scaling JMX monitoring across a large
+  number of components.
 
 ### Making use of jmx.get[]
 
-jmx.get[] Return a JSON array with MBean objects or their attributes. Compared
-to jmx.discovery it does not define LLD macros but it can be used for LLD.
+The `jmx.get[]` item key returns a JSON array containing a list of MBean objects or
+their attributes. Unlike `jmx.discovery[]`, it does not automatically define LLD
+macros. Instead, it is particularly useful when you need to retrieve a structured
+set of data and then process it using JSONPath in a dependent item or a low level
+discovery rule.
 
-We will cover these items in the LLD Chapter of this book. But to give you an
-idea already of what jmx.get does, as it can be used with dependent items without LLD.
+While `jmx.get[]` is commonly used for Low Level Discovery (LLD), it is also highly
+effective for creating dependent items without using a full discovery rule. This
+allows you to collect multiple related metrics from a single request to the JMX
+agent, which is more efficient.
 
-you could create an item like `jmx.get[attributes,"*:type=GarbageCollector,name=PS MarkSweep"]`
-This would return a JSON with all the info about the attributes of our garbage
-collector `PS MarkSweep` like this:
+For instance, the key `jmx.get[attributes,"*:type=GarbageCollector,name=PS MarkSweep"]`
+would return a comprehensive payload with all attributes of the specified garbage
+collector.
 
 ``` json
 [
@@ -430,7 +504,68 @@ collector `PS MarkSweep` like this:
 ]
 ```
 
+This JSON output can then be used as the master item for multiple dependent items,
+each with a preprocessing step to extract a specific value (e.g., `CollectionCount`
+or `CollectionTime`) using a JSONPath expression. This technique is a powerful
+way to reduce the load on both the JMX agent and the Zabbix server by making a
+single call to collect multiple metrics.
+
+## Performance Considerations for JMX Monitoring
+
+JMX monitoring is powerful but comes with higher overhead compared to traditional
+Zabbix agent checks. To ensure your monitoring remains efficient and doesn't impact
+either your Zabbix infrastructure or the monitored JVMs, keep the following points
+in mind.
+
+Zabbix communicates with the Java Gateway synchronously:
+
+- The Zabbix server sends a request for a JMX item.
+- The Java Gateway connects to the target JVM and retrieves the data.
+- Only when the response comes back does the Zabbix server proceed with that item's
+  check.
+This means that if JMX queries are slow (due to network, JVM GC pauses, or overloaded
+gateways), your monitoring queue can back up.
+
+To optimize performance:
+
+- The Java Gateway bundles multiple requests for the same host and processes them
+  in a single JVM connection.
+- This reduces the overhead of repeatedly opening/closing JMX connections.
+- For example, if you monitor 20 JVM attributes on the same Tomcat, the gateway
+  will collect them in fewer, larger batches instead of 20 separate calls.
+
+- Once a JMX connection to a JVM is established, the gateway keeps it alive and
+  reuses it for subsequent checks.
+- This avoids expensive RMI connection setup for
+  every metric.
+- If the JVM restarts or the connection drops, the gateway will re-establish it automatically.
+
+Two important parameters in zabbix_server.conf and zabbix_java_gateway.conf directly
+affect JMX performance:
+
+- StartJavaPollers (on Zabbix Server)
+    - Defines how many parallel JMX pollers the server can use.
+    - Too few pollers → JMX checks queue up and fall behind.
+    - Too many pollers → high load on Java Gateway and JVMs.
+- StartPollers (general pollers)
+  Balance with Java pollers so your server can handle both JMX and regular agent
+  checks without bottlenecks.
+- Rule of thumb: start small (Ex: 5–10 Java pollers) and increase gradually while
+  monitoring load.
+
+- Don't enable all MBeans just because you can.
+- Focus on actionable JVM metrics (heap, non-heap, GC, threads, JDBC pools) and
+  a few application-specific MBeans that map to real-world performance.
+- Too many JMX items not only stress the JVM but also flood your Zabbix database
+  with unnecessary history data.
+
+
 ## Conclusion
+
+Zabbix handles JMX monitoring synchronously, but optimizes performance with request
+bundling and connection reuse. By tuning pollers, using reasonable update intervals,
+and selecting only the most valuable metrics, you can scale JMX monitoring without
+overloading your monitoring system or your Java applications.
 
 ## Questions
 

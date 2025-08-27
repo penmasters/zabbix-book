@@ -255,3 +255,6 @@ mbean
 mbeans
 requestcount
 nio
+dcom
+jmxremote
+
