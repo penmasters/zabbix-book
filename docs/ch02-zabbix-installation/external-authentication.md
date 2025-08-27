@@ -71,6 +71,7 @@ add these lines:
 ???+ note
     By default configuration has `Require all granted`, remove this line.
 
+For Ubuntu/Debian:
 ```
     <Directory "/usr/share/zabbix">
         ...
@@ -81,16 +82,38 @@ add these lines:
     </Directory>
 ```
 
+For RedHat:
+```
+    <Directory "/usr/share/zabbix">
+        ...
+        AuthType Basic
+        AuthName "Restricted Content"
+        AuthUserFile /etc/httpd/.htpasswd
+        Require valid-user
+    </Directory>
+```
+
 Do not forget to restart apache2 service after making this change.
 
-Create `/etc/apache2/.httpasswd` file that will have all the users with
+Create `/etc/apache2/.httpasswd` (`/etc/httpd/.htpassword` for RedHat) file that will have all the users with
 passwords, do it by using `htpasswd` tool, to add user `test` execute:
+
+For Ubuntu/Debian
 ```
 sudo htpasswd -c /etc/apache2/.htpasswd test
 New password: 
 Re-type new password: 
 Adding password for user test
 ```
+
+For RedHat
+```
+sudo htpasswd -c /etc/httpd/.htpasswd test
+New password: 
+Re-type new password: 
+Adding password for user test
+```
+
 To add more users to the file repeat the command without `-c` flag.
 
 ### Zabbix configuration for HTTP authentication
