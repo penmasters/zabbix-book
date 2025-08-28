@@ -162,8 +162,11 @@ this purpose.
     ```
     Ubuntu
     ```
+    apt install tomcat10
+    vi /etc/default/tomcat10
     ```
-    Add the following config:
+    Add the following config: in Ubuntu remove the original JAVA_OPTS line or
+    place a # in front
 
     ```yaml
     JAVA_OPTS="\
@@ -273,7 +276,7 @@ _04.35 JMX Gateway_
     ```
     Ubuntu
     ```
-    Todo
+    apt install zabbix-java-gateway
     ```
 
 ## Configuring Zabbix and the JAVA Gateway
@@ -327,9 +330,19 @@ forget to enable the `Zabbix Java Gateway` service.
 On the application side don't forget to open the firewall so that our
 `zabbix-java-gateway` can connect to our application.
 
-`firewall-cmd --add-port=8686/tcp --permanent`
+!!! info "Allow JMX"
 
-`firewall-cmd --reload`
+    Red Hat
+    ```
+    firewall-cmd --add-port=8686/tcp --permanent
+    firewall-cmd --reload
+    ```
+
+    Ubuntu
+    ```
+    sudo ufw allow 8686/tcp
+    ```
+
 
 ???+ Warning
 
