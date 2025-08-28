@@ -53,7 +53,7 @@ Admin:$1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
 test:$1$GXoDIOCA$u/n1kkDeFwcI4KhyHkY6p/
 ```
 
-To generate hashed_password you can use `openssl` tool enetring the password
+To generate hashed_password you can use `openssl` tool entering the password
 twice:
 ```
 openssl passwd
@@ -149,7 +149,7 @@ _2.2 HTTP users authentication login form_
 
 If you select "HTTP login form" in `Default login form` drop-down you won't see
 standard Zabbix login form when you try to log out. You actually won't be able
-to sign out unless your authetnciation session expires. The only way to sign out
+to sign out unless your authentication session expires. The only way to sign out
 is to clear cookies in your browser. Then you'll have to go through the Web
 server basic authentication procedure again.
 
@@ -779,7 +779,7 @@ _2.26 New user configuration_
 
 Then switch to `Permissions` tab and select any role.
 
-![MFA new user permissions](ch02ю27-mfa_new_user_permissions.png){ width=90% }
+![MFA new user permissions](ch02.27-mfa_new_user_permissions.png){ width=90% }
 
 _2.27 New user permissions_
 
@@ -901,7 +901,7 @@ user. You should see a welcome screen from Duo. Click several `Next` buttons.
 
 ![MFA DUO ](ch02.40-mfa_duo_welcome.png){ width=32% }
 
-_2.40 Enrollling into DUO, step1_
+_2.40 Enrolling into DUO, step1_
 
 ![MFA DUO ](ch02.41-mfa_duo_welcome1.png){ width=32% }
 
@@ -962,7 +962,7 @@ _2.50 Configure DUO app, step 4_
 
 ![MFA DUO ](ch02.51-mfa_duo_enrollement_confirmation.png){ width=32% }
 
-_2.51 Enrollment confirmation_
+_2.51 Enrolment confirmation_
 
 Duo will ask you now whether you want to add another method of authentication,
 click `Skip for now` and you'll see a confirmation that set up completed. Click
