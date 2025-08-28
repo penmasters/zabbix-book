@@ -431,6 +431,7 @@ Follow the steps below to get the SNMP agent installed.
 
     Ubuntu
     ``` bash
+    sudo apt install snmp snmpd
     Todo
     ```
 
