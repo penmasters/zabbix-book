@@ -1,3 +1,11 @@
+---
+description: |
+    This chapter from The Zabbix Book, titled "Host Groups," explains how to organize
+    and manage monitored hosts effectively in Zabbix. It covers the creation of
+    host groups, their role in permission management, and how they simplify large
+    environments by structuring hosts for better visibility and control.
+---
+
 # Host Groups
 
 In Zabbix, **host groups** serve as a foundational mechanism for organizing monitored

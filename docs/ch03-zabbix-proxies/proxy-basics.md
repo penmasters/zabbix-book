@@ -1,3 +1,12 @@
+---
+description: |
+    This chapter from The Zabbix Book, titled "Proxy Basics," introduces the role
+    of proxies in a Zabbix environment. It explains how proxies collect monitoring
+    data, forward it to the server, and help reduce load in distributed setups.
+    The guide covers installation, configuration, and when to use proxies for
+    scalability and efficiency.
+---
+
 # Proxy basics
 
 In this chapter we will cover the basic needs for our proxies. We won't pay

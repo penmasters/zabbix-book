@@ -909,13 +909,13 @@ _2.41 Enrollling into DUO, step2_
 
 ![MFA DUO ](ch02.42-mfa_duo_welcome2.png){ width=32% }
 
-_2.42 Enrollling into DUO, step3_
+_2.42 Enrolling into DUO, step3_
 
 Then you need to select the method of authentication.
 
 ![MFA DUO ](ch02.43-mfa_duo_auth_method.png){ width=50% }
 
-_2.43 Enrollling into DUO, step4_
+_2.43 Enrolling into DUO, step4_
 
 It is up to you what to select you can experiment with all these methods. Let's
 select "Duo Mobile" (you need to install "Duo mobile" application on your device).
@@ -925,15 +925,15 @@ see a QR code that you need to scan in "Duo mobile" application.
 
 ![MFA DUO ](ch02.44-mfa_duo_duo_app.png){ width=32% }
 
-_2.44 Enrollling into DUO, step5_
+_2.44 Enrolling into DUO, step5_
 
 ![MFA DUO ](ch02.45-mfa_duo_confirm_app_installed.png){ width=32% }
 
-_2.45 Enrollling into DUO, step6_
+_2.45 Enrolling into DUO, step6_
 
 ![MFA DUO ](ch02.46-mfa_duo_scan_qr.png){ width=32% }
 
-_2.46 Enrollling into DUO, step7_
+_2.46 Enrolling into DUO, step7_
 
 Open "Duo mobile" on your phone. If you did not have this application previously
 installed (thus no accounts enrolled) you will see couple of welcome screens.
