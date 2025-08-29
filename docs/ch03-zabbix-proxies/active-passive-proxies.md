@@ -1,3 +1,11 @@
+---
+description: |
+    This chapter from The Zabbix Book, titled "Active and Passive Proxies," explores
+    the two proxy modes available in Zabbix. It explains how active proxies push
+    data to the server, while passive proxies wait for polling requests. The guide
+    covers setup, use cases, and how to choose the right mode for your environment.
+---
+
 # Active and Passive proxies
 
 ## Active proxies
