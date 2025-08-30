@@ -1,5 +1,9 @@
 ---
 description: |
+    This section from The Zabbix Book, titled "HTTP Authentication," explains how
+    to secure Zabbix frontend access using web server authentication methods. It
+    covers setup with Apache or Nginx, integration with Zabbix, and how HTTP auth
+    adds an extra protection layer to your monitoring environment.
 ---
 
 # HTTP
@@ -159,6 +163,20 @@ server basic authentication procedure again.
 
 ## Conclusion
 
+Configuring HTTP level authentication adds a critical layer of access control to
+your Zabbix Web UI by leveraging your web server's native authentication mechanisms.
+Whether using Nginx or Apache, this approach ensures that users are prompted for
+credentials before even reaching Zabbix, effectively guarding against unauthorized
+access at the HTTP entry point. Key considerations include ensuring that usernames
+used in the HTTP authentication are already defined within Zabbix itself only the
+password from the web server matters for credential checks and correctly setting
+up Zabbix's HTTP authentication settings (such as domain removal and case sensitivity
+options). By coordinating web server authentication settings with Zabbix's internal
+configuration, you can achieve seamless and secure user login workflows that blend
+frontend usability with robust protective measures.
+
 ## Questions
 
 ## Useful URLs
+
+[https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http)
