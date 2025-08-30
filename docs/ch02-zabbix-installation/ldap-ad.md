@@ -1,5 +1,9 @@
 ---
 description: |
+    This section from The Zabbix Book, titled "LDAP/AD Authentication," explains
+    how to integrate Zabbix with LDAP or Active Directory for centralized user
+    management. It covers connection setup, binding options, and login verification,
+    making user authentication more secure and easier to maintain.
 ---
 
 # LDAP / AD
@@ -297,3 +301,5 @@ _2.15 Test user3_
 ## Questions
 
 ## Useful URLs
+
+[https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap)

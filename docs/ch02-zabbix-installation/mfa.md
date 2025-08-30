@@ -1,5 +1,9 @@
 ---
 descripton: |
+    This section from The Zabbix Book, titled "Duo MFA Provider," explains how
+    to integrate Duo Security with Zabbix for multi-factor authentication. It
+    covers setup, configuration, and login testing, adding an extra security
+    layer to protect access to the Zabbix frontend.
 ---
 
 # Multi factor authentication
@@ -307,23 +311,57 @@ _2.56 New user registered in DUO_
 
 ## Conclusion
 
-In conclusion, integrating external authentication mechanisms like SAML with Zabbix
-significantly enhances security and streamlines user management. While the configuration
-process involves meticulous steps across both the Zabbix backend and frontend,
-as well as the external Identity Provider, the benefits are substantial. By centralizing
-authentication, organizations can enforce consistent access policies, simplify
-user onboarding and offboarding, and improve overall security posture. Ultimately,
-external authentication provides a robust and scalable solution for managing user
-access within complex Zabbix environments.
+Implementing Multi-Factor Authentication (MFA) in Zabbix is a powerful way to
+significantly advance your system’s security beyond the standard password policies.
+This chapter outlined how Zabbix supports two robust MFA mechanisms:
+
+- Time Based One-Time Password (TOTP): Offers user-friendly, secure login via an
+  authenticator app (like Google or Microsoft Authenticator). It's easy to
+  configure and effective just ensure that your Zabbix server maintains accurate
+  time settings to avoid authentication issues.
+
+- Duo MFA: Integrates a more advanced, enterprise grade solution that provides
+  features like push notifications and customizable authentication methods. Duo
+  offers flexible and strong security, albeit requiring a bit more setup (including
+  HTTPS on the Zabbix WebUI).
+
+Both MFA options elevate the login process by introducing an additional layer of
+validation. Administrators can apply MFA selectively by assigning it to specific
+user groups thus tailoring the security posture to organizational needs.
+
+Ultimately, enabling MFA not only enhances protection against unauthorized access
+but also fits within a broader strategy of robust authentication. Whether through
+TOTP or Duo, adding MFA demonstrates a commitment to safeguarding access to your
+Zabbix environment and fortifying your monitoring infrastructure.n
 
 ## Questions
 
+- Why is relying on a password alone not sufficient to secure access to a Zabbix
+  instance? (Think about common attack methods like password reuse, brute force,
+  or phishing.)
+
+- What are the key differences between TOTP-based MFA and Duo MFA in terms of setup,
+  security, and user experience?
+
+- How does accurate system time affect the reliability of TOTP authentication,
+  and what could go wrong if time synchronization is not maintained?
+
+- If you were tasked with enabling MFA for a production Zabbix system, which method
+  (TOTP or Duo) would you choose, and why? (Consider factors such as environment
+  size, user skill level, regulatory requirements, and available resources.)
+
+- What are some potential challenges when rolling out MFA in an organization,
+  and how could an administrator mitigate user resistance or technical issues?
+
+- Why might it be useful to enable MFA only for certain user groups in Zabbix
+  rather than enforcing it globally?
+
+- How does adding MFA to Zabbix align with a broader security strategy, and what
+  other complementary security measures should be considered?
+
 ## Useful URLs
 
-[https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http)
-
-[https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap)
-
-[https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/saml](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/saml)
-
 [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/mfa](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/mfa)
+[https://duo.com/docs/sso-zabbix](https://duo.com/docs/sso-zabbix)
+
+

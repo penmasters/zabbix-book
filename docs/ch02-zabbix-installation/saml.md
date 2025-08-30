@@ -1,5 +1,9 @@
 ---
 description: |
+    This chapter from The Zabbix Book, titled "SAML Authentication," explains how
+    to integrate Zabbix with SAML-based identity providers for single sign-on (SSO).
+    It covers configuration steps, metadata exchange, and login testing, enabling
+    secure and centralized access management for the Zabbix frontend.
 ---
 
 # SAML
@@ -256,3 +260,5 @@ $SSO['IDP_CERT']                = 'conf/certs/idp.crt';
 ## Questions
 
 ## Useful URLs
+
+[https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/saml](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/saml)
