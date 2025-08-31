@@ -379,6 +379,45 @@ menu_
 
 ## Conclusion
 
+The Zabbix frontend serves as the central command center for monitoring, configuration,
+and system awareness. In this chapter, you explored how to navigate its interface
+from dashboards and the customizable main menu to powerful tools like system information
+and global search. You learned how each menu section (Monitoring, Data Collection,
+Alerts, Users, Administration, and more) aligns with distinct functions, and how
+kiosk mode and layout controls help optimize visibility during daily operations.
+
+Additionally, the system information widget stands out as a real time diagnostic
+snapshot, revealing critical metrics such as server status, number of hosts, templates,
+items, triggers, and user activity all of which aid rapid troubleshooting and performance
+assessment.
+
+By mastering these frontend components, you're now better equipped to confidently
+navigate Zabbix, manage user access, interpret monitoring data, and maintain your
+environment more effectively. This foundational knowledge lays the groundwork for
+deeper exploration into host configuration, authentication mechanisms, and advanced
+monitoring workflows in the chapters that follow.
+
 ## Questions
 
+- Which frontend section (Monitoring, Data Collection, Alerts, Users, or Administration)
+  do you think you'll use most often in your daily work, and why?
+
+- How can kiosk mode be useful in a real-world monitoring environment, and what
+  types of dashboards would you display with it?
+
+- What insights can the system information widget provide during troubleshooting,
+  and how might it help identify issues with server performance?
+
+- Why is it important to understand the difference between data displayed in “Monitoring”
+  and configuration options found in “Data Collection”?
+
+- If you were onboarding a new team member, which parts of the frontend would you
+  show them first, and why?
+
 ## Useful URLs
+
+- https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards
+
+- https://blog.zabbix.com/handy-tips-6-organize-your-dashboards-and-create-slideshows-with-dashboard-pages/17511/
+
+- https://blog.zabbix.com/interactive-dashboard-creation-for-large-organizations-and-msps/30132/

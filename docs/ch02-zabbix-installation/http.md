@@ -177,6 +177,30 @@ frontend usability with robust protective measures.
 
 ## Questions
 
+- What advantage does HTTP (web server based) authentication provide compared to
+  Zabbix's internal authentication mechanism? (Consider protection at the web
+  server layer before the user even reaches the Zabbix UI.)
+
+- Why is it essential that a user must exist in Zabbix even when HTTP authentication
+  is enabled and why does the Zabbix password become irrelevant in that case?
+
+- What are the configuration options in Zabbix's frontend under “Administration
+  → Authentication” for HTTP authentication, and how might each affect login behavior?
+  Examples include enabling/disabling case sensitivity, domain stripping, and choice
+  of login form. 
+
+- Suppose you disable case sensitive logins and maintain both 'Admin' and 'admin'
+  accounts in Zabbix. How will HTTP authentication behave, and what outcome should
+  you expect?
+
+- Imagine troubleshooting a login failure when using HTTP authentication: What
+  steps would you take to ensure the web server’s authentication is configured
+  correctly before examining Zabbix settings?
+
+- From a security standpoint, when would HTTP authentication alone be
+  insufficient and what other authentication methods (e.g., LDAP, SAML, MFA) might
+  you layer on top for added security?
+
 ## Useful URLs
 
 [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http)
