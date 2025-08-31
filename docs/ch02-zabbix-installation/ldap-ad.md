@@ -298,7 +298,58 @@ _2.15 Test user3_
 
 ## Conclusion
 
+Integrating Zabbix with LDAP—or specifically, Active Directory elevates your system's
+authentication capabilities by leveraging existing organizational credentials. It
+allows users to log in using familiar domain credentials, while Zabbix offloads
+the password verification process to a trusted external directory. Notably, even
+when configuring LDAP authentication, corresponding user accounts must still exist
+within Zabbix though their internal passwords become irrelevant once external authentication
+is active.
+
+Particularly powerful is the Just-In-Time (JIT) provisioning feature: this enables
+Zabbix to dynamically create user accounts upon first successful LDAP login streamlining
+onboarding and reducing manual administration. Beyond that, JIT supports ongoing
+synchronization updating user roles, group memberships, or even user removals in
+Zabbix to mirror changes in LDAP—either when a user logs in or during configured
+provisioning intervals.
+
+Important configuration details such as case sensitivity, authentication binding
+methods, search filters, and group mapping need careful attention to ensure reliable
+and secure operation. And while LDAP offers seamless integration, Zabbix still
+maintains control over roles, permissions, and access behavior through its own
+user and user group models Zabbix.
+
+In sum, LDAP/AD authentication offers a scalable, secure, and enterprise-aligned
+approach to centralizing identity management in Zabbix. With flexible provisioning
+and synchronization, organizations can reduce administrative load while reinforcing
+consistency across their access control and authentication strategy.
+
 ## Questions
+
+- What are the main benefits of integrating Zabbix authentication with LDAP or Active
+  Directory compared to using only internal Zabbix accounts?
+
+- Why must a user still exist in Zabbix even when LDAP authentication is enabled,
+  and what role does the internal password play in that case?
+
+- How does Just-In-Time (JIT) provisioning simplify user management in Zabbix,
+  and what potential risks or caveats should an administrator consider when
+  enabling it?
+
+- What is the difference between user authentication and user authorization in
+  the context of LDAP integration with Zabbix? (Hint: Authentication verifies
+  credentials, while authorization determines permissions inside Zabbix.)
+
+- Imagine an administrator incorrectly configures the LDAP search filter. What issues
+  might users encounter when attempting to log in, and how could you troubleshoot
+  the problem?
+
+- How could LDAP group mappings be used to streamline permission assignment in
+  Zabbix? Can you think of an example from your own environment?
+
+- If an organization disables a user account in Active Directory, how does JIT
+  provisioning ensure that Zabbix access is also updated? What would happen if
+  JIT was not enabled?
 
 ## Useful URLs
 
