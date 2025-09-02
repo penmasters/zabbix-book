@@ -1,5 +1,17 @@
 # Some guidelines when writing chapters
 
+## Meta description
+
+Just above the header add a short description that webcrawlers can use.
+
+```` markdown
+    ```
+    description: |
+        A short deescption of a few lines preferable around 150-200 words.
+    ```
+````
+
+
 ## headings and Captialization
 
 Always start with # followed by the name of the chapter starting with a Capital.
@@ -114,6 +126,22 @@ the code in a block with 4 spaces
     block of text
     ```
 ````
+## Ending the Chapter
+
+End the chapter always with a:
+
+## Conclusion
+
+A short conclusion to explain to the readers what they have learned in this
+chapter.
+
+## Questions
+
+- Add a list with questions so that the reader can reflect on the topic.
+
+## Useful URL's
+
+- Add a list with useful URLs to point the reader to more info about this topic.
 
 ## Links
 
