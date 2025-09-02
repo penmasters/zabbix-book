@@ -148,14 +148,14 @@ plugins:
       separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
       lang:
         - fr
-        - de
-        - it
+        #        - de
+        #        - it
         - nl
-        - pt
-        - es
-        - th
-        - zh
-        - ru
+        #        - pt
+        #        - es
+        #        - th
+        #        - zh
+        #        - ru
         - en
   - autolinks
   - privacy #GDPR compliance
@@ -207,30 +207,30 @@ plugins:
         - locale: fr
           name: Français
           build: true
-        - locale: de
-          name: German
-          build: true
-        - locale: it
-          name: Italian
-          build: true
+        #        - locale: de
+        #          name: German
+        #          build: true
+        #        - locale: it
+        #          name: Italian
+        #          build: true
         - locale: nl
           name: Nederlands
           build: true
-        - locale: pt
-          name: Portuguese
-          build: true
-        - locale: es
-          name: Spanish
-          build: true
-        - locale: th
-          name: ภาษาไทย
-          build: true
-        - locale: zh
-          name: 中国人
-          build: true
-        - locale: ru
-          name: Russian
-          build: true
+        #        - locale: pt
+        #          name: Portuguese
+        #          build: true
+        #        - locale: es
+        #          name: Spanish
+        #          build: true
+        #        - locale: th
+        #          name: ภาษาไทย
+        #          build: true
+        #        - locale: zh
+        #          name: 中国人
+        #          build: true
+        #        - locale: ru
+        #          name: Russian
+        #          build: true
         - locale: en
           default: true
           name: English
