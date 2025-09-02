@@ -1,4 +1,12 @@
-# Low Level Discovery with Dependent items.
+---
+description: |
+    Discover how to use Zabbix Low-Level Discovery (LLD) with dependent items to
+    optimize monitoring efficiency—extract metrics from a single data source (like
+    JSON or logs) using preprocessing and reduce overhead while automating item
+    creation.
+---
+
+# Low Level Discovery with Dependent items
 
 Efficiency in monitoring isn't just about automation it's also about minimizing
 resource usage. Low-Level Discovery (LLD) with dependent items in Zabbix offers
@@ -19,19 +27,17 @@ Let’s get started!
 ---
 
 ???+ note
-    For this chapter we start with a working system with a passive Zabbix agent. You can
-    always refer to Chapter 01 if you like to know how to setup Zabbix.
+    For this chapter we start with a working system with a passive Zabbix agent.
+    You can always refer to Chapter 01 if you like to know how to setup Zabbix.
     It can be a good start to have a look at our previous topic `Custom LLD` to get
     a better understanding on how LLD works.
 
-
-## Creating our custom data.
+## Creating our custom data
 
 Before we can implement our Low-Level Discovery (LLD) rule, we first need relevant
 data to work with. Consider a scenario where a print server provides a list of printers
 along with their status in JSON format. This structured data will serve as the foundation
 for our discovery process.  
-
 
 !!! info "Example data"
 
@@ -65,7 +71,7 @@ that will serve as the master item for our Low-Level Discovery (LLD) rule.
 
 !!! info "Run the following command:"
     ```
-    echo 
+    echo
     '{
       "data": [
         {
@@ -95,12 +101,12 @@ that will serve as the master item for our Low-Level Discovery (LLD) rule.
     cat /home/printer-status.json
     ```
 
-## Create a master item.
+## Create a master item
 
 We are now ready to create an item in Zabbix to get the information in to our
 master item. But first we need to create a host.
 
-Go to `Data collection | Hosts` and click `Create host`. Fill in the `Host name` 
+Go to `Data collection | Hosts` and click `Create host`. Fill in the `Host name`
 and the `Host group` and create an `Agent interface`. Those are the only things
 we need for our host and press `Add`.
 
@@ -131,7 +137,7 @@ data we need.
 
 Press `Test` at the bottom of the page a popup will come and you can press at the
 bottom of the page `Get value and test` or `Get value` just above. Both should work
-and return you the information form the txt file. 
+and return you the information form the txt file.
 
 ???+ note
     When you press `Get value` it
@@ -146,9 +152,7 @@ and return you the information form the txt file.
 
 ???+ tip
     Keep a copy of the output somewhere you will need it in the following steps
-    to create your LLD rule and LLD items etc ... 
-
-
+    to create your LLD rule and LLD items etc ...
 
 ## Create LLD Discovery
 
@@ -160,13 +164,14 @@ Triggers and Graphs and click on `Create discovery rule`.
 
 Before configuring our Low-Level Discovery (LLD) rule, we can test our JSON queries
 using tools like [JSON Query Tool](https://www.jsonquerytool.com/). If we apply the
-query `$..name`, it extracts all printer names, while `$..status` retrieves their statuses.  
+query `$..name`, it extracts all printer names, while `$..status` retrieves
+their statuses.
 
 However, referring to the [Zabbix documentation](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery),
 we see that starting from **Zabbix 4.2**, the expected JSON format for LLD has changed.
 The `data` object is no longer required; instead, LLD now supports a direct JSON
-array. This update enables features like **item value preprocessing** and **custom JSONPath queries**
-for macro extraction.  
+array. This update enables features like **item value preprocessing** and
+**custom JSONPath queries** for macro extraction.
 
 While Zabbix still accepts legacy JSON structures containing a `data` object for
 backward compatibility, its use is discouraged. If the JSON consists of a single
@@ -193,7 +198,7 @@ When ready press `Update` at the bottom of the page.
 ## Creating a Low-Level Discovery (LLD) Item
 
 After defining the discovery rule and mapping the data to the corresponding LLD
-macros, the next step is to create an LLD item. This is done through item prototypes.  
+macros, the next step is to create an LLD item. This is done through item prototypes.
 
 1. Navigate to the `Item prototypes` tab.  
 2. Click Create `item prototype` in the upper-right corner.  
@@ -221,7 +226,8 @@ formatted for Zabbix. Configure the following preprocessing steps:
    - This step is required because Zabbix does not recognize `NOK` as a boolean
      value but does recognize `false`.
 3. **Boolean to Decimal**:  
-   - This conversion transforms boolean values into numerical representation (`1` for `OK`, `0` for `false`).  
+   - This conversion transforms boolean values into numerical representation
+   (`1` for `OK`, `0` for `false`).
    - Numeric values are more suitable for graphing and analysis in Zabbix.
 4. **Type of Information**:  
    - Set to **Numeric** to ensure proper data processing and visualization.
@@ -239,17 +245,21 @@ The JSONPath query used in this case is:
     $.data..[?(@.name=='{#PRINTER.NAME}')].status.first()
     ```
 
-### Breakdown of the JSONPath Syntax:
+### Breakdown of the JSONPath Syntax
 
-- **`$`** → Refers to the root of the JSON document.  
-- **`.data`** → Accesses the `data` key within the JSON structure.  
-- **`..`** → The recursive descent operator, searching through all nested levels for matching elements.  
-- **`[?(@.name=='{#PRINTER.NAME}')]`** → A filter expression that:  
-  - Uses `?(@.name=='Color Printer 1')` to match objects where the `name` field equals `"Color Printer 1"`.  
-  - `{#PRINTER.NAME}` is a Zabbix macro that dynamically replaces `"Color Printer 1"` with the discovered printer name.  
-- **`@`** → Represents the current element being evaluated.  
-- **`.status`** → Retrieves the `status` field from the filtered result.  
-- **`.first()`** → Returns only the first matching `status` value instead of an array.  
+- **`$`** → Refers to the root of the JSON document.
+- **`.data`** → Accesses the `data` key within the JSON structure.
+- **`..`** → The recursive descent operator, searching through all nested levels
+  for matching elements.
+- **`[?(@.name=='{#PRINTER.NAME}')]`** → A filter expression that:
+  - Uses `?(@.name=='Color Printer 1')` to match objects where the `name` field
+    equals `"Color Printer 1"`.
+  - `{#PRINTER.NAME}` is a Zabbix macro that dynamically replaces
+    `"Color Printer 1"` with the discovered printer name.
+- **`@`** → Represents the current element being evaluated.
+- **`.status`** → Retrieves the `status` field from the filtered result.
+- **`.first()`** → Returns only the first matching `status` value instead of
+  an array.
   - Without `.first()`, the result would be `["OK"]` instead of `"OK"`.
 
 By applying these preprocessing steps, we ensure that the extracted printer status
@@ -278,7 +288,7 @@ a `preprocessing trick`.
 
 Go to the `Preprocessing` tab and add the following preprocessing step:
 
--  **Discard unchanged with heartbeat** → `1h`  
+-  **Discard unchanged with heartbeat** → `1h`
 
 This ensures that the database is updated `only when a status change occurs`. If
 no status change is detected, `no new entry is written to the database`, reducing
@@ -288,7 +298,7 @@ even if no changes occur.
 
 Before saving the changes, we can further optimize storage by preventing the
 master item from being stored in the database. Navigate back to the `Item` tab and
-set `History` to `Do not store`. 
+set `History` to `Do not store`.
 
 ???+ note
     If you change your mind and want to keep the history then our preprocessing step
@@ -296,22 +306,23 @@ set `History` to `Do not store`.
     every hour.
 
 The RAW item is only used to feed data into the **LLD discovery rule** and `LLD items`.
-Since we do not need to retain historical data for this master item, `discarding it` 
-saves database space and improves efficiency.
+Since we do not need to retain historical data for this master item,
+`discarding it` saves database space and improves efficiency.
 
 By applying these optimizations, we ensure that our monitoring system remains
 efficient while still capturing necessary status updates.
 
-
 ## Creating a Low-Level Discovery (LLD) Filter
 
-Now lets have some fun and use a script that generates the output of our text file with random statuses so that we have a more close to real live environment.
-Create in the folder where your `printer-status.txt` file is a new file called `printer-demo.py` and paste following content in it.
+Now lets have some fun and use a script that generates the output of our text file
+with random statuses so that we have a more close to real live environment.
+Create in the folder where your `printer-status.txt` file is a new file called
+`printer-demo.py` and paste following content in it.
 
 !!! info "python script"
     ```
     #!/usr/bin/env python3
-    
+ 
     import json
     import os
     
@@ -350,26 +361,28 @@ Create in the folder where your `printer-status.txt` file is a new file called `
 Once you have created the script make it executable with `chmod +x printer-demo.py`
 and then run the script with the following command `./printer-demo.py`.
 
-If you cannot run the script then check the python environment or try to run it as `python printer-demo.py`.
+If you cannot run the script then check the python environment or try to run it
+as `python printer-demo.py`.
 
-This script will change the status of our printers you can verify this in the `Latest data` page.
+This script will change the status of our printers you can verify this in the
+`Latest data` page.
 
 ![Latest data updated](ch08-dependent-lld-create-latestdata-updated.png)
 *8.7 Latest data*
 
-But hey wait as we can see there is an extra devices detected with the name `This is not a printer`
-and Zabbix hasn't detected any status for it ..... 
+But hey wait as we can see there is an extra devices detected with the name
+`This is not a printer` and Zabbix hasn't detected any status for it .....
 
 That we don't have any status yet is normal remember we did a check only once per
-hour with our Preprocessing step so first time the data was changed the new device was detected.
-If the status from the device changes again zabbix will create an update for the item and 
-a status will be processed.
+hour with our Preprocessing step so first time the data was changed the new device
+was detected. If the status from the device changes again zabbix will create an update
+for the item and a status will be processed.
 
 ???+ note
-   Low Level will work in 2 steps first step is the detection of the new devices
-   and second step is populating the items with the correct data. Remember that
-   we did an item interval of 1m so it can take up to 1m before our items gets a
-   new value.
+    Low Level will work in 2 steps first step is the detection of the new devices
+    and second step is populating the items with the correct data. Remember that
+    we did an item interval of 1m so it can take up to 1m before our items gets a
+    new value.
 
 Lets see now how we can remove the device `this is not a printer` from our list
 since we don't want to monitor this one.
@@ -378,13 +391,13 @@ Let's go back to our LLD discovery rule this time to the tab Filters and add the
 following to the fields:
 
 - **Label** : {#PRINTER.NAME} `does not match`
-- ** regular expression** : `{$PRINTERS.NOT.TO.DETECT}`
+- **regular expression** : `{$PRINTERS.NOT.TO.DETECT}`
 
 ![LLD Filters](ch08-dependent-lld-create-filters.png)
 *8.8 LLD Filters*
 
 Press update and go to our Host and click on the tab `Macros`. Here we will create
-our macro and link it with a regular expression. 
+our macro and link it with a regular expression.
 Fill in the following values :
 
 - **Macro**: {$PRINTERS.NOT.TO.DETECT}
@@ -400,7 +413,8 @@ excluded device no longer appears.
 When navigating to the `Items` section of our host, we'll observe that the previously
 discovered item for the filtered device now displays a `Disabled` status with an
 accompanying orange exclamation mark icon. Hovering over this icon reveals the
-system notification: `The item is not discovered anymore and has been disabled, will be deleted in 6d 23h 36m.`
+system notification: `The item is not discovered anymore and has been disabled,
+will be deleted in 6d 23h 36m.`
 
 This automatic cleanup behavior for undiscovered items follows Zabbix's default
 retention policy, which can be customized by modifying the `Keep lost resources period`
@@ -409,7 +423,7 @@ governance requirements.
 
 This concludes our chapter.
 
-# Conclusion
+## Conclusion
 
 Low-Level Discovery in Zabbix represents a powerful approach to dynamic monitoring
 that scales efficiently with your infrastructure. Through this chapter, we've explored
@@ -444,18 +458,20 @@ With these techniques at your disposal, your Zabbix implementation can evolve fr
 a basic monitoring tool to an intelligent system that adapts to your changing infrastructure,
 providing actionable insights without constant reconfiguration.
 
-# Questions
+## Questions
 
-- How do LLD filters change the monitoring paradigm from "collect everything" to a more targeted approach?
-- How does Zabbix LLD fundamentally differ from traditional static monitoring approaches ?
+- How do LLD filters change the monitoring paradigm from "collect everything"
+  to a more targeted approach?
+- How does Zabbix LLD fundamentally differ from traditional static monitoring
+  approaches ?
 - Break down the components of the JSONPath expression $.data..[?(@.name=='{#PRINTER.NAME}')].status.first()
   and explain how each part contributes to extracting the correct data.
-- How would you modify the example to monitor printer ink levels in addition to printer status?
+- How would you modify the example to monitor printer ink levels in addition to
+  printer status?
 
-# Useful URLs
+## Useful URLs
 
 - [https://www.jsonquerytool.com/](https://www.jsonquerytool.com/)
 - [https://regex101.com/](https://regex101.com/)
 - [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery#filter](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery#filter)
 - [https://blog.zabbix.com/lld-filtering-with-macros/24959/](https://blog.zabbix.com/lld-filtering-with-macros/24959/)
-
