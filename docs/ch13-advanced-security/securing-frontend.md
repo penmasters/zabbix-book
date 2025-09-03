@@ -222,7 +222,7 @@ update-ca-trust extract
 - Modify the “When using this certificate:” dropdown to “Always Trust”.
 - Close the certificate window.
 
-#### Import the CA i[48;46;145;1380;2030tn Windows
+#### Import the CA in Windows
 
 - Open the “Microsoft Management Console” by pressing Windows + R, typing mmc, and
   clicking Open.
@@ -308,6 +308,127 @@ When we go to our url ```http://<IP or DNS>/``` we get redirected to our ```http
     - For HTTP/2 to work you need at least nginx 1.9.5 or later
 
 ## Securing the Frontend with Let's Encrypt on Nginx
+
+
+Creating a certificate with Let's Encrypt is quite easy the only thing you need
+is a domain. With a valid dns record set. Once this is in place you can with a
+few command in place add SSL to your website.
+
+### Setup Let's Encrypt with a DNS server
+
+You have a DNS server and everything is properly configured, configuration this
+is going to be easy.
+
+``` bash
+dnf install epel-release
+dnf install certbot python3-certbot-nginx
+
+# Make sure you have added your domain in the file /etc/nginx/conf.d/zabbix.com
+# rename the file
+mv /etc/nginx/conf.d/zabix.conf /etc/nginx/conf.d/<yourdomain.com>
+
+# run certbot replace yourdomain.com with your own domain 
+certbot --nginx -d yourdomain.com -d www.yourdomain.com
+```
+
+``` bash
+# add firewall config
+firewall-cmd --permanent --add-service=https
+firewall-cmd --reload
+```
+
+``` bash
+# Obtain the SSL certificate
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+```
+
+This will install the certificates automatic in your configuration file. In case
+you had not renamed your file with the domain name you have alter the config
+file yourself.
+You can take a look for an example to the next topic.
+
+### Setup Let;s encrypt without local a DNS server
+In case you like to test this at home it's a bit more complex if you don't have a
+DNS server at home but still possible with DNS-01 if you have bought a domain and
+are able to configure the TXT records for this domain. In this case we can use
+get.acme.
+
+``` bash
+# Install the needed packages
+sudo dnf install epel-release
+sudo dnf install certbot python3-certbot-nginx
+sudo dnf install -y tar gzip openssl cronie
+sudo dnf install -y bind-utils # gives `dig`
+
+# Install the acme script and add it to you path
+curl https://get.acme.sh | sh
+exec bash
+acme.sh --version
+
+# Activate crond and setup the certificate.
+sudo systemctl enable --now crond
+acme.sh --set-default-ca --server letsencrypt
+acme.sh --issue -d <mydomain.com> -d '*.<mydomain.com>' --dns --yes-I-know-dns-manual-mode-enough-go-ahead-please
+
+# The script had provided you with 2 TXT records add them to your domain and
+# check if they are properly configured. It can take a few minutes before other
+# DNS servers pickup the config change.
+dig +short TXT _acme-challenge.<mydomain.com> @8.8.8.8
+
+# Try to renew the certificate and copy it to your webserver
+acme.sh --renew -d <mydomain.com> --ecc --dns --yes-I-know-dns-manual-mode-enough-go-ahead-please
+sudo mkdir -p /etc/ssl/<mydomain>
+acme.sh --install-cert -d <mydomain.com> --ecc --key-file /etc/ssl/<mydomain>/site.key --fullchain-file /etc/ssl/<mydomain>/site.fullchain.pem  --reloadcmd
+```
+
+Next step is to alter your NGINX config and open the firewall on port 443
+
+``` bash
+# Configure the firewall
+firewall-cmd --add-service=https --permanent
+firewall-cmd --reload
+```
+
+```bash
+# Add to your hosts file the domain zabbix.<mydomain.com>
+vi /etc/hosts
+```
+
+``` bash
+# Alter your NGINX config
+vi /etc/nginx/conf.d/zabbix.conf
+
+server {
+        listen          443 ssl;
+        server_name     zabbix.mydoamin.com;
+        ssl_certificate     /etc/ssl/mydomain/site.fullchain.pem;
+        ssl_certificate_key /etc/ssl/mydomain/site.key;
+        ssl_protocols       TLSv1.2 TLSv1.3;
+        ssl_ciphers         HIGH:!aNULL:!MD5;
+```
+
+``` bash
+# Add a forward from port 80 to 443
+
+vi /etc/nginx/conf.d/no-ssl-zabbix.conf
+server{
+    listen  80;
+    return 301 https://$host$request_uri?;
+}
+```
+
+``` bash
+# restart the NGINX webserver
+systemctl restart nginx
+```
+
+You can now browse to the url zabbix.mydomain.com and you should have a working
+certificate.
+
+???+ Note
+    You should probably add a bit more security to your webserver this is only
+    the bare minimum to make ssl working, A good place to start is probably
+    https://cipherlist.eu/
 
 ## Securing the Frontend with Let's Encrypt on Nginx
 
