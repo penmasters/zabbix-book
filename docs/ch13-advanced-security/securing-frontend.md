@@ -40,7 +40,7 @@ create our own root certificate and private key.
     Borrowed the designs from https://www.youtube.com/watch?v=WqgzYuHtnIM
     this video explains well how SSL works.
 
-## Securing the Frontend with Self signed SSL on Nginx
+## Securing the frontend with self signed Certificates
 
 
 To configure this there are a few steps that we need to follow:
@@ -263,30 +263,40 @@ Add the following lines to your Nginx configuration, modifying the file paths as
 Replace the the already existing lines with port 80 with this configuration. This
 will enable SSL and HTTP2.
 
-```
-# vi /etc/nginx/conf.d/zabbix.conf
-```
 
-``` text
-server {
-        listen          443 http2 ssl;
-        listen          [::]:443 http2 ssl;
-        server_name     <ip qddress>;
-        ssl_certificate /etc/ssl/certs/zabbix.mycompany.internal.crt;
-        ssl_certificate_key /etc/pki/tls/private/zabbix.mycompany.internal.key;
-        ssl_dhparam /etc/ssl/certs/dhparam.pem;
-```
+!!! Info "Adapt the Nginx config"
 
-To redirect traffic from port 80 to 443 we can add the following lines above our
-https block:
+    Red Hat
+    ```
+    # vi /etc/nginx/conf.d/zabbix.conf
+    ```
+    ``` text
+    server {
+            listen          443 http2 ssl;
+            listen          [::]:443 http2 ssl;
+            server_name     <ip qddress>;
+            ssl_certificate /etc/ssl/certs/zabbix.mycompany.internal.crt;
+            ssl_certificate_key /etc/pki/tls/private/zabbix.mycompany.internal.key;
+            ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    ```
 
-``` text
-server {
-       listen         80;
-       server_name    _; #dns or ip is also possible
-       return         301 https://$host$request_uri;
-}
-```
+    To redirect traffic from port 80 to 443 we can add the following lines above our
+    https block:
+
+    ``` text
+    server {
+           listen         80;
+           server_name    _; #dns or ip is also possible
+           return         301 https://$host$request_uri;
+    }
+    ```
+    Ubuntu
+    ```
+    ToDo
+    ```
+
+#### Adapt your Apache Zabbix config
+
 
 #### Restart all services and allow https traffic
 
