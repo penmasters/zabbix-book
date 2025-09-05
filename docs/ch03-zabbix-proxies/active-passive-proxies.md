@@ -421,8 +421,8 @@ to future monitoring challenges.
 
 ## Questions
 
+- What is the fundamental difference between an active proxy and a passive proxy
+  in terms of who initiates the connection?
+
 ## Useful URLs
 
-```
-
-```
