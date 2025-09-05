@@ -1,3 +1,14 @@
+---
+description: | This chapter from The Zabbix Book, titled "Basic Installation,"
+provides a step-by-step guide to installing a Zabbix server. It covers the
+essential architectural components—the Zabbix server, web server (frontend), and
+database and details common installation setups on Ubuntu and Rocky Linux. The
+guide also highlights best practices for security by creating dedicated database
+users with limited permissions and explains how to improve performance with a
+distributed database setup. Additionally, it addresses the mandatory database
+migration required for Zabbix 7.0 and newer versions.
+---
+
 # Basic installation
 
 In this chapter, we will walk through the process of installing the Zabbix
@@ -11,6 +22,17 @@ composed of three main components, which we will discuss in detail.
 - The Zabbix server
 - The Zabbix web server
 - The Zabbix database
+
+!!! info "Creation of DB users"
+
+    ``` yaml
+    In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
+    zabbix-web user will be used for the frontend to connect to our zabbix database.
+    The zabbix-srv user will be used by our zabbix server to connect to the database.
+    This allows us to limit the permissions for every user to only what is strictly
+    needed.
+    ```
+
 
 ![overview](ch01-basic-installation-zabbixserver.png){ align=left }
 
@@ -2323,8 +2345,10 @@ On the next page, you'll configure the database connection parameters:
    is zabbix. If you are using PostgreSQL, you will also need to provide the
    schema name, which is zabbix_server in our case.
 4. `Enter the Database User`: Input the database user created for the web
-   front-end, such as zabbix-web. Enter the corresponding password for this
-   user.
+   front-end, remember in our basic installation guide we created 2 users
+   zabbix-web and zabbix-srv. One for the frontend and the other one for our
+   zabbix server so here we will use the user `zabbix-web`. Enter the
+   corresponding password for this user.
 
 Ensure that the `Database TLS encryption` option is not selected, and then click
 `Next step` to proceed.
