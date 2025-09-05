@@ -1,3 +1,11 @@
+---
+description: |
+    Learn how Zabbix proxies enhance scalability and distributed monitoring. This
+    chapter guides you through setting up basic proxies, explores active vs. passive
+    modes, container deployment, proxy groups, and the web services component
+    helping you architect a resilient and efficient Zabbix infrastructure.
+---
+
 # Proxies and the Web services component
 
 Proxies are often regarded as an advanced topic in Zabbix, but in reality,
