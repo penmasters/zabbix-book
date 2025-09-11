@@ -89,6 +89,7 @@ nav:
       - ch11-zabbix-visualisation/chapter.md
   - "Chapter 12 : Zabbix API":
       - ch12-zabbix-api/chapter.md
+      - ch12-zabbix-api/self-engaging.md
   - "Chapter 13 : Advanced set up and security":
       - ch13-advanced-security/chapter.md
       - SELinux: ch13-advanced-security/selinux-zabbix.md

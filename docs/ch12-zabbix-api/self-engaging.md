@@ -1,3 +1,8 @@
+---
+description: |
+    add a description for SEO.
+---
+
 # Self-engaging
 
 Welcome to Zabbix API self engaging methods. All upcoming chapters will address the tools available to allow software to re-engage with itself. It is like developing a small service(s) which runs on the top of Zabbix and do exactly the tasks we told to do. This is like simulating an extra employee in the company.
