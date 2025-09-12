@@ -30,7 +30,7 @@ plus de simplicité, notez les détails du/des serveur(s) :
 | Serveur de base de données |            |
 | Serveur web                |            |
 
-???+ astuces
+???+ tip
 
     Zabbix package names often use dashes (`-`) in their names, such as `zabbix-get`
     or `zabbix-sender`, but the binaries themselves may use underscores (`_`),
