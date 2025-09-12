@@ -1,29 +1,32 @@
 ---
-description: | This chapter from The Zabbix Book, titled "Basic Installation,"
-provides a step-by-step guide to installing a Zabbix server. It covers the
-essential architectural components—the Zabbix server, web server (frontend), and
-database and details common installation setups on Ubuntu and Rocky Linux. The
-guide also highlights best practices for security by creating dedicated database
-users with limited permissions and explains how to improve performance with a
-distributed database setup. Additionally, it addresses the mandatory database
-migration required for Zabbix 7.0 and newer versions.
+description : | Ce chapitre du livre Zabbix, intitulé « Installation de base »,
+fournit un guide étape par étape pour l'installation d'un serveur Zabbix. Il
+englobe les composants essentiels - le serveur Zabbix, le serveur web (frontend)
+et la base de données - il détaille les configurations d'installation sur Ubuntu
+et Rocky Linux. Le guide met également l'accent sur les meilleures pratiques en
+matière de sécurité en créant des utilisateurs dédiés à la base de données avec
+des autorisations limitées et explique comment améliorer les performances avec
+une configuration de base de données distribuée. Par ailleurs, il aborde la
+migration obligatoire de la base de données requise pour Zabbix 7.0 et les
+versions ultérieures.
 ---
 
-# Basic installation
+# Installation de base
 
-In this chapter, we will walk through the process of installing the Zabbix
-server. There are many different ways to setup a Zabbix server. We will cover
-the most common setups with MariaDB and PostgreSQL on Ubuntu and on Rocky Linux.
+Dans ce chapitre, nous allons suivre le processus d'installation du serveur
+Zabbix. Il existe de nombreuses façons de configurer un serveur Zabbix. Nous
+couvrirons les configurations les plus courantes avec MariaDB et PostgreSQL sur
+Ubuntu et sur Rocky Linux.
 
-Before beginning the installation, it is important to understand the
-architecture of Zabbix. The Zabbix server is structured in a modular fashion,
-composed of three main components, which we will discuss in detail.
+Avant de commencer l'installation, il est important de comprendre l'architecture
+de Zabbix. Le serveur Zabbix est structuré de manière modulaire et se compose de
+trois éléments principaux, que nous allons examiner en détail.
 
-- The Zabbix server
-- The Zabbix web server
-- The Zabbix database
+- Le serveur Zabbix
+- Le serveur web Zabbix (frontend)
+- La base de données Zabbix
 
-!!! info "Creation of DB users"
+!!! info "Création des utilisateurs de la base de données"
 
     ``` yaml
     In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
@@ -34,29 +37,30 @@ composed of three main components, which we will discuss in detail.
     ```
 
 
-![overview](ch01-basic-installation-zabbixserver.png){ align=left }
+![aperçu](ch01-basic-installation-zabbixserver.png){ align=left }
 
-_1.1 Zabbix basic split installation_
+_1.1 Installation Zabbix de base_
 
-All of these components can either be installed on a single server or
-distributed across three separate servers. The core of the system is the Zabbix
-server, often referred to as the "brain." This component is responsible for
-processing trigger calculations and sending alerts. The database serves as the
-storage for the Zabbix server's configuration and all the data it collects. The
-web server provides the user interface (front-end) for interacting with the
-system. It is important to note that the Zabbix API is part of the front-end
-component, not the Zabbix server itself.
+Tous ces composants peuvent être installés sur un seul serveur ou répartis sur
+trois serveurs distincts. Le cœur du système est le serveur Zabbix, souvent
+appelé « cerveau ». Ce composant est responsable du traitement des calculs des
+déclencheurs et de l'envoi des alertes. La base de données sert à stocker la
+configuration du serveur Zabbix et toutes les données qu'il recueille. Le
+serveur web fournit l'interface utilisateur (front-end) permettant d'interagir
+avec le système. Il est important de noter que l'API Zabbix fait partie du
+composant frontal, et non du serveur Zabbix lui-même.
 
-These components must function together seamlessly, as illustrated in the
-diagram above. The Zabbix server must read configurations and store monitoring
-data in the database, while the front-end needs access to read and write
-configuration data. Furthermore, the front-end must be able to check the status
-of the Zabbix server and retrieve additional necessary information to ensure
-smooth operation.
+Ces composants doivent fonctionner ensemble de manière transparente, comme
+l'illustre le diagramme ci-dessus. Le serveur Zabbix doit lire les
+configurations et stocker les données de surveillance dans la base de données,
+tandis que le frontal doit avoir accès à la lecture et à l'écriture des données
+de configuration. En outre, le frontal doit pouvoir vérifier l'état du serveur
+Zabbix et récupérer d'autres informations nécessaires pour assurer un
+fonctionnement sans soucis.
 
-For our setup, we will be using two virtual machines (VMs): one VM will host
-both the Zabbix server and the Zabbix web front-end, while the second VM will
-host the Zabbix database.
+Pour notre installation, nous utiliserons deux machines virtuelles (VM) : une VM
+hébergera le serveur Zabbix et l'interface web Zabbix (frontend) , tandis que la
+seconde VM hébergera la base de données Zabbix.
 
 ???+ note
 
@@ -77,28 +81,29 @@ host the Zabbix database.
     mandatory step to ensure continued functionality and compatibility with future
     Zabbix versions.
 
-We will cover the following topics:
+Les sujets suivants seront abordés :
 
-- Install our Database based on MariaDB.
-- Install our Database based on PostgreSQL.
-- Installing the Zabbix server.
-- Install the frontend.
+- Installer notre base de données MariaDB.
+- Installer notre base de données PostgreSQL.
+- Installation du serveur Zabbix.
+- Installer le serveur web Zabbix (frontend).
 
-## Installing the MariaDB database
+## Installation de la base de données MariaDB
 
-To begin the installation process for the MariaDB server, the first step
-involves manually creating a repository configuration file. This file,
-mariadb.repo on Rocky, must be placed in the /etc/yum.repos.d/ directory. The
-repository file will allow your package manager to locate and install the
-necessary MariaDB components. For Ubuntu we need to import the repository keys
-and create a file for example '/etc/apt/sources.list.d/mariadb.sources'.
+Pour commencer le processus d'installation du serveur MariaDB, la première étape
+consiste à créer manuellement un fichier de configuration du dépôt. Ce fichier,
+mariadb.repo sur Rocky, doit être placé dans le répertoire /etc/yum.repos.d/. Le
+fichier de dépôt permettra à votre gestionnaire de paquets de localiser et
+d'installer les composants MariaDB nécessaires. Pour Ubuntu, nous devons
+importer les clés du dépôt et créer un fichier, par exemple
+'/etc/apt/sources.list.d/mariadb.sources'.
 
-### Add the MariaDB repository
+### Ajouter le dépôt MariaDB
 
-To create the MariaDB repository file, execute the following command in your
-terminal:
+Pour créer le fichier de dépôt MariaDB, exécutez la commande suivante dans votre
+terminal :
 
-!!! info "create mariadb repository"
+!!! info "créer un dépôt mariadb"
 
     Red Hat
     ``` yaml
@@ -114,20 +119,20 @@ terminal:
     sudo vi /etc/apt/sources.list.d/mariadb.sources
     ```
 
-This will open a text editor where you can input the repository configuration
-details. Once the repository is configured, you can proceed with the
-installation of MariaDB using your package manager.
+Cela ouvrira un éditeur de texte dans lequel vous pourrez saisir les détails de
+la configuration du dépôt. Une fois le dépôt configuré, vous pouvez procéder à
+l'installation de MariaDB en utilisant votre gestionnaire de paquets.
 
 ???+ tip
 
     Always check Zabbix documentation for the latest supported versions.
 
-The latest config can be found here:
+La dernière configuration est disponible ici :
 <https://mariadb.org/download/?t=repo-config>
 
-Here's the configuration you need to add into the file:
+Voici la configuration à ajouter au fichier :
 
-!!! info "Mariadb repository"
+!!! info "Dépôt MariaDB"
 
     Red Hat
     ```yaml
@@ -157,9 +162,9 @@ Here's the configuration you need to add into the file:
     Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
     ```
 
-After saving the file, ensure that everything is properly set up and that your
-MariaDB version is compatible with your Zabbix version to avoid potential
-integration issues.
+Après avoir enregistré le fichier, assurez-vous que tout est correctement
+configuré et que la version de MariaDB est compatible avec la version de Zabbix
+afin d'éviter tout problème de compatibilité.
 
 Before proceeding with the MariaDB installation, it's a best practice to ensure
 your operating system is up-to-date with the latest patches and security fixes.
@@ -1465,7 +1470,7 @@ in the `Zabbix server` log file using:
 Look for messages indicating that the server has started successfully. If there
 are any issues, the log file will provide details to help with troubleshooting.
 
-!!! info "Example output"
+!!! info "Exemple de sortie"
 
     ```yaml
     12074:20250225:145333.529 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
@@ -2204,7 +2209,7 @@ This should help you in locating the errors you made.
 Upon accessing the appropriate URL, a page resembling the one illustrated below
 should appear:
 
-![overview](ch01-basic-installation-setup.png){ align=left }
+![aperçu](ch01-basic-installation-setup.png){ align=left }
 
 _1.4 Zabbix welcome_
 
@@ -2432,7 +2437,7 @@ level.
 3. What port does my DB use ?
 4. What Zabbix logs should I check for troubleshooting common issues?
 
-## Useful URLs
+## URL utiles
 
 - <https://www.postgresql.org/docs/current/ddl-priv.html>
 - <https://www.zabbix.com/download>
