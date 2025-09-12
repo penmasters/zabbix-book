@@ -201,6 +201,6 @@ with robust protective measures.
   insufficient and what other authentication methods (e.g., LDAP, SAML, MFA)
   might you layer on top for added security?
 
-## Useful URLs
+## URL utiles
 
 [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http)
