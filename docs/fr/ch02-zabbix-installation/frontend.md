@@ -372,7 +372,7 @@ _2.18 Administration menu_
     module created by one of the Zabbix developers `UI Twix` will solve this problem
     for you.
 
-???+ Note
+???+ note
 
     At time of writing there is no Dashboard import/export functionality in zabbix.
     So when upgrading dashboards it needs to be created by hand. It was on the roadmap
@@ -418,7 +418,7 @@ mechanisms, and advanced monitoring workflows in the chapters that follow.
 - If you were onboarding a new team member, which parts of the frontend would
   you show them first, and why?
 
-## Useful URLs
+## URL utiles
 
 - https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards
 
