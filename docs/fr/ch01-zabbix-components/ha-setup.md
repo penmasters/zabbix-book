@@ -1,41 +1,46 @@
 ---
-description: | This chapter from The Zabbix Book, titled "HA Setup," explains
-how to configure a Zabbix `High Availability` (HA) cluster to ensure continuous
-monitoring. It details a setup using two Zabbix servers with a single database
-to create a seamless failover system. The guide covers the installation and
-configuration of the Zabbix cluster, including the use of Keepalived to manage a
-Virtual IP (VIP) for the frontend, which ensures uninterrupted service. The
-chapter provides step-by-step instructions for the entire process, from setting
-up the servers to verifying that the HA setup is functioning correctly.
+description : | Ce chapitre du livre Zabbix, intitulé « HA Setup », explique
+comment configurer un cluster Zabbix `High Availability` (HA) pour assurer une
+surveillance continue. Il détaille une installation utilisant deux serveurs
+Zabbix avec une seule base de données pour créer un système de basculement
+transparent. Le guide couvre l'installation et la configuration du cluster
+Zabbix, y compris l'utilisation de Keepalived pour gérer une IP virtuelle (VIP)
+pour le frontend, ce qui garantit un service ininterrompu. Le chapitre fournit
+des instructions étape par étape pour l'ensemble du processus, de la
+configuration des serveurs à la vérification du bon fonctionnement de la
+configuration HA.
 ---
 
-# HA Setup
+# Configuration HA
 
-In this section, we will set up Zabbix in a High Availability (HA)
-configuration. This feature, introduced in Zabbix 6, is a crucial enhancement
-that ensures continued monitoring even if a Zabbix server fails. With HA, when
-one Zabbix server goes down, another can take over seamlessly.
+Dans cette section, nous allons configurer Zabbix en haute disponibilité (HA).
+Cette fonctionnalité, introduite dans Zabbix 6, est une amélioration cruciale
+qui garantit la poursuite de la surveillance même si un serveur Zabbix tombe en
+panne. Avec HA, lorsqu'un serveur Zabbix tombe en panne, un autre peut prendre
+le relais de manière transparente.
 
-For this guide, we will use two Zabbix servers and one database, but the setup
-allows for adding more zabbix servers if necessary.
+Pour ce guide, nous utiliserons deux serveurs Zabbix et une base de données,
+mais la configuration permet d'ajouter d'autres serveurs Zabbix si nécessaire.
 
-![HA-Setup](./ha-setup/ch01-HA-setup.png)
+![Configuration HA](./ha-setup/ch01-HA-setup.png)
 
-_1.1 HA Setup_
+_1.1 Configuration HA_
 
-It's important to note that Zabbix HA setup is straightforward, providing
-redundancy without complex features like load balancing.
+Il est important de noter que la configuration de Zabbix HA est simple,
+fournissant une redondance sans fonctionnalités complexes telles que
+l'équilibrage de charge.
 
-Just as in our basic configuration, we will document key details for the servers
-in this HA setup. Below is the list of servers and some place to add their
-respective IP addresses for your convenience :
+Au même titre que dans notre configuration de base, nous allons documenter les
+détails clés des serveurs dans cette configuration HA. Vous trouverez ci-dessous
+la liste des serveurs et l'endroit où ajouter leurs adresses IP respectives pour
+plus de commodité :
 
-| Server          | IP Address |
-| --------------- | ---------- |
-| Zabbix Server 1 |            |
-| Zabbix Server 2 |            |
-| Database        |            |
-| Virtual IP      |            |
+| Serveur          | Adresse IP |
+| ---------------- | ---------- |
+| Serveur Zabbix 1 |            |
+| Serveur Zabbix 2 |            |
+| Base de données  |            |
+| IP virtuelle     |            |
 
 ???+ note
 
@@ -47,28 +52,29 @@ respective IP addresses for your convenience :
 
 ---
 
-## Installing the Database
+## Installer la base de données
 
-Refer to the [_Basic Installation_](basic-installation.md) chapter for detailed
-instructions on setting up the database. That chapter provides step-by-step
-guidance on installing either a PostgreSQL or MariaDB database on a dedicated
-node running Ubuntu or Rocky Linux. The same installation steps apply when
-configuring the database for this setup.
+Reportez-vous au chapitre [_Installation de base_](basic-installation.md) pour
+obtenir des instructions détaillées sur la configuration de la base de données.
+Ce chapitre fournit des conseils étape par étape sur l'installation d'une base
+de données PostgreSQL ou MariaDB sur un nœud dédié fonctionnant sous Ubuntu ou
+Rocky Linux.
 
 ---
 
-## Installing the Zabbix cluster
+## Installation du cluster Zabbix
 
-Setting up a Zabbix cluster involves configuring multiple Zabbix servers to work
-together, providing high availability. While the process is similar to setting
-up a single Zabbix server, there are additional configuration steps required to
-enable HA (High Availability).
+La mise en place d'un cluster Zabbix consiste à configurer plusieurs serveurs
+Zabbix pour qu'ils fonctionnent ensemble et offrent une haute disponibilité.
+Bien que le processus soit similaire à la configuration d'un seul serveur
+Zabbix, des étapes de configuration supplémentaires sont nécessaires pour
+activer la haute disponibilité (HA).
 
-Add the Zabbix Repositories to your servers.
+Ajoutez les dépôts Zabbix à vos serveurs.
 
-First, add the Zabbix repository to both of your Zabbix servers:
+Tout d'abord, ajoutez le dépôt Zabbix à vos deux serveurs Zabbix :
 
-!!! info "add zabbix repository"
+!!! info "ajouter le dépôt zabbix"
 
     Redhat
 
@@ -85,9 +91,9 @@ First, add the Zabbix repository to both of your Zabbix servers:
     sudo apt update
     ```
 
-Once this is done we can install the zabbix server packages.
+Une fois cela fait, nous pouvons installer les paquets du serveur zabbix.
 
-!!! info "install zabbix server packages"
+!!! info "installer les paquets du serveur Zabbix"
 
     Redhat
 
@@ -111,17 +117,17 @@ Once this is done we can install the zabbix server packages.
 
 ---
 
-### Configuring Zabbix Server 1
+### Configuration du serveur Zabbix 1
 
-Edit the Zabbix server configuration file,
+Modifiez le fichier de configuration du serveur Zabbix,
 
-!!! info "edit the server config file"
+!!! info "éditer le fichier de configuration du serveur"
 
     ``` yaml
     sudo vi /etc/zabbix/zabbix_server.conf
     ```
 
-Update the following lines to connect to the database:
+Mettez à jour les lignes suivantes pour vous connecter à la base de données :
 
 !!! info ""
 
@@ -133,7 +139,7 @@ Update the following lines to connect to the database:
     DBPassword=<your secret password>
     ```
 
-Configure the HA parameters for this server:
+Configurer les paramètres HA pour ce serveur :
 
 !!! info ""
 
@@ -543,7 +549,7 @@ needed.
 
 ---
 
-## Useful URLs
+## URL utiles
 
 - <https://www.redhat.com/sysadmin/advanced-keepalived>
 - <https://keepalived.readthedocs.io/en/latest/introduction.html>
