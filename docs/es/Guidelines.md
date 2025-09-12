@@ -27,5 +27,5 @@
     - git branch -d "<your branch name\>"
 - Create a pull requests so that we can merge it :)
 - Follow these
-  [guidelines](https://github.com/Trikke76/the-zabbix-book/blob/main/how-to-rules-for-writing.md)
+  [guidelines](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
   when you write a topic.

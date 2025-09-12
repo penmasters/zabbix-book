@@ -29,5 +29,5 @@
     - git branch -d "<votre nom de branche\>"
 - Créez une pull requests pour que nous puissions la fusionner :)
 - Suivez ces [lignes
-  directrices](https://github.com/Trikke76/the-zabbix-book/blob/main/how-to-rules-for-writing.md)
+  directrices](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
   lorsque vous rédigez un sujet.

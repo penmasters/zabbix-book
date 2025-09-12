@@ -28,5 +28,5 @@
     - git branch -d "<jouw branch naam\>"
 - Maak een pull-verzoek zodat we het kunnen samenvoegen :)
 - Volg deze
-  [richtlijnen](https://github.com/Trikke76/the-zabbix-book/blob/main/how-to-rules-for-writing.md)
+  [richtlijnen](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
   als je een onderwerp schrijft.
