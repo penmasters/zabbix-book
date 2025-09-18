@@ -252,17 +252,17 @@ La sortie attendue devrait ressembler à ceci :
 Pour vous assurer que le service MariaDB fonctionne correctement, vous pouvez
 vérifier son état à l'aide de la commande suivante :
 
-! !! info "Obtenir l'état de mariadb"
+!!! info "Obtenir l'état de mariadb"
 
     Red Hat and Ubuntu
     ```yaml
     sudo systemctl status mariadb
     ```
 
-You should see an output similar to this, indicating that the MariaDB service is
-active and running:
+Vous devriez voir une sortie similaire à celle-ci, indiquant que le service
+MariaDB est actif et fonctionne :
 
-!!! info "mariadb service status example"
+! !! info "exemple d'état du service mariadb"
 
     ```yaml
      mariadb.service - MariaDB 11.4.5 database server
