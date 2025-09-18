@@ -551,7 +551,7 @@ Maintenant nous allons télécharger les données de zabbix (structure de la bas
 de données, images, utilisateur, ... ) pour cela nous utilisons l'utilisateur
 `zabbix-srv` et nous téléchargeons le tout dans notre base de données `zabbix`.
 
-! !! info "Remplir la base de données"
+!!! info "Remplir la base de données"
 
     Red Hat and Ubuntu
     ``` yaml
@@ -564,9 +564,9 @@ de données, images, utilisateur, ... ) pour cela nous utilisons l'utilisateur
     take anywhere from a few seconds to several minutes. Please be patient and
     avoid cancelling the operation; just wait for the prompt to appear.
 
-Log back into your MySQL Database as root
+Reconnectez-vous à votre base de données MySQL en tant que root
 
-!!! info "Enter mariadb as user root"
+! !! info "Entrez dans mariadb en tant qu'utilisateur root"
 
     `mariadb -uroot -p`
 
