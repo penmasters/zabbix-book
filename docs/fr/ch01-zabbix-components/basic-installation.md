@@ -530,7 +530,7 @@ Une des premières choses à faire est d'ajouter le dépôt Zabbix à notre mach
 Cela peut sembler bizarre mais c'est en fait logique car nous avons besoin de
 remplir notre base de données avec nos schémas Zabbix.
 
-! !! info "Ajouter le repo Zabbix et les scripts d'installation"
+!!! info "Ajouter le dépôt Zabbix et les scripts d'installation"
 
     Red Hat
     ``` yaml
@@ -547,10 +547,11 @@ remplir notre base de données avec nos schémas Zabbix.
     sudo apt install zabbix-sql-scripts
     ```
 
-Now lets upload the data from zabbix (db structure, images, user, ... ) for this
-we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
+Maintenant nous allons télécharger les données de zabbix (structure de la base
+de données, images, utilisateur, ... ) pour cela nous utilisons l'utilisateur
+`zabbix-srv` et nous téléchargeons le tout dans notre base de données `zabbix`.
 
-!!! info "Populate the database"
+! !! info "Remplir la base de données"
 
     Red Hat and Ubuntu
     ``` yaml
