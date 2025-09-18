@@ -308,7 +308,7 @@ votre base de données.
 
 Exécutez la commande suivante :
 
-! !! info "Installation sécurisée de Mariadb"
+!!! info "Installation sécurisée de Mariadb"
 
     Red Hat and Ubuntu
     ```yaml
@@ -385,11 +385,12 @@ Exécutez la commande suivante :
     Thanks for using MariaDB!
     ```
 
-The mariadb-secure-installation script will guide you through several key steps:
+Le script mariadb-secure-installation vous guidera à travers plusieurs étapes
+clés :
 
-1. Set a root password if one isn't already set.
-2. Remove anonymous users.
-3. Disallow remote root logins.
+1. Définir un mot de passe root si ce n'est pas déjà fait.
+2. Supprimer les utilisateurs anonymes.
+3. Interdire les connexions à la racine à distance.
 4. Remove the test database.
 5. Reload the privilege tables to ensure the changes take effect.
 
