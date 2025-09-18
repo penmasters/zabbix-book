@@ -234,14 +234,14 @@ Cette commande permet d'activer et de démarrer le service MariaDB. Une fois le
 service lancé, vous pouvez vérifier que l'installation a réussi en vérifiant la
 version de MariaDB à l'aide de la commande suivante :
 
-! !! info "Vérifier la version de Mariadb"
+!!! info "Vérifier la version de Mariadb"
 
     Red Hat and Ubuntu
     ```yaml
     sudo mariadb -V
     ```
 
-The expected output should resemble this:
+La sortie attendue devrait ressembler à ceci :
 
 !!! info ""
 
@@ -249,10 +249,10 @@ The expected output should resemble this:
     mariadb from 11.4.5-MariaDB, client 15.2 for Linux (aarch64) using EditLine wrapper
     ```
 
-To ensure that the MariaDB service is running properly, you can check its status
-with the following command:
+Pour vous assurer que le service MariaDB fonctionne correctement, vous pouvez
+vérifier son état à l'aide de la commande suivante :
 
-!!! info "Get mariadb status"
+! !! info "Obtenir l'état de mariadb"
 
     Red Hat and Ubuntu
     ```yaml
