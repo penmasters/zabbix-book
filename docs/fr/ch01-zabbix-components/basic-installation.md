@@ -520,17 +520,17 @@ nous devons également ouvrir le port de notre pare-feu.
 
 ---
 
-### Remplir la base de données Maria de Zabbix
+### Remplir la base de données MariaDB de Zabbix
 
-With the users and permissions set up correctly, you can now populate the
-database with the Zabbix schema created and other required elements. Follow
-these steps:
+Avec les utilisateurs et les permissions configurés correctement, vous pouvez
+maintenant remplir la base de données avec le schéma Zabbix créé et d'autres
+éléments requis. Suivez les étapes suivantes :
 
-One of the first things we need to do is add the Zabbix repository to our
-machine. This may sound weird but actually makes sense because we need to
-populate our DB with our Zabbix schemas.
+Une des premières choses à faire est d'ajouter le dépôt Zabbix à notre machine.
+Cela peut sembler bizarre mais c'est en fait logique car nous avons besoin de
+remplir notre base de données avec nos schémas Zabbix.
 
-!!! info "Add Zabbix repo and install scripts"
+! !! info "Ajouter le repo Zabbix et les scripts d'installation"
 
     Red Hat
     ``` yaml
@@ -970,9 +970,9 @@ with the database. First, we grant `USAGE` privileges on the schema to allow
 Now, the `zabbix-web` user has appropriate access to interact with the schema
 while maintaining security by limiting permissions to essential operations.
 
-With the users and permissions set up correctly, you can now populate the
-database with the Zabbix schema created and other required elements. Follow
-these steps:
+Avec les utilisateurs et les permissions configurés correctement, vous pouvez
+maintenant remplir la base de données avec le schéma Zabbix créé et d'autres
+éléments requis. Suivez les étapes suivantes :
 
 - Execute the SQL file to populate the database. Run the following command in
   the `psql` shell:
