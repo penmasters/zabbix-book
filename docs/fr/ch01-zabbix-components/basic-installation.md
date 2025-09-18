@@ -230,11 +230,11 @@ faire, utilisez la commande suivante :
     systemctl enable mariadb --now
     ```
 
-This command will both enable and start the MariaDB service. Once the service is
-running, you can verify that the installation was successful by checking the
-version of MariaDB using the following command:
+Cette commande permet d'activer et de démarrer le service MariaDB. Une fois le
+service lancé, vous pouvez vérifier que l'installation a réussi en vérifiant la
+version de MariaDB à l'aide de la commande suivante :
 
-!!! info "Check Mariadb version"
+! !! info "Vérifier la version de Mariadb"
 
     Red Hat and Ubuntu
     ```yaml
