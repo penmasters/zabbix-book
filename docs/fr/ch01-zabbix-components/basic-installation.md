@@ -505,7 +505,7 @@ configuration du serveur Zabbix pour qu'il se connecte à la base de données.
 Si nous voulons que notre serveur Zabbix se connecte à notre base de données,
 nous devons également ouvrir le port de notre pare-feu.
 
-! !! info "Ajouter des règles de pare-feu"
+!!! info "Ajouter des règles de pare-feu"
 
     Red Hat
     ``` yaml
@@ -520,7 +520,7 @@ nous devons également ouvrir le port de notre pare-feu.
 
 ---
 
-### Populate the Zabbix Maria DB
+### Remplir la base de données Maria de Zabbix
 
 With the users and permissions set up correctly, you can now populate the
 database with the Zabbix schema created and other required elements. Follow
