@@ -413,17 +413,17 @@ Connectez-vous à l'interpréteur de commandes MariaDB en tant qu'utilisateur ro
 : Il vous sera demandé d'entrer le mot de passe root que vous avez défini lors
 de l'installation de mariadb-secure-installation.
 
-! !! info "Entrez dans Mariadb en tant qu'utilisateur root"
+!!! info "Entrez dans Mariadb en tant qu'utilisateur root"
 
     Red Hat and Ubuntu
     ```yaml
     mariadb -uroot -p
     ```
 
-Once you're logged into the MariaDB shell, run the following command to create a
-database for Zabbix:
+Une fois que vous êtes connecté au shell MariaDB, exécutez la commande suivante
+pour créer une base de données pour Zabbix :
 
-!!! info "Create the database"
+! !! info "Créer la base de données"
 
     `MariaDB [(none)]> CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;`
 
