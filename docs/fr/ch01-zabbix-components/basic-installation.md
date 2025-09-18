@@ -423,7 +423,7 @@ de l'installation de mariadb-secure-installation.
 Une fois que vous êtes connecté au shell MariaDB, exécutez la commande suivante
 pour créer une base de données pour Zabbix :
 
-! !! info "Créer la base de données"
+!!! info "Créer la base de données"
 
     `MariaDB [(none)]> CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;`
 
@@ -434,14 +434,15 @@ pour créer une base de données pour Zabbix :
      only supports up to three bytes per character and is not a true UTF-8 implementation,
      which is why utf8mb4 is recommended.
 
-This command creates a new database named zabbix with the UTF-8 character set,
-which is required for Zabbix.
+Cette commande crée une nouvelle base de données nommée zabbix avec le jeu de
+caractères UTF-8, nécessaire pour Zabbix.
 
-Create a dedicated user for Zabbix and grant the necessary privileges: Next, you
-need to create a user that Zabbix will use to access the database. Replace
-password with a strong password of your choice.
+Créez un utilisateur dédié à Zabbix et accordez-lui les privilèges nécessaires :
+Ensuite, vous devez créer un utilisateur que Zabbix utilisera pour accéder à la
+base de données. Remplacez le mot de passe par un mot de passe fort de votre
+choix.
 
-!!! info "Create users and grant privileges"
+! !! info "Créer des utilisateurs et accorder des privilèges"
 
     ```sql
     MariaDB [(none)]> CREATE USER 'zabbix-web'@'<zabbix server ip>' IDENTIFIED BY '<password>';
