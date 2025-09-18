@@ -223,7 +223,7 @@ Maintenant que MariaDB est installé, nous devons activer le service pour qu'il
 démarre automatiquement au démarrage et le démarrer immédiatement. Pour ce
 faire, utilisez la commande suivante :
 
-! !! info "Activer le service mariadb"
+!!! info "Activer le service mariadb"
 
     Red Hat
     ```yaml
