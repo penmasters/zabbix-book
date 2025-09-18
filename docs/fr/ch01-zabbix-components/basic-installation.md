@@ -577,21 +577,21 @@ pratique de le supprimer pour des raisons de sécurité.
 Pour annuler la modification et remettre le paramètre global à 0, utilisez la
 commande suivante dans l'interpréteur de commandes MariaDB :
 
-! !! info "Désactiver à nouveau la fonction log_bin_trust"
+!!! info "Désactiver à nouveau la fonction log_bin_trust"
 
     ```sql
     mysql> SET GLOBAL log_bin_trust_function_creators = 0;
     Query OK, 0 rows affected (0.001 sec)
     ```
 
-This command will disable the setting, ensuring that the servers security
-posture remains robust.
+Cette commande désactivera le paramètre, garantissant que la posture de sécurité
+des serveurs reste robuste.
 
-This concludes our installation of the MariaDB
+Ceci conclut notre installation du serveur MariaDB
 
 ---
 
-## Installing the PostgreSQL database
+## Installation de la base de données PostgreSQL
 
 For our DB setup with PostgreSQL we need to add our PostgreSQL repository first
 to the system. As of writing PostgreSQL 13-17 are supported but best is to have
