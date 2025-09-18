@@ -166,14 +166,14 @@ Après avoir enregistré le fichier, assurez-vous que tout est correctement
 configuré et que la version de MariaDB est compatible avec la version de Zabbix
 afin d'éviter tout problème de compatibilité.
 
-Before proceeding with the MariaDB installation, it's a best practice to ensure
-your operating system is up-to-date with the latest patches and security fixes.
-This will help maintain system stability and compatibility with the software
-you're about to install.
+Avant de procéder à l'installation de MariaDB, il est recommandé de s'assurer
+que votre système d'exploitation est à jour avec les derniers patchs et
+correctifs de sécurité. Cela permettra de maintenir la stabilité du système et
+la compatibilité avec le logiciel que vous êtes sur le point d'installer.
 
-To update your OS, run the following command:
+Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
 
-!!! info "Update OS"
+!!! info "Mise à jour OS"
 
     Red Hat
     ```yaml
@@ -185,22 +185,24 @@ To update your OS, run the following command:
     sudo apt update && sudo apt upgrade
     ```
 
-This command will automatically fetch and install the latest updates available
-for your system, applying security patches, performance improvements, and bug
-fixes. Once the update process is complete, you can move forward with the
-MariaDB installation.
+Cette commande va automatiquement chercher et installer les dernières mises à
+jour disponibles pour votre système, en appliquant les correctifs de sécurité,
+les améliorations de performance et les corrections de bogues. Une fois le
+processus de mise à jour terminé, vous pouvez poursuivre l'installation de
+MariaDB.
 
 ---
 
-### Install the MariaDB database
+### Installer la base de données MariaDB
 
-With the operating system updated and the MariaDB repository configured, you are
-now ready to install the MariaDB server and client packages. This will provide
-the necessary components to run and manage your database.
+Avec le système d'exploitation mis à jour et le dépôt MariaDB configuré, vous
+êtes maintenant prêt à installer les paquets serveur et client MariaDB. Vous
+disposerez ainsi des composants nécessaires pour faire fonctionner et gérer
+votre base de données.
 
-To install the MariaDB server and client, execute the following command:
+Pour installer le serveur et le client MariaDB, exécutez la commande suivante :
 
-!!! info "Install Mariadb"
+!!! info "Installer Mariadb"
 
     Red Hat
     ```yaml
@@ -212,16 +214,16 @@ To install the MariaDB server and client, execute the following command:
     sudo apt install mariadb-server
     ```
 
-This command will download and install both the server and client packages,
-enabling you to set up, configure, and interact with your MariaDB database. Once
-the installation is complete, you can proceed to start and configure the MariaDB
-service.
+Cette commande télécharge et installe les paquets serveur et client, ce qui vous
+permet de mettre en place, de configurer et d'interagir avec votre base de
+données MariaDB. Une fois l'installation terminée, vous pouvez démarrer et
+configurer le service MariaDB.
 
-Now that MariaDB is installed, we need to enable the service to start
-automatically upon boot and start it immediately. Use the following command to
-accomplish this:
+Maintenant que MariaDB est installé, nous devons activer le service pour qu'il
+démarre automatiquement au démarrage et le démarrer immédiatement. Pour ce
+faire, utilisez la commande suivante :
 
-!!! info "Enable mariadb service"
+! !! info "Activer le service mariadb"
 
     Red Hat
     ```yaml
@@ -643,7 +645,7 @@ commands.
     sudo apt install postgresql-17
     ```
 
-To update your OS, run the following command:
+Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
 
 !!! info "update the OS"
 
