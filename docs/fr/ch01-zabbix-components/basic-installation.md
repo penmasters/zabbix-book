@@ -262,7 +262,7 @@ vérifier son état à l'aide de la commande suivante :
 Vous devriez voir une sortie similaire à celle-ci, indiquant que le service
 MariaDB est actif et fonctionne :
 
-! !! info "exemple d'état du service mariadb"
+!!! info "exemple d'état du service mariadb"
 
     ```yaml
      mariadb.service - MariaDB 11.4.5 database server
@@ -295,19 +295,20 @@ MariaDB est actif et fonctionne :
     Feb 21 11:22:59 localhost.localdomain systemd[1]: Started MariaDB 11.4.5 database server.
     ```
 
-This confirms that your MariaDB server is up and running, ready for further
-configuration.
+Ceci confirme que votre serveur MariaDB est opérationnel et prêt à être
+configuré.
 
-### Securing the MariaDB Database
+### Sécuriser la base de données MariaDB
 
-To enhance the security of your MariaDB server, it's essential to remove
-unnecessary test databases, anonymous users, and set a root password. This can
-be done using the mariadb-secure-installation script, which provides a
-step-by-step guide to securing your database.
+Pour améliorer la sécurité de votre serveur MariaDB, il est essentiel de
+supprimer les bases de données de test inutiles, les utilisateurs anonymes, et
+de définir un mot de passe root. Cela peut être fait en utilisant le script
+mariadb-secure-installation, qui fournit un guide étape par étape pour sécuriser
+votre base de données.
 
-Run the following command:
+Exécutez la commande suivante :
 
-!!! info "Secure Mariadb setup"
+! !! info "Installation sécurisée de Mariadb"
 
     Red Hat and Ubuntu
     ```yaml
