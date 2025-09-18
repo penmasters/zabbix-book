@@ -465,7 +465,7 @@ créer des fonctions stockées et des déclencheurs sans avoir besoin des
 privilèges SUPER, qui sont restreints lorsque la journalisation binaire est
 activée.
 
-! !! info "Activer temporairement les privilèges supplémentaires pour les
+!!! info "Activer temporairement les privilèges supplémentaires pour les
 utilisateurs non root"
 
     ```sql
@@ -473,8 +473,8 @@ utilisateurs non root"
     MariaDB [(none)]> QUIT
     ```
 
-At this point, your Zabbix database is ready, and you can proceed with
-configuring the Zabbix server to connect to the database.
+A ce stade, votre base de données Zabbix est prête, et vous pouvez procéder à la
+configuration du serveur Zabbix pour qu'il se connecte à la base de données.
 
 ???+ warning
 
@@ -502,10 +502,10 @@ configuring the Zabbix server to connect to the database.
     This ensures that Zabbix can successfully create the required triggers during
     schema import without encountering privilege-related errors.
 
-If we want our Zabbix server to connect to our DB then we also need to open our
-firewall port.
+Si nous voulons que notre serveur Zabbix se connecte à notre base de données,
+nous devons également ouvrir le port de notre pare-feu.
 
-!!! info "Add firewall rules"
+! !! info "Ajouter des règles de pare-feu"
 
     Red Hat
     ``` yaml
