@@ -390,27 +390,30 @@ clés :
 
 1. Définir un mot de passe root si ce n'est pas déjà fait.
 2. Supprimer les utilisateurs anonymes.
-3. Interdire les connexions à la racine à distance.
-4. Remove the test database.
-5. Reload the privilege tables to ensure the changes take effect.
+3. Interdire les connexions root à distance.
+4. Supprimer la base de données de test.
+5. Recharger les tables de privilèges pour s'assurer que les modifications sont
+   prises en compte.
 
-Once complete, your MariaDB instance will be significantly more secure. You are
-now ready to configure the database for Zabbix.
+Une fois terminé, votre instance MariaDB sera nettement plus sécurisée. Vous
+êtes maintenant prêt à configurer la base de données pour Zabbix.
 
 ---
 
-### Create the Zabbix database
+### Créer la base de données Zabbix
 
-With MariaDB now set up and secured, we can move on to creating the database for
-Zabbix. This database will store all the necessary data related to your Zabbix
-server, including configuration information and monitoring data.
+MariaDB étant maintenant configuré et sécurisé, nous pouvons passer à la
+création de la base de données pour Zabbix. Cette base de données stockera
+toutes les données nécessaires relatives à votre serveur Zabbix, y compris les
+informations de configuration et les données de surveillance.
 
-Follow these steps to create the Zabbix database:
+Suivez ces étapes pour créer la base de données Zabbix :
 
-Log in to the MariaDB shell as the root user: You'll be prompted to enter the
-root password that you set during the mariadb-secure-installation process.
+Connectez-vous à l'interpréteur de commandes MariaDB en tant qu'utilisateur root
+: Il vous sera demandé d'entrer le mot de passe root que vous avez défini lors
+de l'installation de mariadb-secure-installation.
 
-!!! info "Enter Mariadb as user root"
+! !! info "Entrez dans Mariadb en tant qu'utilisateur root"
 
     Red Hat and Ubuntu
     ```yaml
