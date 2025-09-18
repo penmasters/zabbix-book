@@ -442,7 +442,7 @@ Ensuite, vous devez créer un utilisateur que Zabbix utilisera pour accéder à 
 base de données. Remplacez le mot de passe par un mot de passe fort de votre
 choix.
 
-! !! info "Créer des utilisateurs et accorder des privilèges"
+!!! info "Créer des utilisateurs et accorder des privilèges"
 
     ```sql
     MariaDB [(none)]> CREATE USER 'zabbix-web'@'<zabbix server ip>' IDENTIFIED BY '<password>';
@@ -452,17 +452,21 @@ choix.
     MariaDB [(none)]> FLUSH PRIVILEGES;
     ```
 
-This creates new users for zabbix-web and zabbix-srv, grants them access to the
-zabbix database, and ensures that the privileges are applied immediately.
+Cette opération crée de nouveaux utilisateurs pour zabbix-web et zabbix-srv,
+leur donne accès à la base de données zabbix et garantit que les privilèges sont
+appliqués immédiatement.
 
-In some cases, especially when setting up Zabbix with MariaDB, you might
-encounter issues related to stored functions and triggers if binary logging is
-enabled. To address this, you need to set the log_bin_trust_function_creators
-option to 1 in the MariaDB configuration file. This allows non-root users to
-create stored functions and triggers without requiring SUPER privileges, which
-are restricted when binary logging is enabled.
+Dans certains cas, en particulier lors de la configuration de Zabbix avec
+MariaDB, vous pouvez rencontrer des problèmes liés aux fonctions stockées et aux
+déclencheurs si la journalisation binaire est activée. Pour résoudre ce
+problème, vous devez définir l'option log_bin_trust_function_creators à 1 dans
+le fichier de configuration MariaDB. Cela permet aux utilisateurs non root de
+créer des fonctions stockées et des déclencheurs sans avoir besoin des
+privilèges SUPER, qui sont restreints lorsque la journalisation binaire est
+activée.
 
-!!! info "Activate temporarily extra privileges for non root users"
+! !! info "Activer temporairement les privilèges supplémentaires pour les
+utilisateurs non root"
 
     ```sql
     MariaDB [(none)]> SET GLOBAL log_bin_trust_function_creators = 1;
