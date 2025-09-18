@@ -566,18 +566,18 @@ de données, images, utilisateur, ... ) pour cela nous utilisons l'utilisateur
 
 Reconnectez-vous à votre base de données MySQL en tant que root
 
-! !! info "Entrez dans mariadb en tant qu'utilisateur root"
+!!! info "Entrez dans MariaDB en tant qu'utilisateur root"
 
     `mariadb -uroot -p`
 
-Once the import of the Zabbix schema is complete and you no longer need the
-log_bin_trust_function_creators global parameter, it is a good practice to
-remove it for security reasons.
+Une fois que l'importation du schéma Zabbix est terminée et que vous n'avez plus
+besoin du paramètre global log_bin_trust_function_creators, c'est une bonne
+pratique de le supprimer pour des raisons de sécurité.
 
-To revert the change and set the global parameter back to 0, use the following
-command in the MariaDB shell:
+Pour annuler la modification et remettre le paramètre global à 0, utilisez la
+commande suivante dans l'interpréteur de commandes MariaDB :
 
-!!! info "Disable function log_bin_trust again"
+! !! info "Désactiver à nouveau la fonction log_bin_trust"
 
     ```sql
     mysql> SET GLOBAL log_bin_trust_function_creators = 0;
