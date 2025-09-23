@@ -1,6 +1,6 @@
 ---
 description : | Cette section du livre Zabbix, intitulée "Authentification
-HTTP", explique comment sécuriser l'accès au frontend de Zabbix en utilisant des
+HTTP", explique comment sécuriser l'accès au frontend de Zabbix en utilisant les
 méthodes d'authentification de serveur web. Elle couvre la configuration avec
 Apache ou Nginx, l'intégration avec Zabbix, et comment l'authentification HTTP
 ajoute une couche de protection supplémentaire à votre environnement de
