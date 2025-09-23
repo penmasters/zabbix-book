@@ -29,7 +29,8 @@ utilisées pour authentifier les utilisateurs.
     must exit in Zabbix. But only passwords configured in HTTP server are used
     for users authentication.
 
-First let's see how we can configure basic authentication in HTTP server.
+Voyons d'abord comment configurer l'authentification de base dans le serveur
+HTTP.
 
 ???+ warning
 
@@ -37,7 +38,7 @@ First let's see how we can configure basic authentication in HTTP server.
     basic authentication. Please refer to respective HTTP server documentation
     for more details
 
-## Basic authentication in Nginx
+## Authentification de base dans Nginx
 
 Find `location / {` block in Nginx configuration file that defines your Zabbix
 WebUI (in my Zabbix deployment it is `/etc/nginx/conf.d/nginx.conf` file) and
