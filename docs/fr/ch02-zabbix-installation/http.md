@@ -74,11 +74,11 @@ Verifying - Password:
 $1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
 ```
 
-## Basic authentication in Apache HTTPD
+## Authentification de base dans Apache HTTPD
 
-Find `<Directory "/usr/share/zabbix">` block in Apache HTTPD configuration file
-that defines your Zabbix WebUI (in my case it is `/etc/zabbix/apache.conf`) and
-add these lines:
+Trouvez `<Directory "/usr/share/zabbix">` bloc dans le fichier de configuration
+Apache HTTPD qui définit votre WebUI Zabbix (dans mon cas c'est
+`/etc/zabbix/apache.conf`) et ajoutez ces lignes :
 
 ???+ note By default configuration has `Require all granted`, remove this line.
 
