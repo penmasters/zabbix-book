@@ -44,13 +44,13 @@ flèches à gauche :
 
 ![Réduire](ch02-frontend-collapse.png)
 
-_2.2 Effondrement_
+_2.2 Réduction_
 
-You will see that the menu collapses to a set of small icons. Pressing ">>" will
-bring the `main menu` back to it's original state.
+Vous verrez que le menu se réduit à un ensemble de petites icônes. En appuyant
+sur ">>", le menu principal de `` reviendra à son état d'origine.
 
-When you click on the icon that looks like a box with an arrow sticking out,
-next to the "<<" button will hide the `main menu` completely.
+En cliquant sur l'icône qui ressemble à une boîte avec une flèche qui dépasse, à
+côté du bouton "<<", vous masquerez complètement le menu principal de `` .
 
 ![Hide](ch02-frontend-hide.png)
 
