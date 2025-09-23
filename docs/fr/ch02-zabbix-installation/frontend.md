@@ -24,14 +24,15 @@ Commençons
 
 ## Aperçu de l'interface
 
-Avec Zabbix 7, l'interface utilisateur après la connexion a légèrement changé.
-Notre menu sur le côté gauche de l'écran a été légèrement remanié. Voyons cela
-de plus près. Lorsque nous nous connectons à notre installation Zabbix pour la
-première fois avec notre utilisateur Admin, nous voyons une page
+Avec Zabbix 7, l'interface de connexion utilisateur a légèrement changé. Notre
+menu sur le côté gauche de l'écran a été légèrement remanié. Voyons cela de plus
+près. Lorsque nous nous connectons à notre installation Zabbix pour la première
+fois avec notre utilisateur Admin, nous voyons une page
 
-like this where we have our `main window` in <font color='green'>green</font>
-our `main menu` marked in <font color='red'>red</font> and our `links` marked in
-<font color='gold'>yellow</font>.
+comme ceci où nous avons notre `fenêtre principale` en
+<font color='green'>vert</font> notre `menu principal` marqué en
+<font color='red'>rouge</font> et nos `liens` marqués en
+<font color='gold'>jaune</font>.
 
 ![Overview](ch02-frontend-overview.png)
 
