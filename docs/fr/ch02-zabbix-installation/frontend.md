@@ -42,7 +42,7 @@ Le menu principal peut être caché en le réduisant complètement ou en le
 réduisant à un ensemble de petites icônes. En cliquant sur le bouton avec les 2
 flèches à gauche :
 
-![Collapse](ch02-frontend-collapse.png)
+![Effondrement](ch02-frontend-collapse.png)
 
 _2.2 Collapse_
 
