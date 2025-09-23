@@ -22,11 +22,12 @@ Commençons
 
 ---
 
-## Overview of the interface
+## Aperçu de l'interface
 
-With Zabbix 7 the user interface after logging in is a bit changed. Our menu on
-the left side of the screen has has a small overhaul. Let's dive into it. When
-we login into our Zabbix setup the first time with our Admin user we see a page
+Avec Zabbix 7, l'interface utilisateur après la connexion a légèrement changé.
+Notre menu sur le côté gauche de l'écran a été légèrement remanié. Voyons cela
+de plus près. Lorsque nous nous connectons à notre installation Zabbix pour la
+première fois avec notre utilisateur Admin, nous voyons une page
 
 like this where we have our `main window` in <font color='green'>green</font>
 our `main menu` marked in <font color='red'>red</font> and our `links` marked in
