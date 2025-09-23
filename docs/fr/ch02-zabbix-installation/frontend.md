@@ -6,7 +6,7 @@ Apache ou Nginx pour une interface de surveillance sécurisée et entièrement
 fonctionnelle.
 ---
 
-# Frontend explained
+# Frontend expliqué
 
 This chapter is going to cover the basics we need to know when it comes to the
 Zabbix user interface and the thing we need to know before we can start to fully
