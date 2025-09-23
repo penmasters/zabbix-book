@@ -14,10 +14,11 @@ fournies par Zabbix et peut être utilisée pour sécuriser davantage votre
 interface Web Zabbix avec un mécanisme d'authentification de base au niveau du
 serveur HTTP.
 
-Basic HTTP authentication protects Website (Zabbix WebUI) resources with a
-username and password. When a user attempts to access Zabbix WebUI, the browser
-pops up a dialog asking for credentials before sending anything over to Zabbix
-WebUI php code.
+L'authentification HTTP de base protège les ressources du site Web (Zabbix
+WebUI) avec un nom d'utilisateur et un mot de passe. Lorsqu'un utilisateur tente
+d'accéder à Zabbix WebUI, le navigateur affiche une boîte de dialogue demandant
+des informations d'identification avant d'envoyer quoi que ce soit au code php
+de Zabbix WebUI.
 
 An HTTP server has a file with credentials that is used to authenticate users.
 
