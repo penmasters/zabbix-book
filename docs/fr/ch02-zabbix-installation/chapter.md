@@ -1,10 +1,11 @@
 # Démarrer l'installation de Zabbix
 
-We begin this chapter with a **deep dive into the Zabbix frontend**, the central
-hub where all monitoring and configuration tasks come together. Alongside the
-basic introduction to navigating the frontend, this chapter also covers **user
-and group setup**, focusing on creating a secure and efficient user management
-system.
+Nous commençons ce chapitre par une plongée profonde dans le frontend de Zabbix
+**** , le centre où toutes les tâches de surveillance et de configuration se
+rejoignent. En plus de l'introduction de base à la navigation dans le frontend,
+ce chapitre couvre également **la configuration des utilisateurs et des
+groupes**, en se concentrant sur la création d'un système de gestion des
+utilisateurs sécurisé et efficace.
 
 We'll walk through setting up **internal authentication** with best practices
 for security, including **dual-factor authentication**. For those needing
