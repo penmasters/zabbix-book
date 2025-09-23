@@ -20,7 +20,8 @@ d'accéder à Zabbix WebUI, le navigateur affiche une boîte de dialogue demanda
 des informations d'identification avant d'envoyer quoi que ce soit au code php
 de Zabbix WebUI.
 
-An HTTP server has a file with credentials that is used to authenticate users.
+Un serveur HTTP dispose d'un fichier contenant des informations d'identification
+utilisées pour authentifier les utilisateurs.
 
 ???+ note
 
