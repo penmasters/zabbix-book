@@ -47,12 +47,12 @@ flèches à gauche :
 _2.2 Réduction_
 
 Vous verrez que le menu se réduit à un ensemble de petites icônes. En appuyant
-sur ">>", le menu principal de `` reviendra à son état d'origine.
+sur ">>", le `menu principal` de reviendra à son état d'origine.
 
 En cliquant sur l'icône qui ressemble à une boîte avec une flèche qui dépasse, à
-côté du bouton "<<", vous masquerez complètement le menu principal de `` .
+côté du bouton "<<", vous masquerez complètement le `menu principal ` .
 
-![Hide](ch02-frontend-hide.png)
+![Masquer](ch02-frontend-hide.png)
 
 _2.3 Hide_
 
