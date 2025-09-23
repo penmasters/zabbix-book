@@ -52,7 +52,8 @@ ces deux lignes:
     }
 ```
 
-Do not forget to restart Nginx service after making this change.
+N'oubliez pas de redémarrer le service Nginx après avoir effectué cette
+modification.
 
 Then you need to create `/etc/nginx/httpauth` file which will keep all users'
 password (make sure to restrict access to this file). Format of this file is
