@@ -8,14 +8,14 @@ fonctionnelle.
 
 # Frontend expliqué
 
-Ce chapitre va couvrir les bases que nous devons connaître quand il s'agit de
-l'interface utilisateur de Zabbix et les choses que nous devons savoir avant de
-pouvoir commencer à plonger pleinement dans notre outil de surveillance. Nous
+Ce chapitre va couvrir les bases que vous devez connaître à propos de
+l'interface utilisateur de Zabbix et les choses que vous devez savoir avant de
+pouvoir commencer à exploiter pleinement votre outil de surveillance. Nous
 verrons comment fonctionne l'interface utilisateur, comment ajouter un hôte, des
 groupes, des utilisateurs, des éléments... afin d'avoir une bonne compréhension
 des bases. C'est quelque chose qui est parfois oublié et qui peut conduire à des
-frustrations en ne sachant pas pourquoi les choses ne fonctionnent pas comme
-nous l'avions prévu. Donc, même si vous êtes un utilisateur avancé, il peut être
+frustration, ne pas savoir pourquoi les choses ne fonctionnent pas comme nous
+l'avions prévu. Donc, même si vous êtes un utilisateur avancé, il peut être
 utile de jeter un coup d'oeil à ce chapitre.
 
 Let's get started
