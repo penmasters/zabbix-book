@@ -40,9 +40,9 @@ HTTP.
 
 ## Authentification de base dans Nginx
 
-Trouvez `location / {` block in Nginx configuration file that defines your
-Zabbix WebUI (in my Zabbix deployment it is `/etc/nginx/conf.d/nginx.conf` file)
-et ajoutez ces deux lignes :
+Trouvez le bloc `location / {` dans les fichiers de configuration de Nginx, qui
+définit votre WebUI Zabbix (ie : `/etc/nginx/conf.d/nginx.conf` file) et ajoutez
+ces deux lignes:
 
 ```
     location / {
