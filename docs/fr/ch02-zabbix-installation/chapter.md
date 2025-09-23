@@ -13,11 +13,11 @@ facteur**. Pour ceux qui ont besoin d'une intégration avancée, nous exploreron
 des options telles que **SAML, LDAP**, et d'autres méthodes d'authentification
 externes.
 
-Ce chapitre établit un équilibre entre une vue d'ensemble simple " c'est le
-frontend " et un regard plus approfondi sur les choix avancés **** que vous
-pouvez faire pour améliorer la sécurité et la facilité de gestion de votre
-système. Que vous débutiez ou que vous cherchiez à mettre en œuvre des mesures
-de sécurité robustes, il y a ici quelque chose pour tout le monde.
+Ce chapitre établit un équilibre entre une vue d'ensemble simple "c'est le
+frontend" et un regard plus approfondi sur les choix **avancés** que vous pouvez
+faire pour améliorer la sécurité et la facilité de gestion de votre système. Que
+vous débutiez ou que vous cherchiez à mettre en œuvre des mesures de sécurité
+robustes, il y a ici quelque chose pour tout le monde.
 
 By the end, you'll be well equipped to navigate the Zabbix frontend with
 confidence and set up a secure, scalable user management system tailored to your
