@@ -19,6 +19,6 @@ faire pour améliorer la sécurité et la facilité de gestion de votre système
 vous débutiez ou que vous cherchiez à mettre en œuvre des mesures de sécurité
 robustes, il y a ici quelque chose pour tout le monde.
 
-By the end, you'll be well equipped to navigate the Zabbix frontend with
-confidence and set up a secure, scalable user management system tailored to your
-organization's needs.
+À la fin de cette formation, vous serez bien équipé pour naviguer en toute
+confiance dans l'interface de Zabbix et mettre en place un système de gestion
+des utilisateurs sécurisé, évolutif et adapté aux besoins de votre organisation.
