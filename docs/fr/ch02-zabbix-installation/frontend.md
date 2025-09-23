@@ -18,7 +18,7 @@ frustration, ne pas savoir pourquoi les choses ne fonctionnent pas comme nous
 l'avions prévu. Donc, même si vous êtes un utilisateur avancé, il peut être
 utile de jeter un coup d'oeil à ce chapitre.
 
-Let's get started
+Commençons
 
 ---
 
