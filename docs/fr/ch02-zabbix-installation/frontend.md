@@ -29,17 +29,18 @@ menu sur le côté gauche de l'écran a été légèrement remanié. Voyons cela
 près. Lorsque nous nous connectons à notre installation Zabbix pour la première
 fois avec notre utilisateur Admin, nous voyons une page
 
-comme ceci où nous avons notre `fenêtre principale` en
-<font color='green'>vert</font> notre `menu principal` marqué en
-<font color='red'>rouge</font> et nos `liens` marqués en
+comme ceci où nous avons la `fenêtre principale` en
+<font color='green'>vert</font> le `menu principal` marqué en
+<font color='red'>rouge</font> et les `liens` marqués en
 <font color='gold'>jaune</font>.
 
-![Overview](ch02-frontend-overview.png)
+![Vue d'ensemble](ch02-frontend-overview.png)
 
-_2.1 Overview_
+_2.1 Vue d'ensemble_
 
-The main menu can be hidden by collapsing it completely or to reduce it to a set
-of small icons. When we click on the button with the 2 arrows to the left:
+Le menu principal peut être caché en le réduisant complètement ou en le
+réduisant à un ensemble de petites icônes. En cliquant sur le bouton avec les 2
+flèches à gauche :
 
 ![Collapse](ch02-frontend-collapse.png)
 
