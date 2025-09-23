@@ -55,17 +55,18 @@ ces deux lignes:
 N'oubliez pas de redémarrer le service Nginx après avoir effectué cette
 modification.
 
-Then you need to create `/etc/nginx/httpauth` file which will keep all users'
-password (make sure to restrict access to this file). Format of this file is
-`username:hashed_password`, for example, for users `Admin` and `test`:
+Ensuite, vous devez créer `/etc/nginx/httpauth` un fichier qui contiendra les
+mots de passe de tous les utilisateurs (assurez-vous de restreindre l'accès à ce
+fichier). Le format de ce fichier est `nom_utilisateur:mot_de_passe_haché`, par
+exemple, pour les utilisateurs `Admin` et `test`:
 
 ```
 Admin:$1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
 test:$1$GXoDIOCA$u/n1kkDeFwcI4KhyHkY6p/
 ```
 
-To generate hashed_password you can use `openssl` tool entering the password
-twice:
+Pour générer un mot de passe haché, vous pouvez utiliser l'outil `openssl` en
+entrant le mot de passe deux fois :
 ```
 openssl passwd
 Password:
