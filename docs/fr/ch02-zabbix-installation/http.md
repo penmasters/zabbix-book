@@ -120,7 +120,7 @@ Re-type new password:
 Adding password for user test
 ```
 
-For RedHat
+Pour RedHat
 ```
 sudo htpasswd -c /etc/httpd/.htpasswd test
 New password: 
@@ -128,7 +128,8 @@ Re-type new password:
 Adding password for user test
 ```
 
-To add more users to the file repeat the command without `-c` flag.
+Pour ajouter d'autres utilisateurs au fichier, répétez la commande sans le
+drapeau `-c`.
 
 ## Zabbix configuration for HTTP authentication
 
