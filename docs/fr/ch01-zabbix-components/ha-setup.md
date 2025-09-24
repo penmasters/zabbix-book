@@ -147,7 +147,7 @@ Configurer les paramètres HA pour ce serveur :
     HANodeName=zabbix1 (or choose a name you prefer)
     ```
 
-Spécifier l'adresse du nœud frontal pour les scénarios de basculement :
+Spécifier l'adresse du serveur frontend pour les scénarios de basculement :
 
 !!! info ""
 
