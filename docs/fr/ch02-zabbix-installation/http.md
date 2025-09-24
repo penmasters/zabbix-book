@@ -94,7 +94,7 @@ Pour Ubuntu/Debian :
     </Directory>
 ```
 
-For RedHat:
+Pour RedHat :
 ```
     <Directory "/usr/share/zabbix">
         ...
