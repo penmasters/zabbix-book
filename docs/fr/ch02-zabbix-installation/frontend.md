@@ -114,9 +114,9 @@ _2.7 Résultat de la recherche globale_
 
 ## Menu principal
 
-Nous allons maintenant examiner brièvement les sections constitutives du menu
-principal de l'application. Le menu principal `` , situé sur l'interface de
-gauche, comprend au total neuf sections distinctes :
+Nous allons maintenant examiner brièvement les éléments du menu principal de
+l'application. Le `menu principal` , situé sur l'interface de gauche, comprend
+au total neuf sections distinctes :
 
 | Menu Name       | Details                                                                                           |
 | --------------- | ------------------------------------------------------------------------------------------------- |
