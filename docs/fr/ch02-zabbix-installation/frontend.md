@@ -118,17 +118,17 @@ Nous allons maintenant examiner brièvement les éléments du menu principal de
 l'application. Le `menu principal` , situé sur l'interface de gauche, comprend
 au total neuf sections distinctes :
 
-| Menu Name       | Details                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------- |
-| Dashboards      | Contains an overview of all the dashboards we have access to.                                     |
-| Monitoring      | Shows us the hosts, problems, latest data, maps, ...                                              |
-| Services        | An overview of all the Services and SLA settings.                                                 |
-| Inventory       | An overview of our collected inventory data.                                                      |
-| Reports         | Shows us the system information, scheduled reports, audit logs, action logs, etc .                |
-| Data collection | Contains all things related to collecting data like hosts, templates, maintenance, discovery, ... |
-| Alert           | The configuration of our media types, scripts and actions                                         |
-| Users           | User configuration like user roles, user groups, authentication, API tokes, ...                   |
-| Administration  | The administration part containing all global settings, housekeeper, proxies, queue, ...          |
+| Nom du menu      | Détails                                                                                           |
+| ---------------- | ------------------------------------------------------------------------------------------------- |
+| Tableaux de bord | Contains an overview of all the dashboards we have access to.                                     |
+| Monitoring       | Shows us the hosts, problems, latest data, maps, ...                                              |
+| Services         | An overview of all the Services and SLA settings.                                                 |
+| Inventory        | An overview of our collected inventory data.                                                      |
+| Reports          | Shows us the system information, scheduled reports, audit logs, action logs, etc .                |
+| Data collection  | Contains all things related to collecting data like hosts, templates, maintenance, discovery, ... |
+| Alert            | The configuration of our media types, scripts and actions                                         |
+| Users            | User configuration like user roles, user groups, authentication, API tokes, ...                   |
+| Administration   | The administration part containing all global settings, housekeeper, proxies, queue, ...          |
 
 ---
 
@@ -138,7 +138,7 @@ Immediately subjacent to the primary application menu on the left-hand interface
 resides the `Links` menu. This module furnishes a collection of pertinent
 hyperlinks for user access.
 
-| Menu name     | Details                                                                                                                                                                                                                                                |
+| Menu name     | Détails                                                                                                                                                                                                                                                |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Support       | This brings us to the technical support page that you can buy from Zabbix. Remember that your local partner is also able to sell these contracts and can help you in your own language. [Your local distributors](https://www.zabbix.com/distributors) |
 | Integrations  | The official zabbix [integration page](https://www.zabbix.com/integrations)                                                                                                                                                                            |
@@ -177,7 +177,7 @@ panel, as their interpretation is crucial for system comprehension.
 
 _2.9 System Information_
 
-| Parameter                                         | Value                                                                                                                                                                                                                                       | Details                                                                                                                                                                                                                                                                         |
+| Parameter                                         | Value                                                                                                                                                                                                                                       | Détails                                                                                                                                                                                                                                                                         |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Zabbix server is running                          | The status of our zabbix server if it is running yes or no and if it is running on our localhost or another IP and on what port the zabbix server is listening. If no trapper is listening the rest of the information can not be displayed | IP and port of the Zabbix server                                                                                                                                                                                                                                                |
 | Zabbix server version                             | This shows us the version of the `Zabbix server` so the version you see at the bottom of your screen is the one from the Zabbix frontend and can be different but should be in the same major version.                                      | Version Number                                                                                                                                                                                                                                                                  |
