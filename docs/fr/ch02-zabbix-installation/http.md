@@ -128,10 +128,10 @@ Re-type new password:
 Adding password for user test
 ```
 
-Pour ajouter d'autres utilisateurs au fichier, répétez la commande sans le
-drapeau `-c`.
+Pour ajouter d'autres utilisateurs au fichier, répétez la commande sans l'option
+`-c`.
 
-## Zabbix configuration for HTTP authentication
+## Configuration de Zabbix pour l'authentification HTTP
 
 When we have a WEB server configured with basic authentication it is high time
 to configure Zabbix server. In Zabbix menu select `Users | Authentication | HTTP
