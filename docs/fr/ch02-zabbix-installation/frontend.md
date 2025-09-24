@@ -68,15 +68,15 @@ de l'écran et ressemble à 4 flèches pointant vers chaque coin de l'écran. En
 appuyant sur ce bouton, tous les menus disparaissent et il ne reste plus que la
 `fenêtre principale` sur laquelle vous pouvez vous concentrer.
 
-![Expand](ch02-frontend-expand.png)
+![Développer](ch02-frontend-expand.png)
 
-_2.4 Expand_
+_2.4 Élargir_
 
 When we want to leave the kiosk mode, the button will be changed to 2 arrows
 pointing to the inside of the screen. Pressing this button will revert us back
 to the original state.
 
-![Expand](ch02-frontend-shrink.png)
+![Développer](ch02-frontend-shrink.png)
 
 _2.5 Shrink_
 
