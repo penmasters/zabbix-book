@@ -106,9 +106,9 @@ Voici notre résultat après avoir cherché le mot `serveur`. Si vous avez une
 configuration Zabbix standard, votre page devrait ressembler plus ou moins à la
 même chose.
 
-![Global search result](ch02-global-search-result.png)
+![Résultat de la recherche globale](ch02-global-search-result.png)
 
-_2.7 Global search result_
+_2.7 Résultat de la recherche globale_
 
 ---
 
