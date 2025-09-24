@@ -154,7 +154,7 @@ compte des majuscules/minuscules dans les noms d'utilisateur, par exemple "tEst"
 et "test" deviendront des noms d'utilisateur tout aussi légitimes même si dans
 Zabbix nous n'avons que l'utilisateur "test" de configuré.
 
-Notez que le formulaire de connexion par défaut `` est réglé sur "Zabbix login
+Notez que le `formulaire de connexion par défaut` est réglé sur "Zabbix login
 form". Maintenant, si vous vous déconnectez, vous verrez le lien "Sign in with
 HTTP" (se connecter avec HTTP) sous les champs Username (nom d'utilisateur) et
 Password (mot de passe). Si vous cliquez sur ce lien, vous serez automatiquement
@@ -163,7 +163,7 @@ utilisé précédemment. Vous pouvez également saisir un nom d'utilisateur et u
 mot de passe différents et vous connecter normalement à Zabbix WebUI en tant
 qu'utilisateur différent.
 
-![HTTP users authentication login](ch02.2-http-auth-login.png){ align=center }
+[HTTP users authentication login](ch02.2-http-auth-login.png){ align=center }
 
 _2.2 HTTP users authentication login form_
 
