@@ -165,7 +165,7 @@ qu'utilisateur différent.
 
 [HTTP users authentication login](ch02.2-http-auth-login.png){ align=center }
 
-_2.2 HTTP users authentication login form_
+_2.2 Formulaire d'authentification des utilisateurs HTTP_
 
 If you select "HTTP login form" in `Default login form` drop-down you won't see
 standard Zabbix login form when you try to log out. You actually won't be able
