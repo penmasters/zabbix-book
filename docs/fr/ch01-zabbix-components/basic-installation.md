@@ -223,7 +223,7 @@ Maintenant que MariaDB est installé, nous devons activer le service pour qu'il
 démarre automatiquement au démarrage et le démarrer immédiatement. Pour ce
 faire, utilisez la commande suivante :
 
-!!! info "Activer le service mariadb"
+!!! info "Activer le service Mariadb"
 
     Red Hat
     ```yaml
@@ -252,7 +252,7 @@ La sortie attendue devrait ressembler à ceci :
 Pour vous assurer que le service MariaDB fonctionne correctement, vous pouvez
 vérifier son état à l'aide de la commande suivante :
 
-!!! info "Obtenir l'état de mariadb"
+!!! info "Obtenir l'état de Mariadb"
 
     Red Hat and Ubuntu
     ```yaml
@@ -262,7 +262,7 @@ vérifier son état à l'aide de la commande suivante :
 Vous devriez voir une sortie similaire à celle-ci, indiquant que le service
 MariaDB est actif et fonctionne :
 
-!!! info "exemple d'état du service mariadb"
+!!! info "exemple d'état du service Mariadb"
 
     ```yaml
      mariadb.service - MariaDB 11.4.5 database server
