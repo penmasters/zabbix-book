@@ -138,14 +138,16 @@ de configurer le serveur Zabbix. Dans le menu Zabbix, sélectionnez `Users |
 Authentication | HTTP settings` et cochez la case `Enable HTTP authentication`.
 Cliquez sur `Update` et confirmez les changements en cliquant sur `OK`.
 
-![HTTP users authentication](ch02.1-http-auth-settings.png){ align=center }
+![Authentification des utilisateurs HTTP](ch02.1-http-auth-settings.png){
+align=center }
 
-_2.1 HTTP users authentication_
+_2.1 Authentification des utilisateurs HTTP_
 
-`Remove domain name` field should have a comma separated list of domains that
-Zabbix will remove from provided username, e.g. if a user enters "test@myzabbix"
-or "myzabbix\test" and we have "myzabbix" in this field then the user will be
-logged in with username "test".
+`Remove domain name` Le champ doit contenir une liste de domaines séparés par
+des virgules que Zabbix supprimera du nom d'utilisateur fourni. Par exemple, si
+un utilisateur entre "test@myzabbix" ou "myzabbix\test" et que nous avons
+"myzabbix" dans ce champ, l'utilisateur sera connecté avec le nom d'utilisateur
+"test".
 
 Unchecking `Case-sensitive login` check-box will tell Zabbix to not pay
 attention to capital/small letters in usernames, e.g. "tEst" and "test" will
