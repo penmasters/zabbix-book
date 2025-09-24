@@ -93,9 +93,10 @@ _2.5 Réduire_
     Zabbix also has a global search menu that we can use to find hosts, host groups
     and templates.
 
-If we type in the search box the word `server` you will see that we get an
-overview of all `templates`, `host groups` and `hosts` with the name server in
-it. That's why this is called the `global search` box.
+Si nous tapons dans la boîte de recherche le mot `server` vous verrez que nous
+obtenons une vue d'ensemble de tous les `templates`, `host groups` et `hosts`
+avec le serveur de nom dedans. C'est pourquoi on l'appelle la boîte de recherche
+globale `` .
 
 ![Global search](ch02-global-search.png)
 
