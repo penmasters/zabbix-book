@@ -114,9 +114,9 @@ _2.7 Résultat de la recherche globale_
 
 ## Menu principal
 
-We shall now briefly examine the constituent sections of the primary application
-menu. The `main menu`, situated on the left hand interface, comprises a total of
-nine distinct sections:
+Nous allons maintenant examiner brièvement les sections constitutives du menu
+principal de l'application. Le menu principal `` , situé sur l'interface de
+gauche, comprend au total neuf sections distinctes :
 
 | Menu Name       | Details                                                                                           |
 | --------------- | ------------------------------------------------------------------------------------------------- |
