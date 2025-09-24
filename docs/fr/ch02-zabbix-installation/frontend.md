@@ -56,17 +56,17 @@ côté du bouton "<<", vous masquerez complètement le `menu principal ` .
 
 _2.3 Masquer_
 
-Pour ramener notre menu principal `` , c'est assez facile, il suffit de chercher
-le bouton à gauche avec trois lignes horizontales et de cliquer dessus. Cela
-affichera le menu principal `` mais il ne restera pas. Lorsque nous cliquons sur
-la boîte avec la flèche pointant vers le bas à droite, le menu principal `` est
-remis à sa place.
+Pour revenir à votre `menu principal` , c'est assez facile, il suffit de
+chercher le bouton à gauche avec trois lignes horizontales et de cliquer dessus.
+Cela affichera le `menu principal` mais il ne restera pas. Lorsque nous cliquons
+sur la boîte avec la flèche pointant vers le bas à droite, le `menu principal`
+est remis à sa place.
 
-Yet another way to make the screen bigger that is quite useful for monitors in
-`NOK teams` for example is the `kiosk mode` button. This one however is located
-on the left side of your screen and looks like 4 arrows pointing to every corner
-of the screen. Pressing this button will remove all the menus and leave only the
-`main window` to focus on.
+Une autre façon d'agrandir l'écran, très utile pour les moniteurs des équipes
+`NOK` par exemple, est le bouton `kiosk mode`. Celui-ci est situé sur le côté
+gauche de l'écran et ressemble à 4 flèches pointant vers chaque coin de l'écran.
+En appuyant sur ce bouton, tous les menus disparaissent et il ne reste plus que
+la fenêtre principale `` sur laquelle vous pouvez vous concentrer.
 
 ![Expand](ch02-frontend-expand.png)
 
