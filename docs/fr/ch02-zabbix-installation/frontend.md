@@ -72,9 +72,9 @@ appuyant sur ce bouton, tous les menus disparaissent et il ne reste plus que la
 
 _2.4 Élargir_
 
-When we want to leave the kiosk mode, the button will be changed to 2 arrows
-pointing to the inside of the screen. Pressing this button will revert us back
-to the original state.
+Lorsque nous voulons quitter le mode kiosque, le bouton sera remplacé par 2
+flèches pointant vers l'intérieur de l'écran. En appuyant sur ce bouton, nous
+reviendrons à l'état d'origine.
 
 ![Développer](ch02-frontend-shrink.png)
 
