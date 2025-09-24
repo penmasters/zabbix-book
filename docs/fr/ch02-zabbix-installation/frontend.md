@@ -62,11 +62,11 @@ Cela affichera le `menu principal` mais il ne restera pas. Lorsque nous cliquons
 sur la boîte avec la flèche pointant vers le bas à droite, le `menu principal`
 est remis à sa place.
 
-Une autre façon d'agrandir l'écran, très utile pour les moniteurs des équipes
-`NOK` par exemple, est le bouton `kiosk mode`. Celui-ci est situé sur le côté
-gauche de l'écran et ressemble à 4 flèches pointant vers chaque coin de l'écran.
-En appuyant sur ce bouton, tous les menus disparaissent et il ne reste plus que
-la fenêtre principale `` sur laquelle vous pouvez vous concentrer.
+Une autre façon d'agrandir l'écran, très utile pour les moniteurs `NOC Teams`
+par exemple, est le bouton `kiosk mode`. Celui-ci est situé sur le côté gauche
+de l'écran et ressemble à 4 flèches pointant vers chaque coin de l'écran. En
+appuyant sur ce bouton, tous les menus disparaissent et il ne reste plus que la
+`fenêtre principale` sur laquelle vous pouvez vous concentrer.
 
 ![Expand](ch02-frontend-expand.png)
 
