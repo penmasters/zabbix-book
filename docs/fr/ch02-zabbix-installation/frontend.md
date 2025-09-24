@@ -112,7 +112,7 @@ _2.7 Résultat de la recherche globale_
 
 ---
 
-## Main menu
+## Menu principal
 
 We shall now briefly examine the constituent sections of the primary application
 menu. The `main menu`, situated on the left hand interface, comprises a total of
