@@ -80,7 +80,8 @@ Trouvez le bloc `<Directory "/usr/share/zabbix">` dans le fichier de
 configuration Apache HTTP, il définit votre WebUI Zabbix (ie :
 `/etc/zabbix/apache.conf`) et ajoutez ces lignes :
 
-Note La configuration par défaut a `Require all granted`, supprimez cette ligne.
+???+ note La configuration par défaut est `Require all granted`, supprimez cette
+ligne.
 
 For Ubuntu/Debian:
 ```
