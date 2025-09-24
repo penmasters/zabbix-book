@@ -149,16 +149,19 @@ un utilisateur entre "test@myzabbix" ou "myzabbix\test" et que nous avons
 "myzabbix" dans ce champ, l'utilisateur sera connecté avec le nom d'utilisateur
 "test".
 
-Unchecking `Case-sensitive login` check-box will tell Zabbix to not pay
-attention to capital/small letters in usernames, e.g. "tEst" and "test" will
-become equally legitimate usernames even if in Zabbix we have only "test" user
-configured.
+Décocher la case `Case-sensitive login` indiquera à Zabbix de ne pas tenir
+compte des majuscules/minuscules dans les noms d'utilisateur, par exemple "tEst"
+et "test" deviendront des noms d'utilisateur tout aussi légitimes même si dans
+Zabbix nous n'avons que l'utilisateur "test" de configuré.
 
-Note that `Default login form` is set to "Zabbix login form". Now if you sign
-out you will see "Sign in with HTTP" link below Username and Password fields. If
-you click on the link you will be automatically logged in into Zabbix WebUI with
-the same username you previously used. Or you can enter different Username and
-Password and normally log in into Zabbix WebUI as different user.
+Notez que le formulaire de connexion par défaut `` est réglé sur "Zabbix login
+form". Maintenant, si vous vous déconnectez, vous verrez le lien "Sign in with
+HTTP" (se connecter avec HTTP) sous les champs Username (nom d'utilisateur) et
+Password (mot de passe). Si vous cliquez sur ce lien, vous serez automatiquement
+connecté à Zabbix WebUI avec le même nom d'utilisateur que celui que vous avez
+utilisé précédemment. Vous pouvez également saisir un nom d'utilisateur et un
+mot de passe différents et vous connecter normalement à Zabbix WebUI en tant
+qu'utilisateur différent.
 
 ![HTTP users authentication login](ch02.2-http-auth-login.png){ align=center }
 
