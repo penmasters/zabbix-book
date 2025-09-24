@@ -105,11 +105,12 @@ Pour RedHat :
     </Directory>
 ```
 
-Do not forget to restart apache2 service after making this change.
+N'oubliez pas de redémarrer le service apache2 après avoir effectué cette
+modification.
 
-Create `/etc/apache2/.httpasswd` (`/etc/httpd/.htpassword` for RedHat) file that
-will have all the users with passwords, do it by using `htpasswd` tool, to add
-user `test` execute:
+Créez `/etc/apache2/.httpasswd` (`/etc/httpd/.htpassword` pour RedHat) un
+fichier qui contiendra tous les utilisateurs avec leurs mots de passe, en
+utilisant l'outil `htpasswd`, pour ajouter l'utilisateur `tester` exécuter :
 
 For Ubuntu/Debian
 ```
