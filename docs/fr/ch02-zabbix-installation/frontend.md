@@ -98,12 +98,13 @@ obtenons une vue d'ensemble de tous les `templates`, `host groups` et `hosts`
 avec le serveur de nom dedans. C'est pourquoi on l'appelle la boîte de
 `recherche globale` .
 
-![Global search](ch02-global-search.png)
+![Recherche globale](ch02-global-search.png)
 
-_2.6 Global search_
+_2.6 Recherche globale_
 
-This is our result after we looked for the word `server`. If you have a standard
-Zabbix setup your page should look more or less the same.
+Voici notre résultat après avoir cherché le mot `serveur`. Si vous avez une
+configuration Zabbix standard, votre page devrait ressembler plus ou moins à la
+même chose.
 
 ![Global search result](ch02-global-search-result.png)
 
