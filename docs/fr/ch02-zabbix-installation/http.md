@@ -76,11 +76,11 @@ $1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
 
 ## Authentification de base dans Apache HTTPD
 
-Trouvez `<Directory "/usr/share/zabbix">` bloc dans le fichier de configuration
-Apache HTTPD qui définit votre WebUI Zabbix (dans mon cas c'est
+Trouvez le bloc `<Directory "/usr/share/zabbix">` dans le fichier de
+configuration Apache HTTP, il définit votre WebUI Zabbix (ie :
 `/etc/zabbix/apache.conf`) et ajoutez ces lignes :
 
-???+ note By default configuration has `Require all granted`, remove this line.
+Note La configuration par défaut a `Require all granted`, supprimez cette ligne.
 
 For Ubuntu/Debian:
 ```
