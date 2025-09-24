@@ -56,10 +56,11 @@ côté du bouton "<<", vous masquerez complètement le `menu principal ` .
 
 _2.3 Masquer_
 
-To bring back our `main menu` is rather easy, we just look for the button on the
-left with three horizontal lines and click on it. This will show the `main menu`
-but it won't stay. When we click on the box with the arrow now pointing to the
-bottom right it will keep the `main menu` back in it's position.
+Pour ramener notre menu principal `` , c'est assez facile, il suffit de chercher
+le bouton à gauche avec trois lignes horizontales et de cliquer dessus. Cela
+affichera le menu principal `` mais il ne restera pas. Lorsque nous cliquons sur
+la boîte avec la flèche pointant vers le bas à droite, le menu principal `` est
+remis à sa place.
 
 Yet another way to make the screen bigger that is quite useful for monitors in
 `NOK teams` for example is the `kiosk mode` button. This one however is located
