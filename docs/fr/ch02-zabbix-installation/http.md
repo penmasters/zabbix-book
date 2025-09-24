@@ -42,7 +42,7 @@ HTTP.
 
 Trouvez le bloc `location / {` dans les fichiers de configuration de Nginx, qui
 définit votre WebUI Zabbix (ie : `/etc/nginx/conf.d/nginx.conf` file) et ajoutez
-ces deux lignes:
+ces deux lignes :
 
 ```
     location / {
@@ -57,8 +57,8 @@ modification.
 
 Ensuite, vous devez créer `/etc/nginx/httpauth` un fichier qui contiendra les
 mots de passe de tous les utilisateurs (assurez-vous de restreindre l'accès à ce
-fichier). Le format de ce fichier est `nom_utilisateur:mot_de_passe_haché`, par
-exemple, pour les utilisateurs `Admin` et `test`:
+fichier). Le format de ce fichier est `nom_utilisateur :mot_de_passe_haché`, par
+exemple, pour les utilisateurs `Admin` et `test` :
 
 ```
 Admin:$1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
@@ -167,11 +167,13 @@ qu'utilisateur différent.
 
 _2.2 Formulaire d'authentification des utilisateurs HTTP_
 
-If you select "HTTP login form" in `Default login form` drop-down you won't see
-standard Zabbix login form when you try to log out. You actually won't be able
-to sign out unless your authentication session expires. The only way to sign out
-is to clear cookies in your browser. Then you'll have to go through the Web
-server basic authentication procedure again.
+Si vous sélectionnez "HTTP login form" dans le menu déroulant `Default login
+form`, vous ne verrez pas le formulaire de connexion standard de Zabbix lorsque
+vous essayerez de vous déconnecter. En fait, vous ne pourrez pas vous
+déconnecter à moins que votre session d'authentification n'expire. La seule
+façon de se déconnecter est d'effacer les cookies dans votre navigateur. Vous
+devrez alors suivre à nouveau la procédure d'authentification de base du serveur
+Web.
 
 ---
 
