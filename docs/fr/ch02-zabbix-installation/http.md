@@ -108,9 +108,9 @@ Pour RedHat :
 N'oubliez pas de redémarrer le service apache2 après avoir effectué cette
 modification.
 
-Créez `/etc/apache2/.httpasswd` (`/etc/httpd/.htpassword` pour RedHat) un
-fichier qui contiendra tous les utilisateurs avec leurs mots de passe, en
-utilisant l'outil `htpasswd`, pour ajouter l'utilisateur `tester` exécuter :
+Créez le fichier `/etc/apache2/.httpasswd` (`/etc/httpd/.htpassword` pour
+RedHat) qui contiendra tous les utilisateurs avec leurs mots de passe, en
+utilisant l'outil `htpasswd`, pour ajouter l'utilisateur `test` exécuter :
 
 For Ubuntu/Debian
 ```
