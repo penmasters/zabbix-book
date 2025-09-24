@@ -112,7 +112,7 @@ Créez le fichier `/etc/apache2/.httpasswd` (`/etc/httpd/.htpassword` pour
 RedHat) qui contiendra tous les utilisateurs avec leurs mots de passe, en
 utilisant l'outil `htpasswd`, pour ajouter l'utilisateur `test` exécuter :
 
-For Ubuntu/Debian
+Pour Ubuntu/Debian
 ```
 sudo htpasswd -c /etc/apache2/.htpasswd test
 New password: 
