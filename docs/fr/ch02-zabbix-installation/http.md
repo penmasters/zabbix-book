@@ -83,7 +83,7 @@ configuration Apache HTTP, il définit votre WebUI Zabbix (ie :
 ???+ note La configuration par défaut est `Require all granted`, supprimez cette
 ligne.
 
-For Ubuntu/Debian:
+Pour Ubuntu/Debian :
 ```
     <Directory "/usr/share/zabbix">
         ...
