@@ -54,7 +54,7 @@ côté du bouton "<<", vous masquerez complètement le `menu principal ` .
 
 ![Masquer](ch02-frontend-hide.png)
 
-_2.3 Hide_
+_2.3 Masquer_
 
 To bring back our `main menu` is rather easy, we just look for the button on the
 left with three horizontal lines and click on it. This will show the `main menu`
