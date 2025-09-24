@@ -78,7 +78,7 @@ reviendrons à l'état d'origine.
 
 ![Développer](ch02-frontend-shrink.png)
 
-_2.5 Shrink_
+_2.5 Réduire_
 
 ???+ tip
 
