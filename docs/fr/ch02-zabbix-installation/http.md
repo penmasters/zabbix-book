@@ -133,10 +133,10 @@ Pour ajouter d'autres utilisateurs au fichier, répétez la commande sans l'opti
 
 ## Configuration de Zabbix pour l'authentification HTTP
 
-When we have a WEB server configured with basic authentication it is high time
-to configure Zabbix server. In Zabbix menu select `Users | Authentication | HTTP
-settings` and check `Enable HTTP authentication` check-box. Click `Update` and
-confirm the changes by clicking `OK` button.
+Une fois le serveur WEB configuré avec l'authentification de base, il est temps
+de configurer le serveur Zabbix. Dans le menu Zabbix, sélectionnez `Users |
+Authentication | HTTP settings` et cochez la case `Enable HTTP authentication`.
+Cliquez sur `Update` et confirmez les changements en cliquant sur `OK`.
 
 ![HTTP users authentication](ch02.1-http-auth-settings.png){ align=center }
 
