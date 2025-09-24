@@ -157,14 +157,14 @@ Spécifier l'adresse du serveur frontend pour les scénarios de basculement :
 
 ---
 
-### Configuring Zabbix Server 2
+### Configuration de Zabbix Server 2
 
-Repeat the configuration steps for the second Zabbix server. Adjust the
-`HANodeName` and `NodeAddress` as necessary for this server.
+Répétez les étapes de configuration pour le deuxième serveur Zabbix. Ajustez les
+champs `HANodeName` et `NodeAddress` si nécessaire pour ce serveur.
 
 ---
 
-### Starting Zabbix Server
+### Démarrage du serveur Zabbix
 
 After configuring both servers, enable and start the zabbix-server service on
 each:
