@@ -197,8 +197,8 @@ Sur le premier serveur :
     sudo grep HA /var/log/zabbix/zabbix_server.log
     ```
 
-In the system logs, you should observe the following entries, indicating the
-initialization of the High Availability (HA) manager:
+Dans les journaux du système, vous devriez observer les entrées suivantes,
+indiquant l'initialisation du gestionnaire de haute disponibilité (HA) :
 
 !!! info ""
 
