@@ -194,9 +194,10 @@ with robust protective measures.
 
 ## Questions
 
-- What advantage does HTTP (web server based) authentication provide compared to
-  Zabbix's internal authentication mechanism? (Consider protection at the web
-  server layer before the user even reaches the Zabbix UI.)
+- Quel est l'avantage de l'authentification HTTP (basée sur le serveur web) par
+  rapport au mécanisme d'authentification interne de Zabbix ? (Pensez à la
+  protection au niveau du serveur web avant même que l'utilisateur n'atteigne
+  l'interface utilisateur de Zabbix).
 
 - Why is it essential that a user must exist in Zabbix even when HTTP
   authentication is enabled and why does the Zabbix password become irrelevant
