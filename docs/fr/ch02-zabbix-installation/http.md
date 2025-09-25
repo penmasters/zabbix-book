@@ -214,9 +214,10 @@ with robust protective measures.
   l'authentification HTTP se comportera-t-elle, et à quel résultat devez-vous
   vous attendre ?
 
-- Imagine troubleshooting a login failure when using HTTP authentication: What
-  steps would you take to ensure the web server’s authentication is configured
-  correctly before examining Zabbix settings?
+- Imaginez la résolution d'un problème d'échec de connexion lors de
+  l'utilisation de l'authentification HTTP : Quelles mesures prendriez-vous pour
+  vous assurer que l'authentification du serveur web est configurée correctement
+  avant d'examiner les paramètres de Zabbix ?
 
 - From a security standpoint, when would HTTP authentication alone be
   insufficient and what other authentication methods (e.g., LDAP, SAML, MFA)
