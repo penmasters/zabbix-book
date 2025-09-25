@@ -221,7 +221,8 @@ with robust protective measures.
 
 - Du point de vue de la sécurité, quand l'authentification HTTP seule
   serait-elle insuffisante et quelles autres méthodes d'authentification (par
-  exemple, LDAP, SAML, MFA) pourriez-vous superposer pour plus de sécurité ?
+  exemple, LDAP, SAML, MFA) pourriez-vous mettre en œuvre pour plus de sécurité
+  ?
 
 ## URL utiles
 
