@@ -166,10 +166,10 @@ champs `HANodeName` et `NodeAddress` si nécessaire pour ce serveur.
 
 ### Démarrage du serveur Zabbix
 
-After configuring both servers, enable and start the zabbix-server service on
-each:
+Après avoir configuré les deux serveurs, activez et démarrez le service
+zabbix-server sur chacun d'eux :
 
-!!! info "restart zabbix-server service"
+! !! info "restart zabbix-server service"
 
     ```
     sudo systemctl enable zabbix-server --now
