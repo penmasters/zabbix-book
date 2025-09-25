@@ -203,10 +203,11 @@ with robust protective measures.
   l'authentification HTTP est activée et pourquoi le mot de passe Zabbix
   n'est-il pas pertinent dans ce cas ?
 
-- What are the configuration options in Zabbix's frontend under “Administration
-  → Authentication” for HTTP authentication, and how might each affect login
-  behavior? Examples include enabling/disabling case sensitivity, domain
-  stripping, and choice of login form.
+- Quelles sont les options de configuration dans le frontend de Zabbix sous
+  "Administration → Authentification" pour l'authentification HTTP, et comment
+  chacune d'entre elles peut-elle affecter le comportement de connexion ? Les
+  exemples incluent l'activation/désactivation de la sensibilité à la casse, la
+  suppression du domaine et le choix du formulaire de connexion.
 
 - Suppose you disable case sensitive logins and maintain both 'Admin' and
   'admin' accounts in Zabbix. How will HTTP authentication behave, and what
