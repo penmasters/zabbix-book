@@ -189,7 +189,7 @@ zabbix-server sur chacun d'eux :
 Vérifiez les fichiers journaux des deux serveurs pour vous assurer qu'ils ont
 démarré correctement et qu'ils fonctionnent dans leurs modes HA respectifs.
 
-On the first server:
+Sur le premier serveur :
 
 !!! info "check logs for HA messages"
 
