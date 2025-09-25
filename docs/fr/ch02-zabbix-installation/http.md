@@ -209,9 +209,10 @@ with robust protective measures.
   exemples incluent l'activation/désactivation de la sensibilité à la casse, la
   suppression du domaine et le choix du formulaire de connexion.
 
-- Suppose you disable case sensitive logins and maintain both 'Admin' and
-  'admin' accounts in Zabbix. How will HTTP authentication behave, and what
-  outcome should you expect?
+- Supposons que vous désactiviez la sensibilité à la casse des logins et que
+  vous mainteniez les deux comptes 'Admin' et 'admin' dans Zabbix. Comment
+  l'authentification HTTP se comportera-t-elle, et à quel résultat devez-vous
+  vous attendre ?
 
 - Imagine troubleshooting a login failure when using HTTP authentication: What
   steps would you take to ensure the web server’s authentication is configured
