@@ -184,7 +184,7 @@ zabbix-server sur chacun d'eux :
 
 ---
 
-### Verifying the Configuration
+### Vérification de la configuration
 
 Check the log files on both servers to ensure they have started correctly and
 are operating in their respective HA modes.
