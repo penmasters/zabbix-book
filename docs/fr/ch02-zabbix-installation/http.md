@@ -219,9 +219,9 @@ with robust protective measures.
   vous assurer que l'authentification du serveur web est configurée correctement
   avant d'examiner les paramètres de Zabbix ?
 
-- From a security standpoint, when would HTTP authentication alone be
-  insufficient and what other authentication methods (e.g., LDAP, SAML, MFA)
-  might you layer on top for added security?
+- Du point de vue de la sécurité, quand l'authentification HTTP seule
+  serait-elle insuffisante et quelles autres méthodes d'authentification (par
+  exemple, LDAP, SAML, MFA) pourriez-vous superposer pour plus de sécurité ?
 
 ## URL utiles
 
