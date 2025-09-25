@@ -207,10 +207,11 @@ indiquant l'initialisation du gestionnaire de haute disponibilité (HA) :
     22597:20240309:155230.362 HA manager started in active mode
     ```
 
-These log messages confirm that the HA manager process has started and assumed
-the active role. This means that the Zabbix instance is now the primary node in
-the HA cluster, handling all monitoring operations. If a failover event occurs,
-another standby node will take over based on the configured HA strategy.
+Ces messages confirment que le processus HA manager a démarré et a assumé le
+rôle actif. Cela signifie que l'instance Zabbix est maintenant le nœud principal
+dans le cluster HA, gérant toutes les opérations de surveillance. Si un
+événement de basculement se produit, un autre nœud en attente prendra le relais
+en fonction de la stratégie HA configurée.
 
 On the second server (and any additional nodes):
 
