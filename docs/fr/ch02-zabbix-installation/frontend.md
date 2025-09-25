@@ -122,7 +122,7 @@ au total neuf sections distinctes :
 | ---------------- | ------------------------------------------------------------------------------------------------- |
 | Tableaux de bord | Contient un aperçu de tous les tableaux de bord auxquels nous avons accès.                        |
 | Monitoring       | Nous montre les hôtes, les problèmes, les dernières données, les cartes, ...                      |
-| Services         | An overview of all the Services and SLA settings.                                                 |
+| Services         | Une vue d'ensemble de tous les services et des paramètres SLA.                                    |
 | Inventory        | An overview of our collected inventory data.                                                      |
 | Reports          | Shows us the system information, scheduled reports, audit logs, action logs, etc .                |
 | Data collection  | Contains all things related to collecting data like hosts, templates, maintenance, discovery, ... |
