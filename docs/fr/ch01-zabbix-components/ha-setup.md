@@ -191,7 +191,7 @@ démarré correctement et qu'ils fonctionnent dans leurs modes HA respectifs.
 
 Sur le premier serveur :
 
-! !! info "vérifier les journaux pour les messages HA"
+!!! info "vérifier les journaux pour les messages HA"
 
     ``` yaml
     sudo grep HA /var/log/zabbix/zabbix_server.log
