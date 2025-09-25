@@ -121,7 +121,7 @@ au total neuf sections distinctes :
 | Nom du menu      | Détails                                                                                           |
 | ---------------- | ------------------------------------------------------------------------------------------------- |
 | Tableaux de bord | Contient un aperçu de tous les tableaux de bord auxquels nous avons accès.                        |
-| Monitoring       | Shows us the hosts, problems, latest data, maps, ...                                              |
+| Monitoring       | Nous montre les hôtes, les problèmes, les dernières données, les cartes, ...                      |
 | Services         | An overview of all the Services and SLA settings.                                                 |
 | Inventory        | An overview of our collected inventory data.                                                      |
 | Reports          | Shows us the system information, scheduled reports, audit logs, action logs, etc .                |
