@@ -213,7 +213,7 @@ dans le cluster HA, gérant toutes les opérations de surveillance. Si un
 événement de basculement se produit, un autre nœud en attente prendra le relais
 en fonction de la stratégie HA configurée.
 
-On the second server (and any additional nodes):
+Sur le deuxième serveur (et tout autre nœud supplémentaire) :
 
 !!! info ""
 
@@ -221,8 +221,8 @@ On the second server (and any additional nodes):
     grep HA /var/log/zabbix/zabbix_server.log
     ```
 
-In the system logs, the following entries indicate the initialization of the
-High Availability (HA) manager:
+Dans les journaux du système, les entrées suivantes indiquent l'initialisation
+du gestionnaire de haute disponibilité (HA) :
 
 !!! info ""
 
