@@ -199,9 +199,9 @@ with robust protective measures.
   protection au niveau du serveur web avant même que l'utilisateur n'atteigne
   l'interface utilisateur de Zabbix).
 
-- Why is it essential that a user must exist in Zabbix even when HTTP
-  authentication is enabled and why does the Zabbix password become irrelevant
-  in that case?
+- Pourquoi est-il essentiel qu'un utilisateur existe dans Zabbix même lorsque
+  l'authentification HTTP est activée et pourquoi le mot de passe Zabbix
+  n'est-il pas pertinent dans ce cas ?
 
 - What are the configuration options in Zabbix's frontend under “Administration
   → Authentication” for HTTP authentication, and how might each affect login
