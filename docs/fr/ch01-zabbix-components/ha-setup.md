@@ -278,7 +278,7 @@ nécessite de légères adaptations. Nous commencerons par le serveur 1. Pour
 éditer le fichier de configuration de Keepalived, utilisez la commande suivante
 :
 
-! !! info "éditer la config keepalived"
+!!! info "éditer la configuration de keepalived"
 
     RedHat and Ubuntu
     ``` yaml
