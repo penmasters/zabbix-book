@@ -200,7 +200,7 @@ des mesures de protection robustes.
 - Quel est l'avantage de l'authentification HTTP (basée sur le serveur web) par
   rapport au mécanisme d'authentification interne de Zabbix ? (Pensez à la
   protection au niveau du serveur web avant même que l'utilisateur n'atteigne
-  l'interface utilisateur de Zabbix).
+  l'interface utilisateur de Zabbix.)
 
 - Pourquoi est-il essentiel qu'un utilisateur existe dans Zabbix même lorsque
   l'authentification HTTP est activée et pourquoi le mot de passe Zabbix
