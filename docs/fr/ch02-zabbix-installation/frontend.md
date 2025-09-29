@@ -136,7 +136,7 @@ au total neuf sections distinctes :
 
 Immédiatement à côté du menu principal de l'application, sur la gauche de
 l'interface, se trouve le menu `Links`. Ce module fournit une collection
-d'hyperliens pertinents pour l'accès de l'utilisateur.
+d'hyperliens utiles pour les utilisateurs.
 
 | Menu name     | Détails                                                                                                                                                                                                                                                |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
