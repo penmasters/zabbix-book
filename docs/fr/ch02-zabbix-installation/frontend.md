@@ -144,7 +144,7 @@ d'hyperliens utiles pour les utilisateurs.
 | Intégrations                | La [page d'intégration] officielle de zabbix (https://www.zabbix.com/integrations)                                                                                                                                                                                                       |
 | Aide                        | Le lien vers la documentation de votre [version Zabbix](https://www.zabbix.com/documentation/7.0/)                                                                                                                                                                                       |
 | Paramètres de l'utilisateur | Les paramètres du profil de l'utilisateur.                                                                                                                                                                                                                                               |
-| Déconnexion                 | Log out of the current session.                                                                                                                                                                                                                                                          |
+| Déconnexion                 | Déconnexion de la session en cours.                                                                                                                                                                                                                                                      |
 
 A few interactive elements remains to be addressed on the right-hand portion of
 the display.
