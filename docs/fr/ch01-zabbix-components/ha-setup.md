@@ -384,7 +384,7 @@ préviennent les défaillances inattendues. Avant de continuer, vérifiez que le
 ports nécessaires sont ouverts et appliquez les règles de pare-feu requises en
 conséquence.
 
-! !! info "configurer le firewall"
+!!! info "configurer le firewall"
 
     RedHat
     ```yaml
@@ -399,9 +399,10 @@ conséquence.
     sudo ufw allow 80/tcp
     ```
 
-With the configuration in place and the firewall properly configured, we can now
-start the Keepalived service. Additionally, we should enable it to ensure it
-automatically starts on reboot. Use the following commands to achieve this:
+Avec la configuration en place et le pare-feu correctement configuré, nous
+pouvons maintenant démarrer le service Keepalived. De plus, nous devons
+l'activer pour nous assurer qu'il démarre automatiquement au redémarrage. Pour
+ce faire, utilisez les commandes suivantes :
 
 !!! info "start and enable keepalived"
 
