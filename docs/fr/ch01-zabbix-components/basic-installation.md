@@ -1985,7 +1985,7 @@ PostgreSQL.
 
 ---
 
-## Installing the frontend
+## Installation du frontend
 
 Before configuring the front-end, you need to install the necessary packages. If
 the Zabbix front-end is hosted on the same server as the Zabbix server, you can
