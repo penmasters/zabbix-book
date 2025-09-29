@@ -138,7 +138,7 @@ Immédiatement à côté du menu principal de l'application, sur la gauche de
 l'interface, se trouve le menu `Links`. Ce module fournit une collection
 d'hyperliens utiles pour les utilisateurs.
 
-| Menu name     | Détails                                                                                                                                                                                                                                                |
+| Nom du menu   | Détails                                                                                                                                                                                                                                                |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Support       | This brings us to the technical support page that you can buy from Zabbix. Remember that your local partner is also able to sell these contracts and can help you in your own language. [Your local distributors](https://www.zabbix.com/distributors) |
 | Integrations  | The official zabbix [integration page](https://www.zabbix.com/integrations)                                                                                                                                                                            |
