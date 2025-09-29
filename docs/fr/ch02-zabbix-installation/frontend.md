@@ -134,9 +134,9 @@ au total neuf sections distinctes :
 
 ## Menu des liens
 
-Immediately subjacent to the primary application menu on the left-hand interface
-resides the `Links` menu. This module furnishes a collection of pertinent
-hyperlinks for user access.
+Immédiatement à côté du menu principal de l'application, sur la gauche de
+l'interface, se trouve le menu `Links`. Ce module fournit une collection
+d'hyperliens pertinents pour l'accès de l'utilisateur.
 
 | Menu name     | Détails                                                                                                                                                                                                                                                |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
