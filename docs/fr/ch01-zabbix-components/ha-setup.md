@@ -258,7 +258,7 @@ le maintien d'une infrastructure résiliente.
 
 ### Mise en place de keepalived
 
-So let's get started. On both our servers we have to install keepalived.
+Commençons donc. Sur nos deux serveurs, nous devons installer keepalived.
 
 !!! info "install keepalived"
 
