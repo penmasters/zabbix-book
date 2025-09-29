@@ -231,10 +231,10 @@ du gestionnaire de haute disponibilité (HA) :
     22304:20240309:155331.174 HA manager started in standby mode
     ```
 
-These messages confirm that the HA manager process was invoked and successfully
-launched in standby mode. This suggests that the node is operational but not
-currently acting as the active HA instance, awaiting further state transitions
-based on the configured HA strategy.
+Ces messages confirment que le processus du gestionnaire HA a été invoqué et
+lancé avec succès en mode veille. Cela suggère que le nœud est opérationnel mais
+qu'il n'agit pas actuellement en tant qu'instance HA active, en attendant
+d'autres transitions d'état basées sur la stratégie HA configurée.
 
 At this stage, your Zabbix cluster is successfully configured for High
 Availability (HA). The system logs confirm that the HA manager has been
