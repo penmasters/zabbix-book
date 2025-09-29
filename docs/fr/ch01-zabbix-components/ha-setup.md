@@ -285,8 +285,8 @@ nécessite de légères adaptations. Nous commencerons par le serveur 1. Pour
     sudo vi /etc/keepalived/keepalived.conf
     ```
 
-If the file contains any existing content, it should be cleared and replaced
-with the following lines :
+Si le fichier contient un contenu existant, il doit être effacé et remplacé par
+les lignes suivantes :
 
 !!! info ""
 
