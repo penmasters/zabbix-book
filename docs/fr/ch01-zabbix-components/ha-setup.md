@@ -366,7 +366,7 @@ adapter le frontend.
 Sur les deux serveurs, nous pouvons exécuter les commandes suivantes pour
 installer notre serveur web et les paquets du serveur frontend :
 
-! !! info "installer serveur web et config"
+!!! info "installation et configuration du serveur web"
 
     RedHat
     ```yaml
@@ -378,10 +378,11 @@ installer notre serveur web et les paquets du serveur frontend :
     sudo apt install nginx zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
-Additionally, it is crucial to configure the firewall. Proper firewall rules
-ensure seamless communication between the servers and prevent unexpected
-failures. Before proceeding, verify that the necessary ports are open and apply
-the required firewall rules accordingly.
+En outre, il est essentiel de configurer le pare-feu. Des règles de pare-feu
+appropriées garantissent une communication transparente entre les serveurs et
+préviennent les défaillances inattendues. Avant de continuer, vérifiez que les
+ports nécessaires sont ouverts et appliquez les règles de pare-feu requises en
+conséquence.
 
 !!! info "configure the firewall"
 
