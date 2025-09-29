@@ -364,9 +364,9 @@ adapter le frontend.
 ### Installer et configurer le frontend
 
 Sur les deux serveurs, nous pouvons exécuter les commandes suivantes pour
-installer notre serveur web et les paquets frontaux zabbix :
+installer notre serveur web et les paquets du serveur frontend :
 
-!!! info "install web server and config"
+! !! info "installer serveur web et config"
 
     RedHat
     ```yaml
