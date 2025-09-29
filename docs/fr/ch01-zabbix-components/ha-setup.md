@@ -272,10 +272,11 @@ Commençons donc. Sur nos deux serveurs, nous devons installer keepalived.
     sudo apt install keepalived
     ```
 
-Next, we need to modify the Keepalived configuration on both servers. While the
-configurations will be similar, each server requires slight adjustments. We will
-begin with Server 1. To edit the Keepalived configuration file, use the
-following command:
+Ensuite, nous devons modifier la configuration de Keepalived sur les deux
+serveurs. Bien que les configurations soient similaires, chaque serveur
+nécessite de légères adaptations. Nous commencerons par le serveur 1. Pour
+éditer le fichier de configuration de Keepalived, utilisez la commande suivante
+:
 
 !!! info "edit the keepalived config"
 
