@@ -179,18 +179,21 @@ Web.
 
 ## Conclusion
 
-Configuring HTTP level authentication adds a critical layer of access control to
-your Zabbix Web UI by leveraging your web server's native authentication
-mechanisms. Whether using Nginx or Apache, this approach ensures that users are
-prompted for credentials before even reaching Zabbix, effectively guarding
-against unauthorized access at the HTTP entry point. Key considerations include
-ensuring that usernames used in the HTTP authentication are already defined
-within Zabbix itself only the password from the web server matters for
-credential checks and correctly setting up Zabbix's HTTP authentication settings
-(such as domain removal and case sensitivity options). By coordinating web
-server authentication settings with Zabbix's internal configuration, you can
-achieve seamless and secure user login workflows that blend frontend usability
-with robust protective measures.
+La configuration de l'authentification au niveau HTTP ajoute une couche critique
+de contrôle d'accès à votre interface Web Zabbix en exploitant les mécanismes
+d'authentification natifs de votre serveur Web. Que vous utilisiez Nginx ou
+Apache, cette approche garantit que les utilisateurs sont invités à fournir des
+informations d'identification avant même d'atteindre Zabbix, ce qui protège
+efficacement contre les accès non autorisés au niveau du point d'entrée HTTP. Il
+est essentiel de s'assurer que les noms d'utilisateur utilisés dans
+l'authentification HTTP sont déjà définis dans Zabbix lui-même - seul le mot de
+passe du serveur web compte pour les vérifications d'identité - et de configurer
+correctement les paramètres d'authentification HTTP de Zabbix (tels que la
+suppression du domaine et les options de sensibilité à la casse). En coordonnant
+les paramètres d'authentification du serveur web avec la configuration interne
+de Zabbix, vous pouvez obtenir des flux de travail de connexion des utilisateurs
+transparents et sécurisés qui combinent la facilité d'utilisation frontale avec
+des mesures de protection robustes.
 
 ## Questions
 
