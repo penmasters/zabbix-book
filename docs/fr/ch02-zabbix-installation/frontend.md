@@ -118,17 +118,17 @@ Nous allons maintenant examiner brièvement les éléments du menu principal de
 l'application. Le `menu principal` , situé sur l'interface de gauche, comprend
 au total neuf sections distinctes :
 
-| Nom du menu         | Détails                                                                                                     |
-| ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Tableaux de bord    | Contient un aperçu de tous les tableaux de bord auxquels nous avons accès.                                  |
-| Monitoring          | Nous montre les hôtes, les problèmes, les dernières données, les cartes, ...                                |
-| Services            | Une vue d'ensemble de tous les services et des paramètres SLA.                                              |
-| Inventaire          | Une vue d'ensemble de nos données d'inventaire collectées.                                                  |
-| Rapports            | Affiche les informations système, les rapports planifiés, les journaux d'audit, les journaux d'action, etc. |
-| Collecte de données | Contains all things related to collecting data like hosts, templates, maintenance, discovery, ...           |
-| Alert               | The configuration of our media types, scripts and actions                                                   |
-| Users               | User configuration like user roles, user groups, authentication, API tokes, ...                             |
-| Administration      | The administration part containing all global settings, housekeeper, proxies, queue, ...                    |
+| Nom du menu         | Détails                                                                                                                |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Tableaux de bord    | Contient un aperçu de tous les tableaux de bord auxquels nous avons accès.                                             |
+| Monitoring          | Nous montre les hôtes, les problèmes, les dernières données, les cartes, ...                                           |
+| Services            | Une vue d'ensemble de tous les services et des paramètres SLA.                                                         |
+| Inventaire          | Une vue d'ensemble de nos données d'inventaire collectées.                                                             |
+| Rapports            | Affiche les informations système, les rapports planifiés, les journaux d'audit, les journaux d'action, etc.            |
+| Collecte de données | Contient tout ce qui est lié à la collecte de données comme les hôtes, les modèles, la maintenance, la découverte, ... |
+| Alert               | The configuration of our media types, scripts and actions                                                              |
+| Users               | User configuration like user roles, user groups, authentication, API tokes, ...                                        |
+| Administration      | The administration part containing all global settings, housekeeper, proxies, queue, ...                               |
 
 ---
 
