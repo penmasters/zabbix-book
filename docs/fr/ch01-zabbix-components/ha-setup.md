@@ -236,7 +236,7 @@ succès en mode veille. Cela suggère que le nœud est opérationnel mais qu'il
 n'agit pas actuellement en tant qu'instance HA active, en attendant d'autres
 transitions d'état basées sur la stratégie HA configurée.
 
-À ce stade, votre cluster Zabbix est configuré avec succès pour la haute
+À ce stade, votre cluster Zabbix est configuré correctement pour la haute
 disponibilité (HA). Les journaux du système confirment que le gestionnaire HA a
 été initialisé et qu'il fonctionne en mode veille, ce qui indique que les
 mécanismes de basculement sont en place. Cette configuration garantit une
@@ -245,13 +245,14 @@ permettant des transitions de rôle automatiques basées sur la configuration HA
 
 ---
 
-## Installing the frontend
+## Installation du frontend
 
-Before proceeding with the installation and configuration of the web server, it
-is essential to install Keepalived. Keepalived enables the use of a Virtual IP
-(VIP) for frontend services, ensuring seamless failover and service continuity.
-It provides a robust framework for both load balancing and high availability,
-making it a critical component in maintaining a resilient infrastructure.
+Avant de procéder à l'installation et à la configuration du serveur web, il est
+essentiel d'installer Keepalived. Keepalived permet l'utilisation d'une IP
+virtuelle (VIP) pour les services frontaux, assurant un basculement transparent
+et la continuité du service. Il fournit un cadre robuste pour l'équilibrage de
+la charge et la haute disponibilité, ce qui en fait un composant essentiel dans
+le maintien d'une infrastructure résiliente.
 
 ---
 
