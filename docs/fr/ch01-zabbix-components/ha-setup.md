@@ -256,7 +256,7 @@ le maintien d'une infrastructure résiliente.
 
 ---
 
-### Setting up keepalived
+### Mise en place de keepalived
 
 So let's get started. On both our servers we have to install keepalived.
 
