@@ -325,7 +325,7 @@ Nous pouvons maintenant faire la même modification sur notre `deuxième` serveu
 Zabbix. Supprimez tout dans le même fichier comme nous l'avons fait précédemment
 et remplacez le par les lignes suivantes :
 
-!!!info ""
+!!! info ""
 
     ``` yaml
     vrrp_track_process track_nginx {
@@ -352,9 +352,9 @@ et remplacez le par les lignes suivantes :
     }
     ```
 
-Just as with our 1st Zabbix server, replace `enp0s1` with the interface name of
-your machine and replace the `password` with your password and fill in the
-virtual_ipaddress as used before.
+Comme pour notre 1er serveur Zabbix, remplacez `enp0s1` par le nom de
+l'interface de votre machine et remplacez `password` par votre mot de passe et
+remplissez le virtual_ipaddress comme précédemment.
 
 This ends the configuration of keepalived. We can now continue adapting the
 frontend.
