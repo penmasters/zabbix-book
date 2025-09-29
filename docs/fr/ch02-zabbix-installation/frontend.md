@@ -132,7 +132,7 @@ au total neuf sections distinctes :
 
 ---
 
-## Links menu
+## Menu des liens
 
 Immediately subjacent to the primary application menu on the left-hand interface
 resides the `Links` menu. This module furnishes a collection of pertinent
