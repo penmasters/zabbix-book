@@ -236,12 +236,12 @@ succès en mode veille. Cela suggère que le nœud est opérationnel mais qu'il
 n'agit pas actuellement en tant qu'instance HA active, en attendant d'autres
 transitions d'état basées sur la stratégie HA configurée.
 
-At this stage, your Zabbix cluster is successfully configured for High
-Availability (HA). The system logs confirm that the HA manager has been
-initialized and is running in standby mode, indicating that failover mechanisms
-are in place. This setup ensures uninterrupted monitoring, even in the event of
-a server failure, by allowing automatic role transitions based on the HA
-configuration.
+À ce stade, votre cluster Zabbix est configuré avec succès pour la haute
+disponibilité (HA). Les journaux du système confirment que le gestionnaire HA a
+été initialisé et qu'il fonctionne en mode veille, ce qui indique que les
+mécanismes de basculement sont en place. Cette configuration garantit une
+surveillance ininterrompue, même en cas de défaillance d'un serveur, en
+permettant des transitions de rôle automatiques basées sur la configuration HA.
 
 ---
 
