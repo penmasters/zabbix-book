@@ -285,8 +285,8 @@ nécessite de légères adaptations. Nous commencerons par le serveur 1. Pour
     sudo vi /etc/keepalived/keepalived.conf
     ```
 
-Si le fichier contient un contenu existant, il doit être effacé et remplacé par
-les lignes suivantes :
+Si le fichier contient quelque chose, il doit être effacé et remplacé par les
+lignes suivantes :
 
 !!! info ""
 
@@ -321,9 +321,9 @@ les lignes suivantes :
     with something secure. For the virtual_ipaddress use a free IP from your network.
     This will be used as our VIP.
 
-We can now do the same modification on our `second` Zabbix server. Delete
-everything again in the same file like we did before and replace it with the
-following lines:
+Nous pouvons maintenant faire la même modification sur notre `deuxième` serveur
+Zabbix. Supprimez tout dans le même fichier comme nous l'avons fait précédemment
+et remplacez le par les lignes suivantes :
 
 !!!info ""
 
