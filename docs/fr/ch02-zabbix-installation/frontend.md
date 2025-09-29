@@ -126,7 +126,7 @@ au total neuf sections distinctes :
 | Inventaire          | Une vue d'ensemble de nos données d'inventaire collectées.                                                             |
 | Rapports            | Affiche les informations système, les rapports planifiés, les journaux d'audit, les journaux d'action, etc.            |
 | Collecte de données | Contient tout ce qui est lié à la collecte de données comme les hôtes, les modèles, la maintenance, la découverte, ... |
-| Alert               | The configuration of our media types, scripts and actions                                                              |
+| Alerte              | La configuration de nos types de médias, scripts et actions                                                            |
 | Users               | User configuration like user roles, user groups, authentication, API tokes, ...                                        |
 | Administration      | The administration part containing all global settings, housekeeper, proxies, queue, ...                               |
 
