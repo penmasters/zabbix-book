@@ -2177,7 +2177,7 @@ With the service operational and configured for automatic startup, the final
 preparatory step involves adjusting the firewall to permit inbound HTTP traffic.
 Execute the following commands:
 
-! !! info "configurer le firewall"
+!!! info "configurer le firewall"
 
     Red Hat
 
