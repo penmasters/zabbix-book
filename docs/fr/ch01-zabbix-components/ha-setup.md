@@ -260,7 +260,7 @@ le maintien d'une infrastructure résiliente.
 
 Commençons donc. Sur nos deux serveurs, nous devons installer keepalived.
 
-!!! info "install keepalived"
+! !! info "install keepalived"
 
     Redhat
     ``` yaml
