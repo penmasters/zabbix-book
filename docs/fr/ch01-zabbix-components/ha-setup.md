@@ -353,18 +353,18 @@ et remplacez le par les lignes suivantes :
     ```
 
 Comme pour notre 1er serveur Zabbix, remplacez `enp0s1` par le nom de
-l'interface de votre machine et remplacez `password` par votre mot de passe et
+l'interface de votre machine, remplacez `password` par votre mot de passe et
 remplissez le virtual_ipaddress comme précédemment.
 
-This ends the configuration of keepalived. We can now continue adapting the
-frontend.
+Ceci termine la configuration de keepalived. Nous pouvons maintenant continuer à
+adapter le frontend.
 
 ---
 
-### Install and configure the frontend
+### Installer et configurer le frontend
 
-On both servers we can run the following commands to install our web server and
-the zabbix frontend packages:
+Sur les deux serveurs, nous pouvons exécuter les commandes suivantes pour
+installer notre serveur web et les paquets frontaux zabbix :
 
 !!! info "install web server and config"
 
