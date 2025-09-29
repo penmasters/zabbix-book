@@ -128,7 +128,7 @@ au total neuf sections distinctes :
 | Collecte de données | Contient tout ce qui est lié à la collecte de données comme les hôtes, les modèles, la maintenance, la découverte, ...                |
 | Alerte              | La configuration de nos types de médias, scripts et actions                                                                           |
 | Utilisateurs        | Configuration des utilisateurs comme les rôles d'utilisateurs, les groupes d'utilisateurs, l'authentification, les accès à l'API, ... |
-| Administration      | The administration part containing all global settings, housekeeper, proxies, queue, ...                                              |
+| Administration      | La partie administration contenant tous les paramètres globaux, gouvernante, proxies, file d'attente, ...                             |
 
 ---
 
