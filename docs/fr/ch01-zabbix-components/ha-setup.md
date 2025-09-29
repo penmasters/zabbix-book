@@ -384,7 +384,7 @@ préviennent les défaillances inattendues. Avant de continuer, vérifiez que le
 ports nécessaires sont ouverts et appliquez les règles de pare-feu requises en
 conséquence.
 
-!!! info "configure the firewall"
+! !! info "configurer le firewall"
 
     RedHat
     ```yaml
