@@ -146,8 +146,8 @@ d'hyperliens utiles pour les utilisateurs.
 | Paramètres de l'utilisateur | Les paramètres du profil de l'utilisateur.                                                                                                                                                                                                                                               |
 | Déconnexion                 | Déconnexion de la session en cours.                                                                                                                                                                                                                                                      |
 
-A few interactive elements remains to be addressed on the right-hand portion of
-the display.
+Quelques éléments interactifs restent à traiter dans la partie droite de
+l'écran.
 
 ![Edit dashboard](ch02-edit-dashboard.png)
 
