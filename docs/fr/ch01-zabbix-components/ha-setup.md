@@ -404,7 +404,7 @@ pouvons maintenant démarrer le service Keepalived. De plus, nous devons
 l'activer pour nous assurer qu'il démarre automatiquement. Pour ce faire,
 utilisez les commandes suivantes :
 
-! !! info "démarrer et activer keepalived"
+!!! info "démarrer et activer keepalived"
 
     RedHat and Ubuntu
     ```yaml
@@ -413,7 +413,7 @@ utilisez les commandes suivantes :
 
 ---
 
-### Configure the web server
+### Configurer le serveur web
 
 The setup process for the frontend follows the same steps outlined in the `Basic
 Installation` section under [Installing the
