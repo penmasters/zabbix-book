@@ -151,7 +151,7 @@ l'écran.
 
 ![Edit dashboard](ch02-edit-dashboard.png)
 
-_2.8 Edit dashboard_
+_2.8 Editer le tableau de bord_
 
 The `Edit dashboard` button facilitates modification of the user's dashboard
 configuration, a feature that will be elaborated upon in subsequent sections.
