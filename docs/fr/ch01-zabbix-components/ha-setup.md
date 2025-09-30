@@ -401,10 +401,10 @@ conséquence.
 
 Avec la configuration en place et le pare-feu correctement configuré, nous
 pouvons maintenant démarrer le service Keepalived. De plus, nous devons
-l'activer pour nous assurer qu'il démarre automatiquement au redémarrage. Pour
-ce faire, utilisez les commandes suivantes :
+l'activer pour nous assurer qu'il démarre automatiquement. Pour ce faire,
+utilisez les commandes suivantes :
 
-!!! info "start and enable keepalived"
+! !! info "démarrer et activer keepalived"
 
     RedHat and Ubuntu
     ```yaml
