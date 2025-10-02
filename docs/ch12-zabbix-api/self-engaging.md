@@ -398,7 +398,7 @@ return JSON.stringify(hostDelete);
 To setup action, the trigger must running a tag `delete` with value `host`.
 The conditions can be to target tag plus value and trigger severity:
 
-![Auto close problem](ch12.15-delete-host-action-conditions.png) 
+![Delete host action conditions](ch12.15-delete-host-action-conditions.png) 
 
 _12.15
 Delete host target tag and tag value_
@@ -406,7 +406,7 @@ Delete host target tag and tag value_
 Here we are running a delayed action with a step number 31.
 Because default duration is 1d, the host will be deleted after 30 days.
 
-![Auto close problem](ch12.16-delete-host-action-operations.png) 
+![Delete host action operations](ch12.16-delete-host-action-operations.png)
 
 _12.16
 Delete host operations_
@@ -438,6 +438,34 @@ This is maximum efficiency to run a single API call once per day.
 If nothing needs to be done, API calls will not be wasted.
 No SQL UPDATE operations for the Zabbix database :)
 
+**Name** will be:
+
+```yaml
+Delete host
+```
+
+Scope: **Action operation**
+
+Type: **Webhook**
+
+Parameters:
+
+`hostid` set:
+```yaml
+{HOST.ID}
+```
+
+`token` must be:
+```yaml
+{$ZABBIX.API.TOKEN}
+```
+
+`url` points to:
+```yaml
+{$ZABBIX.URL}/api_jsonrpc.php
+```
+
+Script:
 
 ```javascript
 // load all parameters in memory
@@ -508,3 +536,191 @@ the script will continue to parse all hosts and will retry update operation.
 Ensure $.listOfErrors in output is an empty list.
 
 This is tested and works with Zabbix 7.0
+
+## Cleanup unused ZBX interfaces (Webhook)
+
+!!! tip "Use case 1"
+
+    Default "Host availability" widget will print "Unknown" interfaces
+    if none of Zabbix agent passive checks are using it.
+    Need to remove interface to get "Unknown" interface number closer to 0
+
+---
+
+
+![Unknown ZBX passive interfaces](ch12.17-host-availability-unknown-passive-agent-checks.png)
+
+_12.17
+Unknown ZBX passive interfaces_
+
+
+!!! tip "Use case 2"
+
+    Active checks by design do not require an interface. Having a defined
+    interface will mislead the team to understand how active checks actually
+    works.
+
+---
+
+
+!!! tip "Use case 3"
+
+    https://cloud.zabbix.com/ is good for server monitoring with active checks.
+    While registering new servers, the IP address of host interface is not
+    relatable to infrastructure.
+    Remove the interface to make setup look more clean.
+
+---
+
+
+!!! info "Implementation"
+
+    To bring aboard a host, run a webhook to validate if an interface is used
+    by any passive Zabbix agent items. If it's not used, then remove interface.
+
+---
+
+To implement, visit **Alerts** => **Scripts**, press **Create script**
+
+![Remove unused ZBX interfaces](ch12.18-remove-unused-zbx-hosts.png)
+
+_12.18
+Remove unused ZBX interfaces_
+
+
+Webhook
+**Name** will be:
+
+```yaml
+Remove unused ZBX interfaces
+```
+
+Scope: **Action operation**
+
+Type: **Webhook**
+
+Parameters:
+
+`host` set:
+```yaml
+{HOST.HOST}
+```
+
+`token` must be:
+```yaml
+{$ZABBIX.API.TOKEN}
+```
+
+`url` points to:
+```yaml
+{$ZABBIX.URL}/api_jsonrpc.php
+```
+
+Set `debug` points to `4`
+
+
+Script:
+
+```javascript
+// Load all variables
+var params = JSON.parse(value);
+
+var request = new HttpRequest();
+request.addHeader('Content-Type: application/json');
+request.addHeader('Authorization: Bearer ' + params.token);
+
+// Pick up hostid
+var hostid = JSON.parse(request.post(params.url,
+    '{"jsonrpc":"2.0","method":"host.get","params":{"output":["hostid"],"filter":{"host":["' + params.host + '"]}},"id":1}'
+)).result[0].hostid;
+
+// Extract all passive Zabbix agent interfaces
+var allAgentInterfaces = JSON.parse(request.post(params.url,
+    '{"jsonrpc":"2.0","method":"hostinterface.get","params":{"output":["interfaceid","main"],"filter":{"type":"1"},"hostids":"' + hostid + '"},"id":1}'
+)).result;
+
+// If any ZBX interface was found then proceed fetching all items because need to find out if any items use an interface
+if (allAgentInterfaces.length > 0) {
+    // Fetch all items which are defined at host level and ask which item use passive ZBX agent interface
+    // Simple check items (like icmpping) also can use zabbix agent interface
+    var items_with_int = JSON.parse(request.post(params.url,
+        '{"jsonrpc":"2.0","method":"item.get","params":{"output":["type","interfaces"],"hostids":"' + hostid + '","selectInterfaces":"query"},"id":1}'
+    )).result;
+}
+
+// Define an interface array. This is required if more than one ZBX interface exists on host level
+var interfacesInUse = [];
+
+// Iterate through all ZBX interfaces
+for (var zbx = 0; zbx < allAgentInterfaces.length; zbx++) {
+
+    // Go through all items which is defined at host level
+    for (var int = 0; int < items_with_int.length; int++) {
+
+        // There are many items which does not need interface. Specifically analyze the ones which has an interface defined
+        if (items_with_int[int].interfaces.length > 0) {
+
+            // There is an interface found for the item
+            if (items_with_int[int].interfaces[0].interfaceid == allAgentInterfaces[zbx].interfaceid) {
+                // Put this item in list which use an interface
+                var row = {};
+                row["itemid"] = items_with_int[int].itemid;
+                row["interfaceid"] = allAgentInterfaces[zbx].interfaceid;
+                row["main"] = allAgentInterfaces[zbx].main;
+                interfacesInUse.push(row);
+            }
+        }
+    }
+}
+
+// Final scan to identify if any interface is wasted
+var needToDelete = 1;
+var evidenceOfDeletedInterfaces = [];
+var mainNotUsed = 0;
+for (var defined = 0; defined < allAgentInterfaces.length; defined++) {
+
+    // Scan all items
+    needToDelete = 1;
+    for (var used = 0; used < interfacesInUse.length; used++) {
+        if (allAgentInterfaces[defined].interfaceid == interfacesInUse[used].interfaceid) {
+            needToDelete = 0;
+        }
+    }
+
+    // If flag was not turned off, then no items with this interface were found. No items are using this interface. Safe to delete
+    // Delete all slaves first
+    if (needToDelete == 1 && allAgentInterfaces[defined].main == 0) {
+        var deleteInt = JSON.parse(request.post(params.url,
+            '{"jsonrpc":"2.0","method":"hostinterface.delete","params":["' + allAgentInterfaces[defined].interfaceid + '"],"id":1}'
+        ));
+        var row = {};
+        row["deleted"] = deleteInt;
+        evidenceOfDeletedInterfaces.push(row);
+    }
+
+    if (needToDelete == 1 && allAgentInterfaces[defined].main == 1) {
+        var mainNotUsed = allAgentInterfaces[defined].interfaceid;
+    }
+
+}
+
+// Delete main interface at the end
+if (mainNotUsed > 0) {
+    var deleteInt = JSON.parse(request.post(params.url,
+        '{"jsonrpc":"2.0","method":"hostinterface.delete","params":["' + mainNotUsed + '"],"id":1}'
+    ));
+    var row = {};
+    row["deleted"] = deleteInt;
+    evidenceOfDeletedInterfaces.push(row);
+}
+
+var output = JSON.stringify({
+    "allAgentInterfaces": allAgentInterfaces,
+    "interfacesInUse": interfacesInUse,
+    "evidenceOfDeletedInterfaces": evidenceOfDeletedInterfaces
+});
+
+Zabbix.Log(params.debug, 'Auto remove unused ZBX agent passive interfaces: ' + output)
+
+return 0;
+```
