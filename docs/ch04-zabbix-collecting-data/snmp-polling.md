@@ -739,6 +739,33 @@ is also handled asynchronously. The maximum concurrency for these checks is 1000
 defined by the `MaxConcurrentChecksPerPoller` parameter. The number of SNMP pollers
 dedicated to this method is set by the `StartSNMPPollers` parameter.
 
+#### Synchronous versus Asynchronous Polling
+
+Zabbix can also use two different internal methods for polling:
+
+**Synchronous Polling**
+
+Synchronous polling means the Zabbix server queries one SNMP OID at a time and waits
+for the response before continuing. This is simpler and ensures accurate timing,
+but it can become slow when monitoring hundreds or thousands of items per second.
+
+- Characteristics: Sequential, blocking, predictable timing
+- Use case: Small environments or when timing precision is critical
+
+**Asynchronous Polling**
+
+Asynchronous polling sends multiple SNMP requests in parallel without waiting for
+each response before sending the next. This dramatically increases performance
+and reduces latency in large environments.
+
+- Characteristics: Parallel, non-blocking, more efficient
+- Use case: Large-scale Zabbix installations with many SNMP hosts
+
+| Method | Direction | Timing | Example | Pros | Cons |
+|:----   |:----      |:----   |:----    |:---- |:---- |
+|Polling (Sync)  | Zabbix → Device | Periodic | SNMP GET for CPU load  | Predictable, simple | Slower, more traffic |
+|Polling (Async) | Zabbix → Device | Parallel | Many SNMP GETs at once | Fast, scalable | More complex tuning |
+
 ---
 
 ### **Polling Your First OID in Zabbix**
