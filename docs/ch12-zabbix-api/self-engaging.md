@@ -1,6 +1,7 @@
 ---
 description: |
-    add a description for SEO.
+    Zabbix API: Automate your monitoring! Discover how self-engaging methods create
+    a virtual colleague for automated tasks and management.
 ---
 
 # Self-engaging
