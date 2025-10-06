@@ -279,4 +279,5 @@ ssl
 mydomain
 api
 webhook
-
+nodata
+snmptrapd
