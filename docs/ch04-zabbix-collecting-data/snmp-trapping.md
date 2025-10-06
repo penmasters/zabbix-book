@@ -93,34 +93,20 @@ something happens. No waiting or polling required.
 
 ``` mermaid
 flowchart TB
-    %% --- Polling section ---
-    subgraph POLLING[SNMP Polling - Active Monitoring]
-        direction LR
-        ZBX[Zabbix Server or Proxy]
-        DEV[Network Device]
-        ZBX -->|SNMP GET UDP 161| DEV
-        DEV -->|SNMP Response| ZBX
-        ZBX --> DBP[Zabbix Database]
-        DBP --> UI1[Zabbix Frontend]
-        UI1 -->|Displays polled data| USER1[User]
-    end
-
-    %% --- Invisible separator (no box) ---
-    %% This line just adds vertical space visually without rendering a node
-    %% You can also remove it entirely if your renderer already adds spacing
-    %% No visible element will be shown
-
-    %% --- Traps section ---
-    subgraph TRAPS[SNMP Traps - Passive Monitoring]
+    %% --- Traps section (top) ---
+    subgraph TRAPS[Traps]
         direction TB
+        TITLET["SNMP Traps<br/>Acrive Monitoring"]
+        WIDE["                                                                 "]
         DEV2[Network Device]
         TRAPD[snmptrapd Daemon]
-        HANDLER[Trap Handler or Log File]
+        HANDLER[SNMPTT or perl script]
         ZBXT[Zabbix Server or Proxy]
         DBT[Zabbix Database]
         UI2[Zabbix Frontend]
         USER2[User]
 
+        TITLET --> DEV2
         DEV2 -->|SNMP Trap UDP 162| TRAPD
         TRAPD -->|Handler Script| HANDLER
         HANDLER -->|Trap Log| ZBXT
@@ -129,9 +115,29 @@ flowchart TB
         UI2 -->|Displays event| USER2
     end
 
-    %% --- Styling (color-coded like before) ---
+    %% --- Invisible connector to force vertical stacking ---
+    TRAPS -.-> POLLING
+
+    %% --- Polling section (bottom) ---
+    subgraph POLLING[Polling]
+        direction LR
+        TITLEP["SNMP Polling<br/>Passive Monitoring"]
+        ZBX[Zabbix Server or Proxy]
+        DEV[Network Device]
+        TITLEP --> ZBX
+        ZBX -->|SNMP GET UDP 161| DEV
+        DEV -->|SNMP Response| ZBX
+        ZBX --> DBP[Zabbix Database]
+        DBP --> UI1[Zabbix Frontend]
+        UI1 -->|Displays polled data| USER1[User]
+    end
+
+    %% --- Styling ---
     style POLLING fill:#f0fff0,stroke:#3a3,stroke-width:1px
     style TRAPS fill:#f0f8ff,stroke:#339,stroke-width:1px
+    style WIDE fill:none,stroke:none
+    style TITLEP fill:transparent,stroke:transparent
+    style TITLET fill:transparent,stroke:transparent
     style ZBX fill:#e0ffe0,stroke:#3a3
     style DEV fill:#ffefd5,stroke:#c96
     style DEV2 fill:#ffefd5,stroke:#c96
@@ -144,12 +150,284 @@ flowchart TB
     style UI2 fill:#e8e8ff,stroke:#669
     style USER1 fill:#fff0f0,stroke:#c33
     style USER2 fill:#fff0f0,stroke:#c33
+```
+### SNMP Trap Flow (Active Monitoring)
 
+In an SNMP Trap setup, communication is device initiated. Meaning the network device
+sends an event message to Zabbix the moment something happens.
+This is called active monitoring because Zabbix doesn't need to query the device
+periodically.
+
+**Step-by-step flow:**
+
+- **Network Device:**
+When an event occurs (for example, a power failure, interface down, or temperature
+alarm), the device immediately sends an SNMP Trap to the configured destination
+on UDP port 162.
+
+- **snmptrapd Daemon:**
+The Net-SNMP daemon **snmptrapd**  listens for incoming traps.
+It acts as a relay between the device and Zabbix, executing a handler script whenever
+a trap is received.
+
+- **Trap Handler / Log File:**
+The handler script (often zabbix_trap_receiver.pl or SNMPTT) processes the trap
+and writes it into a log file, usually "/var/log/snmptrap/snmptrap.log."
+This file contains the raw trap data including timestamps, source IPs, and OIDs.
+
+- **Zabbix Server or Proxy:**
+The Zabbix component (server or proxy) monitors the trap log for new entries and
+matches them against configured SNMP trap items. These items use regular expressions
+or string filters to extract relevant data.
+
+- **Zabbix Database:**
+Once processed, the trap information is stored in the database like any other
+item value.
+
+- **Zabbix Frontend:**
+The event becomes visible in the Zabbix frontend almost instantly showing up in
+Latest Data, Problems, or triggering actions and notifications based on your configuration.
+
+???+ note
+
+    SNMP traps deliver real-time alerts without polling overhead, making them
+    ideal for event driven devices like UPSs, firewalls, or network switches.
+
+
+### **SNMP Polling Flow (Passive Monitoring)**
+
+In contrast, SNMP Polling is Zabbix initiated.
+This is called passive monitoring because the Zabbix server (or proxy)  queries
+the device at a set interval to retrieve values.
+
+**Step-by-step flow:**
+
+- **Zabbix Server or Proxy:**
+Periodically sends an SNMP GET request to the device using UDP port 161.
+Each SNMP item in Zabbix corresponds to a specific OID (Object Identifier) that
+defines which metric is requested (e.g., CPU usage, interface status).
+
+- **Network Device:**
+Responds to the SNMP GET request with the current value of the requested OID.
+
+- **Zabbix Database:**
+The response data is stored in the database with a timestamp for trend analysis
+and historical graphing.
+
+- **Zabbix Frontend:**
+Displays the collected values in graphs, dashboards, and triggers thresholds if
+defined.
+
+???+ note
+
+    Polling provides consistent, periodic data collection. Ideal for metrics like
+    bandwidth usage, temperature, or CPU load. However, it may have a small delay
+    between data updates depending on the polling interval (e.g., every 30s,
+    1min, etc.).
+
+### Summary
+
+| Feature            | SNMP Traps (Active)              | SNMP Polling (Passive)        |
+| ------------------ | -------------------------------- | ----------------------------- |
+| **Initiator**      | Network Device                   | Zabbix                        |
+| **Direction**      | Device → Zabbix                  | Zabbix → Device               |
+| **Transport Port** | UDP 162                          | UDP 161                       |
+| **Frequency**      | Event-driven (immediate)         | Periodic (configurable interval) |
+| **Resource Usage** | Lower (only on events)           | Higher (regular queries)      |
+| **Data Type**      | Event notifications              | Continuous metrics            |
+| **Best for**       | Fault and alert notifications    | Performance and trend monitoring |
+
+
+!!! Tip
+
+    In production Zabbix environments, many administrators combine both methods:
+    - Use SNMP polling for regular metrics (e.g., interface traffic, system uptime).
+    - Use SNMP traps for immediate events (e.g., link down, power failure).
+    This hybrid approach gives you both real-time alerts and historical performance
+    data, achieving complete SNMP visibility with minimal overhead.
+
+---
+
+## Setting up SNMP traps with zabbix_trap_receiver
+
+In this section, we’ll configure Zabbix to receive and process SNMP traps using
+the Perl script zabbix_trap_receiver.pl. SNMP traps allow network devices to actively
+send event information to the Zabbix server, enabling near real-time alerting without
+periodic polling.
+
+1. Open the Firewall for SNMP Trap Traffic
+
+By default, SNMP traps are received on UDP port 162.
+Make sure this port is open on your Zabbix server:
+``` bash
+firewall-cmd --add-port=162/udp
+firewall-cmd --reload
 ```
 
-## Setting up SNMP traps
+This allows incoming traps from SNMP-enabled devices.
+
+2. Install Required SNMP Packages
+
+The snmptrapd daemon and Perl bindings are needed for trap handling.
+``` bash
+dnf install -y net-snmp-utils net-snmp-perl net-snmp
+```
+
+This installs the SNMP tools, daemon, and Perl modules used by Zabbix's receiver
+script.
+
+3. Install zabbix_trap_receiver.pl
+
+Download the latest zabbix_trap_receiver.pl script from the official
+Zabbix source archive [https://cdn.zabbix.com/zabbix/sources/stable/](https://cdn.zabbix.com/zabbix/sources/stable/)
+
+Once downloaded, copy it to /usr/bin and make it executable:
+``` bash
+cp zabbix_trap_receiver.pl /usr/bin/
+chmod +x /usr/bin/zabbix_trap_receiver.pl
+```
+
+This script receives traps from snmptrapd and writes them to a log file that Zabbix
+can read.
+
+4. Configure snmptrapd
+
+Edit the SNMP trap daemon configuration file:
+
+``` bash
+vi /etc/snmp/snmptrapd.conf
+```
+
+Append the following lines:
+
+``` bash
+authCommunity execute public
+perl do "/usr/bin/zabbix_trap_receiver.pl";
+```
+
+**Explanation:**
+
+- authCommunity execute public allows traps from devices using the community
+  string public.
+- The perl do line executes the Zabbix Perl handler for each incoming trap.
+
+5. Enable SNMP Trap Support in Zabbix
+
+Edit the Zabbix server configuration file:
+
+``` bash
+vi /etc/zabbix/zabbix_server.conf
+```
+
+Uncomment or add the following parameters:
+
+``` bash
+StartSNMPTrapper=1
+SNMPTrapperFile=/var/log/zabbix_traps_archive/zabbix_traps.tmp
+```
+???+ note
+
+    - StartSNMPTrapper=1 enables the Zabbix SNMP trapper process.
+    - The SNMPTrapperFile path must match exactly the path used inside zabbix_trap_receiver.pl.
+
+Restart the Zabbix server to apply changes:
+
+``` bash
+service zabbix-server restart
+```
+
+6. Enable and Start snmptrapd
+
+Activate and start the SNMP trap daemon so it launches at boot:
+``` bash
+systemctl enable snmptrapd --now
+```
+
+This service will now listen on UDP 162 and feed incoming traps to Zabbix.
+
+7. (Optional) Rotate the Trap Log File
+
+Zabbix writes all traps into a temporary log file.
+To prevent this file from growing indefinitely, configure log rotation.
+
+Create the directory:
+``` bash
+mkdir -p /var/log/zabbix_traps_archive
+chmod 755 /var/log/zabbix_traps_archive
+```
+
+Then create a logrotate configuration file /etc/logrotate.d/zabbix_traps:
+``` bash
+/var/log/zabbix_traps_archive/zabbix_traps.tmp {
+    weekly
+    size 10M
+    compress
+    notifempty
+    dateext
+    dateformat -%Y%m%d
+    missingok
+    olddir /var/log/zabbix_traps_archive
+    maxage 365
+    rotate 10
+}
+```
+
+**Conclusion**
+
+You've now configured Zabbix to:
+
+- Listen for SNMP traps on UDP 162
+- Use snmptrapd and zabbix_trap_receiver.pl to capture traps
+- Write traps to a Zabbix-monitored log file
+- Rotate the trap log automatically
+- Verify correct trap delivery and troubleshoot via SELinux if needed
+
+Once traps are arriving, you can create SNMP trap items in Zabbix (type SNMP trap,
+key snmptrap[regex]) to trigger events, alerts, and dashboards.
 
 ## Testing and debugging
+
+### To test rotation manually:
+
+``` bash
+logrotate --force /etc/logrotate.d/zabbix_traps
+```
+
+### Testing SNMP Trap Reception
+
+You can simulate a trap manually using the snmptrap command.
+
+``` bash
+Example 1: SNMP v1 Test Trap
+snmptrap -v 1 -c public 127.0.0.1 '.1.3.6.1.6.3.1.1.5.4' '0.0.0.0' 6 33 '55' .1.3.6.1.6.3.1.1.5.4 s "eth0"
+```
+
+``` bash
+Example 2: SNMP v2c Test Trap
+snmptrap -v 2c -c public localhost '' 1.3.6.1.4.1.8072.2.3.0.1 1.3.6.1.4.1.8072.2.3.2.1 i 123456
+```
+
+### SELinux Considerations
+
+If SELinux is enabled and traps are not being processed, check for denied actions:
+``` bash
+ausearch -m AVC,USER_AVC -ts recent
+```
+
+Adjust SELinux policies or create exceptions for /usr/bin/zabbix_trap_receiver.pl and the trap log directory as needed.
+
+### (Optional) SNMPv3 Trap Configuration
+
+If using SNMPv3 for secure traps, you can define users directly in snmptrapd.conf:
+
+``` bash
+createUser -e <engineid> <user> SHA <key> AES <key>
+authUser log,execute <user>
+perl do "/usr/bin/zabbix_trap_receiver.pl";
+```
+
+This adds authentication and encryption for trap communication.
+
 
 ## Trap mapping and preprocessing
 
