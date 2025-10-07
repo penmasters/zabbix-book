@@ -446,22 +446,22 @@ established procedures, we ensure consistency and reliability in the deployment.
     (2 rows)
     ```
 
-In this instance, the node `zabbix2` is identified as the active node, as
-indicated by its status value of `3`, which designates an active state. The
-possible status values are as follows:
+Dans ce cas, le nœud `zabbix2` est identifié comme le nœud actif, comme
+l'indique sa valeur d'état `3`, qui désigne un état actif. Les valeurs d'état
+possibles sont les suivantes :
 
-- `0` – Multiple nodes can remain in standby mode.
-- `1` – A previously detected node has been shut down.
-- `2` – A node was previously detected but became unavailable without a proper
-  shutdown.
-- `3` – The node is currently active.
+- `0` - Plusieurs nœuds peuvent rester en mode veille.
+- `1` - Un nœud précédemment détecté a été arrêté.
+- `2` - Un nœud a été détecté précédemment mais est devenu indisponible sans
+  avoir été correctement arrêté.
+- `3` - Le nœud est actuellement actif.
 
-This classification allows for effective monitoring and state management within
-the cluster.
+Cette classification permet une surveillance et une gestion efficace de l'état
+au sein du cluster.
 
 ---
 
-### Verify the correct working
+### Vérifier le bon fonctionnement
 
 To verify that the setup is functioning correctly, access your `Zabbix server`
 using the Virtual IP (VIP). Navigate to Reports → System Information in the
