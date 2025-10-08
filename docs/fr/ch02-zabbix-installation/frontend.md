@@ -149,37 +149,38 @@ d'hyperliens utiles pour les utilisateurs.
 Quelques éléments interactifs restent à traiter dans la partie droite de
 l'écran.
 
-![Edit dashboard](ch02-edit-dashboard.png)
+![Modifier le tableau de bord](ch02-edit-dashboard.png)
 
 _2.8 Editer le tableau de bord_
 
-The `Edit dashboard` button facilitates modification of the user's dashboard
-configuration, a feature that will be elaborated upon in subsequent sections.
-Located on the extreme left margin is a query mark icon ('?'), activation of
-which redirects the user to the Zabbix documentation portal providing
-comprehensive details regarding dashboard functionalities. Conversely, the
-control situated on the right margin, represented by three horizontal lines,
-provides access to operations such as sharing, renaming, and deletion of user
-defined dashboards.
+Le bouton `Edit dashboard` facilite la modification de la configuration du
+tableau de bord de l'utilisateur, une fonctionnalité qui sera développée dans
+les sections suivantes. L'activation de cette icône redirige l'utilisateur vers
+le portail de documentation de Zabbix, qui fournit des informations détaillées
+sur les fonctionnalités du tableau de bord. Inversement, le contrôle situé dans
+la marge de droite, représenté par trois lignes horizontales, permet d'accéder à
+des opérations telles que le partage, le renommage et la suppression des
+tableaux de bord définis par l'utilisateur.
 
 ---
 
-## System information
+## Informations sur le système
 
-The dashboard also features a dedicated panel labeled `System Information`. This
-widget provides a real-time overview of the operational status of the Zabbix
-deployment. We will now examine the individual data points presented within this
-panel, as their interpretation is crucial for system comprehension.
+Le tableau de bord comporte également un panneau dédié intitulé `System
+Information`. Ce widget fournit une vue d'ensemble en temps réel de l'état
+opérationnel du déploiement de Zabbix. Nous allons maintenant examiner les
+différents points de données présentés dans ce panneau, car leur interprétation
+est cruciale pour la compréhension du système.
 
 </br>
 
-![System Information](ch02-system-information.png)
+![Information système](ch02-system-information.png)
 
-_2.9 System Information_
+_2.9 Informations sur le système_
 
-| Parameter                                         | Value                                                                                                                                                                                                                                       | Détails                                                                                                                                                                                                                                                                         |
+| Paramètre                                         | Valeur                                                                                                                                                                                                                                      | Détails                                                                                                                                                                                                                                                                         |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Zabbix server is running                          | The status of our zabbix server if it is running yes or no and if it is running on our localhost or another IP and on what port the zabbix server is listening. If no trapper is listening the rest of the information can not be displayed | IP and port of the Zabbix server                                                                                                                                                                                                                                                |
+| Le serveur Zabbix fonctionne                      | The status of our zabbix server if it is running yes or no and if it is running on our localhost or another IP and on what port the zabbix server is listening. If no trapper is listening the rest of the information can not be displayed | IP and port of the Zabbix server                                                                                                                                                                                                                                                |
 | Zabbix server version                             | This shows us the version of the `Zabbix server` so the version you see at the bottom of your screen is the one from the Zabbix frontend and can be different but should be in the same major version.                                      | Version Number                                                                                                                                                                                                                                                                  |
 | Zabbix frontend version                           | This is the version of the frontend and should match with what you see at the bottom of your screen.                                                                                                                                        | Version Number                                                                                                                                                                                                                                                                  |
 | Number of hosts (enabled/disabled)                | The total number of hosts configured on our system                                                                                                                                                                                          | How many of those are enabled and disabled                                                                                                                                                                                                                                      |
