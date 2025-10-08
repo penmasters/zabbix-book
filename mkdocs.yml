@@ -98,8 +98,14 @@ nav:
       - Storing secrets: ch13-advanced-security/using-vault.md
       - Partitioning MariaDB: ch13-advanced-security/partitioning-database.md
       - Partitioning PostgreSQL with TimescaleDB: ch13-advanced-security/partitioning-postgresql-database.md
-  - "Chapter 14 : Real world examples":
-      - ch14-zabbix-real-world-examples/chapter.md
+  - "Chapter 14 : Maintenance":
+      - ch14-zabbix-maintenance/chapter.md
+      - maintenance: ch14-zabbix-maintenance/maintenance.md
+      - Internal health: ch14-zabbix-maintenance/internal-health.md
+      - Backups: ch14-zabbix-maintenance/taking-backups.md
+      - Upgrades: ch14-zabbix-maintenance/upgrades.md
+  - "Chapter 15 : Real world examples":
+      - ch15-zabbix-real-world-examples/chapter.md
 
 theme:
   language: en
