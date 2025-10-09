@@ -479,7 +479,6 @@ perl do "/usr/bin/zabbix_trap_receiver.pl";
 
 This adds authentication and encryption for trap communication.
 
-
 ## Trap mapping and preprocessing
 
 
@@ -488,3 +487,11 @@ This adds authentication and encryption for trap communication.
 ## Questions
 
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmptrap](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmptrap)
+- [https://www.net-snmp.org/](https://www.net-snmp.org/)
+- [https://datatracker.ietf.org/doc/html/rfc3416](https://datatracker.ietf.org/doc/html/rfc3416)
+- [https://datatracker.ietf.org/doc/html/rfc1905](https://datatracker.ietf.org/doc/html/rfc1905)
+- [https://datatracker.ietf.org/doc/html/rfc1157](https://datatracker.ietf.org/doc/html/rfc1157)
+
+
