@@ -250,81 +250,105 @@ defined.
 
 ## Setting up SNMP traps with zabbix_trap_receiver
 
-In this section, we’ll configure Zabbix to receive and process SNMP traps using
+In this section, we'll configure Zabbix to receive and process SNMP traps using
 the Perl script zabbix_trap_receiver.pl. SNMP traps allow network devices to actively
 send event information to the Zabbix server, enabling near real-time alerting without
 periodic polling.
 
-1. Open the Firewall for SNMP Trap Traffic
+### **Open the Firewall for SNMP Trap Traffic**
 
 By default, SNMP traps are received on UDP port 162.
 Make sure this port is open on your Zabbix server:
-``` bash
-firewall-cmd --add-port=162/udp
-firewall-cmd --reload
+
+```bash
+sudo firewall-cmd --add-port=162/udp --permanent
+```
+
+```bash
+sudo firewall-cmd --reload
 ```
 
 This allows incoming traps from SNMP-enabled devices.
 
-2. Install Required SNMP Packages
+### **Install Required SNMP Packages**
 
 The snmptrapd daemon and Perl bindings are needed for trap handling.
-``` bash
-dnf install -y net-snmp-utils net-snmp-perl net-snmp
+
+```bash
+sudo dnf install -y net-snmp-utils net-snmp-perl net-snmp
 ```
 
 This installs the SNMP tools, daemon, and Perl modules used by Zabbix's receiver
 script.
 
-3. Install zabbix_trap_receiver.pl
+### **Install zabbix_trap_receiver.pl**
 
 Download the latest zabbix_trap_receiver.pl script from the official
 Zabbix source archive [https://cdn.zabbix.com/zabbix/sources/stable/](https://cdn.zabbix.com/zabbix/sources/stable/)
 
-Once downloaded, copy it to /usr/bin and make it executable:
-``` bash
-cp zabbix_trap_receiver.pl /usr/bin/
-chmod +x /usr/bin/zabbix_trap_receiver.pl
+```bash
+sudo wget https://cdn.zabbix.com/zabbix/sources/stable/7.0/zabbix-8.0.0.tar.gz
+```
+
+Once downloaded, extract the file and copy the script to /usr/bin and make it executable:
+
+```bash
+sudo tar -xvf zabbix-8.0.0.tar.gz
+sudo cp zabbix-7.0.0/misc/snmptrap/zabbix_trap_receiver.pl /usr/bin/.
+sudo chmod +x /usr/bin/zabbix_trap_receiver.pl
 ```
 
 This script receives traps from snmptrapd and writes them to a log file that Zabbix
 can read.
 
-4. Configure snmptrapd
+### **Configure snmptrapd**
 
 Edit the SNMP trap daemon configuration file:
 
-``` bash
-vi /etc/snmp/snmptrapd.conf
+```bash
+sudo vi /etc/snmp/snmptrapd.conf
 ```
 
 Append the following lines:
 
-``` bash
+```bash
 authCommunity execute public
 perl do "/usr/bin/zabbix_trap_receiver.pl";
 ```
 
-**Explanation:**
+### **Explanation:**
 
 - authCommunity execute public allows traps from devices using the community
   string public.
 - The perl do line executes the Zabbix Perl handler for each incoming trap.
 
-5. Enable SNMP Trap Support in Zabbix
+### **Edit the perl script**
+
+```bash
+vi /usr/bin/zabbix_trap_receiver.pl
+```
+
+Replace $SNMPTrapperFile = '/tmp/zabbix_traps.tmp'; with:
+
+```bash
+$SNMPTrapperFile = '/var/log/zabbix_traps_archive/zabbix_traps.log';
+```
+
+### **Enable SNMP Trap Support in Zabbix**
 
 Edit the Zabbix server configuration file:
 
-``` bash
-vi /etc/zabbix/zabbix_server.conf
+```bash
+sudo vi /etc/zabbix/zabbix_server.conf
 ```
 
 Uncomment or add the following parameters:
 
-``` bash
+```bash
 StartSNMPTrapper=1
-SNMPTrapperFile=/var/log/zabbix_traps_archive/zabbix_traps.tmp
+SNMPTrapperFile=/var/log/zabbix_traps_archive/zabbix_traps.log
 ```
+
 ???+ note
 
     - StartSNMPTrapper=1 enables the Zabbix SNMP trapper process.
@@ -332,33 +356,42 @@ SNMPTrapperFile=/var/log/zabbix_traps_archive/zabbix_traps.tmp
 
 Restart the Zabbix server to apply changes:
 
-``` bash
-service zabbix-server restart
+```bash
+sudo systemctl restart zabbix-server
 ```
 
-6. Enable and Start snmptrapd
+### **Enable and Start snmptrapd**
 
 Activate and start the SNMP trap daemon so it launches at boot:
-``` bash
+
+```bash
 systemctl enable snmptrapd --now
 ```
 
 This service will now listen on UDP 162 and feed incoming traps to Zabbix.
 
-7. (Optional) Rotate the Trap Log File
+### **(Optional) Rotate the Trap Log File**
 
 Zabbix writes all traps into a temporary log file.
 To prevent this file from growing indefinitely, configure log rotation.
 
 Create the directory:
-``` bash
-mkdir -p /var/log/zabbix_traps_archive
-chmod 755 /var/log/zabbix_traps_archive
+
+```bash
+sudo mkdir -p /var/log/zabbix_traps_archive
+sudo chmod 755 /var/log/zabbix_traps_archive
 ```
 
-Then create a logrotate configuration file /etc/logrotate.d/zabbix_traps:
+Next wecreate a logrotate configuration file /etc/logrotate.d/zabbix_traps:
+
+```bash
+sudo vi /etc/logrotate.d/zabbix_traps
+```
+
+Add the folowing content to this file.
+
 ``` bash
-/var/log/zabbix_traps_archive/zabbix_traps.tmp {
+/var/log/zabbix_traps_archive/zabbix_traps.log {
     weekly
     size 10M
     compress
@@ -372,7 +405,7 @@ Then create a logrotate configuration file /etc/logrotate.d/zabbix_traps:
 }
 ```
 
-**Conclusion**
+### **Conclusion**
 
 You've now configured Zabbix to:
 
@@ -387,9 +420,9 @@ key snmptrap[regex]) to trigger events, alerts, and dashboards.
 
 ## Testing and debugging
 
-### To test rotation manually:
+### To test rotation manually
 
-``` bash
+```bash
 logrotate --force /etc/logrotate.d/zabbix_traps
 ```
 
