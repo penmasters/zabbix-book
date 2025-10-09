@@ -260,13 +260,18 @@ periodic polling.
 By default, SNMP traps are received on UDP port 162.
 Make sure this port is open on your Zabbix server:
 
-```bash
-sudo firewall-cmd --add-port=162/udp --permanent
-```
+!!! info "Open firewall port 162/udp"
 
-```bash
-sudo firewall-cmd --reload
-```
+    Red Hat
+    ``` bash
+    sudo firewall-cmd --add-port=162/udp --permanent
+    sudo firewall-cmd --reload
+    ```
+
+    Ubuntu
+    ```
+    sudo ufw allow 162/udp
+    ```
 
 This allows incoming traps from SNMP-enabled devices.
 
@@ -274,9 +279,17 @@ This allows incoming traps from SNMP-enabled devices.
 
 The snmptrapd daemon and Perl bindings are needed for trap handling.
 
-```bash
-sudo dnf install -y net-snmp-utils net-snmp-perl net-snmp
-```
+!!! info "Install needed packages"
+
+    Red Hat
+    ``` bash
+    sudo dnf install -y net-snmp-utils net-snmp-perl net-snmp
+    ```
+    
+    Ubuntu
+    ```
+    sudo apt install snmpd snmp libsnmp-dev snmptrapd
+    ```
 
 This installs the SNMP tools, daemon, and Perl modules used by Zabbix's receiver
 script.
@@ -287,14 +300,14 @@ Download the latest zabbix_trap_receiver.pl script from the official
 Zabbix source archive [https://cdn.zabbix.com/zabbix/sources/stable/](https://cdn.zabbix.com/zabbix/sources/stable/)
 
 ```bash
-sudo wget https://cdn.zabbix.com/zabbix/sources/stable/7.0/zabbix-8.0.0.tar.gz
+sudo wget https://cdn.zabbix.com/zabbix/sources/stable/8.0/zabbix-8.0.0.tar.gz
 ```
 
 Once downloaded, extract the file and copy the script to /usr/bin and make it executable:
 
 ```bash
 sudo tar -xvf zabbix-8.0.0.tar.gz
-sudo cp zabbix-7.0.0/misc/snmptrap/zabbix_trap_receiver.pl /usr/bin/.
+sudo cp zabbix-8.0.0/misc/snmptrap/zabbix_trap_receiver.pl /usr/bin/.
 sudo chmod +x /usr/bin/zabbix_trap_receiver.pl
 ```
 
@@ -325,10 +338,10 @@ perl do "/usr/bin/zabbix_trap_receiver.pl";
 ### **Edit the perl script**
 
 ```bash
-vi /usr/bin/zabbix_trap_receiver.pl
+sudo vi /usr/bin/zabbix_trap_receiver.pl
 ```
 
-Replace $SNMPTrapperFile = '/tmp/zabbix_traps.tmp'; with:
+Replace `$SNMPTrapperFile = '/tmp/zabbix_traps.tmp';` with:
 
 ```bash
 $SNMPTrapperFile = '/var/log/zabbix_traps_archive/zabbix_traps.log';
@@ -365,7 +378,7 @@ sudo systemctl restart zabbix-server
 Activate and start the SNMP trap daemon so it launches at boot:
 
 ```bash
-systemctl enable snmptrapd --now
+sudo systemctl enable snmptrapd --now
 ```
 
 This service will now listen on UDP 162 and feed incoming traps to Zabbix.
@@ -380,6 +393,11 @@ Create the directory:
 ```bash
 sudo mkdir -p /var/log/zabbix_traps_archive
 sudo chmod 755 /var/log/zabbix_traps_archive
+```
+On ubuntu only :
+
+```bash
+chown Debian-snmp: /var/log/zabbix_traps_archive/
 ```
 
 Next wecreate a logrotate configuration file /etc/logrotate.d/zabbix_traps:
@@ -423,7 +441,7 @@ key snmptrap[regex]) to trigger events, alerts, and dashboards.
 ### To test rotation manually
 
 ```bash
-logrotate --force /etc/logrotate.d/zabbix_traps
+sudo logrotate --force /etc/logrotate.d/zabbix_traps
 ```
 
 ### Testing SNMP Trap Reception
@@ -432,19 +450,19 @@ You can simulate a trap manually using the snmptrap command.
 
 ``` bash
 Example 1: SNMP v1 Test Trap
-snmptrap -v 1 -c public 127.0.0.1 '.1.3.6.1.6.3.1.1.5.4' '0.0.0.0' 6 33 '55' .1.3.6.1.6.3.1.1.5.4 s "eth0"
+sudo snmptrap -v 1 -c public 127.0.0.1 '.1.3.6.1.6.3.1.1.5.4' '0.0.0.0' 6 33 '55' .1.3.6.1.6.3.1.1.5.4 s "eth0"
 ```
 
 ``` bash
 Example 2: SNMP v2c Test Trap
-snmptrap -v 2c -c public localhost '' 1.3.6.1.4.1.8072.2.3.0.1 1.3.6.1.4.1.8072.2.3.2.1 i 123456
+sudo snmptrap -v 2c -c public localhost '' 1.3.6.1.4.1.8072.2.3.0.1 1.3.6.1.4.1.8072.2.3.2.1 i 123456
 ```
 
 ### SELinux Considerations
 
 If SELinux is enabled and traps are not being processed, check for denied actions:
 ``` bash
-ausearch -m AVC,USER_AVC -ts recent
+sudo ausearch -m AVC,USER_AVC -ts recent
 ```
 
 Adjust SELinux policies or create exceptions for /usr/bin/zabbix_trap_receiver.pl and the trap log directory as needed.
@@ -461,7 +479,6 @@ perl do "/usr/bin/zabbix_trap_receiver.pl";
 
 This adds authentication and encryption for trap communication.
 
-
 ## Trap mapping and preprocessing
 
 
@@ -470,3 +487,11 @@ This adds authentication and encryption for trap communication.
 ## Questions
 
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmptrap](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmptrap)
+- [https://www.net-snmp.org/](https://www.net-snmp.org/)
+- [https://datatracker.ietf.org/doc/html/rfc3416](https://datatracker.ietf.org/doc/html/rfc3416)
+- [https://datatracker.ietf.org/doc/html/rfc1905](https://datatracker.ietf.org/doc/html/rfc1905)
+- [https://datatracker.ietf.org/doc/html/rfc1157](https://datatracker.ietf.org/doc/html/rfc1157)
+
+
