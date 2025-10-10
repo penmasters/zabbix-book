@@ -1,13 +1,7 @@
 ---
 description: |
-    This chapter from The Zabbix Book, titled "HA Setup," explains how to configure
-    a Zabbix `High Availability` (HA) cluster to ensure continuous monitoring. It
-    details a setup using two Zabbix servers with a single database to create a
-    seamless failover system. The guide covers the installation and configuration
-    of the Zabbix cluster, including the use of Keepalived to manage a Virtual IP
-    (VIP) for the frontend, which ensures uninterrupted service. The chapter provides
-    step-by-step instructions for the entire process, from setting up the servers
-    to verifying that the HA setup is functioning correctly.
+    Set up Zabbix High Availability with clustered servers, shared DB, and Keepalived
+    for VIP failover—ensuring zero-downtime monitoring.
 ---
 
 # HA Setup

@@ -1,10 +1,18 @@
+---
+description: |
+    Learn how to create and configure hosts in Zabbix. Including host names, visible
+    names, host groups, and best practices for monitoring setup.
+---
+
 # Hosts
+
 After reading the previous dataflow section, it is now clear we have to go through the 
 dataflow steps to get from collecting data to sending out alerts. 
 The first part of the dataflow is to create a host, so that is what we are now going to tackle
 in this part.
 
 ## Creating a host
+
 As we mentioned, Hosts in Zabbix are nothing more than a container (not the Docker kind).
 They contain our `Items`, `Triggers`, `graphs`, `Low Level Discovery` rules and `Web scenarios`.  
 

@@ -1,13 +1,7 @@
 ---
 description: |
-    This chapter from The Zabbix Book, titled "Basic Installation," provides a
-    step-by-step guide to installing a Zabbix server. It covers the essential
-    architectural components—the Zabbix server, web server (frontend), and
-    database and details common installation setups on Ubuntu and Rocky Linux.
-    The guide also highlights best practices for security by creating dedicated
-    database users with limited permissions and explains how to improve performance
-    with a distributed database setup. Additionally, it addresses the mandatory
-    database migration required for Zabbix 7.0 and newer versions.
+    Step‑by‑step guide to install Zabbix with MariaDB or PostgreSQL, setup server
+    & frontend on Ubuntu or Rocky Linux, including security & repo configuration.
 ---
 
 # Basic installation
