@@ -1,4 +1,11 @@
+---
+description: |
+    Learn the Zabbix dataflow: how hosts, items, triggers, events, and actions
+    work together to collect metrics, detect problems, and automate responses in
+    your monitoring setup.
+---
 # Dataflow
+
 The Zabbix dataflow is a concept that is meant to guide us through the various different
 stages of building up our monitoring system. In the end, when building a Zabbix
 environment we want to achieve a few things:
