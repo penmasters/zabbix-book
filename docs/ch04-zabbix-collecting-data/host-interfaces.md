@@ -3,6 +3,7 @@ description: |
     Discover how to configure host interfaces in Zabbix. Learn about agent, SNMP,
     JMX, IPMI interfaces, default settings, and interface parameters essential
     for monitoring setup.
+tags: [beginner]
 ---
 
 # Host Interfaces

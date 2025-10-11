@@ -2,6 +2,7 @@
 description: |
     Learn how to create and configure hosts in Zabbix. Including host names, visible
     names, host groups, and best practices for monitoring setup.
+tags: [beginner]
 ---
 
 # Hosts
