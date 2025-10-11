@@ -417,7 +417,7 @@ utilisez les commandes suivantes :
 
 The setup process for the frontend follows the same steps outlined in the `Basic
 Installation` section under [Installing the
-Frontend](basic-installation.md/#installing-the-frontend). By adhering to these
+Frontend](basic-installation.md/#installation-du-frontend). By adhering to these
 established procedures, we ensure consistency and reliability in the deployment.
 
 ???+ warning

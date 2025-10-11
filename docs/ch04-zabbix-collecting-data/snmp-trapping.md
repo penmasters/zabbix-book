@@ -1,6 +1,7 @@
 ---
 description: |
-    Learn how to configure and manage SNMP traps in Zabbix for real-time alerts, faster event detection, and efficient network monitoring.
+    Learn how to configure and manage SNMP traps in Zabbix for real-time alerts,
+    faster event detection, and efficient network monitoring.
 ---
 
 # SNMP Trapping
@@ -400,13 +401,13 @@ On ubuntu only :
 chown Debian-snmp: /var/log/zabbix_traps_archive/
 ```
 
-Next wecreate a logrotate configuration file /etc/logrotate.d/zabbix_traps:
+Next we create a logrotate configuration file `/etc/logrotate.d/zabbix_traps`:
 
 ```bash
 sudo vi /etc/logrotate.d/zabbix_traps
 ```
 
-Add the folowing content to this file.
+Add the following content to this file.
 
 ``` bash
 /var/log/zabbix_traps_archive/zabbix_traps.log {

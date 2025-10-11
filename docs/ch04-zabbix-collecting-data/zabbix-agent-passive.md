@@ -1,3 +1,10 @@
+---
+description: |
+    Zabbix Agent in passive mode. The server polls the agent (on TCP 10050) for
+    item data; agent responds to requests when queried. Efficient agent-server
+    communication.
+---
+
 # Zabbix Agent installation and Passive monitoring
 
 At this point we are familiar with the Zabbix dataflow, how to create hosts and,
@@ -26,16 +33,27 @@ We have prepared an example setup in our Book LAB environment.
 
 _4.14 Zabbix Agent passive hosts_
 
-What we can see here is a setup you might see in any datacenter or office server cabinet. We have a Zabbix server monitoring one Windows server and one Linux server directly (or through a proxy). We call Zabbix a network monitoring solution as it communicates over the network. In Zabbix we have two methods of communication.
+What we can see here is a setup you might see in any datacenter or office server
+cabinet. We have a Zabbix server monitoring one Windows server and one Linux server
+directly (or through a proxy). We call Zabbix a network monitoring solution as it
+communicates over the network. In Zabbix we have two methods of communication.
 
-- **Passive** Otherwise known as `polling`. We communicate from the Zabbix server (or proxy) towards the monitoring target. The monitoring target is listening on a port waiting for Zabbix to request data.
-- **Active** Otherwise known as `trapping`. We communicate from the monitoring target towards the Zabbix server (or proxy). The Zabbix server is listening on a port waiting for the monitoring target to send data.
+- **Passive** Otherwise known as `polling`. We communicate from the Zabbix server
+  (or proxy) towards the monitoring target. The monitoring target is listening
+  on a port waiting for Zabbix to request data.
+- **Active** Otherwise known as `trapping`. We communicate from the monitoring
+  target towards the Zabbix server (or proxy). The Zabbix server is listening
+  on a port waiting for the monitoring target to send data.
 
 As you can imagine there is quite a big difference between these two methods of communication. Often times it depends on the protocol which method is preferred. For example SNMP traps are always an active type of check.
 
 The Zabbix agent however can communicate in either `Active` or `Passive` mode. It can even do those simultaneously. Simultaneous communication can be useful when you want to use `Passive` mode for all communication, but still want to execute some items that are `Active` only. `Active` items can do everything `Passive` items can do however.
 
-Before we can configure either though, we will have to install our Zabbix agent first. When installing on Linux and Windows we have a choice between two different agents, `Zabbix agent` and `Zabbix agent 2`. Both of these Zabbix agents are still in active development and receive both major (LTS) and minor updates. The difference between them is in Programming language and features.
+Before we can configure either though, we will have to install our Zabbix agent
+first. When installing on Linux and Windows we have a choice between two different
+agents, `Zabbix agent` and `Zabbix agent 2`. Both of these Zabbix agents are still
+in active development and receive both major (LTS) and minor updates. The difference
+between them is in Programming language and features.
 
 |                      | Zabbix agent                     | Zabbix agent 2                          |
 | :------------------- | :------------------------------- | :-------------------------------------- |
@@ -49,9 +67,16 @@ Before we can configure either though, we will have to install our Zabbix agent 
 
 ## Agent installation on Linux
 
-Installation on Linux can be done in one of three ways. Through direct install files like `.rpm` and `.deb`, by building from sources and through packages pulled from the repository. Installation through the packages is preferred as this means Zabbix agent will be updated when updating with commands like `dnf update` and `apt upgrade`. Keep in mind, Zabbix agent is a piece of software just like any other and as such news versions will contain security and bug fixes. Whatever installation method you choose, keep your Zabbix agent up-to-date.
+Installation on Linux can be done in one of three ways. Through direct install
+files like `.rpm` and `.deb`, by building from sources and through packages pulled
+from the repository. Installation through the packages is preferred as this means
+Zabbix agent will be updated when updating with commands like `dnf update` and
+`apt upgrade`. Keep in mind, Zabbix agent is a piece of software just like any
+other and as such news versions will contain security and bug fixes. Whatever
+installation method you choose, keep your Zabbix agent up-to-date.
 
-We will be using the packages on both RedHat-based and Ubuntu to install `Zabbix agent 2`. To use the packages we will add the Zabbix repository first.
+We will be using the packages on both RedHat-based and Ubuntu to install `Zabbix agent 2`.
+To use the packages we will add the Zabbix repository first.
 
 !!! info "add zabbix repository"
 
@@ -97,17 +122,26 @@ After installation make sure to start and enable the Zabbix agent.
     systemctl enable zabbix-agent2
     ```
 
-Your agent is now installed under the `zabbix` user and ready to be configured. On a Linux based system, by default we can find all of the Zabbix configuration files in `/etc/zabbix/`. Specifically we want to edit `/etc/zabbix/zabbix_agent2.conf`.
+Your agent is now installed under the `zabbix` user and ready to be configured.
+On a Linux based system, by default we can find all of the Zabbix configuration
+files in `/etc/zabbix/`. Specifically we want to edit `/etc/zabbix/zabbix_agent2.conf`.
 
 ## Agent installation on Windows
 
-On Windows, we have two options to install our Zabbix agent. Through downloading the `.exe` file and placing the configuration files in the right location or the easy option. Downloading the `.msi` and going through the installation wizard. Whichever method you prefer, you'll first have to navigate to the Zabbix download page. We will be using the `.msi` in our example.
+On Windows, we have two options to install our Zabbix agent. Through downloading
+the `.exe` file and placing the configuration files in the right location or the
+easy option. Downloading the `.msi` and going through the installation wizard.
+Whichever method you prefer, you'll first have to navigate to the Zabbix download
+page. We will be using the `.msi` in our example.
 
 <https://www.zabbix.com/download_agents?os=Windows>
 
-Here you will be presented with the choice to download either `Zabbix agent` or `Zabbix agent 2`. Choose whichever one you would like to install, but by now we recommend `Zabbix agent 2` as it is stable and includes more features.
+Here you will be presented with the choice to download either `Zabbix agent` or
+`Zabbix agent 2`. Choose whichever one you would like to install, but by now we
+recommend `Zabbix agent 2` as it is stable and includes more features.
 
-Once downloaded, we can open the new `zabbix_agent2-x.x.x-windows-amd64-openssl.msi` file and it will take us to the wizard window.
+Once downloaded, we can open the new `zabbix_agent2-x.x.x-windows-amd64-openssl.msi`
+file and it will take us to the wizard window.
 
 ![Zabbix Agent Windows install step 1](ch04.15-windows-agent-install-step1.png){ align=center }
 

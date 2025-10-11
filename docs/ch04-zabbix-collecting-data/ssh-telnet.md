@@ -1,3 +1,8 @@
+---
+description: |
+    160 characters seo text
+---
+
 # SSH Telnet
 
 ## Conclusion

@@ -74,7 +74,6 @@ nav:
       - ch07-zabbix-alerts/chapter.md
       - ch07-zabbix-alerts/media-types.md
       - ch07-zabbix-alerts/scripts.md
-      - ch07-zabbix-alerts/maintenance.md
       - ch07-zabbix-alerts/actions.md
   - "Chapter 08 : LLD":
       - ch08-zabbix-lld/chapter.md
@@ -130,6 +129,7 @@ theme:
     - search.share
     - content.code.copy
     - content.action.view
+    - content.tags
   palette:
     - scheme: default
       primary: blue
@@ -148,6 +148,10 @@ extra_css:
   - stylesheets/extra.css
   - stylesheets/linewrap.css
 
+extra:
+  tags:
+    index: tags.md
+
 # Plugins
 plugins:
   - mermaid2
@@ -164,6 +168,7 @@ plugins:
         #        - zh
         #        - ru
         - en
+  - tags
   - autolinks
   - privacy #GDPR compliance
   - spellcheck:
@@ -258,6 +263,7 @@ plugins:
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/tags-data-attr.js
 
 # extensions
 markdown_extensions:

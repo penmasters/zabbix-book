@@ -1,4 +1,12 @@
+---
+description: |
+    Learn how to use Zabbix simple checks. ICMP ping, TCP/UDP port monitoring
+    and built-in services, to collect network and service data for effective
+    host monitoring.
+---
+
 # Simple checks
+
 What would a Zabbix book be without setting up the actual monitoring itself, because in 
 the end a monitoring system is all about collecting data through various different protocols. 
 
@@ -10,6 +18,7 @@ Without further ado, let's set up our first items. Please keep in mind that we w
 everything on a host level for now. Check out Chapter 06 to learn how to do this properly on a template.
 
 ## Building the item
+
 We shall start with a simple ICMP Ping check. If you haven't already, at `Data collection` | `Hosts`
 let's create the host `simple-checks` in the host group `Servers/Linux`. Then, for this
 new host navigate to `Items`. You should see a `Create item` button in the top right corner. Click
@@ -27,6 +36,7 @@ item work.
 - **Key**
 
 ### Item Name
+
 The `Item name` in Zabbix is a very important field for all of our items. This is going
 to be the first thing you see when looking for you configuration, but also the main identifier
 when you'll search the visualisation pages (like `Latest data`) for this item. 
@@ -68,6 +78,7 @@ different places in Zabbix. The following video is highly recommended: https://w
 
 
 ### Item Key
+
 Next up is the item key, an important part of setting up your Zabbix item as it will serve as
 the uniqueness criteria for the creation of this entity. There are two types of item keys:
 
@@ -92,6 +103,7 @@ mandatory parameters have no pre/suffix.
 
 
 ### ICMP Ping
+
 With all of this in mind, let's finish the creation our ICMP Ping item. First, we will give our
 new item a name. Since this is a simple ICMP Ping to the host lets go for:
 
@@ -133,6 +145,7 @@ Zabbix server/proxy configuration file:
     ```
 
 ## TCP/UDP Ports
+
 Another useful simple check you can create is the TCP (and UDP) port check. With these 4 item keys 
 we can monitor the availability and performance of TCP and UDP ports. There are 4 built-in keys
 available for these checks:
@@ -146,19 +159,28 @@ Granted, the `net.udp.service` item keys only monitor the availability and perfo
 protocol due to the "take it our leave it" nature of UDP. But, the `net.tcp.service` item keys are
 useful for monitoring every single TCP port available.
 
-We fill in the `service` parameter with `tcp` and the we use `ip` (or a host interface) and `port`
-to define which TCP port to check. Zabbix will connect to the port and tell us the up/down status
-or the connection speed if we use `net.tcp.service.perf`. If we fill in the `service` parameter with
-`ssh, ldap, smtp, ftp, pop, nntp, imap, tcp, https, telnet` it will use the correct (default) port
-automatically, as well as do an additional check to make sure the port is actually being used by that service.
+We fill in the `service` parameter with `tcp` and the we use `ip` (or a host interface)
+and `port` to define which TCP port to check. Zabbix will connect to the port and
+tell us the up/down status or the connection speed if we use `net.tcp.service.perf`.
+If we fill in the `service` parameter with `ssh, ldap, smtp, ftp, pop, nntp, imap,
+tcp, https, telnet` it will use the correct (default) port automatically, as well
+as do an additional check to make sure the port is actually being used by that
+service.
 
 ## Conclusion
-The simple checks are mainly used for ICMP ping and Port checks, which means they are quite useful for almost every host. It's always a good idea to do some basic network availability checks on your hosts.
 
-Keep in mind that Zabbix will apply alphabetical sorting in many places when you create things like items. Keeping things structured in your environment means that you and your colleagues will have an easier time using your monitoring and observability platform.
+The simple checks are mainly used for ICMP ping and Port checks, which means they
+are quite useful for almost every host. It's always a good idea to do some basic
+network availability checks on your hosts.
+
+Keep in mind that Zabbix will apply alphabetical sorting in many places when you
+create things like items. Keeping things structured in your environment means that
+you and your colleagues will have an easier time using your monitoring and
+observability platform.
 
 ## Questions
 
 ## Useful URLs
+
 [https://www.youtube.com/watch?v=5etxbNPrygU](https://www.youtube.com/watch?v=5etxbNPrygU)
 

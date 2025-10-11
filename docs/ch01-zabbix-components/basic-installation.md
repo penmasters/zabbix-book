@@ -2,6 +2,7 @@
 description: |
     Step‑by‑step guide to install Zabbix with MariaDB or PostgreSQL, setup server
     & frontend on Ubuntu or Rocky Linux, including security & repo configuration.
+tags: [beginner, advanced, expert]
 ---
 
 # Basic installation

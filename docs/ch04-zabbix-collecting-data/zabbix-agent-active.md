@@ -1,3 +1,9 @@
+---
+description: |
+    Configure Zabbix Agent in active mode, agent self-initiates connection to the
+    server, fetches item configs, and pushes data continuously for proactive monitoring
+---
+
 # Zabbix Agent Active monitoring
 
 In the previous part we installed our Zabbix agent and started monitoring a host in the `Passive` mode. When we use `Passive` mode the Zabbix server or proxy will connect to the Zabbix agent and request specific item data. The item data is returned within the same TCP session. From a security aspect this means that we need to allow our Zabbix servers or proxies to connect to many different servers.
