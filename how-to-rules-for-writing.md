@@ -8,6 +8,7 @@ Just above the header add a short description that webcrawlers can use.
     ```
     description: |
         A short deescption of a few lines preferable around 150-200 words.
+    tags: [beginner, advanced, expert] #Add one of these tags so that reader knows what level of knowledge is required.
     ```
 ````
 
