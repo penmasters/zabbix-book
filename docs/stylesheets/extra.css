@@ -96,3 +96,16 @@ img[alt$="><"] {
   background-color: #ffcdd2 !important;
   color: #b71c1c !important;
 }
+
+/* Use tag-list on /tags/ visual consistent */
+.md-content .md-typeset .md-tag {
+  border-radius: 9999px;
+  padding: .2rem .6rem;
+  font-weight: 500;
+  font-size: .85em;
+}
+
+/* Reuse same colors */
+.md-content .md-typeset .md-tag[data-tag="beginner"] { background:#c8e6c9; color:#1b5e20; }
+.md-content .md-typeset .md-tag[data-tag="advanced"] { background:#fff9c4; color:#665c00; }
+.md-content .md-typeset .md-tag[data-tag="expert"]   { background:#ffcdd2; color:#b71c1c; }
