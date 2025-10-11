@@ -1,7 +1,7 @@
 thead th {
   text-align: left;
   background: grey;
-  color: white
+  color: white;
 }
 
 tr td:first-child {
@@ -32,19 +32,19 @@ td {
 
 /* dark mode alternating table bg colors */
 [data-md-color-scheme="slate"] .md-typeset__table tr:nth-child(2n) {
-  background-color: hsla(var(--md-hue), 25%, 25%, 1) 
+  background-color: hsla(var(--md-hue), 25%, 25%, 1);
 }
 
 /* dark mode alternating table bg colors */
 [data-md-color-scheme="slate"] .md-typeset__table tr td:first-child {
-  background-color: hsla(var(--md-hue), 25%, 25%, 1) 
+  background-color: hsla(var(--md-hue), 25%, 25%, 1);
 }
 
 /* dark mode table header bg colors */
 [data-md-color-scheme="slate"] .md-typeset__table thead th {
   text-align: left;
-  background-color: hsla(var(--md-hue), 50%, 50%, 2) ;
-  color: white
+  background-color: hsla(var(--md-hue), 50%, 50%, 2);
+  color: white;
 }
 
 img[alt$=">"] {
@@ -61,4 +61,38 @@ img[alt$="><"] {
   height: auto;
   margin: auto;
   float: none !important;
+}
+
+/* Basestyle: override the standard Material chips */
+.md-typeset .md-tag {
+  border-radius: 9999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.8em;
+  font-weight: 500;
+  border: none;
+}
+
+/* Remove the # from the icons  (the pseudo elemens from md-tag-icon) */
+.md-typeset .md-tag.md-tag-icon::before {
+  content: none !important;
+}
+
+/* color per tag – based on the visible text */
+.md-typeset .md-tag.md-tag-icon {
+  background-color: #eee;
+  color: #333;
+}
+
+/* use attribute selectors with  JS-helper (sie further) */
+.md-typeset .md-tag[data-tag="beginner"] {
+  background-color: #c8e6c9 !important;
+  color: #1b5e20 !important;
+}
+.md-typeset .md-tag[data-tag="advanced"] {
+  background-color: #fff9c4 !important;
+  color: #665c00 !important;
+}
+.md-typeset .md-tag[data-tag="expert"] {
+  background-color: #ffcdd2 !important;
+  color: #b71c1c !important;
 }
