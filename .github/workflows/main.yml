@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - master
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,5 +13,36 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install idna mkdocs-material mkdocs-static-i18n mkdocs-print-site-plugin mkdocs-spellcheck[all] mkdocs-autolinks-plugin mkdocs-mermaid2-plugin
-      - run: mkdocs gh-deploy --force
+
+      - name: Install MkDocs and plugins
+        run: |
+          pip install idna mkdocs-material mkdocs-static-i18n mkdocs-print-site-plugin mkdocs-spellcheck[all] mkdocs-autolinks-plugin mkdocs-mermaid2-plugin
+
+      # 👇 Add a versioned copy of your mkdocs.yml (cache-busting)
+      - name: Add cache-busting version to assets
+        run: |
+          cp mkdocs.yml mkdocs.ci.yml
+          sed -i "s#stylesheets/extra.css#stylesheets/extra.css?v=${{ github.sha }}#" mkdocs.ci.yml
+          sed -i "s#javascripts/tags-data-attr.js#javascripts/tags-data-attr.js?v=${{ github.sha }}#" mkdocs.ci.yml
+          echo "Created versioned mkdocs.ci.yml with commit hash ${{ github.sha }}"
+
+      - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --force --config-file mkdocs.ci.yml
+
+
+#name: ci
+#on:
+#  push:
+#    branches:
+#      - main
+#      - master
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: actions/setup-python@v5
+#        with:
+#          python-version: '3.12'
+#      - run: pip install idna mkdocs-material mkdocs-static-i18n mkdocs-print-site-plugin mkdocs-spellcheck[all] mkdocs-autolinks-plugin mkdocs-mermaid2-plugin
+#      - run: mkdocs gh-deploy --force
