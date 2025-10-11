@@ -4,6 +4,7 @@ description: |
     to integrate Zabbix with SAML-based identity providers for single sign-on (SSO).
     It covers configuration steps, metadata exchange, and login testing, enabling
     secure and centralized access management for the Zabbix frontend.
+tags: [advanced]
 ---
 
 # SAML
