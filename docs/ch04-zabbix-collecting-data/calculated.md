@@ -1,6 +1,7 @@
 ---
 description: |
     160 character seo description
+tags:[beginner]
 ---
 
 # Calculated items

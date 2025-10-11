@@ -3,6 +3,7 @@ description: |
     Learn the Zabbix dataflow: how hosts, items, triggers, events, and actions
     work together to collect metrics, detect problems, and automate responses in
     your monitoring setup.
+tags: [beginner]
 ---
 # Dataflow
 

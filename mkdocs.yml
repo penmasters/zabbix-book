@@ -15,6 +15,7 @@ docs_dir: docs
 nav:
   - Welcome: index.md
   - Guidelines: Guidelines.md
+  - Book Tags: tags.md
   - Supporters and contributors: Supporters-Contributors.md
   - Getting started:
       - Initial steps: ch00-getting-started/initial-steps.md

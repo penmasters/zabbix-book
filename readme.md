@@ -17,17 +17,18 @@ Contributors should be aware that:
 
 - By contributing to this work, you irrevocably assign and transfer all rights, title,
 and interest in your contributions to **The Monitoring Penmasters Foundation**,
-including any associated intellectual property rights, to the fullest extent permitted by law.
-- **The Monitoring Penmasters Foundation** reserves the right to use, reproduce, 
+including any associated intellectual property rights, to the fullest extent permitted
+by law.
+- **The Monitoring Penmasters Foundation** reserves the right to use, reproduce,
 modify, distribute, and commercially exploit any contributed material in any form,
 including but not limited to the publication of physical and digital books.
-- All contributors must sign a **Deed of Transfer of Intellectual Property Rights** before making 
-any contributions, ensuring the proper transfer of rights and handling of the content
-by **The Monitoring Penmasters Foundation**. Any contributions without a signed 
-**Deed of Transfer of Intellectual Property Rights** cannot be accepted.
-- All profits generated will be used by The Monitoring Penmasters Foundation to cover 
-operational expenses and to sponsor other open-source projects, as determined by the foundation.
-
+- All contributors must sign a **Deed of Transfer of Intellectual Property Rights**
+before making any contributions, ensuring the proper transfer of rights and handling
+of the content by **The Monitoring Penmasters Foundation**. Any contributions without
+a signed **Deed of Transfer of Intellectual Property Rights** cannot be accepted.
+- All profits generated will be used by The Monitoring Penmasters Foundation to
+cover operational expenses and to sponsor other open-source projects, as determined
+by the foundation.
 
 Your contributions are invaluable and will help make *The Zabbix Book* an even greater
 resource for the entire community!
@@ -42,10 +43,11 @@ Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 [cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
 [cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
 
-Read the book here : https://www.thezabbixbook.com
+Read the book here :
+[https://www.thezabbixbook.com](https://wwww.thezabbixbook.com)
 
-Help us Translate the book : https://weblate.thezabbixbook.com
-
+Help us Translate the book :
+[https://weblate.thezabbixbook.com](https://weblate.thezabbixbook.com)
 
 ## Contributors
 
@@ -54,4 +56,3 @@ Thanks for your contribution to the project!
 ![Contributors Count](https://img.shields.io/github/contributors/penmasters/zabbix-book)
 
 [![Contributors Avatars](https://contrib.rocks/image?repo=penmasters/zabbix-book)](https://github.com/penmasters/zabbix-book/graphs/contributors)
-
