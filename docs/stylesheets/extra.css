@@ -63,7 +63,7 @@ img[alt$="><"] {
   float: none !important;
 }
 
-/* Basestyle: override the standard Material chips */
+/* Base style for all chips (span or link) */
 .md-typeset .md-tag {
   border-radius: 9999px;
   padding: 0.15rem 0.55rem;
@@ -72,40 +72,32 @@ img[alt$="><"] {
   border: none;
 }
 
-/* Remove the # from the icons  (the pseudo elemens from md-tag-icon) */
+/* Remove the leading “#” icon Material adds on md-tag-icon */
 .md-typeset .md-tag.md-tag-icon::before {
   content: none !important;
 }
 
-/* color per tag – based on the visible text */
-.md-typeset .md-tag.md-tag-icon {
-  background-color: #eee;
-  color: #333;
-}
-
-/* use attribute selectors with  JS-helper (sie further) */
-.md-typeset .md-tag[data-tag="beginner"] {
+/* Color rules – work for both <span data-tag="…"> and <a href="#…"> */
+.md-typeset .md-tag[data-tag="beginner"],
+.md-typeset .md-tag[href*="#beginner"] {
   background-color: #c8e6c9 !important;
   color: #1b5e20 !important;
 }
-.md-typeset .md-tag[data-tag="advanced"] {
+
+.md-typeset .md-tag[data-tag="advanced"],
+.md-typeset .md-tag[href*="#advanced"] {
   background-color: #fff9c4 !important;
   color: #665c00 !important;
 }
-.md-typeset .md-tag[data-tag="expert"] {
+
+.md-typeset .md-tag[data-tag="expert"],
+.md-typeset .md-tag[href*="#expert"] {
   background-color: #ffcdd2 !important;
   color: #b71c1c !important;
 }
 
-/* Use tag-list on /tags/ visual consistent */
+/* (Optional) Slightly larger chips on the /tags/ index */
 .md-content .md-typeset .md-tag {
-  border-radius: 9999px;
-  padding: .2rem .6rem;
-  font-weight: 500;
-  font-size: .85em;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85em;
 }
-
-/* Reuse same colors */
-.md-content .md-typeset .md-tag[data-tag="beginner"] { background:#c8e6c9; color:#1b5e20; }
-.md-content .md-typeset .md-tag[data-tag="advanced"] { background:#fff9c4; color:#665c00; }
-.md-content .md-typeset .md-tag[data-tag="expert"]   { background:#ffcdd2; color:#b71c1c; }

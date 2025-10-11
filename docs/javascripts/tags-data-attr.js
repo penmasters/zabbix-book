@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".md-tags .md-tag").forEach((el) => {
+  // target ANY md-tag on the page (span OR link)
+  document.querySelectorAll(".md-tag").forEach((el) => {
+    // derive slug from visible text (beginner → beginner, "Very Hard" → very-hard)
     const slug = el.textContent.trim().toLowerCase().replace(/\s+/g, "-");
-    el.setAttribute("data-tag", slug);
+    if (!el.hasAttribute("data-tag")) {
+      el.setAttribute("data-tag", slug);
+    }
   });
 });
