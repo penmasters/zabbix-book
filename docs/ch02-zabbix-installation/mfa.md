@@ -4,6 +4,7 @@ descripton: |
     to integrate Duo Security with Zabbix for multi-factor authentication. It
     covers setup, configuration, and login testing, adding an extra security
     layer to protect access to the Zabbix frontend.
+tags: [advanced]
 ---
 
 # Multi factor authentication
