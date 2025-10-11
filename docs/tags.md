@@ -1,4 +1,3 @@
 # All tags
-{% raw %}
-{{ tags }}
-{% endraw %}
+
+<!-- material/tags -->
