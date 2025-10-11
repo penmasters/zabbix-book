@@ -4,6 +4,7 @@ description: |
     how to integrate Zabbix with LDAP or Active Directory for centralized user
     management. It covers connection setup, binding options, and login verification,
     making user authentication more secure and easier to maintain.
+tags: [expert]
 ---
 
 # LDAP / AD
