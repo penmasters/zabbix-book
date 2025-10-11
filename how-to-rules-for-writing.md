@@ -1,5 +1,11 @@
 # Some guidelines when writing chapters
 
+## What data formats do we accept ?
+
+- We prefer you clone the project and deliver us your text in markdown.
+- However if you are not familiar with mdocs and / or markdown you can deliver us a document in .doc(x)
+  or .pages with all needed text and screenshots we will convert it to .md for you
+
 ## Meta description
 
 Just above the header add a short description that webcrawlers can use.
@@ -8,6 +14,7 @@ Just above the header add a short description that webcrawlers can use.
     ```
     description: |
         A short deescption of a few lines preferable around 150-200 words.
+    tags: [beginner, advanced, expert] #Add one of these tags so that reader knows what level of knowledge is required.
     ```
 ````
 
