@@ -1,3 +1,10 @@
+---
+description: |
+    Use Zabbix triggers to define expressions on collected data that detect issues
+    e.g. CPU > 90% or no data in 5 m and automatically create alerts when thresholds
+    are exceeded.
+---
+
 # Triggers
 
 In the previous chapter we have been hard at work to collect our data from various
@@ -6,11 +13,19 @@ and important information about our IT infrastructure. However, when you want to
 know something about your various different devices and applications you have to
 go through a mountain of data. This is where triggers come in.
 
-Triggers in Zabbix work as a way for us to collect a mountain worth of data, while being alerted about what's important. It allows us to set our own expressions that will define exactly when Zabbix should log and alert us about something happening with our data. The easiest example being something like a CPU going to 90% utilization.
+Triggers in Zabbix work as a way for us to collect a mountain worth of data, while
+being alerted about what's important. It allows us to set our own expressions that
+will define exactly when Zabbix should log and alert us about something happening
+with our data. The easiest example being something like a CPU going to 90% utilization.
 
 ## Preparing the environment
 
-In the previous chapter we created some hosts to monitor the active Zabbix agent, which are great for some example triggers. We created this host under the hostname `zbx-agent-active-rocky` or `zbx-agent-active-windows`, either should work for the example. We also should already have an item on this host to monitor the `Zabbix agent ping` with item key `agent.ping`. Let's add one item to our `zbx-agent-active-*` host, specifically to monitor the CPU load in percentage.
+In the previous chapter we created some hosts to monitor the active Zabbix agent,
+which are great for some example triggers. We created this host under the hostname
+`zbx-agent-active-rocky` or `zbx-agent-active-windows`, either should work for
+the example. We also should already have an item on this host to monitor the `Zabbix agent ping`
+with item key `agent.ping`. Let's add one item to our `zbx-agent-active-*` host,
+specifically to monitor the CPU load in percentage.
 
 ![Zabbix Agent active CPU util](ch05.1-cpu-util-item.png){ align=center }
 
@@ -22,17 +37,22 @@ Let's not forget to add the tag.
 
 _5.2 Zabbix Agent active CPU util item tag_
 
-With this item created, we have two great examples on our Zabbix agent active host for creating some basic triggers.
+With this item created, we have two great examples on our Zabbix agent active host
+for creating some basic triggers.
 
 ## Trigger creation
 
-Let's now create two very common triggers in our Zabbix environment. Go to `Data collection | Hosts` and navigate to either your Linux or Windows `zbx-agent-active-*` host and click on `Triggers`. In the top right corner you can now click on `Create trigger` to start.
+Let's now create two very common triggers in our Zabbix environment. Go to `Data collection | Hosts`
+and navigate to either your Linux or Windows `zbx-agent-active-*` host and click
+on `Triggers`. In the top right corner you can now click on `Create trigger` to
+start.
 
 ![Empty trigger creation form](ch05.3-trigger-empty-top.png){ align=center }
 
 _5.3 Empty trigger creation form_
 
-To start with the basics we can see the follow information at the top part of our trigger creation form.
+To start with the basics we can see the follow information at the top part of our
+trigger creation form.
 
 - **Name**
 - **Event name: The name of the event and problem you will see Monitoring | Problems**
@@ -43,33 +63,57 @@ To start with the basics we can see the follow information at the top part of ou
 
 ### Name
 
-The name of the trigger is important as it will be used for the name of our events and problems created from this trigger. For example if you would navigate to `Monitoring | Problems`, the triggers you see here will probably have the same name as a trigger.
+The name of the trigger is important as it will be used for the name of our events
+and problems created from this trigger. For example if you would navigate to `Monitoring | Problems`,
+the triggers you see here will probably have the same name as a trigger.
 
-It doesn't have to be unique, meaning we can have multiple triggers with the same name. As long as the combination of `Name` and `Expression` is unique.
+It doesn't have to be unique, meaning we can have multiple triggers with the same
+name. As long as the combination of `Name` and `Expression` is unique.
 
 Let's fill in `Zabbix agent not seen for >5m`.
 
 ### Event name
 
-The `Event name` is very similar to the `Name` field, as it will be used to name the events and problems created from this trigger. However, when `Event name` is used, the `Name` field will no longer form the name of events and problems. `Event name` serves as an override for the `Name` field.
+The `Event name` is very similar to the `Name` field, as it will be used to name
+the events and problems created from this trigger. However, when `Event name`
+is used, the `Name` field will no longer form the name of events and problems.
+`Event name` serves as an override for the `Name` field.
 
-The `Event name` field allows us to create longer and used more extensive macro functionality compared to the `Name` field. This is why it can be useful in some scenarios, but it is not mandatory to use it.
+The `Event name` field allows us to create longer and used more extensive macro
+functionality compared to the `Name` field. This is why it can be useful in some
+scenarios, but it is not mandatory to use it.
 
 Let's leave this empty for now.
 
 ### Operational data
 
-Whenever we create a trigger, once the trigger goes into a problem state it will create a problem event in the background within Zabbix. This problem event in term then creates a `Problem` in Zabbix which we can find under `Monitoring | Problems`. It's important to keep in mind that event and problem names are always static. Even when the trigger name or trigger event name is updated later, existing event and problems will not get a new name until they resolve and go into problem state again.
+Whenever we create a trigger, once the trigger goes into a problem state it will
+create a problem event in the background within Zabbix. This problem event in term
+then creates a `Problem` in Zabbix which we can find under `Monitoring | Problems`.
+It's important to keep in mind that event and problem names are always static. Even
+when the trigger name or trigger event name is updated later, existing event and
+problems will not get a new name until they resolve and go into problem state again.
 
-This is where `Operational data` becomes useful. It can be used to show dynamic information next to your problem names. This will allow you to for example use a macro like `{ITEM.LASTVALUE}` to always show the latest item value related to this triggers item(s).
+This is where `Operational data` becomes useful. It can be used to show dynamic
+information next to your problem names. This will allow you to for example use
+a macro like `{ITEM.LASTVALUE}` to always show the latest item value related to
+this triggers item(s).
 
 Let's fill in `{ITEM.VALUE}` and `{ITEM.LASTVALUE}`
 
 ### Severity
 
-This field is mandatory, as it is a selector we have to pick something with. By default Zabbix sets it to `No classified`, which is a severity rarely used outside of Zabbix internal problems. Instead we often pick one of the other 5 severities to indicate how important a problem created from this trigger is.
+This field is mandatory, as it is a selector we have to pick something with. By
+default Zabbix sets it to `No classified`, which is a severity rarely used outside
+of Zabbix internal problems. Instead we often pick one of the other 5 severities
+to indicate how important a problem created from this trigger is.
 
-For example, `Informational` is often used to indicate something we just want to log. Specifically, often `Informational` is something we do not necessarily want to see on our dashboards or receive external alerts from. `Disaster` on the other end however is often used to indicate something that requires immediate attention. The `Warning`, `Average` and `High` severities can be used to classify anything in between. My favourite basic setup usually looks like below.
+For example, `Informational` is often used to indicate something we just want to
+log. Specifically, often `Informational` is something we do not necessarily want
+to see on our dashboards or receive external alerts from. `Disaster` on the other
+end however is often used to indicate something that requires immediate attention.
+The `Warning`, `Average` and `High` severities can be used to classify anything
+in between. My favourite basic setup usually looks like below.
 
 - **Informational: Just for logging and not showing on dashboards**
 - **Warning: Requires attention, shown on dashboards**
@@ -77,7 +121,10 @@ For example, `Informational` is often used to indicate something we just want to
 - **High: Requires attention even out of office hours, send SMS or Signal message**
 - **Disaster: Problem with severe implications to the business, possible higher SMS or Signal escalation**
 
-This is of course just an example of how you could use the different severities and it will depend on your organisation and setup if this is actually implemented as such. The key here is that the severity can be used later to filter in various locations. Like dashboards for showing problems and actions for sending out alerts.
+This is of course just an example of how you could use the different severities
+and it will depend on your organisation and setup if this is actually implemented
+as such. The key here is that the severity can be used later to filter in various
+locations. Like dashboards for showing problems and actions for sending out alerts.
 
 Let's select `High` for now.
 
