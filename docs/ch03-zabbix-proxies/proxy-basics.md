@@ -5,6 +5,7 @@ description: |
     data, forward it to the server, and help reduce load in distributed setups.
     The guide covers installation, configuration, and when to use proxies for
     scalability and efficiency.
+tags: [beginner]
 ---
 
 # Proxy basics
