@@ -5,6 +5,7 @@ description: |
     It covers installation, configuration, and networking considerations, showing
     how containerized proxies simplify scaling and management in modern monitoring
     environments.
+tags: [expert]
 ---
 
 # Running Proxies as containers
