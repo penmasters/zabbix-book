@@ -2,6 +2,7 @@
 description: |
     Learn how to configure and manage SNMP traps in Zabbix for real-time alerts,
     faster event detection, and efficient network monitoring.
+tags: [advanced]
 ---
 
 # SNMP Trapping

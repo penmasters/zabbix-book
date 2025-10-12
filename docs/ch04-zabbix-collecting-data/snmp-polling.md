@@ -2,6 +2,7 @@
 description: |
     Master SNMP polling in Zabbix. Query OIDs, use MIBs, and leverage asynchronous
     get/walk methods with secure SNMPv3 to monitor network devices efficiently.
+tags: [advanced]
 ---
 
 # SNMP Polling

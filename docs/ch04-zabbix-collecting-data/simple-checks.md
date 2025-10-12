@@ -3,6 +3,7 @@ description: |
     Learn how to use Zabbix simple checks. ICMP ping, TCP/UDP port monitoring
     and built-in services, to collect network and service data for effective
     host monitoring.
+tags: [beginner]
 ---
 
 # Simple checks

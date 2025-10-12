@@ -1,6 +1,8 @@
 ---
 description: |
-    160 characters SEO description.
+    Extend monitoring flexibility with Zabbix item scripts. Run custom scripts to
+    collect unique metrics and automate complex data gathering tasks.
+tags: [expert]
 ---
 
 # Script
