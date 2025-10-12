@@ -28,6 +28,11 @@ valuable for the monitoring and open-source communities.
 - **Nathan Liefting** : [https://github.com/larcorba](https://github.com/larcorba)
 - Evgeny Yurchenko: [https://github.com/BGmot](https://github.com/BGmot)
 - Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
+- Aigars Kadikis : [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
+
+### Translators
+
+- Nicolas Hermel : [https://github.com/wityender](https://github.com/wityender)
 
 ---
 
@@ -40,6 +45,7 @@ book a reality.
 
 - **Patrik Uytterhoeven** : http://github.com/Trikke76
 - **Nathan Liefting** : https://github.com/larcorba
+- **Alexei Vladishev** :
 
 ---
 
