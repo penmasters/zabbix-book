@@ -1,6 +1,8 @@
 ---
 description: |
-    SEO optimized description 160 characters
+    Track Zabbix performance with internal items. Monitor queue size, poller usage,
+    cache, and other server metrics to keep your monitoring healthy.
+tags: [expert]
 ---
 
 # Zabbix Internals

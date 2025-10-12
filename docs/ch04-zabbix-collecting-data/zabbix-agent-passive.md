@@ -3,6 +3,7 @@ description: |
     Zabbix Agent in passive mode. The server polls the agent (on TCP 10050) for
     item data; agent responds to requests when queried. Efficient agent-server
     communication.
+tags: [advanced]
 ---
 
 # Zabbix Agent installation and Passive monitoring

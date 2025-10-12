@@ -1,6 +1,7 @@
 ---
 description: |
-    160 character seo description
+    Monitor databases with Zabbix ODBC checks. Run SQL queries across MySQL, PostgreSQL
+    and more to track performance and availability metrics.
 tags: [advanced]
 ---
 

@@ -1,8 +1,8 @@
 ---
 description: |
-    Learn how to monitor Java applications using Zabbix and JMX with this detailed
-    guide. This page covers JMX core concepts, the role of the Zabbix Java Gateway,
-    and provides a step-by-step tutorial on configuring Tomcat for JMX monitoring.
+    Monitor Java applications with Zabbix JMX checks. Collect performance metrics
+    from JVMs to track memory, threads, and application health easily
+tags: [advanced]
 ---
 
 # Monitoring Java Applications with JMX

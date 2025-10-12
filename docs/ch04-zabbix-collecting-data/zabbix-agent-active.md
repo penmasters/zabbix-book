@@ -1,7 +1,8 @@
 ---
 description: |
     Configure Zabbix Agent in active mode, agent self-initiates connection to the
-    server, fetches item configs, and pushes data continuously for proactive monitoring
+    server, fetches item configs, and pushes data continuously for proactive monitoring.
+tags: [advanced]
 ---
 
 # Zabbix Agent Active monitoring
