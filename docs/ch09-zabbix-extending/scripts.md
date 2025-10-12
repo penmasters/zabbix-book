@@ -1,3 +1,11 @@
+---
+description: |
+    Extend Zabbix's capabilities with frontend scripts. Integrate custom workflows,
+    automate tasks from the UI, and tailor Zabbix to your exact needs directly
+    from the interface.
+tags: [advanced]
+---
+
 # Frontend Scripts
 
 So, you're diving into the world of Zabbix frontend scripts, and you're in for 

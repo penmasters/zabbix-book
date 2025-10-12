@@ -1,8 +1,8 @@
 ---
 description: |
-    Use Zabbix triggers to define expressions on collected data that detect issues
-    e.g. CPU > 90% or no data in 5 m and automatically create alerts when thresholds
-    are exceeded.
+    Detect problems automatically with Zabbix triggers. Define conditions on collected
+    data to alert you instantly when systems or services fail.
+tags: [advanced]
 ---
 
 # Triggers
@@ -130,23 +130,46 @@ Let's select `High` for now.
 
 ### Expression
 
-The expression of the trigger is arguably the most important part. This is where we are going to define exactly how our trigger will detect the problem. Zabbix comes with many different functions to detect problems in an almost unlimited number of ways. But the basis is simple.
+The expression of the trigger is arguably the most important part. This is where
+we are going to define exactly how our trigger will detect the problem. Zabbix
+comes with many different functions to detect problems in an almost unlimited number
+of ways. But the basis is simple.
 
-We collect values from an `Item` using a `Function` applied to a number of values or time period (namely `Last of (T) Count/Time`). To this collect set of values we set a operator and constant (namely `Result`) to indicate what we want the result of our expression to be. This is in the end a whole lot of words to say, more simply put, we select and item to collect values from and then state what we want those values to look like to show a problem in Zabbix.
+We collect values from an `Item` using a `Function` applied to a number of values
+or time period (namely `Last of (T) Count/Time`). To this collect set of values
+we set a operator and constant (namely `Result`) to indicate what we want the
+result of our expression to be. This is in the end a whole lot of words to say,
+more simply put, we select and item to collect values from and then state what
+we want those values to look like to show a problem in Zabbix.
 
-Let's click on the `Add` button now an used the expression builder. For `Item` we select `Zabbix agent ping`, for `Function` we select `nodata`, for `Last of (T)` we set `5m` and for `Result` we set `= 1`. Then press `Insert` to automatically create the expression below.
+Let's click on the `Add` button now an used the expression builder. For `Item` we
+select `Zabbix agent ping`, for `Function` we select `nodata`, for `Last of (T)`
+we set `5m` and for `Result` we set `= 1`. Then press `Insert` to automatically
+create the expression below.
 
 ![Example trigger expression](ch05.4-trigger-expression-example.png){ align=center }
 
 _5.4 Example trigger expression_
 
-The expression is now built automatically and we do not need to write the whole syntax correctly ourselves. This trigger will now detect if `nodata` (is true `=1`) has been received on the item `agent.ping` for host `zbx-agent-active-rocky` (or `zbx-agent-active-windows` if you used that instead). It will only detect that however if `nodata` was received for more than 5 minutes (`,5m`).
+The expression is now built automatically and we do not need to write the whole
+syntax correctly ourselves. This trigger will now detect if `nodata` (is true `=1`)
+has been received on the item `agent.ping` for host `zbx-agent-active-rocky` (or
+`zbx-agent-active-windows` if you used that instead). It will only detect that
+however if `nodata` was received for more than 5 minutes (`,5m`).
 
-The `nodata` function used in this trigger is a bit special, as it specifically can trigger if no data was received (true `=1`) or if data was received (false `=0`) over a time period. This is what we call a time based trigger in Zabbix, whereas most other triggers only trigger when an item receives data instead. More on those later.
+The `nodata` function used in this trigger is a bit special, as it specifically
+can trigger if no data was received (true `=1`) or if data was received (false `=0`)
+over a time period. This is what we call a time based trigger in Zabbix, whereas
+most other triggers only trigger when an item receives data instead. More on those
+later.
 
 ### OK event generation
 
-In the case of this trigger, `OK event generation` is set to `Expression`. This means that the trigger expression will simply use the existing problem `Expression` to detect when the trigger creates an `OK` event. With our `nodata` trigger this will be whenever data has been received again, as the no data for 5 minutes will no longer be true.
+In the case of this trigger, `OK event generation` is set to `Expression`. This
+means that the trigger expression will simply use the existing problem `Expression`
+to detect when the trigger creates an `OK` event. With our `nodata` trigger this
+will be whenever data has been received again, as the no data for 5 minutes will
+no longer be true.
 
 In short:
 
@@ -159,7 +182,9 @@ Our trigger should now look like the image below.
 
 _5.5 Zabbix agent not seen for 5m trigger_
 
-Let's not forget to also add a tag to this trigger. On triggers in Zabbix the best practice is to create a `Scope` tag to indicate what the trigger is going to be about. We usually pick on of 5 options.
+Let's not forget to also add a tag to this trigger. On triggers in Zabbix the best
+practice is to create a `Scope` tag to indicate what the trigger is going to be
+about. We usually pick on of 5 options.
 
 - **availability**
 - **performance**

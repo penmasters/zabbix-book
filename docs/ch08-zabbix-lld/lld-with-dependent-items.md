@@ -1,9 +1,8 @@
 ---
 description: |
-    Discover how to use Zabbix Low-Level Discovery (LLD) with dependent items to
-    optimize monitoring efficiency—extract metrics from a single data source (like
-    JSON or logs) using preprocessing and reduce overhead while automating item
-    creation.
+    Optimize discovery with Zabbix dependent LLD rules. Reuse master discovery
+    data to create related items efficiently without extra polling or load.”
+tags: [advanced]
 ---
 
 # Low Level Discovery with Dependent items

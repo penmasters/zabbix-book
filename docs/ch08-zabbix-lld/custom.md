@@ -1,3 +1,10 @@
+---
+description: |
+    Automate monitoring with Zabbix custom LLD rules. Dynamically discover devices,
+    filesystems, or services and create items and triggers automatically.
+tags: [advanced]
+---
+
 # Custom Low Level Discovery
 
 Zabbix's Low-Level Discovery (LLD) plays a crucial role in dynamically detecting
