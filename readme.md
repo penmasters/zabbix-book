@@ -49,6 +49,9 @@ Read the book here :
 Help us Translate the book :
 [https://weblate.thezabbixbook.com](https://weblate.thezabbixbook.com)
 
+Contribute to the book :
+[https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
+
 ## Contributors
 
 Thanks for your contribution to the project!
