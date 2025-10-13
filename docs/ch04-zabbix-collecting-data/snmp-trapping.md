@@ -483,10 +483,274 @@ This adds authentication and encryption for trap communication.
 
 ## Trap mapping and preprocessing
 
+With SNMP traps now configured and the trap receiver operational, the next step
+is to create a host in the Zabbix frontend so we can link incoming traps to a
+specific monitored device.
+
+In the Zabbix web interface, navigate to:
+Data collection → Hosts, and click Create host.
+
+- **Hostname :** Network Switch 01
+- **Host groups :** SNMP Devices
+- **Interfaces :** SNMP with IP 127.0.0.1
+
+![ch04.35-snmp-host.png](ch04.35-snmp-host.png)
+
+In Zabbix, the macro {$SNMP_COMMUNITY} is often defined globally under Administration
+→ Macros. This global macro provides a default SNMP community string used by all
+hosts that rely on SNMP for polling or trap-based communication.
+
+However, a better approach, especially in larger or more secure environments is
+to define a unique SNMP community per device and override the global macro at the
+host level. This allows for more granular access control and simplifies troubleshooting
+when multiple community strings are used across the network.
+
+### Sending a Test Trap
+
+With the host and trap receiver configured, we can now simulate a link down event
+from our device by sending an SNMP trap manually from the command line:
+
+On the command line we can now sent a trap to mimic a Link down on our device.
+`snmptrap -v 2c -c public 127.0.0.1 '' 1.3.6.1.6.3.1.1.5.3`
+
+This command sends a version 2c SNMP trap using the community string public to
+the local Zabbix trap receiver, emulating a linkDown event defined by
+OID 1.3.6.1.6.3.1.1.5.3.
+
+### Verifying Trap Reception
+
+After sending the test trap, open the Zabbix frontend and navigate to:
+`Monitoring` → `Latest data`
+
+Select the host `Network Switch 01`.
+If everything is configured correctly, you should now see data populated in your
+SNMP trap item, confirming that Zabbix successfully received and processed the
+trap.
+
+
+```
+2025-10-13T21:10:58+0200 PDU INFO:
+  errorindex                     0
+  notificationtype               TRAP
+  messageid                      0
+  transactionid                  2
+  receivedfrom                   UDP: [127.0.0.1]:50483->[127.0.0.1]:162
+  community                      public
+  requestid                      57240481
+  version                        1
+  errorstatus                    0
+VARBINDS:
+  DISMAN-EVENT-MIB::sysUpTimeInstance type=67 value=Timeticks: (227697) 0:37:56.97
+  SNMPv2-MIB::snmpTrapOID.0      type=6  value=OID: IF-MIB::linkDown
+```
+
+Sending a More Realistic Trap Example
+
+In a real production environment, SNMP traps usually include additional variable
+bindings (varbinds) that describe the state of the affected interface or component.
+To better simulate a real-world scenario, we can extend our previous test command
+to include this extra information.
+
+Run the following command on the Zabbix server:
+
+```bash
+snmptrap -v 2c -c public 127.0.0.1 '' \
+  IF-MIB::linkDown \
+  IF-MIB::ifIndex i 1 \
+  IF-MIB::ifAdminStatus i 2 \
+  IF-MIB::ifOperStatus i 2 \
+  IF-MIB::ifName s "Gi0/1" \
+  IF-MIB::ifDescr s "GigabitEthernet0/1"
+```
+This will give use the following output:
+
+```
+2025-10-13T21:53:15+0200 PDU INFO:
+  errorstatus                    0
+  version                        1
+  requestid                      139495039
+  community                      public
+  transactionid                  14
+  receivedfrom                   UDP: [127.0.0.1]:35753->[127.0.0.1]:162
+  messageid                      0
+  notificationtype               TRAP
+  errorindex                     0
+VARBINDS:
+  DISMAN-EVENT-MIB::sysUpTimeInstance type=67 value=Timeticks: (481390) 1:20:13.90
+  SNMPv2-MIB::snmpTrapOID.0      type=6  value=OID: IF-MIB::linkDown
+  IF-MIB::ifIndex                type=2  value=INTEGER: 1
+  IF-MIB::ifAdminStatus          type=2  value=INTEGER: 1
+  IF-MIB::ifOperStatus           type=2  value=INTEGER: 1
+  IF-MIB::ifName                 type=4  value=STRING: "Gi0/1"
+  IF-MIB::ifDescr                type=4  value=STRING: "GigabitEthernet0/1"
+```
+
+### Creating SNMP Trap Items
+
+Now that our host is configured and we've verified that traps are being received,
+we can create a set of items to store and process the trap data in a structured way.
+
+We’ll start with a catch-all (fallback) item that captures every SNMP trap received
+for this host. Then we'll add two dependent items to extract specific values such
+as the administrative and operational interface status.
+
+### Creating the SNMP Fallback Item
+
+This item serves as the master collector for all incoming traps. Any dependent
+items you create later will use this as their source.
+
+In the Zabbix frontend, navigate to
+`Data collection` → `Hosts` → `Network Switch 01` → `Items`
+and click Create item.
+
+Configure the following parameters:
+
+- **Name:** SNMP Trap: Fallback
+- **Type:** SNMP trap
+- **Key:** snmptrap.Fallback
+- **Type of information:** Text
+
+Next we will create 2 dependent items. One item for the ifAdminStatus and another
+one for the ifOperStatus. You can do this by clicking on the 3 dots before our
+fallback item or by just creating a new item and selecting type `Dependent item`
+
+- **Name:** Trap ifAdminStatus
+- **Type:** Dependent item
+- **Key:** trap.ifAdminStatus
+- **Type of information:** Numeric(unsigned)
+- **Master item:** (Select your fallback item as master item)
+
+Click on the `preprocessing` tab and select `Regular expression`.
+use `IF-MIB::ifAdminStatus[\s\S]*?INTEGER:\s+(\d+)` in the Parameters field and
+`\1` in the Output box.
+
+Select the box `Custom on fail` and use the option `Discard value`.
+
+![ch04.36-snmp-preprocessing.png](ch04.36-snmp-preprocessing.png)
+
+Next we create our second item also dependent on our Fallback item.
+
+- **Name:** Trap ifOperStatus
+- **Type:** Dependent item
+- **Key:** trap.ifAdminStatus
+- **Type of information:** Numeric(unsigned)
+- **Master item:** (Select your fallback item as master item)
+
+Again go to the `preprocessing` tab and enter following information.
+
+Select `Regular expression` and for Parameters enter `IF-MIB::ifOperStatus[\s\S]*?INTEGER:\s+(\d+)`
+and `\1` in the Output box.
+
+Again add a `custom on failure` step and select `Discard value`.
+
+![ch04.37-snmp-preprocessing.png](ch04.36-snmp-preprocessing.png)
+
+We have our items now but we still are missing our trigger. Go back to your host
+and click on the triggers and add the following trigger.
+
+**Name:** Problem (Link down:)
+**Severity:** Warning
+
+**Problem expression:** `last(/Network Switch 01/trap.ifOperStatus)=2 and last(/Network Switch 01/trap.ifAdminStatus)=2`
+
+**Recovery expression:** `last(/Network Switch 01/trap.ifOperStatus)=1 and last(/Network Switch 01/trap.ifAdminStatus)=1`
+
+![ch04.38-snmp-trigger.png](ch04.38-snmp-trigger.png)
+
+Make sure to also select the box `Allow manual close.` This can help to close
+the problem in case we don't receive a TRAP.
+
+You should now be able to sent a trap to open and close a problem in Zabbix
+based on the status of the ifOperStatus and the ifAdminStatus 
+
+```bash
+snmptrap -v 2c -c public 127.0.0.1 '' IF-MIB::linkDown   IF-MIB::ifIndex i 1   IF-MIB::ifAdminStatus i 2   IF-MIB::ifOperStatus i 2   IF-MIB::ifName s "Gi0/1"   IF-MIB::ifDescr s "GigabitEthernet0/1"
+snmptrap -v 2c -c public 127.0.0.1 '' IF-MIB::linkDown   IF-MIB::ifIndex i 1   IF-MIB::ifAdminStatus i 1   IF-MIB::ifOperStatus i 1   IF-MIB::ifName s "Gi0/1"   IF-MIB::ifDescr s "GigabitEthernet0/1"
+```
+
+As a bonus you can add on the host a value map and link the items with it.
+
+![ch04.39-snmp-valuemap.png](ch04.39-snmp-valuemap.png)
+
+
+If you don't like 2 different items and want to be more fancy you could create
+an dependent item like we did above and use JS instead of perl regex.
+
+```JavaScript
+var s = value;
+
+function grab(re) {
+  var m = s.match(re);
+  return m ? m[1] : '';
+}
+
+// Extract fields from your sample payload
+var ifName = grab(/IF-MIB::ifName[\s\S]*?STRING:\s+"([^"]+)"/m);
+var admin  = grab(/IF-MIB::ifAdminStatus[\s\S]*?INTEGER:\s+(\d+)/m);
+var oper   = grab(/IF-MIB::ifOperStatus[\s\S]*?INTEGER:\s+(\d+)/m);
+
+// Map 1/2/3 -> up/down/testing
+var map = { '1':'up', '2':'down', '3':'testing' };
+var a = map[admin] || admin || '?';
+var o = map[oper]  || oper  || '?';
+var name = ifName || 'ifName=?';
+
+return 'interface=' + name + ' adminStatus=' + a + ' operStatus=' + o;
+```
+This will return output in latest data like `interface=Gi0/1 adminStatus=down operStatus=down`
+
+Another solution way more easy could be to create a specific item instead of
+falling back on the fallback item that looks exactly for a link that goes Down
+or Up. This can be done by creating a specific item like this:
+
+`snmptrap["IF-MIB::link(Down|Up)"]`
+
+We could then create a trigger like:
+`str(/Network Switch 01/snmptrap["IF-MIB::link(Down|Up)"],"IF-MIB::linkDown")=1`
+and a recovery trigger like :
+`str(/Network Switch 01/snmptrap["IF-MIB::link(Down|Up)"],"IF-MIB::linkUp")=1`
+
+As you can see the solutions are endless and SNMP traps are not so easy and
+probably need some tweaking before you have it all working like you want.
+
+???+ note
+
+    The snmptrap.fallback is a good point to start with if you have no clue what
+    traps to expect it can help you to discover all the traps and stay to be sure
+    you catch all traps even if they are not configured on your host.
+
 
 ## Conclusion
 
+We started by setting up the trap reception environment using snmptrapd and the
+zabbix_trap_receiver.pl script, then integrated it into Zabbix through the SNMP
+Trapper process.
+You also learned how to open the necessary firewall ports, configure log rotation
+for the trap file, and verify successful reception using test traps.
+
+In the Zabbix frontend, we created a host representing our SNMP device, added
+a catch-all trap item, and built dependent items to extract key values such as
+ifAdminStatus and ifOperStatus.
+From there, we constructed a simple yet effective trigger pair that raises an alert
+when a linkDown trap is received and automatically resolves it when a linkUp trap
+arrives.
+
+Combine traps with SNMP polling to balance real-time alerts with long-term
+performance metrics.
+
+SNMP traps are one of the most powerful mechanisms in Zabbix for achieving proactive
+monitoring. When properly configured, they provide immediate visibility into the
+health and state of your infrastructure, allowing you to respond to issues the
+moment they happen, not minutes later.
+
 ## Questions
+
+- What is the key difference between SNMP polling and SNMP traps in how they collect data?
+- Why are SNMP traps often described as active monitoring while SNMP polling is passive?
+- What is the purpose of the zabbix_trap_receiver.pl script, and where is it defined in the SNMP configuration?
+- What role does the parameter StartSNMPTrapper play in zabbix_server.conf?
+- In what kind of situations would you prefer SNMP traps over polling?
+- How could you use SNMP traps in combination with SNMP polling for a hybrid monitoring strategy?
 
 ## Useful URLs
 
