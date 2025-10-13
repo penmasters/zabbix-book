@@ -1,31 +1,33 @@
-# Guidelines
+# Руководство
 
-## How to contribute
+## Как внести свой вклад
 
-- Sign the [deed of
-  transfer](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf)
-  preferable electronically
-- Clone this project to your Github account
-- Clone the repository to you pc
+- Подписывать [акт
+  передачи](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf)
+  предпочтительно в электронном виде
+- Клонируйте этот проект в свой аккаунт Github
+- Клонируйте репозиторий на свой компьютер
 
-- Install the needed software for Mkdocs to work, check the file in the root
-  folder how-to-install-mkdocs.md
-  - Create a new branch to make your changes
-    - git branch "<your branch name\>"
-    - git checkout "<your branch name\>"
-  - Make the changes you want and commit them
-    - git add "files you changed"
-    - git commit -m "add useful commit info"
-  - Return back to the main branch
+- Установите необходимое программное обеспечение для работы Mkdocs, проверьте
+  файл how-to-install-mkdocs.md в корневом каталоге
+  - Создайте новую ветку для внесения изменений
+    - git branch "<имя_вашей_ветви\>"
+    - git checkout "<имя_вашей_ветви\>"
+  - Внесите нужные изменения и закоммитьте их
+    - git add "ваш_измененный_файл"
+    - git commit -m "добавьте полезную информацию по коммиту"
+  - Вернуться в основную ветку
     - git checkout main
-  - Make sure you have the latest changes merged from main
+  - Убедитесь, что у вас есть последние изменения, слитые из основной ветки
+    (main)
     - git pull origin main
-  - Merge your branch into the main branch
-    - git merge "<your branch name\>"
+  - Объедините вашу ветку с основной
+    - git merge "<имя_вашей_ветки\>"
     - git push
-  - cleanup your branch
-    - git branch -d "<your branch name\>"
-- Create a pull requests so that we can merge it :)
-- Follow these
-  [guidelines](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
-  when you write a topic.
+  - очистка ветки
+    - git branch -d "<имя_вашей_ветки\>"
+- Создайте pull request (запрос на внесение изменений в код), чтобы мы могли
+  объединить его :)
+- Следуйте этим
+  [рекомендациям](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
+  при написании темы.

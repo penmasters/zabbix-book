@@ -3,6 +3,7 @@ description: | This chapter from The Zabbix Book, titled "Frontend
 Installation," provides a step-by-step guide to setting up the Zabbix web
 interface. Learn how to install required packages, configure PHP, and integrate
 with Apache or Nginx for a secure and fully functional monitoring frontend.
+tags: [beginner]
 ---
 
 # Frontend explained

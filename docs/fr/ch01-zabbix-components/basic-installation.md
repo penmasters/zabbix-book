@@ -1,14 +1,7 @@
 ---
-description : | Ce chapitre du livre Zabbix, intitulé « Installation de base »,
-fournit un guide étape par étape pour l'installation d'un serveur Zabbix. Il
-englobe les composants essentiels - le serveur Zabbix, le serveur web (frontend)
-et la base de données - il détaille les configurations d'installation sur Ubuntu
-et Rocky Linux. Le guide met également l'accent sur les meilleures pratiques en
-matière de sécurité en créant des utilisateurs dédiés à la base de données avec
-des autorisations limitées et explique comment améliorer les performances avec
-une configuration de base de données distribuée. Par ailleurs, il aborde la
-migration obligatoire de la base de données requise pour Zabbix 7.0 et les
-versions ultérieures.
+description: | Step‑by‑step guide to install Zabbix with MariaDB or PostgreSQL,
+setup server & frontend on Ubuntu or Rocky Linux, including security & repo
+configuration. tags: [beginner]
 ---
 
 # Installation de base

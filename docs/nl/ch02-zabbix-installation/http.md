@@ -2,7 +2,8 @@
 description: | This section from The Zabbix Book, titled "HTTP Authentication,"
 explains how to secure Zabbix frontend access using web server authentication
 methods. It covers setup with Apache or Nginx, integration with Zabbix, and how
-HTTP auth adds an extra protection layer to your monitoring environment.
+HTTP auth adds an extra protection layer to your monitoring environment. tags:
+[advanced]
 ---
 
 # HTTP
