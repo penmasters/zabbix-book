@@ -1,14 +1,7 @@
 ---
-description : | Ce chapitre du livre Zabbix, intitulé « HA Setup », explique
-comment configurer un cluster Zabbix `High Availability` (HA) pour assurer une
-surveillance continue. Il détaille une installation utilisant deux serveurs
-Zabbix avec une seule base de données pour créer un système de basculement
-transparent. Le guide couvre l'installation et la configuration du cluster
-Zabbix, y compris l'utilisation de Keepalived pour gérer une IP virtuelle (VIP)
-pour le frontend, ce qui garantit un service ininterrompu. Le chapitre fournit
-des instructions étape par étape pour l'ensemble du processus, de la
-configuration des serveurs à la vérification du bon fonctionnement de la
-configuration HA.
+description: | Set up Zabbix High Availability with clustered servers, shared
+DB, and Keepalived for VIP failover—ensuring zero-downtime monitoring. tags:
+[expert]
 ---
 
 # Configuration HA
@@ -258,7 +251,14 @@ le maintien d'une infrastructure résiliente.
 
 ### Mise en place de keepalived
 
-Commençons donc. Sur nos deux serveurs, nous devons installer keepalived.
+???+ note
+
+    Keepalived is like a helper that makes sure one computer takes over if another
+    one stops working. It gives them a shared magic IP address so users don't notice
+    when a server fails. If the main one breaks, the backup jumps in right away.
+    You can replace it with tools like Pacemaker, Corosync, or cloud load balancers
+    that do the same “take over” job. So let's get started. On both our servers
+    we have to install keepalived.
 
 !!! info "Installation de keepalived"
 
@@ -417,7 +417,7 @@ utilisez les commandes suivantes :
 
 The setup process for the frontend follows the same steps outlined in the `Basic
 Installation` section under [Installing the
-Frontend](basic-installation.md/#installation-du-frontend). By adhering to these
+Frontend](basic-installation.md/#installing-the-frontend). By adhering to these
 established procedures, we ensure consistency and reliability in the deployment.
 
 ???+ warning
