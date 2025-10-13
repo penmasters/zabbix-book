@@ -1,3 +1,9 @@
+---
+description: | Learn Zabbix system requirements: supported OS, database options,
+hardware specs, firewall ports, and time sync needed for a smooth installation.
+tags: [beginner]
+---
+
 # System Requirements
 
 ## Requirements
