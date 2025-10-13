@@ -167,7 +167,7 @@ plugins:
         #        - es
         #        - th
         #        - zh
-        #        - ru
+        - ru
         - en
   - tags
   - autolinks
@@ -241,9 +241,9 @@ plugins:
         #        - locale: zh
         #          name: 中国人
         #          build: true
-        #        - locale: ru
-        #          name: Russian
-        #          build: true
+        - locale: ru
+          name: Russian
+          build: true
         - locale: en
           default: true
           name: English
