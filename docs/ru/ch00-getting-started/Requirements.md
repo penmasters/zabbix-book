@@ -1,31 +1,33 @@
-# System Requirements
+# Системные требования
 
-## Requirements
+## Требования
 
-Zabbix has specific hardware and software requirements that must be met, and
-these requirements may change over time. They also depend on the size of your
-setup and the software stack you select. Before purchasing hardware or
-installing a database version, it's essential to consult the Zabbix
-documentation for the most up-to-date requirements for the version you plan to
-install. You can find the latest requirements
+У Zabbix есть определенные требования к аппаратному и программному обеспечению,
+которые должны быть выполнены, и эти требования могут меняться со временем. Они
+также зависят от размера вашей установки и выбранного стека программного
+обеспечения. Прежде чем приобретать оборудование или устанавливать версию базы
+данных, необходимо ознакомиться с документацией Zabbix, чтобы узнать самые
+последние требования к версии, которую вы планируете установить. Вы можете найти
+последние требования
 [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements).
-Make sure to select the correct Zabbix version from the list.
+Убедитесь, что выбрали правильную версию Zabbix из списка.
 
-For smaller or test setups, Zabbix can comfortably run on a system with 2 CPUs
-and 8 GB of RAM. However, your setup size, the number of items you monitor, the
-triggers you create, and how long you plan to retain data will impact resource
-requirements. In today's virtualised environments, my advice is to start small
-and scale up as needed.
+Для небольших или тестовых установок Zabbix может комфортно работать на системе
+с 2 процессорами и 8 ГБ оперативной памяти. Однако размер вашей установки,
+количество элементов для отслеживания, создаваемые триггеры и длительность
+хранения данных будут влиять на требования к ресурсам. В современных
+виртуализированных средах я советую начинать с малого и наращивать масштаб по
+мере необходимости.
 
-You can install all components (Zabbix server, database, web server) on a single
-machine or distribute them across multiple servers. For simplicity, take note of
-the server details:
+Вы можете установить все компоненты (сервер Zabbix, базу данных, веб-сервер) на
+одной машине или распределить их по нескольким серверам. Для простоты обратите
+внимание на детали сервера:
 
-| Component       | IP Address |
-| --------------- | ---------- |
-| Zabbix Server   |            |
-| Database Server |            |
-| Web Server      |            |
+| Компонент          | IP-адрес |
+| ------------------ | -------- |
+| Сервер Zabbix      |          |
+| Сервер базы данных |          |
+| Веб-сервер         |          |
 
 ???+ tip
 
@@ -45,31 +47,31 @@ the server details:
 
 ---
 
-## Basic OS Configuration
+## Базовая конфигурация ОС
 
-Operating systems, so many choices, each with its own advantages and loyal user
-base. While Zabbix can be installed on a wide range of platforms, documenting
-the process for every available OS would be impractical. To keep this book
-focused and efficient, we have chosen to cover only the most widely used
-options: Ubuntu and Red Hat based distributions.
+Операционных систем множество вариантов, каждая со своими преимуществами и
+лояльной пользовательской базой. Хотя Zabbix можно установить на широкий спектр
+платформ, документировать процесс для каждой доступной ОС было бы непрактично.
+Чтобы сделать эту книгу целенаправленной и эффективной, мы решили рассказать
+только о наиболее распространенных вариантах: дистрибутивах на базе Ubuntu и Red
+Hat.
 
-Since not everyone has access to a Red Hat Enterprise Linux (RHEL) subscription
-even though a developer account provides limited access we have opted for Rocky
-Linux as a readily available alternative. For this book, we will be using Rocky
-Linux 9.x and Ubuntu LTS 24.04.x.
+Поскольку не у всех есть доступ к подписке на Red Hat Enterprise Linux (RHEL),
+даже если учетная запись разработчика предоставляет ограниченный доступ, мы
+выбрали Rocky Linux в качестве легкодоступной альтернативы. В этой книге мы
+будем использовать Rocky Linux 9.x и Ubuntu LTS 24.04.x.
 
 - <https://rockylinux.org/>
 - <https://ubuntu.com/>
 
-### Firewall
+### Брандмауэр
 
-Before installing Zabbix, it's essential to properly prepare the operating
-system. The first step is to ensure that the firewall is installed and
-configured.
+Перед установкой Zabbix необходимо правильно подготовить операционную систему. В
+первую очередь необходимо убедиться, что брандмауэр установлен и настроен.
 
-To install and enable the firewall, run the following command:
+Чтобы установить и включить брандмауэр, выполните следующую команду:
 
-!!! info "Install and enable the firewall"
+!!! info "Установите и включите брандмауэр"
 
     Red Hat
     ```yaml
@@ -83,11 +85,12 @@ To install and enable the firewall, run the following command:
     sudo ufw enable
     ```
 
-Once installed, you can configure the necessary ports. For Zabbix, we need to
-allow access to port `10051/tcp`, which is where the Zabbix trapper listens for
-incoming data. Use the following command to open this port in the firewall:
+После установки нужно настроить необходимые порты. Для Zabbix нам нужно
+разрешить доступ к порту `10051/tcp`, через который траппер Zabbix прослушивает
+входящие данные. Используйте следующую команду, чтобы открыть этот порт в
+брандмауэре:
 
-!!! info "Allow Zabbix trapper access"
+!!! info "Разрешить доступ к трапперу Zabbix"
 
     Red Hat
     ```yaml
@@ -99,9 +102,9 @@ incoming data. Use the following command to open this port in the firewall:
     sudo ufw allow 10051/tcp
     ```
 
-If the service is not recognized, you can manually specify the port:
+Если служба не распознается, то можете вручную указать порт:
 
-!!! info "Add port instead of the service name"
+!!! info "Добавить порт вместо имени службы"
 
     ```yaml
     firewall-cmd --add-port=10051/tcp --permanent
