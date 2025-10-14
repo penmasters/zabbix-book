@@ -1,7 +1,7 @@
 ---
-description: | Learn Zabbix system requirements: supported OS, database options,
-hardware specs, firewall ports, and time sync needed for a smooth installation.
-tags: [beginner]
+description: | Узнайте системные требования Zabbix: поддерживаемые ОС, параметры
+базы данных, спецификации оборудования, порты брандмауэра и синхронизация
+времени, необходимые для беспроблемной установки. теги: [beginner]
 ---
 
 # Системные требования
@@ -124,18 +124,18 @@ Hat.
     refer to your OS documentation for the appropriate firewall configuration steps."
     Ubuntu makes use of UFW and is merely a frontend for iptables.
 
-An alternative approach is to define dedicated firewall zones for specific use
-cases. For example...
+Альтернативный подход заключается в определении специальных зон брандмауэра для
+конкретных случаев использования. Например...
 
-!!! info "Create a firewalld zone"
+!!! info "Создать зону firewalld"
 
     ```yaml
     firewall-cmd --new-zone=postgresql-access --permanent
     ```
 
-You can confirm the creation of the zone by executing the following command:
+Вы можете подтвердить создание зоны, выполнив следующую команду:
 
-!!! info "Verify the zone creation"
+!!! info "Проверьте создание зоны"
 
     ```yaml
     firewall-cmd --get-zones
@@ -144,30 +144,32 @@ You can confirm the creation of the zone by executing the following command:
 block dmz drop external home internal nm-shared postgresql-access public trusted
 work
 
-Using zones in firewalld to configure firewall rules for PostgreSQL provides
-several advantages in terms of security, flexibility, and ease of management.
-Here’s why zones are beneficial:
+Использование зон в firewalld для настройки правил брандмауэра для PostgreSQL
+дает ряд преимуществ в плане безопасности, гибкости и простоты управления. Вот
+почему зоны полезны:
 
-- **Granular Access Control :**
-  - firewalld zones allow different levels of trust for different network
-    interfaces and IP ranges. You can define which systems are allowed to
-    connect to PostgreSQL based on their trust level.
-- **Simplified Rule management:**
-  - Instead of manually defining complex iptables rules, zones provide an
-    organized way to group and manage firewall rules based on usage scenarios.
-- **Enhanced security:**
-  - By restricting PostgreSQL access to a specific zone, you prevent
-    unauthorized connections from other interfaces or networks.
-- **Dynamic configuration:**
-  - firewalld supports runtime and permanent rule configurations, allowing
-    changes without disrupting existing connections.
-- **Multi-Interface support:**
-  - If the server has multiple network interfaces, zones allow different
-    security policies for each interface.
+- **Детальный контроль доступа :**
+  - Зоны firewalld позволяют устанавливать разные уровни доверия для различных
+    сетевых интерфейсов и диапазонов IP-адресов. Вы можете определить, каким
+    системам разрешено подключаться к PostgreSQL в зависимости от их уровня
+    доверия.
+- **Упрощенное управление правилами:**
+  - Вместо того чтобы вручную определять сложные правила iptables, зоны
+    предоставляют организованный способ группировки и управления правилами
+    брандмауэра на основе сценариев использования.
+- **Повышенная безопасность:**
+  - Ограничивая доступ к PostgreSQL в определенной зоне, вы предотвращаете
+    несанкционированные подключения из других интерфейсов или сетей.
+- **Динамическая конфигурация:**
+  - firewalld поддерживает временные и постоянные конфигурации правил, что
+    позволяет вносить изменения, не нарушая существующих соединений.
+- **Поддержка нескольких интерфейсов:**
+  - Если сервер имеет несколько сетевых интерфейсов, зоны позволяют использовать
+    различные политики безопасности для каждого интерфейса.
 
-Bringing everything together it would look like this:
+Если собрать все вместе, это будет выглядеть следующим образом:
 
-!!! info "Firewalld with zone config"
+!!! info "Firewalld с конфигурацией зоны"
 
     ```yaml
     firewall-cmd --new-zone=db_zone --permanent
@@ -176,20 +178,22 @@ Bringing everything together it would look like this:
     firewall-cmd --reload
     ```
 
-Where the `source IP` is the only address permitted to establish a connection to
-the database.
+Где `IP-адрес источника` является единственным адресом, с которого разрешено
+устанавливать соединение с базой данных.
 
 ---
 
-### Time Server
+### Сервер времени
 
-Another crucial step is configuring the time server and syncing the Zabbix
-server using an NTP client. Accurate time synchronization is vital for Zabbix,
-both for the server and the devices it monitors. If one of the hosts has an
-incorrect time zone, it could lead to confusion, such as investigating an issue
-in Zabbix that appears to have happened hours earlier than it actually did.
+Еще один важный шаг - настройка сервера времени и синхронизация сервера Zabbix с
+помощью NTP-клиента. Точная синхронизация времени жизненно важна для Zabbix, как
+для сервера, так и для устройств, которые он контролирует. Если на одном из
+узлов установлен неправильный часовой пояс, это может привести к путанице,
+например, при расследовании проблемы в Zabbix, которая, как оказалось, произошла
+на несколько часов раньше, чем на самом деле.
 
-To install and enable chrony, our NTP client, use the following command:
+Чтобы установить и включить chrony - наш NTP-клиент, используйте следующую
+команду:
 
 !!! info "Install NTP client"
 
