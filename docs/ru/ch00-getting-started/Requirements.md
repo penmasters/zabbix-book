@@ -195,7 +195,7 @@ work
 Чтобы установить и включить chrony - наш NTP-клиент, используйте следующую
 команду:
 
-!!! info "Install NTP client"
+!!! info "Установить NTP-клиент"
 
     Red Hat
     ```yaml
@@ -208,33 +208,33 @@ work
     sudo apt install chrony
     ```
 
-After installation, verify that Chrony is enabled and running by checking its
-status with the following command:
+После установки убедитесь, что Chrony включен и работает, проверив его состояние
+с помощью следующей команды:
 
-!!! info "Check status chronyd"
+!!! info "Проверка статуса chronyd"
 
     ```yaml
     systemctl status chronyd
     ```
 
-???+ note "what is apt or dnf"
+???+ note "что такое apt или dnf"
 
     dnf is a package manager used in Red Hat-based systems. If you're using another
     distribution, replace `dnf` with your appropriate package manager, such as `zypper`,
     `apt`, or `yum`.
 
-???+ note "what is Chrony"
+???+ note "что такое Chrony"
 
     Chrony is a modern replacement for `ntpd`, offering faster and
     more accurate time synchronization. If your OS does not support
     [Chrony](https://chrony-project.org/), consider using
     `ntpd` instead.
 
-Once Chrony is installed, the next step is to ensure the correct time zone is
-set. You can view your current time configuration using the `timedatectl`
-command:
+После установки Chrony необходимо убедиться, что установлен правильный часовой
+пояс. Просмотреть текущую конфигурацию времени можно с помощью команды
+`timedatectl`:
 
-!!! info "check the time config"
+!!! info "проверьте конфигурацию времени"
 
     ```yaml
     timedatectl
@@ -250,20 +250,20 @@ command:
     RTC in local TZ: no
     ```
 
-Ensure that the Chrony service is active (refer to the previous steps if
-needed). To set the correct time zone, first, you can list all available time
-zones with the following command:
+Убедитесь, что служба Chrony активна (при необходимости обратитесь к предыдущим
+шагам). Чтобы установить правильный часовой пояс, сначала необходимо вывести все
+доступные часовые пояса с помощью следующей команды:
 
-!!! info "list the timezones"
+!!! info "список часовых поясов"
 
     ```yaml
     timedatectl list-timezones
     ```
 
-This command will display a list of available time zones, allowing you to select
-the one closest to your location. For example:
+Эта команда отобразит список доступных часовых поясов, позволяя выбрать тот,
+который ближе всего к вашему местоположению. Например:
 
-!!! info "List of all the timezones available"
+!!! info "Список всех доступных часовых поясов"
 
     ```yaml
     Africa/Abidjan
@@ -275,18 +275,18 @@ the one closest to your location. For example:
     UTC
     ```
 
-Once you've identified your time zone, configure it using the following command:
+Определив часовой пояс, установите его с помощью следующей команды:
 
-!!! info "Set the timezone"
+!!! info "Установите часовой пояс"
 
     ```yaml
     timedatectl set-timezone Europe/Brussels
     ```
 
-To verify that the time zone has been configured correctly, use the
-`timedatectl` command again:
+Чтобы убедиться, что часовой пояс настроен правильно, снова выполните команду
+`timedatectl`:
 
-!!! info "Check the time and zone"
+!!! info "Проверьте время и часовой пояс"
 
     ```yaml
     timedatectl
@@ -312,20 +312,20 @@ To verify that the time zone has been configured correctly, use the
 
 ---
 
-### Verifying Chrony Synchronization
+### Проверка синхронизации Chrony
 
-To ensure that Chrony is synchronizing with the correct time servers, you can
-run the following command:
+Чтобы убедиться, что Chrony синхронизируется с правильными серверами времени, вы
+можете выполнить следующую команду:
 
-!!! info "Verify chrony"
+!!! info "Проверьте chrony"
 
     ```yaml
     chronyc
     ```
 
-The output should resemble:
+Выходные данные должны быть похожи на:
 
-!!! info "Verify your chrony output"
+!!! info "Проверьте вывод chrony"
 
     ```yaml
     chrony version 4.2
@@ -337,7 +337,7 @@ The output should resemble:
     chronyc>
     ```
 
-Once inside the Chrony prompt, type the following to check the sources:
+После ввода запроса Chrony введите следующее для проверки источников:
 
 !!! info ""
 
@@ -345,9 +345,9 @@ Once inside the Chrony prompt, type the following to check the sources:
     chronyc> sources
     ```
 
-Example output:
+Пример вывода:
 
-!!! info "Check your time server sources"
+!!! info "Проверьте источники своего сервера времени"
 
     ```bash
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
@@ -358,22 +358,23 @@ Example output:
     ^* leontp1.office.panq.nl        1  10   377   904  +6806ns[ +171us] +/- 2336us
     ```
 
-In this example, the NTP servers in use are located outside your local region.
-It is recommended to switch to time servers in your country or, if available, to
-a dedicated company time server. You can find local NTP servers here:
-[www.ntppool.org](https://www.ntppool.org/).
+В этом примере используемые серверы NTP расположены за пределами вашего региона.
+Рекомендуется переключиться на серверы времени в вашей стране или, если это
+возможно, на выделенный сервер времени компании. Найти местные NTP-серверы можно
+здесь: [www.ntppool.org](https://www.ntppool.org/).
 
 ---
 
-### Updating Time Servers
+### Обновление серверов времени
 
-To update the time servers, modify the `/etc/chrony.conf` file for Red Hat based
-systems, and if you use Ubuntu edit `/etc/chrony/chrony.conf`. Replace the
-existing NTP server with one closer to your location.
+Чтобы обновить серверы времени, измените файл `/etc/chrony.conf` для систем на
+базе Red Hat, а если используете Ubuntu, отредактируйте
+`/etc/chrony/chrony.conf`. Замените существующий NTP-сервер на более близкий к
+вашему местоположению.
 
-Example of the current configuration:
+Пример текущей конфигурации:
 
-!!! info "example ntp pool config"
+!!! info "пример конфигурации пула ntp"
 
     ```yaml
     # Use public servers from the pool.ntp.org project.
@@ -389,28 +390,29 @@ Example of the current configuration:
     pool be.pool.ntp.org iburst
     ```
 
-After making this change, restart the Chrony service to apply the new
-configuration:
+После внесения этих изменений перезапустите службу Chrony для применения новой
+конфигурации:
 
-!!! info "restart the chrony service"
+!!! info "перезапуск службы chrony"
 
     ```yaml
     systemctl restart chronyd
     ```
 
-### Verifying Updated Time Servers
+### Проверка обновленных серверов времени
 
-Check the time sources again to ensure that the new local servers are in use:
+Проверьте источники времени еще раз, чтобы убедиться, что новые местные серверы
+используются:
 
-!!! info "Check chrony sources"
+!!! info "Проверьте источники chrony"
 
     ```yaml
     chronyc> sources
     ```
 
-Example of expected output with local servers:
+Пример ожидаемого результата при использовании местных серверов:
 
-!!! info "Example output"
+!!! info "Пример вывода"
 
     ```yaml
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
@@ -421,28 +423,28 @@ Example of expected output with local servers:
     ^+ time.cloudflare.com           3   6    17    43
     ```
 
-This confirms that the system is now using local time servers.
+Это подтверждает, что система теперь использует местные серверы времени.
 
-## Conclusion
+## Заключение
 
-As we have seen, before even considering the Zabbix packages, attention must be
-paid to the environment in which it will reside. A properly configured operating
-system, an open path through the firewall, and accurate timekeeping are not mere
-suggestions, but essential building blocks. Having laid this groundwork, we can
-now proceed with confidence to the Zabbix installation, knowing that the
-underlying system is prepared for the task.
+Как мы уже убедились, прежде чем рассматривать пакеты Zabbix, необходимо
+обратить внимание на среду, в которой они будут находиться. Правильно
+настроенная операционная система, открытый путь через брандмауэр и точный учет
+времени - это не просто рекомендации, а важнейшие строительные блоки. Заложив
+эту основу, мы можем с уверенностью приступать к установке Zabbix, зная, что
+базовая система готова к выполнению задачи.
 
-## Questions
+## Вопросы
 
-- Why do you think accurate time synchronization is so crucial for a monitoring
-  system like Zabbix?
-- Now that the groundwork is laid, what do you anticipate will be the first step
-  in the actual Zabbix installation process?
-- As we move towards installing Zabbix, let's think about network communication.
-  What key ports do you anticipate needing to allow through the firewall for the
-  Zabbix server and agents to interact effectively?
+- Как вы думаете, почему точная синхронизация времени так важна для такой
+  системы мониторинга, как Zabbix?
+- Теперь, когда фундамент заложен, что, по вашему мнению, будет первым шагом в
+  процессе установки Zabbix?
+- Приступая к установке Zabbix, давайте подумаем о сетевом взаимодействии. Какие
+  ключевые порты необходимо разрешить через брандмауэр, чтобы сервер Zabbix и
+  агенты могли эффективно взаимодействовать?
 
-## Useful URLs
+## Полезные URL-адреса
 
 - [https://www.ntppool.org/zone](https://www.ntppool.org/zone)
 - [https://www.redhat.com/en/blog/beginners-guide-firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
