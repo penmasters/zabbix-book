@@ -46,43 +46,67 @@ Zabbix provides several JavaScript objects for script items:
 
 **Limits:** up to 10 `HttpRequest` objects per run; typical timeout ≤ 30 seconds (depending on item settings).
 
+The complete list of objects can be found here:
 [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects)
 
 ---
 
+Let's create some example scripts so that you get a better understanding of how
+it works.
+
+Create a new host in `Data collection` -> `Hosts`.
+
+- **Host name:** javascript
+- **Host groups:** JS Servers
+
+Actually name and group are not important at all in this case :) When done
+create an item on the host.
+
 ## Example 1 – Query a public API (GitHub repository stars)
 
-### Goal
-
-Return the current number of **stars** for a given GitHub repository using the REST API.
+This item will return the current number of **stars** for a given GitHub repository
+using the REST API.
 
 ---
 
 ### Item setup
 
-| Field               | Value                                                                |
-| :------------------ | :------------------------------------------------------------------- |
-| Type                | Script                                                               |
-| Key                 | `github.repo.stars`                                                  |
-| Type of information | Numeric (unsigned)                                                   |
-| Update interval     | `1h`                                                                 |
-| Timeout             | `5s`                                                                 |
-| Parameters          | `owner = zabbix`, `repo = zabbix`, `token = <optional GitHub token>` |
+| Field               | Value                                                 |
+| :------------------ | :-----------------------------------------------------|
+| Name                | Query Github Repository                               |
+| Type                | Script                                                |
+| Key                 | github.repo.stars                                     |
+| Type of information | Numeric (unsigned)                                    |
+| Unit                | Stars                                                 |
+| Update interval     | 1h                                                    |
+| Timeout             | 5s                                                    |
+| Parameters          | owner = `zabbix`, repo = `zabbix`, token = `<optional GitHub token>` |
 
 > **Note:** GitHub’s API enforces rate limits for unauthenticated requests (≈60/hour per IP).
 > Add a personal access token for higher limits.
 
----
+Add the following code in the script box of the item.
 
 ### Script
 
 ```js
-// Returns stargazers_count from GitHub REST API
-// Parameters: owner, repo, token (optional)
+// Zabbix 7.4 Script item: GitHub stars
+// Parameters (item → Parameters):
+//   owner = zabbix
+//   repo  = zabbix
+//   token = <optional PAT>
 
-var owner = parameters.owner;
-var repo  = parameters.repo;
-var token = parameters.token;
+// Parse parameters from `value` (JSON string)
+var p = {};
+try {
+  p = JSON.parse(value);   // { owner, repo, token }
+} catch (e) {
+  throw "Parameter JSON parse failed: " + e;
+}
+
+var owner = p.owner;
+var repo  = p.repo;
+var token = p.token || "";
 
 if (!owner || !repo) {
   throw "Missing 'owner' or 'repo' parameter";
@@ -98,8 +122,9 @@ if (token) {
 }
 
 var body = req.get(url);
-if (req.getStatus() !== 200) {
-  throw "GitHub API returned HTTP " + req.getStatus();
+var code = req.getStatus();
+if (code !== 200) {
+  throw "GitHub API HTTP " + code + " body=" + body;
 }
 
 var data = JSON.parse(body);
@@ -108,105 +133,68 @@ if (typeof data.stargazers_count !== "number") {
 }
 
 return data.stargazers_count;
+
 ```
 
----
+![ch04.40-script-example1.png](ch04.40-script-example1.png)
 
 ### Example trigger
 
 ```text
-{<Template/Host>:github.repo.stars.last()}=0
+last(/javascript/github.repo.stars)=0
 ```
 
-**Meaning:** Alert if the script returns 0 (indicating API or auth issue).
+In this case we get an alert if the script returns 0
 
 ---
 
-### Screenshot placeholder
+## Example 2 Public weather
 
-`![Script item - GitHub stars setup](images/scriptitem_github.png)`
-
----
-
-## Example 2 – SSL certificate expiry (days left)
-
-### Goal
-
-Return how many **days remain** before an HTTPS certificate expires, using the [SSL Labs API](https://api.ssllabs.com/).
-
-This example shows how to call a third-party API, parse a nested JSON response, and return a simple numeric value.
-
----
+In this script we call Open-Meteo and ask for for information like temperature,
+windspeed, direction based on our longitude / latitude.
 
 ### Item setup
 
+
 | Field               | Value                                                 |
-| :------------------ | :---------------------------------------------------- |
+| :------------------ | :-----------------------------------------------------|
+| Name                | Query Weather Open Meteo                              |
 | Type                | Script                                                |
-| Key                 | `ssl.days_left`                                       |
-| Type of information | Numeric (unsigned)                                    |
-| Update interval     | `6h`                                                  |
-| Timeout             | `10s`                                                 |
-| Parameters          | `host = example.com`, `fromCache = on`, `maxAge = 72` |
-
-> **Tip:** Use `fromCache=on` to retrieve cached results (instant).
-> A fresh SSL scan can take up to several minutes and exceed timeout limits.
-
----
+| Key                 | weather.openmeteo.json                                |
+| Type of information | Text                                                  |
+| Update interval     | 1h                                                    |
+| Parameters          | latitude = `50.85`, longitude = `1.35`            |
+|                     | temperature_unit = `celcius` (celsius | fahrenheit) |
+|                     | windspeed_unit = `kmh`   (kmh | ms | mph | kn)    |
 
 ### Script
 
-```js
-// Returns integer days until SSL expiry using SSL Labs API (cached).
-// Parameters: host, fromCache (on/off), maxAge (hours)
+```javascript
 
-var host = parameters.host;
-var fromCache = (parameters.fromCache || "on") === "on";
-var maxAge = parseInt(parameters.maxAge || "72", 10);
+function toNumberFixLocale(s){ if(s==null)return NaN; var t=String(s).trim().replace(",","."); return parseFloat(t); }
 
-if (!host) throw "Missing 'host' parameter";
+var p={}; try{ p=JSON.parse(value);}catch(e){ throw "Param JSON parse failed: "+e; }
 
-var url = "https://api.ssllabs.com/api/v3/analyze?host=" + encodeURIComponent(host);
-if (fromCache) url += "&fromCache=on&maxAge=" + maxAge;
+var lat=toNumberFixLocale(p.latitude), lon=toNumberFixLocale(p.longitude);
+if(isNaN(lat)||isNaN(lon)) return JSON.stringify({ok:0,status:"BAD_COORDS",note:"Use dots, e.g. 50.85 and 4.35"});
+if(lat<-90||lat>90||lon<-180||lon>180) return JSON.stringify({ok:0,status:"RANGE_ERROR"});
 
-var req = new HttpRequest();
-req.addHeader("User-Agent: zabbix-script-item");
-var resp = req.get(url);
-if (req.getStatus() !== 200) {
-  throw "SSL Labs API returned HTTP " + req.getStatus();
-}
+var tUnit=(p.temperature_unit||"celsius").toLowerCase();
+var wUnit=(p.windspeed_unit||"kmh").toLowerCase();
 
-var data = JSON.parse(resp);
-if (data.status !== "READY" || !data.endpoints || !data.endpoints.length) {
-  throw "No ready result found (try cached mode)";
-}
+var url="https://api.open-meteo.com/v1/forecast?latitude="+encodeURIComponent(lat)+"&longitude="+encodeURIComponent(lon)+"&current_weather=true&temperature_unit="+encodeURIComponent(tUnit)+"&windspeed_unit="+encodeURIComponent(wUnit)+"&timezone=auto";
 
-var endpoint = data.endpoints[0];
-if (!endpoint.details || !endpoint.details.cert || !endpoint.details.cert.notAfter) {
-  throw "No certificate info in response";
-}
+var req=new HttpRequest(); req.addHeader("User-Agent: zabbix-script-item");
+var body=req.get(url); var code=req.getStatus();
+if(code!==200) return JSON.stringify({ok:0,status:"HTTP",http:code,url:url,body:String(body).slice(0,180)});
 
-var notAfterMs = endpoint.details.cert.notAfter;
-var nowMs = Date.now();
-var daysLeft = Math.floor((notAfterMs - nowMs) / (1000 * 60 * 60 * 24));
+var j; try{ j=JSON.parse(body);}catch(e){ return JSON.stringify({ok:0,status:"BAD_JSON"}); }
+var cw=j.current_weather||j.current||null;
+if(!cw||typeof cw.temperature!=="number"||typeof cw.windspeed!=="number") return JSON.stringify({ok:0,status:"NO_CURRENT"});
 
-return daysLeft;
+return JSON.stringify({ok:1,status:"OK",temperature:cw.temperature,windspeed:cw.windspeed,winddirection:cw.winddirection,is_day:cw.is_day,time:cw.time||""});
+
 ```
-
----
-
-### Example triggers
-
-```text
-{<Template/Host>:ssl.days_left.min(1d)}<=14    → Warning
-{<Template/Host>:ssl.days_left.min(1d)}<=3     → High
-```
-
----
-
-### Screenshot placeholder
-
-`![Script item - SSL expiry](images/scriptitem_ssl.png)`
 
 ---
 
@@ -305,7 +293,7 @@ return parseInt(result, 10);
 * **Testing:** Use *“Check now”* in the item to see raw output.
 * **Logging:** Use `Zabbix.log(3, "message")` for debug output (appears in server log).
 * **Error handling:** Always `throw` errors instead of returning strings; Zabbix will mark the item as unsupported automatically.
-* **Object reuse:** Each script can create up to 10 `HttpRequest` objects—reuse one when chaining API calls.
+* **Object reuse:** Each script can create up to 10 `HttpRequest` objects reuse one when chaining API calls.
 * **Security:** Never hard-code passwords or tokens; use macros or item parameters.
 
 ---
@@ -315,10 +303,10 @@ return parseInt(result, 10);
 Use Script items when:
 
 * You need **logic, loops, or multiple API calls**.
-* You monitor **remote services** where agents aren’t available.
+* You monitor **remote services** where agents aren't available.
 * You want to prototype an integration before writing a custom plugin.
 
-For simple JSON transformations, preprocessing JavaScript might be enough—but Script items shine when you need full control.
+For simple JSON transformations, preprocessing JavaScript might be enough, but Script items shine when you need full control.
 
 ---
 
@@ -469,7 +457,7 @@ You can use Script items as “glue” between Zabbix and external systems:
 
 * **Maintenance automation:** call an external API to disable a host when a maintenance window starts.
 * **Custom SLA checks:** query an API that provides service availability stats and visualize them in Zabbix.
-* **Hybrid monitoring:** fetch metrics from cloud APIs (AWS, Azure, etc.) where direct agents aren’t feasible.
+* **Hybrid monitoring:** fetch metrics from cloud APIs (AWS, Azure, etc.) where direct agents aren't feasible.
 
 Each of these scenarios demonstrates how Script items bridge Zabbix with the outside world.
 
@@ -498,7 +486,7 @@ Each of these scenarios demonstrates how Script items bridge Zabbix with the out
 
 ### 12. Summary
 
-By mastering Script items, you’ve reached the **expert level of Zabbix data collection**.
+By mastering Script items, you've reached the **expert level of Zabbix data collection**.
 You now understand not just how to fetch and return data, but how to:
 
 * Debug effectively
@@ -531,7 +519,7 @@ Return a compact JSON payload for dependent items, so one script can feed multip
 | Timeout             | `5s`                                                                    |
 | Parameters          | `host = example.com`, `type = A`, `expect = 93.184.216.34` *(optional)* |
 
-> Tip: If you don’t want to enforce an expected value, leave `expect` empty.
+> Tip: If you don't want to enforce an expected value, leave `expect` empty.
 
 ### Script (paste as-is)
 
@@ -647,7 +635,7 @@ Create **dependent** items to parse fields from the JSON so you can alert/graph 
 
 ### Example triggers
 
-* **Broken or mismatched DNS** (fires if resolution fails or doesn’t match `expect`):
+* **Broken or mismatched DNS** (fires if resolution fails or doesn't match `expect`):
 
   ```text
   {<Template/Host>:doh.resolve.ok.last()}=0
@@ -665,8 +653,17 @@ Create **dependent** items to parse fields from the JSON so you can alert/graph 
   {<Template/Host>:doh.resolve.ok.count(10m,0,"eq")}>2
   ```
 
+??? note
+
+    In Zabbix 7.4+, Script item parameters arrive as a JSON string in value. Parse
+    it with JSON.parse(value). Older versions used a parameters object. For cross 
+    version scripts, try parameters first, then fall back to JSON.parse(value)
+
 ## Conclusion
 
 ## Questions
 
 ## Useful URLs
+
+
+
