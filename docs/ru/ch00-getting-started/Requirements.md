@@ -374,7 +374,7 @@ work
 
 Пример текущей конфигурации:
 
-!!! info "example ntp pool config"
+!!! info "пример конфигурации пула ntp"
 
     ```yaml
     # Use public servers from the pool.ntp.org project.
@@ -390,28 +390,29 @@ work
     pool be.pool.ntp.org iburst
     ```
 
-After making this change, restart the Chrony service to apply the new
-configuration:
+После внесения этих изменений перезапустите службу Chrony для применения новой
+конфигурации:
 
-!!! info "restart the chrony service"
+!!! info "перезапуск службы chrony"
 
     ```yaml
     systemctl restart chronyd
     ```
 
-### Verifying Updated Time Servers
+### Проверка обновленных серверов времени
 
-Check the time sources again to ensure that the new local servers are in use:
+Проверьте источники времени еще раз, чтобы убедиться, что новые местные серверы
+используются:
 
-!!! info "Check chrony sources"
+!!! info "Проверьте источники chrony"
 
     ```yaml
     chronyc> sources
     ```
 
-Example of expected output with local servers:
+Пример ожидаемого результата при использовании местных серверов:
 
-!!! info "Example output"
+!!! info "Пример вывода"
 
     ```yaml
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
@@ -422,28 +423,28 @@ Example of expected output with local servers:
     ^+ time.cloudflare.com           3   6    17    43
     ```
 
-This confirms that the system is now using local time servers.
+Это подтверждает, что система теперь использует местные серверы времени.
 
-## Conclusion
+## Заключение
 
-As we have seen, before even considering the Zabbix packages, attention must be
-paid to the environment in which it will reside. A properly configured operating
-system, an open path through the firewall, and accurate timekeeping are not mere
-suggestions, but essential building blocks. Having laid this groundwork, we can
-now proceed with confidence to the Zabbix installation, knowing that the
-underlying system is prepared for the task.
+Как мы уже убедились, прежде чем рассматривать пакеты Zabbix, необходимо
+обратить внимание на среду, в которой они будут находиться. Правильно
+настроенная операционная система, открытый путь через брандмауэр и точный учет
+времени - это не просто рекомендации, а важнейшие строительные блоки. Заложив
+эту основу, мы можем с уверенностью приступать к установке Zabbix, зная, что
+базовая система готова к выполнению задачи.
 
-## Questions
+## Вопросы
 
-- Why do you think accurate time synchronization is so crucial for a monitoring
-  system like Zabbix?
-- Now that the groundwork is laid, what do you anticipate will be the first step
-  in the actual Zabbix installation process?
-- As we move towards installing Zabbix, let's think about network communication.
-  What key ports do you anticipate needing to allow through the firewall for the
-  Zabbix server and agents to interact effectively?
+- Как вы думаете, почему точная синхронизация времени так важна для такой
+  системы мониторинга, как Zabbix?
+- Теперь, когда фундамент заложен, что, по вашему мнению, будет первым шагом в
+  процессе установки Zabbix?
+- Приступая к установке Zabbix, давайте подумаем о сетевом взаимодействии. Какие
+  ключевые порты необходимо разрешить через брандмауэр, чтобы сервер Zabbix и
+  агенты могли эффективно взаимодействовать?
 
-## Useful URLs
+## Полезные URL-адреса
 
 - [https://www.ntppool.org/zone](https://www.ntppool.org/zone)
 - [https://www.redhat.com/en/blog/beginners-guide-firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
