@@ -267,11 +267,10 @@ Zabbix.log(2, "Warning: unexpected API reply");
 
 When a script throws an error, Zabbix automatically marks the item as *unsupported*.
 
-
 ### 2. Using macros and secret parameters
 
 Always move credentials, tokens, and sensitive values to **item parameters** or
-**macros** rather than hardcoding them.
+**macros** rather than hard coding them.
 
 For example:
 
@@ -314,7 +313,7 @@ supported.
 
 ### 4. Caching between executions
 
-Script items don’t keep memory between runs, but you can reuse data efficiently
+Script items don't keep memory between runs, but you can reuse data efficiently
 by combining one master Script or trapper item that stores the full JSON response
 with several dependent items that extract individual fields. This isn't true caching
 inside JavaScript. It's data reuse via Zabbix history, avoiding repeated API calls.
@@ -409,30 +408,55 @@ These skills let you integrate Zabbix with virtually any system.
 
 ??? note
 
-    When a Script item is executed, Zabbix starts a Duktape JavaScript interpreter inside the server or proxy process.
-    For each check run, Zabbix injects a few built-in variables into the script’s environment — the most important one is value.
+    When a Script item is executed, Zabbix starts a Duktape JavaScript interpreter
+    inside the server or proxy process. For each check run, Zabbix injects a few
+    built-in variables into the script’s environment the most important one is
+    `value`.
 
-    value is a JSON string that contains all item parameters you defined under Parameters → Name / Value.
+    `value` is a JSON string that contains all item parameters you defined under
+    Parameters → Name / Value.
 
     Inside the script, you must parse it first:
 
-    var p = JSON.parse(value);
+    `var p = JSON.parse(value);`
 
     You can then access the parameters by name:
 
-    var host = p.host;
-    var port = p.port;
+    `var host = p.host;`
+    `var port = p.port;`
 
-    If you try to reference a parameters object (as seen in some very old examples), you will get
-    ReferenceError: identifier 'parameters' undefined
-    because the Duktape runtime does not inject such a variable anymore — all parameters are passed inside the value JSON string.
-
+    If you try to reference a `parameters` object (as seen in some very old examples),
+    you will get : `ReferenceError: identifier 'parameters' undefined` because the
+    Duktape runtime does not inject such a variable anymore. All parameters are
+    passed inside the value JSON string.
 
 ## Conclusion
 
+Script items make Zabbix remarkably flexible — they let you collect data from any
+API or service with just a few lines of JavaScript.
+While the built-in Duktape engine is synchronous and minimal, meaning no true
+parallelism or advanced JS features, it’s more than enough for lightweight
+automation and integrations.
+
+The key to using Script items effectively is efficiency: fetch once, reuse results
+through dependent items, and keep scripts small and predictable. When heavier or
+high-frequency polling is needed, move it closer to the data source with proxies
+or external collectors.
+
+With those principles in mind, Script items become your gateway between Zabbix
+and the modern API world — simple, powerful, and entirely scriptable.
+
 ## Questions
+
+* What makes Script items different from external checks or user parameters in Zabbix?
+* How are Script item parameters passed to the JavaScript environment in modern
+  Zabbix versions?
+* Why does using JSON.parse(value) make your scripts more portable?
+* How can you avoid making multiple API calls when several metrics come from the
+  same endpoint?
+* Why are global macros usually not a good choice for secrets in exported templates?
 
 ## Useful URLs
 
-
-
+* [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects)
+* [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/script](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/script)

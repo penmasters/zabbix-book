@@ -305,4 +305,11 @@ duktape
 parallelization
 rcode
 ms
+kmh
+meteo
+openmeteo
+winddir
+winddirection
+windspeed
+scriptable
 
