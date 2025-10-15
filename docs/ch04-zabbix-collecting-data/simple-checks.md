@@ -113,7 +113,7 @@ new item a name. Since this is a simple ICMP Ping to the host lets go for:
 For the key, we will have to use the built-in key
 `icmpping[<target>,<packets>,<interval>,<size>,<timeout>,<options>]`. This key accepts 6 parameters, all
 of which are optional. However, when we do not select an interface on an `icmpping` item, we
-need to fill in at least `icmpping[<target>]` for it to work. Normally `imcpping` can use the interface
+need to fill in at least `icmpping[<target>]` for it to work. Normally `icmpping` can use the interface
 IP or DNS, but since we will discuss the `Host interfaces` later in this chapter, let's use
 the parameter instead.
 
