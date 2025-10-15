@@ -195,7 +195,7 @@ work
 Чтобы установить и включить chrony - наш NTP-клиент, используйте следующую
 команду:
 
-!!! info "Install NTP client"
+!!! info "Установить NTP-клиент"
 
     Red Hat
     ```yaml
@@ -208,33 +208,33 @@ work
     sudo apt install chrony
     ```
 
-After installation, verify that Chrony is enabled and running by checking its
-status with the following command:
+После установки убедитесь, что Chrony включен и работает, проверив его состояние
+с помощью следующей команды:
 
-!!! info "Check status chronyd"
+!!! info "Проверка статуса chronyd"
 
     ```yaml
     systemctl status chronyd
     ```
 
-???+ note "what is apt or dnf"
+???+ note "что такое apt или dnf"
 
     dnf is a package manager used in Red Hat-based systems. If you're using another
     distribution, replace `dnf` with your appropriate package manager, such as `zypper`,
     `apt`, or `yum`.
 
-???+ note "what is Chrony"
+???+ note "что такое Chrony"
 
     Chrony is a modern replacement for `ntpd`, offering faster and
     more accurate time synchronization. If your OS does not support
     [Chrony](https://chrony-project.org/), consider using
     `ntpd` instead.
 
-Once Chrony is installed, the next step is to ensure the correct time zone is
-set. You can view your current time configuration using the `timedatectl`
-command:
+После установки Chrony необходимо убедиться, что установлен правильный часовой
+пояс. Просмотреть текущую конфигурацию времени можно с помощью команды
+`timedatectl`:
 
-!!! info "check the time config"
+!!! info "проверьте конфигурацию времени"
 
     ```yaml
     timedatectl
@@ -250,20 +250,20 @@ command:
     RTC in local TZ: no
     ```
 
-Ensure that the Chrony service is active (refer to the previous steps if
-needed). To set the correct time zone, first, you can list all available time
-zones with the following command:
+Убедитесь, что служба Chrony активна (при необходимости обратитесь к предыдущим
+шагам). Чтобы установить правильный часовой пояс, сначала необходимо вывести все
+доступные часовые пояса с помощью следующей команды:
 
-!!! info "list the timezones"
+!!! info "список часовых поясов"
 
     ```yaml
     timedatectl list-timezones
     ```
 
-This command will display a list of available time zones, allowing you to select
-the one closest to your location. For example:
+Эта команда отобразит список доступных часовых поясов, позволяя выбрать тот,
+который ближе всего к вашему местоположению. Например:
 
-!!! info "List of all the timezones available"
+!!! info "Список всех доступных часовых поясов"
 
     ```yaml
     Africa/Abidjan
@@ -275,18 +275,18 @@ the one closest to your location. For example:
     UTC
     ```
 
-Once you've identified your time zone, configure it using the following command:
+Определив часовой пояс, установите его с помощью следующей команды:
 
-!!! info "Set the timezone"
+!!! info "Установите часовой пояс"
 
     ```yaml
     timedatectl set-timezone Europe/Brussels
     ```
 
-To verify that the time zone has been configured correctly, use the
-`timedatectl` command again:
+Чтобы убедиться, что часовой пояс настроен правильно, снова выполните команду
+`timedatectl`:
 
-!!! info "Check the time and zone"
+!!! info "Проверьте время и часовой пояс"
 
     ```yaml
     timedatectl
@@ -312,20 +312,20 @@ To verify that the time zone has been configured correctly, use the
 
 ---
 
-### Verifying Chrony Synchronization
+### Проверка синхронизации Chrony
 
-To ensure that Chrony is synchronizing with the correct time servers, you can
-run the following command:
+Чтобы убедиться, что Chrony синхронизируется с правильными серверами времени, вы
+можете выполнить следующую команду:
 
-!!! info "Verify chrony"
+!!! info "Проверьте chrony"
 
     ```yaml
     chronyc
     ```
 
-The output should resemble:
+Выходные данные должны быть похожи на:
 
-!!! info "Verify your chrony output"
+!!! info "Проверьте вывод chrony"
 
     ```yaml
     chrony version 4.2
@@ -337,7 +337,7 @@ The output should resemble:
     chronyc>
     ```
 
-Once inside the Chrony prompt, type the following to check the sources:
+После ввода запроса Chrony введите следующее для проверки источников:
 
 !!! info ""
 
@@ -345,9 +345,9 @@ Once inside the Chrony prompt, type the following to check the sources:
     chronyc> sources
     ```
 
-Example output:
+Пример вывода:
 
-!!! info "Check your time server sources"
+!!! info "Проверьте источники своего сервера времени"
 
     ```bash
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
@@ -358,20 +358,21 @@ Example output:
     ^* leontp1.office.panq.nl        1  10   377   904  +6806ns[ +171us] +/- 2336us
     ```
 
-In this example, the NTP servers in use are located outside your local region.
-It is recommended to switch to time servers in your country or, if available, to
-a dedicated company time server. You can find local NTP servers here:
-[www.ntppool.org](https://www.ntppool.org/).
+В этом примере используемые серверы NTP расположены за пределами вашего региона.
+Рекомендуется переключиться на серверы времени в вашей стране или, если это
+возможно, на выделенный сервер времени компании. Найти местные NTP-серверы можно
+здесь: [www.ntppool.org](https://www.ntppool.org/).
 
 ---
 
-### Updating Time Servers
+### Обновление серверов времени
 
-To update the time servers, modify the `/etc/chrony.conf` file for Red Hat based
-systems, and if you use Ubuntu edit `/etc/chrony/chrony.conf`. Replace the
-existing NTP server with one closer to your location.
+Чтобы обновить серверы времени, измените файл `/etc/chrony.conf` для систем на
+базе Red Hat, а если используете Ubuntu, отредактируйте
+`/etc/chrony/chrony.conf`. Замените существующий NTP-сервер на более близкий к
+вашему местоположению.
 
-Example of the current configuration:
+Пример текущей конфигурации:
 
 !!! info "example ntp pool config"
 
