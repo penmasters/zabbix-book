@@ -43,8 +43,8 @@ Zabbix provides several JavaScript objects for script items:
 | `JSON.parse()` / `JSON.stringify()` | Handle JSON data                           |
 | `parameters.<name>`                 | Access item parameters defined in the UI   |
 
-
-**Limits:** up to 10 `HttpRequest` objects per run; typical timeout ≤ 30 seconds (depending on item settings).
+**Limits:** up to 10 `HttpRequest` objects per run; typical timeout ≤ 30 seconds
+(depending on item settings).
 
 The complete list of objects can be found here:
 [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects)
@@ -56,8 +56,8 @@ it works.
 
 Create a new host in `Data collection` -> `Hosts`.
 
-- **Host name:** javascript
-- **Host groups:** JS Servers
+* **Host name:** javascript
+* **Host groups:** JS Servers
 
 Actually name and group are not important at all in this case :) When done
 create an item on the host.
@@ -86,8 +86,6 @@ using the REST API.
 > Add a personal access token for higher limits.
 
 Add the following code in the script box of the item.
-
-### Script
 
 ```js
 // Zabbix 7.4 Script item: GitHub stars
@@ -163,11 +161,11 @@ windspeed, direction based on our longitude / latitude.
 | Key                 | weather.openmeteo.json                                |
 | Type of information | Text                                                  |
 | Update interval     | 1h                                                    |
-| Parameters          | latitude = `50.85`, longitude = `1.35`            |
-|                     | temperature_unit = `celcius` (celsius | fahrenheit) |
-|                     | windspeed_unit = `kmh`   (kmh | ms | mph | kn)    |
+| Parameters          | latitude = `50.85`, longitude = `1.35`                 |
+|                     | temperature_unit = `celcius` (celsius | fahrenheit)    |
+|                     | windspeed_unit = `kmh`   (kmh | ms | mph | kn)       |
 
-### Script
+Add the following code in the script box.
 
 ```javascript
 
@@ -196,94 +194,29 @@ return JSON.stringify({ok:1,status:"OK",temperature:cw.temperature,windspeed:cw.
 
 ```
 
----
+Next create a few dependent items that use this script as master item.
 
-## Example 3 – Zabbix API: count of problem triggers
+**Name:** Temperature
+**Key:** weather.temp
+**Type of information:** Float
+Preprocessing → JSONPath: $.temperature
 
-### Goal
+**Name:** Windspeed
+**Key:** weather.windspeed
+**Type of information:** Float
+Preprocessing → JSONPath: $.windspeed
 
-Use the **Zabbix API** to log in and return the number of triggers currently in a **PROBLEM** state.
+**Name:** Wind direction
+**Key:** weather.winddir
+**Type of information:** Unsigned
+Preprocessing → JSONPath: $.winddirection
 
-This is a classic use case for Script items: multiple API calls with logic in between.
+**Name:** Is day
+**Key:** weather.is_day
+**Type of information:** Unsigned
+JSONPath: $.is_day
 
----
-
-### Item setup
-
-| Field               | Value                                                                                  |
-| :------------------ | :------------------------------------------------------------------------------------- |
-| Type                | Script                                                                                 |
-| Key                 | `zbx.api.problem.count`                                                                |
-| Type of information | Numeric (unsigned)                                                                     |
-| Update interval     | `1m`                                                                                   |
-| Timeout             | `5s`                                                                                   |
-| Parameters          | `api_url = https://your.zabbix/api_jsonrpc.php`, `user = apiuser`, `password = secret` |
-
----
-
-### Script
-
-```js
-// Returns count of PROBLEM triggers via Zabbix API
-// Parameters: api_url, user, password
-
-function apiCall(req, url, payload) {
-  req.addHeader("Content-Type: application/json");
-  var res = req.post(url, JSON.stringify(payload));
-  if (req.getStatus() !== 200) {
-    throw "API HTTP " + req.getStatus();
-  }
-  var json = JSON.parse(res);
-  if (json.error) throw "API error: " + JSON.stringify(json.error);
-  return json.result;
-}
-
-var url = parameters.api_url;
-var user = parameters.user;
-var pass = parameters.password;
-if (!url || !user || !pass) throw "Missing parameters";
-
-var req = new HttpRequest();
-
-// 1. Login
-var auth = apiCall(req, url, {
-  jsonrpc: "2.0",
-  method: "user.login",
-  params: { user: user, password: pass },
-  id: 1
-});
-
-// 2. Get PROBLEM triggers
-var result = apiCall(req, url, {
-  jsonrpc: "2.0",
-  method: "trigger.get",
-  params: {
-    output: "triggerid",
-    filter: { value: 1 }, // value=1 means PROBLEM
-    countOutput: true
-  },
-  auth: auth,
-  id: 2
-});
-
-return parseInt(result, 10);
-```
-
----
-
-### Example trigger
-
-```text
-{<Template/Host>:zbx.api.problem.count.last()}>0
-```
-
-**Meaning:** Alert if there is at least one problem trigger on the server.
-
----
-
-### Screenshot placeholder
-
-`![Script item - Zabbix API](images/scriptitem_zabbixapi.png)`
+`![Image Placeholder](Image Placeholder)`
 
 ---
 
@@ -291,9 +224,12 @@ return parseInt(result, 10);
 
 * **Timeouts:** Keep script execution short; APIs may delay.
 * **Testing:** Use *“Check now”* in the item to see raw output.
-* **Logging:** Use `Zabbix.log(3, "message")` for debug output (appears in server log).
-* **Error handling:** Always `throw` errors instead of returning strings; Zabbix will mark the item as unsupported automatically.
-* **Object reuse:** Each script can create up to 10 `HttpRequest` objects reuse one when chaining API calls.
+* **Logging:** Use `Zabbix.log(3, "message")` for debug output (appears in server
+  or proxy log).
+* **Error handling:** Always `throw` errors instead of returning strings; Zabbix
+  will mark the item as unsupported automatically.
+* **Object reuse:** Each script can create up to 10 `HttpRequest` objects reuse
+  one when chaining API calls.
 * **Security:** Never hard-code passwords or tokens; use macros or item parameters.
 
 ---
@@ -306,13 +242,14 @@ Use Script items when:
 * You monitor **remote services** where agents aren't available.
 * You want to prototype an integration before writing a custom plugin.
 
-For simple JSON transformations, preprocessing JavaScript might be enough, but Script items shine when you need full control.
+For simple JSON transformations, preprocessing JavaScript might be enough, but
+Script items shine when you need full control.
 
 ---
 
 ## Expert techniques for Script items
 
-### 1. Debugging like a pro
+### 1. Debugging things
 
 During development, use the internal logging API to trace script behavior:
 
@@ -328,13 +265,14 @@ Zabbix.log(2, "Warning: unexpected API reply");
 * Log level `3` = informational.
 * The log lines are written to the Zabbix server or proxy log, not the frontend.
 
-When a script throws an error, Zabbix automatically marks the item as *unsupported* and stores the message for inspection.
+When a script throws an error, Zabbix automatically marks the item as *unsupported*.
 
----
 
 ### 2. Using macros and secret parameters
 
-Always move credentials, tokens, and sensitive values to **item parameters** or **macros** rather than hard-coding them.
+Always move credentials, tokens, and sensitive values to **item parameters** or
+**macros** rather than hardcoding them.
+
 For example:
 
 | Parameter | Value             |
@@ -344,9 +282,11 @@ For example:
 Then define `{$GITHUB_TOKEN}` in your host or template with **secret visibility**.
 This allows you to reuse the same script safely across environments.
 
-> **Tip:** in large environments, manage secrets via *global macros* for consistency.
+???+ tip
 
----
+    Manage secrets via *template macros* so that they are portable if you
+    export the template. Store secrets in a vault instead of the DB.
+
 
 ### 3. Error handling and fallback logic
 
@@ -367,21 +307,17 @@ catch (e) {
 }
 ```
 
-This prevents temporary API errors from spamming unsupported item events.
-
----
+This script catches any errors (network failure, bad JSON, missing .value, etc.):
+Logs the error at severity level 2 (Warning) into the Zabbix server log.
+It returns a numeric 0 instead of throwing errors, so the item remains
+supported.
 
 ### 4. Caching between executions
 
-Script items are stateless by default, but you can cache results using **trapper items** or **dependent items**.
-Pattern example:
-
-1. A Script item fetches heavy data every 10 minutes and sends it via `zabbix_sender`.
-2. Dependent items extract specific fields via preprocessing.
-
-This offloads work and avoids repetitive API calls.
-
----
+Script items don’t keep memory between runs, but you can reuse data efficiently
+by combining one master Script or trapper item that stores the full JSON response
+with several dependent items that extract individual fields. This isn't true caching
+inside JavaScript. It's data reuse via Zabbix history, avoiding repeated API calls.
 
 ### 5. Parallelization and performance considerations
 
@@ -391,11 +327,10 @@ If you have dozens of Script items that do API calls, consider:
 * Running them on a **proxy** close to the data source (reduces latency).
 * Adjusting `StartPollers` and `Timeout` in `zabbix_server.conf`.
 * Avoiding heavy JSON parsing or unnecessary loops.
-* Using asynchronous APIs only when truly needed — Duktape executes synchronously.
+* Using asynchronous APIs only when truly needed. Duktape executes synchronously.
 
-A single bad Script item can block a poller for its entire timeout period, so always test and tune.
-
----
+A single bad Script item can block a poller for its entire timeout period, so always
+test and tune.
 
 ### 6. Returning structured data
 
@@ -412,19 +347,19 @@ return JSON.stringify({
 
 Then create dependent items with JSONPath like:
 
-```
+```json
 $.cpu_usage
 $.mem_usage
 $.disk_free
 ```
 
-This allows one Script item to feed many dependent metrics — a professional optimization pattern.
-
----
+This allows one Script item to feed many dependent metrics. A professional optimization
+pattern.
 
 ### 7. Combining script items with preprocessing JavaScript
 
-Advanced users often pair a Script item that performs heavy retrieval with preprocessing JavaScript that performs lightweight normalization.
+Advanced users often pair a Script item that performs heavy retrieval with preprocessing
+JavaScript that performs lightweight normalization.
 
 Example:
 
@@ -438,32 +373,17 @@ Example:
 
 This separates responsibilities and makes troubleshooting easier.
 
----
-
 ### 8. Controlling execution context
 
-Script items always run **on the poller process** of either the Zabbix server or proxy.
-Understanding this helps when debugging:
+Script items always run **on the poller process** of either the Zabbix server or
+proxy. Understanding this helps when debugging:
 
 * If an item runs on a **proxy**, it has network access only from the proxy’s location.
 * You can **force** execution on a proxy by assigning the host to that proxy.
 * Logs for script execution appear in the respective poller’s log file.
 
----
 
-### 9. Integrating with other Zabbix components
-
-You can use Script items as “glue” between Zabbix and external systems:
-
-* **Maintenance automation:** call an external API to disable a host when a maintenance window starts.
-* **Custom SLA checks:** query an API that provides service availability stats and visualize them in Zabbix.
-* **Hybrid monitoring:** fetch metrics from cloud APIs (AWS, Azure, etc.) where direct agents aren't feasible.
-
-Each of these scenarios demonstrates how Script items bridge Zabbix with the outside world.
-
----
-
-### 10. Best practice checklist
+### 9. Best practice checklist
 
 ✅ Keep scripts short (<200 lines).
 ✅ Always handle HTTP status codes and JSON errors.
@@ -473,16 +393,6 @@ Each of these scenarios demonstrates how Script items bridge Zabbix with the out
 ✅ Test interactively in the frontend with *“Check now”*.
 ✅ Document the purpose and return type at the top of each script.
 
----
-
-### 11. Exercises for the reader
-
-1. Extend the GitHub example to also return **open issue count**.
-2. Modify the SSL script to alert when certificates use weak cipher suites.
-3. Adapt the Zabbix API script to list **unacknowledged problems only**.
-4. Create one Script item that returns both Zabbix host count and problem count in JSON, and build dependent items from it.
-
----
 
 ### 12. Summary
 
@@ -495,169 +405,28 @@ You now understand not just how to fetch and return data, but how to:
 * Optimize poller usage
 * Reuse scripts for multiple metrics
 
-These skills let you integrate Zabbix with virtually any system that exposes an API — a hallmark of an advanced monitoring engineer.
-
-awesome — here’s the **polished, final expert edition** of the DoH example. it adds timing, informational logs, structured JSON output (for dependent items), input validation, and graceful fallback — all in a compact, production-ready script.
-
----
-
-## Advanced real-world example — DNS over HTTPS health (expert edition)
-
-### Goal
-
-Query **Google DoH** (`https://dns.google/resolve`) to verify a record and measure **latency**.
-Return a compact JSON payload for dependent items, so one script can feed multiple metrics.
-
-### Item setup (script)
-
-| Field               | Value                                                                   |
-| ------------------- | ----------------------------------------------------------------------- |
-| Type                | Script                                                                  |
-| Key                 | `doh.resolve.json`                                                      |
-| Type of information | **Text** (JSON)                                                         |
-| Update interval     | `1m`                                                                    |
-| Timeout             | `5s`                                                                    |
-| Parameters          | `host = example.com`, `type = A`, `expect = 93.184.216.34` *(optional)* |
-
-> Tip: If you don't want to enforce an expected value, leave `expect` empty.
-
-### Script (paste as-is)
-
-```js
-// DNS over HTTPS (Google) expert check
-// Returns JSON: { ok: 0|1, ms: <latency>, answers: <count>, matched: 0|1, status: <rcode>, msg: <string> }
-// Params: host (required), type [A|AAAA|CNAME|MX|TXT|NS|SOA], expect (optional exact match)
-
-function normalizeRRData(v) {
-  // Normalize trailing dots for names (CNAME/MX/NS/SOA), leave IPs as-is
-  return String(v).trim().replace(/\.$/, "");
-}
-
-var host = parameters.host;
-var rrtype = parameters.type || "A";
-var expect = (parameters.expect || "").trim();
-
-// Guard rails
-if (!host) throw "Missing 'host' parameter";
-var allowed = {A:1, AAAA:1, CNAME:1, MX:1, TXT:1, NS:1, SOA:1};
-if (!allowed[rrtype]) rrtype = "A";
-
-var url = "https://dns.google/resolve?name=" + encodeURIComponent(host) +
-          "&type=" + encodeURIComponent(rrtype);
-
-var req = new HttpRequest();
-req.addHeader("User-Agent: zabbix-script-item");
-
-var t0 = Date.now();
-var body = req.get(url);
-var ms = Date.now() - t0;
-
-var statusCode = req.getStatus();
-if (statusCode !== 200) {
-  Zabbix.log(2, "DoH HTTP " + statusCode + " for " + host + " type=" + rrtype);
-  return JSON.stringify({ ok: 0, ms: ms, answers: 0, matched: 0, status: -1, msg: "http_" + statusCode });
-}
-
-var json;
-try {
-  json = JSON.parse(body);
-} catch (e) {
-  Zabbix.log(2, "Invalid JSON from DoH: " + e);
-  return JSON.stringify({ ok: 0, ms: ms, answers: 0, matched: 0, status: -2, msg: "invalid_json" });
-}
-
-// RFC 1035 RCODE: 0=NOERROR, 3=NXDOMAIN, etc.
-var rcode = (typeof json.Status === "number") ? json.Status : -9;
-var answers = Array.isArray(json.Answer) ? json.Answer.length : 0;
-
-// Determine ok/matched
-var ok = (rcode === 0 && answers > 0) ? 1 : 0;
-var matched = 0;
-
-if (ok && expect) {
-  var want = normalizeRRData(expect);
-  for (var i = 0; i < json.Answer.length; i++) {
-    var got = normalizeRRData(json.Answer[i].data);
-    if (got === want) { matched = 1; break; }
-  }
-  // If an expectation is provided, "ok" should mean "we resolved AND matched"
-  if (!matched) ok = 0;
-}
-
-var msg = (ok ? "ok" : (rcode === 3 ? "nxdomain" : "not_ok"));
-Zabbix.log(3, "DoH " + host + " type=" + rrtype + " ok=" + ok + " matched=" + matched + " ms=" + ms);
-
-return JSON.stringify({
-  ok: ok,
-  ms: ms,
-  answers: answers,
-  matched: matched,
-  status: rcode,
-  msg: msg
-});
-```
-
-### Dependent items (recommended)
-
-Create **dependent** items to parse fields from the JSON so you can alert/graph cleanly:
-
-1. **DoH OK**
-
-* Type: Dependent item
-* Key: `doh.resolve.ok`
-* Master item: `doh.resolve.json`
-* Preprocessing: *JSONPath* → `$.ok`
-* Type of information: Numeric (unsigned)
-
-2. **Latency (ms)**
-
-* Key: `doh.resolve.ms`
-* JSONPath: `$.ms`
-* Type: Numeric (unsigned)
-
-3. **Answers count**
-
-* Key: `doh.resolve.answers`
-* JSONPath: `$.answers`
-* Type: Numeric (unsigned)
-
-4. **Matched** (only relevant if you use `expect`)
-
-* Key: `doh.resolve.matched`
-* JSONPath: `$.matched`
-* Type: Numeric (unsigned)
-
-5. **Status/rcode** (optional)
-
-* Key: `doh.resolve.status`
-* JSONPath: `$.status`
-* Type: Numeric (unsigned)
-
-### Example triggers
-
-* **Broken or mismatched DNS** (fires if resolution fails or doesn't match `expect`):
-
-  ```text
-  {<Template/Host>:doh.resolve.ok.last()}=0
-  ```
-
-* **DNS latency high** (e.g., > 500 ms):
-
-  ```text
-  {<Template/Host>:doh.resolve.ms.min(5m)}>500
-  ```
-
-* **Flapping detection** (intermittent failures):
-
-  ```text
-  {<Template/Host>:doh.resolve.ok.count(10m,0,"eq")}>2
-  ```
+These skills let you integrate Zabbix with virtually any system.
 
 ??? note
 
-    In Zabbix 7.4+, Script item parameters arrive as a JSON string in value. Parse
-    it with JSON.parse(value). Older versions used a parameters object. For cross 
-    version scripts, try parameters first, then fall back to JSON.parse(value)
+    When a Script item is executed, Zabbix starts a Duktape JavaScript interpreter inside the server or proxy process.
+    For each check run, Zabbix injects a few built-in variables into the script’s environment — the most important one is value.
+
+    value is a JSON string that contains all item parameters you defined under Parameters → Name / Value.
+
+    Inside the script, you must parse it first:
+
+    var p = JSON.parse(value);
+
+    You can then access the parameters by name:
+
+    var host = p.host;
+    var port = p.port;
+
+    If you try to reference a parameters object (as seen in some very old examples), you will get
+    ReferenceError: identifier 'parameters' undefined
+    because the Duktape runtime does not inject such a variable anymore — all parameters are passed inside the value JSON string.
+
 
 ## Conclusion
 
