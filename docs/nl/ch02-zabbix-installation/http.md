@@ -8,7 +8,7 @@ monitoring omgeving. tags: [advanced]
 
 # HTTP
 
-HTTP-authenticatie is een van de externe authenticatiemethoden die Zabbix biedt
+HTTP authenticatie is een van de externe authenticatiemethoden die Zabbix biedt
 en kan worden gebruikt om je Zabbix WebUI extra te beveiligen met een
 basisauthenticatiemechanisme op HTTP-serverniveau.
 
