@@ -1,9 +1,11 @@
 ---
-description : | Ce chapitre du livre Zabbix, intitulé " Frontend Installation ",
-fournit un guide étape par étape pour configurer l'interface web de Zabbix.
-Apprenez à installer les paquets nécessaires, à configurer PHP et à intégrer
-Apache ou Nginx pour obtenir une interface de surveillance sécurisée et
-entièrement fonctionnelle. tags : [beginner]
+description: |\
+Ce chapitre du livre Zabbix, intitulé " Frontend Installation ", fournit un
+guide étape par étape pour configurer l'interface web de Zabbix. Apprenez à
+installer les paquets nécessaires, à configurer PHP et à intégrer Apache ou
+Nginx pour obtenir une interface de surveillance sécurisée et entièrement
+fonctionnelle.\
+tags: [beginner]
 ---
 
 # Frontend expliqué
@@ -382,7 +384,7 @@ _2.18 Administration menu_
     module created by one of the Zabbix developers `UI Twix` will solve this problem
     for you.
 
-???+ note
+???+ Note
 
     At time of writing there is no Dashboard import/export functionality in zabbix.
     So when upgrading dashboards it needs to be created by hand. It was on the roadmap
