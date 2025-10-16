@@ -1,8 +1,8 @@
 ---
 description : | Apprendre la configuration requise pour Zabbix : OS supporté,
 options de base de données, spécifications matérielles, ports de pare-feu, et
-synchronisation temporelle nécessaire pour une installation en douceur. tags :
-[débutant]
+synchronisation du temps nécessaire pour une installation en douceur. tags :
+[beginner]
 ---
 
 # Prérequis système
