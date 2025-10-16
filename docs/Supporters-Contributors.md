@@ -30,9 +30,13 @@ valuable for the monitoring and open-source communities.
 - Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
 - Aigars Kadikis : [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
 
+A list of all the contributors who where so kind to fix typos etc .. can be found here :
+[https://github.com/penmasters/zabbix-book/graphs/contributors](https://github.com/penmasters/zabbix-book/graphs/contributors)
+
 ### Translators
 
 - Nicolas Hermel : [https://github.com/wityender](https://github.com/wityender)
+- Dimitry Q : [https://github.com/krotesk](https://github.com/krotesk)
 
 ---
 
