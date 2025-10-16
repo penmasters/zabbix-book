@@ -68,7 +68,7 @@ de l'écran et ressemble à 4 flèches pointant vers chaque coin de l'écran. En
 appuyant sur ce bouton, tous les menus disparaissent et il ne reste plus que la
 `fenêtre principale` sur laquelle vous pouvez vous concentrer.
 
-![Expand](ch02-frontend-expand.png)
+![Développer](ch02-frontend-expand.png)
 
 _2.4 Élargir_
 
@@ -76,7 +76,7 @@ Lorsque nous voulons quitter le mode kiosque, le bouton sera remplacé par 2
 flèches pointant vers l'intérieur de l'écran. En appuyant sur ce bouton, nous
 reviendrons à l'état d'origine.
 
-![Expand](ch02-frontend-shrink.png)
+![Développer](ch02-frontend-shrink.png)
 
 _2.5 Réduire_
 
