@@ -300,3 +300,17 @@ wityender
 seo
 varbinds
 linkdown
+corosync
+duktape
+parallelization
+rcode
+ms
+kmh
+kn
+meteo
+openmeteo
+winddir
+winddirection
+windspeed
+scriptable
+
