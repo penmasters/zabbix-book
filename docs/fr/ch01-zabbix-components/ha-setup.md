@@ -1,7 +1,9 @@
 ---
-description : | Configurer Zabbix High Availability avec des serveurs en
-cluster, une base de données partagée, et Keepalived pour un basculement VIP
-assurant une surveillance sans interruption de service. tags : [expert]
+description: |\
+Configurer Zabbix High Availability avec des serveurs en cluster, une base de
+données partagée, et Keepalived pour un basculement VIP assurant une
+surveillance sans interruption de service.\
+tags: [expert]
 ---
 
 # Configuration HA
