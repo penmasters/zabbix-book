@@ -164,7 +164,7 @@ que votre système d'exploitation est à jour avec les derniers patchs et
 correctifs de sécurité. Cela permettra de maintenir la stabilité du système et
 la compatibilité avec le logiciel que vous êtes sur le point d'installer.
 
-To update your OS, run the following command:
+Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
 
 !!! info "Mise à jour OS"
 
@@ -649,7 +649,7 @@ commands.
     sudo apt install postgresql-17
     ```
 
-To update your OS, run the following command:
+Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
 
 !!! info "update the OS"
 
