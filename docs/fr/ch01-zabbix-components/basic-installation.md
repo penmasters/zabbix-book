@@ -1,7 +1,7 @@
 ---
-description: | Step‑by‑step guide to install Zabbix with MariaDB or PostgreSQL,
-setup server & frontend on Ubuntu or Rocky Linux, including security & repo
-configuration. tags: [beginner]
+description : | Guide pas à pas pour installer Zabbix avec MariaDB ou
+PostgreSQL, configurer le serveur et le frontend sur Ubuntu ou Rocky Linux, y
+compris la sécurité et la configuration du dépôt. tags : [beginner]
 ---
 
 # Installation de base
@@ -116,7 +116,7 @@ Cela ouvrira un éditeur de texte dans lequel vous pourrez saisir les détails d
 la configuration du dépôt. Une fois le dépôt configuré, vous pouvez procéder à
 l'installation de MariaDB en utilisant votre gestionnaire de paquets.
 
-???+ tip
+???+ astuces
 
     Always check Zabbix documentation for the latest supported versions.
 
@@ -164,7 +164,7 @@ que votre système d'exploitation est à jour avec les derniers patchs et
 correctifs de sécurité. Cela permettra de maintenir la stabilité du système et
 la compatibilité avec le logiciel que vous êtes sur le point d'installer.
 
-To update your OS, run the following command:
+Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
 
 !!! info "Mise à jour OS"
 
@@ -469,7 +469,7 @@ utilisateurs non root"
 A ce stade, votre base de données Zabbix est prête, et vous pouvez procéder à la
 configuration du serveur Zabbix pour qu'il se connecte à la base de données.
 
-???+ warning
+???+ avertissement
 
     In the Zabbix documentation, it is explicitly stated that deterministic
     triggers need to be created during the schema import. On MySQL and MariaDB
@@ -515,9 +515,9 @@ nous devons également ouvrir le port de notre pare-feu.
 
 ### Remplir la base de données MariaDB de Zabbix
 
-With the users and permissions set up correctly, you can now populate the
-database with the Zabbix schema created and other required elements. Follow
-these steps:
+Avec les utilisateurs et les permissions configurés correctement, vous pouvez
+maintenant remplir la base de données avec le schéma Zabbix créé et d'autres
+éléments requis. Suivez les étapes suivantes :
 
 Une des premières choses à faire est d'ajouter le dépôt Zabbix à notre machine.
 Cela peut sembler bizarre mais c'est en fait logique car nous avons besoin de
@@ -649,7 +649,7 @@ commands.
     sudo apt install postgresql-17
     ```
 
-To update your OS, run the following command:
+Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
 
 !!! info "update the OS"
 
@@ -964,14 +964,14 @@ with the database. First, we grant `USAGE` privileges on the schema to allow
 Now, the `zabbix-web` user has appropriate access to interact with the schema
 while maintaining security by limiting permissions to essential operations.
 
-With the users and permissions set up correctly, you can now populate the
-database with the Zabbix schema created and other required elements. Follow
-these steps:
+Avec les utilisateurs et les permissions configurés correctement, vous pouvez
+maintenant remplir la base de données avec le schéma Zabbix créé et d'autres
+éléments requis. Suivez les étapes suivantes :
 
 - Execute the SQL file to populate the database. Run the following command in
   the `psql` shell:
 
-???+ warning
+???+ avertissement
 
     Make sure you did previous steps carefully so that you have selected the correct
     search_path.
@@ -982,7 +982,7 @@ these steps:
     sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
     ```
 
-???+ warning
+???+ avertissement
 
     Depending on your hardware or VM performance, this process can take anywhere
     from a few seconds to several minutes. Please be patient and avoid cancelling
@@ -1298,7 +1298,7 @@ the following statement to disable the EPEL repository by default:
     excludepkgs=zabbix*
     ```
 
-???+ tip
+???+ astuces
 
     It's considered bad practice to keep the EPEL repository enabled all the time,
     as it may cause conflicts by unintentionally overwriting or installing unwanted
@@ -1699,7 +1699,7 @@ the following statement to disable the EPEL repository by default:
     excludepkgs=zabbix*
     ```
 
-???+ tip
+???+ astuces
 
     It's considered bad practice to keep the EPEL repository enabled all the time,
     as it may cause conflicts by unintentionally overwriting or installing unwanted
