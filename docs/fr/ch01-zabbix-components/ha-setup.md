@@ -315,7 +315,7 @@ lignes suivantes :
     }
     ```
 
-???+ warning
+???+ avertissement
 
     Replace `enp0s1` with the interface name of your machine and replace the `password`
     with something secure. For the virtual_ipaddress use a free IP from your network.
@@ -416,11 +416,12 @@ utilisez les commandes suivantes :
 ### Configurer le serveur web
 
 Le processus d'installation du frontend suit les mêmes étapes que celles
-décrites dans la section `Basic Installation` sous [Installing the
-Frontend](basic-installation.md/#installing-the-frontend). En adhérant à ces
-procédures établies, nous assurons la cohérence et la fiabilité du déploiement.
+décrites dans la section `Installation de base` sous [Installation du
+frontend](basic-installation.md/#installing-the-frontend). En utilisant des
+procédures pré-établies, nous assurons la cohérence et la fiabilité du
+déploiement.
 
-???+ warning
+???+ avertissement
 
     Ubuntu users need to use the VIP in the setup of Nginx, together with the local
     IP in the listen directive of the config.
@@ -469,7 +470,7 @@ menu. At the bottom of the page, you should see a list of servers, with at least
 one marked as active. The number of servers displayed will depend on the total
 configured in your HA setup.
 
-![1st active frontend](ha-setup/ch01-HA-check1.png)
+![1er frontend actif](ha-setup/ch01-HA-check1.png)
 
 _1.2 verify HA_
 
