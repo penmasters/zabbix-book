@@ -415,10 +415,10 @@ utilisez les commandes suivantes :
 
 ### Configurer le serveur web
 
-The setup process for the frontend follows the same steps outlined in the `Basic
-Installation` section under [Installing the
-Frontend](basic-installation.md/#installing-the-frontend). By adhering to these
-established procedures, we ensure consistency and reliability in the deployment.
+Le processus d'installation du frontend suit les mêmes étapes que celles
+décrites dans la section `Basic Installation` sous [Installing the
+Frontend](basic-installation.md/#installing-the-frontend). En adhérant à ces
+procédures établies, nous assurons la cohérence et la fiabilité du déploiement.
 
 ???+ warning
 
