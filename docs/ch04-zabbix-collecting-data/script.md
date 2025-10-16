@@ -12,11 +12,10 @@ multiple API calls, or data manipulation that's too complex for simple preproces
 **Script items** fill that gap, they run JavaScript directly on the Zabbix Server
 or Proxy and can fetch, process, and return data exactly how you need it.
 
-In this chapter, we'll explore what script items can do through **three working examples**:
+In this chapter, we'll explore what script items can do through **two working examples**:
 
 1. Checking GitHub repository stars via public API
-2. Monitoring SSL certificate expiry using the SSL Labs API
-3. Querying the Zabbix API for problem triggers
+2. Querying the public weather page Open-Meteo
 
 ---
 
@@ -46,7 +45,7 @@ Zabbix provides several JavaScript objects for script items:
 **Limits:** up to 10 `HttpRequest` objects per run; typical timeout ≤ 30 seconds
 (depending on item settings).
 
-The complete list of objects can be found here:
+The complete list of objects can be found in the official Zabbix documentation:
 [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects)
 
 ---
@@ -80,7 +79,9 @@ using the REST API.
 | Unit                | Stars                                                 |
 | Update interval     | 1h                                                    |
 | Timeout             | 5s                                                    |
-| Parameters          | owner = `zabbix`, repo = `zabbix`, token = `<optional GitHub token>` |
+| Parameters          | owner = `zabbix`                                      |
+|                     | repo = `zabbix`                                       |
+|                     | token = `<optional Github token>`                      |
 
 > **Note:** GitHub’s API enforces rate limits for unauthenticated requests (≈60/hour per IP).
 > Add a personal access token for higher limits.
@@ -88,7 +89,6 @@ using the REST API.
 Add the following code in the script box of the item.
 
 ```js
-// Zabbix 7.4 Script item: GitHub stars
 // Parameters (item → Parameters):
 //   owner = zabbix
 //   repo  = zabbix
@@ -161,13 +161,17 @@ windspeed, direction based on our longitude / latitude.
 | Key                 | weather.openmeteo.json                                |
 | Type of information | Text                                                  |
 | Update interval     | 1h                                                    |
-| Parameters          | latitude = `50.85`, longitude = `1.35`                 |
-|                     | temperature_unit = `celcius` (celsius | fahrenheit)    |
-|                     | windspeed_unit = `kmh`   (kmh | ms | mph | kn)       |
+| Parameters          | latitude = `50.85`, longitude = `4.7`                |
+|                     | temperature_unit = `celcius` (celsius / fahrenheit)    |
+|                     | windspeed_unit = `kmh`   (kmh / ms / mph / kn)       |
 
 Add the following code in the script box.
 
-```javascript
+```js
+// Parameters (item → Parameters):
+//   latitude = zabbix
+//   temperaature_unit  = zabbix
+//   windspeed_unit = <optional PAT>
 
 function toNumberFixLocale(s){ if(s==null)return NaN; var t=String(s).trim().replace(",","."); return parseFloat(t); }
 
@@ -193,30 +197,40 @@ if(!cw||typeof cw.temperature!=="number"||typeof cw.windspeed!=="number") return
 return JSON.stringify({ok:1,status:"OK",temperature:cw.temperature,windspeed:cw.windspeed,winddirection:cw.winddirection,is_day:cw.is_day,time:cw.time||""});
 
 ```
+![ch04.42-script-example2.png](ch04.42-script-example2.png)
 
 Next create a few dependent items that use this script as master item.
 
-**Name:** Temperature
-**Key:** weather.temp
-**Type of information:** Float
-Preprocessing → JSONPath: $.temperature
+| Field                | Value                    |
+| :------------------  | :-------------------     |
+| **Name:**            | Temperature              |
+| **Key:**             | weather.temp              |
+| **Type of information:** | Float                 |
+| Preprocessing        |JSONPath: -> $.temperature |
 
-**Name:** Windspeed
-**Key:** weather.windspeed
-**Type of information:** Float
-Preprocessing → JSONPath: $.windspeed
+| Field                | Value                    |
+| :------------------  | :-------------------     |
+| **Name:**            | Windspeed                  |
+| **Key:**             | weather.windspeed              |
+| **Type of information:** | Float                 |
+| Preprocessing        |JSONPath: -> $.windspeed        |
 
-**Name:** Wind direction
-**Key:** weather.winddir
-**Type of information:** Unsigned
-Preprocessing → JSONPath: $.winddirection
+| Field                | Value                    |
+| :------------------  | :-------------------     |
+| **Name:**            | Wind direction                 |
+| **Key:**             | weather.winddir                |
+| **Type of information:** | Unsigned                 |
+| Preprocessing        |JSONPath: -> $.winddirection      |
 
-**Name:** Is day
-**Key:** weather.is_day
-**Type of information:** Unsigned
-JSONPath: $.is_day
+| Field                | Value                    |
+| :------------------  | :-------------------     |
+| **Name:**            | Is day                   |
+| **Key:**             | weather.is_day           |
+| **Type of information:** | Unsigned                 |
+| Preprocessing        |JSONPath: -> $.is_day      |
 
-`![Image Placeholder](Image Placeholder)`
+
+![ch04.41-script-example2.png](ch04.41-script-example2.png)
 
 ---
 
@@ -259,11 +273,11 @@ Zabbix.log(3, "Info: token received successfully");
 Zabbix.log(2, "Warning: unexpected API reply");
 ```
 
-**Tip:**
+???+ tip
 
-* Log level `4` = debug, visible only if the server log level ≥4.
-* Log level `3` = informational.
-* The log lines are written to the Zabbix server or proxy log, not the frontend.
+    - Log level `4` = debug, visible only if the server log level ≥4.
+    - Log level `3` = informational.
+    - The log lines are written to the Zabbix server or proxy log, not the frontend.
 
 When a script throws an error, Zabbix automatically marks the item as *unsupported*.
 
@@ -384,13 +398,13 @@ proxy. Understanding this helps when debugging:
 
 ### 9. Best practice checklist
 
-✅ Keep scripts short (<200 lines).
-✅ Always handle HTTP status codes and JSON errors.
-✅ Use parameters or macros for configuration.
-✅ Log at `Zabbix.log(3, ...)` for operations and `Zabbix.log(4, ...)` for debugging.
-✅ Reuse a single `HttpRequest` object per script.
-✅ Test interactively in the frontend with *“Check now”*.
-✅ Document the purpose and return type at the top of each script.
+* ✅ Keep scripts short (<200 lines).
+* ✅ Always handle HTTP status codes and JSON errors.
+* ✅ Use parameters or macros for configuration.
+* ✅ Log at `Zabbix.log(3, ...)` for operations and `Zabbix.log(4, ...)` for debugging.
+* ✅ Reuse a single `HttpRequest` object per script.
+* ✅ Test interactively in the frontend with *“Check now”*.
+* ✅ Document the purpose and return type at the top of each script.
 
 
 ### 12. Summary
@@ -406,7 +420,7 @@ You now understand not just how to fetch and return data, but how to:
 
 These skills let you integrate Zabbix with virtually any system.
 
-??? note
+???+ note
 
     When a Script item is executed, Zabbix starts a Duktape JavaScript interpreter
     inside the server or proxy process. For each check run, Zabbix injects a few

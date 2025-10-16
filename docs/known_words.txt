@@ -306,6 +306,7 @@ parallelization
 rcode
 ms
 kmh
+kn
 meteo
 openmeteo
 winddir
