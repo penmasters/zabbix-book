@@ -17,8 +17,6 @@ In this chapter, we'll explore what script items can do through **two working ex
 1. Checking GitHub repository stars via public API
 2. Querying the public weather page Open-Meteo
 
----
-
 ## Understanding Script items
 
 Script items execute JavaScript in the Zabbix backend using the built-in Duktape
@@ -48,8 +46,6 @@ Zabbix provides several JavaScript objects for script items:
 The complete list of objects can be found in the official Zabbix documentation:
 [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects)
 
----
-
 Let's create some example scripts so that you get a better understanding of how
 it works.
 
@@ -61,12 +57,12 @@ Create a new host in `Data collection` -> `Hosts`.
 Actually name and group are not important at all in this case :) When done
 create an item on the host.
 
+---
+
 ## Example 1 – Query a public API (GitHub repository stars)
 
 This item will return the current number of **stars** for a given GitHub repository
 using the REST API.
-
----
 
 ### Item setup
 
