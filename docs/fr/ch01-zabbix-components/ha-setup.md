@@ -465,11 +465,12 @@ au sein du cluster.
 
 ### Vérifier le bon fonctionnement
 
-To verify that the setup is functioning correctly, access your `Zabbix server`
-using the Virtual IP (VIP). Navigate to Reports → System Information in the
-menu. At the bottom of the page, you should see a list of servers, with at least
-one marked as active. The number of servers displayed will depend on the total
-configured in your HA setup.
+Pour vérifier que la configuration fonctionne correctement, accédez à votre
+serveur `Zabbix` en utilisant l'IP virtuelle (VIP). Naviguez vers Rapports →
+Informations sur le système dans le menu. Au bas de la page, vous devriez voir
+une liste de serveurs, dont au moins un est marqué comme actif. Le nombre de
+serveurs affichés dépend du nombre total de serveurs configurés dans votre
+configuration HA.
 
 ![1er frontend actif](ha-setup/ch01-HA-check1.png)
 
