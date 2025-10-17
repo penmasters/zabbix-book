@@ -317,7 +317,7 @@ lignes suivantes :
     }
     ```
 
-???+ avertissement
+???+ warning
 
     Replace `enp0s1` with the interface name of your machine and replace the `password`
     with something secure. For the virtual_ipaddress use a free IP from your network.
@@ -423,7 +423,7 @@ frontend](basic-installation.md/#installing-the-frontend). En utilisant des
 procédures pré-établies, nous assurons la cohérence et la fiabilité du
 déploiement.
 
-???+ avertissement
+???+ warning
 
     Ubuntu users need to use the VIP in the setup of Nginx, together with the local
     IP in the listen directive of the config.
