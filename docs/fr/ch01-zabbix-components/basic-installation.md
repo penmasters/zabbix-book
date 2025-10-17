@@ -607,7 +607,7 @@ Le tableau de compatibilité se trouve à l'adresse suivante :
 Commençons donc par configurer notre dépôt PostgreSQL avec les commandes
 suivantes.
 
-!!! info "Ajouter le dépôt PostgreSQL"
+! !! info "Ajouter un repo PostgreSQL"
 
     Red Hat
     ``` yaml
