@@ -591,7 +591,7 @@ Pour l'installation de notre base de données avec PostgreSQL, nous devons
 d'abord ajouter notre dépôt PostgreSQL au système. A ce jour, PostgreSQL 13-17
 est supporté mais le mieux est de jeter un coup d'œil avant de l'installer car
 de nouvelles versions peuvent être supportées et d'autres plus anciennes peuvent
-ne pas l'être par Zabbix et PostgreSQL. En général, c'est une bonne idée
+ne plus l'être par Zabbix et PostgreSQL. En général, c'est une bonne idée
 d'utiliser la dernière version supportée par Zabbix. Zabbix supporte également
 l'extension TimescaleDB dont nous parlerons plus tard. Comme vous le verrez,
 l'installation de PostgreSQL est très différente de celle de MySQL, tant au
@@ -607,7 +607,7 @@ Le tableau de compatibilité se trouve à l'adresse suivante :
 Commençons donc par configurer notre dépôt PostgreSQL avec les commandes
 suivantes.
 
-! !! info "Ajouter un repo PostgreSQL"
+!!! info "Ajouter le dépôt PostgreSQL"
 
     Red Hat
     ``` yaml
