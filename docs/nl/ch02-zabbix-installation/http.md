@@ -39,9 +39,9 @@ Waarschuwing
 
 ## Basisauthenticatie in Nginx
 
-Find `location / {` block in Nginx configuration file that defines your Zabbix
-WebUI (in my Zabbix deployment it is `/etc/nginx/conf.d/nginx.conf` file) and
-add these two lines:
+Zoek `location / {` block in Nginx configuratiebestand dat je Zabbix WebUI
+definieert (in mijn Zabbix implementatie is dat `/etc/nginx/conf.d/nginx.conf`
+bestand) en voeg deze twee regels toe:
 
 ```
     location / {
@@ -51,19 +51,20 @@ add these two lines:
     }
 ```
 
-Do not forget to restart Nginx service after making this change.
+Vergeet niet om de Nginx service te herstarten na het maken van deze wijziging.
 
-Then you need to create `/etc/nginx/httpauth` file which will keep all users'
-password (make sure to restrict access to this file). Format of this file is
-`username:hashed_password`, for example, for users `Admin` and `test`:
+Dan moet je het bestand `/etc/nginx/httpauth` aanmaken dat het wachtwoord van
+alle gebruikers bijhoudt (zorg ervoor dat je de toegang tot dit bestand
+beperkt). Het formaat van dit bestand is `gebruikersnaam:hashed_wachtwoord`,
+bijvoorbeeld voor gebruikers `Admin` en `test`:
 
 ```
 Admin:$1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
 test:$1$GXoDIOCA$u/n1kkDeFwcI4KhyHkY6p/
 ```
 
-To generate hashed_password you can use `openssl` tool entering the password
-twice:
+Om hashed_password te genereren kun je `openssl` gebruiken en het wachtwoord
+twee keer in te voeren:
 ```
 openssl passwd
 Password:
@@ -71,7 +72,7 @@ Verifying - Password:
 $1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
 ```
 
-## Basic authentication in Apache HTTPD
+## Basisverificatie in Apache HTTPD
 
 Find `<Directory "/usr/share/zabbix">` block in Apache HTTPD configuration file
 that defines your Zabbix WebUI (in my case it is `/etc/zabbix/apache.conf`) and
