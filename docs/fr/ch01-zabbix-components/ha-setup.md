@@ -476,12 +476,12 @@ configuration HA.
 
 _1.2 vérifier l'HA_
 
-Arrêtez ou redémarrez le serveur frontal actif et observez que le serveur
-frontal `Zabbix` reste accessible. En rechargeant la page, vous remarquerez que
-l'autre serveur frontal `` a pris le relais en tant qu'instance active, assurant
+Arrêtez ou redémarrez le serveur frontend actif et observez que le serveur
+`frontend Zabbix` reste accessible. En rechargeant la page, vous remarquerez que
+l'autre `serveur frontend` a pris le relais en tant qu'instance active, assurant
 ainsi un basculement presque transparent et une haute disponibilité.
 
-![2st active frontend](ha-setup/ch01-HA-check2.png)
+![2nd serveur frontend actif](ha-setup/ch01-HA-check2.png)
 
 _1.3 vérifier l'HA_
 
@@ -502,7 +502,7 @@ laquelle Zabbix attend avant de faire passer un nœud en attente à l'état acti
 Le délai peut être défini entre **10 secondes** et **15 minutes**.
 
 Pour supprimer un nœud qui est soit **arrêté** ou **inaccessible**, la commande
-d'exécution suivante doit être utilisée :
+suivante doit être utilisée :
 
 !!! info ""
 
@@ -520,9 +520,9 @@ est réussie, la sortie confirme l'action :
     ```
 
 Si le nœud supprimé redevient disponible, il peut être ajouté automatiquement
-lorsqu'il se reconnecte au cluster. Ces commandes d'exécution offrent une
-certaine souplesse pour gérer la haute disponibilité dans Zabbix sans nécessiter
-un redémarrage complet du processus `zabbix_server`.
+lorsqu'il se reconnecte au cluster. Ces commandes offrent une certaine souplesse
+pour gérer la haute disponibilité dans Zabbix sans nécessiter un redémarrage
+complet du processus `zabbix_server`.
 
 ---
 
