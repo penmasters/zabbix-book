@@ -118,7 +118,7 @@ Cela ouvrira un éditeur de texte dans lequel vous pourrez saisir les détails d
 la configuration du dépôt. Une fois le dépôt configuré, vous pouvez procéder à
 l'installation de MariaDB en utilisant votre gestionnaire de paquets.
 
-???+ astuces
+???+ tip
 
     Always check Zabbix documentation for the latest supported versions.
 
@@ -166,7 +166,7 @@ que votre système d'exploitation est à jour avec les derniers patchs et
 correctifs de sécurité. Cela permettra de maintenir la stabilité du système et
 la compatibilité avec le logiciel que vous êtes sur le point d'installer.
 
-Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
+To update your OS, run the following command:
 
 !!! info "Mise à jour OS"
 
@@ -471,7 +471,7 @@ utilisateurs non root"
 A ce stade, votre base de données Zabbix est prête, et vous pouvez procéder à la
 configuration du serveur Zabbix pour qu'il se connecte à la base de données.
 
-???+ avertissement
+???+ warning
 
     In the Zabbix documentation, it is explicitly stated that deterministic
     triggers need to be created during the schema import. On MySQL and MariaDB
@@ -517,9 +517,9 @@ nous devons également ouvrir le port de notre pare-feu.
 
 ### Remplir la base de données MariaDB de Zabbix
 
-Avec les utilisateurs et les permissions configurés correctement, vous pouvez
-maintenant remplir la base de données avec le schéma Zabbix créé et d'autres
-éléments requis. Suivez les étapes suivantes :
+With the users and permissions set up correctly, you can now populate the
+database with the Zabbix schema created and other required elements. Follow
+these steps:
 
 Une des premières choses à faire est d'ajouter le dépôt Zabbix à notre machine.
 Cela peut sembler bizarre mais c'est en fait logique car nous avons besoin de
@@ -651,7 +651,7 @@ commands.
     sudo apt install postgresql-17
     ```
 
-Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
+To update your OS, run the following command:
 
 !!! info "update the OS"
 
@@ -966,14 +966,14 @@ with the database. First, we grant `USAGE` privileges on the schema to allow
 Now, the `zabbix-web` user has appropriate access to interact with the schema
 while maintaining security by limiting permissions to essential operations.
 
-Avec les utilisateurs et les permissions configurés correctement, vous pouvez
-maintenant remplir la base de données avec le schéma Zabbix créé et d'autres
-éléments requis. Suivez les étapes suivantes :
+With the users and permissions set up correctly, you can now populate the
+database with the Zabbix schema created and other required elements. Follow
+these steps:
 
 - Execute the SQL file to populate the database. Run the following command in
   the `psql` shell:
 
-???+ avertissement
+???+ warning
 
     Make sure you did previous steps carefully so that you have selected the correct
     search_path.
@@ -984,7 +984,7 @@ maintenant remplir la base de données avec le schéma Zabbix créé et d'autres
     sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
     ```
 
-???+ avertissement
+???+ warning
 
     Depending on your hardware or VM performance, this process can take anywhere
     from a few seconds to several minutes. Please be patient and avoid cancelling
@@ -1300,7 +1300,7 @@ the following statement to disable the EPEL repository by default:
     excludepkgs=zabbix*
     ```
 
-???+ astuces
+???+ tip
 
     It's considered bad practice to keep the EPEL repository enabled all the time,
     as it may cause conflicts by unintentionally overwriting or installing unwanted
@@ -1701,7 +1701,7 @@ the following statement to disable the EPEL repository by default:
     excludepkgs=zabbix*
     ```
 
-???+ astuces
+???+ tip
 
     It's considered bad practice to keep the EPEL repository enabled all the time,
     as it may cause conflicts by unintentionally overwriting or installing unwanted
