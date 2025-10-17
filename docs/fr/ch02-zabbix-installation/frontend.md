@@ -70,7 +70,7 @@ de l'écran et ressemble à 4 flèches pointant vers chaque coin de l'écran. En
 appuyant sur ce bouton, tous les menus disparaissent et il ne reste plus que la
 `fenêtre principale` sur laquelle vous pouvez vous concentrer.
 
-![Développer](ch02-frontend-expand.png)
+![Expand](ch02-frontend-expand.png)
 
 _2.4 Élargir_
 
@@ -78,7 +78,7 @@ Lorsque nous voulons quitter le mode kiosque, le bouton sera remplacé par 2
 flèches pointant vers l'intérieur de l'écran. En appuyant sur ce bouton, nous
 reviendrons à l'état d'origine.
 
-![Développer](ch02-frontend-shrink.png)
+![Expand](ch02-frontend-shrink.png)
 
 _2.5 Réduire_
 
@@ -120,7 +120,7 @@ Nous allons maintenant examiner brièvement les éléments du menu principal de
 l'application. Le `menu principal` , situé sur l'interface de gauche, comprend
 au total neuf sections distinctes :
 
-| Nom du menu         | Détails                                                                                                                               |
+| Nom du menu         | Details                                                                                                                               |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | Tableaux de bord    | Contient un aperçu de tous les tableaux de bord auxquels nous avons accès.                                                            |
 | Monitoring          | Nous montre les hôtes, les problèmes, les dernières données, les cartes, ...                                                          |
@@ -140,7 +140,7 @@ Immédiatement à côté du menu principal de l'application, sur la gauche de
 l'interface, se trouve le menu `Links`. Ce module fournit une collection
 d'hyperliens utiles pour les utilisateurs.
 
-| Nom du menu                 | Détails                                                                                                                                                                                                                                                                                  |
+| Nom du menu                 | Details                                                                                                                                                                                                                                                                                  |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Support                     | Ceci nous amène à la page de support technique que vous pouvez acheter chez Zabbix. N'oubliez pas que votre partenaire local est également en mesure de vendre ces contrats et peut vous aider dans votre propre langue. [Vos distributeurs locaux](https://www.zabbix.com/distributors) |
 | Intégrations                | La [page d'intégration] officielle de zabbix (https://www.zabbix.com/integrations)                                                                                                                                                                                                       |
@@ -180,7 +180,7 @@ est cruciale pour la compréhension du système.
 
 _2.9 Informations sur le système_
 
-| Paramètre                                         | Valeur                                                                                                                                                                                                                                      | Détails                                                                                                                                                                                                                                                                         |
+| Paramètre                                         | Valeur                                                                                                                                                                                                                                      | Details                                                                                                                                                                                                                                                                         |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Le serveur Zabbix fonctionne                      | The status of our zabbix server if it is running yes or no and if it is running on our localhost or another IP and on what port the zabbix server is listening. If no trapper is listening the rest of the information can not be displayed | IP and port of the Zabbix server                                                                                                                                                                                                                                                |
 | Zabbix server version                             | This shows us the version of the `Zabbix server` so the version you see at the bottom of your screen is the one from the Zabbix frontend and can be different but should be in the same major version.                                      | Version Number                                                                                                                                                                                                                                                                  |
