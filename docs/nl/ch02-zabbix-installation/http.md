@@ -9,16 +9,18 @@ tags: [advanced]
 
 # HTTP
 
-HTTP authentication is one of external authentication methods provided by Zabbix
-and can be used to additionally secure your Zabbix WebUI with basic
-authentication mechanism at HTTP server level.
+HTTP authenticatie is een van de externe authenticatiemethoden die Zabbix biedt
+en kan worden gebruikt om je Zabbix WebUI extra te beveiligen met een
+basisauthenticatiemechanisme op HTTP-serverniveau.
 
-Basic HTTP authentication protects Website (Zabbix WebUI) resources with a
-username and password. When a user attempts to access Zabbix WebUI, the browser
-pops up a dialog asking for credentials before sending anything over to Zabbix
-WebUI php code.
+Basis HTTP authenticatie beschermt website (Zabbix WebUI) bronnen met een
+gebruikersnaam en wachtwoord. Wanneer een gebruiker toegang probeert te krijgen
+tot de Zabbix WebUI, zal de browser een dialoogvenster laten verschijnen waarin
+gevraagd wordt naar de gebruikersnaam en wachtwoord voordat er iets verzonden
+wordt naar de Zabbix WebUI php code.
 
-An HTTP server has a file with credentials that is used to authenticate users.
+Een HTTP-server heeft een bestand met referenties dat wordt gebruikt om
+gebruikers te authenticeren.
 
 ???+ note
 
@@ -26,15 +28,16 @@ An HTTP server has a file with credentials that is used to authenticate users.
     must exit in Zabbix. But only passwords configured in HTTP server are used
     for users authentication.
 
-First let's see how we can configure basic authentication in HTTP server.
+Laten we eerst eens kijken hoe we basisauthenticatie kunnen configureren in HTTP
+server.
 
-???+ warning
+Waarschuwing
 
     The examples below provide just minimum set of options to configure
     basic authentication. Please refer to respective HTTP server documentation
     for more details
 
-## Basic authentication in Nginx
+## Basisauthenticatie in Nginx
 
 Find `location / {` block in Nginx configuration file that defines your Zabbix
 WebUI (in my Zabbix deployment it is `/etc/nginx/conf.d/nginx.conf` file) and
