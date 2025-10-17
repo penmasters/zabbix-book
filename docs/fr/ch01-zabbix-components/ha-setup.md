@@ -481,7 +481,7 @@ frontal `Zabbix` reste accessible. En rechargeant la page, vous remarquerez que
 l'autre serveur frontal `` a pris le relais en tant qu'instance active, assurant
 ainsi un basculement presque transparent et une haute disponibilité.
 
-![2nd serveur frontend actif](ha-setup/ch01-HA-check2.png)
+![2st active frontend](ha-setup/ch01-HA-check2.png)
 
 _1.3 vérifier l'HA_
 
