@@ -64,7 +64,7 @@ test:$1$GXoDIOCA$u/n1kkDeFwcI4KhyHkY6p/
 ```
 
 Om hashed_password te genereren kun je `openssl` gebruiken en het wachtwoord
-twee keer in te voeren:
+twee keer in voeren:
 ```
 openssl passwd
 Password:
