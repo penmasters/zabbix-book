@@ -502,7 +502,7 @@ laquelle Zabbix attend avant de faire passer un nœud en attente à l'état acti
 Le délai peut être défini entre **10 secondes** et **15 minutes**.
 
 Pour supprimer un nœud qui est soit **arrêté** ou **inaccessible**, la commande
-suivante doit être utilisée :
+d'exécution suivante doit être utilisée :
 
 !!! info ""
 
