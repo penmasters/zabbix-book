@@ -8,8 +8,8 @@
 - Clonez ce projet sur votre compte Github
 - Clonez le dépôt sur votre PC
 
-- Installez les logiciels nécessaires au bon fonctionnement de Mkdocs et
-  consultez le fichier how-to-install-mkdocs.md dans le dossier racine.
+- Installez les logiciels nécessaires au bon fonctionnement de Mkdocs et dans le
+  dossier racine, consultez le fichier how-to-install-mkdocs.md
   - Créez une nouvelle branche pour effectuer vos modifications
     - git branch "<votre nom de branche\>"
     - git checkout "<votre nom de branche\>"
