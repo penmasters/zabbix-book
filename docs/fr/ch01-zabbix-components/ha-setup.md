@@ -520,9 +520,9 @@ est réussie, la sortie confirme l'action :
     ```
 
 Si le nœud supprimé redevient disponible, il peut être ajouté automatiquement
-lorsqu'il se reconnecte au cluster. Ces commandes offrent une certaine souplesse
-pour gérer la haute disponibilité dans Zabbix sans nécessiter un redémarrage
-complet du processus `zabbix_server`.
+lorsqu'il se reconnecte au cluster. Ces commandes d'exécution offrent une
+certaine souplesse pour gérer la haute disponibilité dans Zabbix sans nécessiter
+un redémarrage complet du processus `zabbix_server`.
 
 ---
 
