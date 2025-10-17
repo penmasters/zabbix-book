@@ -142,7 +142,7 @@ In this case we get an alert if the script returns 0
 
 ---
 
-## Example 2 Public weather
+## Example 2 - Public weather
 
 In this script we call Open-Meteo and ask for for information like temperature,
 windspeed, direction based on our longitude / latitude.
@@ -158,7 +158,7 @@ windspeed, direction based on our longitude / latitude.
 | Type of information | Text                                                  |
 | Update interval     | 1h                                                    |
 | Parameters          | latitude = `50.85`, longitude = `4.7`                |
-|                     | temperature_unit = `celcius` (celsius / fahrenheit)    |
+|                     | temperature_unit = `celsius` (celsius / fahrenheit)    |
 |                     | windspeed_unit = `kmh`   (kmh / ms / mph / kn)       |
 
 Add the following code in the script box.
@@ -391,6 +391,11 @@ proxy. Understanding this helps when debugging:
 * You can **force** execution on a proxy by assigning the host to that proxy.
 * Logs for script execution appear in the respective poller’s log file.
 
+???+ info
+
+    There is a small exeption when it comes to the use of the poller process.
+    If you make use of the test button to test the item then the check will not
+    user the poller but the task manager process.
 
 ### 9. Best practice checklist
 
