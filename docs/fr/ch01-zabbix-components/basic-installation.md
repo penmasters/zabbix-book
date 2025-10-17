@@ -1,8 +1,7 @@
 ---
-description: |\
-Guide pas à pas pour installer Zabbix avec MariaDB ou PostgreSQL, configurer le
-serveur et le frontend sur Ubuntu ou Rocky Linux, y compris la sécurité et la
-configuration du dépôt.\
+description: |
+    Step‑by‑step guide to install Zabbix with MariaDB or PostgreSQL, setup server
+    & frontend on Ubuntu or Rocky Linux, including security & repo configuration.
 tags: [beginner]
 ---
 
@@ -166,7 +165,7 @@ que votre système d'exploitation est à jour avec les derniers patchs et
 correctifs de sécurité. Cela permettra de maintenir la stabilité du système et
 la compatibilité avec le logiciel que vous êtes sur le point d'installer.
 
-To update your OS, run the following command:
+Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
 
 !!! info "Mise à jour OS"
 
@@ -517,9 +516,9 @@ nous devons également ouvrir le port de notre pare-feu.
 
 ### Remplir la base de données MariaDB de Zabbix
 
-With the users and permissions set up correctly, you can now populate the
-database with the Zabbix schema created and other required elements. Follow
-these steps:
+Avec les utilisateurs et les permissions configurés correctement, vous pouvez
+maintenant remplir la base de données avec le schéma Zabbix créé et d'autres
+éléments requis. Suivez les étapes suivantes :
 
 Une des premières choses à faire est d'ajouter le dépôt Zabbix à notre machine.
 Cela peut sembler bizarre mais c'est en fait logique car nous avons besoin de
@@ -651,7 +650,7 @@ commands.
     sudo apt install postgresql-17
     ```
 
-To update your OS, run the following command:
+Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
 
 !!! info "update the OS"
 
@@ -966,9 +965,9 @@ with the database. First, we grant `USAGE` privileges on the schema to allow
 Now, the `zabbix-web` user has appropriate access to interact with the schema
 while maintaining security by limiting permissions to essential operations.
 
-With the users and permissions set up correctly, you can now populate the
-database with the Zabbix schema created and other required elements. Follow
-these steps:
+Avec les utilisateurs et les permissions configurés correctement, vous pouvez
+maintenant remplir la base de données avec le schéma Zabbix créé et d'autres
+éléments requis. Suivez les étapes suivantes :
 
 - Execute the SQL file to populate the database. Run the following command in
   the `psql` shell:
