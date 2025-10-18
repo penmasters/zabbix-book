@@ -71,6 +71,7 @@ nav:
       - ch05-zabbix-triggers/advanced-triggers.md
   - "Chapter 06 : Templates":
       - ch06-zabbix-templates/chapter.md
+      - ch06-zabbix-templates/templates.md
   - "Chapter 07 : Alerting":
       - ch07-zabbix-alerts/chapter.md
       - ch07-zabbix-alerts/media-types.md
