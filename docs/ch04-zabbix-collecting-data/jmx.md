@@ -564,9 +564,9 @@ Two important parameters in zabbix_server.conf and zabbix_java_gateway.conf dire
 affect JMX performance:
 
 - StartJavaPollers (on Zabbix Server)
-    - Defines how many parallel JMX pollers the server can use.
-    - Too few pollers → JMX checks queue up and fall behind.
-    - Too many pollers → high load on Java Gateway and JVMs.
+    * Defines how many parallel JMX pollers the server can use.
+    * Too few pollers → JMX checks queue up and fall behind.
+    * Too many pollers → high load on Java Gateway and JVMs.
 - StartPollers (general pollers)
   Balance with Java pollers so your server can handle both JMX and regular agent
   checks without bottlenecks.
@@ -579,6 +579,51 @@ affect JMX performance:
 - Too many JMX items not only stress the JVM but also flood your Zabbix database
   with unnecessary history data.
 
+## Monitoring JMX through Jolokia
+
+While Zabbix can natively collect JMX data using the Zabbix Java Gateway, an
+alternative worth considering is Jolokia — a lightweight JMX-to-HTTP bridge.
+
+Jolokia exposes JMX MBeans over a simple REST/JSON interface, which means you
+can collect Java metrics using Zabbix's HTTP Agent items instead of the Java Gateway.
+The result is often lower overhead, easier network configuration, and greater flexibility.
+
+Why Jolokia?
+
+- No Gateway Needed. Jolokia runs as a Java agent, servlet, or OSGi bundle directly
+  inside the JVM.
+- Efficient Data Collection. You can request multiple attributes in a single HTTP
+  call and split them into dependent items using JSONPath preprocessing.
+- Firewall-Friendly. Works over standard HTTP(S) ports, avoiding the complexity
+  of RMI and port ranges.
+- Secure, it supports HTTPS, authentication, and access control policies out of
+  the box.
+
+Example:
+
+```bash
+curl -s http://localhost:8778/jolokia/read/java.lang:type=Memory,java.lang:type=Threading
+```
+
+In Zabbix:
+
+Create an HTTP Agent master item pointing to the Jolokia endpoint.
+Add dependent items to extract individual values, e.g.:
+
+```json
+$.value['java.lang:type=Memory']['HeapMemoryUsage']['used']
+$.value['java.lang:type=Threading']['ThreadCount']
+```
+
+This approach allows you to collect dozens of metrics with a single network request.
+
+???+ note "When to use it ?"
+
+    Choose Jolokia if you prefer a stateless, agent-based setup or need to monitor
+    many JVMs without maintaining a central Java Gateway. Stick with the Zabbix
+    Java Gateway if you rely on built-in templates or want a fully integrated,
+    out of the box JMX experience.
+
 
 ## Conclusion
 
@@ -589,8 +634,19 @@ overloading your monitoring system or your Java applications.
 
 ## Questions
 
+- Explain how the Zabbix Java Gateway fits into the overall JMX architecture.
+  Why is it needed?
+- In Zabbix, what is the difference between the item keys jmx[], jmx.get[] and
+  jmx.discovery[]? Give an example use case for each.
+- Reflect: In your environment, what Java-applications would benefit most from
+  JMX monitoring? What metrics would you pick first, and why?
+- What are security considerations when enabling remote JMX monitoring in production?
+  What could go wrong if you leave flags like authenticate=false and ssl=false in
+  a live environment?
+
 ## Useful URLs
 
 - [https://www.youtube.com/watch?v=aKGYa6Y9r60&t=87s](https://www.youtube.com/watch?v=aKGYa6Y9r60&t=87s)
 - [https://docs.oracle.com/javase/1.5.0/docs/guide/management/agent.html](https://docs.oracle.com/javase/1.5.0/docs/guide/management/agent.html)
 - [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/jmx_monitoring](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/jmx_monitoring)
+- [https://jolokia.org/](https://jolokia.org/)
