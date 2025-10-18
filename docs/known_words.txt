@@ -317,3 +317,10 @@ windspeed
 scriptable
 jolokia
 servlet
+cpu
+filesystems
+fs
+kubernetes
+eventid
+hostid
+msg
