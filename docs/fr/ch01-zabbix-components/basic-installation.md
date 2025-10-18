@@ -587,26 +587,27 @@ Ceci conclut notre installation du serveur MariaDB
 
 ## Installation de la base de données PostgreSQL
 
-For our DB setup with PostgreSQL we need to add our PostgreSQL repository first
-to the system. As of writing PostgreSQL 13-17 are supported but best is to have
-a look before you install it as new versions may be supported and older maybe
-unsupported both by Zabbix and PostgreSQL. Usually it's a good idea to go with
-the latest version that is supported by Zabbix. Zabbix also supports the
-extension TimescaleDB this is something we will talk later about. As you will
-see the setup from PostgreSQL is very different from MySQL not only the
-installation but also securing the DB.
+Pour l'installation de notre base de données avec PostgreSQL, nous devons
+d'abord ajouter notre dépôt PostgreSQL au système. A ce jour, PostgreSQL 13-17
+est supporté mais le mieux est de jeter un coup d'œil avant de l'installer car
+de nouvelles versions peuvent être supportées et d'autres plus anciennes peuvent
+ne plus l'être par Zabbix et PostgreSQL. En général, c'est une bonne idée
+d'utiliser la dernière version supportée par Zabbix. Zabbix supporte également
+l'extension TimescaleDB dont nous parlerons plus tard. Comme vous le verrez,
+l'installation de PostgreSQL est très différente de celle de MySQL, tant au
+niveau de l'installation que de la sécurisation de la base de données.
 
-The table of compatibility can be found
+Le tableau de compatibilité se trouve à l'adresse suivante :
 [https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/](https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/)
 
 ---
 
-### Add the PostgreSQL repository
+### Ajouter le dépôt PostgreSQL
 
-So let us start first setting up our PostgreSQL repository with the following
-commands.
+Commençons donc par configurer notre dépôt PostgreSQL avec les commandes
+suivantes.
 
-!!! info "Add PostgreSQL repo"
+!!! info "Ajouter le dépôt PostgreSQL"
 
     Red Hat
     ``` yaml
@@ -631,9 +632,9 @@ commands.
     sudo apt update
     ```
 
-### Install the PostgreSQL databases
+### Installer les bases de données PostgreSQL
 
-!!! info "Install the Postgres server"
+!!! info "Installer le serveur PostgreSQL"
 
     Red Hat
     ``` yaml

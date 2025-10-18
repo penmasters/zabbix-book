@@ -466,7 +466,7 @@ au sein du cluster.
 ### Vérifier le bon fonctionnement
 
 Pour vérifier que la configuration fonctionne correctement, accédez à votre
-serveur `Zabbix` en utilisant l'IP virtuelle (VIP). Naviguez vers Rapports →
+`serveur Zabbix` en utilisant l'IP virtuelle (VIP). Naviguez vers Rapports →
 Informations sur le système dans le menu. Au bas de la page, vous devriez voir
 une liste de serveurs, dont au moins un est marqué comme actif. Le nombre de
 serveurs affichés dépend du nombre total de serveurs configurés dans votre
@@ -474,22 +474,22 @@ configuration HA.
 
 ![1er frontend actif](ha-setup/ch01-HA-check1.png)
 
-_1.2 verify HA_
+_1.2 vérifier l'HA_
 
-Shut down or reboot the active frontend server and observe that the `Zabbix
-frontend` remains accessible. Upon reloading the page, you will notice that the
-other `frontend server` has taken over as the active instance, ensuring an
-almost seamless failover and high availability.
+Arrêtez ou redémarrez le serveur frontend actif et observez que le serveur
+`frontend Zabbix` reste accessible. En rechargeant la page, vous remarquerez que
+l'autre `serveur frontend` a pris le relais en tant qu'instance active, assurant
+ainsi un basculement presque transparent et une haute disponibilité.
 
-![2st active frontend](ha-setup/ch01-HA-check2.png)
+![2nd serveur frontend actif](ha-setup/ch01-HA-check2.png)
 
-_1.3 verify HA_
+_1.3 vérifier l'HA_
 
-In addition to monitoring the status of HA nodes, Zabbix provides several
-runtime commands that allow administrators to manage failover settings and
-remove inactive nodes dynamically.
+Outre la surveillance de l'état des nœuds HA, Zabbix fournit plusieurs commandes
+d'exécution qui permettent aux administrateurs de gérer les paramètres de
+basculement et de supprimer les nœuds inactifs de manière dynamique.
 
-One such command is:
+L'une de ces commandes est la suivante :
 
 !!! info ""
 
@@ -497,12 +497,12 @@ One such command is:
     zabbix_server -R ha_set_failover_delay=10m
     ```
 
-This command adjusts the failover delay, which defines how long Zabbix waits
-before promoting a standby node to active status. The delay can be set within a
-range of **10 seconds** to **15 minutes**.
+Cette commande ajuste le délai de basculement, qui définit la durée pendant
+laquelle Zabbix attend avant de faire passer un nœud en attente à l'état actif.
+Le délai peut être défini entre **10 secondes** et **15 minutes**.
 
-To remove a node that is either **stopped** or **unreachable**, the following
-runtime command must be used:
+Pour supprimer un nœud qui est soit **arrêté** ou **inaccessible**, la commande
+suivante doit être utilisée :
 
 !!! info ""
 
@@ -510,8 +510,8 @@ runtime command must be used:
     zabbix_server -R ha_remove_node=`zabbix1`
     ```
 
-Executing this command removes the node from the HA cluster. Upon successful
-removal, the output confirms the action:
+L'exécution de cette commande supprime le nœud du cluster HA. Si la suppression
+est réussie, la sortie confirme l'action :
 
 !!! info ""
 
@@ -519,21 +519,22 @@ removal, the output confirms the action:
     Removed node "zabbix1" with ID "cm8agwr2b0001h6kzzsv19ng6"
     ```
 
-If the removed node becomes available again, it can be added back automatically
-when it reconnects to the cluster. These runtime commands provide flexibility
-for managing high availability in Zabbix without requiring a full restart of the
-`zabbix_server` process.
+Si le nœud supprimé redevient disponible, il peut être ajouté automatiquement
+lorsqu'il se reconnecte au cluster. Ces commandes offrent une certaine souplesse
+pour gérer la haute disponibilité dans Zabbix sans nécessiter un redémarrage
+complet du processus `zabbix_server`.
 
 ---
 
 ## Conclusion
 
-In this chapter, we have successfully set up a high-availability (HA) Zabbix
-environment by configuring both the Zabbix server and frontend for redundancy.
-We first established HA for the Zabbix server, ensuring that monitoring services
-remain available even in the event of a failure. Next, we focused on the
-frontend, implementing a Virtual IP (VIP) with Keepalived to provide seamless
-failover and continuous accessibility.
+Dans ce chapitre, nous avons réussi à mettre en place un environnement Zabbix à
+haute disponibilité (HA) en configurant le serveur Zabbix et le frontend pour la
+redondance. Nous avons d'abord établi la haute disponibilité pour le serveur
+Zabbix, en veillant à ce que les services de surveillance restent disponibles
+même en cas de défaillance. Ensuite, nous nous sommes concentrés sur le
+frontend, en implémentant une IP virtuelle (VIP) avec Keepalived pour fournir un
+basculement transparent et une accessibilité continue.
 
 Additionally, we configured the firewall to allow Keepalived traffic and ensured
 that the service starts automatically after a reboot. With this setup, the
