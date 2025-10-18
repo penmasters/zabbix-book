@@ -297,6 +297,8 @@ hermel
 kadikis
 vladishev
 wityender
+dimitry
+krotesk
 seo
 varbinds
 linkdown
@@ -313,4 +315,5 @@ winddir
 winddirection
 windspeed
 scriptable
-
+jolokia
+servlet

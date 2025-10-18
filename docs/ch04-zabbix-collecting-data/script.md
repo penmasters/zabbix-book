@@ -393,7 +393,7 @@ proxy. Understanding this helps when debugging:
 
 ???+ info
 
-    There is a small exeption when it comes to the use of the poller process.
+    There is a small exception when it comes to the use of the poller process.
     If you make use of the test button to test the item then the check will not
     user the poller but the task manager process.
 
