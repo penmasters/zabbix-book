@@ -1,9 +1,3 @@
----
-description: |
-    Zabbix API: Automate your monitoring! Discover how self-engaging methods create
-    a virtual colleague for automated tasks and management.
----
-
 # Self-engaging
 
 Welcome to Zabbix API self engaging methods. All upcoming chapters will address
@@ -129,24 +123,19 @@ a static session token becomes possible.
 An upcoming solution is tested and works on version 7.0/7.4
 
 
-Create new HTTP agent
+Create new **HTTP agent** item
 
-Item name: `host.get`
-
-Type: `HTTP agent`
-
-Key: `host.get`
-
-Type of information: `Text`
-
-URL:
-```yaml
-{$ZABBIX.URL}/api_jsonrpc.php
-```
-
-Request type: `POST`
-
-Request body type: `JSON data`
+| Field                              | Value                                  |
+| :--------------------------------- | :--------------------------------------|
+| **Item name**                      | `host.get`                             |
+| **Type**                           | `HTTP agent`                           |
+| **Key**                            | `host.get`                             |
+| **Type of information**            | `Text`                                 |
+| **URL**                            | `{$ZABBIX.URL}/api_jsonrpc.php`        |
+| **Request type**                   | `POST`                                 |
+| **Request body type**              | `JSON data`                            |
+| **Update interval**                | `1d`                                   |
+| **Populates host inventory field** | `Site rack location`                   |
 
 Request body:
 
@@ -165,33 +154,26 @@ Request body:
 
 Headers
 
-Name `Authorization` with value:
-```yaml
-Bearer {$ZABBIX.API.TOKEN}
-```
+| Field                   | Value                                             |
+| :---------------------- | :-------------------------------------------------|
+| **Authorization**       | `Bearer {$ZABBIX.API.TOKEN}`                      |
 
 ![User macros](ch12.05-host-get.png)
 
 _12.5
 Host get method via HTTP agent item_
 
-Preprocessing
+Preprocessing steps
 
-JSONPath:
-```yaml
-$.result[0].hostgroups[*].name
-```
-
-JavaScript:
-```javascript
-return JSON.parse(value).join(',');
-```
+| Name                | Parameters                                            |
+| :------------------ | :-----------------------------------------------------|
+| JSONPath            | `$.result[0].hostgroups[*].name`                      |
+| JavaScript          | `return JSON.parse(value).join(',');`                 |
 
 ![User macros](ch12.06-host-get-preprocessing.png)
 
 _12.6
 Preprocessing_
-
 
 Last step is to store the outcome in the inventory.
 Scroll down to the bottom of HTTP agent item and select an inventory field
@@ -241,37 +223,20 @@ To implement, visit **Alerts** => **Scripts**, press **Create script**
 _12.13
 Auto close problem_
 
-**Name** will be:
-
-```yaml
-Automatically close problem
-```
-
-Scope: **Action operation**
-
-Type: **Webhook**
+| Field               | Value                                                 |
+| :------------------ | :-----------------------------------------------------|
+| **Name**            | `Automatically close problem`                        |
+| **Scope**           | `Action operation`                                    |
+| **Type**            | `Webhook`                                             |
 
 Parameters:
 
-`eventid` set:
-```yaml
-{EVENT.ID}
-```
-
-`msg` title is:
-```yaml
-Auto closed by API
-```
-
-`token` must be:
-```yaml
-{$ZABBIX.API.TOKEN}
-```
-
-`url` points to:
-```yaml
-{$ZABBIX.URL}/api_jsonrpc.php
-```
+| Field               | Value                                                 |
+| :------------------ | :-----------------------------------------------------|
+| eventid             | `{EVENT.ID}`                                          |
+| msg                 | `Auto closed by API`                                  |
+| token               | `{$ZABBIX.API.TOKEN}`                                 |
+| url                 | `{$ZABBIX.URL}/api_jsonrpc.php`                       |
 
 Script:
 ```javascript
@@ -352,37 +317,24 @@ This solution has been tested with 7.0/7.4
 
 To implement, visit **Alerts** => **Scripts**, press **Create script**
 
-![Auto close problem](ch12.14-delete-host-webhook.png) 
+![Delete host webhook](ch12.14-delete-host-webhook.png) 
 
 _12.13
 Auto close problem_
 
-**Name** will be:
-
-```yaml
-Delete host
-```
-
-Scope: **Action operation**
-
-Type: **Webhook**
+| Field               | Value                                                 |
+| :------------------ | :-----------------------------------------------------|
+| **Name**            | `Delete host`                                         |
+| **Scope**           | `Action operation`                                    |
+| **Type**            | `Webhook`                                             |
 
 Parameters:
 
-`hostid` set:
-```yaml
-{HOST.ID}
-```
-
-`token` must be:
-```yaml
-{$ZABBIX.API.TOKEN}
-```
-
-`url` points to:
-```yaml
-{$ZABBIX.URL}/api_jsonrpc.php
-```
+| Field               | Value                                                 |
+| :------------------ | :-----------------------------------------------------|
+| hostid              | `{HOST.ID}`                                         |
+| token               | `{$ZABBIX.API.TOKEN}`                                 |
+| url                 | `{$ZABBIX.URL}/api_jsonrpc.php`                       |
 
 Script:
 
@@ -417,59 +369,49 @@ Because default duration is 1d, the host will be deleted after 30 days.
 _12.16
 Delete host operations_
 
-## Replace host Visible name (Script)
-
-The "Script" item is handy to take data from step 1
-and use it as an input for step 2.
-
-Configuration-wise, the "Script" item will give an elegant looking solution
-where all base variables are kept outside the script.
+## Replace host Visible name (Script item)
 
 !!! tip "Use case"
 
-    Replace host "Visible name" with a data coming to an item
+    Replace host "Visible name" with a name which is already stored in inventory
 
 ---
 
 !!! info "Implementation"
 
-    Every host, by default, will store the intended host visible name inside
-    inventory. The "Script" item (without running extra API calls) will compare
-    inventory with host visible name. If inventory field is empty,
-    the visible field will not be replaced.
+    The "Script" item, will read metadata for all hosts. Will read the **Name**
+    field stored inside inventory and compare with current **Visible name** of
+    host. If inventory field is empty, the visible field will not be replaced.
 
 ---
 
 This is maximum efficiency to run a single API call once per day.
-If nothing needs to be done, API calls will not be wasted.
+If nothing needs to be done, "host.update" API calls will not be wasted.
 No SQL UPDATE operations for the Zabbix database :)
 
-**Name** will be:
+Go to **Data collection** => **Hosts** => press **Create host**
 
-```yaml
-Delete host
-```
+| Field               | Value                                                 |
+| :------------------ | :-----------------------------------------------------|
+| **Host name**       | `Update host Visible name`                            |
+| **Host groups**     | `Daily Zabbix API calls`                              |
 
-Scope: **Action operation**
+Go to **Items** and press **Create item**
 
-Type: **Webhook**
+| Field                      | Value                                          |
+| :------------------------- | :----------------------------------------------|
+| **Name**                   | `Visible name`                                 |
+| **Type**                   | `Script`                                       |
+| **Key**                    | `visible.name`                                 |
+| **Type of information**    | `Text`                                         |
+| **Update interval**        | `1d`                                           |
 
 Parameters:
 
-`hostid` set:
-```yaml
-{HOST.ID}
-```
-
-`token` must be:
-```yaml
-{$ZABBIX.API.TOKEN}
-```
-
-`url` points to:
-```yaml
-{$ZABBIX.URL}/api_jsonrpc.php
-```
+| Field               | Value                                                 |
+| :------------------ | :-----------------------------------------------------|
+| token               | `{$ZABBIX.API.TOKEN}`                                 |
+| url                 | `{$ZABBIX.URL}/api_jsonrpc.php`                       |
 
 Script:
 
@@ -537,9 +479,27 @@ for (var h = 0; h < hostData.length; h++) {
 return JSON.stringify({ 'listOfSuccess': listOfSuccess, 'errors': listOfErrors });
 ```
 
-The chances of having duplicate host names are still possible. In this case,
-the script will continue to parse all hosts and will retry update operation.
-Ensure $.listOfErrors in output is an empty list.
+!!! warning "Warning"
+
+    The chances of having duplicate host names are still possible. In this case,
+    the script will continue to parse all hosts and will retry update operation.
+    Ensure $.listOfErrors in output is an empty list.
+
+---
+
+All together
+
+![Script item, host Visible name](ch12.17-script-item-host-visible-name.png)
+
+_12.17
+Script item, host Visible name_
+
+The item will be sit at host level and serve a purpose of cronjob
+
+![Script item ready](ch12.18-script-item-ready.png)
+
+_12.18
+Script item ready_
 
 This is tested and works with Zabbix 7.0
 
@@ -553,10 +513,9 @@ This is tested and works with Zabbix 7.0
 
 ---
 
+![Unknown ZBX passive interfaces](ch12.19-host-availability-unknown-passive-agent-checks.png)
 
-![Unknown ZBX passive interfaces](ch12.17-host-availability-unknown-passive-agent-checks.png)
-
-_12.17
+_12.19
 Unknown ZBX passive interfaces_
 
 
@@ -588,42 +547,27 @@ Unknown ZBX passive interfaces_
 
 To implement, visit **Alerts** => **Scripts**, press **Create script**
 
-![Remove unused ZBX interfaces](ch12.18-remove-unused-zbx-hosts.png)
+![Remove unused ZBX interfaces](ch12.20-remove-unused-zbx-hosts.png)
 
-_12.18
+_12.20
 Remove unused ZBX interfaces_
 
-
 Webhook
-**Name** will be:
 
-```yaml
-Remove unused ZBX interfaces
-```
-
-Scope: **Action operation**
-
-Type: **Webhook**
+| Field               | Value                                                 |
+| :------------------ | :-----------------------------------------------------|
+| **Name**            | `Remove unused ZBX interfaces`                        |
+| **Scope**           | `Action operation`                                    |
+| **Type**            | `Webhook`                                             |
 
 Parameters:
 
-`host` set:
-```yaml
-{HOST.HOST}
-```
-
-`token` must be:
-```yaml
-{$ZABBIX.API.TOKEN}
-```
-
-`url` points to:
-```yaml
-{$ZABBIX.URL}/api_jsonrpc.php
-```
-
-Set `debug` points to `4`
-
+| Field               | Value                                                 |
+| :------------------ | :-----------------------------------------------------|
+| debug               | `4`                                                   |
+| host                | `{HOST.HOST}`                                         |
+| token               | `{$ZABBIX.API.TOKEN}`                                 |
+| url                 | `{$ZABBIX.URL}/api_jsonrpc.php`                       |
 
 Script:
 
@@ -730,3 +674,27 @@ Zabbix.Log(params.debug, 'Auto remove unused ZBX agent passive interfaces: ' + o
 
 return 0;
 ```
+
+To make webhook in action visit **Alerts** => **Actions**
+=> **Autoregistration actions**. Press **Create action**. For example to auto
+register Linux servers, we can target a pattern ".lnx" inside the hostname.
+
+![Conditions for ZBX active checks](ch12.21-autoreg-conditions.png)
+
+_12.21
+Conditions for ZBX active checks_
+
+The operations will use newly made webhook
+
+![Operations of Zabbix agent autoregistration](ch12.22-autoreg-actions.png)
+
+_12.22
+Operations of Zabbix agent autoregistration_
+
+The complete picture is
+
+![Zabbix agent autoregistration completed](ch12.23-autoreg-completed.png)
+
+_12.23
+Zabbix agent autoregistration completed_
+
