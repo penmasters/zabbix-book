@@ -13,11 +13,13 @@ be applied to any number of hosts. By grouping related items, triggers, graphs,
 discovery rules, and macros into a single logical entity, templates make it possible
 to standardize and scale monitoring efficiently.
 
-In Zabbix 8.0, the template system has matured significantly. It now uses a monolithic,
-self contained design. A deliberate departure from the older inheritance based approach
-used in previous versions. This design philosophy makes templates easier to export,
-share, and maintain, especially when managing multiple environments or distributing
-monitoring logic across teams.
+
+Zabbix 8.0 emphasizes a monolithic, self contained design. While template linking
+is still supported for compatibility, the recommended approach is to use standalone
+templates for simplicity and portability. A deliberate departure from the older
+inheritance based approach. used in previous versions. This design philosophy makes
+templates easier to export, share, and maintain, especially when managing multiple
+environments or distributing monitoring logic across teams.
 
 ???+ info "Fun fact"
 
@@ -132,6 +134,11 @@ This means your cloned template is independent:
 - It can coexist safely even if it has a similar name.
 - It is ideal for creating customized variants of official templates.
 
+???+ note
+
+    If you manually remove or alter UUIDs in the YAML file, Zabbix treats it as
+    a new object on import.
+
 ???+ info "Best practice"
 
     Add a suffix or prefix such as (Custom) to distinguish cloned templates and
@@ -159,6 +166,11 @@ In other words:
 This model provides flexible role based access control (RBAC): administrators can
 manage access centrally by assigning or revoking permissions for user groups
 rather than editing individual templates.
+
+If you like to make a new template group then they can be found under `Data collection`
+→ `Host groups` → `Create template group`
+
+![ch06.01-template-group.png](ch06.01-template-group.png)
 
 ### Permissions and Access Control
 
@@ -220,6 +232,11 @@ If both groups monitor hosts that use templates from Templates/Applications/Data
 This segregation maintains stability. Operations staff can handle incidents, while
 admins manage definitions.
 
+???+ note
+
+    Template group permissions control configuration visibility, but operational
+    access (to data and problems) still depends on host group permissions.
+
 ### Permissions and Roles – How Access Really Works
 
 Zabbix enforces permissions through user groups and roles, not through inheritance
@@ -261,6 +278,11 @@ Zabbix 3.2 introduced nested template groups (subgroups), enabling a hierarchica
 structure similar to host groups. Subgroups allow administrators to build organized,
 multi-level collections of templates, which improves navigation and permission
 granularity.
+
+Subgtoups are created in Zabbix by adding a `/` in the group names. For exmple if we
+want to create a group `Databases` as a subgroup of `Templates` then we only need
+to create the new group liek this: `Templates/Databases`. However it's
+recommended to create `Templates` first.
 
 Example hierarchy:
 
@@ -305,6 +327,10 @@ Templates
 Tags are metadata elements used throughout Zabbix for event classification, filtering,
 correlation, and alert routing. They attach semantic meaning to triggers, items,
 or templates, helping to describe what the metric or event represents.
+
+`Data collection` → `Templates` → `Template` → `Tags`
+
+![ch06.02-template-tags.png](ch06.02-template-tags.png)
 
 ### Purpose of Tags
 
@@ -426,6 +452,10 @@ Macros are variables that make templates flexible and reusable. They define thre
 credentials, or paths that can be adjusted per environment without editing template
 logic.
 
+`Data collection` → `Templates` → `Template` → `Macros`
+
+![ch06.03-template-macros.png](ch06.03-template-macros.png)
+
 Example:
 
 ```bash
@@ -471,6 +501,10 @@ Precedence Hierarchy:
 Value maps convert raw numeric or coded values into meaningful, human readable text.
 They make dashboards, triggers, and data views more intuitive. For example, turning
 SNMP status codes like 1, 2, 3 into Up, Down, Unknown.
+
+`Data collection` → `Templates` → `Template` → `Value maps`
+
+![ch06.04-template-value maps.png](ch06.04-template-value maps.png)
 
 ### Scope and Availability
 
@@ -598,9 +632,10 @@ Template dashboards support the same widget types as user dashboards, including:
 | **Service overview**   | Business service state, SLA        | Map triggers to service impact                |
 | **Layout elements**    | Text, maps, URL embeds             | Add context, documentation, or external views |
 
+Each widget automatically substitutes host-specific data when rendered under
+`Monitoring` → `Hosts` → `Dashboards`. No manual host configuration is required.
 
-Each widget automatically substitutes host-specific data when rendered under Monitoring → Hosts → Dashboards.
-No manual host configuration is required.
+![ch06.05-template-dashboards.png](ch06.05-template-dashboards.png)
 
 ### Some Good Practices
 
@@ -643,12 +678,14 @@ renders **three dashboards,** each showing real metrics for its respective insta
 
 ## Template Management Operations
 
-Template management in Zabbix 7.4 offers multiple actions for maintaining, cloning,
+Template management in Zabbix 8.0 offers multiple actions for maintaining, cloning,
 cleaning, and synchronizing templates efficiently.
 
 These operations are accessible under:
 
-`Data collection → Templates`
+`Data collection → Hosts` on the host itself.
+
+![ch06.06-template-unlink-clear.png](ch06.06-template-unlink-clear.png)
 
 ### Unlink vs. Unlink and Clear
 
@@ -666,6 +703,10 @@ the monitoring logic completely.
 The `clone` button creates an exact copy of an existing template, including all
 items, triggers, dashboards, macros, and value maps. Every entity within the clone
 receives a new UUID, ensuring full independence from the original.
+
+`Data collection` → `Templates` on the template itself.
+
+![ch06.07-template-delete-clear.png](ch06.07-template-delete-clear.png)
 
 Example:
 
@@ -734,7 +775,9 @@ standard now in Zabbix.
 
 ### Exporting
 
-Navigate to `Data collection → Templates → Your Template → Export`, then select `YAML`.
+Navigate to `Data collection` → `Templates` → `Select Your Template(s)` → `Export`, then select `YAML`.
+
+![ch06.08-template-export.png](ch06.08-template-export.png)
 
 A typical export looks like:
 
@@ -763,6 +806,10 @@ differences, and optionally merges or removes entities.
 You can import templates via:
 
 `Data collection → Templates → Import`
+
+The button is on the upper right side of your window.
+
+![ch06.09-template-export.png](ch06.09-template-export.png)
 
 Zabbix supports both `YAML` `JSON and `XML`, though YAML is preferred due to its
 readability and UUID retention.
@@ -886,4 +933,19 @@ monitoring across diverse infrastructures.
 
 ## Questions
 
+- What are the main configuration elements a Zabbix template can contain, and how do they contribute to standardizing monitoring?
+- Explain what happens to UUIDs when a template is cloned.
+- Why is it important to preserve UUIDs when managing templates through YAML or Git?
+- Describe how tags are inherited when a template is applied to a host.
+- Which tags take precedence if both the host and the template define the same key?
+- Why can’t a template-level value map be used by local host items?
+
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/config/templates](https://www.zabbix.com/documentation/current/en/manual/config/templates)
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/mapping](https://www.zabbix.com/documentation/current/en/manual/config/items/mapping)
+- [https://www.zabbix.com/documentation/current/en/manual/config/templates/template](https://www.zabbix.com/documentation/current/en/manual/config/templates/template)
+- [https://www.zabbix.com/documentation/current/en/manual/xml_export_import](https://www.zabbix.com/documentation/current/en/manual/xml_export_import)
+- [https://github.com/zabbix/zabbix/tree/master/templates/](https://github.com/zabbix/zabbix/tree/master/templates/)
+- [https://jsonlint.com/](https://jsonlint.com/)
+- [https://www.yamllint.com/](https://www.yamllint.com/)
