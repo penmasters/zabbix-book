@@ -197,7 +197,7 @@ and their permissions for the underlying host or template.
 | Modify trigger severity     |        ❌       |        ✅        |
 | Edit or link templates      |        ❌       |        ✅        |
 
-???+ info ""
+???+ tip
 
     Read-only users can acknowledge or suppress issues but cannot change severity
     or manually close problems.
@@ -554,7 +554,7 @@ building dashboards for each one.
 
 Template dashboards can be accessed and edited under:
 
-`Configuration → Templates → [select template] → Dashboards tab`
+`Data collection → Templates → [select template] → Dashboards tab`
 
 Each template may include one or more dashboards.
 When a host is linked to a template containing a dashboard, that dashboard appears
@@ -648,7 +648,7 @@ cleaning, and synchronizing templates efficiently.
 
 These operations are accessible under:
 
-`Configuration → Templates`
+`Data collection → Templates`
 
 ### Unlink vs. Unlink and Clear
 
@@ -697,7 +697,7 @@ remain in configuration cache.
 Zabbix 8 provides a Mass update feature to modify multiple templates simultaneously.
 This is available via:
 
-`Configuration → Templates → Mass update`
+`Data collection → Templates → Mass update`
 
 It’s particularly useful for enforcing consistent macro values, tags, or template
 group structures across many templates.
@@ -734,7 +734,7 @@ standard now in Zabbix.
 
 ### Exporting
 
-Navigate to `Configuration → Templates → Your Template → Export`, then select `YAML`.
+Navigate to `Data collection → Templates → Your Template → Export`, then select `YAML`.
 
 A typical export looks like:
 
@@ -762,7 +762,7 @@ The import process in Zabbix 7.4 is intelligent — it compares UUIDs, detects
 differences, and optionally merges or removes entities.
 You can import templates via:
 
-`Configuration → Templates → Import`
+`Data collection → Templates → Import`
 
 Zabbix supports both `YAML` `JSON and `XML`, though YAML is preferred due to its
 readability and UUID retention.
@@ -838,4 +838,52 @@ but absent in the import file:
 When both Update existing and Delete missing are checked, the import performs a
 full sync. The resulting template will exactly match the import file.
 
+#### Error Handling
 
+Zabbix validates all entities before applying the import.
+If inconsistencies are found, the import halts and reports detailed errors, such
+as:
+
+- Missing referenced value maps or linked templates
+- Invalid macro names or syntax
+- Circular template linkage
+- Version mismatches between export and server
+
+The error list shows affected entity names, allowing quick correction and re-import.
+
+#### Safe Import Workflow
+
+For production grade environments:
+
+- **Export first:** always back up current templates.
+- **Validate syntax:** use yamllint or JSON validators.
+    - yamllint template.yaml
+    - jq empty template.json
+- **Preview diff:** check additions (green) and deletions (red).
+- **Test in staging:** confirm behavior before production import.
+- **Promote via automation:** use the Zabbix API (configuration.import) for reproducible
+  CI/CD deployments.
+
+  ???+ tip
+
+      Automating template synchronization via API and Git ensures identical configurations
+      across multiple Zabbix servers or environments.
+
+## Conclusion
+
+Templates in Zabbix 8.0 are now fully self-contained, UUID-tracked, and automation 
+ready. With improved import/export handling, color-coded diffs, and fine-grained
+RBAC, they deliver both control and scalability.
+
+By following some good practices, cloning instead of editing `built-ins`, organizing
+templates by group and tag, tuning intervals, maintaining YAML or JSON in Git,
+and verifying diffs before import, administrators achieve consistent, predictable
+monitoring deployments.
+
+Templates are no longer mere configuration helpers; they are core assets in a modern
+observability strategy, enabling reproducible, automated, and standards driven
+monitoring across diverse infrastructures.
+
+## Questions
+
+## Useful URLs
