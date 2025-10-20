@@ -165,9 +165,9 @@ Add the following code in the script box.
 
 ```js
 // Parameters (item → Parameters):
-//   latitude = zabbix
-//   temperaature_unit  = zabbix
-//   windspeed_unit = <optional PAT>
+//   latitude = 50.85
+//   temperaature_unit  = 4.7
+//   windspeed_unit = kmh / ms / mph / kn
 
 function toNumberFixLocale(s){ if(s==null)return NaN; var t=String(s).trim().replace(",","."); return parseFloat(t); }
 
