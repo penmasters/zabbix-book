@@ -16,7 +16,7 @@ problemas.
 Para este guia, usaremos dois servidores Zabbix e um banco de dados, mas a
 configuração permite adicionar mais servidores Zabbix, se necessário.
 
-![Configuração-HA](./ha-setup/ch01-HA-setup.png)
+![HA-Setup](./ha-setup/ch01-HA-setup.png)
 
 _1.1 Configuração de HA_
 
