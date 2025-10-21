@@ -165,7 +165,7 @@ plugins:
         #        - de
         #        - it
         - nl
-        #        - pt
+        - pt
         #        - es
         #        - th
         #        - zh
@@ -201,7 +201,7 @@ plugins:
         - de/*
         - it/*
         - nl/*
-        - pt/*
+        - pt_BR/*
         - es/*
         - th/*
         - zh/*
@@ -231,12 +231,11 @@ plugins:
         - locale: nl
           name: Nederlands
           build: true
-        - locale: pt
-          name: Portuguese
+        - locale: pt_BR
+          name: Brazillian Portugese
           build: true
-        - locale: pt-BR
-          name: Brazillian-Portugese
-          build: true
+          theme: # override Material options for this locale
+            language: pt-BR
         #        - locale: es
         #          name: Spanish
         #          build: true
