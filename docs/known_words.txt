@@ -336,3 +336,5 @@ jq
 rollout
 unlinking
 vs
+jsonpathfinder
+xml
