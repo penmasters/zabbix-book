@@ -231,9 +231,12 @@ plugins:
         - locale: nl
           name: Nederlands
           build: true
-        #        - locale: pt
-        #          name: Portuguese
-        #          build: true
+        - locale: pt
+          name: Portuguese
+          build: true
+        - locale: pt-BR
+          name: Brazillian-Portugese
+          build: true
         #        - locale: es
         #          name: Spanish
         #          build: true
@@ -276,9 +279,6 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
   - admonition
   - pymdownx.details
   - pymdownx.superfences:

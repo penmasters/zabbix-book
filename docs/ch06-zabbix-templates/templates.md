@@ -143,7 +143,7 @@ This means your cloned template is independent:
 
     Add a suffix or prefix such as (Custom) to distinguish cloned templates and
     document their origin in the template notes like:
-    - Origin: Template OS Linux by Zabbix agent
+    - Origin: Linux by Zabbix agent
     - Based on UUID: a4c1d0f2d7de4a40a8b347afeb9a88df
 
 ## Template Groups
@@ -422,8 +422,8 @@ removed.
 
 | Source                  | Tag Key     | Tag Value     |
 | :---------------------- | :---------- | :------------ |
-| Template OS Linux       | `service`   | `os`          |
-| Template App PostgreSQL | `service`   | `database`    |
+| Linux by Zabbix agent       | `service`   | `os`          |
+| PostgreSQL by Zabbix agent 2 | `service`   | `database`    |
 | Host                    | `region`    | `europe`      |
 | Item                    | `component` | `replication` |
 
@@ -946,6 +946,6 @@ monitoring across diverse infrastructures.
 - [https://www.zabbix.com/documentation/current/en/manual/config/items/mapping](https://www.zabbix.com/documentation/current/en/manual/config/items/mapping)
 - [https://www.zabbix.com/documentation/current/en/manual/config/templates/template](https://www.zabbix.com/documentation/current/en/manual/config/templates/template)
 - [https://www.zabbix.com/documentation/current/en/manual/xml_export_import](https://www.zabbix.com/documentation/current/en/manual/xml_export_import)
-- [https://github.com/zabbix/zabbix/tree/master/templates/](https://github.com/zabbix/zabbix/tree/master/templates/)
-- [https://jsonlint.com/](https://jsonlint.com/)
+- [https://git.zabbix.com/repos?visibility=public](https://git.zabbix.com/repos?visibility=public)
+- [https://jsonpathfinder.com/](https://jsonpathfinder.com/)
 - [https://www.yamllint.com/](https://www.yamllint.com/)
