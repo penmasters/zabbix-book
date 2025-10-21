@@ -279,9 +279,9 @@ structure similar to host groups. Subgroups allow administrators to build organi
 multi-level collections of templates, which improves navigation and permission
 granularity.
 
-Subgtoups are created in Zabbix by adding a `/` in the group names. For exmple if we
+Subgroups are created in Zabbix by adding a `/` in the group names. For example if we
 want to create a group `Databases` as a subgroup of `Templates` then we only need
-to create the new group liek this: `Templates/Databases`. However it's
+to create the new group like this: `Templates/Databases`. However it's
 recommended to create `Templates` first.
 
 Example hierarchy:
@@ -938,7 +938,7 @@ monitoring across diverse infrastructures.
 - Why is it important to preserve UUIDs when managing templates through YAML or Git?
 - Describe how tags are inherited when a template is applied to a host.
 - Which tags take precedence if both the host and the template define the same key?
-- Why can’t a template-level value map be used by local host items?
+- Why can't a template-level value map be used by local host items?
 
 ## Useful URLs
 
