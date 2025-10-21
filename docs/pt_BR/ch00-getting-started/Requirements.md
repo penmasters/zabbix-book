@@ -5,9 +5,9 @@ description: |
 tags: [beginner]
 ---
 
-# System Requirements
+# Requisitos de sistema
 
-## Requirements
+## Requisitos
 
 Zabbix has specific hardware and software requirements that must be met, and
 these requirements may change over time. They also depend on the size of your
@@ -28,11 +28,11 @@ You can install all components (Zabbix server, database, web server) on a single
 machine or distribute them across multiple servers. For simplicity, take note of
 the server details:
 
-| Component       | IP Address |
-| --------------- | ---------- |
-| Zabbix Server   |            |
-| Database Server |            |
-| Web Server      |            |
+| Component       | Endereço IP |
+| --------------- | ----------- |
+| Zabbix Server   |             |
+| Database Server |             |
+| Web Server      |             |
 
 ???+ tip
 
