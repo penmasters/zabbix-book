@@ -5,35 +5,36 @@ description: |
 tags: [expert]
 ---
 
-# HA Setup
+# Configuração do HA
 
-In this section, we will set up Zabbix in a High Availability (HA)
-configuration. This feature, introduced in Zabbix 6, is a crucial enhancement
-that ensures continued monitoring even if a Zabbix server fails. With HA, when
-one Zabbix server goes down, another can take over seamlessly.
+Nesta seção, definiremos o Zabbix em uma configuração de alta disponibilidade
+(HA). Esse recurso, introduzido no Zabbix 6, é um aprimoramento crucial que
+garante o monitoramento contínuo mesmo se um servidor Zabbix falhar. Com a HA,
+quando um servidor Zabbix fica inativo, outro pode assumir o controle sem
+problemas.
 
-For this guide, we will use two Zabbix servers and one database, but the setup
-allows for adding more zabbix servers if necessary.
+Para este guia, usaremos dois servidores Zabbix e um banco de dados, mas a
+configuração permite adicionar mais servidores Zabbix, se necessário.
 
-![HA-Setup](./ha-setup/ch01-HA-setup.png)
+![Configuração-HA](./ha-setup/ch01-HA-setup.png)
 
-_1.1 HA Setup_
+_1.1 Configuração de HA_
 
-It's important to note that Zabbix HA setup is straightforward, providing
-redundancy without complex features like load balancing.
+É importante observar que a configuração do Zabbix HA é simples, fornecendo
+redundância sem recursos complexos, como balanceamento de carga.
 
-Just as in our basic configuration, we will document key details for the servers
-in this HA setup. Below is the list of servers and some place to add their
-respective IP addresses for your convenience :
+Assim como em nossa configuração básica, documentaremos os principais detalhes
+dos servidores nessa configuração de HA. Abaixo está a lista de servidores e um
+local para adicionar seus respectivos endereços IP para sua conveniência:
 
-| Server          | IP Address |
-| --------------- | ---------- |
-| Zabbix Server 1 |            |
-| Zabbix Server 2 |            |
-| Database        |            |
-| Virtual IP      |            |
+| Servidor          | Endereço IP |
+| ----------------- | ----------- |
+| Servidor Zabbix 1 |             |
+| Servidor Zabbix 2 |             |
+| Banco de dados    |             |
+| IP virtual        |             |
 
-???+ note
+???+ nota
 
     Our database (DB) in this setup is not configured for HA. Since it's not a
     Zabbix component, you will need to implement your own solution for database
@@ -43,28 +44,30 @@ respective IP addresses for your convenience :
 
 ---
 
-## Installing the Database
+## Instalação do banco de dados
 
-Refer to the [_Basic Installation_](basic-installation.md) chapter for detailed
-instructions on setting up the database. That chapter provides step-by-step
-guidance on installing either a PostgreSQL or MariaDB database on a dedicated
-node running Ubuntu or Rocky Linux. The same installation steps apply when
-configuring the database for this setup.
+Consulte o capítulo [_Instalação básica_](basic-installation.md) para obter
+instruções detalhadas sobre a configuração do banco de dados. Esse capítulo
+fornece orientação passo a passo sobre a instalação de um banco de dados
+PostgreSQL ou MariaDB em um nó dedicado que executa o Ubuntu ou o Rocky Linux.
+As mesmas etapas de instalação se aplicam à configuração do banco de dados para
+essa instalação.
 
 ---
 
-## Installing the Zabbix cluster
+## Instalando o cluster do Zabbix
 
-Setting up a Zabbix cluster involves configuring multiple Zabbix servers to work
-together, providing high availability. While the process is similar to setting
-up a single Zabbix server, there are additional configuration steps required to
-enable HA (High Availability).
+A configuração de um cluster do Zabbix envolve a configuração de vários
+servidores Zabbix para trabalharem juntos, proporcionando alta disponibilidade.
+Embora o processo seja semelhante à configuração de um único servidor Zabbix, há
+etapas adicionais de configuração necessárias para ativar a HA (High
+Availability).
 
-Add the Zabbix Repositories to your servers.
+Adicione os Repositórios Zabbix aos seus servidores.
 
-First, add the Zabbix repository to both of your Zabbix servers:
+Primeiro, adicione o repositório Zabbix a ambos os servidores Zabbix:
 
-!!! info "add zabbix repository"
+!!! info "add zabbix repository" (adicionar repositório zabbix)
 
     Redhat
 
@@ -81,9 +84,9 @@ First, add the Zabbix repository to both of your Zabbix servers:
     sudo apt update
     ```
 
-Once this is done we can install the zabbix server packages.
+Quando isso for feito, poderemos instalar os pacotes do servidor zabbix.
 
-!!! info "install zabbix server packages"
+!!! info "install zabbix server packages" (instalar pacotes do servidor zabbix)
 
     Redhat
 
@@ -107,9 +110,9 @@ Once this is done we can install the zabbix server packages.
 
 ---
 
-### Configuring Zabbix Server 1
+### Configuração do Zabbix Server 1
 
-Edit the Zabbix server configuration file,
+Edite o arquivo de configuração do servidor Zabbix,
 
 !!! info "edit the server config file"
 
@@ -165,7 +168,7 @@ each:
     sudo systemctl enable zabbix-server --now
     ```
 
-???+ note
+???+ nota
 
     The `NodeAddress` must match the IP or FQDN name of the Zabbix server node.
     Without this parameter the Zabbix front-end is unable to connect to the active
@@ -246,7 +249,7 @@ making it a critical component in maintaining a resilient infrastructure.
 
 ### Setting up keepalived
 
-???+ note
+???+ nota
 
     Keepalived is like a helper that makes sure one computer takes over if another
     one stops working. It gives them a shared magic IP address so users don't notice
@@ -417,7 +420,7 @@ established procedures, we ensure consistency and reliability in the deployment.
     Ubuntu users need to use the VIP in the setup of Nginx, together with the local
     IP in the listen directive of the config.
 
-???+ note
+???+ nota
 
     Don't forget to configure both front-ends. Also this is a new setup. Keep in
     mind that with an existing setup we need to comment out the lines  `$ZBX_SERVER`
