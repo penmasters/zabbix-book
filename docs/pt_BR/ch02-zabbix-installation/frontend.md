@@ -75,7 +75,7 @@ to the original state.
 
 _2.5 Shrink_
 
-???+ tip
+???+ dica
 
     We can also enter and exit kiosk mode by making use of parameters in our Zabbix
     url: `/zabbix.php?action=dashboard.view&kiosk=1` - activate kiosk mode or
