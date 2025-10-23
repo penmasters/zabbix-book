@@ -55,9 +55,9 @@ essa instalação.
 
 ---
 
-## Instalando o cluster do Zabbix
+## Instalando o cluster no Zabbix
 
-A configuração de um cluster do Zabbix envolve a configuração de vários
+A configuração de um cluster no Zabbix envolve a configuração de vários
 servidores Zabbix para trabalharem juntos, proporcionando alta disponibilidade.
 Embora o processo seja semelhante à configuração de um único servidor Zabbix, há
 etapas adicionais de configuração necessárias para ativar a HA (High
@@ -67,7 +67,7 @@ Adicione os Repositórios Zabbix aos seus servidores.
 
 Primeiro, adicione o repositório Zabbix a ambos os servidores Zabbix:
 
-!!! info "add zabbix repository" (adicionar repositório zabbix)
+!!! info "adicionar repositório zabbix"
 
     Redhat
 
@@ -86,7 +86,7 @@ Primeiro, adicione o repositório Zabbix a ambos os servidores Zabbix:
 
 Quando isso for feito, poderemos instalar os pacotes do servidor zabbix.
 
-!!! info "install zabbix server packages" (instalar pacotes do servidor zabbix)
+!!! info "instalar pacotes do servidor zabbix"
 
     Redhat
 
