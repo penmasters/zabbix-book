@@ -1,4 +1,4 @@
-# Aan de slag met Zabbix - De kracht van monitoring ontsluiten
+# Aan de slag met Zabbix - De Kracht van Monitoring Onthuld
 
 Welkom in de wereld van **Zabbix**, een krachtige open-source monitoring
 oplossing ontworpen om u uitgebreide inzichten te geven in uw IT-infrastructuur.
