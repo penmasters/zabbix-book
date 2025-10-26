@@ -153,10 +153,11 @@ flowchart TB
     style USER1 fill:#fff0f0,stroke:#c33
     style USER2 fill:#fff0f0,stroke:#c33
 ```
+
 ### SNMP Trap Flow (Active Monitoring)
 
-In an SNMP Trap setup, communication is device initiated. Meaning the network device
-sends an event message to Zabbix the moment something happens.
+In an SNMP Trap setup, communication is device initiated. Meaning the network
+device sends an event message to Zabbix the moment something happens.
 This is called active monitoring because Zabbix doesn't need to query the device
 periodically.
 
@@ -169,8 +170,8 @@ on UDP port 162.
 
 - **snmptrapd Daemon:**
 The Net-SNMP daemon **snmptrapd**  listens for incoming traps.
-It acts as a relay between the device and Zabbix, executing a handler script whenever
-a trap is received.
+It acts as a relay between the device and Zabbix, executing a handler script
+whenever a trap is received.
 
 - **Trap Handler / Log File:**
 The handler script (often zabbix_trap_receiver.pl or SNMPTT) processes the trap
@@ -438,6 +439,57 @@ You've now configured Zabbix to:
 Once traps are arriving, you can create SNMP trap items in Zabbix (type SNMP trap,
 key snmptrap[regex]) to trigger events, alerts, and dashboards.
 
+## Setting up SNMP traps with bash parser
+
+Using `perl` parser script might feel the only way to do trap parsing which
+is not true. `bash` script will use less dependencies and can be shortcut
+to get a working setup faster.
+
+### Bash script to accept the trap
+
+Create a file `/usr/bin/zabbix_trap_receiver.sh` with content:
+
+```bash
+#!/bin/bash
+
+# Outcome will be produced into a file
+OUT=/var/log/zabbix_traps_archive/zabbix_traps.log
+
+# Put contents of SNMP trap from stdin into a variable
+ALL=$(tee)
+
+# Extract IP where trap is coming from
+HOST=$(echo "$ALL" | grep "^UDP" | grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" | head -1)
+
+# Append SNMP trap into the log file
+echo "ZBXTRAP $HOST
+$(date)
+$ALL" | tee --append "$OUT"
+```
+
+The most important part is for the message to hold keyword `ZBXTRAP`
+which is followed by IP address.
+
+!!! tip "tip"
+
+    The bash `HOST` variable can be redefined to extract an IP address
+    from actual trap message, therefore giving an opportunity
+    automatically forward and store message in appropriate host in Zabbix.
+
+To enable trap parser inside `/etc/snmp/snmptrapd.conf` instead of using:
+
+```
+perl do "/usr/bin/zabbix_trap_receiver.pl";
+```
+
+use:
+
+```
+traphandle default /usr/bin/zabbix_trap_receiver.sh
+```
+
+---
+
 ## Testing and debugging
 
 ### To test rotation manually
@@ -448,7 +500,7 @@ sudo logrotate --force /etc/logrotate.d/zabbix_traps
 
 ### Testing SNMP Trap Reception
 
-You can simulate a trap manually using the snmptrap command.
+We can simulate a trap manually using the snmptrap command.
 
 ``` bash
 Example 1: SNMP v1 Test Trap
@@ -460,7 +512,65 @@ Example 2: SNMP v2c Test Trap
 sudo snmptrap -v 2c -c public localhost '' 1.3.6.1.4.1.8072.2.3.0.1 1.3.6.1.4.1.8072.2.3.2.1 i 123456
 ```
 
-### SELinux Considerations
+While using "zabbix_trap_receiver.pl" as a parser, the perl dependencies will be
+validated only at the runtime when receiving the actual message. It can be handy
+to see if the status of service is still healthy. Running the "status" for the
+systemd service automatically prints the most recent log lines of snmptrapd.
+
+``` bash
+sudo systemctl status snmptrapd
+```
+
+For troubleshooting efficiency:
+
+- Wrong order is: restart service, run status, send trap
+
+- Correct order is: restart service, send trap, run status
+
+
+### Testing SNMP Trap reception without UPD channel
+
+This method helps to simulate an SNMP trap message even if device currently
+cannot send one.
+
+``` bash
+echo "ZBXTRAP 127.0.0.1
+$(date)
+line two
+line three" | sudo tee --append /var/log/zabbix_traps_archive/zabbix_traps.log
+```
+
+The most important part is having keyword "ZBXTRAP" (all caps) followed by the
+IP address. The IP must belong to an **existing SNMP interface** behind 
+Zabbix proxy/server.
+
+
+### Validate if proxy/server runs a correct mapping
+
+If the host is not yet made in frontend, that is perfect opportunity to validate
+if Zabbix proxy/server service has recognised the mapping with a zabbix_traps.log file.
+
+Every time the trap message is sent (and the device is not yet registered in GUI), 
+it should print a line about "unmatched trap received from"
+
+Send a test trap
+
+```
+sudo snmptrap -v 1 -c public 127.0.0.1 '.1.3.6.1.6.3.1.1.5.4' '0.0.0.0' 6 33 '55' .1.3.6.1.6.3.1.1.5.4 s "eth0"
+```
+
+Check immediately
+
+``` bash
+date
+grep "unmatched trap received from" /var/log/zabbix/zabbix_proxy.log
+```
+
+If the line appear, it's a solid indication the settings about
+StartSNMPTrapper and SNMPTrapperFile is configured correctly.
+
+
+### SELinux considerations
 
 If SELinux is enabled and traps are not being processed, check for denied actions:
 ``` bash
@@ -480,6 +590,34 @@ perl do "/usr/bin/zabbix_trap_receiver.pl";
 ```
 
 This adds authentication and encryption for trap communication.
+
+### Desperate snmptrapd.conf for SNMPv2
+
+If community names for SNMPv2 traps are not known and deadlines are approaching,
+we can whitelist to allow every SNMP trap message to come in
+by completely ignoring all community names.
+
+Add at the beginning of existing configuration file add:
+
+```
+disableAuthorization yes 
+```
+
+For example with a bash parser it's enough to have only 2 active lines
+to make it functional and have confidence that trap receiving is working.
+
+```
+echo "
+# Allow everyone to register a message
+disableAuthorization yes
+
+# Forward message to parser script
+traphandle default /usr/bin/zabbix_trap_receiver.sh
+" | sudo tee /etc/snmp/snmptrapd.conf
+```
+
+This is only applicable to SNMPv2 traps. This will not work with SNMPv3 traps.
+
 
 ## Trap mapping and preprocessing
 
@@ -585,6 +723,48 @@ VARBINDS:
   IF-MIB::ifDescr                type=4  value=STRING: "GigabitEthernet0/1"
 ```
 
+### (optional) Bulletproof solution
+
+Official Zabbix SNMP templates do not require installing MIB files, targeting
+raw OIDs for data polling. If we continue this style for trapping too
+we can create a dependency free solution by enabling a "numerical" flag inside
+/etc/snmp/snmptrapd.conf
+
+```
+outputOption n
+```
+
+Edit the file, restart the snmptrapd service, send test trap, and check the log:
+
+```
+tail -99 /var/log/zabbix_traps_archive/zabbix_traps.log
+```
+
+!!! warning "In long run"
+
+    Using a numerical traps will take much more time to design a template.
+    More time in creating items and triggers. Due to the '.' (dot) symbol of
+    being a special character in the regular expression world, the items
+    keys will require to escape. This makes solution not visually pleasant.
+    Ignoring escaping the '.' will also work 99.9% of time, but it violates the
+    idea of bulletproof and precise solution.
+
+---
+
+Using numerical traps can be best direction if:
+
+- There is a big passion about bulletproof solution. Creating solution with
+bare minimum dependencies - MIBs are never required for Zabbix proxies.
+
+- Template readability is not an issue. You are only person in the
+monitoring departement. There are no team mates.
+
+- Have a lot of time to design solution
+
+- You are willing to share your masterpiece with the internet.
+Perhaps share it at GitHub
+
+
 ### Creating SNMP Trap Items
 
 Now that our host is configured and we've verified that traps are being received,
@@ -607,7 +787,7 @@ Configure the following parameters:
 
 - **Name:** SNMP Trap: Fallback
 - **Type:** SNMP trap
-- **Key:** snmptrap.Fallback
+- **Key:** snmptrap.fallback
 - **Type of information:** Text
 
 Next we will create 2 dependent items. One item for the ifAdminStatus and another
@@ -636,12 +816,12 @@ Next we create our second item also dependent on our Fallback item.
 - **Type of information:** Numeric(unsigned)
 - **Master item:** (Select your fallback item as master item)
 
-Again go to the `preprocessing` tab and enter following information.
+Again go to the `Preprocessing` tab and enter following information.
 
 Select `Regular expression` and for Parameters enter `IF-MIB::ifOperStatus[\s\S]*?INTEGER:\s+(\d+)`
 and `\1` in the Output box.
 
-Again add a `custom on failure` step and select `Discard value`.
+Again add a `Custom on fail` step and select `Discard value`.
 
 ![ch04.37-snmp-preprocessing.png](ch04.36-snmp-preprocessing.png)
 
@@ -720,6 +900,84 @@ probably need some tweaking before you have it all working like you want.
     you catch all traps even if they are not configured on your host.
 
 
+## Deploying bare minimum MIB files
+
+Gathering proper MIB files might sounds a tedious and time consuming task.
+
+Installing too many MIBs will cause degradation for the
+SNMP trap translation process and slow down the SNMP polling process.
+
+Here is an universal method (treat it as one option) on how to obtain bare minimum
+MIBs to work with most of devices. This is useful for SNMP polling too.
+
+The project [https://github.com/netdisco/netdisco-mibs](https://github.com/netdisco/netdisco-mibs)
+exist for 20 years and is a collection of MIBs for a lot of vendors. Dare I say: all vendors?
+
+To install/replace the Linux distribution stock MIB bundle:
+
+```bash
+# move to /tmp
+cd /tmp
+
+# download
+curl -kL https://github.com/netdisco/netdisco-mibs/archive/refs/heads/master.zip -o /tmp/netdisco-mibs.zip
+
+# unpack. this will create '/tmp/netdisco-mibs-master' directory
+unzip /tmp/netdisco-mibs.zip -d /tmp
+
+# remove existing/official MIBs from Linux distribution
+rm -rf /usr/share/snmp/mibs/*
+
+# install Netdisco collection. it will move all directories which start with lower case letter or digit
+find /tmp/netdisco-mibs-master -mindepth 1 -maxdepth 1 -type d -name '[a-z0-9]*' -exec mv {} /usr/share/snmp/mibs/ \;
+
+# list what is installed
+ls -1 /usr/share/snmp/mibs
+
+# cleanup
+rm -rf /tmp/netdisco*
+```
+
+To enable bare minimum MIBs we need to anable two catalogs "rfc" and "net-snmp".
+
+Overwrite/replace configuration by using:
+
+```bash
+echo "
+mibs :
+mibdirs /usr/share/snmp/mibs/rfc:/usr/share/snmp/mibs/net-snmp
+mibs +ALL
+" | sudo tee /etc/snmp/snmp.conf
+```
+
+!!! tip "Fun fact"
+    
+    Modifying /etc/snmp/snmp.conf file the changes are applied on the fly.
+    No need to restart anything.
+
+### Include another vendor
+
+Let's say we need to work with Cisco equipment. We can double-check if vendor
+is included in Netdisco bundle. Grep for case insensitive name:
+
+```bash
+ls -1 /usr/share/snmp/mibs | grep -i Cisco
+```
+
+If the vendor is in list, then include "cisco" directory
+together with "rfc" and "net-snmp" directory, like this:
+
+```bash
+echo "
+mibs :
+mibdirs /usr/share/snmp/mibs/rfc:/usr/share/snmp/mibs/net-snmp:/usr/share/snmp/mibs/cisco
+mibs +ALL
+" | sudo tee /etc/snmp/snmp.conf
+```
+
+Adding multiple vendors is possible but it will slow down the translation speed.
+Adding plus one vendor usually add at least 1s more to the translation speed.
+
 ## Conclusion
 
 We started by setting up the trap reception environment using snmptrapd and the
@@ -755,6 +1013,7 @@ moment they happen, not minutes later.
 ## Useful URLs
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmptrap](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmptrap)
+- [https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/misc/snmptrap](https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/misc/snmptrap)
 - [https://www.net-snmp.org/](https://www.net-snmp.org/)
 - [https://datatracker.ietf.org/doc/html/rfc3416](https://datatracker.ietf.org/doc/html/rfc3416)
 - [https://datatracker.ietf.org/doc/html/rfc1905](https://datatracker.ietf.org/doc/html/rfc1905)
