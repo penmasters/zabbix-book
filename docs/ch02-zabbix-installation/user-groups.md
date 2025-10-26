@@ -36,9 +36,9 @@ This group centric architecture provides several major benefits:
 
 > **Technical Definition:**
 > User groups allow grouping users for both organizational purposes and for assigning
-  permissions to data. Permissions to viewing and configuring data of host groups and
-  template groups are assigned to user groups, not individual users. A user can belong
-  to any number of groups.
+  permissions to data. Permissions to viewing and configuring data of host groups
+  and template groups are assigned to user groups, not individual users. A user
+  can belong to any number of groups.
 
 ---
 
@@ -49,10 +49,10 @@ remains consistent across Zabbix 8.0 and previous versions.
 
 ### Group Creation and General Attributes
 
-1.  Navigate to **Administration** →  **User groups**.
-2.  Click **Create user group** (or select an existing group to modify).
-3.  The configuration form is divided into four critical tabs: **User group**,
-    **Template permissions**, **Host permissions**, and **Problem tag filter**.
+1. Navigate to **Administration** →  **User groups**.
+2. Click **Create user group** (or select an existing group to modify).
+3. The configuration form is divided into four critical tabs: **User group**,
+   **Template permissions**, **Host permissions**, and **Problem tag filter**.
 
 ![ch02.20_user-groups_menu.png](ch02.20_user-groups_menu.png)
 
@@ -97,7 +97,7 @@ triggers, graphs, etc.) via their Template Groups.
 
 For each assigned Template Group, one of the following permissions must be selected:
 
-* **Read-only:** Users can view the template configuration and see data derived 
+* **Read-only:** Users can view the template configuration and see data derived
   from it, but they **cannot** modify or link the template.
 * **Read-write:** Users can view, modify, and link/unlink the template and its
   entities (items, triggers, etc.).
@@ -199,10 +199,10 @@ In Zabbix 8.0, the actions available in the **Monitoring** → **Problems**
 view (via the *Update problem* dialog) are controlled by two distinct mechanisms
 working in tandem:
 
-1.  **Host/Template Permissions:** Governs basic access to the problem and whether
-    configuration-level changes can be made.
-2.  **User Role Capabilities:** Governs which specific administrative actions (like
-    acknowledging, changing severity, or closing) are enabled.
+1. **Host/Template Permissions:** Governs basic access to the problem and whether
+   configuration-level changes can be made.
+2. **User Role Capabilities:** Governs which specific administrative actions (like
+   acknowledging, changing severity, or closing) are enabled.
 
 The table below clarifies the minimum required permissions to perform actions on
 an active problem:
@@ -223,22 +223,22 @@ an active problem:
 Building a maintainable, secure Zabbix environment requires discipline in defining
 groups and permissions.
 
-1.  **Adopt Role-Based Naming:** Use clear, standardized names that reflect the
-    user's role and their access level, such as `Ops-RW` (Operations Read/Write)
-    or `NOC-RO` (NOC Read-Only).
-2.  **Grant Access via Groups Only:** Never assign permissions directly to an individual
-    user; always rely on **group membership**. This ensures auditability and maintainability.
-3.  **Principle of Least Privilege:** Start with the most restrictive access (**Read-only**)
-    and only escalate to **Read-write** when configuration-level changes are an
-    absolute requirement of the user's role.
-4.  **Align with Organizational Structure:** Ensure your Host Groups and Template
-    Groups mirror your organization's teams or asset categories (e.g., `EU-Network`,
-    `US-Database`, `Finance-Templates`). This makes permission assignment intuitive.
-5.  **Regular Review and Audit:** Periodically review group memberships and permissions.
-    A user's role may change, and their access in Zabbix must be adjusted accordingly.
-6.  **Test Restricted Views:** After creating a group, always log in as a test user
-    belonging to that group to verify that dashboards, widgets, and configuration
-    pages display the correct restricted view.
+1. **Adopt Role-Based Naming:** Use clear, standardized names that reflect the
+   user's role and their access level, such as `Ops-RW` (Operations Read/Write)
+   or `NOC-RO` (NOC Read-Only).
+2. **Grant Access via Groups Only:** Never assign permissions directly to an individual
+   user; always rely on **group membership**. This ensures auditability and maintainability.
+3. **Principle of Least Privilege:** Start with the most restrictive access (**Read-only**)
+   and only escalate to **Read-write** when configuration-level changes are an
+   absolute requirement of the user's role.
+4. **Align with Organizational Structure:** Ensure your Host Groups and Template
+   Groups mirror your organization's teams or asset categories (e.g., `EU-Network`,
+   `US-Database`, `Finance-Templates`). This makes permission assignment intuitive.
+5. **Regular Review and Audit:** Periodically review group memberships and permissions.
+   A user's role may change, and their access in Zabbix must be adjusted accordingly.
+6. **Test Restricted Views:** After creating a group, always log in as a test user
+   belonging to that group to verify that dashboards, widgets, and configuration
+   pages display the correct restricted view.
 
 ---
 
@@ -251,6 +251,3 @@ structured user groups, deliberate template/host permissions, and well defined
 roles ensures a secure, predictable, and maintainable monitoring environment, minimizing
 the risk of unauthorized configuration changes or viewing sensitive data.
 
-The next chapter will detail the configuration of **User Roles** and explain how
-their **Capabilities** augment user group permissions to complete the Zabbix
-access control model.
