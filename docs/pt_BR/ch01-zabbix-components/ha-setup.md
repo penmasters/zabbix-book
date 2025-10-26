@@ -518,7 +518,7 @@ for managing high availability in Zabbix without requiring a full restart of the
 
 ---
 
-## Conclusion
+## Conclusão
 
 In this chapter, we have successfully set up a high-availability (HA) Zabbix
 environment by configuring both the Zabbix server and frontend for redundancy.
@@ -539,7 +539,7 @@ needed.
 
 ---
 
-## Questions
+## Perguntas
 
 1. What is Zabbix High Availability (HA), and why is it important?
 2. How does Zabbix determine which node is active in an HA setup?
@@ -549,7 +549,7 @@ needed.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - <https://www.redhat.com/sysadmin/advanced-keepalived>
 - <https://keepalived.readthedocs.io/en/latest/introduction.html>

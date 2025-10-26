@@ -400,19 +400,20 @@ configuração:
     systemctl restart chronyd
     ```
 
-### Verifying Updated Time Servers
+### Verificação de servidores de horário atualizados
 
-Check the time sources again to ensure that the new local servers are in use:
+Verifique novamente as fontes de horário para garantir que os novos servidores
+locais estejam em uso:
 
-!!! info "Check chrony sources"
+!!! info "Verificar as fontes do chrony "
 
     ```yaml
     chronyc> sources
     ```
 
-Example of expected output with local servers:
+Exemplo de saída esperada com servidores locais:
 
-!!! info "Example output"
+!!! info "Exemplo de saída"
 
     ```yaml
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
@@ -423,28 +424,28 @@ Example of expected output with local servers:
     ^+ time.cloudflare.com           3   6    17    43
     ```
 
-This confirms that the system is now using local time servers.
+Isso confirma que o sistema agora está usando servidores de horário local.
 
-## Conclusion
+## Conclusão
 
-As we have seen, before even considering the Zabbix packages, attention must be
-paid to the environment in which it will reside. A properly configured operating
-system, an open path through the firewall, and accurate timekeeping are not mere
-suggestions, but essential building blocks. Having laid this groundwork, we can
-now proceed with confidence to the Zabbix installation, knowing that the
-underlying system is prepared for the task.
+Como vimos, antes mesmo de considerar os pacotes do Zabbix, é preciso prestar
+atenção ao ambiente em que ele residirá. Um sistema operacional configurado
+adequadamente, um caminho aberto através do firewall e um controle preciso do
+tempo não são meras sugestões, mas blocos de construção essenciais. Depois de
+estabelecer essa base, agora podemos prosseguir com confiança para a instalação
+do Zabbix, sabendo que o sistema subjacente está preparado para a tarefa.
 
-## Questions
+## Perguntas
 
-- Why do you think accurate time synchronization is so crucial for a monitoring
-  system like Zabbix?
-- Now that the groundwork is laid, what do you anticipate will be the first step
-  in the actual Zabbix installation process?
-- As we move towards installing Zabbix, let's think about network communication.
-  What key ports do you anticipate needing to allow through the firewall for the
-  Zabbix server and agents to interact effectively?
+- Por que você acha que a sincronização precisa do tempo é tão crucial para um
+  sistema de monitoramento como o Zabbix?
+- Agora que as bases estão estabelecidas, qual você prevê que será a primeira
+  etapa do processo de instalação do Zabbix?
+- À medida que avançamos na instalação do Zabbix, vamos pensar na comunicação da
+  rede. Quais são as principais portas que você prevê que precisarão passar pelo
+  firewall para que o servidor Zabbix e os agentes interajam de forma eficaz?
 
-## Useful URLs
+## URLs úteis
 
 - [https://www.ntppool.org/zone](https://www.ntppool.org/zone)
 - [https://www.redhat.com/en/blog/beginners-guide-firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
