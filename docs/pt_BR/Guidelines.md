@@ -11,7 +11,7 @@
 - Instale o software necessário para que o Mkdocs funcione, verifique o arquivo
   na pasta raiz how-to-install-mkdocs.md
   - Crie uma nova branch para fazer suas alterações
-    - git branch "<nome do seu branch\>"
+    - git branch "<nome da sua branch\>"
     - git checkout "<nome da sua branch\>"
   - Faça as alterações desejadas e confirme-as
     - git add "arquivos que você alterou"
@@ -24,8 +24,8 @@
   - Mesclar sua branch com a branch principal
     - git merge "<nome da sua branch\>"
     - git push
-  - limpar seu branch
-    - git branch -d "<nome do seu branch\>"
+  - limpar sua branch
+    - git branch -d "<nome da sua branch\>"
 - Crie um pull request para que possamos mesclá-lo :)
 - Siga estas
   [diretrizes](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)

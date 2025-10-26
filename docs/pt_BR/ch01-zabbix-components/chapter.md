@@ -1,33 +1,36 @@
-# Zabbix components, basic functions and installation
+# Componentes do Zabbix, funções básicas e instalação
 
-In this chapter, we expand on the foundational knowledge from the "Getting
-Started" section to provide a comprehensive guide for both beginners who are
-installing Zabbix for the first time and advanced users who seek to optimize
-their setup. We’ll not only cover the essential steps for a basic installation
-but also delve into the finer details of Zabbix architecture, components, and
-best practices.
+Neste capítulo, expandimos o conhecimento básico da seção "Introdução" para
+fornecer um guia abrangente tanto para iniciantes que estão instalando o Zabbix
+pela primeira vez quanto para usuários avançados que buscam otimizar sua
+configuração. Não abordaremos apenas as etapas essenciais para uma instalação
+básica, mas também nos aprofundaremos nos detalhes mais finos da arquitetura,
+dos componentes e das práticas recomendadas do Zabbix.
 
-We’ll start by walking through the installation process, ensuring you have a
-solid foundation to build on. From there, we'll move into the core components of
-Zabbix, what each one does, how they interact, and why they are crucial to your
-monitoring solution. You'll learn about subprocesses, their roles, and how they
-contribute to Zabbix efficiency and reliability.
+Começaremos percorrendo o processo de instalação, garantindo que você tenha uma
+base sólida sobre a qual construir. A partir daí, abordaremos os principais
+componentes do Zabbix, o que cada um deles faz, como interagem e por que são
+cruciais para sua solução de monitoramento. Você conhecerá os subprocessos, suas
+funções e como eles contribuem para a eficiência e a confiabilidade do Zabbix.
 
-Additionally, we’ll explore good architectural choices that can make or break
-your monitoring setup. Whether you're managing a small network or a large-scale
-infrastructure, making the right design decisions early on will pay dividends in
-scalability, performance, and maintenance.
+Além disso, exploraremos as boas escolhas arquitetônicas que podem ser decisivas
+para a sua configuração de monitoramento. Não importa se você está gerenciando
+uma rede pequena ou uma infraestrutura de grande escala, tomar as decisões
+corretas de projeto logo no início trará dividendos em termos de escalabilidade,
+desempenho e manutenção.
 
-This chapter is designed to cater to a wide range of readers. If you're simply
-looking to get Zabbix up and running, you'll find clear, step-by-step
-instructions. For those wanting to dive deeper, we'll provide detailed insights
-into how Zabbix functions under the hood, helping you make informed choices that
-align with your needs and future growth plans.
+Este capítulo foi projetado para atender a uma ampla gama de leitores. Se
+estiver apenas procurando colocar o Zabbix em funcionamento, você encontrará
+instruções claras e passo a passo. Para aqueles que desejam se aprofundar,
+forneceremos insights detalhados sobre como o Zabbix funciona nos bastidores,
+ajudando-o a fazer escolhas informadas que se alinham com suas necessidades e
+planos de crescimento futuro.
 
-By the end of this chapter, you will have not only a working Zabbix installation
-but also a thorough understanding of its components and architecture, empowering
-you to leverage Zabbix to its fullest potential, regardless of the complexity of
-your environment.
+Ao final deste capítulo, você terá não apenas uma instalação funcional do
+Zabbix, mas também uma compreensão completa de seus componentes e arquitetura, o
+que o capacitará a aproveitar todo o potencial do Zabbix, independentemente da
+complexidade de seu ambiente.
 
-Let’s embark on this detailed journey into Zabbix and equip ourselves with the
-knowledge to both start and optimize a powerful monitoring solution.
+Vamos embarcar nessa jornada detalhada pelo Zabbix e nos equipar com o
+conhecimento necessário para iniciar e otimizar uma solução de monitoramento
+avançada.
