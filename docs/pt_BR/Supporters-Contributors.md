@@ -1,79 +1,82 @@
-# Supporters & Contributors
+# Apoiadores e colaboradores
 
-This book would not have been possible without the dedication, generosity, and
-expertise of many individuals and organizations. We extend our heartfelt thanks
-to everyone who has supported this project, whether through financial
-contributions, technical expertise, content reviews, or community engagement.
+Este livro não teria sido possível sem a dedicação, a generosidade e o
+conhecimento especializado de muitas pessoas e organizações. Nossos sinceros
+agradecimentos a todos que apoiaram este projeto, seja por meio de contribuições
+financeiras, conhecimento técnico, revisões de conteúdo ou envolvimento da
+comunidade.
 
-## Our Sponsors
+## Nossos patrocinadores
 
-We are deeply grateful to the sponsors who have provided financial or material
-support to help bring this book to life. Their contributions have enabled us to
-maintain high-quality content, support open-source initiatives, and ensure that
-this book remains accessible to as many people as possible.
+Somos profundamente gratos aos patrocinadores que forneceram apoio financeiro ou
+material para ajudar a dar vida a este livro. Suas contribuições nos permitiram
+manter um conteúdo de alta qualidade, apoiar iniciativas de código aberto e
+garantir que este livro permaneça acessível ao maior número possível de pessoas.
 
-- **OICTS** : [https://oicts.com/](https://oicts.com/)
-- **ZABBIX** : [https://www.zabbix.com/](https://www.zabbix.com/)
+- **OICTS**: [https://oicts.com/](https://oicts.com/)
+- **ZABBIX**: [https://www.zabbix.com/](https://www.zabbix.com/)
 
 ---
 
-## Our Contributors
+## Nossos colaboradores
 
-This book is a community effort, and we sincerely appreciate the time and
-knowledge shared by our contributors. From writing and reviewing content to
-providing feedback and sharing expertise, your efforts have helped shape this
-resource into something valuable for the monitoring and open-source communities.
+Este livro é um esforço da comunidade, e agradecemos sinceramente o tempo e o
+conhecimento compartilhados por nossos colaboradores. Desde a redação e a
+revisão do conteúdo até o fornecimento de feedback e o compartilhamento de
+conhecimentos, seus esforços ajudaram a transformar este recurso em algo valioso
+para as comunidades de monitoramento e de código aberto.
 
-- **Patrik Uytterhoeven** :
+- **Patrik Uytterhoeven**:
   [http://github.com/Trikke76](http://github.com/Trikke76)
-- **Nathan Liefting** :
+- **Nathan Liefting**:
   [https://github.com/larcorba](https://github.com/larcorba)
 - Evgeny Yurchenko: [https://github.com/BGmot](https://github.com/BGmot)
 - Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
 - Aigars Kadikis :
   [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
 
-A list of all the contributors who where so kind to fix typos etc .. can be
-found here :
+Uma lista de todos os colaboradores que tiveram a gentileza de corrigir erros de
+digitação etc. pode ser encontrada aqui:
 [https://github.com/penmasters/zabbix-book/graphs/contributors](https://github.com/penmasters/zabbix-book/graphs/contributors)
 
-### Translators
+### Tradutores
 
 - Nicolas Hermel : [https://github.com/wityender](https://github.com/wityender)
 - Dimitry Q : [https://github.com/krotesk](https://github.com/krotesk)
 
 ---
 
-## Special Thanks to Our Board Members
+## Agradecimentos especiais aos membros de nossa diretoria
 
-A special acknowledgment goes to the members of our board, whose vision,
-leadership, and dedication have guided this project from its inception. Their
-commitment to open-source principles and knowledge sharing has been instrumental
-in making this book a reality.
+Um agradecimento especial vai para os membros do nosso conselho, cuja visão,
+liderança e dedicação guiaram este projeto desde o seu início. Seu compromisso
+com os princípios de código aberto e com o compartilhamento de conhecimento foi
+fundamental para tornar este livro uma realidade.
 
-- **Patrik Uytterhoeven** : http://github.com/Trikke76
-- **Nathan Liefting** : https://github.com/larcorba
-- **Alexei Vladishev** :
-
----
-
-## Every Contribution Matters
-
-Open-source thrives on collaboration, and even the smallest contributions help
-make a difference. Whether it was reporting a typo, suggesting an improvement,
-opening an issue, or simply sharing feedback, we appreciate everyone who took
-the time to help refine and improve this book. Your efforts, no matter how
-small, are a valuable part of this project. Check out [Everyone who created an
-issue](https://github.com/penmasters/zabbix-book/issues?q=is%3Aissue%20).
+- **Patrik Uytterhoeven**: http://github.com/Trikke76
+- **Nathan Liefting**: https://github.com/larcorba
+- **Alexei Vladishev**:
 
 ---
 
-## Join the Community
+## Toda contribuição é importante
 
-We welcome new contributors and supporters! If you'd like to get involved
-whether by contributing content, providing feedback, or supporting this
-initiative you can find more details on how to participate at
-[Guidelines](./Guidelines.md).
+O código aberto prospera com a colaboração, e mesmo as menores contribuições
+ajudam a fazer a diferença. Seja relatando um erro de digitação, sugerindo uma
+melhoria, abrindo um problema ou simplesmente compartilhando comentários,
+agradecemos a todos que dedicaram seu tempo para ajudar a refinar e melhorar
+este livro. Seus esforços, por menores que sejam, são uma parte valiosa deste
+projeto. Dê uma olhada em [Todos que criaram um
+problema](https://github.com/penmasters/zabbix-book/issues?q=is%3Aissue%20).
 
-Thank you for being part of this journey and helping us build a valuable
-resource for the open-source community!
+---
+
+## Participe da comunidade
+
+Damos as boas-vindas a novos colaboradores e apoiadores! Se você quiser se
+envolver, seja contribuindo com conteúdo, fornecendo feedback ou apoiando esta
+iniciativa, poderá encontrar mais detalhes sobre como participar em
+[Diretrizes](./Guidelines.md).
+
+Obrigado por fazer parte dessa jornada e por nos ajudar a criar um recurso
+valioso para a comunidade de código aberto!
