@@ -801,7 +801,7 @@ zabbix_export:
 
 ### Importing Templates
 
-The import process in Zabbix 8.0  is intelligent — it compares UUIDs, detects
+The import process in Zabbix 7.4 is intelligent — it compares UUIDs, detects
 differences, and optionally merges or removes entities.
 You can import templates via:
 

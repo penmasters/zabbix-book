@@ -5,164 +5,128 @@ description: |
 tags: [beginner]
 ---
 
-# User Groups: The Foundation of Zabbix Access Control
+# User groups
 
-In any enterprise monitoring platform, establishing **role-based access control
-(RBAC)** is critical for maintaining both security and clarity of operational
-responsibility. For Zabbix, this control is built upon the fundamental concept
-of **User Groups**.
+In any monitoring system, controlling who sees what is key to maintaining both
+security and clarity of responsibility. In Zabbix 7.4, user access management is
+built around the concept of user groups, which serve as the foundation for assigning
+permissions and structuring access to the monitoring data. This chapter explains
+how user groups work, how to configure them, and how to apply best practices
+in a real-world enterprise monitoring deployment.
 
-In Zabbix 8.0, user groups serve as the primary mechanism for assigning permissions
-and structuring access to the monitored data and configuration entities. This
-chapter details the function of user groups, guides you through their configuration,
-and outlines best practices for applying them in a robust, real world deployment.
+## What Is a User Group?
 
-## The Role of a User Group
+I think the first question we have to ask us is, what is a user group exactly in
+Zabbix.
+A “user group” in Zabbix is a logical grouping of individual user accounts. Instead
+of assigning permissions individually to each user, you assign users into groups
+and then grant access rights (to host groups, template groups, problem tags, etc)
+at the group level. From the documentation:
 
-A **User Group** in Zabbix is a logical collection of individual user accounts.
-Rather than managing permissions for hundreds of users individually, Zabbix requires
-that users be assigned to one or more groups. Access rights, such as the ability
-to view host groups, configure templates, or see specific problem tags are then
-granted at the **group level**.
+``` bash
+“User groups allow to group users both for organisational purposes and for assigning
+permissions to data. Permissions to viewing and configuring data of host groups and
+template groups are assigned to user groups, not individual users.”
+“A user can belong to any number of groups.”
+```
 
-This group centric architecture provides several major benefits:
+This structure enables:
 
-* **Simplified Management:** Access rights are managed by **role** (e.g., "Network Engineers,"
-  "Database Administrators") instead of by individual user.
-* **Consistency:** Ensures that all users within the same role possess a consistent,
-  standardized set of permissions.
-* **Segregation of Duties:** Enables clear separation between viewing (read-only)
-  and configuration (read-write) access.
+- Easier management of access rights by role rather than individual user.
+- Consistency of permissions for users in the same role (for example, “Network
+  Engineers”, “Database Administrators”, “Service Desk”).
+- Segregation of view and configuration access (e.g., read-only vs read-write
+  rights).
 
-> **Technical Definition:**
-> User groups allow grouping users for both organizational purposes and for assigning
-  permissions to data. Permissions to viewing and configuring data of host groups and
-  template groups are assigned to user groups, not individual users. A user can belong
-  to any number of groups.
+## How to Configure a User Group
 
----
+In Zabbix 8.0 and older versions the configuration of a user group happens via the
+web frontend:
 
-## Configuring a User Group
-
-User groups are configured exclusively through the Zabbix frontend. This process
-remains consistent across Zabbix 8.0 and previous versions.
-
-### Group Creation and General Attributes
-
-1.  Navigate to **Administration** →  **User groups**.
-2.  Click **Create user group** (or select an existing group to modify).
-3.  The configuration form is divided into four critical tabs: **User group**,
-    **Template permissions**, **Host permissions**, and **Problem tag filter**.
+- Navigate to Users → User groups. (This can be different in older versions.)
+- Click `Create user group` in the top right corner (or edit an existing group).
+- The form is divided into four tabs:
+    - User group (general attributes)
+    - Template permissions
+    - Host permissions
+    - Problem tag filter
 
 ![ch02.20_user-groups_menu.png](ch02.20_user-groups_menu.png)
 
-_2.20 user group menu_
+_2.20 User Group menu_
 
-#### The `User group` Tab
+### General Attributes
 
-This initial tab defines the group's general properties and its membership:
+On the `User group` tab you set:
 
-* **Group name:** A unique, descriptive identifier (e.g., `NOC-RO`, `System-Admins-RW`).
-* **Users:** Add existing users to this group. A user can be a member of multiple
-  groups.
-* **Frontend access:** Controls the authentication method for group members. Options
-  include `System default`, `Internal`, `LDAP`, or `Disabled` (useful for API-only
-  accounts or for temporarily locking frontend access for a role).
-* **LDAP server:** If `LDAP` access is chosen, select the specific LDAP server
-  configuration to be used for members of this group.
-* **Multi-factor authentication (MFA):** Select the method to be enforced for the
-  group. If a user is a member of multiple groups, the most secure MFA setting
-  will typically apply.
-* **Enabled:** The master switch to activate or deactivate the group and its members.
-* **Debug mode:** A powerful, optional setting that enables detailed debug logging
-  for all group members in the Zabbix frontend.
+- **Group name:** A unique, descriptive name for the group.
+- **Users:** Add existing users by typing the names, or use the “Select” button
+  to pick from a list.
+- **Frontend access:** Determines how users in the group authenticate. Options
+  include System default, Internal, LDAP, Disabled (if the group should not have
+  frontend access).
+- **LDAP server:** If you selected LDAP access, you choose the LDAP server to use,
+  for the users in this group.
+- **Multi-factor authentication (MFA):** Choose the method for the group: Default
+  (use the global default), a specific method, or Disabled. Note: if a user is
+  in multiple groups and any group has MFA enabled, MFA may apply.
+- **Enabled:** Whether the group (and thus its members) are enabled.
+- **Debug mode:** Optionally enable debug mode for members of the group.
 
-???+ tip "The Debug User Group"
-    Zabbix includes a dedicated `Debug` user group out-of-the-box. Instead of activating
-    the debug option for an existing production group, it is cleaner practice to
-    simply add the required user to the pre-existing `Debug` group.
+???+ tip
 
----
+    ```
+    There is a dedicated `Debug` user group. There is no need to activate the
+    debug option. You can just easy add a user to this group who needs to have
+    debug anabled.
+    ```
 
-### Permission Tabs: Host Groups and Template Groups
+## Template Permissions Tab
 
-Permissions are configured by assigning access levels to **Host Groups** and
-**Template Groups**. These entities act as containers, meaning the permissions
-assigned to the group apply to all nested groups and all entities within them.
+This tab lets you assign permissions to `template groups` (and thereby to the templates
+within them). For each row you specify:
 
-#### Template Permissions Tab
+- Template group (or nested group)
+- **Permission:** `Read-only`, `Read-write`, or `Deny`.
 
-This section controls access to the configuration elements of templates (items,
-triggers, graphs, etc.) via their Template Groups.
+If overlap in the permissions on groups happens then following rules apply:
 
-For each assigned Template Group, one of the following permissions must be selected:
+- **Read-only:** users can view but not modify templates.
+- **Read-write:** users can edit or link templates.
+- **Deny:** no access.
 
-* **Read-only:** Users can view the template configuration and see data derived 
-  from it, but they **cannot** modify or link the template.
-* **Read-write:** Users can view, modify, and link/unlink the template and its
-  entities (items, triggers, etc.).
-* **Deny:** Explicitly blocks all access.
+### Front-end Behavior and Editing Limitations
+
+There are certain Limitations that we have to keep in mind when we give read or
+read-write permissions to user. Below is a table with an easy overview of all
+the permissions.
+
+| Action or Screen Element           | **Read-only** | **Read-write** | **Description / Impact**                                         |
+| ---------------------------------- | ------------- | -------------- | ---------------------------------------------------------------- |
+| Open template configuration        | ✅             | ✅              | View mode for read-only; full edit mode for read-write.          |
+| Edit items / triggers / macros     | ❌             | ✅              | Read-only users see data but cannot modify fields.               |
+| Update inherited trigger from host | ❌             | ✅              | Locked for read-only; editable at template level for read-write. |
+| Clone / delete template entities   | ❌             | ✅              | Available only with write permission.                            |
+| Enable / disable items or triggers | ❌             | ✅              | Buttons greyed out for read-only.                                |
+| Link / unlink templates to hosts   | ❌             | ✅              | Requires write access on both template and host.                 |
+| View inherited items on host       | ✅             | ✅              | Shown for both; read-only cannot modify.                         |
+| Items from denied templates        | ❌ (hidden)    | ❌ (hidden)     | Displayed as *Inaccessible template* if template is denied.      |
 
 
-#### Host Permissions Tab
 
-This tab works identically to the Template Permissions tab but applies the access
-levels to **Host Groups** and the hosts contained within them.
+## Host Permissions Tab
 
-#### Problem Tag Filters: Granular Alert Access
+Analogous to the above, but applies to `host groups` and the hosts within them.
 
-The final configuration tab, **Problem tag filter**, allows for fine-grained control
-over which problems (alerts) a user group can see.
+If a host belongs to multiple groups with differing access levels, permissions
+combine according to precedence rules (see below).
 
-This is invaluable for enterprise environments where users should only be alerted
-to issues relevant to their domain. For instance, a Database Administrator should
-not be distracted by network switch problems.
+## Permission Precedence in Zabbix 8.0
 
-Filters are applied to specific host groups and can be configured to display:
+Zabbix determines effective permissions based on the most permissive level, unless
+a Deny is present. If Deny exists anywhere, it always overrides all other rights.
 
-* All tags for the specified hosts.
-* Only problems matching specific tag name/value pairs.
-
-When a user is a member of multiple groups, the tag filters apply with **OR logic**.
-If any of the user's groups allows visibility of a specific problem based on its
-tags, the user will see it.
-
-???+ info "Example: Database Administrator Filter"
-    To ensure a Database Administrator group only sees relevant issues, the problem
-    tag filter would be configured to specify:
-    * **Tag name:** `service`
-    * **Value:** `mysql`
-    
-    This ensures the user only sees problems tagged with `service:mysql` on the
-    host groups they have permission to view.
----
-
-### Frontend Behavior and Editing Limitations
-
-Granting `Read-only` or `Read-write` access has distinct consequences for a user's
-interaction with the frontend. A `Read-only` permission on a template is a view-only
-mode, all configuration fields will be locked.
-
-| Action or Screen Element | **Read-only** | **Read-write** | Description / Impact |
-| :--- | :---: | :---: | :--- |
-| Open template configuration | ✅ | ✅ | View mode for Read-only; full edit mode for Read-write. |
-| Edit items / triggers / macros | ❌ | ✅ | Read-only users see data but cannot modify fields. |
-| Update inherited trigger from host | ❌ | ✅ | Editable only with write permission at the template level. |
-| Clone / delete template entities | ❌ | ✅ | Available only with write permission. |
-| Enable / disable items or triggers | ❌ | ✅ | Buttons are greyed out for read-only users. |
-| Link / unlink templates to hosts | ❌ | ✅ | Requires write access on both the template and the host. |
-| Items from denied templates | ❌ (hidden) | ❌ (hidden) | Displayed as *Inaccessible template* if the template group is denied. |
-## The Rule of Precedence: Deny Always Wins
-
-A user's effective permission is the result of combining the rights from **all**
-groups they belong to. Zabbix resolves these overlapping permissions by applying
-a simple, strict hierarchy based on the most restrictive level, unless a `Deny`
-is present.
-
-### Hierarchy of Precedence
-
-The order of precedence is absolute: **Deny** is the highest, followed by
-**Read-write**, and finally **Read-only**.
+Hierarchy of Precedence
 
 ``` mermaid
 flowchart TB
@@ -178,79 +142,105 @@ flowchart TB
     classDef ro fill:#a7f3d0,stroke:#065f46,stroke-width:2px,color:black;
 ```
 
-This precedence can be summarized by two core rules:
+Meaning the following:
 
-1.  **Deny Always Overrides:** If any group grants **Deny** access to a host or
-    template group, that user **will not** have access, regardless of any other
-    `Read-only` or `Read-write` permissions.
-2.  **Most Permissive Wins (Otherwise):** If no `Deny` is present, the most permissive
-    right applies. **Read-write** always overrides **Read-only**.
+**Deny:** always takes precedence and blocks all access.
+**Read-write:** overrides Read-only when both are assigned.
+**Read-only:** lowest level; view-only access to data.
 
-| Scenario | Group A | Group B | Effective Permission | Rationale |
-| :--- | :--- | :--- | :--- | :--- |
-| **RW Over RO** | Read-only | Read-write | **Read-write** | The most permissive right wins when **Deny** is absent. |
-| **Deny Over RO** | Read-only | Deny | **Deny** | **Deny** always takes precedence and blocks all access. |
-| **Deny Over RW** | Read-write | Deny | **Deny** | The most restrictive right (Deny) overrides the most permissive. |
+Let us have a look at the following example where a user is in multiple groups:
+
+| Scenario                                  | Effective Permission |
+| ----------------------------------------- | -------------------- |
+| Group A = Read-only, Group B = Read-write | **Read-write**       |
+| Group A = Read-only, Group B = Deny       | **Deny**             |
+| Group A = Read-write, Group B = Deny      | **Deny**             |
 
 
-### Permissions in the "Update Problem" Dialog
+Let's see another example :
 
-In Zabbix 8.0, the actions available in the **Monitoring** → **Problems**
-view (via the *Update problem* dialog) are controlled by two distinct mechanisms
-working in tandem:
+| Group A    | Group B    | Result         | Why                                |
+| ---------- | ---------- | -------------- | ---------------------------------- |
+| Read-only  | Read-write | **Read-write** | The *most permissive* one wins     |
+| Read-write | Deny       | **Deny**       | *Deny* always overrides everything |
+| Read-only  | Deny       | **Deny**       | Same – Deny wins                   |
+| Read-only  | Read-only  | **Read-only**  | Same level                         |
 
-1.  **Host/Template Permissions:** Governs basic access to the problem and whether
-    configuration-level changes can be made.
-2.  **User Role Capabilities:** Governs which specific administrative actions (like
-    acknowledging, changing severity, or closing) are enabled.
 
-The table below clarifies the minimum required permissions to perform actions on
-an active problem:
+## Problem Tag Filters
 
-| Action in “Update problem” dialog | Required Host Permission | Required Template Permission | Required Role Capability / Notes |
-| :--- | :--- | :--- | :--- |
-| **Message** (add comment) | Read-only or Read-write | Same level as host | Requires the role capability **Acknowledge problems**. |
-| **Acknowledge** | Read-only or Read-write | Same level as host | Requires **Acknowledge problems**. Read-only access is sufficient. |
-| **Change severity** | **Read-write** required | **Read-write** if template trigger | Requires the **Change problem severity** capability. |
-| **Suppress** / **Unsuppress** | **Read-write** required | **Read-write** if template trigger | Requires the **Suppress problems** capability. |
-| **Convert to cause** | **Read-write** required | **Read-write** if template trigger | Requires **Manage problem correlations** capability. |
-| **Close problem** | **Read-write** required | **Read-write** if template trigger | Requires **Close problems manually** capability. |
+Problem tag filters allow fine grained control over which problems (alerts) users in the group can see.
+You can:
 
----
+- Apply filters to specific host groups.
+- Choose to display all tags or only specific tag name/value pairs.
 
-## Best Practices for Enterprise Access Control
+If a user is in multiple groups, tag filters apply with OR logic. If any group
+allows the problem, the user can see it.
 
-Building a maintainable, secure Zabbix environment requires discipline in defining
-groups and permissions.
+???+ info
 
-1.  **Adopt Role-Based Naming:** Use clear, standardized names that reflect the
-    user's role and their access level, such as `Ops-RW` (Operations Read/Write)
-    or `NOC-RO` (NOC Read-Only).
-2.  **Grant Access via Groups Only:** Never assign permissions directly to an individual
-    user; always rely on **group membership**. This ensures auditability and maintainability.
-3.  **Principle of Least Privilege:** Start with the most restrictive access (**Read-only**)
-    and only escalate to **Read-write** when configuration-level changes are an
-    absolute requirement of the user's role.
-4.  **Align with Organizational Structure:** Ensure your Host Groups and Template
-    Groups mirror your organization's teams or asset categories (e.g., `EU-Network`,
-    `US-Database`, `Finance-Templates`). This makes permission assignment intuitive.
-5.  **Regular Review and Audit:** Periodically review group memberships and permissions.
-    A user's role may change, and their access in Zabbix must be adjusted accordingly.
-6.  **Test Restricted Views:** After creating a group, always log in as a test user
-    belonging to that group to verify that dashboards, widgets, and configuration
-    pages display the correct restricted view.
+    ```
+    A database administrator should only see problems tagged service:mysql.
+    The group’s problem tag filter would specify:
+    - Tag name: service
+    - Value: mysql
+    ```
 
----
+### Understanding Permissions in the Update Problem Dialog
+
+The `Update problem` window in Zabbix 8.0 provides operators and administrators with
+tools to manage ongoing issues directly from the Monitoring → Problems view.
+However, not every user sees the same set of available actions — visibility and
+editability of each field depend on a combination of host/template permissions
+(Read-only or Read-write) and the user’s role capabilities.
+
+The table below outlines which permissions are required to perform each action
+within the Update problem dialog.
+It clarifies when host-level access alone is sufficient, when template permissions
+apply (for template-based triggers), and when a specific role capability must also
+be enabled (such as `Acknowledge problems,` `Change problem severity,` or `Close problems manually`).
+
+| **Action in “Update problem” dialog**        | **Required Host Permission**  | **Required Template Permission**           | **Role Capability / Notes**                                                                                               |
+| -------------------------------------------- | ----------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| **Message** *(add a comment / note)*         |  **Read-only or Read-write** | Same level as host                         | Requires the role capability **“Acknowledge problems”**. Template permission only matters if problem originates from a template trigger. |
+| **Scope** *(public / private)*               |  **Read-only or Read-write** | Same                                       | Controlled by **“Acknowledge problems”** role right. Determines who sees the comment (public = all users with access).                   |
+| **Change severity**                          |  **Read-write** required    |  **Read-write** if template trigger      | Requires the **“Change problem severity”** capability in the user role. Read-only users cannot modify severity.               |
+| **Suppress**                                 |  **Read-write** required    |  **Read-write** if trigger from template | Requires the **“Suppress problems”** capability. This hides the problem from normal views.                                    |
+| **Unsuppress**                               |  **Read-write** required    |  **Read-write** if template trigger      | Same as above — only users with **“Suppress problems”** right can unsuppress.                                                            |
+| **Acknowledge**                              |  **Read-only or Read-write** | Same                                       | Requires **“Acknowledge problems”** right. Even read-only host access allows acknowledging, as long as the role permits it.              |
+| **Convert to cause** *(problem correlation)* |  **Read-write**               |  **Read-write** if template trigger      | Requires **“Manage problem correlations”** capability in the role.                                                                       |
+| **Close problem**                            |  **Read-write**               |  **Read-write** if template trigger      | Requires **“Close problems manually”** capability. Read-only users can't manually close problems.                                        |
+
+
+???+ note
+
+    ```
+    - Host/template permissions govern access to the problem; the role governs
+      which actions appear enabled.
+    - Read-only access allows acknowledging and commenting (if permitted by role)
+      but not suppression, closing, or severity change.
+    - Even with Read-write host access, the user still needs the corresponding
+      role rights for each action
+    ```
+
+
+## Some Best Practices
+
+- Use role-based naming (e.g., Ops-RW, NOC-RO).
+- Grant permissions only via groups, not individuals.
+- Apply least privilege: start with Read-only and expand only when needed.
+- Align host / template groups with organisational structure.
+- Review permissions regularly.
+- Test restricted views to verify widgets and dashboards behave correctly.
+
 
 ## Conclusion
 
-User groups form the essential foundation of access control in Zabbix 8.0. They
-define *what* each user can see and configure (via host/template permissions),
-while User Roles govern *which actions* are permitted (via capabilities). Combining
-structured user groups, deliberate template/host permissions, and well defined
-roles ensures a secure, predictable, and maintainable monitoring environment, minimizing
-the risk of unauthorized configuration changes or viewing sensitive data.
+User groups form the backbone of access control in Zabbix 8.0.
+They define what each user can see or configure, while roles govern which actions
+are allowed. Combining structured user groups, proper template permissions, and
+well defined roles ensures a secure, predictable, and maintainable monitoring
+environment.
 
-The next chapter will detail the configuration of **User Roles** and explain how
-their **Capabilities** augment user group permissions to complete the Zabbix
-access control model.
+
