@@ -161,7 +161,7 @@ server basic authentication procedure again.
 
 ---
 
-## Conclusion
+## Conclusão
 
 Configuring HTTP level authentication adds a critical layer of access control to
 your Zabbix Web UI by leveraging your web server's native authentication
@@ -176,7 +176,7 @@ server authentication settings with Zabbix's internal configuration, you can
 achieve seamless and secure user login workflows that blend frontend usability
 with robust protective measures.
 
-## Questions
+## Perguntas
 
 - What advantage does HTTP (web server based) authentication provide compared to
   Zabbix's internal authentication mechanism? (Consider protection at the web
@@ -203,6 +203,6 @@ with robust protective measures.
   insufficient and what other authentication methods (e.g., LDAP, SAML, MFA)
   might you layer on top for added security?
 
-## Useful URLs
+## URLs úteis
 
 [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http)
