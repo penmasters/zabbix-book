@@ -5,21 +5,22 @@ description: |
 tags: [beginner]
 ---
 
-# Basic installation
+# Instalação básica
 
-In this chapter, we will walk through the process of installing the Zabbix
-server. There are many different ways to setup a Zabbix server. We will cover
-the most common setups with MariaDB and PostgreSQL on Ubuntu and on Rocky Linux.
+Neste capítulo, examinaremos o processo de instalação do servidor Zabbix. Há
+muitas maneiras diferentes de configurar um servidor Zabbix. Abordaremos as
+configurações mais comuns com o MariaDB e o PostgreSQL no Ubuntu e no Rocky
+Linux.
 
-Before beginning the installation, it is important to understand the
-architecture of Zabbix. The Zabbix server is structured in a modular fashion,
-composed of three main components, which we will discuss in detail.
+Antes de iniciar a instalação, é importante entender a arquitetura do Zabbix. O
+servidor Zabbix é estruturado de forma modular, composto por três componentes
+principais, que discutiremos em detalhes.
 
-- The Zabbix server
-- The Zabbix web server
-- The Zabbix database
+- O servidor Zabbix
+- O servidor web Zabbix
+- O banco de dados Zabbix
 
-!!! info "Creation of DB users"
+!!! info "Criação de Usuários em Banco de Dados"
 
     ``` yaml
     In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
@@ -32,29 +33,29 @@ composed of three main components, which we will discuss in detail.
 
 ![overview](ch01-basic-installation-zabbixserver.png){ align=left }
 
-_1.1 Zabbix basic split installation_
+_1.1 Instalação da divisão básica do Zabbix_
 
-All of these components can either be installed on a single server or
-distributed across three separate servers. The core of the system is the Zabbix
-server, often referred to as the "brain." This component is responsible for
-processing trigger calculations and sending alerts. The database serves as the
-storage for the Zabbix server's configuration and all the data it collects. The
-web server provides the user interface (front-end) for interacting with the
-system. It is important to note that the Zabbix API is part of the front-end
-component, not the Zabbix server itself.
+Todos esses componentes podem ser instalados em um único servidor ou
+distribuídos em três servidores separados. O núcleo do sistema é o Zabbix
+Server, geralmente chamado de "cérebro". Esse componente é responsável pelo
+processamento de cálculos de acionamento e pelo envio de alertas. O banco de
+dados serve como armazenamento da configuração do servidor Zabbix e de todos os
+dados que ele coleta. O servidor Web fornece a interface do usuário (front-end)
+para interagir com o sistema. É importante observar que a API do Zabbix faz
+parte do componente front-end, e não do próprio servidor Zabbix.
 
-These components must function together seamlessly, as illustrated in the
-diagram above. The Zabbix server must read configurations and store monitoring
-data in the database, while the front-end needs access to read and write
-configuration data. Furthermore, the front-end must be able to check the status
-of the Zabbix server and retrieve additional necessary information to ensure
-smooth operation.
+Esses componentes devem funcionar juntos de forma integrada, conforme ilustrado
+no diagrama acima. O Zabbix Server deve ler as configurações e armazenar os
+dados de monitoramento no banco de dados, enquanto o front-end precisa ter
+acesso para ler e gravar os dados de configuração. Além disso, o front-end deve
+ser capaz de verificar o status do Zabbix Server e recuperar informações
+adicionais necessárias para garantir uma operação tranquila.
 
-For our setup, we will be using two virtual machines (VMs): one VM will host
-both the Zabbix server and the Zabbix web front-end, while the second VM will
-host the Zabbix database.
+Para nossa configuração, usaremos duas máquinas virtuais (VMs): uma VM hospedará
+o servidor Zabbix e o front-end da Web do Zabbix, enquanto a segunda VM
+hospedará o banco de dados do Zabbix.
 
-???+ note
+???+ nota
 
     It's perfect possible to install all components on 1 single VM or every component
     on a separate VM.
@@ -63,7 +64,7 @@ host the Zabbix database.
     that needs some extra attention when we split it so for this reason we have
     chosen in this example to split the database from the rest of the setup.
 
-???+ note
+???+ nota
 
     A crucial consideration for those managing Zabbix installations is the database
     back-end. Zabbix 7.0 marks the final release to offer support for Oracle Database.
@@ -73,28 +74,29 @@ host the Zabbix database.
     mandatory step to ensure continued functionality and compatibility with future
     Zabbix versions.
 
-We will cover the following topics:
+Abordaremos os seguintes tópicos:
 
-- Install our Database based on MariaDB.
-- Install our Database based on PostgreSQL.
-- Installing the Zabbix server.
-- Install the frontend.
+- Instale nosso banco de dados baseado no MariaDB.
+- Instale nosso banco de dados baseado no PostgreSQL.
+- Instalando o servidor Zabbix.
+- Instale o front-end.
 
-## Installing the MariaDB database
+## Instalação do banco de dados MariaDB
 
-To begin the installation process for the MariaDB server, the first step
-involves manually creating a repository configuration file. This file,
-mariadb.repo on Rocky, must be placed in the /etc/yum.repos.d/ directory. The
-repository file will allow your package manager to locate and install the
-necessary MariaDB components. For Ubuntu we need to import the repository keys
-and create a file for example '/etc/apt/sources.list.d/mariadb.sources'.
+Para iniciar o processo de instalação do servidor MariaDB, a primeira etapa
+envolve a criação manual de um arquivo de configuração do repositório. Esse
+arquivo, mariadb.repo no Rocky, deve ser colocado no diretório
+/etc/yum.repos.d/. O arquivo de repositório permitirá que seu gerenciador de
+pacotes localize e instale os componentes necessários do MariaDB. Para o Ubuntu,
+precisamos importar as chaves do repositório e criar um arquivo, por exemplo,
+'/etc/apt/sources.list.d/mariadb.sources'.
 
-### Add the MariaDB repository
+### Adicione o repositório MariaDB
 
-To create the MariaDB repository file, execute the following command in your
-terminal:
+Para criar o arquivo de repositório do MariaDB, execute o seguinte comando em
+seu terminal:
 
-!!! info "create mariadb repository"
+!!! info "criar repositório mariadb"
 
     Red Hat
     ``` yaml
@@ -110,20 +112,20 @@ terminal:
     sudo vi /etc/apt/sources.list.d/mariadb.sources
     ```
 
-This will open a text editor where you can input the repository configuration
-details. Once the repository is configured, you can proceed with the
-installation of MariaDB using your package manager.
+Isso abrirá um editor de texto no qual você poderá inserir os detalhes de
+configuração do repositório. Depois que o repositório estiver configurado, você
+poderá prosseguir com a instalação do MariaDB usando o gerenciador de pacotes.
 
-???+ tip
+???+ dica
 
     Always check Zabbix documentation for the latest supported versions.
 
-The latest config can be found here:
+A configuração mais recente pode ser encontrada aqui:
 <https://mariadb.org/download/?t=repo-config>
 
-Here's the configuration you need to add into the file:
+Aqui está a configuração que você precisa adicionar ao arquivo:
 
-!!! info "Mariadb repository"
+!!! info "Repositório Mariadb"
 
     Red Hat
     ```yaml
@@ -153,18 +155,18 @@ Here's the configuration you need to add into the file:
     Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
     ```
 
-After saving the file, ensure that everything is properly set up and that your
-MariaDB version is compatible with your Zabbix version to avoid potential
-integration issues.
+Depois de salvar o arquivo, verifique se tudo está configurado corretamente e se
+a versão do MariaDB é compatível com a versão do Zabbix para evitar possíveis
+problemas de integração.
 
-Before proceeding with the MariaDB installation, it's a best practice to ensure
-your operating system is up-to-date with the latest patches and security fixes.
-This will help maintain system stability and compatibility with the software
-you're about to install.
+Antes de prosseguir com a instalação do MariaDB, é uma prática recomendada
+garantir que seu sistema operacional esteja atualizado com os patches e as
+correções de segurança mais recentes. Isso ajudará a manter a estabilidade e a
+compatibilidade do sistema com o software que você está prestes a instalar.
 
-To update your OS, run the following command:
+Para atualizar seu sistema operacional, execute o seguinte comando:
 
-!!! info "Update OS"
+!!! info "Atualizar sistema operacional"
 
     Red Hat
     ```yaml
@@ -176,22 +178,23 @@ To update your OS, run the following command:
     sudo apt update && sudo apt upgrade
     ```
 
-This command will automatically fetch and install the latest updates available
-for your system, applying security patches, performance improvements, and bug
-fixes. Once the update process is complete, you can move forward with the
-MariaDB installation.
+Esse comando buscará e instalará automaticamente as atualizações mais recentes
+disponíveis para seu sistema, aplicando patches de segurança, melhorias de
+desempenho e correções de bugs. Quando o processo de atualização estiver
+concluído, você poderá prosseguir com a instalação do MariaDB.
 
 ---
 
-### Install the MariaDB database
+### Instalar o banco de dados MariaDB
 
-With the operating system updated and the MariaDB repository configured, you are
-now ready to install the MariaDB server and client packages. This will provide
-the necessary components to run and manage your database.
+Com o sistema operacional atualizado e o repositório do MariaDB configurado,
+agora você está pronto para instalar os pacotes do servidor e do cliente
+MariaDB. Isso fornecerá os componentes necessários para executar e gerenciar seu
+banco de dados.
 
-To install the MariaDB server and client, execute the following command:
+Para instalar o servidor e o cliente MariaDB, execute o seguinte comando:
 
-!!! info "Install Mariadb"
+!!! info "Instalar o Mariadb"
 
     Red Hat
     ```yaml
@@ -203,10 +206,10 @@ To install the MariaDB server and client, execute the following command:
     sudo apt install mariadb-server
     ```
 
-This command will download and install both the server and client packages,
-enabling you to set up, configure, and interact with your MariaDB database. Once
-the installation is complete, you can proceed to start and configure the MariaDB
-service.
+Esse comando fará o download e instalará os pacotes do servidor e do cliente,
+permitindo que você defina, configure e interaja com o banco de dados MariaDB.
+Quando a instalação estiver concluída, você poderá iniciar e configurar o
+serviço MariaDB.
 
 Now that MariaDB is installed, we need to enable the service to start
 automatically upon boot and start it immediately. Use the following command to
@@ -411,7 +414,7 @@ database for Zabbix:
 
     `MariaDB [(none)]> CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;`
 
-???+ note
+???+ nota
 
      utf8mb4 is a proper implementation of UTF-8 in MySQL/MariaDB, supporting all
      Unicode characters, including emojis. The older utf8 charset in MySQL/MariaDB
@@ -536,7 +539,7 @@ we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
     sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
     ```
 
-???+ note
+???+ nota
 
     Depending on the speed of your hardware or virtual machine, the process may
     take anywhere from a few seconds to several minutes. Please be patient and
@@ -634,7 +637,7 @@ commands.
     sudo apt install postgresql-17
     ```
 
-To update your OS, run the following command:
+Para atualizar seu sistema operacional, execute o seguinte comando:
 
 !!! info "update the OS"
 
@@ -656,7 +659,7 @@ PostgreSQL handles access permissions differently from MySQL and MariaDB.
 PostgreSQL relies on a file called pg_hba.conf to manage who can access the
 database, from where, and what encryption method is used for authentication.
 
-???+ note
+???+ nota
 
     Client authentication in PostgreSQL is configured through the pg_hba.conf
     file, where "HBA" stands for Host-Based Authentication. This file specifies
@@ -725,7 +728,7 @@ and replace it with:
 
     `listen_addresses = '*'`
 
-???+ note
+???+ nota
 
     This will enable PostgreSQL to accept connections from any network interface,
     not just the local machine. In production it's probably a good idea to limit
@@ -819,7 +822,7 @@ command:
     sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
     ```
 
-???+ note
+???+ nota
 
     Zabbix seems to like to change the locations of the script to populate the
     DB every version or in between versions. If you encounter an error take a
@@ -886,7 +889,7 @@ applications need to interact with the same database concurrently. Each user or
 application can have its own schema, preventing accidental interference with
 each other's data.
 
-???+ note
+???+ nota
 
     PostgreSQL comes with a default schema, typically called public, but it's in
     general best practice to create custom schemas to better organize and separate
@@ -1026,7 +1029,7 @@ Verify if the rights are correct on the schema :
                    |                   | "zabbix-web"=U/"zabbix-srv"            |
     ```
 
-???+ note
+???+ nota
 
     If you encounter the following error during the SQL import:
     `vbnet psql:/usr/share/zabbix/sql-scripts/postgresql/server.sql:7: ERROR: no
@@ -1106,7 +1109,7 @@ If everything looks correct, your tables are properly created and the
 `zabbix-srv` user has the appropriate ownership and permissions. If you need to
 adjust any permissions, you can do so using the GRANT commands as needed.
 
-???+ note
+???+ nota
 
     If you prefer not to set the search path manually each time you log in as the
     `zabbix-srv` user, you can configure PostgreSQL to automatically use the desired
@@ -1142,7 +1145,7 @@ to open our firewall port.
     sudo ufw allow 5432/tcp
     ```
 
-???+ note
+???+ nota
 
     Make sure your DB is listening on the correct IP and not on 127.0.0.1.
     You could add the following files to your config file. This would allow MariaDB
@@ -1283,7 +1286,7 @@ the following statement to disable the EPEL repository by default:
     excludepkgs=zabbix*
     ```
 
-???+ tip
+???+ dica
 
     It's considered bad practice to keep the EPEL repository enabled all the time,
     as it may cause conflicts by unintentionally overwriting or installing unwanted
@@ -1314,7 +1317,7 @@ can do this by running:
 This will refresh the repository metadata and prepare the system for Zabbix
 installation.
 
-???+ note
+???+ nota
 
     A repository in Linux is a configuration that allows you to access and install
     software packages. You can think of it like an "app store" where you find and
@@ -1405,7 +1408,7 @@ In this example:
 
 Make sure the settings reflect your environment's database configuration.
 
-???+ note
+???+ nota
 
     The Zabbix server configuration file offers an option to include additional
     configuration files for custom parameters. For a production environment, it's
@@ -1432,7 +1435,7 @@ With the Zabbix server configuration updated to connect to your database, you
 can now start and enable the Zabbix server service. Run the following command to
 enable the Zabbix server and ensure it starts automatically on boot:
 
-???+ note
+???+ nota
 
     Before restarting the Zabbix server after modifying its configuration, it is
     considered best practice to validate the configuration to prevent potential
@@ -1461,7 +1464,7 @@ in the `Zabbix server` log file using:
 Look for messages indicating that the server has started successfully. If there
 are any issues, the log file will provide details to help with troubleshooting.
 
-!!! info "Example output"
+!!! info "Exemplo de saída"
 
     ```yaml
     12074:20250225:145333.529 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
@@ -1668,14 +1671,14 @@ configuration.
 
 ![zabbix-download](ch01-basic-installation-zabbixdownload.png)
 
-_1.3 Zabbix download_
+_1.3 Download do Zabbix_
 
 If you make use of a RHEL based system like Rocky then the first step is to
 disable the Zabbix packages provided by the EPEL repository, if it's installed
 on your system. To do this, edit the `/etc/yum.repos.d/epel.repo` file and add
 the following statement to disable the EPEL repository by default:
 
-!!! info "Add exclude to epelrepo for zabbix"
+!!! info "Adicionar exclusão ao epelrepo para o zabbix"
 
     Red Hat
     ``` yaml
@@ -1684,7 +1687,7 @@ the following statement to disable the EPEL repository by default:
     excludepkgs=zabbix*
     ```
 
-???+ tip
+???+ dica
 
     It's considered bad practice to keep the EPEL repository enabled all the time,
     as it may cause conflicts by unintentionally overwriting or installing unwanted
@@ -1715,7 +1718,7 @@ can do this by running:
 This will refresh the repository metadata and prepare the system for Zabbix
 installation.
 
-???+ note
+???+ nota
 
     A repository in Linux is a configuration that allows you to access and install
     software packages. You can think of it like an "app store" where you find and
@@ -1810,7 +1813,7 @@ In this example:
 
 Make sure the settings reflect your environment's database configuration.
 
-???+ note
+???+ nota
 
     The Zabbix server configuration file offers an option to include additional
     configuration files for custom parameters. For a production environment, it's
@@ -2104,7 +2107,7 @@ with :
 
 where xxx.xxx.xxx.xxx is your IP or DNS name.
 
-???+ note
+???+ nota
 
     server_name is normally replaced with the fqdn name of your machine. If you
     have no fqdn you can keep it open like in this example.
@@ -2308,7 +2311,7 @@ after a reload of our browser.
 
 _1.6 Zabbix select language_
 
-???+ note
+???+ nota
 
     If your preferred language is not available in the Zabbix front-end, don't
     worry it simply means that the translation is either incomplete or not yet
@@ -2367,7 +2370,7 @@ You're almost finished with the setup! The final steps involve:
    can complete the setup and proceed with any final configuration steps as
    needed.
 
-???+ note
+???+ nota
 
     It's a good practice to set your Zabbix server to the UTC timezone, especially
     when managing systems across multiple timezones. Using UTC helps ensure consistency
@@ -2398,13 +2401,13 @@ This concludes our topic on setting up the Zabbix server. If you're interested
 in securing your front-end, I recommend checking out the topic Securing Zabbix
 for additional guidance and best practices.
 
-???+ note
+???+ nota
 
     If you are not able to safe your configuration at the end make sure SeLinux
     is disabled. It is possible that it will block access to certain files or even
     the database.
 
-## Conclusion
+## Conclusão
 
 With this, we conclude our journey through setting up Zabbix and configuring it
 with MySQL or PostgreSQL on RHEL-based systems and Ubuntu. We have walked
@@ -2421,14 +2424,14 @@ transform it into a powerful observability platform.
 Now that your Zabbix environment is up and running, let’s take it to the next
 level.
 
-## Questions
+## Perguntas
 
 1. Should I choose MySQL or PostgreSQL as the database back-end? Why?
 2. What version of Zabbix should I install for compatibility and stability?
 3. What port does my DB use ?
 4. What Zabbix logs should I check for troubleshooting common issues?
 
-## Useful URLs
+## URLs úteis
 
 - <https://www.postgresql.org/docs/current/ddl-priv.html>
 - <https://www.zabbix.com/download>
