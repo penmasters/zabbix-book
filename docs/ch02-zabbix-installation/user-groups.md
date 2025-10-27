@@ -44,8 +44,9 @@ This group centric architecture provides several major benefits:
 
 ## Configuring a User Group
 
-User groups are configured exclusively through the Zabbix frontend. This process
-remains consistent across Zabbix 8.0 and previous versions.
+In Zabbix, user groups are defined and maintained solely via the web frontend.
+The procedure has remained largely unchanged between version 8.0 and previous
+generations, ensuring a familiar configuration experience for administrators.
 
 ### Group Creation and General Attributes
 
@@ -137,21 +138,18 @@ tags, the user will see it.
     host groups they have permission to view.
 ---
 
-### Frontend Behavior and Editing Limitations
+### Template Permissions — Frontend Behavior and Editing Limitations
 
-Granting `Read-only` or `Read-write` access has distinct consequences for a user's
-interaction with the frontend. A `Read-only` permission on a template is a view-only
-mode, all configuration fields will be locked.
+The behavior of the Data collection → Templates view and host configuration screens
+is strictly tied to the user’s permission level on template groups.
+Zabbix intentionally hides templates from users who have only Read-only access.
+This is by design, as described in [https://support.zabbix.com/browse/ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)
 
-| Action or Screen Element | **Read-only** | **Read-write** | Description / Impact |
-| :--- | :---: | :---: | :--- |
-| Open template configuration | ✅ | ✅ | View mode for Read-only; full edit mode for Read-write. |
-| Edit items / triggers / macros | ❌ | ✅ | Read-only users see data but cannot modify fields. |
-| Update inherited trigger from host | ❌ | ✅ | Editable only with write permission at the template level. |
-| Clone / delete template entities | ❌ | ✅ | Available only with write permission. |
-| Enable / disable items or triggers | ❌ | ✅ | Buttons are greyed out for read-only users. |
-| Link / unlink templates to hosts | ❌ | ✅ | Requires write access on both the template and the host. |
-| Items from denied templates | ❌ (hidden) | ❌ (hidden) | Displayed as *Inaccessible template* if the template group is denied. |
+| **Action or Screen Element**       | **Read-only**  | **Read-write**  | **Description / Impact**                                                                                                                                                                     |
+| ---------------------------------- | ------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| View *Data collection → Templates* | ❌             | ✅              | Users with Read-only access do **not see any templates**. Template groups are only visible to users with Read-write rights. ([ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)) |
+| Open template configuration        | ❌             | ✅              | Not available for Read-only users — templates are hidden entirely                                                                                                                            |
+
 ## The Rule of Precedence: Deny Always Wins
 
 A user's effective permission is the result of combining the rights from **all**
