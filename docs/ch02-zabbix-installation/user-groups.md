@@ -131,8 +131,8 @@ tags, the user will see it.
 ???+ info "Example: Database Administrator Filter"
     To ensure a Database Administrator group only sees relevant issues, the problem
     tag filter would be configured to specify:
-    * **Tag name:** `service`
-    * **Value:** `mysql`
+    - **Tag name:** `service`
+    - **Value:** `mysql`
     
     This ensures the user only sees problems tagged with `service:mysql` on the
     host groups they have permission to view.
@@ -178,18 +178,17 @@ flowchart TB
 
 This precedence can be summarized by two core rules:
 
-1.  **Deny Always Overrides:** If any group grants **Deny** access to a host or
-    template group, that user **will not** have access, regardless of any other
-    `Read-only` or `Read-write` permissions.
-2.  **Most Permissive Wins (Otherwise):** If no `Deny` is present, the most permissive
-    right applies. **Read-write** always overrides **Read-only**.
+1. **Deny Always Overrides:** If any group grants **Deny** access to a host or
+   template group, that user **will not** have access, regardless of any other
+   `Read-only` or `Read-write` permissions.
+2. **Most Permissive Wins (Otherwise):** If no `Deny` is present, the most permissive
+   right applies. **Read-write** always overrides **Read-only**.
 
 | Scenario | Group A | Group B | Effective Permission | Rationale |
 | :--- | :--- | :--- | :--- | :--- |
 | **RW Over RO** | Read-only | Read-write | **Read-write** | The most permissive right wins when **Deny** is absent. |
 | **Deny Over RO** | Read-only | Deny | **Deny** | **Deny** always takes precedence and blocks all access. |
 | **Deny Over RW** | Read-write | Deny | **Deny** | The most restrictive right (Deny) overrides the most permissive. |
-
 
 ### Permissions in the "Update Problem" Dialog
 
@@ -255,15 +254,16 @@ from even seeing, let alone modifying, your highly critical database servers.
 You will have to configure two overlapping User Groups to demonstrate the
 precedence rules:
 
-- Group A (Junior Monitoring): Grants general Read-only access to a wide host scope.
-- Group B (Critical Exclusion): Applies an explicit Deny to a specific, critical host subset.
+* Group A (Junior Monitoring): Grants general Read-only access to a wide host scope.
+* Group B (Critical Exclusion): Applies an explicit Deny to a specific, critical
+  host subset.
 
 #### Host Group Preparation
 
 Ensure the following Host Groups exist in your Zabbix environment:
 
-- HG_All_Linux_Servers (The wide scope of hosts)
-- HG_Critical_Databases (A subset of servers that is also within HG_All_Linux_Servers)
+* HG_All_Linux_Servers (The wide scope of hosts)
+* HG_Critical_Databases (A subset of servers that is also within HG_All_Linux_Servers)
 
 You can create them under `Data collection` → `Host groups`.
 
@@ -281,29 +281,28 @@ _2.21 Junior monitoring_
 
 
 - Create Group B: 'Critical Exclusion'
-    - Create a second group named 'Critical Exclusion'.
-    - In the Host permissions tab, assign the following right:
-    - HG_Critical_Databases: Deny
+    * Create a second group named 'Critical Exclusion'.
+    * In the Host permissions tab, assign the following right:
+    * HG_Critical_Databases: Deny
 
 ![ch02.22_critical-exclusioin.png](ch02.22_critical-exclusioin.png)
 _ch02.22 Critical exclusion_
-
 
 #### Creating the Test User
 
 We will create the user first, then assign them to the groups.
 
-- Navigate to User Creation: Go to Users → Users in the Zabbix frontend.
-- Click Create user.
-- Details:
-    - Username: test_junior
-    - Name & Surname: (Optional)
-    - Password: Set a strong password and confirm it.
-    - Language & Theme: Set as desired.
-    - Permissions: Select role `User role` as this has the type User (This is important,
+* Navigate to User Creation: Go to Users → Users in the Zabbix frontend.
+* Click Create user.
+* Details:
+    * Username: test_junior
+    * Name & Surname: (Optional)
+    * Password: Set a strong password and confirm it.
+    * Language & Theme: Set as desired.
+    * Permissions: Select role `User role` as this has the type User (This is important,
       as 'Super Admin' bypasses all group restrictions).
-    - Add the user to both group `Junior Monitoring` and `Critical Exclusion`.
-- Save: Click Add.
+    * Add the user to both group `Junior Monitoring` and `Critical Exclusion`.
+* Save: Click Add.
 
 ![ch02.23_test-junior.png](ch02.23_test-junior.png)
 _ch02.23 test user_
@@ -312,23 +311,23 @@ _ch02.23 test user_
 
 We will create 2 host a linux server and a db server.
 
-- Navigate to `Data collection` → `Hosts`.
-- Click on create  host.
-- Details:
-    - Host name: Linux server
-    - Templates: Linux by Zabbix agent
-    - Host groups: HG_All_Linux_Servers
-    - Interfaces: Agent with IP 127.0.0.1
-- Save: Click Add.
+* Navigate to `Data collection` → `Hosts`.
+* Click on create  host.
+* Details:
+    * Host name: Linux server
+    * Templates: Linux by Zabbix agent
+    * Host groups: HG_All_Linux_Servers
+    * Interfaces: Agent with IP 127.0.0.1
+* Save: Click Add.
 
 ![ch02.24_hosts.png](ch02.24_hosts.png)
 _ch02.24 Add hosts_
 
 Add a DB server exact as above but change :
 
-- Host name: DB server
-- Host groups: HG_Critical_Databases
-- Save: Click Add.
+* Host name: DB server
+* Host groups: HG_Critical_Databases
+* Save: Click Add.
 
 This should work as long as you have your zabbix agent installed reporting back
 on `127.0.0.1`. This is how it's configured when you first setup the Zabbix
@@ -342,7 +341,8 @@ When we now  navigate to `Monitoring` → `Hosts`, we see that only the `Linux s
 is visible in the list of hosts. When we click on `Select` behind `Host groups`
 we will only be able to see the group `HG_All_Linux_Servers`.
 
-This table outlines the combined, **effective rights** for the user **`test_junior`** (who is a member of both User Groups).
+This table outlines the combined, **effective rights** for the user **`test_junior`**
+(who is a member of both User Groups).
 
 | Host Group (HG) | Permission via 'Junior Monitoring' | Permission via 'Critical Exclusion' | **Effective Permission** | Outcome |
 | :--- | :--- | :--- | :--- | :--- |
@@ -356,4 +356,26 @@ Because test_junior belongs to a group that explicitly denies access to the Crit
 Databases, the host is hidden entirely, proving that Deny Always Wins regardless
 of other permissions. So we can conclude that user groups form the essential foundation
 of access control in Zabbix 8.0. They define *what* each user can see and configure
-(via host/template permissions),
+(via host/template permissions).
+
+## Questions
+
+- If a user only has Read-only permissions assigned to a Template Group, will they
+  be able to see those templates listed under Data collection → Templates?
+- Scenario: A user, Bob, is a member of two User Groups: 'NOC Viewers' (which
+  has Read-only access to HG_Routers) and 'Tier 2 Techs' (which has Read-write
+  access to the same HG_Routers). 
+  Question: Can Bob modify the configuration of the routers in Zabbix, or is he
+  limited to viewing data? Explain your answer based on Zabbix's precedence rules.
+- Scenario: A user, Alice, is a member of two User Groups: 'Ops Team' (which has
+  Read-write access to the Host Group HG_Webservers) and 'Security Lockdown' (which
+  has Deny access to the exact same HG_Webservers).
+  Question: What are Alice's effective permissions for the hosts in HG_Webservers?
+  Can she view or modify them, and why?
+
+
+## Useful URLs
+
+- https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/usergroup
+- https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions
+
