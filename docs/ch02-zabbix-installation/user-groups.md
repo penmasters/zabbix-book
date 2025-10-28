@@ -5,7 +5,7 @@ description: |
 tags: [beginner]
 ---
 
-# User Groups: The Foundation of Zabbix Access Control
+# User Groups
 
 In any enterprise monitoring platform, establishing **role-based access control
 (RBAC)** is critical for maintaining both security and clarity of operational
@@ -240,12 +240,120 @@ groups and permissions.
 
 ---
 
+## Example : User permissions
+
+This exercise will demonstrate how Zabbix calculates a user's effective
+permissions when they belong to multiple User Groups, focusing exclusively on the
+core access levels: Read-only, Read-write, and Deny.
+
+### Our Scenario
+
+You are managing access rights for a large Zabbix deployment. You need to grant
+general viewing access to all Linux servers but specifically prevent a junior team
+from even seeing, let alone modifying, your highly critical database servers.
+
+You will have to configure two overlapping User Groups to demonstrate the
+precedence rules:
+
+- Group A (Junior Monitoring): Grants general Read-only access to a wide host scope.
+- Group B (Critical Exclusion): Applies an explicit Deny to a specific, critical host subset.
+
+#### Host Group Preparation
+
+Ensure the following Host Groups exist in your Zabbix environment:
+
+- HG_All_Linux_Servers (The wide scope of hosts)
+- HG_Critical_Databases (A subset of servers that is also within HG_All_Linux_Servers)
+
+You can create them under `Data collection` → `Host groups`.
+
+#### Configuring the User Groups
+
+- Create Group A: 'Junior Monitoring'
+    - Navigate to Users → User groups.
+    - Create a new group named 'Junior Monitoring'.
+    - In the Host permissions tab, assign the following right:
+    - HG_All_Linux_Servers: Read-only (Read)
+    - HG_Critical_Databases: Read-only (Read)
+
+![ch02.21_junior-monitoring.png](ch02.21_junior-monitoring.png)
+_2.21 Junior monitoring_
+
+
+- Create Group B: 'Critical Exclusion'
+    - Create a second group named 'Critical Exclusion'.
+    - In the Host permissions tab, assign the following right:
+    - HG_Critical_Databases: Deny
+
+![ch02.22_critical-exclusioin.png](ch02.22_critical-exclusioin.png)
+_ch02.22 Critical exclusion_
+
+
+#### Creating the Test User
+
+We will create the user first, then assign them to the groups.
+
+- Navigate to User Creation: Go to Users → Users in the Zabbix frontend.
+- Click Create user.
+- Details:
+    - Username: test_junior
+    - Name & Surname: (Optional)
+    - Password: Set a strong password and confirm it.
+    - Language & Theme: Set as desired.
+    - Permissions: Select role `User role` as this has the type User (This is important,
+      as 'Super Admin' bypasses all group restrictions).
+    - Add the user to both group `Junior Monitoring` and `Critical Exclusion`.
+- Save: Click Add.
+
+![ch02.23_test-junior.png](ch02.23_test-junior.png)
+_ch02.23 test user_
+
+#### Create the hosts
+
+We will create 2 host a linux server and a db server.
+
+- Navigate to `Data collection` → `Hosts`.
+- Click on create  host.
+- Details:
+    - Host name: Linux server
+    - Templates: Linux by Zabbix agent
+    - Host groups: HG_All_Linux_Servers
+    - Interfaces: Agent with IP 127.0.0.1
+- Save: Click Add.
+
+![ch02.24_hosts.png](ch02.24_hosts.png)
+_ch02.24 Add hosts_
+
+Add a DB server exact as above but change :
+
+- Host name: DB server
+- Host groups: HG_Critical_Databases
+- Save: Click Add.
+
+This should work as long as you have your zabbix agent installed reporting back
+on `127.0.0.1`. This is how it's configured when you first setup the Zabbix
+server with an agent.
+
+#### Test the Outcome
+
+Logout as the `Super admin` user and log back in as user `test_junior`.
+
+When we now  navigate to `Monitoring` → `Hosts`, we see that only the `Linux server`
+is visible in the list of hosts. When we click on `Select` behind `Host groups`
+we will only be able to see the group `HG_All_Linux_Servers`.
+
+This table outlines the combined, **effective rights** for the user **`test_junior`** (who is a member of both User Groups).
+
+| Host Group (HG) | Permission via 'Junior Monitoring' | Permission via 'Critical Exclusion' | **Effective Permission** | Outcome |
+| :--- | :--- | :--- | :--- | :--- |
+| **`HG_All_Linux_Servers`** | Read-only | *No Explicit Rule* | **Read-only** | Access to view data is **Allowed**. |
+| **`HG_Critical_Databases`** | Read-only | Deny | **Deny** | Access is **Blocked** (host is hidden). |
+
+
 ## Conclusion
 
-User groups form the essential foundation of access control in Zabbix 8.0. They
-define *what* each user can see and configure (via host/template permissions),
-while User Roles govern *which actions* are permitted (via capabilities). Combining
-structured user groups, deliberate template/host permissions, and well defined
-roles ensures a secure, predictable, and maintainable monitoring environment, minimizing
-the risk of unauthorized configuration changes or viewing sensitive data.
-
+Because test_junior belongs to a group that explicitly denies access to the Critical
+Databases, the host is hidden entirely, proving that Deny Always Wins regardless
+of other permissions. So we can conclude that user groups form the essential foundation
+of access control in Zabbix 8.0. They define *what* each user can see and configure
+(via host/template permissions),
