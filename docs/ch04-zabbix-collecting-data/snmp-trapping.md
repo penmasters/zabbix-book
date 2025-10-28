@@ -757,7 +757,7 @@ Using numerical traps can be best direction if:
 bare minimum dependencies - MIBs are never required for Zabbix proxies.
 
 - Template readability is not an issue. You are only person in the
-monitoring departement. There are no team mates.
+monitoring department. There are no team mates.
 
 - Have a lot of time to design solution
 
@@ -938,7 +938,7 @@ ls -1 /usr/share/snmp/mibs
 rm -rf /tmp/netdisco*
 ```
 
-To enable bare minimum MIBs we need to anable two catalogs "rfc" and "net-snmp".
+To enable bare minimum MIBs we need to enable two catalogs "rfc" and "net-snmp".
 
 Overwrite/replace configuration by using:
 
