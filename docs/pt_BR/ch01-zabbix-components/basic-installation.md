@@ -7,20 +7,20 @@ tags: [beginner]
 
 # Instalação básica
 
-Neste capítulo, examinaremos o processo de instalação do servidor Zabbix. Há
-muitas maneiras diferentes de configurar um servidor Zabbix. Abordaremos as
+Neste capítulo, discorreremos sobre o processo de instalação do Zabbix Server.
+Há diversas maneiras de configurar um Zabbix Server. Abordaremos as
 configurações mais comuns com o MariaDB e o PostgreSQL no Ubuntu e no Rocky
 Linux.
 
 Antes de iniciar a instalação, é importante entender a arquitetura do Zabbix. O
-servidor Zabbix é estruturado de forma modular, composto por três componentes
+Zabbix Server é estruturado de forma modular, composto por três componentes
 principais, que discutiremos em detalhes.
 
-- O servidor Zabbix
-- O servidor web Zabbix
-- O banco de dados Zabbix
+- O Zabbix Server
+- O servidor web Zabbix (Frontend)
+- O banco de dados do Zabbix
 
-!!! info "Criação de Usuários em Banco de Dados"
+!!! info "Criação de Usuários do Banco de Dados"
 
     ``` yaml
     In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
@@ -52,8 +52,8 @@ ser capaz de verificar o status do Zabbix Server e recuperar informações
 adicionais necessárias para garantir uma operação tranquila.
 
 Para nossa configuração, usaremos duas máquinas virtuais (VMs): uma VM hospedará
-o servidor Zabbix e o front-end da Web do Zabbix, enquanto a segunda VM
-hospedará o banco de dados do Zabbix.
+o Zabbix Server e o Frontend, enquanto a segunda VM hospedará o banco de dados
+do Zabbix.
 
 ???+ nota
 
@@ -78,10 +78,10 @@ Abordaremos os seguintes tópicos:
 
 - Instale nosso banco de dados baseado no MariaDB.
 - Instale nosso banco de dados baseado no PostgreSQL.
-- Instalando o servidor Zabbix.
+- Instalando o Zabbix Server.
 - Instale o front-end.
 
-## Instalação do banco de dados MariaDB
+## Instalando o banco de dados MariaDB
 
 Para iniciar o processo de instalação do servidor MariaDB, a primeira etapa
 envolve a criação manual de um arquivo de configuração do repositório. Esse
@@ -155,8 +155,8 @@ Aqui está a configuração que você precisa adicionar ao arquivo:
     Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
     ```
 
-Depois de salvar o arquivo, verifique se tudo está configurado corretamente e se
-a versão do MariaDB é compatível com a versão do Zabbix para evitar possíveis
+Depois de salvar o arquivo, verifique se tudo está devidamente configurado, e se
+a versão do MariaDB é compatível com a versão do Zabbix, para evitar possíveis
 problemas de integração.
 
 Antes de prosseguir com a instalação do MariaDB, é uma prática recomendada
@@ -189,8 +189,8 @@ concluído, você poderá prosseguir com a instalação do MariaDB.
 
 Com o sistema operacional atualizado e o repositório do MariaDB configurado,
 agora você está pronto para instalar os pacotes do servidor e do cliente
-MariaDB. Isso fornecerá os componentes necessários para executar e gerenciar seu
-banco de dados.
+MariaDB. Isso fornecerá os componentes necessários para executar e administrar a
+sua base de dados.
 
 Para instalar o servidor e o cliente MariaDB, execute o seguinte comando:
 
@@ -206,14 +206,14 @@ Para instalar o servidor e o cliente MariaDB, execute o seguinte comando:
     sudo apt install mariadb-server
     ```
 
-Esse comando fará o download e instalará os pacotes do servidor e do cliente,
-permitindo que você defina, configure e interaja com o banco de dados MariaDB.
-Quando a instalação estiver concluída, você poderá iniciar e configurar o
-serviço MariaDB.
+Esse comando realizará o download e instalará os pacotes do servidor e do
+cliente, permitindo que você defina, configure e interaja com o banco de dados
+MariaDB. Quando a instalação estiver concluída, você poderá iniciar e configurar
+o serviço MariaDB.
 
-Now that MariaDB is installed, we need to enable the service to start
-automatically upon boot and start it immediately. Use the following command to
-accomplish this:
+Agora que o MariaDB está instalado, precisamos habilitar o serviço para iniciar
+automaticamente na inicialização do sistema operacional, assim como iniciá-lo
+imediatamente. Utilize o seguinte comando para realizar isso:
 
 !!! info "Enable mariadb service"
 
@@ -233,7 +233,7 @@ version of MariaDB using the following command:
     sudo mariadb -V
     ```
 
-The expected output should resemble this:
+A saída esperada deve ser similar a esta:
 
 !!! info ""
 
@@ -241,8 +241,8 @@ The expected output should resemble this:
     mariadb from 11.4.5-MariaDB, client 15.2 for Linux (aarch64) using EditLine wrapper
     ```
 
-To ensure that the MariaDB service is running properly, you can check its status
-with the following command:
+Para garantir que o serviço do MariaDB esteja funcionando corretamente, você
+pode verificar o status com o seguinte comando:
 
 !!! info "Get mariadb status"
 
