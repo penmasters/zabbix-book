@@ -698,3 +698,213 @@ The complete picture is
 _12.23
 Zabbix agent autoregistration completed_
 
+
+## Read log file from YYYY.MM.DD filename (Script)
+
+!!! tip "Use case"
+
+    Requirement is to read a filename
+    with today's pattern YYYY.MM.DD or YYYY_MM_DD or YYYYMMDD.
+
+
+!!! note "Popular solution 1 - logrt"
+
+    Using "logrt" item key can be used to cover use case.
+    However in case hundreds of files in directory, the CPU will have impact.
+
+
+!!! note "Popular solution 2 - LLD rule"
+
+    We Zabbix LLD rule to find the files in directory.
+    This method do not allow to store all data insize same itemid.
+    When files are deleted from server, the items in Zabbix will get unsupported.
+
+
+!!! info "Alternative solution"
+
+    We will use Zabbix API to create a global variables YYYY, MM, DD.
+    Those will be universally available by any host, template.
+    The "cronjob host" will run at least once per day
+    and reinstall the date right after the midnight.
+    Inside template level there will be a single/static item key
+    which will be able to read today's log.
+    
+    
+
+
+Go to **Data collection** => **Hosts** => press **Create host**
+
+| Field               | Value                                                 |
+| :------------------ | :-----------------------------------------------------|
+| **Host name**       | `Dude`                            |
+| **Host groups**     | `Cronjob`                              |
+
+Go to **Items** and press **Create item**
+
+| Field                               | Value                                 |
+| :---------------------------------- | :-------------------------------------|
+| **Name**                            | `Create or update global macro`       |
+| **Type**                            | `Script`                              |
+| **Key**                             | `create.or.update.global.macro`       |
+| **Type of information**             | `Text`                                |
+| **Update interval**                 | `0`                                   |
+| **Custom intervals: Scheduling**    | `h0m1s1`                              |
+
+Parameters:
+
+| Field                    | Value                                            |
+| :----------------------- | :------------------------------------------- ----|
+| 1_year                   | `{$DATE:arg1.year}`                              |
+| 2_month                  | `{$DATE:arg2.month}`                             |
+| 3_day                    | `{$DATE:arg3.day}`                               |
+| 4_hour                   | `{$DATE:arg4.hour}`                              |
+| 5_minute                 | `{$DATE:arg5.minute}`                            |
+| 6_second                 | `{$DATE:arg6.seconds}`                           |
+| token                    | `{$ZABBIX.API.TOKEN}`                            |
+| url                      | `{$ZABBIX.URL}/api_jsonrpc.php`                  |
+
+The script to create and maintain global variables:
+
+```javascript
+// load all variables into memory
+var params = JSON.parse(value),
+    now = new Date();
+
+// function to always print seconds, minutes, hours as 2 digits, even it its a 1 digit character
+function padLeft(value, length, char) {
+    value = String(value);
+    while (value.length < length) {
+        value = char + value;
+    }
+    return value;
+}
+
+// define macros to check/create without '{$' an '}'
+var macrosToCheck = [
+    'DATE:arg1.year',
+    'DATE:arg2.month',
+    'DATE:arg3.day',
+    'DATE:arg4.hour',
+    'DATE:arg5.minute',
+    'DATE:arg6.seconds'
+];
+
+// prepare values for replacement. order is important
+var valuesToInsert = [
+    now.getFullYear().toString(),
+    padLeft(now.getMonth() + 1, 2, '0'),
+    padLeft(now.getDate(), 2, '0'),
+    padLeft(now.getHours(), 2, '0'),
+    padLeft(now.getMinutes(), 2, '0'),
+    padLeft(now.getSeconds(), 2, '0')
+];
+
+var request = new HttpRequest();
+request.addHeader('Content-Type: application/json');
+request.addHeader('Authorization: Bearer ' + params.token);
+
+var allGlobalMacrosBefore = JSON.parse(request.post(params.url,
+    '{"jsonrpc":"2.0","method":"usermacro.get","params":{"output":["globalmacroid","macro","value"],"globalmacro":true},"id":1}'
+)).result;
+
+// prepare much compact array which holds only necessary values
+var target = [];
+for (var a = 0; a < allGlobalMacrosBefore.length; a++) {
+    for (var b = 0; b < macrosToCheck.length; b++) {
+        Zabbix.Log(4, 'macro update compare: ' + allGlobalMacrosBefore[a].macro + ' with ' + '{$' + macrosToCheck[b] + '}');
+        if (allGlobalMacrosBefore[a].macro === '{$' + macrosToCheck[b] + '}') {
+            Zabbix.Log(4, 'macro update: ' + allGlobalMacrosBefore[a].macro + ' === ' + '{$' + macrosToCheck[b] + '}');
+            target.push(allGlobalMacrosBefore[a]);
+        }
+    }
+}
+
+// check if the amount of macros to maintain match existing macro. this portion will execute if run template for the first time
+var macroExists = 0;
+var allCreateOperation = [];
+if (macrosToCheck.length !== target.length) {
+    // something is missing, need to find what. open every macro which is known by Zabbix
+    for (var b = 0; b < macrosToCheck.length; b++) {
+        // reset the counter, so far macro has not been found
+        macroExists = 0;
+        for (var a = 0; a < target.length; a++) {
+            Zabbix.Log(3, 'look for missing macro update: ' + target[a].macro + ' VS {$' + macrosToCheck[b] + '}');
+            if (target[a].macro === '{$' + macrosToCheck[b] + '}') {
+                macroExists = 1;
+                break;
+            }
+        }
+
+        // if the list was completed and macro was not found then create a new
+        if (macroExists !== 1) {
+            var createNew = JSON.parse(request.post(params.url,
+                '{"jsonrpc":"2.0","method":"usermacro.createglobal","params":{"macro":"' + '{$' + macrosToCheck[b] + '}' + '","value":"' + valuesToInsert[b] + '"},"id":1}'
+            ));
+            allCreateOperation.push(createNew);
+        }
+    }
+}
+
+// prepare payload what needs to be updated
+var dataForUpdate = [];
+for (var m = 0; m < target.length; m++) {
+    // iterate through importand macro names
+    for (var n = 0; n < macrosToCheck.length; n++) {
+        // compare the macro name
+        if (target[m].macro === '{$' + macrosToCheck[n] + '}') {
+            // if value is not correct at the moment
+            Zabbix.Log(4, 'about to macro update: ' + target[m].value + ' VS ' + valuesToInsert[n]);
+            if (Number(target[m].value) !== Number(valuesToInsert[n])) {
+                var row = {}
+                row["globalmacroid"] = target[m].globalmacroid;
+                row["value"] = valuesToInsert[n];
+                dataForUpdate.push(row);
+            }
+        }
+    }
+}
+
+Zabbix.Log(4, 'about to macro update: ' + JSON.stringify(dataForUpdate));
+
+
+// if there is anything to update (usually seconds has been changed)
+if (dataForUpdate.length > 0) {
+var allUpdateOperations = JSON.parse(request.post(params.url,
+    '{"jsonrpc":"2.0","method":"usermacro.updateglobal","params":'+ JSON.stringify(dataForUpdate) +',"id":1}'
+));
+}
+
+
+// output
+return JSON.stringify({
+    'allCreateOperation': allCreateOperation,
+    'allUpdateOperations': allUpdateOperations
+})
+```
+
+![Reinstall YYYY-MM-DD](ch12.24-yyyy-mm-dd.png)
+
+_12.24
+Create or reinstall global macros_
+
+After running a script now, there are global variables available:
+
+![Reinstall YYYY-MM-DD](ch12.25-yyyy-mm-dd-result.png)
+
+_12.24
+Global YYYY, MM, DD macros_
+
+
+
+For log item monitoring we can use native log item key:
+
+```
+log[/var/log/zabbix/backup_{$DATE:arg1.year}.{$DATE:arg2.month}.{$DATE:arg3.day}.log]
+```
+
+In case need to analyze a single summary where file size is less than 16 MB, then can use:
+
+```
+vfs.file.contents[/var/log/backup/summary_{$DATE:arg1.year}.{$DATE:arg2.month}.{$DATE:arg3.day}.txt]
+```
+
