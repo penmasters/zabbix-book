@@ -594,8 +594,8 @@ This adds authentication and encryption for trap communication.
 ### Desperate snmptrapd.conf for SNMPv2
 
 If community names for SNMPv2 traps are not known and deadlines are approaching,
-we can whitelist to allow every SNMP trap message to come in
-by completely ignoring all community names.
+we can allow every SNMP trap message to come in
+by ignoring all community names.
 
 Add at the beginning of existing configuration file add:
 
