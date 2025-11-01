@@ -1,0 +1,7 @@
+{% set tags = page.meta.tags %} {% if tags %}
+<nav class="md-tags">
+  {% for tag in tags %}
+  <span class="md-tag md-tag-icon">{{ tag }}</span>
+  {% endfor %}
+</nav>
+{% endif %}
