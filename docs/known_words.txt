@@ -349,3 +349,6 @@ usergroups
 webservers
 catalogs
 mibs
+itemid
+logrt
+analyze
