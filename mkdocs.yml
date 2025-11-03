@@ -29,6 +29,7 @@ nav:
       - ch02-zabbix-installation/frontend.md
       - ch02-zabbix-installation/host-groups.md
       - ch02-zabbix-installation/user-groups.md
+      - ch02-zabbix-installation/user-roles.md
       - "External Authentication":
           - ch02-zabbix-installation/http.md
           - ch02-zabbix-installation/ldap-ad.md
