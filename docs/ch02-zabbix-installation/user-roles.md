@@ -89,7 +89,7 @@ base User Type. Customization is split into three main areas:
 ### UI Element Permissions (Frontend Menu Access)
 
 This section controls the visibility of menu items. By default, a role based on
-the `Admin` type can see the `Configuration` menu. This allows you to hide specific
+the `Admin` type can see the `Data collection` menu. This allows you to hide specific
 configuration sections from them.
 
 * **Example Use:** You can create an `Admin` role called **"Template Editor"**
@@ -99,7 +99,7 @@ configuration to prevent accidental host changes.
 | Permission | Description |
 | :--- | :--- |
 | **Frontend access** | Allows or denies access to the entire Zabbix frontend (vs. API-only access).
-| **Visibility** | Toggle access to specific sections like `Monitoring`, `Configuration`, `Reports`, or even sub-menus like `Triggers` or `Screeens`. |
+| **Visibility** | Toggle access to specific sections like `Monitoring`, `Data collection`, `Reports`, or even sub-menus like `Triggers` or `Screeens`. |
 
 ### Action Permissions (Functionality Control)
 
@@ -272,11 +272,11 @@ escalation during live monitoring.
 It is crucial for readers to understand that these two systems work in tandem:
 
 * **User Role:** Controls the **Zabbix application and UI**. *Can you click the
-  "Configuration" menu?*
-* **User Group:** Controls the **Host/Item data**. *If you click "Configuration,
-  " which hosts do you see?*
+  "Data collection" menu?*
+* **User Group:** Controls the **Host/Item data**. *If you click "Data
+  collecdtion, " which hosts do you see?*
 
-A user with the **Config Admin Role** will see the `Configuration` menu, but if
+A user with the **Config Admin Role** will see the `Data collection` menu, but if
 their **User Group** has no permissions to any **Host Groups**, they will see an
 empty host list. This layered approach ensures both security and a tailored
 user experience.
