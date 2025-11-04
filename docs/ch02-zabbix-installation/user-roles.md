@@ -269,7 +269,7 @@ escalation during live monitoring.
     available. This option allows users to manage their own media something
     that wasn't possible before.
 
-It is crucial for readers to understand that these two systems work in tandem:
+It is crucial to understand that these two systems work in tandem:
 
 * **User Role:** Controls the **Zabbix application and UI**. *Can you click the
   "Data collection" menu?*
@@ -304,5 +304,4 @@ for every role within the monitoring ecosystem.
 
 ## Useful URLs
 
-- https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions#user-types
-- 
+- [https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions#user-types](https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions#user-types)
