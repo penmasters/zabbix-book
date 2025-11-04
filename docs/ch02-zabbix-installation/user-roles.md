@@ -86,7 +86,7 @@ When defining a custom role (based on `Admin` or `User`), the Zabbix administrat
 can selectively **revoke** or **grant** specific rights within the scope of the
 base User Type. Customization is split into three main areas:
 
-### UI Element Permissions (Frontend Menu Access)
+### UI Elements (Frontend Menu Access Permissions)
 
 This section controls the visibility of menu items. By default, a role based on
 the `Admin` type can see the `Data collection` menu. This allows you to hide specific
@@ -99,7 +99,7 @@ configuration to prevent accidental host changes.
 | Permission | Description |
 | :--- | :--- |
 | **Frontend access** | Allows or denies access to the entire Zabbix frontend (vs. API-only access).
-| **Visibility** | Toggle access to specific sections like `Monitoring`, `Data collection`, `Reports`, or even sub-menus like `Triggers` or `Screeens`. |
+| **Visibility** | Toggle access to specific sections like `Monitoring`, `Data collection`, `Reports`, or even sub-menus like `Trigger Actions` or `Hosts`. |
 
 ### Action Permissions (Functionality Control)
 
