@@ -1,6 +1,7 @@
 ---
 description: |
-    User roles
+    Learn how Zabbix user roles control frontend and API permissions. Define what
+    users can do, while user groups define what they can see.
 tags: [beginner]
 ---
 
