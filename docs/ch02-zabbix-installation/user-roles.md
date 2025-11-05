@@ -223,7 +223,7 @@ problems and acknowledges them, but cannot alter configuration.
     * **Base role:** `User`
 3. **UI element permissions (7.4 menu)**
     * ✅ **Monitoring → Dashboards / Problems / Hosts / Latest data**
-    * ✅ **Services → SLA report
+    * ✅ **Services → SLA report**
     * ✅ **Reports → Availability report** (if used)
     * ❌ **Data collection** (entire section)
     * ❌ **Users** (entire section)
