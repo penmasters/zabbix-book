@@ -163,14 +163,9 @@ plugins:
       separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
       lang:
         - fr
-        #        - de
-        #        - it
         - nl
-        - pt
-        #        - es
-        #        - th
-        #        - zh
         - ru
+        #        - pt-BR
         - en
   - tags
   - autolinks
@@ -235,8 +230,8 @@ plugins:
         - locale: pt_BR
           name: Brazillian Portugese
           build: true
-          theme: # override Material options for this locale
-            language: pt-BR
+        #          theme: # override Material options for this locale
+        #            language: pt-BR
         #        - locale: es
         #          name: Spanish
         #          build: true
