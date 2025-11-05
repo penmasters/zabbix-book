@@ -120,6 +120,7 @@ theme:
   icon:
     logo: material/library
   features:
+    - content.tags
     #    - content.code.select #seems to be not working for some reason
     #    - navigation.tabs #add navigation to the top
     - navigation.expand
@@ -155,6 +156,19 @@ extra_css:
 extra:
   tags:
     index: tags.md
+  tag_labels:
+    en:
+      beginner: beginner
+      advanced: Advanced
+      expert: Expert
+    nl:
+      beginner: Beginner
+      advanced: Gevorderde
+      expert: Expert
+    pt_BR:
+      beginner: Iniciante
+      advanced: Avançado
+      expert: Expert
 
 # Plugins
 plugins:
