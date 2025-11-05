@@ -1,14 +1,7 @@
 ---
 description: |
-    This chapter explains how to effectively use Zabbix's built-in maintenance 
-    periods to manage planned downtime without triggering false alerts. Zabbix
-    allows you to schedule maintenance windows for hosts, host groups. This is 
-    perfect for software updates, hardware replacements, or testing scenarios.
-    You'll learn how to configure maintenance types (with or without data collection),
-    define time periods, and apply them to specific targets. Using this feature
-    correctly ensures your monitoring data remains clean, avoids alert noise,
-    and helps teams stay focused during routine operations. Mastering maintenance
-    tasks in Zabbix is essential for accurate alerting.
+    sdfsfs
+tag: beginner
 ---
 
 # Maintenance
@@ -29,6 +22,11 @@ tickets, etc.) are typically paused.
 
 ### 1. Maintenance Type
 
+The Maintenance section is located in the main menu under `Data collection`
+→ `Maintenance`. To create a new maintenance window, click Create maintenance.
+When doing so, Zabbix presents two available maintenance types, allowing you to
+choose the one that best fits your needs.
+
 This defines how Zabbix handles data during the maintenance window:
 
 | Type | Description | Trigger Processing | Data Collection | Best Used For |
@@ -36,9 +34,16 @@ This defines how Zabbix handles data during the maintenance window:
 | **With data collection** | Data is collected as usual, but **problem notifications are suppressed** (via a default Action condition). | **Processed** | **Collected** | Routine updates where data continuity is important. |
 | **No data collection** | Data collection is completely paused for the items on the maintained host(s). | **Not Processed** | **Ignored/Not Collected** | Major hardware upgrades or OS reloads where the host is completely unavailable. |
 
+!!! note
+    When using `no data collection`, host and proxies will still sent data to the
+    Zabbix server. However the server will not processs the data and store it into
+    the database.
+
 ### 2. Time Window Definition (`Active Since` / `Active Till`)
-These dates define the **overall lifespan** (outer bounds) of the maintenance rule.
-The specific execution times are defined in the **Periods** tab.
+
+The Start and End dates determine the overall duration of the maintenance rule.
+Specific maintenance execution times are configured on the Periods tab. Each
+defined period must fall within the maintenance window’s overall lifespan.
 
 ### 3. Maintenance Periods (The Schedule)
 
@@ -50,20 +55,36 @@ This tab defines the precise scheduling:
 * **Monthly:** The most flexible, allowing selection by **Day of Month** or
   **Day of Week** within a month (e.g., the last Sunday).
 
-### 4. Scope (Hosts and Groups)
+![ch14.01-maintenance.png](ch14.01-maintenance.png)
+
+### 4. Scope (Hosts and Host Groups)
 
 You define the scope by selecting the specific **Hosts** and/or **Host Groups**
 that the rule applies to.
 
 ### 5. Problem Tag Filtering (Advanced Suppression)
 
-This allows you to suppress **only specific problems** during maintenance by matching **Problem Tags** (e.g., `service:database`), which is useful if you need to be alerted to hardware failures during software maintenance.
+This allows you to suppress **only specific problems** during maintenance by
+matching **Problem Tags** (e.g., `service:database`), which is useful if you
+need to be alerted to hardware failures during software maintenance.
 
 ---
 
 ## Time Zones and Maintenance Schedule Logic
 
-Understanding time zones is critical for reliable recurring maintenance:
+Understanding how time zones work in Zabbix is essential for scheduling reliable
+maintenance tasks. Zabbix handles time zones differently depending on whether
+a maintenance window is one-time or recurring.
+
+For one time maintenance, the start and end times are interpreted in the frontend
+user's local time zone. The same time zone configured for the logged-in user.
+In contrast, recurring maintenance is evaluated based on the Zabbix server's time
+zone, ensuring that the recurrence pattern remains consistent, even if users in
+different regions view it.
+
+This distinction is important to remember: a maintenance period that appears
+correct in your local time might execute at a different time if the server is in
+another time zone.
 
 ### Time Zone Rules for Maintenance Periods
 
@@ -96,11 +117,15 @@ The process responsible for calculating and initiating maintenance periods is th
    and loaded into the Zabbix Server's **Configuration Cache**. The Timer
    uses this cache to determine host status.
 
+???+ info
+     Only the first timer process handles host maintenance updates. Problem
+     supression updates are shared between all the timers.
+
 ### Key Zabbix Server Configuration (`zabbix_server.conf`)
 
 The overall efficiency of maintenance logic depends on these parameters:
 
-| Parameter | Zabbix 7.4 Default Value | Purpose in Relation to Maintenance |
+| Parameter | Zabbix 8.0 Default Value | Purpose in Relation to Maintenance |
 | :--- | :--- | :--- |
 | **`CacheUpdateFrequency`** | **10** | Defines how often (in seconds) the Zabbix Server updates its configuration cache from the database. A change to a maintenance period will take effect within **10 seconds**. |
 | **`StartTimers`** | `1` | The number of **Timer processes** to start. These are the processes that execute the maintenance calculation. |
@@ -189,39 +214,176 @@ The **`timeperiods`** array defines the exact schedule. Key elements include:
 
 This `curl` command demonstrates how to programmatically create the "Last Sunday
 of the Month" maintenance window, which runs at midnight for 2 hours, and applies
-to host group ID `42`.
+to host group ID `4`.
 
 ???+ note
     You must replace `<ZABBIX_SERVER_IP_OR_DNS>` with your server's address and
-    `"your_auth_token"` with an active token from a successful `user.login` API
-    call. The **Host Group ID** (e.g., `"42"`) must be known beforehand.
+    `"YOUR API TOKEN"` with an active token from a successful `user.login` API
+    call. The **Host Group ID** (e.g., `"4"`) must be known beforehand. This id
+    can be found in the url when going to the host group` in the Zabbix menu.
 
 ```bash
-curl -i -X POST -H 'Content-Type: application/json-rpc' -d '{
+curl -i -X POST \
+  -H 'Content-Type: application/json-rpc' \
+  -H 'Authorization: Bearer <YOUR API TOKEN>' \
+  -d '{
     "jsonrpc": "2.0",
     "method": "maintenance.create",
     "params": {
-        "name": "Monthly DB Patching via API",
-        "active_since": 1748822400,
-        "active_till": 1780444800,
-        "maintenance_type": 0,
-        "groupids": ["42"],
-        "timeperiods": [
-            {
-                "timeperiod_type": 4,   // Monthly schedule
-                "start_time": 0,        // Start at 0 seconds past midnight (00:00:00)
-                "period": 7200,         // Duration of 2 hours (2 * 3600 seconds)
-                "dayofweek": 128        // API code for the Last Sunday
-            }
-        ]
+      "name": "Monthly DB Patching via API",
+      "active_since": 1748822400,
+      "active_till": 1780444800,
+      "maintenance_type": 0,
+      "groups": [
+        { "groupid": "4" }
+      ],
+      "timeperiods": [
+        {
+          "timeperiod_type": 4,
+          "start_time": 0,
+          "period": 7200,
+          "dayofweek": 64,
+          "every": 5,
+          "month": 4095
+        }
+      ]
     },
-    "auth": "your_auth_token",
     "id": 1
-}' http://<ZABBIX_SERVER_IP_OR_DNS>/api_jsonrpc.php
+  }' \
+  http://<ZABBIX_SERVER_IP_OR_DNS>/api_jsonrpc.php
 ```
+
+---
+
+### Understanding the Time Period Parameters
+
+Let's go over what we just did here to have a better understanding.
+
+```json
+"timeperiod_type": 4,
+"start_time": 0,
+"period": 7200,
+"dayofweek": 64,
+"every": 5,
+"month": 4095
+```
+
+---
+
+### `timeperiod_type: 4` — Monthly Period
+
+This defines the **type of recurrence** for the maintenance period.
+
+| Value | Meaning     |
+| :---- | :---------- |
+| 0     | One-time    |
+| 2     | Weekly      |
+| 3     | Daily       |
+| **4** | **Monthly** |
+
+Setting it to `4` means the maintenance repeats **every month**.
+
+---
+
+### `start_time: 0` — Start of the Day (00:00:00)
+
+The number of **seconds past midnight** when maintenance begins.
+
+| Value | Meaning          |
+| :---- | :--------------- |
+| 0     | 00:00 (midnight) |
+| 3600  | 01:00            |
+| 9000  | 02:30            |
+
+Here, it starts at **midnight**.
+
+---
+
+### `period: 7200` — Duration
+
+Defines how long the maintenance lasts, in **seconds**.
+
+```
+7200 seconds = 2 hours
+```
+
+So this window runs from **00:00 to 02:00**.
+
+---
+
+### `dayofweek: 64` — Sunday
+
+Zabbix uses a **bitmask** for days of the week:
+
+| Day        | Bit Value |
+| :--------- | :-------- |
+| Monday     | 1         |
+| Tuesday    | 2         |
+| Wednesday  | 4         |
+| Thursday   | 8         |
+| Friday     | 16        |
+| Saturday   | 32        |
+| **Sunday** | **64**    |
+
+`64` means the maintenance occurs on **Sunday**.
+You can combine days — for example, Monday + Wednesday = `1 + 4 = 5`.
+
+---
+
+### `every: 5` — Last Week of the Month
+
+For monthly schedules, this field defines **which week of the month** to use:
+
+| Value | Meaning       |
+| :---- | :------------ |
+| 1     | First week    |
+| 2     | Second week   |
+| 3     | Third week    |
+| 4     | Fourth week   |
+| **5** | **Last week** |
+
+`5` means the **last occurrence** of the selected weekday. In this case, the
+  **last Sunday of the month**.
+
+---
+
+### `month: 4095` — All Months
+
+Months also use a **bitmask**:
+
+| Month     | Bit Value |
+| :-------- | :-------- |
+| January   | 1         |
+| February  | 2         |
+| March     | 4         |
+| April     | 8         |
+| May       | 16        |
+| June      | 32        |
+| July      | 64        |
+| August    | 128       |
+| September | 256       |
+| October   | 512       |
+| November  | 1024      |
+| December  | 2048      |
+
+To include all months, add them up:
+
+```
+1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 = 4095
+```
+
+So `4095` means **every month**.
+
+![ch14.02-maintenance-api.png](ch14.02-maintenance-api.png)
+
+---
 
 ## Conclusion
 
 ## Questions
 
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/maintenance](https://www.zabbix.com/documentation/current/en/manual/maintenance)
+- [https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/create](https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/create)
+- [https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/object#time-period](https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/object#time-period)
