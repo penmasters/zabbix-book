@@ -36,7 +36,7 @@ This defines how Zabbix handles data during the maintenance window:
 
 !!! note
     When using `no data collection`, host and proxies will still sent data to the
-    Zabbix server. However the server will not processs the data and store it into
+    Zabbix server. However the server will not process the data and store it into
     the database.
 
 ### 2. Time Window Definition (`Active Since` / `Active Till`)
@@ -119,7 +119,7 @@ The process responsible for calculating and initiating maintenance periods is th
 
 ???+ info
      Only the first timer process handles host maintenance updates. Problem
-     supression updates are shared between all the timers.
+     suppression updates are shared between all the timers.
 
 ### Key Zabbix Server Configuration (`zabbix_server.conf`)
 

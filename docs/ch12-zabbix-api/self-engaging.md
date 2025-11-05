@@ -716,7 +716,7 @@ Zabbix agent autoregistration completed_
 !!! note "Popular solution 2 - LLD rule"
 
     We Zabbix LLD rule to find the files in directory.
-    This method do not allow to store all data insize same itemid.
+    This method do not allow to store all data inside same itemid.
     When files are deleted from server, the items in Zabbix will get unsupported.
 
 

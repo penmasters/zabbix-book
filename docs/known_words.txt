@@ -352,3 +352,6 @@ mibs
 itemid
 logrt
 analyze
+jira
+programmatically
+
