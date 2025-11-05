@@ -275,7 +275,7 @@ It is crucial to understand that these two systems work in tandem:
 * **User Role:** Controls the **Zabbix application and UI**. *Can you click the
   "Data collection" menu?*
 * **User Group:** Controls the **Host/Item data**. *If you click "Data
-  collecdtion, " which hosts do you see?*
+  collection, " which hosts do you see?*
 
 A user with the **Config Admin Role** will see the `Data collection` menu, but if
 their **User Group** has no permissions to any **Host Groups**, they will see an
