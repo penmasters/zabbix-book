@@ -2,7 +2,7 @@
 description: |
     Master Zabbix maintenance periods to suppress alerts during planned work.
     Learn scheduling, tag filtering, and API automation for maintenance.
-tag: advanced
+tags: [advanced]
 ---
 
 # Maintenance
