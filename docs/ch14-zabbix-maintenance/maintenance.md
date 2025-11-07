@@ -377,7 +377,13 @@ To include all months, add them up:
 
 So `4095` means **every month**.
 
-![ch14.03-maintenance-api.png](ch14.02-maintenance-api.png)
+Ok, let's verify what we just did. Go to `Data collection` → `Maintenance`. If
+all went well you should now see a new maintenance that was created by our
+script.
+
+A working easy to use maintenance script can be found here : [https://github.com/penmasters/trikke76-fork/tree/master/maintenance](https://github.com/penmasters/trikke76-fork/tree/master/maintenance)
+
+![ch14.03-maintenance-api.png](ch14.03-maintenance-api.png)
 
 ---
 
