@@ -20,7 +20,7 @@ dit boek toegankelijk blijft voor zoveel mogelijk mensen.
 
 ## Onze medewerkers
 
-Dit boek is een inspanning van de gemeenschap en we waarderen de tijd en kennis
+Dit boek is een inspanning van de community en we waarderen de tijd en kennis
 die is gedeeld door onze bijdragers. Van het schrijven en beoordelen van inhoud
 tot het geven van feedback en het delen van expertise, jullie inspanningen
 hebben geholpen deze bron te vormen tot iets waardevols voor de monitoring en
