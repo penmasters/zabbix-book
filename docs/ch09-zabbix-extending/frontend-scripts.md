@@ -29,9 +29,13 @@ frontend. Get ready to harness this power and tailor Zabbix precisely to your ne
 For this example, we'll work with a frontend script I developed that lets you put
 hosts in maintenance mode. This script makes it possible to add a convenient option
 in your GUI, allowing you to place hosts in maintenance with just a few clicks.
-You can download the script from my GitHub repository :
+You can download the script from our GitHub repository :
 
-[https://github.com/Trikke76/Zabbix/blob/master/maintenance/zabbix-maintenance.py](https://github.com/Trikke76/Zabbix/blob/master/maintenance/zabbix-maintenance.py)
+[https://github.com/penmasters/trikke76-fork/blob/master/maintenance/](https://github.com/penmasters/trikke76-fork/blob/master/maintenance/)
+
+The original version can be found here:
+
+[https://github.com/Trikke76/Zabbix/tree/master/maintenance](https://github.com/Trikke76/Zabbix/tree/master/maintenance)
 
 !!! info "Download this script and place it in `/usr/bin/` "
     ```

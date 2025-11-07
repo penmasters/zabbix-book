@@ -1,7 +1,8 @@
 ---
 description: |
-    sdfsfs
-tag: beginner
+    Master Zabbix maintenance periods to suppress alerts during planned work.
+    Learn scheduling, tag filtering, and API automation for maintenance.
+tag: advanced
 ---
 
 # Maintenance
@@ -149,6 +150,8 @@ every month** at midnight for **2 hours**. Only suppress problems related to the
 | **Hosts & Groups Tab** | **Host Group:** `Database Servers` | Defines the scope. |
 | **Tags Tab** | **Tag evaluation:** `AND` | Ensures both conditions (maintenance and tag) are met for suppression. |
 | **Tags Tab** | **Tag:** `service` **Operator:** `=` **Value:** `database` | **Crucial:** Only problems with the tag `service:database` are suppressed. |
+
+![ch14.02-maintenance-config.png](ch14.02-maintenance-config.png)
 
 ### Execution Summary
 
@@ -374,13 +377,38 @@ To include all months, add them up:
 
 So `4095` means **every month**.
 
-![ch14.02-maintenance-api.png](ch14.02-maintenance-api.png)
+Ok, let's verify what we just did. Go to `Data collection` → `Maintenance`. If
+all went well you should now see a new maintenance that was created by our
+script.
+
+A working easy to use maintenance script can be found here : [https://github.com/penmasters/trikke76-fork/tree/master/maintenance](https://github.com/penmasters/trikke76-fork/tree/master/maintenance)
+
+![ch14.03-maintenance-api.png](ch14.03-maintenance-api.png)
 
 ---
 
 ## Conclusion
 
+Mastering Zabbix maintenance periods is crucial for operational maturity. By
+correctly applying precise scheduling, leveraging problem tag filtering, and
+integrating maintenance workflows via the Zabbix API, you ensure that alerts
+are accurately suppressed only during planned work. This practice is vital for
+maintaining the credibility of your monitoring data and preventing alert fatigue
+among your operations team, transforming Zabbix from a passive alarm system into
+a strategic tool for change management.
+
+
 ## Questions
+
+- What is the primary operational effect on triggers/alerts when a host enters
+  a defined maintenance period?
+- Briefly explain the difference between "One time only" and "Daily" scheduling
+  for maintenance periods. When would you use one over the other?
+- Does Zabbix continue to collect data from an item during a maintenance period?
+  Why is this important?
+- Your Zabbix server is set to UTC, but the server you are maintaining is in EST.
+  When defining a "No Data Collection" maintenance window from 2:00 AM to 4:00 AM,
+  which time zone should you select for the schedule and why?
 
 ## Useful URLs
 
