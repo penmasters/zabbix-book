@@ -215,18 +215,18 @@ Agora que o MariaDB está instalado, precisamos habilitar o serviço para inicia
 automaticamente na inicialização do sistema operacional, assim como iniciá-lo
 imediatamente. Utilize o seguinte comando para realizar isso:
 
-!!! info "Enable mariadb service"
+!!! info "Habilitar o serviço mariadb"
 
     Red Hat
     ```yaml
     systemctl enable mariadb --now
     ```
 
-This command will both enable and start the MariaDB service. Once the service is
-running, you can verify that the installation was successful by checking the
-version of MariaDB using the following command:
+Esse comando habilitará e iniciará o serviço MariaDB. Quando o serviço estiver
+em execução, você poderá verificar se a instalação foi bem-sucedida verificando
+a versão do MariaDB usando o seguinte comando:
 
-!!! info "Check Mariadb version"
+!!! info "Verificar versão do Mariadb"
 
     Red Hat and Ubuntu
     ```yaml
@@ -235,7 +235,7 @@ version of MariaDB using the following command:
 
 A saída esperada deve ser similar a esta:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     mariadb from 11.4.5-MariaDB, client 15.2 for Linux (aarch64) using EditLine wrapper
@@ -244,17 +244,18 @@ A saída esperada deve ser similar a esta:
 Para garantir que o serviço do MariaDB esteja funcionando corretamente, você
 pode verificar o status com o seguinte comando:
 
-!!! info "Get mariadb status"
+!!! info "Obter status do mariadb"
 
     Red Hat and Ubuntu
     ```yaml
     sudo systemctl status mariadb
     ```
 
-You should see an output similar to this, indicating that the MariaDB service is
-active and running:
+Você deverá ver um resultado semelhante a este, indicando que o serviço MariaDB
+está ativo e em execução:
 
-!!! info "mariadb service status example"
+!!! info "mariadb service status example" (exemplo de status do serviço
+mariadb")
 
     ```yaml
      mariadb.service - MariaDB 11.4.5 database server
@@ -287,26 +288,26 @@ active and running:
     Feb 21 11:22:59 localhost.localdomain systemd[1]: Started MariaDB 11.4.5 database server.
     ```
 
-This confirms that your MariaDB server is up and running, ready for further
-configuration.
+Isso confirma que seu servidor MariaDB está funcionando e pronto para outras
+configurações.
 
-### Securing the MariaDB Database
+### Protegendo o banco de dados MariaDB
 
-To enhance the security of your MariaDB server, it's essential to remove
-unnecessary test databases, anonymous users, and set a root password. This can
-be done using the mariadb-secure-installation script, which provides a
-step-by-step guide to securing your database.
+Para aumentar a segurança do seu servidor MariaDB, é essencial remover bancos de
+dados de teste desnecessários, usuários anônimos e definir uma senha de raiz.
+Isso pode ser feito usando o script mariadb-secure-installation, que fornece um
+guia passo a passo para proteger seu banco de dados.
 
-Run the following command:
+Execute o seguinte comando:
 
-!!! info "Secure Mariadb setup"
+!!! info "Configuração segura do Mariadb"
 
     Red Hat and Ubuntu
     ```yaml
      sudo mariadb-secure-installation
     ```
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
@@ -376,41 +377,44 @@ Run the following command:
     Thanks for using MariaDB!
     ```
 
-The mariadb-secure-installation script will guide you through several key steps:
+O script mariadb-secure-installation o guiará por várias etapas importantes:
 
-1. Set a root password if one isn't already set.
-2. Remove anonymous users.
-3. Disallow remote root logins.
-4. Remove the test database.
-5. Reload the privilege tables to ensure the changes take effect.
+1. Defina uma senha de root, caso ainda não tenha sido definida.
+2. Remover usuários anônimos.
+3. Não permitir logins de raiz remotos.
+4. Remova o banco de dados de teste.
+5. Recarregue as tabelas de privilégios para garantir que as alterações tenham
+   efeito.
 
-Once complete, your MariaDB instance will be significantly more secure. You are
-now ready to configure the database for Zabbix.
+Depois de concluída, sua instância do MariaDB estará significativamente mais
+segura. Agora você está pronto para configurar o banco de dados para o Zabbix.
 
 ---
 
-### Create the Zabbix database
+### Criar o banco de dados Zabbix
 
-With MariaDB now set up and secured, we can move on to creating the database for
-Zabbix. This database will store all the necessary data related to your Zabbix
-server, including configuration information and monitoring data.
+Com o MariaDB configurado e protegido, podemos prosseguir com a criação do banco
+de dados para o Zabbix. Esse banco de dados armazenará todos os dados
+necessários relacionados ao seu servidor Zabbix, incluindo informações de
+configuração e dados de monitoramento.
 
-Follow these steps to create the Zabbix database:
+Siga estas etapas para criar o banco de dados do Zabbix:
 
-Log in to the MariaDB shell as the root user: You'll be prompted to enter the
-root password that you set during the mariadb-secure-installation process.
+Faça login no shell do MariaDB como usuário root: Será solicitado que você
+digite a senha de root que definiu durante o processo de instalação do
+mariadb-secure-installation.
 
-!!! info "Enter Mariadb as user root"
+!!! info "Entre no Mariadb como usuário root"
 
     Red Hat and Ubuntu
     ```yaml
     mariadb -uroot -p
     ```
 
-Once you're logged into the MariaDB shell, run the following command to create a
-database for Zabbix:
+Quando estiver conectado ao shell do MariaDB, execute o seguinte comando para
+criar um banco de dados para o Zabbix:
 
-!!! info "Create the database"
+!!! info "Criar o banco de dados"
 
     `MariaDB [(none)]> CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;`
 
@@ -421,14 +425,14 @@ database for Zabbix:
      only supports up to three bytes per character and is not a true UTF-8 implementation,
      which is why utf8mb4 is recommended.
 
-This command creates a new database named zabbix with the UTF-8 character set,
-which is required for Zabbix.
+Esse comando cria um novo banco de dados chamado zabbix com o conjunto de
+caracteres UTF-8, que é necessário para o Zabbix.
 
-Create a dedicated user for Zabbix and grant the necessary privileges: Next, you
-need to create a user that Zabbix will use to access the database. Replace
-password with a strong password of your choice.
+Crie um usuário dedicado para o Zabbix e conceda os privilégios necessários: Em
+seguida, é necessário criar um usuário que o Zabbix usará para acessar o banco
+de dados. Substitua a senha por uma senha forte de sua escolha.
 
-!!! info "Create users and grant privileges"
+!!! info "Criar usuários e conceder privilégios"
 
     ```sql
     MariaDB [(none)]> CREATE USER 'zabbix-web'@'<zabbix server ip>' IDENTIFIED BY '<password>';
@@ -438,27 +442,29 @@ password with a strong password of your choice.
     MariaDB [(none)]> FLUSH PRIVILEGES;
     ```
 
-This creates new users for zabbix-web and zabbix-srv, grants them access to the
-zabbix database, and ensures that the privileges are applied immediately.
+Isso cria novos usuários para o zabbix-web e o zabbix-srv, concede a eles acesso
+ao banco de dados do zabbix e garante que os privilégios sejam aplicados
+imediatamente.
 
-In some cases, especially when setting up Zabbix with MariaDB, you might
-encounter issues related to stored functions and triggers if binary logging is
-enabled. To address this, you need to set the log_bin_trust_function_creators
-option to 1 in the MariaDB configuration file. This allows non-root users to
-create stored functions and triggers without requiring SUPER privileges, which
-are restricted when binary logging is enabled.
+Em alguns casos, especialmente ao configurar o Zabbix com o MariaDB, você pode
+encontrar problemas relacionados a funções armazenadas e gatilhos se o registro
+binário estiver ativado. Para resolver isso, você precisa definir a opção
+log_bin_trust_function_creators como 1 no arquivo de configuração do MariaDB.
+Isso permite que os usuários não raiz criem funções armazenadas e acionadores
+sem exigir privilégios SUPER, que são restritos quando o registro em log binário
+está ativado.
 
-!!! info "Activate temporarily extra privileges for non root users"
+!!! info "Ativar temporariamente privilégios extras para usuários não root"
 
     ```sql
     MariaDB [(none)]> SET GLOBAL log_bin_trust_function_creators = 1;
     MariaDB [(none)]> QUIT
     ```
 
-At this point, your Zabbix database is ready, and you can proceed with
-configuring the Zabbix server to connect to the database.
+Neste ponto, seu banco de dados Zabbix está pronto e você pode prosseguir com a
+configuração do servidor Zabbix para se conectar ao banco de dados.
 
-???+ warning
+???+ Aviso
 
     In the Zabbix documentation, it is explicitly stated that deterministic
     triggers need to be created during the schema import. On MySQL and MariaDB
@@ -484,10 +490,10 @@ configuring the Zabbix server to connect to the database.
     This ensures that Zabbix can successfully create the required triggers during
     schema import without encountering privilege-related errors.
 
-If we want our Zabbix server to connect to our DB then we also need to open our
-firewall port.
+Se quisermos que o servidor Zabbix se conecte ao nosso banco de dados, também
+precisaremos abrir a porta do firewall.
 
-!!! info "Add firewall rules"
+!!! info "Adicionar regras de firewall"
 
     Red Hat
     ``` yaml
@@ -502,17 +508,17 @@ firewall port.
 
 ---
 
-### Populate the Zabbix Maria DB
+### Preencher o banco de dados do Zabbix Maria
 
-With the users and permissions set up correctly, you can now populate the
-database with the Zabbix schema created and other required elements. Follow
-these steps:
+Com os usuários e as permissões configurados corretamente, agora você pode
+preencher o banco de dados com o esquema do Zabbix criado e outros elementos
+necessários. Siga estas etapas:
 
-One of the first things we need to do is add the Zabbix repository to our
-machine. This may sound weird but actually makes sense because we need to
-populate our DB with our Zabbix schemas.
+Uma das primeiras coisas que precisamos fazer é adicionar o repositório Zabbix à
+nossa máquina. Isso pode parecer estranho, mas na verdade faz sentido porque
+precisamos preencher nosso banco de dados com os esquemas do Zabbix.
 
-!!! info "Add Zabbix repo and install scripts"
+!!! info "Adicionar repositório Zabbix e instalar scripts"
 
     Red Hat
     ``` yaml
@@ -529,10 +535,11 @@ populate our DB with our Zabbix schemas.
     sudo apt install zabbix-sql-scripts
     ```
 
-Now lets upload the data from zabbix (db structure, images, user, ... ) for this
-we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
+Agora vamos fazer o upload dos dados do zabbix (estrutura do banco de dados,
+imagens, usuário, ...) para isso, usamos o usuário `zabbix-srv` e fazemos o
+upload de tudo em nosso banco de dados `zabbix`.
 
-!!! info "Populate the database"
+!!! info "Populate the database" (Preencher o banco de dados)
 
     Red Hat and Ubuntu
     ``` yaml
@@ -545,55 +552,56 @@ we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
     take anywhere from a few seconds to several minutes. Please be patient and
     avoid cancelling the operation; just wait for the prompt to appear.
 
-Log back into your MySQL Database as root
+Faça login novamente em seu banco de dados MySQL como root
 
-!!! info "Enter mariadb as user root"
+!!! info "Entre no mariadb como usuário root"
 
     `mariadb -uroot -p`
 
-Once the import of the Zabbix schema is complete and you no longer need the
-log_bin_trust_function_creators global parameter, it is a good practice to
-remove it for security reasons.
+Quando a importação do esquema do Zabbix estiver concluída e você não precisar
+mais do parâmetro global log_bin_trust_function_creators, é uma boa prática
+removê-lo por motivos de segurança.
 
-To revert the change and set the global parameter back to 0, use the following
-command in the MariaDB shell:
+Para reverter a alteração e definir o parâmetro global de volta para 0, use o
+seguinte comando no shell do MariaDB:
 
-!!! info "Disable function log_bin_trust again"
+!!! info "Desativar a função log_bin_trust novamente"
 
     ```sql
     mysql> SET GLOBAL log_bin_trust_function_creators = 0;
     Query OK, 0 rows affected (0.001 sec)
     ```
 
-This command will disable the setting, ensuring that the servers security
-posture remains robust.
+Esse comando desativará a configuração, garantindo que a postura de segurança
+dos servidores permaneça robusta.
 
-This concludes our installation of the MariaDB
+Isso conclui nossa instalação do MariaDB
 
 ---
 
-## Installing the PostgreSQL database
+## Instalação do banco de dados PostgreSQL
 
-For our DB setup with PostgreSQL we need to add our PostgreSQL repository first
-to the system. As of writing PostgreSQL 13-17 are supported but best is to have
-a look before you install it as new versions may be supported and older maybe
-unsupported both by Zabbix and PostgreSQL. Usually it's a good idea to go with
-the latest version that is supported by Zabbix. Zabbix also supports the
-extension TimescaleDB this is something we will talk later about. As you will
-see the setup from PostgreSQL is very different from MySQL not only the
-installation but also securing the DB.
+Para nossa configuração de banco de dados com o PostgreSQL, precisamos primeiro
+adicionar nosso repositório PostgreSQL ao sistema. Até o momento, o PostgreSQL
+13-17 é suportado, mas o melhor é dar uma olhada antes de instalá-lo, pois as
+novas versões podem ser suportadas e as mais antigas podem não ser suportadas
+tanto pelo Zabbix quanto pelo PostgreSQL. Normalmente, é uma boa ideia usar a
+versão mais recente que é suportada pelo Zabbix. O Zabbix também suporta a
+extensão TimescaleDB, sobre a qual falaremos mais tarde. Como você verá, a
+configuração do PostgreSQL é muito diferente da do MySQL, não apenas na
+instalação, mas também na proteção do banco de dados.
 
-The table of compatibility can be found
+A tabela de compatibilidade pode ser encontrada em
 [https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/](https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/)
 
 ---
 
-### Add the PostgreSQL repository
+### Adicionar o repositório PostgreSQL
 
-So let us start first setting up our PostgreSQL repository with the following
-commands.
+Então, vamos começar configurando nosso repositório PostgreSQL com os seguintes
+comandos.
 
-!!! info "Add PostgreSQL repo"
+!!! info "Adicionar repositório PostgreSQL"
 
     Red Hat
     ``` yaml
@@ -618,9 +626,9 @@ commands.
     sudo apt update
     ```
 
-### Install the PostgreSQL databases
+### Instalar os bancos de dados PostgreSQL
 
-!!! info "Install the Postgres server"
+!!! info "Instalar o servidor Postgres"
 
     Red Hat
     ``` yaml
@@ -639,7 +647,7 @@ commands.
 
 Para atualizar seu sistema operacional, execute o seguinte comando:
 
-!!! info "update the OS"
+!!! info "atualizar o sistema operacional"
 
     Red Hat
     ``` yaml
@@ -653,11 +661,12 @@ Para atualizar seu sistema operacional, execute o seguinte comando:
 
 ---
 
-### Securing the PostgreSQL database
+### Protegendo o banco de dados PostgreSQL
 
-PostgreSQL handles access permissions differently from MySQL and MariaDB.
-PostgreSQL relies on a file called pg_hba.conf to manage who can access the
-database, from where, and what encryption method is used for authentication.
+O PostgreSQL lida com as permissões de acesso de forma diferente do MySQL e do
+MariaDB. O PostgreSQL depende de um arquivo chamado pg_hba.conf para gerenciar
+quem pode acessar o banco de dados, de onde e qual método de criptografia é
+usado para autenticação.
 
 ???+ nota
 
@@ -667,9 +676,9 @@ database, from where, and what encryption method is used for authentication.
     For further details, you can refer to the official PostgreSQL documentation."
     [https://www.postgresql.org/docs/current/auth-pg-hba-conf.html](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
 
-Add the following lines, the order here is important.
+Adicione as seguintes linhas, a ordem aqui é importante.
 
-!!! info "Edit the pg_hba file"
+!!! info "Editar o arquivo pg_hba"
 
     Red hat
     ``` yaml
@@ -681,9 +690,9 @@ Add the following lines, the order here is important.
     sudo vi /etc/postgresql/17/main/pg_hba.conf
     ```
 
-The result should look like :
+O resultado deve ser semelhante a :
 
-!!! info "pg_hba example"
+!!! info "exemplo pg_hba"
 
     ``` yaml
     # "local" is for Unix domain socket connections only
@@ -695,13 +704,13 @@ The result should look like :
     host     all            all                         127.0.0.1/32                            scram-sha-256
     ```
 
-After we changed the pg_hba file don't forget to restart postgres else the
-settings will not be applied. But before we restart let us also edit the file
-postgresql.conf and allow our database to listen on our network interface for
-incoming connections from the zabbix server. Postgresql will standard only allow
-connections from the socket.
+Depois de alterarmos o arquivo pg_hba, não se esqueça de reiniciar o postgres,
+caso contrário as configurações não serão aplicadas. Mas antes de reiniciarmos,
+vamos também editar o arquivo postgresql.conf e permitir que nosso banco de
+dados escute em nossa interface de rede as conexões de entrada do servidor
+zabbix. O Postgresql padrão só permitirá conexões do soquete.
 
-!!! info "Edit postgresql.conf file"
+!!! info "Editar arquivo postgresql.conf"
 
     Red Hat
     ``` yaml
@@ -713,18 +722,18 @@ connections from the socket.
     sudo vi /etc/postgresql/17/main/postgresql.conf
     ```
 
-To configure PostgreSQL to listen on all network interfaces, you need to modify
-the `postgresql.conf` file. Locate the following line:
+Para configurar o PostgreSQL para escutar em todas as interfaces de rede, você
+precisa modificar o arquivo `postgresql.conf`. Localize a seguinte linha:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     #listen_addresses = 'localhost'
     ```
 
-and replace it with:
+e substituí-la por:
 
-!!! info ""
+!!! informações ""
 
     `listen_addresses = '*'`
 
@@ -734,10 +743,10 @@ and replace it with:
     not just the local machine. In production it's probably a good idea to limit
     who can connect to the DB.
 
-After making this change, restart the PostgreSQL service to apply the new
-settings:
+Depois de fazer essa alteração, reinicie o serviço PostgreSQL para aplicar as
+novas configurações:
 
-!!! info "restart the DB server"
+!!! info "restart the DB server" (reinicie o servidor de banco de dados)
 
     Red Hat
     ``` yaml
@@ -749,23 +758,25 @@ settings:
     sudo systemctl restart postgresql
     ```
 
-If the service fails to restart, review the pg_hba.conf file for any syntax
-errors, as incorrect entries here may prevent PostgreSQL from starting.
+Se o serviço não for reiniciado, verifique se há erros de sintaxe no arquivo
+pg_hba.conf, pois entradas incorretas podem impedir a inicialização do
+PostgreSQL.
 
-Next, to prepare your PostgreSQL instance for Zabbix, you'll need to create the
-necessary database tables. Begin by installing the Zabbix repository, as you did
-for the Zabbix server. Then, install the appropriate Zabbix package that
-contains the predefined tables, images, icons, and other database elements
-needed for the Zabbix application.
+Em seguida, para preparar sua instância do PostgreSQL para o Zabbix, você
+precisará criar as tabelas de banco de dados necessárias. Comece instalando o
+repositório do Zabbix, como você fez para o servidor Zabbix. Em seguida, instale
+o pacote Zabbix apropriado que contém as tabelas predefinidas, as imagens, os
+ícones e outros elementos de banco de dados necessários para o aplicativo
+Zabbix.
 
 ---
 
-### Create the Zabbix database with PostgreSQL
+### Criar o banco de dados do Zabbix com o PostgreSQL
 
-To begin, add the Zabbix repository to your system by running the following
-commands:
+Para começar, adicione o repositório Zabbix ao seu sistema executando os
+seguintes comandos:
 
-!!! info "Add zabbix schema repos package"
+!!! info "Adicionar pacote de repositórios de esquemas do zabbix"
 
     Red Hat
     ``` yaml
@@ -781,12 +792,13 @@ commands:
     sudo apt install zabbix-sql-scripts
     ```
 
-With the necessary packages installed, you are now ready to create the Zabbix
-users for both the server and frontend.
+Com os pacotes necessários instalados, agora você está pronto para criar os
+usuários do Zabbix para o servidor e o front-end.
 
-First, switch to the `postgres` user and create the Zabbix server database user:
+Primeiro, mude para o usuário `postgres` e crie o usuário do banco de dados do
+servidor Zabbix:
 
-!!! info "create server users"
+!!! info "criar usuários do servidor"
 
     ```sql
     sudo su - postgres
@@ -795,10 +807,10 @@ First, switch to the `postgres` user and create the Zabbix server database user:
     Enter it again: <server-password>
     ```
 
-Next, create the Zabbix frontend user, which will be used to connect to the
-database:
+Em seguida, crie o usuário front-end do Zabbix, que será usado para se conectar
+ao banco de dados:
 
-!!! info "Create front-end user"
+!!! info "Criar usuário de front-end"
 
     ```sql
     createuser --pwprompt zabbix-web
@@ -806,11 +818,11 @@ database:
     Enter it again: <frontend-password>
     ```
 
-After creating the users, you need to prepare the database schema. As the root
-or your regular user, unzip the necessary schema files by running the following
-command:
+Depois de criar os usuários, é necessário preparar o esquema do banco de dados.
+Como root ou usuário comum, descompacte os arquivos de esquema necessários
+executando o seguinte comando:
 
-!!! info "Unzip the DB patch"
+!!! info "Descompacte o patch do DB"
 
     Red Hat
     ``` yaml
@@ -829,13 +841,13 @@ command:
     look at the Zabbix documentation there is a good chance that some location was
     changed.
 
-This will extract the database schema required for the Zabbix server.
+Isso extrairá o esquema do banco de dados necessário para o servidor Zabbix.
 
-Now that the users are created, the next step is to create the Zabbix database.
-First, switch to the `postgres` user and execute the following command to create
-the database with the owner set to zabbix-srv:
+Agora que os usuários foram criados, a próxima etapa é criar o banco de dados do
+Zabbix. Primeiro, mude para o usuário `postgres` e execute o seguinte comando
+para criar o banco de dados com o proprietário definido como zabbix-srv:
 
-!!! info "Create DB"
+!!! info "Criar banco de dados"
 
     Red Hat
     ``` yaml
@@ -851,20 +863,20 @@ the database with the owner set to zabbix-srv:
     exit
     ```
 
-Once the database is created, you should verify the connection and ensure that
-the correct user session is active. To do this, log into the zabbix database
-using the zabbix-srv user:
+Depois que o banco de dados for criado, verifique a conexão e certifique-se de
+que a sessão correta do usuário esteja ativa. Para fazer isso, faça login no
+banco de dados zabbix usando o usuário zabbix-srv:
 
-!!! info "Login as user zabbix-srv"
+!!! info "Faça login como usuário zabbix-srv"
 
     ```yaml
     psql -d zabbix -U zabbix-srv
     ```
 
-After logging in, run the following SQL query to confirm that both the
-`session_user` and `current_user` are set to `zabbix-srv`:
+Depois de fazer login, execute a seguinte consulta SQL para confirmar que tanto
+o `session_user` quanto o `current_user` estão definidos como `zabbix-srv`:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     zabbix=> SELECT session_user, current_user;
@@ -874,20 +886,21 @@ After logging in, run the following SQL query to confirm that both the
     (1 row)
     ```
 
-If the output matches, you are successfully connected to the database with the
-correct user.
+Se a saída corresponder, você se conectou com sucesso ao banco de dados com o
+usuário correto.
 
-PostgreSQL indeed differs significantly from MySQL or MariaDB in several
-aspects, and one of the key features that sets it apart is its use of schemas.
-Unlike MySQL, where databases are more standalone, PostgreSQL's schema system
-provides a structured, multi-user environment within a single database.
+O PostgreSQL de fato difere significativamente do MySQL ou do MariaDB em vários
+aspectos, e um dos principais recursos que o diferencia é o uso de esquemas. Ao
+contrário do MySQL, em que os bancos de dados são mais independentes, o sistema
+de esquema do PostgreSQL fornece um ambiente estruturado e multiusuário em um
+único banco de dados.
 
-Schemas act as logical containers within a database, enabling multiple users or
-applications to access and manage data independently without conflicts. This
-feature is especially valuable in environments where several users or
-applications need to interact with the same database concurrently. Each user or
-application can have its own schema, preventing accidental interference with
-each other's data.
+Os esquemas funcionam como contêineres lógicos dentro de um banco de dados,
+permitindo que vários usuários ou aplicativos acessem e gerenciem dados de forma
+independente, sem conflitos. Esse recurso é especialmente valioso em ambientes
+em que vários usuários ou aplicativos precisam interagir com o mesmo banco de
+dados simultaneamente. Cada usuário ou aplicativo pode ter seu próprio esquema,
+evitando interferências acidentais nos dados dos outros.
 
 ???+ nota
 
@@ -899,30 +912,32 @@ each other's data.
     this URI, [https://hevodata.com/learn/postgresql-schema/#schema](https://hevodata.com/learn/postgresql-schema/#schema)
     which explains the benefits and use cases for schemas in PostgreSQL.
 
-To finalize the database setup for Zabbix, we need to configure schema
-permissions for both the `zabbix-srv` and `zabbix-web` users.
+Para finalizar a configuração do banco de dados para o Zabbix, precisamos
+configurar as permissões do esquema para os usuários `zabbix-srv` e
+`zabbix-web`.
 
-First, we create a custom schema named `zabbix_server` and assign ownership to
-the `zabbix-srv` user:
+Primeiro, criamos um esquema personalizado chamado `zabbix_server` e atribuímos
+a propriedade ao usuário `zabbix-srv`:
 
-!!! info "create the db schema"
+!!! info "create the db schema" (criar o esquema do banco de dados)
 
     ```psql
     zabbix=> CREATE SCHEMA zabbix_server AUTHORIZATION "zabbix-srv";
     ```
 
-Next, we set the `search path` to `zabbix_server` schema so that it's the
-default for the current session:
+Em seguida, definimos o caminho de pesquisa `` para `zabbix_server` schema para
+que seja o padrão da sessão atual:
 
-!!! info "Set search path"
+!!! info "Definir caminho de pesquisa"
 
     ```psql
     zabbix=> SET search_path TO "zabbix_server";
     ```
 
-To confirm the schema setup, you can list the existing schemas:
+Para confirmar a configuração do esquema, você pode listar os esquemas
+existentes:
 
-!!! info "verify schema access"
+!!! info "verify schema access" (verificar acesso ao esquema)
 
     ```psql
     zabbix=> \dn
@@ -934,12 +949,12 @@ To confirm the schema setup, you can list the existing schemas:
     (2 rows)
     ```
 
-At this point, the `zabbix-srv` user has full access to the schema, but the
-`zabbix-web` user still needs appropriate permissions to connect and interact
-with the database. First, we grant `USAGE` privileges on the schema to allow
-`zabbix-web` to connect:
+Neste ponto, o usuário `zabbix-srv` tem acesso total ao esquema, mas o usuário
+`zabbix-web` ainda precisa de permissões apropriadas para se conectar e
+interagir com o banco de dados. Primeiro, concedemos a `USAGE` privilégios no
+esquema para permitir que `zabbix-web` se conecte:
 
-!!! info "Grant access to schema for user zabbix-web"
+!!! info "Conceder acesso ao esquema para o usuário zabbix-web"
 
     ```psql
     zabbix=# GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
@@ -947,19 +962,19 @@ with the database. First, we grant `USAGE` privileges on the schema to allow
 
 ---
 
-### Populate the Zabbix PostgreSQL DB
+### Preencher o banco de dados PostgreSQL do Zabbix
 
-Now, the `zabbix-web` user has appropriate access to interact with the schema
-while maintaining security by limiting permissions to essential operations.
+Agora, o usuário `zabbix-web` tem acesso adequado para interagir com o esquema,
+mantendo a segurança ao limitar as permissões às operações essenciais.
 
-With the users and permissions set up correctly, you can now populate the
-database with the Zabbix schema created and other required elements. Follow
-these steps:
+Com os usuários e as permissões configurados corretamente, agora você pode
+preencher o banco de dados com o esquema do Zabbix criado e outros elementos
+necessários. Siga estas etapas:
 
-- Execute the SQL file to populate the database. Run the following command in
-  the `psql` shell:
+- Execute o arquivo SQL para preencher o banco de dados. Execute o seguinte
+  comando no shell `psql`:
 
-???+ warning
+???+ Aviso
 
     Make sure you did previous steps carefully so that you have selected the correct
     search_path.
@@ -970,7 +985,7 @@ these steps:
     sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
     ```
 
-???+ warning
+???+ Aviso
 
     Depending on your hardware or VM performance, this process can take anywhere
     from a few seconds to several minutes. Please be patient and avoid cancelling
@@ -1083,7 +1098,7 @@ example:
   the necessary permissions. You can check permissions for specific tables using
   the \dp command:
 
-!!! info ""
+!!! informações ""
 
     ```sql
     sql zabbix=# \dp zabbix_server.*
@@ -1132,7 +1147,7 @@ If you are ready you can exit the database and return as user root.
 If we want our Zabbix server to be able to connect to our DB then we also need
 to open our firewall port.
 
-!!! info ""
+!!! informações ""
 
     Red Hat
     ``` yaml
@@ -1420,7 +1435,7 @@ Make sure the settings reflect your environment's database configuration.
 
 To enable this feature, remove the # from the line:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     # Include=/usr/local/etc/zabbix_server.conf.d/*.conf
@@ -1825,7 +1840,7 @@ Make sure the settings reflect your environment's database configuration.
 
 To enable this feature, remove the # from the line:
 
-!!! info ""
+!!! informações ""
 
     `# Include=/usr/local/etc/zabbix_server.conf.d/*.conf`
 
@@ -2184,7 +2199,7 @@ If all goes well you should be greeted with a Zabbix welcome page. In case you
 have an error check the configuration again or have a look at the nginx log
 file:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
      /var/log/nginx/error.log
@@ -2192,7 +2207,7 @@ file:
 
 or run the following command :
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     journalctl -xe
@@ -2242,7 +2257,7 @@ Users on Ubuntu will probably notice following error `"Locale for language
 
 This will give you on Red Hat based systems a list like:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     Installed Packages
