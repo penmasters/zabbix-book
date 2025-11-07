@@ -1,79 +1,81 @@
-# Supporters & Contributors
+# Supporters & medewerkers
 
-This book would not have been possible without the dedication, generosity, and
-expertise of many individuals and organizations. We extend our heartfelt thanks
-to everyone who has supported this project, whether through financial
-contributions, technical expertise, content reviews, or community engagement.
+Dit boek zou niet mogelijk zijn geweest zonder de toewijding, vrijgevigheid en
+expertise van vele individuen en organisaties. We willen iedereen die dit
+project heeft gesteund hartelijk bedanken, hetzij door financiële bijdragen,
+technische expertise, inhoudelijke beoordelingen of betrokkenheid bij de
+gemeenschap.
 
-## Our Sponsors
+## Onze sponsors
 
-We are deeply grateful to the sponsors who have provided financial or material
-support to help bring this book to life. Their contributions have enabled us to
-maintain high-quality content, support open-source initiatives, and ensure that
-this book remains accessible to as many people as possible.
+We zijn de sponsors die dit boek financieel of materieel hebben ondersteund zeer
+dankbaar. Hun bijdragen hebben ons in staat gesteld om inhoud van hoge kwaliteit
+te behouden, open-source initiatieven te ondersteunen en ervoor te zorgen dat
+dit boek toegankelijk blijft voor zoveel mogelijk mensen.
 
-- **OICTS** : [https://oicts.com/](https://oicts.com/)
-- **ZABBIX** : [https://www.zabbix.com/](https://www.zabbix.com/)
+- **OICTS**: [https://oicts.com/](https://oicts.com/)
+- **ZABBIX**: [https://www.zabbix.com/](https://www.zabbix.com/)
 
 ---
 
-## Our Contributors
+## Onze medewerkers
 
-This book is a community effort, and we sincerely appreciate the time and
-knowledge shared by our contributors. From writing and reviewing content to
-providing feedback and sharing expertise, your efforts have helped shape this
-resource into something valuable for the monitoring and open-source communities.
+Dit boek is een inspanning van de gemeenschap en we waarderen de tijd en kennis
+die is gedeeld door onze bijdragers. Van het schrijven en beoordelen van inhoud
+tot het geven van feedback en het delen van expertise, jullie inspanningen
+hebben geholpen deze bron te vormen tot iets waardevols voor de monitoring en
+open-source gemeenschappen.
 
-- **Patrik Uytterhoeven** :
+- **Patrik Uytterhoeven**:
   [http://github.com/Trikke76](http://github.com/Trikke76)
-- **Nathan Liefting** :
+- **Nathan Liefting**:
   [https://github.com/larcorba](https://github.com/larcorba)
-- Evgeny Yurchenko: [https://github.com/BGmot](https://github.com/BGmot)
+- Evgeniy Yurchenko: [https://github.com/BGmot](https://github.com/BGmot)
 - Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
 - Aigars Kadikis :
   [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
 
-A list of all the contributors who where so kind to fix typos etc .. can be
-found here :
+Een lijst van alle medewerkers die zo vriendelijk waren om typefouten etc. te
+corrigeren kan hier gevonden worden :
 [https://github.com/penmasters/zabbix-book/graphs/contributors](https://github.com/penmasters/zabbix-book/graphs/contributors)
 
-### Translators
+### Vertalers
 
 - Nicolas Hermel : [https://github.com/wityender](https://github.com/wityender)
 - Dimitry Q : [https://github.com/krotesk](https://github.com/krotesk)
 
 ---
 
-## Special Thanks to Our Board Members
+## Speciale dank aan onze bestuursleden
 
-A special acknowledgment goes to the members of our board, whose vision,
-leadership, and dedication have guided this project from its inception. Their
-commitment to open-source principles and knowledge sharing has been instrumental
-in making this book a reality.
+Een speciaal woord van dank gaat uit naar de leden van ons bestuur, wiens visie,
+leiderschap en toewijding dit project vanaf het begin hebben geleid. Hun
+toewijding aan open-source principes en het delen van kennis is essentieel
+geweest bij het realiseren van dit boek.
 
-- **Patrik Uytterhoeven** : http://github.com/Trikke76
-- **Nathan Liefting** : https://github.com/larcorba
-- **Alexei Vladishev** :
-
----
-
-## Every Contribution Matters
-
-Open-source thrives on collaboration, and even the smallest contributions help
-make a difference. Whether it was reporting a typo, suggesting an improvement,
-opening an issue, or simply sharing feedback, we appreciate everyone who took
-the time to help refine and improve this book. Your efforts, no matter how
-small, are a valuable part of this project. Check out [Everyone who created an
-issue](https://github.com/penmasters/zabbix-book/issues?q=is%3Aissue%20).
+- **Patrik Uytterhoeven**: http://github.com/Trikke76
+- **Nathan Liefting**: https://github.com/larcorba
+- **Alexei Vladishev**:
 
 ---
 
-## Join the Community
+## Elke bijdrage telt
 
-We welcome new contributors and supporters! If you'd like to get involved
-whether by contributing content, providing feedback, or supporting this
-initiative you can find more details on how to participate at
-[Guidelines](./Guidelines.md).
+Open-source gedijt op samenwerking en zelfs de kleinste bijdragen maken een
+verschil. Of het nu ging om het melden van een typefout, het voorstellen van een
+verbetering, het openen van een probleem of gewoon het delen van feedback, we
+waarderen iedereen die de tijd heeft genomen om te helpen dit boek te verfijnen
+en te verbeteren. Jullie inspanningen, hoe klein ook, zijn een waardevol
+onderdeel van dit project. Bekijk [Iedereen die een probleem heeft
+gemaakt](https://github.com/penmasters/zabbix-book/issues?q=is%3Aissue%20).
 
-Thank you for being part of this journey and helping us build a valuable
-resource for the open-source community!
+---
+
+## Word lid van de gemeenschap
+
+We verwelkomen nieuwe bijdragers en supporters! Als je mee wilt doen door inhoud
+bij te dragen, feedback te geven of dit initiatief te steunen, kun je meer
+informatie vinden over hoe je mee kunt doen op [Richtlijnen](./Guidelines.md).
+
+Bedankt om deel uit te maken van deze reis en ons te helpen een waardevolle bron
+te bouwen voor de open-source gemeenschap!
