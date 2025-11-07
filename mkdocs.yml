@@ -165,6 +165,10 @@ extra:
       beginner: Beginner
       advanced: Gevorderde
       expert: Expert
+    fr:
+      beginner: Débutant
+      advanced: Élémentaire
+      expert: Avancé
     pt_BR:
       beginner: Iniciante
       advanced: Avançado
