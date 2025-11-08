@@ -10,8 +10,8 @@ fonctionnement de vos services.
 Dans ce livre, nous nous concentrons sur **Zabbix LTS 8.0**, la version de
 support à long terme qui garantit la stabilité et la fiabilité pour vos besoins
 de surveillance. Nous explorerons son vaste ensemble de fonctionnalités, y
-compris la nouvelle fonctionnalité de reporting **** et la surveillance Web
-intégrée **** basée sur le pilote Selenium, qui permet une surveillance
+compris la nouvelle **fonctionnalité de reporting ** et la **surveillance Web
+intégrée ** basée sur le pilote Selenium, qui permet une surveillance
 sophistiquée de l'expérience de l'utilisateur final par le biais d'interactions
 automatisées avec le navigateur.
 
