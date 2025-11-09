@@ -114,15 +114,15 @@ Quando isso for feito, poderemos instalar os pacotes do servidor zabbix.
 
 Edite o arquivo de configuração do servidor Zabbix,
 
-!!! info "edit the server config file"
+!!! info "editar o arquivo de configuração do servidor"
 
     ``` yaml
     sudo vi /etc/zabbix/zabbix_server.conf
     ```
 
-Update the following lines to connect to the database:
+Atualize as seguintes linhas para se conectar ao banco de dados:
 
-!!! info ""
+!!! informações ""
 
     ``` yaml
     DBHost=<zabbix db ip>
@@ -132,17 +132,17 @@ Update the following lines to connect to the database:
     DBPassword=<your secret password>
     ```
 
-Configure the HA parameters for this server:
+Configure os parâmetros de HA para esse servidor:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     HANodeName=zabbix1 (or choose a name you prefer)
     ```
 
-Specify the frontend node address for failover scenarios:
+Especifique o endereço do nó front-end para cenários de failover:
 
-!!! info ""
+!!! informações ""
 
     ``` yaml
     NodeAddress=<Zabbix server 1 ip>:10051
@@ -150,19 +150,19 @@ Specify the frontend node address for failover scenarios:
 
 ---
 
-### Configuring Zabbix Server 2
+### Configuração do Zabbix Server 2
 
-Repeat the configuration steps for the second Zabbix server. Adjust the
-`HANodeName` and `NodeAddress` as necessary for this server.
+Repita as etapas de configuração para o segundo servidor Zabbix. Ajuste o
+`HANodeName` e o `NodeAddress` conforme necessário para esse servidor.
 
 ---
 
-### Starting Zabbix Server
+### Iniciando o Zabbix Server
 
-After configuring both servers, enable and start the zabbix-server service on
-each:
+Depois de configurar os dois servidores, ative e inicie o serviço zabbix-server
+em cada um deles:
 
-!!! info "restart zabbix-server service"
+!!! info "restart zabbix-server service" (reiniciar o serviço zabbix-server)
 
     ```
     sudo systemctl enable zabbix-server --now
@@ -177,77 +177,80 @@ each:
 
 ---
 
-### Verifying the Configuration
+### Verificação da configuração
 
-Check the log files on both servers to ensure they have started correctly and
-are operating in their respective HA modes.
+Verifique os arquivos de registro em ambos os servidores para garantir que eles
+tenham sido iniciados corretamente e estejam operando em seus respectivos modos
+HA.
 
-On the first server:
+No primeiro servidor:
 
-!!! info "check logs for HA messages"
+!!! info "verifique se há mensagens de HA nos registros"
 
     ``` yaml
     sudo grep HA /var/log/zabbix/zabbix_server.log
     ```
 
-In the system logs, you should observe the following entries, indicating the
-initialization of the High Availability (HA) manager:
+Nos logs do sistema, observe as seguintes entradas, indicando a inicialização do
+gerenciador de alta disponibilidade (HA):
 
-!!! info ""
+!!! informações ""
 
     ``` yaml
     22597:20240309:155230.353 starting HA manager
     22597:20240309:155230.362 HA manager started in active mode
     ```
 
-These log messages confirm that the HA manager process has started and assumed
-the active role. This means that the Zabbix instance is now the primary node in
-the HA cluster, handling all monitoring operations. If a failover event occurs,
-another standby node will take over based on the configured HA strategy.
+Essas mensagens de registro confirmam que o processo do gerenciador de HA foi
+iniciado e assumiu a função ativa. Isso significa que a instância do Zabbix é
+agora o nó primário no cluster de HA, lidando com todas as operações de
+monitoramento. Se ocorrer um evento de failover, outro nó de espera assumirá o
+controle com base na estratégia de HA configurada.
 
-On the second server (and any additional nodes):
+No segundo servidor (e em quaisquer nós adicionais):
 
-!!! info ""
+!!! informações ""
 
     ``` yaml
     grep HA /var/log/zabbix/zabbix_server.log
     ```
 
-In the system logs, the following entries indicate the initialization of the
-High Availability (HA) manager:
+Nos logs do sistema, as seguintes entradas indicam a inicialização do
+gerenciador de alta disponibilidade (HA):
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     22304:20240309:155331.163 starting HA manager
     22304:20240309:155331.174 HA manager started in standby mode
     ```
 
-These messages confirm that the HA manager process was invoked and successfully
-launched in standby mode. This suggests that the node is operational but not
-currently acting as the active HA instance, awaiting further state transitions
-based on the configured HA strategy.
+Essas mensagens confirmam que o processo do gerenciador de HA foi invocado e
+iniciado com sucesso no modo de espera. Isso sugere que o nó está operacional,
+mas não está atuando no momento como a instância de HA ativa, aguardando outras
+transições de estado com base na estratégia de HA configurada.
 
-At this stage, your Zabbix cluster is successfully configured for High
-Availability (HA). The system logs confirm that the HA manager has been
-initialized and is running in standby mode, indicating that failover mechanisms
-are in place. This setup ensures uninterrupted monitoring, even in the event of
-a server failure, by allowing automatic role transitions based on the HA
-configuration.
-
----
-
-## Installing the frontend
-
-Before proceeding with the installation and configuration of the web server, it
-is essential to install Keepalived. Keepalived enables the use of a Virtual IP
-(VIP) for frontend services, ensuring seamless failover and service continuity.
-It provides a robust framework for both load balancing and high availability,
-making it a critical component in maintaining a resilient infrastructure.
+Nesta etapa, seu cluster do Zabbix está configurado com sucesso para alta
+disponibilidade (HA). Os registros do sistema confirmam que o gerenciador de HA
+foi inicializado e está sendo executado no modo de espera, indicando que os
+mecanismos de failover estão em vigor. Essa configuração garante o monitoramento
+ininterrupto, mesmo no caso de falha do servidor, permitindo transições
+automáticas de função com base na configuração de HA.
 
 ---
 
-### Setting up keepalived
+## Instalando o front-end
+
+Antes de prosseguir com a instalação e a configuração do servidor Web, é
+essencial instalar o Keepalived. O Keepalived permite o uso de um IP virtual
+(VIP) para serviços de front-end, garantindo um failover perfeito e a
+continuidade do serviço. Ele fornece uma estrutura robusta para balanceamento de
+carga e alta disponibilidade, o que o torna um componente essencial para a
+manutenção de uma infraestrutura resiliente.
+
+---
+
+### Configuração do keepalived
 
 ???+ nota
 
@@ -258,7 +261,7 @@ making it a critical component in maintaining a resilient infrastructure.
     that do the same “take over” job. So let's get started. On both our servers
     we have to install keepalived.
 
-!!! info "install keepalived"
+!!! info "instalar keepalived"
 
     Redhat
     ``` yaml
@@ -270,22 +273,22 @@ making it a critical component in maintaining a resilient infrastructure.
     sudo apt install keepalived
     ```
 
-Next, we need to modify the Keepalived configuration on both servers. While the
-configurations will be similar, each server requires slight adjustments. We will
-begin with Server 1. To edit the Keepalived configuration file, use the
-following command:
+Em seguida, precisamos modificar a configuração do Keepalived em ambos os
+servidores. Embora as configurações sejam semelhantes, cada servidor requer
+pequenos ajustes. Começaremos com o Servidor 1. Para editar o arquivo de
+configuração do Keepalived, use o seguinte comando:
 
-!!! info "edit the keepalived config"
+!!! info "editar a configuração do keepalived"
 
     RedHat and Ubuntu
     ``` yaml
     sudo vi /etc/keepalived/keepalived.conf
     ```
 
-If the file contains any existing content, it should be cleared and replaced
-with the following lines :
+Se o arquivo contiver algum conteúdo existente, ele deverá ser limpo e
+substituído pelas seguintes linhas:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     vrrp_track_process track_nginx {
@@ -312,15 +315,15 @@ with the following lines :
     }
     ```
 
-???+ warning
+???+ aviso
 
     Replace `enp0s1` with the interface name of your machine and replace the `password`
     with something secure. For the virtual_ipaddress use a free IP from your network.
     This will be used as our VIP.
 
-We can now do the same modification on our `second` Zabbix server. Delete
-everything again in the same file like we did before and replace it with the
-following lines:
+Agora podemos fazer a mesma modificação em nosso servidor `second` Zabbix.
+Exclua tudo novamente no mesmo arquivo, como fizemos antes, e substitua-o pelas
+seguintes linhas:
 
 !!!info ""
 
@@ -349,21 +352,22 @@ following lines:
     }
     ```
 
-Just as with our 1st Zabbix server, replace `enp0s1` with the interface name of
-your machine and replace the `password` with your password and fill in the
-virtual_ipaddress as used before.
+Assim como em nosso primeiro servidor Zabbix, substitua `enp0s1` pelo nome da
+interface de sua máquina e substitua a senha `` por sua senha e preencha o
+virtual_ipaddress como usado anteriormente.
 
-This ends the configuration of keepalived. We can now continue adapting the
+Isso encerra a configuração do keepalived. Agora podemos continuar adaptando o
 frontend.
 
 ---
 
-### Install and configure the frontend
+### Instalar e configurar o front-end
 
-On both servers we can run the following commands to install our web server and
-the zabbix frontend packages:
+Em ambos os servidores, podemos executar os seguintes comandos para instalar
+nosso servidor Web e os pacotes de front-end do zabbix:
 
-!!! info "install web server and config"
+!!! info "install web server and config" (instalar servidor da web e
+configuração)
 
     RedHat
     ```yaml
@@ -375,12 +379,12 @@ the zabbix frontend packages:
     sudo apt install nginx zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
-Additionally, it is crucial to configure the firewall. Proper firewall rules
-ensure seamless communication between the servers and prevent unexpected
-failures. Before proceeding, verify that the necessary ports are open and apply
-the required firewall rules accordingly.
+Além disso, é fundamental configurar o firewall. Regras adequadas de firewall
+garantem uma comunicação perfeita entre os servidores e evitam falhas
+inesperadas. Antes de prosseguir, verifique se as portas necessárias estão
+abertas e aplique as regras de firewall necessárias de acordo.
 
-!!! info "configure the firewall"
+!!! info "configurar o firewall"
 
     RedHat
     ```yaml
@@ -395,11 +399,12 @@ the required firewall rules accordingly.
     sudo ufw allow 80/tcp
     ```
 
-With the configuration in place and the firewall properly configured, we can now
-start the Keepalived service. Additionally, we should enable it to ensure it
-automatically starts on reboot. Use the following commands to achieve this:
+Com a configuração em vigor e o firewall devidamente configurado, podemos agora
+iniciar o serviço Keepalived. Além disso, devemos ativá-lo para garantir que ele
+seja iniciado automaticamente na reinicialização. Use os seguintes comandos para
+fazer isso:
 
-!!! info "start and enable keepalived"
+!!! info "iniciar e ativar o keepalived"
 
     RedHat and Ubuntu
     ```yaml
@@ -408,14 +413,15 @@ automatically starts on reboot. Use the following commands to achieve this:
 
 ---
 
-### Configure the web server
+### Configurar o servidor da Web
 
-The setup process for the frontend follows the same steps outlined in the `Basic
-Installation` section under [Installing the
-Frontend](basic-installation.md/#installing-the-frontend). By adhering to these
-established procedures, we ensure consistency and reliability in the deployment.
+O processo de configuração do frontend segue as mesmas etapas descritas na seção
+`Basic Installation` em [Installing the
+Frontend](basic-installation.md/#installing-the-frontend). Ao aderir a esses
+procedimentos estabelecidos, garantimos consistência e confiabilidade na
+implementação.
 
-???+ warning
+???+ aviso
 
     Ubuntu users need to use the VIP in the setup of Nginx, together with the local
     IP in the listen directive of the config.
@@ -427,7 +433,7 @@ established procedures, we ensure consistency and reliability in the deployment.
     and `$ZBX_SERVER_PORT`. Our frontend will check what node is active by reading
     the node table in the database.
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     select * from ha_node;
@@ -441,37 +447,38 @@ established procedures, we ensure consistency and reliability in the deployment.
     (2 rows)
     ```
 
-In this instance, the node `zabbix2` is identified as the active node, as
-indicated by its status value of `3`, which designates an active state. The
-possible status values are as follows:
+Nesse caso, o nó `zabbix2` é identificado como o nó ativo, conforme indicado por
+seu valor de status `3`, que designa um estado ativo. Os valores de status
+possíveis são os seguintes:
 
-- `0` – Multiple nodes can remain in standby mode.
-- `1` – A previously detected node has been shut down.
-- `2` – A node was previously detected but became unavailable without a proper
-  shutdown.
-- `3` – The node is currently active.
+- `0` - Vários nós podem permanecer em modo de espera.
+- `1` - Um nó detectado anteriormente foi desligado.
+- `2` - Um nó foi detectado anteriormente, mas ficou indisponível sem um
+  desligamento adequado.
+- `3` - O nó está ativo no momento.
 
-This classification allows for effective monitoring and state management within
-the cluster.
+Essa classificação permite o monitoramento eficaz e o gerenciamento de estado
+dentro do cluster.
 
 ---
 
-### Verify the correct working
+### Verificar o funcionamento correto
 
-To verify that the setup is functioning correctly, access your `Zabbix server`
-using the Virtual IP (VIP). Navigate to Reports → System Information in the
-menu. At the bottom of the page, you should see a list of servers, with at least
-one marked as active. The number of servers displayed will depend on the total
-configured in your HA setup.
+Para verificar se a configuração está funcionando corretamente, acesse o
+servidor `Zabbix` usando o IP virtual (VIP). Navegue até Reports → System
+Information (Relatórios → Informações do sistema) no menu. Na parte inferior da
+página, você deverá ver uma lista de servidores, com pelo menos um marcado como
+ativo. O número de servidores exibidos dependerá do total configurado em sua
+configuração de HA.
 
-![1st active frontend](ha-setup/ch01-HA-check1.png)
+![1º frontend ativo](ha-setup/ch01-HA-check1.png)
 
-_1.2 verify HA_
+_1.2 verificar HA_
 
-Shut down or reboot the active frontend server and observe that the `Zabbix
-frontend` remains accessible. Upon reloading the page, you will notice that the
-other `frontend server` has taken over as the active instance, ensuring an
-almost seamless failover and high availability.
+Desligue ou reinicie o servidor de front-end ativo e observe que o front-end
+`Zabbix` permanece acessível. Ao recarregar a página, você notará que o outro
+servidor de front-end `` assumiu o papel de instância ativa, garantindo um
+failover quase perfeito e alta disponibilidade.
 
 ![2st active frontend](ha-setup/ch01-HA-check2.png)
 
@@ -483,7 +490,7 @@ remove inactive nodes dynamically.
 
 One such command is:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     zabbix_server -R ha_set_failover_delay=10m
@@ -496,7 +503,7 @@ range of **10 seconds** to **15 minutes**.
 To remove a node that is either **stopped** or **unreachable**, the following
 runtime command must be used:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     zabbix_server -R ha_remove_node=`zabbix1`
@@ -505,7 +512,7 @@ runtime command must be used:
 Executing this command removes the node from the HA cluster. Upon successful
 removal, the output confirms the action:
 
-!!! info ""
+!!! informações ""
 
     ```yaml
     Removed node "zabbix1" with ID "cm8agwr2b0001h6kzzsv19ng6"
