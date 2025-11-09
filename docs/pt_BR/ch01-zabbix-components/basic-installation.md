@@ -979,7 +979,8 @@ necessários. Siga estas etapas:
     Make sure you did previous steps carefully so that you have selected the correct
     search_path.
 
-!!! info "upload the DB schema to db zabbix"
+!!! info "upload the DB schema to db zabbix" (carregar o esquema do banco de
+dados para o banco de dados zabbix)
 
     ```sql
     sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
@@ -991,9 +992,10 @@ necessários. Siga estas etapas:
     from a few seconds to several minutes. Please be patient and avoid cancelling
     the operation.
 
-- Monitor the progress as the script runs. You will see output similar to:
+- Monitore o progresso à medida que o script é executado. Você verá uma saída
+  semelhante a:
 
-!!! info "Output example"
+!!! info "Exemplo de saída"
 
     ```sql
     zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
@@ -1010,18 +1012,19 @@ necessários. Siga estas etapas:
     COMMIT
     ```
 
-Once the script completes and you return to the `zabbix=#` prompt, the database
-should be successfully populated with all the required tables, schemas, images,
-and other elements needed for Zabbix.
+Quando o script for concluído e você retornar ao prompt `zabbix=#`, o banco de
+dados deverá ser preenchido com sucesso com todas as tabelas, esquemas, imagens
+e outros elementos necessários para o Zabbix.
 
-However, `zabbix-web` still cannot perform any operations on the tables or
-sequences. To allow basic data interaction without giving too many privileges,
-grant the following permissions:
+Entretanto, `zabbix-web` ainda não pode executar nenhuma operação nas tabelas ou
+sequências. Para permitir a interação básica dos dados sem conceder muitos
+privilégios, conceda as seguintes permissões:
 
-- For tables: SELECT, INSERT, UPDATE, and DELETE.
-- For sequences: SELECT and UPDATE.
+- Para tabelas: SELECT, INSERT, UPDATE e DELETE.
+- Para sequências: SELECT e UPDATE.
 
-!!! info "Grant rights on the schema to user zabbix-web"
+!!! info "Grant rights on the schema to user zabbix-web" (Conceder direitos
+sobre o esquema ao usuário zabbix-web)
 
     ```psql
     zabbix=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server
@@ -1029,9 +1032,9 @@ grant the following permissions:
     zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
     ```
 
-Verify if the rights are correct on the schema :
+Verifique se os direitos estão corretos no esquema:
 
-!!! info "Example schema rights"
+!!! info "Exemplo de direitos de esquema"
 
     ```psql
     zabbix=> \dn+
@@ -1054,23 +1057,23 @@ Verify if the rights are correct on the schema :
     setting the search path, you ensure that the SQL script will create tables
     and other objects in the intended schema.
 
-To ensure that the Zabbix tables were created successfully and have the correct
-permissions, you can verify the table list and their ownership using the `psql`
-command:
+Para garantir que as tabelas do Zabbix foram criadas com êxito e têm as
+permissões corretas, você pode verificar a lista de tabelas e sua propriedade
+usando o comando `psql`:
 
-- List the Tables: Use the following command to list all tables in the
-  `zabbix_server` schema:
+- Listar as tabelas: Use o seguinte comando para listar todas as tabelas no
+  esquema `zabbix_server`:
 
-!!! info "List tables"
+!!! info "Listar tabelas"
 
     ```sql
     sql zabbix=# \dt
     ```
 
-You should see a list of tables with their schema, name, type, and owner. For
-example:
+Você verá uma lista de tabelas com seu esquema, nome, tipo e proprietário. Por
+exemplo:
 
-!!! info "List table with relations"
+!!! info "Listar tabela com relações"
 
     ```sql
     zabbix=> \dt
@@ -1094,9 +1097,9 @@ example:
     (203 rows)
     ```
 
-- Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
-  the necessary permissions. You can check permissions for specific tables using
-  the \dp command:
+- Verificar permissões: Confirme se o usuário zabbix-srv é o proprietário das
+  tabelas e se tem as permissões necessárias. Você pode verificar as permissões
+  de tabelas específicas usando o comando \dp:
 
 !!! informações ""
 
@@ -1117,12 +1120,14 @@ example:
      zabbix_server | auditlog                   | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
     ```
 
-This will display the access privileges for all tables in the `zabbix_server`
-schema. Ensure that `zabbix-srv` has the required privileges.
+Isso exibirá os privilégios de acesso de todas as tabelas no esquema
+`zabbix_server`. Certifique-se de que `zabbix-srv` tenha os privilégios
+necessários.
 
-If everything looks correct, your tables are properly created and the
-`zabbix-srv` user has the appropriate ownership and permissions. If you need to
-adjust any permissions, you can do so using the GRANT commands as needed.
+Se tudo estiver correto, suas tabelas foram criadas corretamente e o usuário
+`zabbix-srv` tem a propriedade e as permissões adequadas. Se precisar ajustar
+alguma permissão, você poderá fazê-lo usando os comandos GRANT, conforme
+necessário.
 
 ???+ nota
 
@@ -1136,16 +1141,17 @@ adjust any permissions, you can do so using the GRANT commands as needed.
     This command ensures that every time the `zabbix-srv` user connects to the
     database, the `search_path` is automatically set to include `$user`, `public`, and `zabbix_server`.
 
-If you are ready you can exit the database and return as user root.
+Se estiver pronto, você poderá sair do banco de dados e retornar como usuário
+root.
 
-!!! info "Exit the database"
+!!! info "Sair do banco de dados"
 
     ```sql
     zabbix=> \q
     ```
 
-If we want our Zabbix server to be able to connect to our DB then we also need
-to open our firewall port.
+Se quisermos que o servidor Zabbix possa se conectar ao nosso banco de dados,
+também precisaremos abrir a porta do firewall.
 
 !!! informações ""
 
@@ -1173,25 +1179,25 @@ to open our firewall port.
     log_warnings=3
     bind-address = 0.0.0.0
 
-This concludes our installation of the PostgreSQL database.
+Isso conclui nossa instalação do banco de dados PostgreSQL.
 
 ---
 
-## Installing the Zabbix server for MariaDB/Mysql
+## Instalando o servidor Zabbix para MariaDB/Mysql
 
-Before proceeding with the installation of your Zabbix server, ensure that the
-server is properly configured, as outlined in the previous section [System
-Requirements](../ch00-getting-started/Requirements.md)
+Antes de prosseguir com a instalação do servidor Zabbix, certifique-se de que o
+servidor esteja configurado corretamente, conforme descrito na seção anterior
+[Requisitos do sistema](../ch00-getting-started/Requirements.md)
 
-Another critical step at this stage if you use Red Hat based systems is
-disabling SELinux, which can interfere with the installation and operation of
-Zabbix. We will revisit SELinux at the end of this chapter once our installation
-is finished.
+Outro passo crítico nesta etapa, se você usa sistemas baseados no Red Hat, é
+desabilitar o SELinux, que pode interferir na instalação e operação do Zabbix.
+Voltaremos a falar sobre o SELinux no final deste capítulo, quando nossa
+instalação estiver concluída.
 
-To check the current status of SELinux, you can use the following command:
+Para verificar o status atual do SELinux, você pode usar o seguinte comando:
 `sestatus``
 
-!!! info "Selinux status"
+!!! info "Status do Selinux"
 
     ```yaml
     sestatus
@@ -1209,10 +1215,11 @@ To check the current status of SELinux, you can use the following command:
     Max kernel policy version:      33
     ```
 
-As shown, the system is currently in enforcing mode. To temporarily disable
-SELinux, you can run the following command: `setenforce 0`
+Conforme mostrado, o sistema está atualmente no modo de aplicação. Para
+desativar temporariamente o SELinux, você pode executar o seguinte comando:
+`setenforce 0`
 
-!!! info "Disable SeLinux"
+!!! info "Desativar o SeLinux"
 
     ```yaml
     setenforce 0
@@ -1231,26 +1238,26 @@ SELinux, you can run the following command: `setenforce 0`
     Max kernel policy version:      33
     ```
 
-Now, as you can see, the mode is switched to permissive. However, this change is
-not persistent across reboots. To make it permanent, you need to modify the
-SELinux configuration file located at `/etc/selinux/config`. Open the file and
-replace enforcing with `permissive`.
+Agora, como você pode ver, o modo foi alterado para permissivo. No entanto, essa
+alteração não é persistente nas reinicializações. Para torná-la permanente, você
+precisa modificar o arquivo de configuração do SELinux localizado em
+`/etc/selinux/config`. Abra o arquivo e substitua enforcing por `permissive`.
 
-Alternatively, you can achieve the same result more easily by running the
-following command:
+Como alternativa, você pode obter o mesmo resultado mais facilmente executando o
+seguinte comando:
 
-!!! info "Disable SeLinux permanent"
+!!! info "Desativar o SeLinux permanentemente"
 
     Red Hat
     ``` yaml
     sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
     ```
 
-This line will alter the configuration file for you. So when we run `sestatus`
-again we will see that we are in `permissive` mode and that our configuration
-file is also in permissive mode.
+Essa linha alterará o arquivo de configuração para você. Portanto, quando
+executarmos `sestatus` novamente, veremos que estamos no modo `permissivo` e que
+nosso arquivo de configuração também está no modo permissivo.
 
-!!! info "Verify selinux status again"
+!!! info "Verificar novamente o status do selinux"
 
     ```yaml
     sestatus
@@ -1270,29 +1277,31 @@ file is also in permissive mode.
 
 ---
 
-### Adding the Zabbix repository
+### Adicionando o repositório Zabbix
 
-From the Zabbix Download page
-[https://www.zabbix.com/download](https://www.zabbix.com/download), select the
-appropriate Zabbix version you wish to install. In this case, we will be using
-Zabbix 8.0 LTS. Additionally, ensure you choose the correct OS distribution for
-your environment, which will be Rocky Linux 9 or Ubuntu 24.04 in our case.
+Na página de download do Zabbix
+[https://www.zabbix.com/download](https://www.zabbix.com/download), selecione a
+versão apropriada do Zabbix que você deseja instalar. Neste caso, usaremos o
+Zabbix 8.0 LTS. Além disso, certifique-se de escolher a distribuição de sistema
+operacional correta para seu ambiente, que será o Rocky Linux 9 ou o Ubuntu
+24.04 em nosso caso.
 
-We will be installing the Zabbix Server along with NGINX as the web server for
-the front-end. Make sure to download the relevant packages for your chosen
-configuration.
+Instalaremos o Zabbix Server juntamente com o NGINX como o servidor Web para o
+front-end. Certifique-se de fazer o download dos pacotes relevantes para a
+configuração escolhida.
 
-![Zabbix
-Download](./basic-installation/ch01-basic-installation-zabbixdownload.png)
+![Download do
+Zabbix](./basic-installation/ch01-basic-installation-zabbixdownload.png)
 
-_1.2 Zabbix download_
+_1.2 Download do Zabbix_
 
-If you make use of a RHEL based system like Rocky then the first step is to
-disable the Zabbix packages provided by the EPEL repository, if it's installed
-on your system. To do this, edit the `/etc/yum.repos.d/epel.repo` file and add
-the following statement to disable the EPEL repository by default:
+Se você usa um sistema baseado no RHEL, como o Rocky, a primeira etapa é
+desativar os pacotes Zabbix fornecidos pelo repositório EPEL, se ele estiver
+instalado em seu sistema. Para fazer isso, edite o arquivo
+`/etc/yum.repos.d/epel.repo` e adicione a seguinte instrução para desativar o
+repositório EPEL por padrão:
 
-!!! info "exclude packages"
+!!! info "excluir pacotes"
 
     Red Hat
     ``` yaml
@@ -1309,12 +1318,12 @@ the following statement to disable the EPEL repository by default:
     the following command during installations: dnf install --enablerepo=epel <package-name>
     This ensures that EPEL is only enabled when explicitly required.
 
-Next, we will install the Zabbix repository on our operating system. After
-adding the Zabbix repository, it is recommended to perform a repository cleanup
-to remove old cache files and ensure the repository metadata is up to date. You
-can do this by running:
+Em seguida, instalaremos o repositório Zabbix em nosso sistema operacional.
+Depois de adicionar o repositório do Zabbix, é recomendável executar uma limpeza
+do repositório para remover arquivos de cache antigos e garantir que os
+metadados do repositório estejam atualizados. Você pode fazer isso executando:
 
-!!! info "Add the zabbix repo"
+!!! info "Adicionar o repositório zabbix"
 
     Red Hat
     ``` yaml
@@ -1329,8 +1338,8 @@ can do this by running:
     sudo apt update
     ```
 
-This will refresh the repository metadata and prepare the system for Zabbix
-installation.
+Isso atualizará os metadados do repositório e preparará o sistema para a
+instalação do Zabbix.
 
 ???+ nota
 
@@ -1350,17 +1359,17 @@ installation.
 
 ---
 
-### Configuring the Zabbix server for MySQL/MariaDB
+### Configuração do servidor Zabbix para MySQL/MariaDB
 
-Now that we've added the Zabbix repository with the necessary software, we are
-ready to install both the Zabbix server and the web server. Keep in mind that
-the web server doesn't need to be installed on the same machine as the Zabbix
-server; they can be hosted on separate systems if desired.
+Agora que adicionamos o repositório Zabbix com o software necessário, estamos
+prontos para instalar o servidor Zabbix e o servidor Web. Lembre-se de que o
+servidor Web não precisa ser instalado na mesma máquina que o servidor Zabbix;
+eles podem ser hospedados em sistemas separados, se desejado.
 
-To install the Zabbix server and the web server components for MySQL/MariaDB,
-run the following command:
+Para instalar o servidor Zabbix e os componentes do servidor Web para
+MySQL/MariaDB, execute o seguinte comando:
 
-!!! info "Install the zabbix server"
+!!! info "Instalar o servidor zabbix"
 
     Red Hat
     ``` yaml
@@ -1372,13 +1381,13 @@ run the following command:
     sudo apt install zabbix-server-mysql
     ```
 
-After successfully installing the Zabbix server and frontend packages, we need
-to configure the Zabbix server to connect to the database. This requires
-modifying the Zabbix server configuration file. Open the
-`/etc/zabbix/zabbix_server.conf` file and update the following lines to match
-your database configuration:
+Depois de instalar com sucesso os pacotes do Zabbix Server e do front-end,
+precisamos configurar o Zabbix Server para se conectar ao banco de dados. Para
+isso, é necessário modificar o arquivo de configuração do servidor Zabbix. Abra
+o arquivo `/etc/zabbix/zabbix_server.conf` e atualize as seguintes linhas para
+que correspondam à configuração do seu banco de dados:
 
-!!! info "Edit zabbix server config"
+!!! info "Editar configuração do servidor zabbix"
 
     Red Hat and Ubuntu
     ``` yaml
@@ -1391,19 +1400,19 @@ your database configuration:
     DBPassword=<database-password>
     ```
 
-Replace `<database-host>`, `<database-name>`, `<database-user>`, and
-`<database-password>` with the appropriate values for your setup. This ensures
-that the Zabbix server can communicate with your database.
+Substitua `<database-host>`, `<database-name>`, `<database-user>` e
+`<database-password>` pelos valores apropriados para sua configuração. Isso
+garante que o servidor Zabbix possa se comunicar com seu banco de dados.
 
-Ensure that there is no # (comment symbol) in front of the configuration
-parameters, as Zabbix will treat lines beginning with # as comments, ignoring
-them during execution. Additionally, double-check for duplicate configuration
-lines; if there are multiple lines with the same parameter, Zabbix will use the
-value from the last occurrence.
+Certifique-se de que não há nenhum # (símbolo de comentário) na frente dos
+parâmetros de configuração, pois o Zabbix tratará as linhas que começam com #
+como comentários, ignorando-as durante a execução. Além disso, verifique se há
+linhas de configuração duplicadas; se houver várias linhas com o mesmo
+parâmetro, o Zabbix usará o valor da última ocorrência.
 
-For our setup, the configuration will look like this:
+Para nossa instalação, a configuração será semelhante a esta:
 
-!!! info "Example config"
+!!! info "Exemplo de configuração"
 
     ```yaml
     DBHost=<ip or dns of your MariaDB server>
@@ -1583,16 +1592,16 @@ Mariadb.
 
 ## Installing the Zabbix server for PostgreSQL
 
-Before proceeding with the installation of your Zabbix server, ensure that the
-server is properly configured, as outlined in the previous section [System
-Requirements](../ch00-getting-started/Requirements.md)
+Antes de prosseguir com a instalação do servidor Zabbix, certifique-se de que o
+servidor esteja configurado corretamente, conforme descrito na seção anterior
+[Requisitos do sistema](../ch00-getting-started/Requirements.md)
 
-Another critical step at this stage if you use Red Hat based systems is
-disabling SELinux, which can interfere with the installation and operation of
-Zabbix. We will revisit SELinux at the end of this chapter once our installation
-is finished.
+Outro passo crítico nesta etapa, se você usa sistemas baseados no Red Hat, é
+desabilitar o SELinux, que pode interferir na instalação e operação do Zabbix.
+Voltaremos a falar sobre o SELinux no final deste capítulo, quando nossa
+instalação estiver concluída.
 
-To check the current status of SELinux, you can use the following command:
+Para verificar o status atual do SELinux, você pode usar o seguinte comando:
 `sestatus``
 
 !!! info "check the selinux status"
@@ -1612,8 +1621,9 @@ To check the current status of SELinux, you can use the following command:
     Max kernel policy version:      33
     ```
 
-As shown, the system is currently in enforcing mode. To temporarily disable
-SELinux, you can run the following command: `setenforce 0`
+Conforme mostrado, o sistema está atualmente no modo de aplicação. Para
+desativar temporariamente o SELinux, você pode executar o seguinte comando:
+`setenforce 0`
 
 !!! info "change selinux to permissive"
 
@@ -1634,13 +1644,13 @@ SELinux, you can run the following command: `setenforce 0`
     Max kernel policy version:      33
     ```
 
-Now, as you can see, the mode is switched to permissive. However, this change is
-not persistent across reboots. To make it permanent, you need to modify the
-SELinux configuration file located at `/etc/selinux/config`. Open the file and
-replace enforcing with `permissive`.
+Agora, como você pode ver, o modo foi alterado para permissivo. No entanto, essa
+alteração não é persistente nas reinicializações. Para torná-la permanente, você
+precisa modificar o arquivo de configuração do SELinux localizado em
+`/etc/selinux/config`. Abra o arquivo e substitua enforcing por `permissive`.
 
-Alternatively, you can achieve the same result more easily by running the
-following command:
+Como alternativa, você pode obter o mesmo resultado mais facilmente executando o
+seguinte comando:
 
 !!! info "Adapt selinux config permanently"
 
@@ -1649,9 +1659,9 @@ following command:
     sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
     ```
 
-This line will alter the configuration file for you. So when we run `sestatus`
-again we will see that we are in `permissive` mode and that our configuration
-file is also in permissive mode.
+Essa linha alterará o arquivo de configuração para você. Portanto, quando
+executarmos `sestatus` novamente, veremos que estamos no modo `permissivo` e que
+nosso arquivo de configuração também está no modo permissivo.
 
 !!! info "check if everything is disabled"
 
@@ -1672,26 +1682,28 @@ file is also in permissive mode.
 
 ---
 
-### Adding the Zabbix repository
+### Adicionando o repositório Zabbix
 
-From the Zabbix Download page
-[https://www.zabbix.com/download](https://www.zabbix.com/download), select the
-appropriate Zabbix version you wish to install. In this case, we will be using
-Zabbix 8.0 LTS. Additionally, ensure you choose the correct OS distribution for
-your environment, which will be Rocky Linux 9 or Ubuntu 24.04 in our case.
+Na página de download do Zabbix
+[https://www.zabbix.com/download](https://www.zabbix.com/download), selecione a
+versão apropriada do Zabbix que você deseja instalar. Neste caso, usaremos o
+Zabbix 8.0 LTS. Além disso, certifique-se de escolher a distribuição de sistema
+operacional correta para seu ambiente, que será o Rocky Linux 9 ou o Ubuntu
+24.04 em nosso caso.
 
-We will be installing the Zabbix Server along with NGINX as the web server for
-the front-end. Make sure to download the relevant packages for your chosen
-configuration.
+Instalaremos o Zabbix Server juntamente com o NGINX como o servidor Web para o
+front-end. Certifique-se de fazer o download dos pacotes relevantes para a
+configuração escolhida.
 
 ![zabbix-download](ch01-basic-installation-zabbixdownload.png)
 
 _1.3 Download do Zabbix_
 
-If you make use of a RHEL based system like Rocky then the first step is to
-disable the Zabbix packages provided by the EPEL repository, if it's installed
-on your system. To do this, edit the `/etc/yum.repos.d/epel.repo` file and add
-the following statement to disable the EPEL repository by default:
+Se você usa um sistema baseado no RHEL, como o Rocky, a primeira etapa é
+desativar os pacotes Zabbix fornecidos pelo repositório EPEL, se ele estiver
+instalado em seu sistema. Para fazer isso, edite o arquivo
+`/etc/yum.repos.d/epel.repo` e adicione a seguinte instrução para desativar o
+repositório EPEL por padrão:
 
 !!! info "Adicionar exclusão ao epelrepo para o zabbix"
 
@@ -1710,10 +1722,10 @@ the following statement to disable the EPEL repository by default:
     the following command during installations: dnf install --enablerepo=epel <package-name>
     This ensures that EPEL is only enabled when explicitly required.
 
-Next, we will install the Zabbix repository on our operating system. After
-adding the Zabbix repository, it is recommended to perform a repository cleanup
-to remove old cache files and ensure the repository metadata is up to date. You
-can do this by running:
+Em seguida, instalaremos o repositório Zabbix em nosso sistema operacional.
+Depois de adicionar o repositório do Zabbix, é recomendável executar uma limpeza
+do repositório para remover arquivos de cache antigos e garantir que os
+metadados do repositório estejam atualizados. Você pode fazer isso executando:
 
 !!! info "add the repo"
 
@@ -1730,8 +1742,8 @@ can do this by running:
     sudo apt update
     ```
 
-This will refresh the repository metadata and prepare the system for Zabbix
-installation.
+Isso atualizará os metadados do repositório e preparará o sistema para a
+instalação do Zabbix.
 
 ???+ nota
 
@@ -1780,7 +1792,7 @@ the Zabbix server to connect to the database. This requires modifying the Zabbix
 server configuration file. Open the `/etc/zabbix/zabbix_server.conf` file and
 update the following lines to match your database configuration:
 
-!!! info "Edit zabbix server config"
+!!! info "Editar configuração do servidor zabbix"
 
     Red Hat and Ubuntu
     ```yaml
@@ -1799,15 +1811,15 @@ Replace `database-host`, `database-name`, `database-user`,`database-schema` and
 `database-password` with the appropriate values for your setup. This ensures
 that the Zabbix server can communicate with your database.
 
-Ensure that there is no # (comment symbol) in front of the configuration
-parameters, as Zabbix will treat lines beginning with # as comments, ignoring
-them during execution. Additionally, double-check for duplicate configuration
-lines; if there are multiple lines with the same parameter, Zabbix will use the
-value from the last occurrence.
+Certifique-se de que não há nenhum # (símbolo de comentário) na frente dos
+parâmetros de configuração, pois o Zabbix tratará as linhas que começam com #
+como comentários, ignorando-as durante a execução. Além disso, verifique se há
+linhas de configuração duplicadas; se houver várias linhas com o mesmo
+parâmetro, o Zabbix usará o valor da última ocorrência.
 
-For our setup, the configuration will look like this:
+Para nossa instalação, a configuração será semelhante a esta:
 
-!!! info "Example config"
+!!! info "Exemplo de configuração"
 
     ```yaml
     DBHost=<ip or dns of your PostgreSQL server>
@@ -1981,7 +1993,7 @@ PostgreSQL.
 
 ---
 
-## Installing the frontend
+## Instalando o front-end
 
 Before configuring the front-end, you need to install the necessary packages. If
 the Zabbix front-end is hosted on the same server as the Zabbix server, you can
@@ -2173,7 +2185,7 @@ With the service operational and configured for automatic startup, the final
 preparatory step involves adjusting the firewall to permit inbound HTTP traffic.
 Execute the following commands:
 
-!!! info "configure the firewall"
+!!! info "configurar o firewall"
 
     Red Hat
 
