@@ -653,7 +653,7 @@ suivantes.
 
 Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
 
-! !! info "mettre à jour le système d'exploitation"
+!!! info "mettre à jour le système d'exploitation"
 
     Red Hat
     ``` yaml
