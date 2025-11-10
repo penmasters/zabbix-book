@@ -536,21 +536,23 @@ même en cas de défaillance. Ensuite, nous nous sommes concentrés sur le
 frontend, en implémentant une IP virtuelle (VIP) avec Keepalived pour fournir un
 basculement transparent et une accessibilité continue.
 
-Additionally, we configured the firewall to allow Keepalived traffic and ensured
-that the service starts automatically after a reboot. With this setup, the
-Zabbix frontend can dynamically switch between servers, minimizing downtime and
-improving reliability.
+En outre, nous avons configuré le pare-feu pour autoriser le trafic Keepalived
+et nous nous sommes assurés que le service démarre automatiquement après un
+redémarrage. Avec cette configuration, le frontend Zabbix peut basculer
+dynamiquement d'un serveur à l'autre, minimisant ainsi les temps d'arrêt et
+améliorant la fiabilité.
 
-While database HA is an important consideration, it falls outside the scope of
-this setup. However, this foundation provides a robust starting point for
-building a resilient monitoring infrastructure that can be further enhanced as
-needed.
+Bien que l'HA des bases de données soit une considération importante, elle
+n'entre pas dans le cadre de cette configuration. Cependant, cette base fournit
+un point de départ solide pour construire une infrastructure de surveillance
+résiliente qui peut être améliorée selon les besoins.
 
 ---
 
 ## Questions
 
-1. What is Zabbix High Availability (HA), and why is it important?
+1. Qu'est-ce que la Haute Disponibilité (HA) de Zabbix, et pourquoi est-elle
+   importante ?
 2. How does Zabbix determine which node is active in an HA setup?
 3. Can multiple Zabbix nodes be active simultaneously in an HA cluster? Why or
    why not?
