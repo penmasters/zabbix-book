@@ -653,7 +653,7 @@ suivantes.
 
 Pour mettre à jour votre système d'exploitation, exécutez la commande suivante :
 
-!!! info "update the OS"
+! !! info "mettre à jour le système d'exploitation"
 
     Red Hat
     ``` yaml
@@ -667,7 +667,7 @@ Pour mettre à jour votre système d'exploitation, exécutez la commande suivant
 
 ---
 
-### Securing the PostgreSQL database
+### Sécurisation de la base de données PostgreSQL
 
 PostgreSQL handles access permissions differently from MySQL and MariaDB.
 PostgreSQL relies on a file called pg_hba.conf to manage who can access the
