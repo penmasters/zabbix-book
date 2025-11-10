@@ -31,5 +31,5 @@ de fonctionnalités qui vous permettent de :
 - **Automatiser les tâches de surveillance**: Tirez parti de la découverte et de
   l'enregistrement automatiques pour suivre l'évolution des environnements sans
   intervention manuelle.
-- **Personnaliser et étendre**: Créez des scripts, des modèles et des
+- **Personnaliser et approfondir**: Créez des scripts, des modèles et des
   intégrations personnalisés pour adapter Zabbix à vos besoins spécifiques.
