@@ -59,7 +59,7 @@ This tab defines the precise scheduling:
 !!! info
     Active Since/Till will not put the server in maintenance. It is the
     maintenance period that will show that the server is in maintenance or not
-    in the forntend.
+    in the frontend.
 
 ![ch14.01-maintenance.png](ch14.01-maintenance.png)
 
