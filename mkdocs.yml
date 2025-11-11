@@ -183,7 +183,7 @@ plugins:
         - fr
         - nl
         - ru
-        #        - pt-BR
+        - pt_BR
         - en
   - tags
   - autolinks

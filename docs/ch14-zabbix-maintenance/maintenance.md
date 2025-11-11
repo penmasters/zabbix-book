@@ -56,6 +56,11 @@ This tab defines the precise scheduling:
 * **Monthly:** The most flexible, allowing selection by **Day of Month** or
   **Day of Week** within a month (e.g., the last Sunday).
 
+!!! info
+    Active Since/Till will not put the server in maintenance. It is the
+    maintenance period that will show that the server is in maintenance or not
+    in the forntend.
+
 ![ch14.01-maintenance.png](ch14.01-maintenance.png)
 
 ### 4. Scope (Hosts and Host Groups)
@@ -68,6 +73,40 @@ that the rule applies to.
 This allows you to suppress **only specific problems** during maintenance by
 matching **Problem Tags** (e.g., `service:database`), which is useful if you
 need to be alerted to hardware failures during software maintenance.
+
+### 6. Maintenance visibility
+
+When a server is placed into maintenance mode, this state is clearly indicated
+in the Zabbix frontend, making it easy to distinguish whether a host is currently
+under maintenance or not.
+
+During maintenance, an orange wrench ![ch14.04-maintenance-wrench.png](ch14.04-maintenance-wrench.png)
+icon is displayed next to the host name in the following views:
+
+* **Dashboards**
+* **Monitoring → Problems**
+* **Inventory → Hosts → Host inventory details**
+* **Data collection → Hosts**
+
+In addition, hosts in maintenance are highlighted with an orange background on
+**Monitoring → Maps**.
+
+By default, problems associated with hosts in maintenance are *suppressed* and
+therefore not shown in the frontend. However, Zabbix can be configured to display
+these suppressed problems. This behavior can be enabled by selecting the
+**Show suppressed problems** option in the following locations:
+
+* **Dashboards** – in the configuration of the *Problem hosts*, *Problems*,
+  *Problems by severity*, and *Trigger overview* widgets
+* **Monitoring → Problems** – in the filter settings
+* **Monitoring → Maps** – in the map configuration
+* **Global notifications** – in the user profile configuration
+
+When suppressed problems are configured to be shown, a dedicated status icon is
+displayed next to the problem. Hovering the mouse pointer over this icon reveals
+additional details about the suppression state.
+
+![ch14.05-maintenance-icon.png](ch14.05-maintenance-icon.png)
 
 ---
 
