@@ -225,7 +225,7 @@ linked or needs to be restored, it can typically be imported from GIT:
 The ultimate goal of this template is to ensure that the monitoring system never
 fails silently.
 
-### **5.1 Template Zabbix server health **
+### **5.1 Template Zabbix server health**
 
 This template monitors all internal server metrics, including:
 
@@ -267,7 +267,7 @@ data.
 
 ---
 
-### **5.3 Temmplate Remote Zabbix server/proxy health**
+### **5.3 Template Remote Zabbix server/proxy health**
 
 The **Remote Zabbix server health** and **Remote Zabbix proxy health** templates
 allow internal metrics to be collected by *another* Zabbix instance or a third
@@ -318,10 +318,16 @@ side by side.
 ## **8. Alerting on Internal Health**
 
 Triggers can automatically warn about performance degradation.
-Example:
 
-```text
-{Zabbix server:zabbix[process,poller,avg,busy].last()}>0.75
+**Example:**
+
+``` bash
+Problem: avg(/Zabbix server/zabbix[process,poller,avg,busy],10m)>{$ZABBIX.SERVER.UTIL.MAX:"poller"}
+Recovery: avg(/Zabbix server/zabbix[process,poller,avg,busy],10m)<{$ZABBIX.SERVER.UTIL.MIN:"poller"}
+
+Where:
+- {$ZABBIX.SERVER.UTIL.MIN} = 65
+- {$ZABBIX.SERVER.UTIL.MAX} = 75
 ```
 
 This will raise an event if the pollers are overloaded.
@@ -332,7 +338,7 @@ Similar triggers can be created for queues, caches, or proxy synchronization del
 ## Conclusion
 
 Zabbix's internal health checks provide full insight into how the monitoring platform
-itself performs.vCombined with the built-in health templates and dashboards, these
+itself performs. Combined with the built-in health templates and dashboards, these
 metrics help administrators:
 
 * Detect overload and capacity issues
