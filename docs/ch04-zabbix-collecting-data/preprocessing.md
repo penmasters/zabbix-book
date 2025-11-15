@@ -74,11 +74,35 @@ When working with Zabbix, you will find that depending on your environment, some
 **Regular expression**
 Regular expressions are a whole subject on its own, there are many books on the topic on its own. We won't going over the details here, for that we recommend going to https://regex101.com. On this website you can read extensive documentation about regular expressions, as well as test your existing ones. 
 
+Let's start with a basic example, where we have an item that received the value: **The error is value: 0**. Let's say we want to get numeric value from the string, we could configure our preprocessing like this.
 
+![ch04.37-preprocessing-regex.png](ch04.37-preprocessing-regex.png)
+*4.37 Preprocessing regular expression*
 
+This would then result in the value **0**, which we can store as the `Numeric (unsigned)` item type of information. The basic functionality of the regular expression preprocessing step as you can see is to extract values from larger data.
 
-**JSONPath**
+**JSONPath and additional steps**
+Within Zabbix monitoring, JSON data structures are used quite a lot. We can find it in Low Level Discovery, export files and it is often the data format sent back by API's. As such, being able to process JSON datasets is important and that is where JSONPath comes in. Let's say we have a basic JSON dataset we collected from an API.
 
+    
+    ``` {
+    "hostname": "webserver01",
+    "c": true,
+    "retry_count": 3
+    }
+    ```
+
+Now with JSONpath, we could extract these values. Let's say we want to get the `enabled` value and store it as a `Numeric (unsigned)` value. We could do the following.
+
+![ch04.38-preprocessing-jsonpath.png](ch04.38-preprocessing-jsonpath.png)
+*4.38 Preprocessing JSONPath*
+
+This will extract the value `true`. However, as a bonus we said we would also to store this extracted value as a `Numeric (unsigned)` value. To do this, I used an additional 2 preprocessing steps `replace`. Replacing `false` with `0` and `true` with `1`. If we press the `Test all steps` button, we can see the result happen live.
+
+![ch04.39-preprocessing-jsonpath-test.png](ch04.39-preprocessing-jsonpath-test.png)
+*4.38 Preprocessing JSONPath test*
+
+It's important to know that we can add an unlimited amount of preprocessing steps, but that Zabbix will always execute all of them in the order in which they are defined. First, we extract the value from JSON. Second, we try to replace `false` with `0` which didn't do anything as there was no match. Third, we replace `true` with `1` which worked. Now all we have to do is apply a value mapping to translate true and false back into human readable format. The big benefit here being that storing these kinds of values as `Numeric (unsigned)` gives us a lot more trigger functions as options for alerting. It also means we can now store the value in `Trend` tables, as only `Numeric` data types are stores as trends.
 
 **SNMP walk value** 
 
