@@ -84,6 +84,7 @@ This would then result in the value **0**, which we can store as the `Numeric (u
 **JSONPath and additional steps**
 Within Zabbix monitoring, JSON data structures are used quite a lot. We can find it in Low Level Discovery, export files and it is often the data format sent back by API's. As such, being able to process JSON datasets is important and that is where JSONPath comes in. Let's say we have a basic JSON dataset we collected from an API.
 
+!!! info "Example JSON"
     
     ``` {
     "hostname": "webserver01",
@@ -100,7 +101,7 @@ Now with JSONpath, we could extract these values. Let's say we want to get the `
 This will extract the value `true`. However, as a bonus we said we would also to store this extracted value as a `Numeric (unsigned)` value. To do this, I used an additional 2 preprocessing steps `replace`. Replacing `false` with `0` and `true` with `1`. If we press the `Test all steps` button, we can see the result happen live.
 
 ![ch04.39-preprocessing-jsonpath-test.png](ch04.39-preprocessing-jsonpath-test.png)
-*4.38 Preprocessing JSONPath test*
+*4.39 Preprocessing JSONPath test*
 
 It's important to know that we can add an unlimited amount of preprocessing steps, but that Zabbix will always execute all of them in the order in which they are defined. First, we extract the value from JSON. Second, we try to replace `false` with `0` which didn't do anything as there was no match. Third, we replace `true` with `1` which worked. Now all we have to do is apply a value mapping to translate true and false back into human readable format. The big benefit here being that storing these kinds of values as `Numeric (unsigned)` gives us a lot more trigger functions as options for alerting. It also means we can now store the value in `Trend` tables, as only `Numeric` data types are stores as trends.
 
@@ -111,11 +112,87 @@ It's important to know that we can add an unlimited amount of preprocessing step
 
 
 **Custom multiplier** 
+The customer multiplier is simple, but important. In Zabbix you might often find that you receive a value, that you would want to store slightly differently. Specifically, this preprocessing step is often used to convert numbers to their base value. Your device might be giving you MegaBytes (MB) for example, where Zabbix would like us to store Bytes (B) instead. 
 
+![ch04.42-preprocessing-multiplier.png](ch04.42-preprocessing-multiplier.png)
+*4.42 Preprocessing Custom Multiplier*
 
-**Change per second**
+This will now store the received MegaByte value as Bytes. Now, we can set the item `Units` setting to B and it will convert the Bytes stored to a human readable Mega, Giga, Tera, etc.
 
-**Javascript** 
+Storing base values is always preferred in Zabbix, so we can do the conversion with `Units` on the item later. This results in a more dynamic setup.
+
+**Simple Change and Change per second**
+We quickly mentioned the `Simple Change` before, which calculates the difference between `Last` and `Previous` value. Change per second goes a step further however by introducing a time based calculation to the formula. 
+
+A simple change calculation would look like this.
+
+| Position            | Value |
+| :------------------ | :---- |
+| Last #1             |   9   |
+| Last #2 (previous)  |   4   |
+|                     | ----- |
+|                     | **5** |
+
+We can see the result here is a simple *5*, using the formula `Last - Previous`. In Zabbix the last received value is often indicated by `Last #1` and the value before it as `Last #2`. Next, let's introduce the time based calculation with `Change per second`, so we see something more difficult.
+
+| Position            | Value | Timestamp (Unixtime) | Change per second     |
+| :------------------ | :---- | :------------------- | :-------------------- |
+| Last #1             |   13  |      1763282130      |          7            |
+| Last #2 (previous)  |   6   |      1763282100      |          30           |
+|                     | ---- -| ------------------- -| -------------------- /|
+|                     | **7** |       **30**         |        0.23333333     |
+
+We can see the calculation is the same in principle, we subtract `Last #1` and `Last #2`. We also takes the Unixtime stamp of when `Last #1` and `Last #2` were collected, subtracting those. Subtracting those time values gives us the time passed between `Last #1` and `Last #2`. Then the last step is to divide the values, giving us an estimate of how much values were received per second. Of course, the shorter our update interval is, the closer the estimate. But it gives us an accurate average over time.
+
+This kind of calculation works with what we call `Counters`, values that always increase on our monitoring targets. For example, network interfaces Bits received/sent are often times counters. These work by calculating how much data has passed over the interface in total, often since the last reboot. Often times, a useless metric to us unless we convert it with `Change per second` when it gives us a nice `Bits/s`. This allows us to monitor network traffic over time, instead of just a total. 
+
+**Javascript**
+With  many APIs out there being used to make monitoring data available to us, responses are getting more complex. It might happen that you get a response that isn't perfect for us to store in Zabbix. One of my favourite examples is dates and times. Sometimes developers might decide to gives us back a string value with the dates, for example:
+
+- **Aug 21 1991**
+- **Aug 24 1991**
+- **May 8 1945**
+
+Using Javascript, we could convert these dates into a nice `Unixtime` stamp. Unixtime is something Zabbix understands as a Unit and can be used in trigger functions. 
+
+!!! info "Example Javascript"
+
+    ``` function (value) {
+     // Expecting: "Feb 20 2040"
+        var months = {
+            Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+            Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+        };
+
+        if (typeof value !== 'string') {
+            return value;
+        }
+
+        // Split on whitespace
+        var parts = value.trim().split(/\s+/);
+        if (parts.length !== 3) {
+            return value; // or throw, depending on how strict you want to be
+        }
+
+        var monStr = parts[0];
+        var day = parseInt(parts[1], 10);
+        var year = parseInt(parts[2], 10);
+
+        var month = months[monStr];
+        if (month === undefined || isNaN(day) || isNaN(year)) {
+            return value;
+        }
+
+        // Use UTC midnight of that date, convert ms → seconds
+        var ts = Date.UTC(year, month, day) / 1000;
+
+        return ts;
+    ```
+
+Keep in mind, Zabbix will already put this Javascript code in a function for preprocessing as `function (value) { }`. When testing this code, we can see it executed for us now, converting out weird date format into a nice Unixtime.
+
+![ch04.43-preprocessing-javascript.png](ch04.43-preprocessing-javascript.png)
+*4.43 Preprocessing Javascript*
 
 **Discard unchanged with heartbeat** 
 
