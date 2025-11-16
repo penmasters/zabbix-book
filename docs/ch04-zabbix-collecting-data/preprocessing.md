@@ -17,6 +17,7 @@ The preprocessing functionality in our Zabbix environment is used to transform r
 We do this on the item configuration, under the `preprocessing` tab of the item we are editing.
 
 ![ch04.35-preprocessing-item-tab.png](ch04.35-preprocessing-item-tab.png)
+
 *4.35 Preprocessing item tab*
 
 Here we can add our preprocessing steps by pressing the `add` button and selecting a step. However, before we dive deeper into how to create our steps let's have a look at exactly what preprocessing does within our Zabbix application.
@@ -93,7 +94,8 @@ Within Zabbix monitoring, JSON data structures are used quite a lot. We can find
 
 !!! info "Example JSON"
     
-    ``` {
+    ```
+    {
     "hostname": "webserver01",
     "c": true,
     "retry_count": 3
@@ -121,8 +123,8 @@ It's important to know that we can add an unlimited amount of preprocessing step
 **Custom multiplier** 
 The customer multiplier is simple, but important. In Zabbix you might often find that you receive a value, that you would want to store slightly differently. Specifically, this preprocessing step is often used to convert numbers to their base value. Your device might be giving you MegaBytes (MB) for example, where Zabbix would like us to store Bytes (B) instead. 
 
-![ch04.42-preprocessing-multiplier.png](ch04.42-preprocessing-multiplier.png)
-*4.42 Preprocessing Custom Multiplier*
+![ch04.40-preprocessing-multiplier.png](ch04.40-preprocessing-multiplier.png)
+*4.40 Preprocessing Custom Multiplier*
 
 This will now store the received MegaByte value as Bytes. Now, we can set the item `Units` setting to B and it will convert the Bytes stored to a human readable Mega, Giga, Tera, etc.
 
@@ -164,8 +166,8 @@ Using Javascript, we could convert these dates into a nice `Unixtime` stamp. Uni
 
 !!! info "Example Javascript"
 
-    ``` function (value) {
-     // Expecting: "Feb 20 2040"
+    ```
+    // Expecting: "Feb 20 2040"
         var months = {
             Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
             Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
@@ -198,8 +200,8 @@ Using Javascript, we could convert these dates into a nice `Unixtime` stamp. Uni
 
 Keep in mind, Zabbix will already put this Javascript code in a function for preprocessing as `function (value) { }`. When testing this code, we can see it executed for us now, converting out weird date format into a nice Unixtime.
 
-![ch04.43-preprocessing-javascript.png](ch04.43-preprocessing-javascript.png)
-*4.43 Preprocessing Javascript*
+![ch04.41-preprocessing-javascript.png](ch04.41-preprocessing-javascript.png)
+*4.41 Preprocessing Javascript*
 
 **Discard unchanged with heartbeat** 
 
