@@ -204,9 +204,25 @@ Keep in mind, Zabbix will already put this Javascript code in a function for pre
 *4.41 Preprocessing Javascript*
 
 **Discard unchanged with heartbeat** 
+Shortly, I'd also like to discuss the `Discard unchanged with heartbeat` preprocessing in more detail. Let's say we set up our preprocessing step `Discard unchanged with heartbeat` with a heartbeat value of `5m`. We might see the following happen.
 
+| Value | Timestamp | Stored value? |
+| :---- | :-------- |
+|   0   |    Now    | No
+|   0   |   1m ago  | Yes
+|   1   |   2m ago  | Yes
+|   1   |   3m ago  | No
+|   1   |   4m ago  | No
+|   1   |   5m ago  | No
+|   1   |   6m ago  | No
+|   1   |   7m ago  | No
+|   1   |   8m ago  | Yes
+|   0   |   9m ago  | Yes
+
+We can see that we only store the value if it changes from `0` to `1` or from `1` to `0` in this case. However, at the `2m ago` timestamp we can see an exception. This specific value had passed the 5 minute heartbeat interval, meaning we store this value even though it had not changed yet. This can be used to make sure we still save a value from time to time, which can be useful for data integrity or crafting your trigger expressions later on.
 
 ## Conclusion
+As we can see preprocessing can be used to turns raw received data into structured, meaningful monitoring data. Once you the various different types of preprocessing your Zabbix environment becomes cleaner and more powerful. It's useful to familiarise yourself with the various options in preprocessing, although we do not need to know all of them in detail. Different situations call for different types of preprocessing, so it's good to at least know of the existence of most of them. The Zabbix documentation also includes more details, as well as various examples.
 
 ## Questions
 
