@@ -85,7 +85,7 @@ nav:
   - "Chapter 09 : Extending Zabbix":
       - ch09-zabbix-extending/chapter.md
       - ch09-zabbix-extending/frontend-scripts.md
-      - ch09-zabbix-extending/global-scripts.md
+      - ch09-zabbix-extending/user-parameters.md
   - "Chapter 10 : Discovery":
       - ch10-zabbix-discovery/chapter.md
   - "Chapter 11 : Visualisation":
