@@ -104,6 +104,11 @@ some other directory of your choice) for Zabbix agent to include:
     Include=/etc/zabbix/zabbix_agentd.d/*.conf
     ```
 
+???+ note
+
+    For "Zabbix agent 2" this default `Include` directory is
+    `Include=/etc/zabbix/zabbix_agent2.d/*.conf`
+
 Here is an example of such `.conf` file:
 
 ```bash
@@ -141,7 +146,7 @@ exit 0
 binary@binary:~$
 ```
 
-???+ note
+???+ warning
 
     IMPORTANT! You must restart Zabbix agent after adding new `UserParameter`
     (or use `zabbix_agentd -R userparameter_reload`)
@@ -180,10 +185,10 @@ UserParameter=sin[*],/opt/scripts/binary/sin.sh $1 $2 $3 $4
 binary@binary:~$ cat /opt/scripts/binary/sin.sh
 #!/bin/bash
 
-# $1 – frequency multiplier (times_pi)
-# $2 – amplitude
-# $3 – phase shift in multiples of pi
-# $4 – period length in seconds
+# $1 - frequency multiplier (times_pi)
+# $2 - amplitude
+# $3 - phase shift in multiples of pi
+# $4 - period length in seconds
 
 times_pi="$1"
 amplitude="$2"
@@ -200,7 +205,7 @@ ${amplitude} * s( (${time_shift} * ${pi}) + 2 * ${pi} * ${times_pi} * ${now} / $
 EOF
 )
 
-printf "%.8f\n" "$value"
+printf "%.8f\n" "${value}"
 
 exit 0
 binary@binary:~$
@@ -215,6 +220,12 @@ Given that we want multiple different waves, we will clone such item with
 different sets of parameters and end up in having all of them being collected:
 
 ![New Custom Item - Result](ch09-user-parameters-new-flexible-item-result.png)
+
+???+ note
+
+    If you use `awk` in `UserParameter`, pay attention to using double dollar
+    sign `$$`, so that positional references remain unaltered, for example:
+    `UserParameter=demo.awk[*],echo $1 $2 | awk '{print $$2}'`
 
 ## Tips and tricks
 
@@ -247,7 +258,7 @@ zabbix@binary:/$
 
 *Make it executable and reachable*
 
-If `UserParameter` is a script and your environment is *nix, don’t forget to
+If `UserParameter` is a script and your environment is *nix, don't forget to
 make it executable. Also, you will most likely craft your script under some
 different user than the one Zabbix agent is running under (user `zabbix` by
 default), so make sure this very user can run it (e.g. permissions to reach
@@ -280,18 +291,38 @@ binary@binary:~$
 *Be as fast as possible*
 
 Always pay attention to how long it takes for your `UserParameter` to collect
-data. If it runs for too long you might hit timeout. Also, be wise with number
-of such items. If you have many, especially more heavy ones, observe if it
-doesn't affect overall agent (or even host itself!) performance in collecting
-data. If checks are set to be in "active" mode and run for relatively long time,
-they will eventually start blocking other active checks, because active checks
-(on classic Agent, not Agent 2) are not processed in parallel.
+data. If it runs for too long you might hit Zabbix agent timeout. This timeout
+is configurable on item level, so you can adjust it:
+
+![Custom Item - Timeout](ch09-user-parameters-timeout.png)
+
+Also, be wise with number of such items. If you have many, especially more
+heavy ones, observe if it doesn't affect overall agent (or even host itself!)
+performance in collecting data. If checks are set to be in "active" mode and
+run for relatively long time, they will eventually start blocking other active
+checks, because active checks (on classic Agent, not Agent 2) are not processed
+in parallel.
 
 *Use dependent items for splitting*
 
 If there are many similar data points to be collected, avoid having separate
 `UserParameter` for each of them. Better have one master "text" type of item
 with some structured format and apply dependent items on top.
+
+*Using UnsafeUserParameters*
+
+Some symbols are not allowed by default to be passed in arguments for the
+`UserParameter`.
+
+These are ``\ ' " ` * ? [ ] { } ~ $ ! & ; ( ) < > | # @``, plus newline
+character.
+
+If you really need it, you can enable it by setting `UnsafeUserParameters=1` in
+Zabbix agent configuration.
+
+One good example when you would like to enable it is if you want to pass
+regular expressions as parameters. Their syntax often contains symbols in this
+forbidden list.
 
 ## Conclusion
 
@@ -304,3 +335,16 @@ something more advanced.
 
 As long as you are able to write some code which fulfills your custom needs,
 Zabbix will be there to help you collect and visualize it!
+
+## Questions
+
+- Can you only use shell scripts as `UserParameter` under Linux?
+- Is it possible to pass some custom parameters for your `UserParameter`?
+- Your have a `UserParameter` that can produce both positive and negative
+numbers as an output. Which "Type of information" will you choose once creating
+item?
+
+## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/userparameters](https://www.zabbix.com/documentation/current/en/manual/config/items/userparameters)
+- [https://blog.zabbix.com/extending-zabbix-the-power-of-scripting/](https://blog.zabbix.com/extending-zabbix-the-power-of-scripting/)
