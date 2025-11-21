@@ -1422,15 +1422,16 @@ Para nossa instalação, a configuração será semelhante a esta:
     DBPort=3306
     ```
 
-In this example:
+Neste exemplo:
 
-- DBHost refers to the host where your database is running (use localhost if
-  it's on the same machine).
-- DBName is the name of the Zabbix database.
-- DBUser is the database user.
-- DBPassword is the password for the database user.
+- DBHost refere-se ao host em que seu banco de dados está sendo executado (use
+  localhost se estiver na mesma máquina).
+- DBName é o nome do banco de dados do Zabbix.
+- DBUser é o usuário do banco de dados.
+- DBPassword é a senha do usuário do banco de dados.
 
-Make sure the settings reflect your environment's database configuration.
+Certifique-se de que as configurações reflitam a configuração do banco de dados
+de seu ambiente.
 
 ???+ nota
 
@@ -1442,7 +1443,7 @@ Make sure the settings reflect your environment's database configuration.
     file remains untouched, which is particularly useful when performing upgrades
     or managing configurations with tools like Ansible, Puppet, or SaltStack.
 
-To enable this feature, remove the # from the line:
+Para ativar esse recurso, remova o # da linha:
 
 !!! informações ""
 
@@ -1450,14 +1451,16 @@ To enable this feature, remove the # from the line:
     # Include=/usr/local/etc/zabbix_server.conf.d/*.conf
     ```
 
-Ensure the path `/usr/local/etc/zabbix_server.conf.d/` exists and create a
-custom configuration file in this directory. This file should be readable by the
-`zabbix` user. By doing so, you can add or modify parameters without modifying
-the default configuration file, making system management and upgrades smoother.
+Certifique-se de que o caminho `/usr/local/etc/zabbix_server.conf.d/` exista e
+crie um arquivo de configuração personalizado nesse diretório. Esse arquivo deve
+poder ser lido pelo usuário `zabbix`. Ao fazer isso, você pode adicionar ou
+modificar parâmetros sem modificar o arquivo de configuração padrão, o que
+facilita o gerenciamento e as atualizações do sistema.
 
-With the Zabbix server configuration updated to connect to your database, you
-can now start and enable the Zabbix server service. Run the following command to
-enable the Zabbix server and ensure it starts automatically on boot:
+Com a configuração do servidor Zabbix atualizada para se conectar ao seu banco
+de dados, agora você pode iniciar e ativar o serviço do servidor Zabbix. Execute
+o seguinte comando para ativar o servidor Zabbix e garantir que ele seja
+iniciado automaticamente na inicialização:
 
 ???+ nota
 
@@ -1467,26 +1470,28 @@ enable the Zabbix server and ensure it starts automatically on boot:
     beforehand, avoiding downtime caused by an invalid configuration. This can
     be accomplished using the following command: `zabbix-server -T`
 
-!!! info "enable and start zabbix-server service"
+!!! info "ativar e iniciar o serviço zabbix-server"
 
     Red Hat and Ubuntu
     ``` yaml
     sudo systemctl enable zabbix-server --now
     ```
 
-This command will start the Zabbix server service immediately and configure it
-to launch on system startup. To verify that the Zabbix server is running
-correctly, check the log file for any messages. You can view the latest entries
-in the `Zabbix server` log file using:
+Esse comando iniciará o serviço do servidor Zabbix imediatamente e o configurará
+para ser iniciado na inicialização do sistema. Para verificar se o servidor
+Zabbix está funcionando corretamente, verifique se há mensagens no arquivo de
+registro. É possível visualizar as entradas mais recentes no arquivo de registro
+`Zabbix server` usando:
 
-!!! info "Check the log file"
+!!! info "Verifique o arquivo de registro"
 
     ```yaml
     tail /var/log/zabbix/zabbix_server.log
     ```
 
-Look for messages indicating that the server has started successfully. If there
-are any issues, the log file will provide details to help with troubleshooting.
+Procure mensagens que indiquem que o servidor foi iniciado com êxito. Se houver
+algum problema, o arquivo de registro fornecerá detalhes para ajudar na solução
+de problemas.
 
 !!! info "Exemplo de saída"
 
@@ -1519,10 +1524,10 @@ are any issues, the log file will provide details to help with troubleshooting.
     12083:20250225:145333.719 server #8 started [lld manager #1]
     ```
 
-If there was an error and the server was not able to connect to the database you
-would see something like this in the server log file :
+Se houvesse um erro e o servidor não conseguisse se conectar ao banco de dados,
+você veria algo assim no arquivo de registro do servidor:
 
-!!! info "Example log with errors"
+!!! info "Exemplo de registro com erros"
 
     ```yaml
     12068:20250225:145309.018 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
@@ -1542,10 +1547,10 @@ would see something like this in the server log file :
     12068:20250225:145309.027 cannot use database "zabbix": database is not a Zabbix database
     ```
 
-Let's check the Zabbix server service to see if it's enabled so that it survives
-a reboot
+Vamos verificar o serviço do servidor Zabbix para ver se ele está ativado de
+modo a sobreviver a uma reinicialização
 
-!!! info "check status of zabbix-server service"
+!!! info "verificar o status do serviço zabbix-server"
 
     ```yaml
     systemctl status zabbix-server
@@ -1585,12 +1590,12 @@ a reboot
     ├─12097 "/usr/sbin/zabbix_server: self-monitoring [processed data in 0.000068 sec, idle 1 sec]"
     ```
 
-This concludes our chapter on installing and configuring the Zabbix server with
-Mariadb.
+Isso conclui nosso capítulo sobre a instalação e a configuração do servidor
+Zabbix com o Mariadb.
 
 ---
 
-## Installing the Zabbix server for PostgreSQL
+## Instalando o servidor Zabbix para PostgreSQL
 
 Antes de prosseguir com a instalação do servidor Zabbix, certifique-se de que o
 servidor esteja configurado corretamente, conforme descrito na seção anterior
@@ -1604,7 +1609,7 @@ instalação estiver concluída.
 Para verificar o status atual do SELinux, você pode usar o seguinte comando:
 `sestatus``
 
-!!! info "check the selinux status"
+!!! info "verifique o status do selinux"
 
     ```yaml
     sestatus
@@ -1625,7 +1630,7 @@ Conforme mostrado, o sistema está atualmente no modo de aplicação. Para
 desativar temporariamente o SELinux, você pode executar o seguinte comando:
 `setenforce 0`
 
-!!! info "change selinux to permissive"
+!!! info "mudar selinux para permissivo"
 
     ``` yaml
     setenforce 0
@@ -1652,7 +1657,7 @@ precisa modificar o arquivo de configuração do SELinux localizado em
 Como alternativa, você pode obter o mesmo resultado mais facilmente executando o
 seguinte comando:
 
-!!! info "Adapt selinux config permanently"
+!!! info "Adaptar a configuração do selinux permanentemente"
 
     Red Hat
     ``` yaml
@@ -1663,7 +1668,7 @@ Essa linha alterará o arquivo de configuração para você. Portanto, quando
 executarmos `sestatus` novamente, veremos que estamos no modo `permissivo` e que
 nosso arquivo de configuração também está no modo permissivo.
 
-!!! info "check if everything is disabled"
+!!! info "verifique se tudo está desativado"
 
     ```yaml
     sestatus
@@ -1727,7 +1732,7 @@ Depois de adicionar o repositório do Zabbix, é recomendável executar uma limp
 do repositório para remover arquivos de cache antigos e garantir que os
 metadados do repositório estejam atualizados. Você pode fazer isso executando:
 
-!!! info "add the repo"
+!!! info "adicionar o repositório"
 
     Red Hat
     ```yaml
@@ -1764,16 +1769,16 @@ instalação do Zabbix.
 
 ---
 
-### Configuring the Zabbix server for PostgreSQL
+### Configuração do servidor Zabbix para PostgreSQL
 
-We are ready to install both the Zabbix server and the web server. Keep in mind
-that the web server doesn't need to be installed on the same machine as the
-Zabbix server; they can be hosted on separate systems if desired.
+Estamos prontos para instalar o servidor Zabbix e o servidor Web. Lembre-se de
+que o servidor Web não precisa ser instalado na mesma máquina que o servidor
+Zabbix; eles podem ser hospedados em sistemas separados, se desejado.
 
-To install the Zabbix server and the web server components for PostgreSQL, run
-the following command:
+Para instalar o servidor Zabbix e os componentes do servidor Web para o
+PostgreSQL, execute o seguinte comando:
 
-!!! info "install zabbix server"
+!!! info "instalar servidor zabbix"
 
     Red Hat
 
@@ -1787,10 +1792,11 @@ the following command:
     sudo apt install zabbix-server-pgsql
     ```
 
-After successfully installing the Zabbix server packages, we need to configure
-the Zabbix server to connect to the database. This requires modifying the Zabbix
-server configuration file. Open the `/etc/zabbix/zabbix_server.conf` file and
-update the following lines to match your database configuration:
+Depois de instalar com sucesso os pacotes do Zabbix Server, precisamos
+configurar o Zabbix Server para se conectar ao banco de dados. Para isso, é
+necessário modificar o arquivo de configuração do Zabbix Server. Abra o arquivo
+`/etc/zabbix/zabbix_server.conf` e atualize as seguintes linhas para que
+correspondam à configuração do seu banco de dados:
 
 !!! info "Editar configuração do servidor zabbix"
 
@@ -1807,9 +1813,9 @@ update the following lines to match your database configuration:
     DBPassword=<database-password>
     ```
 
-Replace `database-host`, `database-name`, `database-user`,`database-schema` and
-`database-password` with the appropriate values for your setup. This ensures
-that the Zabbix server can communicate with your database.
+Substitua `database-host`, `database-name`, `database-user`,`database-schema` e
+`database-password` pelos valores apropriados para sua configuração. Isso
+garante que o servidor Zabbix possa se comunicar com seu banco de dados.
 
 Certifique-se de que não há nenhum # (símbolo de comentário) na frente dos
 parâmetros de configuração, pois o Zabbix tratará as linhas que começam com #
@@ -1830,15 +1836,16 @@ Para nossa instalação, a configuração será semelhante a esta:
     DBPort=5432
     ```
 
-In this example:
+Neste exemplo:
 
-- DBHost refers to the host where your database is running (use localhost if
-  it's on the same machine).
-- DBName is the name of the Zabbix database.
-- DBUser is the database user.
-- DBPassword is the password for the database user.
+- DBHost refere-se ao host em que seu banco de dados está sendo executado (use
+  localhost se estiver na mesma máquina).
+- DBName é o nome do banco de dados do Zabbix.
+- DBUser é o usuário do banco de dados.
+- DBPassword é a senha do usuário do banco de dados.
 
-Make sure the settings reflect your environment's database configuration.
+Certifique-se de que as configurações reflitam a configuração do banco de dados
+de seu ambiente.
 
 ???+ nota
 
@@ -1850,22 +1857,24 @@ Make sure the settings reflect your environment's database configuration.
     file remains untouched, which is particularly useful when performing upgrades
     or managing configurations with tools like Ansible, Puppet, or SaltStack.
 
-To enable this feature, remove the # from the line:
+Para ativar esse recurso, remova o # da linha:
 
 !!! informações ""
 
     `# Include=/usr/local/etc/zabbix_server.conf.d/*.conf`
 
-Ensure the path `/usr/local/etc/zabbix_server.conf.d/` exists and create a
-custom configuration file in this directory. This file should be readable by the
-`zabbix` user. By doing so, you can add or modify parameters without modifying
-the default configuration file, making system management and upgrades smoother.
+Certifique-se de que o caminho `/usr/local/etc/zabbix_server.conf.d/` exista e
+crie um arquivo de configuração personalizado nesse diretório. Esse arquivo deve
+poder ser lido pelo usuário `zabbix`. Ao fazer isso, você pode adicionar ou
+modificar parâmetros sem modificar o arquivo de configuração padrão, o que
+facilita o gerenciamento e as atualizações do sistema.
 
-With the Zabbix server configuration updated to connect to your database, you
-can now start and enable the Zabbix server service. Run the following command to
-enable the Zabbix server and ensure it starts automatically on boot:
+Com a configuração do servidor Zabbix atualizada para se conectar ao seu banco
+de dados, agora você pode iniciar e ativar o serviço do servidor Zabbix. Execute
+o seguinte comando para ativar o servidor Zabbix e garantir que ele seja
+iniciado automaticamente na inicialização:
 
-!!! info "enable zabbix server service and start"
+!!! info "ativar o serviço do servidor zabbix e iniciar"
 
     Red Hat
     ```yaml
@@ -1877,21 +1886,23 @@ enable the Zabbix server and ensure it starts automatically on boot:
     sudo systemctl enable zabbix-server --now
     ```
 
-This command will start the Zabbix server service immediately and configure it
-to launch on system startup. To verify that the Zabbix server is running
-correctly, check the log file for any messages. You can view the latest entries
-in the `Zabbix server` log file using:
+Esse comando iniciará o serviço do servidor Zabbix imediatamente e o configurará
+para ser iniciado na inicialização do sistema. Para verificar se o servidor
+Zabbix está funcionando corretamente, verifique se há mensagens no arquivo de
+registro. É possível visualizar as entradas mais recentes no arquivo de registro
+`Zabbix server` usando:
 
-!!! info "check the zabbix log file"
+!!! info "verifique o arquivo de registro do zabbix"
 
     ```yaml
     tail /var/log/zabbix/zabbix_server.log
     ```
 
-Look for messages indicating that the server has started successfully. If there
-are any issues, the log file will provide details to help with troubleshooting.
+Procure mensagens que indiquem que o servidor foi iniciado com êxito. Se houver
+algum problema, o arquivo de registro fornecerá detalhes para ajudar na solução
+de problemas.
 
-!!! info "Example log output"
+!!! info "Exemplo de saída de registro"
 
     ```yaml
     12074:20250225:145333.529 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
@@ -1922,10 +1933,10 @@ are any issues, the log file will provide details to help with troubleshooting.
     12083:20250225:145333.719 server #8 started [lld manager #1]
     ```
 
-If there was an error and the server was not able to connect to the database you
-would see something like this in the server log file :
+Se houvesse um erro e o servidor não conseguisse se conectar ao banco de dados,
+você veria algo assim no arquivo de registro do servidor:
 
-!!! info "Example of an error in the log"
+!!! info "Exemplo de um erro no registro"
 
     ```yaml
     12068:20250225:145309.018 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
@@ -1945,10 +1956,10 @@ would see something like this in the server log file :
     12068:20250225:145309.027 cannot use database "zabbix": database is not a Zabbix database
     ```
 
-Let's check the Zabbix server service to see if it's enabled so that it survives
-a reboot
+Vamos verificar o serviço do servidor Zabbix para ver se ele está ativado de
+modo a sobreviver a uma reinicialização
 
-!!! info "check server status"
+!!! info "verificar status do servidor"
 
     ```yaml
      systemctl status zabbix-server
@@ -1988,24 +1999,25 @@ a reboot
                   ├─12097 "/usr/sbin/zabbix_server: self-monitoring [processed data in 0.000068 sec, idle 1 sec]"
     ```
 
-This concludes our chapter on installing and configuring the Zabbix server with
-PostgreSQL.
+Isso conclui nosso capítulo sobre a instalação e a configuração do servidor
+Zabbix com o PostgreSQL.
 
 ---
 
 ## Instalando o front-end
 
-Before configuring the front-end, you need to install the necessary packages. If
-the Zabbix front-end is hosted on the same server as the Zabbix server, you can
-install the packages on the same server as is in our case. It's also perfectly
-possible to install the front-end on another server. In that case you only need
-to specify the correct IP addresses and open the correct firewall ports.
+Antes de configurar o front-end, você precisa instalar os pacotes necessários.
+Se o front-end do Zabbix estiver hospedado no mesmo servidor que o servidor
+Zabbix, você poderá instalar os pacotes no mesmo servidor, como no nosso caso.
+Também é perfeitamente possível instalar o front-end em outro servidor. Nesse
+caso, você só precisa especificar os endereços IP corretos e abrir as portas
+corretas do firewall.
 
 ---
 
-### Installing the frontend with NGINX
+### Instalando o front-end com o NGINX
 
-!!! info "install frontend packages"
+!!! info "instalar pacotes de front-end"
 
     Red Hat
     ```yaml
@@ -2021,25 +2033,25 @@ to specify the correct IP addresses and open the correct firewall ports.
     # sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
-This command will install the front-end packages along with the required
-dependencies for Nginx. If you are installing the front-end on a different
-server, make sure to execute this command on that specific machine.
+Esse comando instalará os pacotes de front-end juntamente com as dependências
+necessárias para o Nginx. Se estiver instalando o front-end em um servidor
+diferente, certifique-se de executar esse comando nessa máquina específica.
 
-If you don't remember how to add the repository, have a look at the topic
+Se não se lembrar de como adicionar o repositório, dê uma olhada no tópico
 [Adding the zabbix repository](#adding-the-zabbix-repository)
 
-First thing we have to do is alter the Nginx configuration file so that we don't
-use the standard config.
+A primeira coisa que precisamos fazer é alterar o arquivo de configuração do
+Nginx para que não usemos a configuração padrão.
 
-!!! info "edit nginx config for Red Hat"
+!!! info "editar configuração do nginx para Red Hat"
 
     ```yaml
     vi /etc/nginx/nginx.conf
     ```
 
-In this configuration file look for the following block that starts with :
+Nesse arquivo de configuração, procure o seguinte bloco que começa com :
 
-!!! info "original config"
+!!! info "configuração original"
 
     ```yaml
     server {
@@ -2052,9 +2064,9 @@ In this configuration file look for the following block that starts with :
              include /etc/nginx/default.d/*.conf;
     ```
 
-Then, comment out the following server block within the configuration file:
+Em seguida, comente o seguinte bloco de servidor no arquivo de configuração:
 
-!!! info "config after edit"
+!!! info "configuração após edição"
 
     ```yaml
     server {
@@ -2064,18 +2076,18 @@ Then, comment out the following server block within the configuration file:
     # root /usr/share/nginx/html;
     ```
 
-The Zabbix configuration file must now be modified to reflect the current
-environment. Open the following file for editing:
+Agora, o arquivo de configuração do Zabbix deve ser modificado para refletir o
+ambiente atual. Abra o arquivo a seguir para edição:
 
-!!! info "edit zabbix config for nginx"
+!!! info "editar configuração do zabbix para nginx"
 
     ```yaml
     vi /etc/nginx/conf.d/zabbix.conf
     ```
 
-And alter the following lines:
+E altere as seguintes linhas:
 
-!!! info "original config"
+!!! info "configuração original"
 
     ```yaml
     server {
@@ -2087,11 +2099,11 @@ And alter the following lines:
     index   index.php;
     ```
 
-Replace the first 2 lines with the correct port and domain for your front-end in
-case you don't have a domain you can replace `servername` with `_;` like in the
-example below:
+Substitua as duas primeiras linhas pela porta e pelo domínio corretos do seu
+front-end. Caso não tenha um domínio, você pode substituir `servername` por
+`_;`, como no exemplo abaixo:
 
-!!! info "config after the edit"
+!!! info "configuração após a edição"
 
     ```yaml
     server { # listen 8080; # server*name example.com;
@@ -2103,18 +2115,19 @@ example below:
              index   index.php;
     ```
 
-The web server and PHP-FPM service are now ready for activation and persistent
-startup. Execute the following commands to enable and start them immediately:
+O servidor Web e o serviço PHP-FPM agora estão prontos para ativação e
+inicialização persistente. Execute os comandos a seguir para ativá-los e
+iniciá-los imediatamente:
 
-!!! info "edit nginx config for ubuntu"
+!!! info "editar configuração do nginx para o ubuntu"
 
     ```yaml
     sudo vi /etc/zabbix/nginx.conf
     ```
 
-replace the Following lines:
+Substitua as seguintes linhas:
 
-!!! info "original config"
+!!! info "configuração original"
 
     ```yaml
     server {
@@ -2122,9 +2135,9 @@ replace the Following lines:
     #        server_name     example.com;
     ```
 
-with :
+com :
 
-!!! info "config after edit"
+!!! info "configuração após edição"
 
     ```yaml
     server {
@@ -2132,14 +2145,14 @@ with :
     server_name "";
     ```
 
-where xxx.xxx.xxx.xxx is your IP or DNS name.
+em que xxx.xxx.xxx.xxx é seu IP ou nome DNS.
 
 ???+ nota
 
     server_name is normally replaced with the fqdn name of your machine. If you
     have no fqdn you can keep it open like in this example.
 
-!!! info "restart the front-end services"
+!!! info "reinicie os serviços de front-end"
 
     Red Hat
     ```yaml
@@ -2153,10 +2166,10 @@ where xxx.xxx.xxx.xxx is your IP or DNS name.
     sudo systemctl restart nginx php8.3-fpm
     ```
 
-Let's verify if the service is properly started and enabled so that it survives
-our reboot next time.
+Vamos verificar se o serviço foi iniciado e ativado corretamente para que ele
+sobreviva à nossa reinicialização na próxima vez.
 
-!!! info "check if the service is running"
+!!! info "verifique se o serviço está em execução"
 
     ```yaml
     systemctl status nginx
@@ -2181,9 +2194,9 @@ our reboot next time.
     Nov 20 11:42:18 zabbix-srv systemd[1]: Started The nginx HTTP and reverse proxy server.
     ```
 
-With the service operational and configured for automatic startup, the final
-preparatory step involves adjusting the firewall to permit inbound HTTP traffic.
-Execute the following commands:
+Com o serviço operacional e configurado para inicialização automática, a etapa
+preparatória final envolve o ajuste do firewall para permitir o tráfego HTTP de
+entrada. Execute os seguintes comandos:
 
 !!! info "configurar o firewall"
 
@@ -2199,17 +2212,17 @@ Execute the following commands:
     sudo ufw allow 80/tcp
     ```
 
-Open your browser and go to the url or ip of your front-end :
+Abra seu navegador e acesse a url ou o ip de seu front-end:
 
-!!! info "front-end configuration"
+!!! info "configuração de front-end"
 
     ```yaml
     http://<ip or dns of the zabbix frontend server>/
     ```
 
-If all goes well you should be greeted with a Zabbix welcome page. In case you
-have an error check the configuration again or have a look at the nginx log
-file:
+Se tudo correr bem, você deverá ser recebido com uma página de boas-vindas do
+Zabbix. Caso ocorra algum erro, verifique novamente a configuração ou dê uma
+olhada no arquivo de log do nginx:
 
 !!! informações ""
 
@@ -2217,7 +2230,7 @@ file:
      /var/log/nginx/error.log
     ```
 
-or run the following command :
+ou execute o seguinte comando :
 
 !!! informações ""
 
@@ -2225,17 +2238,17 @@ or run the following command :
     journalctl -xe
     ```
 
-This should help you in locating the errors you made.
+Isso deve ajudá-lo a localizar os erros que você cometeu.
 
-Upon accessing the appropriate URL, a page resembling the one illustrated below
-should appear:
+Ao acessar o URL apropriado, deverá aparecer uma página semelhante à ilustrada
+abaixo:
 
 ![overview](ch01-basic-installation-setup.png){ align=left }
 
-_1.4 Zabbix welcome_
+_1.4 Boas-vindas ao Zabbix_
 
-The Zabbix frontend presents a limited array of available localizations, as
-shown.
+O front-end do Zabbix apresenta um conjunto limitado de localizações
+disponíveis, conforme mostrado.
 
 ![overview language](ch01-basic-installation-setuplanguage.png){ align=left }
 
