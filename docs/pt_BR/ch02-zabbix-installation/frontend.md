@@ -7,40 +7,43 @@ description: |
 tags: [beginner]
 ---
 
-# Frontend explained
+# Explicação do front-end
 
-This chapter is going to cover the basics we need to know when it comes to the
-Zabbix user interface and the thing we need to know before we can start to fully
-dive into our monitoring tool. We will see how the user interface works how to
-add a host, groups users, items ... so that we have a good understanding of the
-basics. This is something that is sometimes missed and can lead to frustrations
-not knowing why things don't work like we had expected them to work. So even if
-you are an advanced user it may be useful to have a look into this chapter.
+Este capítulo abordará os conceitos básicos que precisamos conhecer no que diz
+respeito à interface de usuário do Zabbix e o que precisamos saber antes de
+começar a mergulhar totalmente em nossa ferramenta de monitoramento. Veremos
+como a interface do usuário funciona, como adicionar um host, grupos de
+usuários, itens... para que tenhamos uma boa compreensão do básico. Isso é algo
+que às vezes é esquecido e pode levar a frustrações por não sabermos por que as
+coisas não funcionam como esperávamos que funcionassem. Portanto, mesmo que você
+seja um usuário avançado, pode ser útil dar uma olhada neste capítulo.
 
-Let's get started
+Vamos começar
 
 ---
 
-## Overview of the interface
+## Visão geral da interface
 
-With Zabbix 7 the user interface after logging in is a bit changed. Our menu on
-the left side of the screen has has a small overhaul. Let's dive into it. When
-we login into our Zabbix setup the first time with our Admin user we see a page
+Com o Zabbix 7, a interface do usuário após o login foi um pouco alterada. Nosso
+menu no lado esquerdo da tela passou por uma pequena reformulação. Vamos nos
+aprofundar nisso. Quando fazemos login em nossa configuração do Zabbix pela
+primeira vez com nosso usuário Admin, vemos uma página
 
-like this where we have our `main window` in <font color='green'>green</font>
-our `main menu` marked in <font color='red'>red</font> and our `links` marked in
-<font color='gold'>yellow</font>.
+Assim, temos nossa ` janela principal `em <font color='green'>verde</font>,
+nosso `menu principal `marcado em <font color='red'>vermelho</font> e nossos
+`links` marcados em <font color='gold'>amarelo</font>.
 
-![Overview](ch02-frontend-overview.png)
+![Visão geral](ch02-frontend-overview.png)
 
-_2.1 Overview_
+_2.1 Visão geral_
 
-The main menu can be hidden by collapsing it completely or to reduce it to a set
-of small icons. When we click on the button with the 2 arrows to the left:
+O menu principal pode ser ocultado, recolhendo-o completamente ou reduzindo-o a
+um conjunto de pequenos ícones. Quando clicamos no botão com as duas setas à
+esquerda:
 
-![Collapse](ch02-frontend-collapse.png)
+![Recolher](ch02-frontend-collapse.png)
 
-_2.2 Collapse_
+_2.2 Recolher_
 
 You will see that the menu collapses to a set of small icons. Pressing ">>" will
 bring the `main menu` back to it's original state.
