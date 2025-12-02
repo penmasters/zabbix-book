@@ -58,15 +58,17 @@ For simplicity, take note of the server details:
 Operating systems, so many choices, each with its own advantages and loyal user base.
 While Zabbix can be installed on a wide range of platforms, documenting the process
 for every available OS would be impractical. To keep this book focused and efficient,
-we have chosen to cover only the most widely used options: Ubuntu and Red Hat based
-distributions.
+we have chosen to cover only the most widely used options: Ubuntu, Red Hat and Suse 
+based distributions.
 
-Since not everyone has access to a Red Hat Enterprise Linux (RHEL) subscription even
-though a developer account provides limited access we have opted for Rocky Linux
-as a readily available alternative. For this book, we will be using
-Rocky Linux 9.x and Ubuntu LTS 24.04.x.
+Since not everyone has access to a Red Hat Enterprise Linux (RHEL) or a SUSE Linux
+Enterprise Server (SLES) subscription even though a developer account provides limited 
+access we have opted for Rocky Linux respectively openSUSE Leap as a readily available
+alternative. For this book, we will be using Rocky Linux 9.x, openSUSE Leap 16 and
+Ubuntu LTS 24.04.x.
 
 - <https://rockylinux.org/>
+- <https://opensuse.org/>
 - <https://ubuntu.com/>
 
 ### Firewall
@@ -83,6 +85,11 @@ To install and enable the firewall, run the following command:
     dnf install firewalld
     systemctl enable firewalld --now
     ```
+    SUSE
+    ```yaml
+    zypper install firewalld
+    systemctl enable firewalld --now
+    ```
 
     Ubuntu
     ```yaml
@@ -97,7 +104,7 @@ this port in the firewall:
 
 !!! info "Allow Zabbix trapper access"
 
-    Red Hat
+    Red Hat / SUSE
     ```yaml
     firewall-cmd --add-service=zabbix-server --permanent
     ```
@@ -117,7 +124,7 @@ If the service is not recognized, you can manually specify the port:
 
 ???+ note
 
-    "Firewalld is the replacement for iptables in RHEL-based systems and allows
+    "Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
     changes to take effect immediately without needing to restart the service.
     If your distribution does not use [Firewalld](https://www.firewalld.org),
     refer to your OS documentation for the appropriate firewall configuration steps."
@@ -200,6 +207,12 @@ To install and enable chrony, our NTP client, use the following command:
     systemctl enable chronyd --now
     ```
 
+    SUSE
+    ```yaml
+    zypper install chrony
+    systemctl enable chronyd --now
+    ```
+
     Ubuntu
     ```yaml
     sudo apt install chrony
@@ -214,11 +227,13 @@ status with the following command:
     systemctl status chronyd
     ```
 
-???+ note "what is apt or dnf"
+???+ note "what is apt, dnf or zypper"
 
-    dnf is a package manager used in Red Hat-based systems. If you're using another
-    distribution, replace `dnf` with your appropriate package manager, such as `zypper`,
-    `apt`, or `yum`.
+    dnf is a package manager used in Red Hat-based systems. Zypper is the package
+    manager used on SUSE-based systems and apt is the package manager used on 
+    Debian/Ubuntu-based systems.If you're using another distribution, replace 
+    `dnf` with your appropriate package manager, such as `zypper`, `apt`, or `yum`.
+    Do note that packagenames may also vary from distribution to distribution.
 
 ???+ note "what is Chrony"
 
@@ -363,9 +378,9 @@ to a dedicated company time server. You can find local NTP servers here:
 
 ### Updating Time Servers
 
-To update the time servers, modify the `/etc/chrony.conf` file for Red Hat based
-systems, and if you use Ubuntu edit `/etc/chrony/chrony.conf`. Replace the existing
-NTP server with one closer to your location.
+To update the time servers, modify the `/etc/chrony.conf` file for Red Hat and SUSE
+based systems, and if you use Ubuntu edit `/etc/chrony/chrony.conf`. Replace the
+existing NTP server with one closer to your location.
 
 Example of the current configuration:
 
