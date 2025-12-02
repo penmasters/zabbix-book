@@ -82,79 +82,51 @@ We will cover the following topics:
 
 ## Installing the MariaDB database
 
-To begin the installation process for the MariaDB server, the first step involves
-manually creating a repository configuration file. This file, mariadb.repo on Rocky,
-must be placed in the /etc/yum.repos.d/ directory. The repository file will allow
-your package manager to locate and install the necessary MariaDB components.
-For Ubuntu we need to import the repository keys and create a file for example
-'/etc/apt/sources.list.d/mariadb.sources'.
+Before initiating the installation of MariaDB, you must determine the source 
+from which you will install the database server. Two primary options are 
+available:
 
-### Add the MariaDB repository
+1. **Vendor-Provided Packages**\
+   These are included in the software repositories of most Linux distributions 
+   and are maintained by the distribution vendor.
 
-To create the MariaDB repository file, execute the following command in your terminal:
+   **Advantages:**
+   - **Simplified installation:** Packages are readily available via the 
+     distribution’s package manager.
+   - **Vendor support:** For enterprise distributions (e.g., RHEL, SLES), 
+     active subscriptions include official support.
+   - **Compatibility:** Guaranteed integration with other system packages and 
+     dependencies.
+   - **Distribution-specific optimizations:** Includes tailored configurations 
+     (e.g., logrotate, bash completion,...).
+   - **Long-term maintenance:** Security and bug fixes are backported by the 
+     vendor for the duration of the distribution’s support lifecycle.
 
-!!! info "create mariadb repository"
+   **Disadvantages:**
+   - **Version lock-in:** Major distribution upgrades may automatically introduce
+     newer MariaDB versions, potentially requiring compatibility checks with Zabbix.
+   - **Vendor modifications:** Default configurations, log directories, and data
+     paths may be altered to align with distribution-specific standards.
 
-    Red Hat
-    ``` yaml
-    vi /etc/yum.repos.d/mariadb.repo
-    ```
+2. **Official MariaDB Repositories**
+   These repositories provide packages directly from MariaDB and offer access to
+   the latest stable releases.
 
-    Ubuntu
-    ``` yaml
-    sudo apt install apt-transport-https curl
-    sudo mkdir -p /etc/apt/keyrings
-    sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+   **Advantages:**
+   - **Up-to-date versions:** Immediate access to the latest features, security
+     patches, and bug fixes.
+   - **Enterprise support:** Option to purchase MariaDB Enterprise, which includes
+     professional support and additional features.
 
-    sudo vi /etc/apt/sources.list.d/mariadb.sources
-    ```
-
-This will open a text editor where you can input the repository configuration details.
-Once the repository is configured, you can proceed with the installation of MariaDB
-using your package manager.
+   **Disadvantages:**
+   - **Manual version management:** Users must proactively monitor and upgrade 
+     to new major versions to ensure continued security and bug fix coverage.
 
 ???+ tip
 
-    Always check Zabbix documentation for the latest supported versions.
-
-The latest config can be found here:
-<https://mariadb.org/download/?t=repo-config>
-
-Here's the configuration you need to add into the file:
-
-!!! info "Mariadb repository"
-
-    Red Hat
-    ```yaml
-    # MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-02-21 10:15 UTC
-    # https://mariadb.org/download/
-    [mariadb]
-    name = MariaDB
-    # rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-    # baseurl = https://rpm.mariadb.org/11.4/rhel/$releasever/$basearch
-    baseurl = https://mirror.bouwhuis.network/mariadb/yum/11.4/rhel/$releasever/$basearch
-    # gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
-    gpgkey = https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
-    gpgcheck = 1
-    ```
-
-    Ubuntu
-    ``` yaml
-    # MariaDB 11.4 repository list - created 2025-02-21 11:42 UTC
-    # https://mariadb.org/download/
-    X-Repolib-Name: MariaDB
-    Types: deb
-    # deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-    # URIs: https://deb.mariadb.org/11.4/ubuntu
-    URIs: https://mirror.bouwhuis.network/mariadb/repo/11.4/ubuntu
-    Suites: noble
-    Components: main main/debug
-    Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
-    ```
-
-After saving the file, ensure that everything is properly set up and that your
-MariaDB version is compatible with your Zabbix version to avoid potential
-integration issues.
+    Always ensure that your MariaDB version is compatible with your Zabbix version
+    to avoid potential integration issues. Check the Zabbix documentation for the 
+    latest supported versions.
 
 Before proceeding with the MariaDB installation, it's a best practice to ensure
 your operating system is up-to-date with the latest patches and security fixes.
@@ -169,6 +141,10 @@ To update your OS, run the following command:
     ```yaml
     dnf update
     ```
+
+    SUSE
+    ``` bash
+    zypper refresh && zypper update
 
     Ubuntu
     ``` yaml
@@ -187,13 +163,24 @@ With the operating system updated and the MariaDB repository configured, you are
 now ready to install the MariaDB server and client packages. This will provide the
 necessary components to run and manage your database.
 
-To install the MariaDB server and client, execute the following command:
+For the installation of the official MariaDB packages, you will need to follow the
+distribution specific instructions at <https://mariadb.org/download/?t=repo-config>
+to configure the MariaDB repository and to install the MariaDB-server and -client
+package.
 
-!!! info "Install Mariadb"
+To install the distribution default MariaDB server and client, execute the 
+following command:
+
+!!! info "Install distribution version of Mariadb"
 
     Red Hat
     ```yaml
-    dnf install MariaDB-server
+    dnf install mariadb-server
+    ```
+
+    SUSE
+    ``` bash
+    zypper install mariadb mariadb-client
     ```
 
     Ubuntu
@@ -210,7 +197,7 @@ upon boot and start it immediately. Use the following command to accomplish this
 
 !!! info "Enable mariadb service"
 
-    Red Hat
+    Red Hat / SUSE / Ubuntu
     ```yaml
     systemctl enable mariadb --now
     ```
@@ -221,9 +208,9 @@ version of MariaDB using the following command:
 
 !!! info "Check Mariadb version"
 
-    Red Hat and Ubuntu
+    Red Hat / SUSE / Ubuntu
     ```yaml
-    sudo mariadb -V
+    mariadb -V
     ```
 
 The expected output should resemble this:
@@ -231,7 +218,7 @@ The expected output should resemble this:
 !!! info ""
 
     ```yaml
-    mariadb from 11.4.5-MariaDB, client 15.2 for Linux (aarch64) using EditLine wrapper
+    mariadb  Ver 15.1 Distrib 10.11.14-MariaDB, for Linux (x86_64) using  EditLine wrapper
     ```
 
 To ensure that the MariaDB service is running properly, you can check its status
@@ -239,7 +226,7 @@ with the following command:
 
 !!! info "Get mariadb status"
 
-    Red Hat and Ubuntu
+    Red Hat / SUSE / Ubuntu
     ```yaml
     sudo systemctl status mariadb
     ```
@@ -250,34 +237,27 @@ is active and running:
 !!! info "mariadb service status example"
 
     ```yaml
-     mariadb.service - MariaDB 11.4.5 database server
-          Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
-         Drop-In: /etc/systemd/system/mariadb.service.d
-                  └─migrated-from-my.cnf-settings.conf
-          Active: active (running) since Fri 2025-02-21 11:22:59 CET; 2min 8s ago
-            Docs: man:mariadbd(8)
-                  https://mariadb.com/kb/en/library/systemd/
-         Process: 23147 ExecStartPre=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
-         Process: 23148 ExecStartPre=/bin/sh -c [ ! -e /usr/bin/galera_recovery ] && VAR= ||   VAR=`/usr/bin/galera_recovery`; [ $? -eq 0 ] && systemctl set-enviro>
-    Process: 23168 ExecStartPost=/bin/sh -c systemctl unset-environment \_WSREP_START_POSITION (code=exited, status=0/SUCCESS)
-    Main PID: 23156 (mariadbd)
-    Status: "Taking your SQL requests now..."
-    Tasks: 7 (limit: 30620)
-    Memory: 281.7M
-    CPU: 319ms
-    CGroup: /system.slice/mariadb.service
-    └─23156 /usr/sbin/mariadbd
+    ● mariadb.service - MariaDB database server
+     Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
+     Active: active (running) since Wed 2025-12-03 00:16:04 CET; 5s ago
+       Docs: man:mysqld(8)
+             https://mariadb.com/kb/en/library/systemd/
+    Process: 11148 ExecStartPre=/usr/lib/mysql/mysql-systemd-helper install (code=exited, status=0/SUCCESS)
+    Process: 11155 ExecStartPre=/usr/lib/mysql/mysql-systemd-helper upgrade (code=exited, status=0/SUCCESS)
+   Main PID: 11162 (mysqld)
+     Status: "Taking your SQL requests now..."
+      Tasks: 18 (limit: 4670)
+        CPU: 340ms
+     CGroup: /system.slice/mariadb.service
+             └─11162 /usr/sbin/mysqld --defaults-file=/etc/my.cnf --user=mysql --socket=/run/mysql/mysql.sock
 
-    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
-    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Plugin 'FEEDBACK' is disabled.
-    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Plugin 'wsrep-provider' is disabled.
-    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] InnoDB: Buffer pool(s) load completed at 250221 11:22:58
-    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Server socket created on IP: '0.0.0.0'.
-    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] Server socket created on IP: '::'.
-    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] mariadbd: Event Scheduler: Loaded 0 events
-    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: 2025-02-21 11:22:58 0 [Note] /usr/sbin/mariadbd: ready for connections.
-    Feb 21 11:22:58 localhost.localdomain mariadbd[23156]: Version: '11.4.5-MariaDB'  socket: '/var/lib/mysql/mysql.sock'  port: 3306  MariaDB Server
-    Feb 21 11:22:59 localhost.localdomain systemd[1]: Started MariaDB 11.4.5 database server.
+    Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] Plugin 'FEEDBACK' is disabled.
+    Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+    Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] Server socket created on IP: '127.0.0.1', port: '3306'.
+    Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] /usr/sbin/mysqld: ready for connections.
+    Dec 03 00:16:04 localhost.localdomain systemd[1]: Version: '10.11.14-MariaDB'  socket: '/run/mysql/mysql.sock'  port: 3306  MariaDB package
+    Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] InnoDB: Buffer pool(s) load completed at 251203  0:16:04
+    Dec 03 00:16:04 localhost.localdomain systemd[1]: Started MariaDB database server.
     ```
 
 This confirms that your MariaDB server is up and running, ready for further configuration.
@@ -293,7 +273,7 @@ Run the following command:
 
 !!! info "Secure Mariadb setup"
 
-    Red Hat and Ubuntu
+    Red Hat / SUSE / Ubuntu
     ```yaml
      sudo mariadb-secure-installation
     ```
@@ -395,7 +375,7 @@ process.
 
 !!! info "Enter Mariadb as user root"
 
-    Red Hat and Ubuntu
+    Red Hat / SUSE / Ubuntu
     ```yaml
     mariadb -uroot -p
     ```
@@ -431,14 +411,14 @@ with a strong password of your choice.
     MariaDB [(none)]> FLUSH PRIVILEGES;
     ```
 
-This creates new users for zabbix-web and zabbix-srv, grants them access to the
+This creates new users `zabbix-web` and `zabbix-srv`, grants them access to the
 zabbix database, and ensures that the privileges are applied immediately.
 
 In some cases, especially when setting up Zabbix with MariaDB, you might encounter
 issues related to stored functions and triggers if binary logging is enabled.
-To address this, you need to set the log_bin_trust_function_creators option to 1
+To address this, you need to set the `log_bin_trust_function_creators` option to `1`
 in the MariaDB configuration file. This allows non-root users to create stored
-functions and triggers without requiring SUPER privileges, which are restricted
+functions and triggers without requiring `SUPER` privileges, which are restricted
 when binary logging is enabled.
 
 !!! info "Activate temporarily extra privileges for non root users"
@@ -455,10 +435,10 @@ the Zabbix server to connect to the database.
 
     In the Zabbix documentation, it is explicitly stated that deterministic
     triggers need to be created during the schema import. On MySQL and MariaDB
-    systems, this requires setting GLOBAL log_bin_trust_function_creators = 1
+    systems, this requires setting `GLOBAL log_bin_trust_function_creators = 1`
     if binary logging is enabled, and you lack superuser privileges.
 
-    If the log_bin_trust_function_creators option is not set in the MySQL
+    If the `log_bin_trust_function_creators` option is not set in the MySQL
     configuration file, it will block the creation of these triggers during
     schema import. This is essential because, without superuser access,
     non-root users cannot create triggers or stored functions unless this setting is applied.
@@ -467,11 +447,11 @@ the Zabbix server to connect to the database.
 
     - Binary logging enabled: If binary logging is enabled and the user does not
       have superuser privileges, the creation of necessary Zabbix triggers will
-      fail unless log_bin_trust_function_creators = 1 is set.
+      fail unless `log_bin_trust_function_creators = 1` is set.
 
-    - Solution: Add log_bin_trust_function_creators = 1 to the [mysqld] section
+    - Solution: Add `log_bin_trust_function_creators = 1` to the `[mysqld]` section
       in your MySQL/MariaDB configuration file or temporarily set it at runtime
-      with SET GLOBAL log_bin_trust_function_creators = 1 if you have sufficient
+      with `SET GLOBAL log_bin_trust_function_creators = 1` if you have sufficient
       permissions.
 
     This ensures that Zabbix can successfully create the required triggers during
@@ -481,7 +461,7 @@ If we want our Zabbix server to connect to our DB then we also need to open our 
 
 !!! info "Add firewall rules"
 
-    Red Hat
+    Red Hat / SUSE
     ``` yaml
     firewall-cmd --add-port=3306/tcp --permanent
     firewall-cmd --reload
@@ -494,7 +474,7 @@ If we want our Zabbix server to connect to our DB then we also need to open our 
 
 ---
 
-### Populate the Zabbix Maria DB
+### Populate the Zabbix MariaDB
 
 With the users and permissions set up correctly, you can now populate the database
 with the Zabbix schema created and other required elements. Follow these steps:
@@ -507,25 +487,37 @@ with our Zabbix schemas.
 
     Red Hat
     ``` yaml
-    rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
+    rpm -Uvh https://repo.zabbix.com/zabbix/7.4/release/rocky/9/noarch/zabbix-release-latest-7.4.el9.noarch.rpm
     dnf clean all
     dnf install zabbix-sql-scripts
     ```
 
+    SUSE
+    ``` bash
+    zypper install https://repo.zabbix.com/zabbix/7.4/release/sles/15/noarch/zabbix-release-latest-7.4.sles15.noarch.rpm
+    zypper refresh
+    zypper install zabbix-sql-scripts
+    ```
+
     Ubuntu
     ``` yaml
-    sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
-    sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
+    sudo wget https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu24.04_all.deb
+    sudo dpkg -i zabbix-release_latest_7.4+ubuntu24.04_all.deb
     sudo apt update
     sudo apt install zabbix-sql-scripts
     ```
+
+!!! tip
+
+    Check <https://www.zabbix.com/download> for instructions on how to install 
+    the Zabbix repository of any support version on any supported distribution. 
 
 Now lets upload the data from zabbix (db structure, images, user, ... )
 for this we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
 
 !!! info "Populate the database"
 
-    Red Hat and Ubuntu
+    Red Hat / SUSE / Ubuntu
     ``` yaml
     sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
     ```
@@ -536,14 +528,14 @@ for this we make use of the user `zabbix-srv` and we upload it all in our DB `za
     take anywhere from a few seconds to several minutes. Please be patient and
     avoid cancelling the operation; just wait for the prompt to appear.
 
-Log back into your MySQL Database as root
+Log back into your MariaDB Database as root
 
 !!! info "Enter mariadb as user root"
 
     `mariadb -uroot -p`
 
 Once the import of the Zabbix schema is complete and you no longer need the
-log_bin_trust_function_creators global parameter, it is a good practice to remove
+`log_bin_trust_function_creators` global parameter, it is a good practice to remove
 it for security reasons.
 
 To revert the change and set the global parameter back to 0, use the following
