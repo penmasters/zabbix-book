@@ -59,7 +59,7 @@ There are several types of preprocessing available, all of which will process an
 - **Octal to decimal** is used to convert the aforementioned value. 
 - **HExadecimal to decimal** is used to convert the aforementioned value. 
 
-- **Javascript** is an extensive preprocessor, where we can use Javascripts Duktape engine to apply complex scripts for processing.
+- **Javascript** is an extensive preprocessor, where we can use Javascript Duktape engine to apply complex scripts for processing.
 
 - **In range** is used to validate if the value falls within a defined range.
 - **Matches regular expression** is used to validate if the value matches the regular expression. 
