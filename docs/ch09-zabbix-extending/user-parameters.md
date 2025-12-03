@@ -333,7 +333,7 @@ need to monitor something "custom". Zabbix offers multiple ways to achieve it,
 In this section you have learned how to create simple custom checks, as well as
 something more advanced.
 
-As long as you are able to write some code which fulfills your custom needs,
+As long as you are able to write some code which fulfils your custom needs,
 Zabbix will be there to help you collect and visualize it!
 
 ## Questions
