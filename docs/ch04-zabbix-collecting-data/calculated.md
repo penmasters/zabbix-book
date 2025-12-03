@@ -291,7 +291,7 @@ calculated item. Now that we have seen how to create calculated items lets have
 a look at aggregated items.
 
 
-# Aggregated items
+## Aggregated items
 
 Now that we've seen how Calculated Items allow us to perform mathematical operations
 on data from a single host (like determining the P99 latency on one server), the
@@ -325,7 +325,7 @@ In short, while Calculated Items help you interpret the metric for one specific
 device, Aggregated Items help you determine the collective status of a group of
 devices or an entire service.
 
-## Configuration of Aggregated Items
+### Configuration of Aggregated Items
 
 Aggregated Items use a special **item key** that differs significantly from standard
 data collection methods. Instead of defining a specific check (like `icmpping`),
@@ -346,11 +346,11 @@ The general format for an Aggregated Item key is:
 
 ---
 
-## Practical Examples of Aggregated Items
+### Practical Examples of Aggregated Items
 
 Here are several common scenarios demonstrating how to define these powerful global metrics:
 
-### Example 1: Total Free Space Across a Group
+#### Example 1: Total Free Space Across a Group
 
 **Goal:** Monitor the collective available disk space for all hosts in the
 "Database Cluster" group to prevent a system-wide outage.
@@ -360,7 +360,7 @@ Here are several common scenarios demonstrating how to define these powerful glo
 | **Key** | `sum[group:"Database Cluster",vfs.fs.size[/,,free]]` | This key **SUMS** the free space (`vfs.fs.size[/,,free]`) from every host in the group. |
 | **Units** | `B` (Bytes) | |
 
-### Example 2: Average CPU Load for a Service
+#### Example 2: Average CPU Load for a Service
 
 **Goal:** Determine the overall average CPU load experienced by your primary web
 service, which is running across the "Production Web" group.
@@ -369,7 +369,7 @@ service, which is running across the "Production Web" group.
 | :--- | :--- | :--- |
 | **Key** | `avg[group:"Production Web",system.cpu.load[all,avg1]]` | This calculates the **AVERAGE** 1-minute CPU load across all servers in the group. |
 
-### Example 3: Counting Conditional Items with `foreach`
+#### Example 3: Counting Conditional Items with `foreach`
 
 The **`foreach`** function is a highly flexible tool that allows you to calculate
 statistics based on a **condition** within the target set. Instead of aggregating
@@ -394,7 +394,7 @@ count of servers currently under heavy load.
 
 ---
 
-## Other Aggregate Functions
+### Other Aggregate Functions
 
 Zabbix supports a wide array of aggregate functions beyond the basics shown here,
 including statistics like standard deviation (`stddevpop`) and more specialized
@@ -403,7 +403,7 @@ counting and filtering.
 For a complete list of all supported aggregate functions, including detailed syntax
 and examples for `foreach`, consult the official Zabbix documentation.
 
-### Troubleshooting Calculated Items
+#### Troubleshooting Calculated Items
 
 1. How to best troubleshoot unsupported calculated items.
 
