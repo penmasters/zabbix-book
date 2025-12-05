@@ -156,6 +156,13 @@ If everything went well you should end up with a similar looking page :
 
 *9.6 Script form*
 
+???+ note
+    It is possible that you cannot select the Execute on `Zabbix server` and that
+    you see a warning _Global script execution on Zabbix server is disabled by
+    server configuration._ In this case, you will have to edit the Zabbix server
+    configuration file and change the config `EnableGlobalScripts=0` to
+    `EnableGlobalScripts=0` and restart the service.
+
 When your are ready press `Add` at the bottom of the form. Let's test our script
 to see if it works.
 
@@ -201,7 +208,7 @@ for hosts without the need to give special access rights or create special profi
 We have in our config of our script the option to limit the use of this `frontend script`
 to certain `Host groups` and `User groups`.
 
-???+ Tip 
+???+ Tip
     You can now create the same script but add the option `yes` instead of `no`
     when it comes to data collection and you can also create a script to delete
     the maintenance period by just replacing `create` with `delete` and remove
