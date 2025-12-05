@@ -176,19 +176,19 @@ compreensão do sistema.
 
 _2.9 Informações do sistema_
 
-| Parâmetro                                            | Valor                                                                                                                                                                                                                                                                           | Detalhes                                                                                                                                                                                                                                                                                               |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| O servidor Zabbix está em execução                   | O status do nosso servidor zabbix, se ele estiver em execução, sim ou não, e se estiver em execução em nosso host local ou em outro IP e em qual porta o servidor zabbix está escutando. Se nenhum trapper estiver escutando, o restante das informações não poderá ser exibido | IP e porta do servidor Zabbix                                                                                                                                                                                                                                                                          |
-| Versão do servidor Zabbix                            | Isso nos mostra a versão do servidor `Zabbix`. Portanto, a versão que você vê na parte inferior da tela é a versão do front-end do Zabbix e pode ser diferente, mas deve estar na mesma versão principal.                                                                       | Número da versão                                                                                                                                                                                                                                                                                       |
-| Versão de front-end do Zabbix                        | Essa é a versão do frontend e deve corresponder ao que você vê na parte inferior da tela.                                                                                                                                                                                       | Número da versão                                                                                                                                                                                                                                                                                       |
-| Número de hosts (ativado/desativado)                 | O número total de hosts configurados em nosso sistema                                                                                                                                                                                                                           | Quantos deles estão ativados e desativados?                                                                                                                                                                                                                                                            |
-| Número de modelos                                    | O número de modelos instalados em nosso servidor Zabbix.                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                                        |
-| Número de itens (ativado/desativado/não suportado)   | Essa linha nos mostra o número de itens que configuramos no total, neste caso 99                                                                                                                                                                                                | 90 estão ativados e 0 estão desativados, mas 9 deles não têm suporte. Esse último número é importante, pois são itens que não estão funcionando. Veremos mais tarde por que isso acontece e como corrigi-lo. Por enquanto, lembre-se de que um grande número de itens sem suporte não é uma boa ideia. |
-| Número de gatilhos(Ativado/desativado [problema/ok]) | O número de gatilhos configurados                                                                                                                                                                                                                                               | Number of enabled and disabled triggers. Just as with items we also see if there are triggers that are in a problem state or ok state. A trigger in a problem state is a non working trigger something we need to monitor and fix. We will cover this also later.                                      |
-| Number of users (online)                             | Here we see the number of users that are configured on our system                                                                                                                                                                                                               | The number of users currently online.                                                                                                                                                                                                                                                                  |
-| Required server performance, nvps                    | The number of new values per second that Zabbix will process per second.                                                                                                                                                                                                        | This is just an estimated number as some values we get are unknown so the real value is probably higher. So we can have some indication about how many IOPS we need and how busy our database is. A better indication is probably the internal item `zabbix[wcache,values,all]`                        |
-| Global scripts on Zabbix server                      | It notifies us that the Global scripts are enabled or disabled in the server config.                                                                                                                                                                                            | Global scripts can be used in our frontend, actions, ... but need to be activated first                                                                                                                                                                                                                |
-| High availability cluster                            | It will show us if Zabbix HA cluster is disabled or not                                                                                                                                                                                                                         | Failover delay once HA is activated                                                                                                                                                                                                                                                                    |
+| Parâmetro                                            | Valor                                                                                                                                                                                                                                                                           | Detalhes                                                                                                                                                                                                                                                                                                                                 |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| O servidor Zabbix está em execução                   | O status do nosso servidor zabbix, se ele estiver em execução, sim ou não, e se estiver em execução em nosso host local ou em outro IP e em qual porta o servidor zabbix está escutando. Se nenhum trapper estiver escutando, o restante das informações não poderá ser exibido | IP e porta do servidor Zabbix                                                                                                                                                                                                                                                                                                            |
+| Versão do servidor Zabbix                            | Isso nos mostra a versão do servidor `Zabbix`. Portanto, a versão que você vê na parte inferior da tela é a versão do front-end do Zabbix e pode ser diferente, mas deve estar na mesma versão principal.                                                                       | Número da versão                                                                                                                                                                                                                                                                                                                         |
+| Versão de front-end do Zabbix                        | Essa é a versão do frontend e deve corresponder ao que você vê na parte inferior da tela.                                                                                                                                                                                       | Número da versão                                                                                                                                                                                                                                                                                                                         |
+| Número de hosts (ativado/desativado)                 | O número total de hosts configurados em nosso sistema                                                                                                                                                                                                                           | Quantos deles estão ativados e desativados?                                                                                                                                                                                                                                                                                              |
+| Número de modelos                                    | O número de modelos instalados em nosso servidor Zabbix.                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                                                                          |
+| Número de itens (ativado/desativado/não suportado)   | Essa linha nos mostra o número de itens que configuramos no total, neste caso 99                                                                                                                                                                                                | 90 estão ativados e 0 estão desativados, mas 9 deles não têm suporte. Esse último número é importante, pois são itens que não estão funcionando. Veremos mais tarde por que isso acontece e como corrigi-lo. Por enquanto, lembre-se de que um grande número de itens sem suporte não é uma boa ideia.                                   |
+| Número de gatilhos(Ativado/desativado [problema/ok]) | O número de gatilhos configurados                                                                                                                                                                                                                                               | Número de acionadores ativados e desativados. Assim como nos itens, também verificamos se há acionadores que estão em um estado problemático ou em um estado ok. Um acionador em um estado problemático é um acionador que não está funcionando, algo que precisamos monitorar e corrigir. Também abordaremos esse assunto mais adiante. |
+| Número de usuários (on-line)                         | Aqui vemos o número de usuários que estão configurados em nosso sistema                                                                                                                                                                                                         | O número de usuários on-line no momento.                                                                                                                                                                                                                                                                                                 |
+| Desempenho necessário do servidor, nvps              | O número de novos valores por segundo que o Zabbix processará por segundo.                                                                                                                                                                                                      | Esse é apenas um número estimado, pois alguns valores que recebemos são desconhecidos, portanto, o valor real provavelmente é maior. Assim, podemos ter alguma indicação de quantos IOPS precisamos e quão ocupado está nosso banco de dados. Uma indicação melhor é provavelmente o item interno `zabbix[wcache,values,all]`            |
+| Scripts globais no servidor Zabbix                   | Ele nos notifica de que os scripts globais estão ativados ou desativados na configuração do servidor.                                                                                                                                                                           | Os scripts globais podem ser usados em nosso frontend, ações, ... mas precisam ser ativados primeiro                                                                                                                                                                                                                                     |
+| Cluster de alta disponibilidade                      | Ele nos mostrará se o cluster Zabbix HA está desativado ou não                                                                                                                                                                                                                  | Atraso no failover quando o HA é ativado                                                                                                                                                                                                                                                                                                 |
 
 ???+ nota
 
@@ -197,7 +197,7 @@ _2.9 Informações do sistema_
     installations, since Zabbix 7.0, global script execution on Zabbix server is
     disabled by default.
 
-???+ Tip
+Dica
 
      System information may display some additional warnings like when your database
      doesn't have the correct character set or collation UTF-8.
@@ -209,178 +209,188 @@ _2.9 Informações do sistema_
 
 ---
 
-## The main menu explained
+## O menu principal explicado
 
-It's important to know that we have seen so far our dashboard with the Admin
-user and that this user is a `Zabbix Super Admin` user. This has a serious
-impact on what we can see and do in Zabbix as this user has no restrictions.
-Zabbix works with 3 different levels of users we have the regular `users`,
-`Zabbix Admin` and `Zabbix Super Admin` users. Let's have a deeper look at the
-differences :
+É importante saber que até agora vimos nosso painel de controle com o usuário
+Admin e que esse usuário é um usuário `Zabbix Super Admin`. Isso tem um grande
+impacto sobre o que podemos ver e fazer no Zabbix, pois esse usuário não tem
+restrições. O Zabbix trabalha com três níveis diferentes de usuários: os
+`usuários comuns ` , `Zabbix Admin` e `Zabbix Super Admin`. Vamos dar uma olhada
+mais profunda nas diferenças:
 
-![Main Menu sections](ch02-main-menu.png){ width=20% }
+![Seções do menu principal](ch02-main-menu.png){ width=20% }
 
-_2.10 Main menu sections_
+_2.10 Seções do menu principal_
 
-- A `Zabbix User` will only see the <font color='red'>red</font> part of our
-  `main menu` and will only be able to see our collected data.
-- A `Zabbix Admin` will see the red part and the
-  <font color='gold'>yellow</font> part of the `main menu` and is able to change
-  our configuration.
-- A `Zabbix Super Admin` will see the complete `main menu` and so is able to
-  change the configuration and all the global settings.
+- Um `usuário do Zabbix` verá apenas a parte <font color='red'>vermelha</font>
+  do nosso `menu principal` e poderá ver apenas os dados coletados.
+- Um `administrador do Zabbix` verá a parte vermelha e a parte
+  <font color='gold'>amarela</font> do `menu principal do` e poderá alterar
+  nossa configuração.
+- Um `Zabbix Super Admin` verá o `menu principal` completo e, portanto, poderá
+  alterar a configuração e todas as definições globais.
 
   ***
 
-  ![Monitoring Menu](ch02-monitoring-menu.png){ width=20% }
+  ![Menu de monitoramento](ch02-monitoring-menu.png){ width=20% }
 
-_2.11 Monitoring menu_
+_2.11 Menu de monitoramento_
 
-- **Problems**: This page will give us an overview of all the problems. With
-  filter we can look at recent problems past problems and problems that are
-  active now. There are many more filters tor drill down more.
-- **Hosts**: This will give us a quick overview page with what's happening on
-  our hosts and allows us to quickly go to the latest data, graphs and
-  dashboards.
-- **Latest data**: This page I probably use the most, it shows us all the
-  information collected from all our hosts.
-- **Maps**: The location where we can create map that are an overview of our IT
-  infrastructure very useful to get a high level overview of the network.
-- **Discovery**: When we run a network discovery this is the place where we can
-  find the results.
-
----
-
-![Services menu](ch02-services-menu.png){ width="20%" }
-
-_2.12 Services menu_
-
-- **Services**: This page will give us a high level overview of all services
-  configured in Zabbix.
-- **SLA**: An overview of all the SLAs configured in Zabbix.
-- **SLA Report**: Here we can watch all SLA reports based on our filters.
+- **Problemas**: Esta página nos dará uma visão geral de todos os problemas. Com
+  o filtro, podemos ver os problemas recentes, os problemas anteriores e os
+  problemas que estão ativos no momento. Há muitos outros filtros para detalhar
+  mais.
+- **Hosts**: Isso nos dará uma página de visão geral rápida com o que está
+  acontecendo em nossos hosts e nos permitirá acessar rapidamente os dados,
+  gráficos e painéis mais recentes.
+- **Dados mais recentes**: Essa página é provavelmente a que eu mais uso, pois
+  mostra todas as informações coletadas de todos os nossos hosts.
+- **Mapas**: O local onde podemos criar mapas que são uma visão geral da nossa
+  infraestrutura de TI, muito útil para obter uma visão geral de alto nível da
+  rede.
+- **Descoberta**: Quando executamos uma descoberta de rede, este é o local onde
+  podemos encontrar os resultados.
 
 ---
 
-![Inventory menu](ch02-inventory-menu.png){ width="20%" }
+![Menu Serviços](ch02-services-menu.png){ width="20%" }
 
-_2.13 Inventory menu_
+_2.12 Menu Serviços_
 
-- **Overview**: A place where we can watch all our inventory data that we have
-  retrieved from our hosts.
-- **Hosts**: Here we can filter by host and watch all inventory data for the
-  hosts we have selected.
-
----
-
-![Reports menu](ch02-reports-menu.png){ width="20%" }
-
-_2.14 Inventory menu_
-
-- **System information**: System information is a summary of key Zabbix server
-  and system data.
-- **Scheduled reports**: The place where we can schedule our reports, a `pdf` of
-  the dashboard that will be sent at a specified time and date.
-- **Availability report**: A nice overview where we can see what trigger has
-  been in `ok`/`nok` state for how much % of the time
-- **Top 100 triggers**: Another page I visit a lot here we have our top list
-  with triggers that have been in a `NOK` state.
-- **Audit log**: An overview of the user activity that happened on our system.
-  Useful if we want to know who did what and when.
-- **Action log**: A detailed overview of our actions can be found here. What
-  mail was sent to who and when ...?
-- **Notifications**: A quick overview of the number of notifications sent to
-  each user.
+- **Serviços**: Esta página nos dará uma visão geral de alto nível de todos os
+  serviços configurados no Zabbix.
+- **SLA**: Uma visão geral de todos os SLAs configurados no Zabbix.
+- **Relatório de SLA**: Aqui podemos ver todos os relatórios de SLA com base em
+  nossos filtros.
 
 ---
 
-![Data collection](ch02-datacollection-menu.png){ width="20%" }
+![Menu Inventário](ch02-inventory-menu.png){ width="20%" }
 
-_2.15 Data collection_
+_2.13 Menu Inventário_
 
-- **Template groups**: A place to logical group all templates together in
-  different groups. Before it was mixed together with hosts in host groups.
-- **Host groups**: A logical collection of different hosts put together. Host
-  groups are used for our permissions.
-- **Templates**: A set off entities like items and triggers can be grouped
-  together on a template, A template can be applied to one or more hosts.
-- **Hosts**: What we need in Zabbix to monitor A host, application, service ...
-- **Maintenance**: The place to configure our maintenance windows. A maintenance
-  can be planned in this location.
-- **Event correlation**: When we have multiple events that fires triggers
-  related we can configure correlations in this place.
-- **Discovery**: Sometimes we like to use Zabbix to discover devices,
-  services,... on our network. This can be done here.
+- **Visão geral**: Um local onde podemos ver todos os dados de inventário que
+  recuperamos de nossos hosts.
+- **Hosts**: Aqui podemos filtrar por host e ver todos os dados de inventário
+  dos hosts que selecionamos.
 
 ---
 
-![Alerts menu](ch02-alerts-menu.png){ width="20%" }
+![Menu de relatórios](ch02-reports-menu.png){ width="20%" }
 
-_2.16 Alerts menu_
+_2.14 Menu Inventário_
 
-- **Actions**: This menu allows us to configure actions based on `events` in
-  Zabbix. We can create such actions for triggers, services, discovery,
-  autoregistration and internal events.
-- **Media types**: Zabbix can sent messages, emails etc ... based on the actions
-  we have configured. Those media types need templates and need to be activated.
-- **Scripts**: In Zabbix it's possible to make use of scripts in our actions and
-  frontend. Those actions need to be created here first and configured.
-
----
-
-![Users menu](ch02-users-menu.png){ width="20%" }
-
-_2.17 Users menu_
-
-- **User groups**: The `User groups` menu section enables the creation and
-  management of user groupings for streamlined access and permission control.
-- **User roles**: The `User roles` menu section defines sets of permissions that
-  can be assigned to individual users, limiting their allowed actions based on
-  the user type they have within the system.
-- **Users**: The `Users` menu section provides the interface for managing
-  individual user accounts, including creation and modification settings.
-- **API tokens**: The `API tokens` menu section manages authentication
-  credentials specifically designed for programmatic access to the system's
-  Application Programming Interface (API), enabling secure automation and
-  integration with external applications.
-- **Authentication**: The `Authentication` menu section configures the methods
-  and settings used to verify user identities and control access to the system.
+- **Informações do sistema**: As informações do sistema são um resumo dos
+  principais dados do servidor Zabbix e do sistema.
+- **Relatórios agendados**: O local onde podemos agendar nossos relatórios, um
+  `pdf` do painel que será enviado em uma data e hora especificadas.
+- **Relatório de disponibilidade**: Uma boa visão geral em que podemos ver qual
+  acionador esteve em `ok`/`nok` estado por quanto % do tempo
+- **Os 100 principais acionadores**: Outra página que visito muito: aqui temos
+  nossa lista principal com os acionadores que estiveram em um estado `NOK`.
+- **Registro de auditoria**: Uma visão geral da atividade do usuário que ocorreu
+  em nosso sistema. Útil se quisermos saber quem fez o quê e quando.
+- **Registro de ações**: Uma visão geral detalhada de nossas ações pode ser
+  encontrada aqui. Que correspondência foi enviada para quem e quando...?
+- **Notificações**: Uma visão geral rápida do número de notificações enviadas a
+  cada usuário.
 
 ---
 
-![Administration menu](ch02-administration-menu.png){ width="20%" }
+![Coleta de dados](ch02-datacollection-menu.png){ width="20%" }
 
-_2.18 Administration menu_
+_2.15 Coleta de dados_
 
-- **General**: The `General` menu section within administration allows
-  configuration of core system-wide settings and parameters.
-- **Audit log**: The `Audit log` menu section provides a chronological record of
-  system activities and user actions for security monitoring and
-  troubleshooting.
-- **Housekeeping**: The `Housekeeping` menu section configures automated
-  maintenance tasks for managing historical data and system performance.
-- **Proxies**: The `Proxies` menu section manages the configuration and
-  monitoring of proxy servers used for communication with managed hosts in
-  distributed environments.
-- **Macros**: The `Macros` menu section allows the definition and management of
-  global variables for flexible system configuration.
-- **Queue**: The `Queue` menu section provides real-time insight into the
-  processing status of internal system tasks and data handling.
+- **Grupos de modelos**: Um local para agrupar logicamente todos os modelos em
+  diferentes grupos. Antes, eles eram misturados com hosts em grupos de hosts.
+- **Grupos de hosts**: Uma coleção lógica de diferentes hosts reunidos. Os
+  grupos de hosts são usados para nossas permissões.
+- **Modelos**: Um conjunto de entidades, como itens e acionadores, pode ser
+  agrupado em um modelo. Um modelo pode ser aplicado a um ou mais hosts.
+- **Hosts**: O que precisamos no Zabbix para monitorar um host, aplicativo,
+  serviço ...
+- **Manutenção**: O local para configurar nossas janelas de manutenção. Uma
+  manutenção pode ser planejada nesse local.
+- **Correlação de eventos**: Quando temos vários eventos que disparam gatilhos
+  relacionados, podemos configurar correlações neste local.
+- **Descoberta**: Às vezes gostamos de usar o Zabbix para descobrir
+  dispositivos, serviços,... em nossa rede. Isso pode ser feito aqui.
 
 ---
 
-???+ info
+![Menu de alertas](ch02-alerts-menu.png){ width="20%" }
+
+_2.16 Menu de alertas_
+
+- **Ações**: Esse menu permite configurar ações com base nos `eventos` do
+  Zabbix. Podemos criar essas ações para gatilhos, serviços, descoberta,
+  registro automático e eventos internos.
+- **Tipos de mídia**: O Zabbix pode enviar mensagens, e-mails etc... com base
+  nas ações que configuramos. Esses tipos de mídia precisam de modelos e
+  precisam ser ativados.
+- **Scripts**: No Zabbix é possível utilizar scripts em nossas ações e
+  front-end. Essas ações precisam ser criadas aqui primeiro e configuradas.
+
+---
+
+![Menu de usuários](ch02-users-menu.png){ width="20%" }
+
+_2.17 Menu de usuários_
+
+- **Grupos de usuários**: A seção do menu `User groups` permite a criação e o
+  gerenciamento de grupos de usuários para simplificar o acesso e o controle de
+  permissões.
+- **Funções de usuário**: A seção do menu `User roles` define conjuntos de
+  permissões que podem ser atribuídas a usuários individuais, limitando suas
+  ações permitidas com base no tipo de usuário que eles têm no sistema.
+- **Usuários**: A seção do menu `Users` fornece a interface para gerenciar
+  contas de usuários individuais, incluindo configurações de criação e
+  modificação.
+- **Tokens de API**: A seção do menu `API tokens` gerencia credenciais de
+  autenticação especificamente projetadas para acesso programático à Interface
+  de Programação de Aplicativos (API) do sistema, permitindo a automação segura
+  e a integração com aplicativos externos.
+- **Autenticação**: A seção do menu `Authentication` define os métodos e as
+  configurações usados para verificar as identidades dos usuários e controlar o
+  acesso ao sistema.
+
+---
+
+![Menu de administração](ch02-administration-menu.png){ width="20%" }
+
+_2.18 Menu de administração_
+
+- **Geral**: A seção do menu `General` na administração permite a configuração
+  das principais definições e parâmetros de todo o sistema.
+- **Registro de auditoria**: A seção do menu `Audit log` fornece um registro
+  cronológico das atividades do sistema e das ações do usuário para
+  monitoramento de segurança e solução de problemas.
+- **Housekeeping**: A seção do menu `Housekeeping` configura tarefas de
+  manutenção automatizadas para gerenciar dados históricos e o desempenho do
+  sistema.
+- **Proxies**: A seção do menu `Proxies` gerencia a configuração e o
+  monitoramento de servidores proxy usados para comunicação com hosts
+  gerenciados em ambientes distribuídos.
+- **Macros**: A seção do menu `Macros` permite a definição e o gerenciamento de
+  variáveis globais para a configuração flexível do sistema.
+- **Queue**: A seção do menu `Queue` fornece informações em tempo real sobre o
+  status de processamento das tarefas internas do sistema e do tratamento de
+  dados.
+
+---
+
+???+ informações
 
     More information can be found in the online Zabbix documentation [here](https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections)
 
-???+ info
+???+ informações
 
     You will see that Zabbix is using the modal forms in the frontend on many places.
     The problem is that they are not movable. [This](https://github.com/gr8b/zabbix-module-uitwix/)
     module created by one of the Zabbix developers `UI Twix` will solve this problem
     for you.
 
-???+ Note
+???+ Nota
 
     At time of writing there is no Dashboard import/export functionality in zabbix.
     So when upgrading dashboards it needs to be created by hand. It was on the roadmap
@@ -388,43 +398,45 @@ _2.18 Administration menu_
 
 ## Conclusão
 
-The Zabbix frontend serves as the central command center for monitoring,
-configuration, and system awareness. In this chapter, you explored how to
-navigate its interface from dashboards and the customizable main menu to
-powerful tools like system information and global search. You learned how each
-menu section (Monitoring, Data Collection, Alerts, Users, Administration, and
-more) aligns with distinct functions, and how kiosk mode and layout controls
-help optimize visibility during daily operations.
+O frontend do Zabbix funciona como o centro de comando central para
+monitoramento, configuração e reconhecimento do sistema. Neste capítulo, você
+explorou como navegar pela interface, desde painéis e o menu principal
+personalizável até ferramentas poderosas, como informações do sistema e pesquisa
+global. Você aprendeu como cada seção do menu (Monitoramento, Coleta de Dados,
+Alertas, Usuários, Administração e outros) se alinha a funções distintas e como
+o modo de quiosque e os controles de layout ajudam a otimizar a visibilidade
+durante as operações diárias.
 
-Additionally, the system information widget stands out as a real time diagnostic
-snapshot, revealing critical metrics such as server status, number of hosts,
-templates, items, triggers, and user activity all of which aid rapid
-troubleshooting and performance assessment.
+Além disso, o widget de informações do sistema se destaca como um instantâneo de
+diagnóstico em tempo real, revelando métricas críticas, como status do servidor,
+número de hosts, modelos, itens, acionadores e atividade do usuário, o que ajuda
+na rápida solução de problemas e na avaliação do desempenho.
 
-By mastering these frontend components, you're now better equipped to
-confidently navigate Zabbix, manage user access, interpret monitoring data, and
-maintain your environment more effectively. This foundational knowledge lays the
-groundwork for deeper exploration into host configuration, authentication
-mechanisms, and advanced monitoring workflows in the chapters that follow.
+Ao dominar esses componentes de front-end, você estará mais bem equipado para
+navegar com confiança no Zabbix, gerenciar o acesso do usuário, interpretar os
+dados de monitoramento e manter seu ambiente com mais eficiência. Esse
+conhecimento básico estabelece as bases para uma exploração mais profunda da
+configuração do host, dos mecanismos de autenticação e dos fluxos de trabalho de
+monitoramento avançado nos capítulos seguintes.
 
 ## Perguntas
 
-- Which frontend section (Monitoring, Data Collection, Alerts, Users, or
-  Administration) do you think you'll use most often in your daily work, and
-  why?
+- Qual seção do front-end (Monitoramento, Coleta de dados, Alertas, Usuários ou
+  Administração) você acha que usará com mais frequência no seu trabalho diário
+  e por quê?
 
-- How can kiosk mode be useful in a real-world monitoring environment, and what
-  types of dashboards would you display with it?
+- Como o modo quiosque pode ser útil em um ambiente de monitoramento do mundo
+  real e que tipos de painéis você exibiria com ele?
 
-- What insights can the system information widget provide during
-  troubleshooting, and how might it help identify issues with server
-  performance?
+- Quais percepções o widget de informações do sistema pode fornecer durante a
+  solução de problemas e como ele pode ajudar a identificar problemas com o
+  desempenho do servidor?
 
-- Why is it important to understand the difference between data displayed in
-  “Monitoring” and configuration options found in “Data Collection”?
+- Por que é importante entender a diferença entre os dados exibidos em
+  "Monitoramento" e as opções de configuração encontradas em "Coleta de dados"?
 
-- If you were onboarding a new team member, which parts of the frontend would
-  you show them first, and why?
+- Se você estivesse integrando um novo membro da equipe, quais partes do
+  front-end você mostraria a ele primeiro e por quê?
 
 ## URLs úteis
 
