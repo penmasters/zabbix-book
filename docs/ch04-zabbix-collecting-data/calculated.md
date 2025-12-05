@@ -172,7 +172,7 @@ Again on our host we would need the item `net.if.total[eth0]` and
 **The Crucial Role of Percentile Analysis in Network Quality**
 When assessing network latency, specifically using metrics like ICMP Ping response
 time, relying solely on the average (mean) can be profoundly misleading a pitfall
-analogous to analyzing website performance without considering real world user
+analogous to analysing website performance without considering real world user
 experience.
 
 **Suppose :**
