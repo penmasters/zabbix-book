@@ -188,7 +188,7 @@ flowchart LR
 * **Version Requirements:** All proxies must run Zabbix **7.0 or later** and match the server version.
 * **Firewall Requirements:** Agents must be able to communicate with **every proxy** in the group.
 * **SNMP Traps Not Supported:** Proxy groups **cannot process SNMP traps**. Traps must be routed to a dedicated, non-grouped proxy.
-* **External Dependencies Must Be Identical:** If proxies use external check scripts, ODBC configs, or third-party integrations, ensure **all proxies have identical configurations**.
+* **External Dependencies Must Be Identical:** If proxies use external check scripts, ODBC configuration, or third-party integrations, ensure **all proxies have identical configurations**.
 * **VMware Monitoring Impact:** VMware hypervisors may be distributed across proxies, and each proxy will retrieve cached data from vCenter, increasing load.
 
 ---
