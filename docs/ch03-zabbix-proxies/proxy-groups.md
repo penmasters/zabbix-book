@@ -142,13 +142,13 @@ Hosts must be explicitly assigned to the proxy group:
 
 1.  Select hosts in **Hosts**.
 2.  Use **Mass Update**.
-3.  Set **Monitored by proxy = \<Proxy Group Name\>**.
+3.  Set **Monitored by proxy = <Proxy Group Name\>**.
 
 Only hosts assigned to the group are eligible for automated failover and load balancing.
 
 ---
 
-## Architecture Diagram (Mermaid)
+## Architecture Diagram
 
 ```mermaid
 flowchart LR
@@ -202,6 +202,235 @@ flowchart LR
 * Test failover events regularly in non-production environments.
 
 ---
+## Practical Example
+
+This example utilizes a single Zabbix Server and a three node Proxy Group to provide
+superior High Availability (HA) and load balancing for a large remote location.
+This configuration allows for failure tolerance and demonstrates mixed Active/Passive
+monitoring modes.
+
+You don't need multiple virtual machines but of course we won't stop you if you
+want too. :) An easy alternative is containers. Or running proxies with different
+configuration files manually from the command line with the option `-c` or `--config-file`.
+If you don't know how have a look at our previous chapter `Running proxies as containers`.
+
+### Environment Overview
+
+| Component | Quantity | Role |
+|:---       |:---      |:---  |
+| Zabbix Server | 1 (zbx-server-main) | Central hub for all collected data. |
+| Zabbix Proxies | 3 (zbx-proxy-A1, A2, A3) | Collect data locally at the branch office. |
+| Hosts | 300 | Monitored devices in the branch office. |
+| Monitoring Group | Branch-A_HA_Group      | The Zabbix entity responsible for distributing the |
+| | |300 hosts across the 3 proxies for redundancy.|
+
+
+### Zabbix Proxy Configuration File (zabbix_proxy.conf)
+
+The IPs are just examples, adapt them to your own setup.
+
+| Parameter | zbx-proxy-A1 (Active) | zbx-proxy-A3 (Passive) | zbx-proxy-A2 (Active) | Critical Note |
+|:---       |:---                   |:---                    |:---                   |:---           |
+| IP       | 10.0.0.1              | 10.0.0.2               | 10.0.0.3              | IP/DNS of the the Proxy server. |
+| Hostname | zbx-proxy-A1 | zbx-proxy-A3 | zbx-proxy-A2 | Must match the Proxy Name defined in the Zabbix Frontend. |
+| ProxyMode | 1 | 0 | 1 | 1 = Active (proxy connects to server). 0 = Passive (server connects to proxy).|
+| DBName | /tmp/proxy_a1.db | /tmp/proxy_a3.db | /tmp/proxy_a2.db | Each proxy must use a unique database file when use SQlite3 .|
+
+### Zabbix Frontend Setup (Administration)
+
+Follow these steps in the Zabbix Web Interface (Administration section) to create and assign the Proxy Group.
+
+#### Define Individual Proxies (Administration -> Proxies)
+
+- Navigate to `Administration`-> `Proxies`.
+- Click `Create proxy`.
+- Define all three proxies one by one:
+    - Proxy name: Enter the `Hostname` (e.g., `zbx-proxy-A1`).
+    - Proxy mode: Select Active (1) for A1 and A2, and Passive (0) for A3.
+    - Proxy group: Leave as None for now.
+- Click Add.
+
+![ch03-add-proxy.png](ch03-add-proxy.png)
+_ch03 Add proxy_
+
+#### Create the Proxy Group (Administration -> Proxy groups)
+
+- Navigate to `Administration`-> `Proxy groups`.
+- Click `Create proxy group`.
+- Configure the group parameters for High Availability:
+    - Name: `Branch-A_HA_Group`
+    - Minimum proxies: Set to 2. This ensures if only one proxy remains, the group
+      will enter a Degrading state, preventing the single remaining proxy from
+      being overloaded.
+    - Failover period: `1m` (The time the server waits before redistributing hosts
+      from an offline proxy).
+
+![ch03-create-proxy-group.png](ch03-create-proxy-group.png)
+_ch03 Create Proxy groups_
+
+#### Assign Proxies to the Group (Administration -> Proxies)
+
+- Go back to `Administration -> `Proxies`.
+- Edit each proxy (`zbx-proxy-A1`, `zbx-proxy-A2`, and `zbx-proxy-A3`).
+- Change the Proxy group dropdown from `None` to `Branch-A_HA_Group`.
+- Define `Address for active agents` add the IP of the proxy.
+- Click `Update`.
+
+![ch03-add-proxy-to-group.png](ch03-add-proxy-to-group.png)
+_ch03 Add proxy to proxy group_
+
+![ch03-all-proxy-linked.png](ch03-all-proxy-linked.png)
+_ch03 All proxies linked with a proxy group_
+
+### Zabbix Agent Configuration (zabbix_agentd.conf)
+
+To ensure hosts can be monitored by any proxy in the group, the `Zabbix Agent`
+configuration on the 300 hosts must be aware of all proxy IP addresses. Don't
+worry we will not install 300 hosts. Just one agent is fine, we will use a
+passive agent and just create 300 dummy agents in the frontend.
+
+| Parameter | Configuration Value Example | Rationale for HA/Load Balancing |
+| :---      |:---                         |:---                             |
+| Server | "IP_A1,IP_A2,IP_A3,10.0.0.1" | "Passive Checks: Allows the host to accept |
+| | | incoming connections (checks) from any IP address in the group (and the Server,|
+| | | for redundancy or occasional checks)." |
+| ServerActive | IP_A1;IP_A2;IP_A3 | "Active Checks: The agent will attempt to |
+| | | send data to the first proxy in the semi-colon list. If that fails, it automatically |
+| | | tries the next one, providing agent-side failover."|
+| Hostname    | [ Not too important ] | We will use passive agents to the name is not important.|
+
+As a final step you now have to create 300 hosts in the frontend and select
+`Monitored by proxy` field to the `proxy group :` `Branch-A_HA_Group`.
+
+Just here is a script for you that will handle those things. Just create an API
+token for the Zabbix Administrator account or any account with enough privileges
+and fill in the API token and the URL of the zabbix frontend. Make the script
+executable `chmod +x create_hosts.py` or whatever you used as name for the
+script. Verify also the `Host_group_id`, `Template_id` and the `Proxy_group_id`. 
+This can be done by looking at the URL when clicking on them.
+
+???+ note
+     For this script to work you need to have python3 and you probably need
+     to install pip and the requests module.
+
+
+``` python
+#!/bin/python3
+import requests
+import json
+import random
+
+# --- Configuration ---
+ZABBIX_URL = "http://<Server URL>/api_jsonrpc.php"
+AUTH_TOKEN = "<API TOKEN>"  # Replace with your Zabbix API token
+HOST_COUNT = 300
+HOST_GROUP_ID = "2"  # Replace with the actual ID of your target Host Group (e.g., 'Branch A Servers')
+TEMPLATE_ID = "10561" # Replace with a common template ID (e.g., 'Template Module Zabbix agent')
+PROXY_GROUP_ID = "1" # Replace with the actual ID of your 'Branch-A_HA_Group'
+
+def api_call(method, params, id_val=1):
+    """
+    Generic function to make a Zabbix API call for 7.2+.
+    - Token is passed via Authorization: Bearer header.
+    - 'auth' is NOT included in the JSON body anymore.
+    """
+    headers = {
+        "Content-Type": "application/json-rpc",
+        "Authorization": f"Bearer {AUTH_TOKEN}",
+    }
+
+    payload = {
+        "jsonrpc": "2.0",
+        "method": method,
+        "params": params,
+        "id": id_val
+    }
+
+    try:
+        # using json= lets requests handle encoding
+        response = requests.post(ZABBIX_URL, json=payload, headers=headers, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"API Request Error on method {method}: {e}")
+        return None
+
+def create_hosts():
+    """Creates the bulk hosts using the host.create API method."""
+    print(f"Starting host creation for {HOST_COUNT} hosts...")
+
+    # --- AUTHENTICATION CHECK ---
+    auth_check_response = api_call(
+        "user.get",
+        {"output": ["username"]},
+        id_val=1000
+    )
+
+    if auth_check_response and 'result' in auth_check_response:
+        if auth_check_response['result']:
+            user_alias = auth_check_response['result'][0]['username']
+            print(f" Authenticated successfully as: {user_alias}")
+        else:
+            print(" Auth success, but no users returned. Check the token's permissions.")
+            return
+    elif auth_check_response and 'error' in auth_check_response:
+        print(f" Initial Authentication Error. Received: {auth_check_response['error']['data']}")
+        print("Please double-check your ZABBIX_URL and AUTH_TOKEN.")
+        return
+    else:
+        print(" Failed to establish connection for authentication check. Check ZABBIX_URL.")
+        return
+
+    # --- END AUTHENTICATION CHECK ---
+
+    hosts_created_count = 0
+    for i in range(1, HOST_COUNT + 1):
+        host_name = f"SIM-HOST-{i:03d}"
+
+        params = {
+            "host": host_name,
+            "name": host_name,
+            "groups": [{"groupid": HOST_GROUP_ID}],
+            "templates": [{"templateid": TEMPLATE_ID}],
+
+            # If you are using proxy groups in 7.x:
+            "proxy_groupid": int(PROXY_GROUP_ID),
+            "monitored_by": 2,
+
+            "interfaces": [{
+                "type": 1,  # Zabbix Agent interface
+                "main": 1,
+                "useip": 1,
+                "ip": "127.0.0.1",
+                "dns": "",
+                "port": "10050"
+            }],
+            "status": 0  # enabled
+        }
+
+        response = api_call("host.create", params, id_val=i + 1)
+
+        if response and 'result' in response:
+            host_id = response['result']['hostids'][0]
+            print(f"✅ Created host {host_name} (ID: {host_id})")
+            hosts_created_count += 1
+        elif response and 'error' in response:
+            print(f" Error creating {host_name}: {response['error']['data']}")
+            if "already exists" in response['error']['data']:
+                break
+        else:
+            print(f" Unknown API error creating {host_name}.")
+            break
+
+    print(f"\n--- Script Finished ---")
+    print(f"Total Hosts Created: {hosts_created_count}")
+
+if __name__ == "__main__":
+    create_hosts()
+```
+
+![ch03-proxy-groups.png](ch03-proxy-groups.png)
+_ch03 proxy groups_
 
 ## Troubleshooting Tips
 
@@ -234,9 +463,7 @@ Zabbix Proxy Groups significantly enhance the resilience and scalability of dist
 
 ## Useful URLs
 
-| Description | URL |
-| :--- | :--- |
-| **Zabbix Distributed Monitoring Manual** | `https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring` |
-| **Proxy Load Balancing and HA Official Documentation** | `https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring/proxies/ha` |
-| **Zabbix Proxy Configuration** | `https://www.zabbix.com/documentation/current/en/manual/concepts/proxy` |
-| **Zabbix Agent Configuration (ServerActive)** | `https://www.zabbix.com/documentation/current/en/manual/config/items/zabbix_agent/config` |
+- `https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring
+- `https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring/proxies/ha
+- https://www.zabbix.com/documentation/current/en/manual/concepts/proxy
+- https://www.zabbix.com/documentation/current/en/manual/config/items/zabbix_agent/config
