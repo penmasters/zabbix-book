@@ -34,6 +34,8 @@ open-source gemeenschappen.
 - Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
 - Aigars Kadikis :
   [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
+- Giedrius Stasiulionis :
+  [https://github.com/b1nary1](https://github.com/b1nary1)
 
 Een lijst van alle medewerkers die zo vriendelijk waren om typefouten etc. te
 corrigeren kan hier gevonden worden :
@@ -43,6 +45,8 @@ corrigeren kan hier gevonden worden :
 
 - Nicolas Hermel : [https://github.com/wityender](https://github.com/wityender)
 - Dimitry Q : [https://github.com/krotesk](https://github.com/krotesk)
+- Leonardo Cardoso:
+  [https://github.com/leocardosoo](https://github.com/leocardosoo)
 
 ---
 

@@ -32,6 +32,8 @@ resource into something valuable for the monitoring and open-source communities.
 - Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
 - Aigars Kadikis :
   [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
+- Giedrius Stasiulionis :
+  [https://github.com/b1nary1](https://github.com/b1nary1)
 
 A list of all the contributors who where so kind to fix typos etc .. can be
 found here :
@@ -41,6 +43,8 @@ found here :
 
 - Nicolas Hermel : [https://github.com/wityender](https://github.com/wityender)
 - Dimitry Q : [https://github.com/krotesk](https://github.com/krotesk)
+- Leonardo Cardoso:
+  [https://github.com/leocardosoo](https://github.com/leocardosoo)
 
 ---
 

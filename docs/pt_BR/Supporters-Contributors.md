@@ -34,6 +34,8 @@ para as comunidades de monitoramento e de código aberto.
 - Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
 - Aigars Kadikis :
   [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
+- Giedrius Stasiulionis :
+  [https://github.com/b1nary1](https://github.com/b1nary1)
 
 Uma lista de todos os colaboradores que tiveram a gentileza de corrigir erros de
 digitação etc. pode ser encontrada aqui:
@@ -43,6 +45,8 @@ digitação etc. pode ser encontrada aqui:
 
 - Nicolas Hermel : [https://github.com/wityender](https://github.com/wityender)
 - Dimitry Q : [https://github.com/krotesk](https://github.com/krotesk)
+- Leonardo Cardoso:
+  [https://github.com/leocardosoo](https://github.com/leocardosoo)
 
 ---
 
