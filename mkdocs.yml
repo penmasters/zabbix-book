@@ -51,11 +51,11 @@ nav:
       - ch04-zabbix-collecting-data/zabbix-agent-passive.md
       - ch04-zabbix-collecting-data/zabbix-agent-active.md
       - ch04-zabbix-collecting-data/snmp-polling.md
+      - ch04-zabbix-collecting-data/snmp-trapping.md
+      - ch04-zabbix-collecting-data/http.md
       - ch04-zabbix-collecting-data/preprocessing.md
       - ch04-zabbix-collecting-data/dependent.md
-      - ch04-zabbix-collecting-data/snmp-trapping.md
       - ch04-zabbix-collecting-data/ssh-telnet.md
-      - ch04-zabbix-collecting-data/http.md
       - ch04-zabbix-collecting-data/script.md
       - ch04-zabbix-collecting-data/jmx.md
       - ch04-zabbix-collecting-data/ipmi.md
