@@ -7,36 +7,65 @@ tags: [advanced, expert]
 
 # Browser item
 
-# Chapter: Synthetic Web Monitoring with the Zabbix Browser Item
+## Synthetic Web Monitoring with the Zabbix Browser Item
 
-Modern applications require more than simple HTTP availability checks. The **Zabbix Browser item** enables real user simulation by controlling a headless Chrome/Firefox instance through WebDriver. This allows Zabbix to measure real rendering times, validate user flows, capture screenshots, and extract content from web pages.
+Modern applications require more than simple HTTP availability checks. While an HTTP
+agent can confirm whether a web server responds, it cannot verify whether a page renders
+correctly, whether JavaScript loads, or whether a user can interact with key interface
+elements.
 
----
+The Zabbix Browser item solves this by executing real, scriptable, headless browsers
+such as Chrome or Firefox through WebDriver, enabling full synthetic user monitoring.
 
-## 1. Architecture Overview
-
-![WebDriver Architecture](image:selenium-webdriver-architecture-diagram)
-![Zabbix Browser Monitoring](image:zabbix-browser-monitoring-architecture)
-
-Components involved:
-
-- **Zabbix Server/Proxy:** Executes JavaScript (ES5 only).
-- **WebDriver (Selenium/ChromeDriver):** Controls browser operations.
-- **Browser (Chrome/Firefox):** Loads content, renders pages, returns metrics & screenshots.
-
-Zabbix uses **Duktape**, an ES5-only JavaScript engine, meaning modern syntax (ES6, async/await) cannot be used.
+This chapter explains how to configure the Browser item, write reliable scripts, extract
+metrics, troubleshoot errors, and avoid common pitfalls.
 
 ---
 
-## 2. Running Browsers in Headless Mode
+## Architecture Overview
 
-Linux servers typically lack a graphical environment, causing browser startup failures like:
+![WebDriver Architecture](ch03_xx_architecture.png)
+_Webdriver Architecture_
+
+Synthetic monitoring with Zabbix relies on a three-layer architecture:
+
+- **Zabbix Server/Proxy:**
+  Executes JavaScript using an embedded ES5 engine (Duktape).
+  Runs your script, processes results, and stores metrics.
+- **WebDriver**
+  Acts as a bridge between Zabbix and a browser. Example: Selenium Standalone Server,
+  Selenium Grid, ChromeDriver, GeckoDriver.
+
+- **Browser (Chrome/Firefox)**
+  Performs all real HTML rendering, JavaScript execution, screenshot capture,
+  and navigation.
+
+Zabbix does not include a browser internally; it communicates to one externally
+through the WebDriver JSON protocol.
+
+???+ info
+
+     Zabbix uses an ES5 JavaScript engine. This means:
+
+     - No async, no await
+     - No let, const, arrow functions, Promises
+     - Use only ES5 syntax (var, classical functions, synchronous calls)
+
+---
+
+## Running Browsers in Headless Mode
+
+Most Zabbix environments run on Linux servers which do not have a GUI.
+A typical browser expects an X11/Wayland display environment. Without one, Chrome
+or Firefox fails with errors such as:
 
 - “Missing X server”
 - “No DISPLAY variable set”
 - “GPU process initialization failed”
 
-Solution: Run Chrome in **headless** mode.
+The solution is Headless Mode, which allows Chrome/Firefox to run without a graphical environment.
+
+**Recommended Chrome options:**
 
 ```js
 var opts = Browser.chromeOptions({
@@ -48,43 +77,54 @@ var opts = Browser.chromeOptions({
     ]
 });
 ```
-3. Writing Reliable Browser Scripts
+Why these flags matter:
 
-A robust synthetic-check script must:
+| Flag            | Purpose                                          |
+| --------------- | ------------------------------------------------ |
+| `--headless`    | Runs Chrome without GUI. Required.               |
+| `--no-sandbox`  | Needed in SELinux/sandboxed server environments. |
+| `--disable-gpu` | Prevents GPU-related crashes in headless mode.   |
+| `--window-size` | Ensures consistent screenshots and layout.       |
 
-Initialize a stable browser session
+---
 
-Interact with DOM elements
+## Writing Reliable Browser Scripts
 
-Wait for dynamic content
+**A robust synthetic-check script must:**
 
-Collect performance metrics
+- Create a stable WebDriver session
+- Wait for elements and dynamic content
+- Perform interactions (navigate, click, fill fields)
+- Collect metrics (TTFB, DOM load, full load time)
+- Capture screenshots
+- Always return JSON, even when errors occur
+- Handle crashes gracefully
 
-Always return JSON (never undefined)
+The most important rule:
 
-Use a try/finally block to guarantee return values.
+Always wrap your script in a try/finally block
 
-4. Practical Example: Monitoring https://www.zabbix.com
-Actions Performed
+The finally block must always return a valid JSON string.
+This prevents “Unsupported item key value” errors.
 
-Load homepage
+---
 
-Click Download menu link
+## Practical Example: Monitoring https://www.zabbix.com
 
-Wait for navigation
+Scenario
 
-Extract <h1> headline text
-
-Collect metrics + screenshot
-
-Return structured JSON
+- Navigate to https://www.zabbix.com/
+- Click the Download menu link
+- Wait for the Download page to load
+- Extract the :  headline text
+- Collect performance timing
+- Return all results as JSON
 
 Screenshot (reference)
 
+zabbix homepage  and download page
 
-
-
-4.1 Full Script Example
+### Full Script Example
 
 ```
 var opts = Browser.chromeOptions({
@@ -99,22 +139,29 @@ var opts = Browser.chromeOptions({
 var browser = null;
 
 try {
+    // Initialize browser
     browser = new Browser(opts);
     browser.setScreenSize(1920, 1080);
 
+    // Load homepage
     browser.navigate('https://www.zabbix.com/');
     browser.waitForLoad();
 
+    // Click "Download"
     var downloadLink = browser.findElement('a[href="/download"]');
     downloadLink.click();
 
+    // Wait for Download page
     browser.waitForLoad(8000);
 
+    // Extract headline
     var h1 = browser.findElement('h1');
     var headline = h1.getText();
 
+    // Collect performance metrics
     browser.collectPerfEntries();
 
+    // Build result object
     var result = {
         status: 'ok',
         headline: headline,
@@ -125,13 +172,15 @@ try {
     return JSON.stringify(result);
 
 } finally {
+    // Ensure Zabbix always gets a return value
     if (browser && browser.session) {
         return JSON.stringify(browser.getResult());
     }
     return JSON.stringify({ status: 'session_failed' });
 }
+
 ```
-## 5. What the Script Returns
+### What the Script Returns
 
 The Zabbix Browser item returns a JSON structure that includes:
 
@@ -158,6 +207,9 @@ These dependent items transform the Browser item into a full set of synthetic mo
 
 ## 6. Troubleshooting Common Failures
 
+Synthetic monitoring failures fall into predictable categories.
+Below are the most common cases and reliable fixes.
+
 ### 6.1 Browser Fails to Start
 
 **Symptoms:**
@@ -169,6 +221,7 @@ These dependent items transform the Browser item into a full set of synthetic mo
 - Missing headless flags
 - Required system libraries not installed
 - ChromeDriver and Chrome version mismatch
+- Sadndbox or SELinux restrictions
 
 **Fixes:**
 1. Ensure_browser arguments include:  
@@ -179,7 +232,7 @@ These dependent items transform the Browser item into a full set of synthetic mo
 
 ---
 
-### 6.2 Script Returns No Value (Unsupported Item)
+### Script Returns No Value (Unsupported Item)
 
 **Symptoms:**
 - Zabbix marks the item as *Unsupported*
@@ -189,7 +242,7 @@ These dependent items transform the Browser item into a full set of synthetic mo
 - JavaScript error occurs before reaching `return`, leaving the script without output.
 
 **Fix:**
-Always wrap your script with:
+Always wrap your script with try/finally:
 
 ```js
 try {
@@ -197,51 +250,87 @@ try {
 } finally {
     return JSON.stringify(browser.getResult());
 }
-
 ```
 
-### 6.3 Element Not Found
+### Element not found
 
-**Symptoms:**
-- “Failed to find element”
-- Script stops during `findElement()`, `.click()`, or `.getText()`
-- Browser session ends prematurely
+Symptoms:
+- The script reports "Failed to find element".
+- The script fails during clicks or text extraction.
+- The script stops when calling findElement or similar functions.
 
-**Typical Causes:**
-1. **Page not fully loaded yet**  
-   The script attempts to interact with elements before the DOM is ready, especially on JavaScript-heavy websites.
+Causes:
+- The page has not finished loading or rendering.
+- The CSS selector or XPath used does not match the actual element.
+- The website uses dynamic content that appears after JavaScript executes.
+- The target element exists inside an iframe which requires switching context.
+- The element exists but is hidden or not interactable due to overlays or animations.
 
-2. **Incorrect or unstable selector**  
-   CSS selectors or XPath expressions may differ from what the script expects, or may change over time.
+#### Fixes and Best Practices
 
-3. **Dynamic content / delayed rendering**  
-   SPAs (React, Vue, Angular) load content asynchronously. Elements may not exist immediately after navigation.
+Explicitly wait for the element before interacting:
 
-4. **Element inside an iframe**  
-   WebDriver cannot see inside iframes until the script switches context.
-
-5. **Element hidden or not interactable**  
-   Sometimes the element exists but is not visible or clickable due to overlays, animations, or cookie banners.
-
----
-
-**Fixes and Best Practices:**
-
-#### 1. Explicitly wait for the element
-
-Use `waitForElement()` to prevent interacting too early:
-
-```js
+``` js
 browser.waitForElement('#username', 5000);
 ```
 
-#### 2. Validate the selector manually
+Validate the selector in your browser console:
 
-```js
+``` js
 document.querySelector('a[href="/download"]')
 ```
+If this returns null, the script will also fail.
 
+Prefer stable selectors instead of cosmetic ones.
 
+Unstable selectors include classes based on colors, layout, or nth-child logic.
+Stable selectors include IDs, attributes, and data-qa markers.
+
+Use XPath when selecting text-based elements:
+
+```
+var elem = browser.findElement('//h1[contains(text(),"Zabbix")]');
+```
+
+Add controlled waits for dynamic SPA rendering when necessary:
+
+``` js
+browser.sleep(1000);
+```
+
+If the target element is inside an iframe, switch context first:
+
+```js
+var frame = browser.findElement('iframe#iframe_id');
+```
+
+browser.switchToFrame(frame);
+var innerElem = browser.findElement('#inside-frame');
+
+**Recommended pattern:**
+
+```js
+browser.waitForElement('#welcome-message', 5000);
+var welcomeElem = browser.findElement('#welcome-message');
+var text = welcomeElem.getText();
+```
+
+---
+
+### Common Pitfalls (Text Summary)
+
+Here are the most frequent mistakes seen in Browser item implementations:
+
+- Forgetting headless mode, causing browser launch failure
+- Forgetting try/finally, resulting in unsupported items
+- Using unstable or incorrect selectors
+- Using ES6 syntax instead of ES5
+- Not calling setScreenSize(), causing unpredictable Chrome behavior
+- Running too many sessions on one Selenium node
+- Scripts running too long and blocking Zabbix queues
+- Returning plain text instead of JSON, breaking dependent items
+
+Avoiding these pitfalls ensures stable and predictable Browser item monitoring.
 
 # Conclusion
 
