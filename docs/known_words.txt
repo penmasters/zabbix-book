@@ -388,3 +388,11 @@ viewport
 shm
 ncat
 dev
+nc
+logics
+sandboxed
+ttfb
+hostgroup
+openssh
+preprocess
+
