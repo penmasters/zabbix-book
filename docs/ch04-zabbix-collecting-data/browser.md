@@ -8,10 +8,11 @@ tags: [advanced, expert]
 # Browser item
 
 ## Foundational Concepts and Synthetic Monitoring Architecture
-The introduction of the Browser Item (Item Type 19) in Zabbix 7.x marked a significant
+
+The introduction of the Browser Item in Zabbix 7.0 marked a significant
 expansion of monitoring capabilities, allowing Zabbix to serve not only as a traditional
 IT infrastructure monitoring tool but also as a powerful resource for monitoring
-strategic web-based information. This item type enables synthetic monitoring a
+strategic web-based information. This item type enables synthetic monitoring, a
 method that simulates the behavior of a real user, including multi-step journeys
 (user journeys) such as logging in, navigating through menus, or completing a checkout
 process.
@@ -236,7 +237,8 @@ collection.
 The script has access to Zabbix's additions to the JavaScript language, particularly
 the **Browser objects**. The central `Browser` object manages the WebDriver session;
 it is initialized upon creation and terminated upon destruction. A single script
-can support up to four `Browser` objects.
+can support up to four `Browser` objects but they will share the same WebDriver
+session internally.
 
 **The basic workflow of any script includes :**
 
@@ -265,7 +267,7 @@ graphical environment.
 ```js
 var opts = Browser.chromeOptions({
     args: [
-        '--headless',
+        '--headless=new',
         '--no-sandbox',
         '--disable-gpu',
         '--window-size=1920,1080'
@@ -289,8 +291,7 @@ are crucial :
 
 - `navigate(url)`: Navigates the browser to the specified URL.
 - `findElement(strategy, selector)`: Finds a single element on the page (e.g., an
-  input field or button) using a location strategy (CSS selector, XPath, link text,
-  etc.).
+  input field or button) using a location strategy (CSS, XPath )
 - `sendKeys(text)/click()`: Methods of the returned Element object to enter text
   or click buttons.
 - `setElementWaitTimeout(timeout)`: Sets the implicit wait time (in milliseconds)
@@ -365,7 +366,7 @@ of the Browser Item.
 - **Type of Information:** Set this to Binary. This data type is specifically designed
   to store and display large binary data, such as Base64-encoded images.
 - **Preprocessing:** Use JSONPath to extract the Base64-encoded string produced
-  by `browser.getScreenshot()`.
+  by `browser.getScreenshot()`. 
 
 It is vital to consider storage limits. The Base64-encoded image may be a maximum
 of 1 MB in size. This limit can theoretically be adjusted via the `ZBX_MAX_IMAGE_SIZE`
@@ -394,8 +395,9 @@ underlying WebDriver infrastructure is essential.
 
 - **Timeout Optimization:** In addition to the Zabbix Master Item Timeout parameter,
   script authors should actively use the internal JavaScript timeouts, such as
-  `setSessionTimeout` (page load time) and `setElementWaitTimeout` (waiting for
-  dynamic elements). This ensures the script fails as quickly as possible if a
+  `browser.setElementWaitTimeout(ms)` and `browser.setSessionTimeout(ms)` and,
+  when needed, `browser.setScriptTimeout(ms)`.
+  This ensures the script fails as quickly as possible if a
   step fails, releasing the costly Browser Poller sessions sooner for other checks.
 
 - **Data Retention Policy:** Storing Base64-encoded images (Binary data) can lead
@@ -414,7 +416,7 @@ and the external WebDriver logs should be investigated jointly.
 
 | Problem/Error Message | Possible Cause    | Diagnosis Tool | Solution/Mitigation | 
 |:---                   |:---               |:---            |:---                 |
-| Failed to get JSON of the requested website | Zabbix cannot reach the WebDriverURL or the WebDriver is not responding correctly. | Zabbix Server log (zabbix_server.log); nc/curl to the WebDriver port 4444. |8Check network connectivity, firewall rules, and the Selenium Server status.|
+| Failed to get JSON of the requested website | Zabbix cannot reach the WebDriverURL or the WebDriver is not responding correctly. | Zabbix Server log (zabbix_server.log); nc/curl to the WebDriver port 4444. | Check network connectivity, firewall rules, and the Selenium Server status.|
 | Zabbix Queue backlog for Browser Items | Too few StartBrowserPollers set, or the WebDriver host is overloaded. | Zabbix Monitoring → Queue Overview; OS metrics on the WebDriver host (CPU/RAM).| Increase StartBrowserPollers or scale the WebDriver infrastructure (e.g., via Proxies).|
 | WebdriverError or unexplained crashes  | Problems with the Chrome engine in the container, often due to insufficient shared memory. | Selenium Container logs; use VNC (port 7900) for visual debugging. | Confirm that the --shm-size="2g" parameter was used when starting the Docker container.|
 | Timeouts on complex scripts | Implicit wait times are too short for dynamic content; Zabbix Timeout is too low. | Increase the Timeout at the item level; adjust setElementWaitTimeout in the JS. | Use try...catch to isolate the exact error position and generate a Base64 screenshot. |
@@ -439,7 +441,7 @@ This requires strict security measures.
 Scenario
 
 - Navigate to https://www.zabbix.com/
-- Click the Download menu link
+- Click the "GET ZABBIX" link
 - Wait for the Download page to load
 - Extract the : headline text
 - Collect performance timing
@@ -447,81 +449,221 @@ Scenario
 
 
 ```JavaScript
+// Chrome settings (headless, sandbox, viewport)
 var opts = Browser.chromeOptions({
     args: [
-        '--headless',
-        '--no-sandbox',
-        '--disable-gpu',
-        '--window-size=1920,1080'
+        "--headless=new",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--window-size=1920,1080"
     ]
 });
 
 var browser = null;
+var out = {};
 
 try {
-    // Initialize browser
     browser = new Browser(opts);
+
+    browser.setSessionTimeout(15000);
+    browser.setElementWaitTimeout(10000);
     browser.setScreenSize(1920, 1080);
 
-    // Load homepage
-    browser.navigate('https://www.zabbix.com/');
-    browser.waitForLoad();
+    // 1) Load homepage
+    browser.navigate("https://www.zabbix.com/");
+    browser.collectPerfEntries("open_home");
 
-    // Click "Download"
-    var downloadLink = browser.findElement('a[href="/download"]');
-    downloadLink.click();
+    // 2) Click GET ZABBIX
+    var btn = browser.findElement("link text", "GET ZABBIX");
+    if (!btn) {
+        throw Error("cannot find 'GET ZABBIX' link");
+    }
+    btn.click();
 
-    // Wait for Download page
-    browser.waitForLoad(8000);
+    browser.collectPerfEntries("after_click");
 
-    // Extract headline
-    var h1 = browser.findElement('h1');
-    var headline = h1.getText();
+    // 3) Extract H1 headline
+    var h1 = browser.findElement("tag name", "h1");
+    out.headline = h1 ? h1.getText() : null;
 
-    // Collect performance metrics
-    browser.collectPerfEntries();
+    // Build result
+    out.status = "ok";
 
-    // Build result object
-    var result = {
-        status: 'ok',
-        headline: headline,
-        url: browser.getUrl(),
-        perf: browser.getPerfEntries()
-    };
+} catch (err) {
 
-    return JSON.stringify(result);
+    // Catch any JS or WebDriver error
+    if (!(err instanceof BrowserError)) {
+        browser.setError(err.message);
+    }
+
+    out.status = "error";
+    out.error = err.toString();
+
+    // Attach screenshot
+    out.screenshot = browser.getScreenshot();
 
 } finally {
-    // Ensure Zabbix always gets a return value
-    if (browser && browser.session) {
-        return JSON.stringify(browser.getResult());
+
+    // Zabbix BrowserResult (contains perf + duration + URL)
+    if (browser) {
+        out.final_url = browser.getUrl();
+        out.result = browser.getResult();
     }
-    return JSON.stringify({ status: 'session_failed' });
+
+    return JSON.stringify(out);
 }
+
 ```
 
 ### What the Script Returns
 
-The Zabbix Browser item returns a JSON structure that includes:
+```js
+{
+  "status": "ok",
+  "headline": "Zabbix Cloud",
+  "final_url": "https://www.zabbix.com/zabbix_cloud",
 
-- Navigation timing metrics (TTFB, DOM load, full load time)
-- Resource timing metrics for all loaded assets
-- Final URL after redirects
-- Screenshot (Base64-encoded PNG)
-- Extracted text from elements you queried (e.g. <h1>)
-- Error details if the browser or WebDriver encountered problems
+  "result": {
+    "duration": 2.53,
+    "performance_data": {
+      "summary": {
+        "navigation": {
+          "response_time": 0.19,
+          "dom_content_loading_time": 0.01,
+          "load_finished": 0.64,
+          "encoded_size": 17753,
+          "total_size": 102839,
+          "redirect_count": 0
+        },
+        "resource": {
+          "response_time": 12.37,
+          "resource_fetch_time": 0.42,
+          "count": 42
+        }
+      },
+      "details": [
+        {
+          "mark": "open_home",
+          "navigation": { /* navigation timing for homepage */ },
+          "resource":   { /* aggregated resource metrics */ },
+          "user":       [ /* optional marks set by the website itself */ ]
+        },
+        {
+          "mark": "after_click",
+          "navigation": { /* navigation timing for /zabbix_cloud */ },
+          "resource":   { /* aggregated resource metrics */ }
+        }
+      ],
+      "marks": [
+        { "name": "open_home",   "index": 0 },
+        { "name": "after_click", "index": 1 }
+      ]
+    }
+  }
+}
 
-Typical dependent items you can create:
+```
 
-- perf.navigation.ttfb
-- perf.navigation.domContentLoadedEventEnd
-- perf.navigation.loadEventEnd
-- perf.navigation.duration
-- Extracted headline text
-- Final URL
-- Screenshot retrieval/decoding
+**On error, you’ll see something like:**
 
-These dependent items transform the Browser item into a full set of synthetic monitoring checks.
+```js
+{
+  "status": "error",
+  "error": "cannot find 'GET ZABBIX' link",
+  "screenshot": "<base64-encoded PNG>",
+  "final_url": "https://www.zabbix.com/",
+  "result": {
+    "duration": 12.02,
+    "error": {
+      "http_status": 0,
+      "code": "",
+      "message": "cannot find 'GET ZABBIX' link"
+    }
+  }
+}
+
+```
+
+#### Let's go over what everything does in the script 
+
+**Top-level fields (script-defined)**
+
+- status
+  High-level outcome of the synthetic scenario:
+    - "ok" – the script completed the full user journey as intended.
+    - "error" – something failed (element not found, timeout, navigation error, etc.).
+- headline
+  The text content of the <h1> element on the final page after clicking GET ZABBIX.
+  This is a functional assertion: “Did we end up on the expected page with the expected headline?”
+- final_url
+  The final URL seen by the browser after all redirects and navigation.
+  This allows you to verify whether the button still leads to /zabbix_cloud or was changed/redirected elsewhere.
+- error (optional)
+  A human-readable explanation if something went wrong (for example: “cannot find 'GET ZABBIX' link”).
+  This is added by the script using err.toString() for quick diagnosis from the Zabbix frontend.
+- screenshot (optional, on error)
+  A Base64-encoded PNG image captured at the time of failure.
+  This allows the operator to see what the user would have seen at the moment of the error (login form, cookie banner, error page, etc.). It’s stored as a Binary dependent item.
+- result
+  This is the BrowserResult object returned by Zabbix (browser.getResult()), which wraps:
+    - Timing and performance data
+    - Duration of the scenario
+    - Any internal error information
+    - Marks set by browser.collectPerfEntries(...)
+
+**Inside result**
+
+- duration
+  Total execution time of the Browser scenario in seconds, from start of the script to completion.
+  This is useful as a high-level synthetic transaction time.
+- performance_data.summary.navigation
+    - Aggregated navigation metrics for the page load (in seconds), for example:
+    - response_time – backend response time (server + network).
+    - dom_content_loading_time – time until the DOM is ready (DOMContentLoaded).
+    - load_finished – time until the load event fires (page fully loaded).
+    - encoded_size / total_size – size of transferred and decoded content.
+    - redirect_count – number of redirects for the navigation.
+You can think of this section as “the synthetic page-speed metrics from the browser’s point of view”.
+- performance_data.summary.resource
+    - Aggregated metrics for all resources (images, CSS, JS, fonts, etc.):
+    - count – number of resources loaded.
+    - resource_fetch_time – time spent fetching resources.
+    - response_time – cumulative response time for resources.
+- performance_data.details[]
+An array with one entry per collectPerfEntries("mark") call in your script:
+    - Each element has:
+        - mark – the label you passed (e.g. "open_home", "after_click").
+        - navigation – detailed timings for that navigation.
+        - resource – resource stats for that step.
+        - user – optional PerformanceEntry marks set by the website itself (e.g. third-party SDKs, analytics, etc.).
+
+This enables per-step decomposition of your user journey: open homepage vs. landing page after click, etc.
+- marks[]
+A list of all marks with their indices. Mostly useful if you need to correlate external tools with Zabbix data.
+
+### Dependent items – screenshot + useful metrics
+
+| Name | Type | Master item | Type of information | Preprocessing | Value | 
+|:---  |:---  |:---         |:---                 |:---           |:---   |
+| Website screenshot (GET ZABBIX) | Dependent item | your Browser item | Binary | JSONPath | $.screenshot |
+| GET ZABBIX – headline | Dependent item | your Browser item |  Binary | JSONPath | $.headline |
+
+Since we only make screenshots when it fails also add a custom on fail option to
+your item.
+
+![ch03_xx_discard-value.png](ch03_xx_discard-value.png)
+_CH03 Discard Value_
+
+** A few other JSONPath regexes that you can use:**
+
+- $.result.performance_data.details[0].navigation.duration
+- $.result.performance_data.details[1].navigation.duration
+- $.result.performance_data.summary.navigation.load_finished
+- $.result.duration
+- $.final_url
+...
+
+
 
 ## Conclusion
 
