@@ -564,7 +564,7 @@ try {
 
 ```
 
-**On error, you’ll see something like:**
+**On error, you'll see something like:**
 
 ```js
 {
@@ -593,7 +593,7 @@ try {
     - "ok" – the script completed the full user journey as intended.
     - "error" – something failed (element not found, timeout, navigation error, etc.).
 - headline
-  The text content of the <h1> element on the final page after clicking GET ZABBIX.
+  The text content of the `<h1>` element on the final page after clicking GET ZABBIX.
   This is a functional assertion: “Did we end up on the expected page with the expected headline?”
 - final_url
   The final URL seen by the browser after all redirects and navigation.
@@ -654,7 +654,7 @@ your item.
 ![ch03_xx_discard-value.png](ch03_xx_discard-value.png)
 _CH03 Discard Value_
 
-** A few other JSONPath regexes that you can use:**
+**A few other JSONPath regexes that you can use:**
 
 - $.result.performance_data.details[0].navigation.duration
 - $.result.performance_data.details[1].navigation.duration
@@ -662,7 +662,6 @@ _CH03 Discard Value_
 - $.result.duration
 - $.final_url
 ...
-
 
 
 ## Conclusion
@@ -696,4 +695,20 @@ scalable environment:
 
 ## Questions
 
+- What key limitation of classic Web Scenarios does the Browser item solve, and
+  why is this especially important for modern JavaScript-heavy applications?
+- Why is it generally a bad idea to run many Browser items directly on the main
+  Zabbix server, and how can proxies help?
+- Why are screenshots stored as Binary items, and what are the main risks if you
+  keep them for a long retention period?
+- What is the purpose of browser.setElementWaitTimeout() in your script, and what
+  kind of failures do you prevent by tuning it correctly?
+
+
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/browser](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/browser)
+- [https://www.zabbix.com/documentation/current/en/manual/guides/monitor_browser](https://www.zabbix.com/documentation/current/en/manual/guides/monitor_browser)
+- [https://blog.zabbix.com/monitoring-website-changes-with-zabbix-browser-item/31684/](https://blog.zabbix.com/monitoring-website-changes-with-zabbix-browser-item/31684/)
+- [https://blog.zabbix.com/an-introduction-to-browser-monitoring/29245/](https://blog.zabbix.com/an-introduction-to-browser-monitoring/29245/)
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/browser_item_javascript_objects](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/browser_item_javascript_objects)
