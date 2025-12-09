@@ -384,6 +384,7 @@ foreach
 giga
 tmp
 agentd
-innerElem
-welcomeElem
-
+viewport
+shm
+ncat
+dev
