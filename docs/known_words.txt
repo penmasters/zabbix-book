@@ -395,4 +395,7 @@ ttfb
 hostgroup
 openssh
 preprocess
+getresult
+regexes
+tostring
 

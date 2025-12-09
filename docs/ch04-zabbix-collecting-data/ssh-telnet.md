@@ -133,7 +133,7 @@ Do not forget to add your tag.
 Then, if you had a Telnet user set up. You can go to `Monitoring` | `Latest data` to check if the value is coming in.
 
 ## Conclusion
-SSH and Telnet monitoring provide you with a great fallback when traditional protocols like SNMP or API's simply aren’t available. It might also be the case that a vendor hides important information within CLI commands. Using a limited user account, only granted access to specific commands, Zabbix can remotely authenticate and execute CLI commands or even entire scripts to get us raw terminal output that can be used as metrics.
+SSH and Telnet monitoring provide you with a great fallback when traditional protocols like SNMP or API's simply aren't available. It might also be the case that a vendor hides important information within CLI commands. Using a limited user account, only granted access to specific commands, Zabbix can remotely authenticate and execute CLI commands or even entire scripts to get us raw terminal output that can be used as metrics.
 
 When working with these two options, of course SSH will be the preferred method as it grants us the correct security for modern environments. Telnet should only be used when absolutely all other options are exhausted. In any case, the workflow remains the same in both cases: log in, run a command, preprocess the output, and then use it just like any other metric you have collected.
 
