@@ -7,17 +7,16 @@ description: |
 tags: [beginner]
 ---
 
-# Groupes d'accueil
+# Groupes d'hôtes
 
-Dans Zabbix, les groupes d'hôtes **** servent de mécanisme de base pour
-organiser les entités surveillées. Ils vous permettent de classer logiquement
-les hôtes pour faciliter la gestion, simplifier les autorisations et
-rationaliser la configuration, ce qui est particulièrement utile dans les grands
-environnements.
+Dans Zabbix, les **groupes d'hôtes** servent de mécanisme de base pour organiser
+les entités surveillées. Ils vous permettent de classer logiquement les hôtes
+pour faciliter la gestion, simplifier les autorisations et rationaliser la
+configuration, ce qui est particulièrement utile dans les grands environnements.
 
 Les exemples les plus courants sont les suivants :
 
-- Regroupement de tous les serveurs Linux **** .
+- Regroupement de tous **les serveurs Linux** ensemble.
 - Separating **database servers** (e.g., PostgreSQL, MySQL).
 - Organizing hosts by **team**, **location**, or **function**.
 
