@@ -15,8 +15,8 @@ meilleure sécurité pour les mots de passe des utilisateurs en configurant la
 politique de mot de passe :
 
 - Exigence relative à la longueur minimale du mot de passe
-- Exigences pour que le mot de passe contienne une lettre latine majuscule et
-  minuscule, un chiffre, un caractère spécial
+- Exigences pour que le mot de passe contienne une lettre latine,une majuscule,
+  une minuscule, un chiffre et un caractère spécial
 - Requirement to avoid easy-to-guess passwords
 
 To secure sign in process even more you can configure multi factor
