@@ -1,18 +1,20 @@
-# Supporters & Contributors
+# Supporters et contributeurs
 
-This book would not have been possible without the dedication, generosity, and
-expertise of many individuals and organizations. We extend our heartfelt thanks
-to everyone who has supported this project, whether through financial
-contributions, technical expertise, content reviews, or community engagement.
+Ce livre n'aurait pas été possible sans le dévouement, la générosité et
+l'expertise de nombreuses personnes et organisations. Nous remercions
+chaleureusement tous ceux qui ont soutenu ce projet, que ce soit par des
+contributions financières, une expertise technique, des révisions de contenu ou
+l'engagement de la communauté.
 
-## Our Sponsors
+## Nos sponsors
 
-We are deeply grateful to the sponsors who have provided financial or material
-support to help bring this book to life. Their contributions have enabled us to
-maintain high-quality content, support open-source initiatives, and ensure that
-this book remains accessible to as many people as possible.
+Nous sommes profondément reconnaissants aux sponsors qui nous ont apporté un
+soutien financier ou matériel pour nous aider à donner vie à cet ouvrage. Leurs
+contributions nous ont permis de maintenir un contenu de haute qualité, de
+soutenir des initiatives open-source et de veiller à ce que ce livre reste
+accessible au plus grand nombre.
 
-- **OICTS** : [https://oicts.com/](https://oicts.com/)
+- **OICTS**: [https://oicts.com/](https://oicts.com/)
 - **ZABBIX** : [https://www.zabbix.com/](https://www.zabbix.com/)
 
 ---
