@@ -555,12 +555,17 @@ This concludes our installation of the MariaDB
 
 ## Installing the PostgreSQL database
 
-For our DB setup with PostgreSQL we need to add our PostgreSQL repository first
-to the system. As of writing PostgreSQL 13-17 are supported but best is to have
-a look before you install it as new versions may be supported and older maybe
-unsupported both by Zabbix and PostgreSQL. Usually it's a good idea to go with
+Before proceeding with the PostgreSQL installation, it's a best practice to ensure
+your operating system is up-to-date with the latest patches and security fixes.
+This will help maintain system stability and compatibility with the software you're
+about to install.
+Once the update process is complete, you can move forward with the PostgreSQL installation.
+
+
+As of writing PostgreSQL 13-17 are supported by Zabbix. Check the Zabbix documentation
+for an up-to-date list for your Zabbix version. Usually it's a good idea to go with
 the latest version that is supported by Zabbix. Zabbix also supports the extension
-TimescaleDB this is something we will talk later about. As you will see the setup
+TimescaleDB this is something we will talk about later. As you will see the setup
 from PostgreSQL is very different from MySQL not only the installation but
 also securing the DB.
 
@@ -568,36 +573,18 @@ The table of compatibility can be found [https://docs.timescale.com/self-hosted/
 
 ---
 
-### Add the PostgreSQL repository
-
-So let us start first setting up our PostgreSQL repository with the following commands.
-
-!!! info "Add PostgreSQL repo"
-
-    Red Hat
-    ``` yaml
-    Install the repository RPM:
-    dnf install https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-
-    Disable the built-in PostgreSQL module:
-    dnf -qy module disable postgresql
-    ```
-
-    Ubuntu
-    ```
-    # Import the repository signing key:
-    sudo apt install curl ca-certificates
-    sudo install -d /usr/share/postgresql-common/pgdg
-    sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
-
-    # Create the repository configuration file:
-    sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-
-    # Update the package lists:
-    sudo apt update
-    ```
-
 ### Install the PostgreSQL databases
+
+With the operating system updated, you are now ready to install the PostgreSQL 
+server packages. This will provide the necessary components to run and manage
+your database.
+
+For the installation of the official PostgreSQL packages, you will need to follow the
+distribution specific instructions at <https://www.postgresql.org/download>, select
+Linux and then select your distribution.
+
+To install the distribution default PostgreSQL server, execute the 
+following commands:
 
 !!! info "Install the Postgres server"
 
@@ -611,36 +598,26 @@ So let us start first setting up our PostgreSQL repository with the following co
     systemctl enable postgresql-17 --now
     ```
 
+    SUSE
+    ``` yaml
+    zypper install postgresql17-server
+    ```
+
     Ubuntu
     ``` yaml
     sudo apt install postgresql-17
     ```
-
-To update your OS, run the following command:
-
-!!! info "update the OS"
-
-    Red Hat
-    ``` yaml
-    dnf update
-    ```
-
-    Ubuntu
-    ``` yaml
-    sudo apt update && sudo apt upgrade
-    ```
-
 ---
 
 ### Securing the PostgreSQL database
 
 PostgreSQL handles access permissions differently from MySQL and MariaDB.
-PostgreSQL relies on a file called pg_hba.conf to manage who can access the database,
-from where, and what encryption method is used for authentication.
+PostgreSQL relies on a file called `pg_hba.conf` to manage who can access the database,
+from where, and what encryption method is allowed for authentication.
 
 ???+ note
 
-    Client authentication in PostgreSQL is configured through the pg_hba.conf
+    Client authentication in PostgreSQL is configured through the `pg_hba.conf`
     file, where "HBA" stands for Host-Based Authentication. This file specifies
     which users can access the database, from which hosts, and how they are authenticated.
     For further details, you can refer to the official PostgreSQL documentation."
@@ -653,6 +630,11 @@ Add the following lines, the order here is important.
     Red hat
     ``` yaml
     vi /var/lib/pgsql/17/data/pg_hba.conf
+    ```
+
+    SUSE
+    ``` yaml
+    vi /var/lib/pgsql/data/pg_hba.conf
     ```
 
     Ubuntu
@@ -674,8 +656,8 @@ The result should look like :
     host     all            all                         127.0.0.1/32                            scram-sha-256
     ```
 
-After we changed the pg_hba file don't forget to restart postgres else the settings
-will not be applied. But before we restart let us also edit the file postgresql.conf
+After we changed the pg_hba file don't forget to restart postgres otherwise the settings
+will not be applied. But before we restart, let us also edit the file `postgresql.conf`
 and allow our database to listen on our network interface for incoming connections
 from the zabbix server. Postgresql will standard only allow connections from the socket.
 
@@ -686,17 +668,21 @@ from the zabbix server. Postgresql will standard only allow connections from the
     vi /var/lib/pgsql/17/data/postgresql.conf
     ```
 
+    SUSE
+    ```
+    vi /var/lib/pgsql/data/postgresql.conf
+    ```
+
     Ubuntu
     ``` yaml
     sudo vi /etc/postgresql/17/main/postgresql.conf
     ```
 
-To configure PostgreSQL to listen on all network interfaces, you need to modify
-the `postgresql.conf` file. Locate the following line:
+Locate the following line:
 
 !!! info ""
 
-    ```yaml
+    ```ini
     #listen_addresses = 'localhost'
     ```
 
@@ -704,7 +690,9 @@ and replace it with:
 
 !!! info ""
 
-    `listen_addresses = '*'`
+    ```ini
+    listen_addresses = '*'
+    ```
 
 ???+ note
 
@@ -717,16 +705,20 @@ After making this change, restart the PostgreSQL service to apply the new settin
 !!! info "restart the DB server"
 
     Red Hat
-    ``` yaml
+    ``` bash
     systemctl restart postgresql-17
+    ```
+    SUSE
+    ``` bash
+    systemctl restart postgresql
     ```
 
     Ubuntu
-    ``` yaml
+    ``` bash
     sudo systemctl restart postgresql
     ```
 
-If the service fails to restart, review the pg_hba.conf file for any syntax errors,
+If the service fails to restart, review the `pg_hba.conf` file for any syntax errors,
 as incorrect entries here may prevent PostgreSQL from starting.
 
 Next, to prepare your PostgreSQL instance for Zabbix, you'll need to create the
@@ -749,6 +741,13 @@ To begin, add the Zabbix repository to your system by running the following comm
     dnf install zabbix-sql-scripts
     ```
 
+    SUSE
+    ``` bash
+    zypper install https://repo.zabbix.com/zabbix/7.4/release/sles/15/noarch/zabbix-release-latest-7.4.sles15.noarch.rpm
+    zypper refresh
+    zypper install zabbix-sql-scripts
+    ```
+
     Ubuntu
     ``` yaml
     sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
@@ -760,13 +759,12 @@ To begin, add the Zabbix repository to your system by running the following comm
 With the necessary packages installed, you are now ready to create the Zabbix users
 for both the server and frontend.
 
-First, switch to the `postgres` user and create the Zabbix server database user:
+First, switch to the `postgres` linux-user and create the Zabbix server database user:
 
 !!! info "create server users"
 
-    ```sql
-    sudo su - postgres
-    createuser --pwprompt zabbix-srv
+    ```bash
+    sudo -u postgres createuser --pwprompt zabbix-srv
     Enter password for new role: <server-password>
     Enter it again: <server-password>
     ```
@@ -775,8 +773,8 @@ Next, create the Zabbix frontend user, which will be used to connect to the data
 
 !!! info "Create front-end user"
 
-    ```sql
-    createuser --pwprompt zabbix-web
+    ```bash
+    sudo -u postgres createuser --pwprompt zabbix-web
     Enter password for new role: <frontend-password>
     Enter it again: <frontend-password>
     ```
@@ -786,14 +784,14 @@ or your regular user, unzip the necessary schema files by running the following 
 
 !!! info "Unzip the DB patch"
 
-    Red Hat
-    ``` yaml
-    gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+    Red Hat / SUSE
+    ``` bash
+    gzip -d /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz
     ```
 
     Ubuntu
-    ``` yaml
-    sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+    ``` bash
+    sudo gzip -d /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz
     ```
 
 ???+ note
@@ -811,18 +809,8 @@ the database with the owner set to zabbix-srv:
 
 !!! info "Create DB"
 
-    Red Hat
-    ``` yaml
-    su - postgres
-    createdb -E Unicode -O zabbix-srv zabbix
-    exit
-    ```
-
-    Ubuntu
-    ``` yaml
-    sudo su - postgres
-    createdb -E Unicode -O zabbix-srv zabbix
-    exit
+    ``` bash
+    sudo -u postgres createdb -E Unicode -T template0 -O zabbix-srv zabbix
     ```
 
 Once the database is created, you should verify the connection and ensure that
@@ -831,7 +819,7 @@ the zabbix-srv user:
 
 !!! info "Login as user zabbix-srv"
 
-    ```yaml
+    ```bash
     psql -d zabbix -U zabbix-srv
     ```
 
@@ -840,7 +828,7 @@ and `current_user` are set to `zabbix-srv`:
 
 !!! info ""
 
-    ```yaml
+    ```sql
     zabbix=> SELECT session_user, current_user;
      session_user | current_user
     --------------+--------------
@@ -880,7 +868,7 @@ the `zabbix-srv` user:
 
 !!! info "create the db schema"
 
-    ```psql
+    ```sql
     zabbix=> CREATE SCHEMA zabbix_server AUTHORIZATION "zabbix-srv";
     ```
 
@@ -889,7 +877,7 @@ for the current session:
 
 !!! info "Set search path"
 
-    ```psql
+    ```sql
     zabbix=> SET search_path TO "zabbix_server";
     ```
 
@@ -897,7 +885,7 @@ To confirm the schema setup, you can list the existing schemas:
 
 !!! info "verify schema access"
 
-    ```psql
+    ```sql
     zabbix=> \dn
               List of schemas
          Name      |       Owner
@@ -913,8 +901,8 @@ First, we grant `USAGE` privileges on the schema to allow `zabbix-web` to connec
 
 !!! info "Grant access to schema for user zabbix-web"
 
-    ```psql
-    zabbix=# GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
+    ```sql
+    zabbix=> GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
     ```
 
 ---
@@ -938,7 +926,7 @@ with the Zabbix schema created and other required elements. Follow these steps:
 !!! info "upload the DB schema to db zabbix"
 
     ```sql
-    sql zabbix=# \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
+    zabbix=> \i /usr/share/zabbix-sql-scripts/postgresql/server.sql
     ```
 
 ???+ warning
@@ -966,7 +954,7 @@ with the Zabbix schema created and other required elements. Follow these steps:
     COMMIT
     ```
 
-Once the script completes and you return to the `zabbix=#` prompt, the database
+Once the script completes and you return to the `zabbix=>` prompt, the database
 should be successfully populated with all the required tables, schemas,
 images, and other elements needed for Zabbix.
 
@@ -979,17 +967,17 @@ following permissions:
 
 !!! info "Grant rights on the schema to user zabbix-web"
 
-    ```psql
-    zabbix=# GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server
+    ```sql
+    zabbix=> GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server
     TO "zabbix-web";
-    zabbix=# GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
+    zabbix=> GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
     ```
 
 Verify if the rights are correct on the schema :
 
 !!! info "Example schema rights"
 
-    ```psql
+    ```sql
     zabbix=> \dn+
                                                List of schemas
          Name      |       Owner       |           Access privileges            |      Description
@@ -1003,7 +991,7 @@ Verify if the rights are correct on the schema :
 ???+ note
 
     If you encounter the following error during the SQL import:
-    `vbnet psql:/usr/share/zabbix/sql-scripts/postgresql/server.sql:7: ERROR: no
+    `vbnet psql:/usr/share/zabbix-sql-scripts/postgresql/server.sql:7: ERROR: no
         schema has been selected to create in` It indicates that the search_path setting
     might not have been correctly applied. This setting is crucial because it specifies
     the schema where the tables and other objects should be created. By correctly
@@ -1085,7 +1073,9 @@ permissions, you can do so using the GRANT commands as needed.
     search path. Run the following SQL command to set the default search path for
     the `zabbix-srv` role:
 
-    sql zabbix=> ALTER ROLE "zabbix-srv" SET search_path = "$user", public, zabbix_server;
+    ```sql
+    zabbix=> ALTER ROLE "zabbix-srv" SET search_path = "$user", public, zabbix_server;
+    ```
 
     This command ensures that every time the `zabbix-srv` user connects to the
     database, the `search_path` is automatically set to include `$user`, `public`, and `zabbix_server`.
@@ -1104,28 +1094,21 @@ open our firewall port.
 !!! info ""
 
     Red Hat
-    ``` yaml
+    ``` bash
     firewall-cmd --add-port=5432/tcp --permanent
     firewall-cmd --reload
     ```
 
-    Ubuntu
-    ``` yaml
-    sudo ufw allow 5432/tcp
+    SUSE
+    ``` bash
+    firewall-cmd --add-service=postgresql --permanent
+    firewall-cmd --reload
     ```
 
-???+ note
-
-    Make sure your DB is listening on the correct IP and not on 127.0.0.1.
-    You could add the following files to your config file. This would allow MariaDB
-    to listen on all interfaces. Best to limit it only to the needed IP.
-
-    /etc/mysql/mariadb.cnf
-
-    [mariadb]
-    log_error=/var/log/mysql/mariadb.err
-    log_warnings=3
-    bind-address = 0.0.0.0
+    Ubuntu
+    ``` bash
+    sudo ufw allow 5432/tcp
+    ```
 
 This concludes our installation of the PostgreSQL database.
 
