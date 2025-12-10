@@ -9,10 +9,11 @@ tags: [beginner]
 
 # Groupes d'accueil
 
-Dans Zabbix, les **groupes d'hôtes** servent de mécanisme de base pour organiser
-les entités surveillées. Ils vous permettent de classer logiquement les hôtes
-pour faciliter la gestion, simplifier les autorisations et rationaliser la
-configuration, ce qui est particulièrement utile dans les grands environnements.
+Dans Zabbix, les groupes d'hôtes **** servent de mécanisme de base pour
+organiser les entités surveillées. Ils vous permettent de classer logiquement
+les hôtes pour faciliter la gestion, simplifier les autorisations et
+rationaliser la configuration, ce qui est particulièrement utile dans les grands
+environnements.
 
 Les exemples les plus courants sont les suivants :
 
