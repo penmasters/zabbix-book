@@ -7,11 +7,10 @@ tags: [beginner]
 
 # Groupes d'utilisateurs
 
-** Dans toute plateforme de surveillance d'entreprise, l'établissement d'un
-contrôle d'accès basé sur les rôles (RBAC) **est essentiel pour maintenir à la
+Dans toute plateforme de surveillance d'entreprise, l'établissement d'un
+**contrôle d'accès basé sur les rôles (RBAC)** est essentiel pour maintenir à la
 fois la sécurité et la clarté de la responsabilité opérationnelle. Pour Zabbix,
-ce contrôle s'appuie sur le concept fondamental des groupes d'utilisateurs ****
-.
+ce contrôle s'appuie sur le concept fondamental des **groupes d'utilisateurs** .
 
 Dans Zabbix 8.0, les groupes d'utilisateurs constituent le principal mécanisme
 d'attribution des autorisations et de structuration de l'accès aux données
