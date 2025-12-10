@@ -9,7 +9,7 @@ tags: [beginner]
 
 In this chapter, we will walk through the process of installing the Zabbix server.
 There are many different ways to setup a Zabbix server. We will cover the most
-common setups with MariaDB and PostgreSQL on Ubuntu and on Rocky Linux.
+common setups with MariaDB and PostgreSQL on RHEL- and SLES-based distro's and Ubuntu.
 
 Before beginning the installation, it is important to understand the architecture
 of Zabbix.
@@ -63,27 +63,25 @@ Zabbix database.
     that needs some extra attention when we split it so for this reason we have
     chosen in this example to split the database from the rest of the setup.
 
+A crucial consideration for those managing Zabbix installations is the database
+back-end. Zabbix supports a few different databases: MySQL/Percona, MariaDB 
+and PostgreSQL(/TimescaleDB) and up to Zabbix 7.0 also Oracle. 
+
+All those databases are supported equally by Zabbix and perform mostly similar 
+with Zabbix load, so the choice mostly comes down to which database software you
+are the most familiar with. 
+
 ???+ note
 
-    A crucial consideration for those managing Zabbix installations is the database
-    back-end. Zabbix 7.0 marks the final release to offer support for Oracle Database.
+    Zabbix 7.0 marks the final release to offer support for Oracle Database.
     Consequently, systems running Zabbix 7.0 or any prior version must undertake
     a database migration to either PostgreSQL, MySQL, or a compatible fork such
     as MariaDB before upgrading to a later Zabbix release. This migration is a
     mandatory step to ensure continued functionality and compatibility with future
     Zabbix versions.
 
-We will cover the following topics:
-
-- Install our Database based on MariaDB.
-- Install our Database based on PostgreSQL.
-- Installing the Zabbix server.
-- Install the frontend.
-
-## Installing the MariaDB database
-
-Before initiating the installation of MariaDB, you must determine the source 
-from which you will install the database server. Two primary options are 
+When installing MariaDB or PostgreSQL you must determine the source 
+from which you will want to install the database server. Two primary options are 
 available:
 
 1. **Vendor-Provided Packages**\
@@ -104,64 +102,58 @@ available:
 
    **Disadvantages:**
    - **Version lock-in:** Major distribution upgrades may automatically introduce
-     newer MariaDB versions, potentially requiring compatibility checks with Zabbix.
+     newer database versions, potentially requiring compatibility checks with
+     Zabbix.
    - **Vendor modifications:** Default configurations, log directories, and data
      paths may be altered to align with distribution-specific standards.
 
-2. **Official MariaDB Repositories**
-   These repositories provide packages directly from MariaDB and offer access to
-   the latest stable releases.
+2. **Official MariaDB/PostgreSQL Repositories**
+   These repositories provide packages directly from MariaDB/PostgreSQL and offer
+   access to the latest stable releases.
 
    **Advantages:**
    - **Up-to-date versions:** Immediate access to the latest features, security
-     patches, and bug fixes.
-   - **Enterprise support:** Option to purchase MariaDB Enterprise, which includes
-     professional support and additional features.
+     patches, and bug fixes. However, make sure Zabbix is compatible with the
+     chosen version.
+   - **Enterprise support:** Option to purchase MariaDB Enterprise or Enterprise DB
+     respectively, which includes professional support and additional features.
 
    **Disadvantages:**
    - **Manual version management:** Users must proactively monitor and upgrade 
      to new major versions to ensure continued security and bug fix coverage.
 
+In this chapter we will concentrate on the OS vendor-provided packages but we will
+point you to the instructions on how to use the official database-vendor packages
+if you want to use those.
+
 ???+ tip
 
-    Always ensure that your MariaDB version is compatible with your Zabbix version
+    Always ensure that your chosen database version is compatible with your Zabbix version
     to avoid potential integration issues. Check the Zabbix documentation for the 
     latest supported versions.
+
+We will cover the following topics:
+
+- Install our Database based on MariaDB.
+- Install our Database based on PostgreSQL.
+- Installing the Zabbix server.
+- Install the frontend.
+
+## Installing the MariaDB database
 
 Before proceeding with the MariaDB installation, it's a best practice to ensure
 your operating system is up-to-date with the latest patches and security fixes.
 This will help maintain system stability and compatibility with the software you're
 about to install.
-
-To update your OS, run the following command:
-
-!!! info "Update OS"
-
-    Red Hat
-    ```yaml
-    dnf update
-    ```
-
-    SUSE
-    ``` bash
-    zypper refresh && zypper update
-
-    Ubuntu
-    ``` yaml
-    sudo apt update && sudo apt upgrade
-    ```
-
-This command will automatically fetch and install the latest updates available for
-your system, applying security patches, performance improvements, and bug fixes.
 Once the update process is complete, you can move forward with the MariaDB installation.
 
 ---
 
 ### Install the MariaDB database
 
-With the operating system updated and the MariaDB repository configured, you are
-now ready to install the MariaDB server and client packages. This will provide the
-necessary components to run and manage your database.
+With the operating system updated, you are now ready to install the MariaDB 
+server and client packages. This will provide the necessary components to run 
+and manage your database.
 
 For the installation of the official MariaDB packages, you will need to follow the
 distribution specific instructions at <https://mariadb.org/download/?t=repo-config>
@@ -461,9 +453,15 @@ If we want our Zabbix server to connect to our DB then we also need to open our 
 
 !!! info "Add firewall rules"
 
-    Red Hat / SUSE
+    Red Hat
     ``` yaml
     firewall-cmd --add-port=3306/tcp --permanent
+    firewall-cmd --reload
+    ```
+
+    SUSE
+    ``` bash
+    firewall-cmd --add-service=mysql --permanent
     firewall-cmd --reload
     ```
 
