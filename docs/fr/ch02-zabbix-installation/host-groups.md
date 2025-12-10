@@ -17,7 +17,7 @@ environnements.
 
 Les exemples les plus courants sont les suivants :
 
-- Regroupement de tous **les serveurs Linux** ensemble.
+- Regroupement de tous les serveurs Linux **** .
 - Separating **database servers** (e.g., PostgreSQL, MySQL).
 - Organizing hosts by **team**, **location**, or **function**.
 
