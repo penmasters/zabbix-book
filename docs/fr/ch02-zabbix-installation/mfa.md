@@ -7,15 +7,16 @@ descripton: |
 tags: [advanced]
 ---
 
-# Multi factor authentication
+# Authentification multi-facteurs
 
-We all know that before you can start configuring Zabbix via WebUI you have to
-sign in. Zabbix has several options to provide better security for user
-passwords by configuring password policy:
+Nous savons tous qu'avant de commencer à configurer Zabbix via l'interface
+WebUI, il faut s'identifier. Zabbix a plusieurs options pour fournir une
+meilleure sécurité pour les mots de passe des utilisateurs en configurant la
+politique de mot de passe :
 
-- Requirement for Minimum password length
-- Requirements for password to contain an uppercase and a lowercase Latin
-  letter, a digit, a special character
+- Exigence relative à la longueur minimale du mot de passe
+- Exigences pour que le mot de passe contienne une lettre latine majuscule et
+  minuscule, un chiffre, un caractère spécial
 - Requirement to avoid easy-to-guess passwords
 
 To secure sign in process even more you can configure multi factor
