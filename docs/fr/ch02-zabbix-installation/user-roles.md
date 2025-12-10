@@ -7,9 +7,9 @@ tags: [beginner]
 
 # Rôles des utilisateurs
 
-Le système Zabbix *User Role*, introduit dans Zabbix 5.2, définit ce qu'un
-utilisateur est autorisé à faire dans le frontend Zabbix et via l'API.
-Contrairement aux groupes d'utilisateurs qui contrôlent la visibilité des
+Le principe Zabbix de *rôle de l'utilisateur*, introduit dans Zabbix 5.2,
+définit ce qu'un utilisateur est autorisé à faire dans le frontend Zabbix et via
+l'API. Contrairement aux groupes d'utilisateurs qui contrôlent la visibilité des
 données (les hôtes qu'un utilisateur peut voir et/ou gérer), les rôles
 d'utilisateurs contrôlent la fonctionnalité de l'application (les boutons sur
 lesquels un utilisateur peut cliquer).
