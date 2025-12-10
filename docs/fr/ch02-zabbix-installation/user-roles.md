@@ -5,18 +5,21 @@ description: |
 tags: [beginner]
 ---
 
-# User Roles
+# Rôles des utilisateurs
 
-The Zabbix *User Role* system, introduced in Zabbix 5.2, defines what a user is
-allowed to do within the Zabbix frontend and via the API. Unlike User Groups
-which control data visibility Ex: (which hosts a user can see and/or manage),
-User Roles control application functionality (what buttons a user can click).
+Le système Zabbix *User Role*, introduit dans Zabbix 5.2, définit ce qu'un
+utilisateur est autorisé à faire dans le frontend Zabbix et via l'API.
+Contrairement aux groupes d'utilisateurs qui contrôlent la visibilité des
+données (les hôtes qu'un utilisateur peut voir et/ou gérer), les rôles
+d'utilisateurs contrôlent la fonctionnalité de l'application (les boutons sur
+lesquels un utilisateur peut cliquer).
 
-## The role hierarchy
+## La hiérarchie des rôles
 
-Every User Role, whether default or custom, is fundamentally based on one of the
-classic User Types (Super Admin, Admin or User). This User Type serves as the
-maximum allowed privilege for the role.
+Chaque rôle d'utilisateur, qu'il soit par défaut ou personnalisé, est
+fondamentalement basé sur l'un des types d'utilisateurs classiques (Super Admin,
+Admin ou Utilisateur). Ce type d'utilisateur sert de privilège maximum autorisé
+pour le rôle.
 
 ## Default Menu Access by User Type
 
