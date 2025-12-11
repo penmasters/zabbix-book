@@ -237,14 +237,14 @@ Modifying `zabbix.conf.php`:
 - **Configure SAML Settings:** Within the file, locate or add the following
   configuration directives:
 
-`php
+```php
 // Uncomment to override the default paths to SP private key, SP and IdP X.509 certificates,
 // and to set extra settings.
 $SSO['SP_KEY']                  = 'conf/certs/sp.key';
 $SSO['SP_CERT']                 = 'conf/certs/sp.crt';
 $SSO['IDP_CERT']                = 'conf/certs/idp.crt';
 //$SSO['SETTINGS']              = [];
-`
+```
 
 ---
 
