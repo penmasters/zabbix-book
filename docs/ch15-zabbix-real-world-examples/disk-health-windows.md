@@ -89,4 +89,25 @@ In Zabbix do the following steps:
 ![ch15_07_host-add.jpg](ch15_07_host-add.jpg)
 _15.7 Host add_
 
+Wait 1–5 minutes for Zabbix to automatically detect the disk sensors and metrics.
+If it does not detect anything:
+
+- Restart the Zabbix Agent 2 service in Windows
+- Execute the discovery rule
+    - Wait a few more minutes
+
+After collecting all the data, Zabbix will display all relevant disk health data, such as:
+
+- Temperature
+- SMART errors
+- Wear level
+- Critical alerts
+- Read/Write status
+- Estimated disk lifespan
+
+Let's have a look at our latest data page. Monitoring -> Latest data.
+
+![ch15_08_latestdata.jpg](ch15_08_latestdata.jpg)
+
+_15.8 latest data_
 
