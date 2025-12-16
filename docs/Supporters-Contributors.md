@@ -30,6 +30,7 @@ valuable for the monitoring and open-source communities.
 - Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
 - Aigars Kadikis : [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
 - Giedrius Stasiulionis : [https://github.com/b1nary1](https://github.com/b1nary1)
+- Leonardo Cardoso: [https://github.com/leocardosoo](https://github.com/leocardosoo)
 
 A list of all the contributors who where so kind to fix typos etc .. can be found here :
 [https://github.com/penmasters/zabbix-book/graphs/contributors](https://github.com/penmasters/zabbix-book/graphs/contributors)
