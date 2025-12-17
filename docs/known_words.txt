@@ -398,4 +398,15 @@ preprocess
 getresult
 regexes
 tostring
-
+smartmontools
+smartctl
+manpages
+ad
+hoc
+supermicro
+mockup
+microcontroller
+lenovo
+untrusted
+pi
+exe

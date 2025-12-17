@@ -24,7 +24,7 @@ send some data to be monitored (i.e. monitoring is just a part of the script
 logic, not the main intent). For example, you send the duration of how long
 your script was running
 - temporary or ad-hoc metrics (e.g. some historical data which was not
-monitored at the time of occurance to be analyzed)
+monitored at the time of occurrence to be analysed)
 
 ## How to send data?
 
@@ -53,7 +53,7 @@ or host and hit "Create item":
 
 ![Zabbix trapper - first item](ch04.xx-trapper-hello-world.png)
 
-Then we can go to CLI and emoploy `zabbix_sender` to pass agreed value to our
+Then we can go to CLI and employ `zabbix_sender` to pass agreed value to our
 newly created Zabbix trapper item. You have to take item key from previous step,
 we will use it here as `-k`:
 
@@ -137,7 +137,7 @@ displayed on time axis in unequal intervals between collected values:
 
 ![Zabbix trapper - not aligned time graph](ch04.xx-trapper-not-aligned-time-graph.png)
 
-That is visually unappealling and we can easily fix it by forcing Zabbix to
+That is visually unappealing and we can easily fix it by forcing Zabbix to
 store results not when the value was sent to Zabbix server, but at the 00
 seconds of the minute the script was started:
 

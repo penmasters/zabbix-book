@@ -273,7 +273,7 @@ plugins:
       add_table_of_contents: true
       toc_title: "Table of Contents"
       toc_depth: 6
-      enumerate_headings: true
+      enumerate_headings: false
       enumerate_figures: true
       add_cover_page: false
       cover_page_template: "docs/assets/templates/custom_cover_page.tpl"
