@@ -76,7 +76,7 @@ Inside the Zabbix Agent 2 installation folder, run: zabbix_agent2.exe -t smart.d
 If successful, it will return the disk information that will be sent to Zabbix.
 
 ![ch15_06_communication.jpg](ch15_06_communication.jpg)
-_15.6 communicaton check_
+_15.6 communication check_
 
 ## Configure it in the Zabbix Web Interface
 
