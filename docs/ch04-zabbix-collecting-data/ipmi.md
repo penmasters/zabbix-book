@@ -5,7 +5,7 @@ description: |
 tags: [advanced]
 ---
 
-#IPMI Monitoring with Zabbix
+# IPMI Monitoring
 
 ## What is IPMI
 
@@ -714,18 +714,192 @@ _4.52 Latest data_
 
 ### LLD examples
 
-## IPMI vs Redfish comparison table
+???+ note
+    If you have no idea how LLD (Low Level Discovery works it's best to skip
+    this for now and cover the LLD chapter first.)
+
+Redfish exposes many resources as collections containing a Members array. This
+structure is ideal for Zabbix Low-Level Discovery (LLD) because it allows
+discovery rules to be implemented using JSONPath.
+
+In this example, we will discover chassis resources from the Redfish endpoint:
+
+``` bash
+/redfish/v1/Chassis
+```
+
+#### Create the Master HTTP Agent Item
 
 
+First, create a master item that retrieves the chassis collection.
 
+| Field | Configuration | notes |
+|:---   |:---           |:---   |
+| **Host** | Redfish Mockup Server | |
+| **Name:** | Redfish Chassis collection (raw) | |
+| **Type** | HTTP agent | |
+| **Key** | redfish.chassis.collection.raw| |
+| **Type of information** | text | |
+| **Update interval** | 5m | |
+| **URL**         | http://127.0.0.1:8000/redfish/v1/Chassis |   |
+| **Request method** | GET |  |
 
+Save the item and confirm in Latest data that it returns JSON similar to:
 
+``` json
+{
+  "Members": [
+    { "@odata.id": "/redfish/v1/Chassis/1U" }
+  ]
+}
+```
+
+#### Create the LLD Rule
+
+Next we can now create a discovery rule based on the master item we just made.
+Press the `...` in front of the item and select `Create dependent discovery rule`.
+
+| Field | Configuration | notes |
+|:---   |:---           |:---   |
+| **Name:** | Discovery Redfish chassis | |
+| **Type** | Dependent item |
+| **Key** | redfish.chassis.discovery | |
+| **Master item** | Redfish Chassis collection (raw) | |
+| **Preprocessing** | JSONPath | $.Members[*] |
+| **LLD macros** | {#CHASSIS_URI} | $['@odata.id'] |
+
+![ch04.53_discovery_rule.png](ch04.53_discovery_rule.png)
+
+_4.53 LLD Discovery rule_
+
+The JSONPath will output each member object individually, for example:
+
+``` json
+{ "@odata.id": "/redfish/v1/Chassis/1U" }
+```
+
+This is exactly what Zabbix expects for JSONPath-based LLD.
+
+The LLD macros section define how values are extracted from each discovered object:
+
+- The JSONPath must start with `$`
+- The macro path is evaluated per discovered object
+
+After this step, Zabbix will discover:
+
+``` json
+{#CHASSIS_URI} = /redfish/v1/Chassis/1U
+```
+
+#### Create an Item Prototype (Raw Chassis Data)
+
+Now that we have our discovery rule it's time to create an item prototype that queries each discovered chassis.
+
+| Field | Configuration | notes |
+|:---   |:---           |:---   |
+| **Name:** | Redfish chassis {#CHASSIS_URI} (raw) | |
+| **Type:** | HTTP agent | |
+| **Key:** | redfish.chassis.raw[{#CHASSIS_URI}] | |
+| **URL:** | http://127.0.0.1:8000{#CHASSIS_URI} | |
+| **Request method** | GET | |
+| **Update interval** | 5m | |
+| **Type of information** | Text | |
+
+This produces one HTTP item per discovered chassis.
+
+![ch04.54_item_prototype_raw.png](ch04.54_item_prototype_raw.png)
+
+_4.54 Item prototype raw_
+
+#### Create a Dependent Item Prototype (Health)
+
+Our next step is to extract the health and the status with dependent items
+prototypes.
+
+The chassis resource already contains a standard Status object:
+
+``` json
+"Status": {
+  "Health": "OK",
+  "State": "Enabled"
+}
+```
+
+We can extract this cleanly using a dependent item.
+
+| Field | Configuration | notes |
+|:---   |:---           |:---   |
+| **Name:** | Chassis health | |
+| **Type** | Dependent item |
+| **Key** | redfish.chassis.health[{#CHASSIS_URI}] | |
+| **Master item** | Redfish chassis {#CHASSIS_URI} (raw) | |
+| **Type of information** | Character | |
+| **Preprocessing** | JSONPath | $.Status.Health |
+
+![ch04.55_item_prototype_health.png](ch04.55_item_prototype_health.png)
+
+_4.55 Dependent discovery item health_
+
+Once done clone this item and create one for the `Status state`. You can use
+this JSONPath `$.Status.State` for it.
+
+#### Create a Trigger Prototype
+
+And as a final step we can create a simple `Trigger prototype` to make the discovery useful.
+
+| Field | Configuration | notes |
+|:---   |:---           |:---   |
+| **Name:** | Chassis health is not OK | |
+| **Expression** | last(/Redfish Mockup Server/redfish.chassis.health[{#CHASSIS_URI}])<>"OK" | Adpat trigger names if needed |
+
+![ch04.56_trigger_prototype.png](ch04.56_trigger_prototype.png)
+
+_4.56 Trigger Prototype_
 
 ## Conclusion
 
+Both IPMI and Redfish provide out-of-band management capabilities, but they
+reflect very different design philosophies and operational eras. Understanding
+these differences helps decide which technology to use — and why many
+environments are gradually transitioning from IPMI to Redfish.
+
+| Topic                   | IPMI                                          | Redfish                                             |
+| ----------------------- | --------------------------------------------- | --------------------------------------------------- |
+| Standardization         | Older, widely implemented standard            | Modern DMTF standard designed for automation        |
+| Transport               | Binary protocol over UDP (typically port 623) | RESTful API over HTTPS                              |
+| Data format             | Sensor-based, vendor-defined naming           | Structured JSON with formal schemas                 |
+| Security model          | Historically weak, varies by firmware         | Designed with modern security in mind               |
+| Authentication          | Legacy mechanisms, cipher suites              | HTTP authentication, sessions, tokens               |
+| Discoverability         | Limited, often manual                         | Native via collections and `Members`                |
+| Resource model          | Individual sensors                            | Linked resources (`Systems`, `Chassis`, `Managers`) |
+| Low-Level Discovery     | Difficult and vendor-specific                 | Natural and scalable using JSONPath                 |
+| Poller behavior         | Specialized, limited scalability              | Uses existing HTTP infrastructure                   |
+| Template portability    | Often vendor- and model-specific              | Largely vendor-neutral                              |
+| Automation friendliness | Limited                                       | Designed for automation and APIs                    |
+| Tooling                 | `ipmitool` and vendor utilities               | `curl`, browsers, standard HTTP tools               |
+| Typical use today       | Legacy fleets, basic hardware health          | Modern platforms, scalable monitoring               |
+
+In practice, the choice is rarely binary.
+
+IPMI remains valuable in environments with older hardware or where Redfish support is limited or inconsistent. It provides reliable access to fundamental hardware health metrics and continues to work well when deployed on isolated management networks.
+
+Redfish, on the other hand, is clearly the direction of the industry. Its REST-based design, structured data model, and native discoverability make it far better suited for modern monitoring platforms such as Zabbix. Redfish scales naturally, integrates cleanly with automation workflows, and is significantly easier to reason about and troubleshoot.
+
+For many organizations, the most realistic approach is coexistence: IPMI for
+legacy systems, Redfish for new deployments.
+
 ## Questions
+
+- What problem do IPMI and Redfish both aim to solve, and how do their approaches differ?
+- How does the Redfish resource model (Systems, Chassis, Managers) differ from IPMI's sensor based model?
+- What role does JSONPath play in making Redfish monitoring scalable?
+- When designing a new monitoring template, why is vendor neutrality important?
 
 ## Useful URLs
 
-[https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview)
+- [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview)
+- [https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmi-second-gen-interface-spec-v2-rev1-1.pdf](https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmi-second-gen-interface-spec-v2-rev1-1.pdf)
+- [https://github.com/ipmitool/ipmitool](https://github.com/ipmitool/ipmitool)
+- [https://www.dmtf.org/standards/redfish](https://www.dmtf.org/standards/redfish)
+- [https://github.com/DMTF/Redfish-Mockup-Server](https://github.com/DMTF/Redfish-Mockup-Server)
 
