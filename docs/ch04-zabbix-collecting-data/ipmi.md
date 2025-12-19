@@ -50,102 +50,31 @@ availability, and behavior often vary by vendor and even by firmware version.
 ```mermaid
 flowchart TB
   %% ---------- Styles ----------
-  classDef zabbix fill:#e3f2fd,stroke:#1e88e5,stroke-width:1px,color:#0d47a1
-  classDef network fill:#e8f5e9,stroke:#2e7d32,stroke-width:1px,color:#1b5e20
-  classDef vendor fill:#fff3e0,stroke:#ef6c00,stroke-width:1px,color:#e65100
-  classDef sensor fill:#fffde7,stroke:#fbc02d,stroke-width:1px,color:#6d4c41
-  classDef tools fill:#f5f5f5,stroke:#616161,stroke-width:1px,color:#424242
+  classDef zabbix fill:#e3f2fd,stroke:#1e88e5,color:#0d47a1
+  classDef ipmi fill:#ede7f6,stroke:#5e35b1,color:#311b92
+  classDef network fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef hardware fill:#fff3e0,stroke:#ef6c00,color:#e65100
+  classDef sensors fill:#fffde7,stroke:#fbc02d,color:#6d4c41
 
-  %% ---------- Zabbix ----------
-  subgraph Z["Zabbix"]
-    direction TB
-    UI["Frontend
-    Items • Triggers • Templates"]
-    S["Zabbix Server"]
-    P["Zabbix Proxy
-    (optional)"]
-    IP["IPMI pollers
-    (StartIPMIPollers)"]
-    OI["OpenIPMI library"]
+  %% ---------- Nodes ----------
+  Z["Zabbix Server / Proxy"]
+  O["OpenIPMI"]
+  N["Management Network"]
+  B["BMC"]
+  H["Hardware Sensors"]
 
-    UI --> S
-    UI --> P
-    S --> IP
-    P --> IP
-    IP --> OI
-  end
+  %% ---------- Flow ----------
+  Z --> O
+  O -->|"IPMI (UDP 623)"| N
+  N --> B
+  B --> H
 
-  class UI,S,P,IP,OI zabbix
-
-  %% ---------- Network ----------
-  subgraph Net["Management network"]
-    direction TB
-    FW["Firewall / ACLs<br/>VLAN isolation"]
-  end
-
-  class FW network
-
-  %% ---------- Hardware ----------
-  subgraph HW["Physical server"]
-    direction TB
-
-    subgraph V["Vendor implementation"]
-      direction TB
-      VND["Vendor platform
-      Dell iDRAC
-      HPE iLO
-      Lenovo XClarity
-      Supermicro IPMI"]
-      BMC["BMC
-      (Baseboard Mgmt Controller)"]
-      VND --> BMC
-    end
-
-    subgraph SNS["IPMI sensors"]
-      direction TB
-      T["Temperature
-      CPU • System • Inlet • Exhaust"]
-      F["Fans
-      RPM • Presence • Failure"]
-      VLT["Voltages
-      CPU • Memory • Rails"]
-      PS["Power
-      PSU • Redundancy • Watts"]
-      CH["Chassis
-      Intrusion • Lid"]
-    end
-
-    BMC --> T
-    BMC --> F
-    BMC --> VLT
-    BMC --> PS
-    BMC --> CH
-  end
-
-  class VND,BMC vendor
-  class T,F,VLT,PS,CH sensor
-
-  %% ---------- Connectivity ----------
-  OI -->|"IPMI over LAN<br/>UDP 623 (RMCP / RMCP+)"| FW
-  FW --> BMC
-
-  %% ---------- Zabbix item mapping ----------
-  UI -.->|"Item key maps to sensor name
-  ipmi.get[<Sensor Name>]"| T
-  UI -.-> F
-  UI -.-> VLT
-  UI -.-> PS
-  UI -.-> CH
-
-  %% ---------- Tooling ----------
-  subgraph Tools["Admin tooling"]
-    IPT["ipmitool
-    Manual validation & discovery"]
-  end
-
-  class IPT tools
-
-  IPT -.->|"IPMI over LAN<br/>(troubleshooting only)"| FW
+  %% ---------- Classes ----------
+  class Z zabbix
+  class O ipmi
+  class N network
+  class B hardware
+  class H sensors
 ```
 
 ---
