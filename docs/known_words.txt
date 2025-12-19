@@ -415,4 +415,9 @@ ipmitool
 mockups
 odata
 pdf
-
+bitwise
+centers
+daemonless
+discoverability
+dmtf
+remediate
