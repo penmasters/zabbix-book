@@ -333,6 +333,84 @@ familiar patterns:
 This exploratory step is important because sensor names must be used exactly as
 shown when configuring Zabbix IPMI items.
 
+**Example Output:**
+
+| Sensor  Name      | Value      | Units      | Status |
+|:---              |:---        |:---        |:---    |
+| CPU Temp         | 42.000     | degrees C  | ok |
+| System Temp      | 35.000     | degrees C  | ok |
+| Inlet Temp       | 22.000     | degrees C  | ok |
+| Exhaust Temp     | 28.000     | degrees C  | ok |
+| FAN1             | 4200.000   | RPM        | ok |
+| FAN2             | 4100.000   | RPM        | ok |
+| PSU1 Status      | 0x01       | discrete   | ok |
+| PSU2 Status      | 0x01       | discrete   | ok |
+| Voltage 12V      | 12.096     | Volts      | ok |
+| Chassis Intrusion| 0x00       | discrete   | ok |
+
+Each line represents a sensor exposed by the BMC. While the exact sensors and names
+vary by vendor and hardware model, the structure is consistent.
+
+**The output columns represent:**
+
+- **Sensor name:** The identifier used by IPMI. This value is case-sensitive and
+  must match exactly when configuring Zabbix IPMI items.
+- **Current reading:** The latest measured value reported by the sensor.
+- **Units:** The measurement unit, such as degrees Celsius, RPM, or Volts.
+- **Status:** A simplified state indicating whether the sensor is operating normally.
+
+Discrete sensors (such as power supply status or chassis intrusion) may show
+hexadecimal values instead of numeric readings.
+
+---
+
+### Working with Discrete IPMI Sensors
+
+Some IPMI sensors do not return numeric measurements such as temperature or fan
+speed. Instead, they return discrete values, where individual bits represent different
+states or conditions. Common examples include power supply status, chassis intrusion,
+or predictive hardware failures.
+
+In these cases, Zabbix can evaluate specific bits using the bitwise AND trigger
+function, band().
+
+**Example: Predictive Power Supply Failure**
+
+Assume an IPMI sensor returns a value where the eighth bit indicates a predictive
+failure condition. To check whether this bit is set, Zabbix applies a bitmask using
+the band() function.
+
+In decimal notation:
+
+- Bit 8 corresponds to the value 128
+- The trigger expression checks whether this bit is set
+
+Example trigger expression:
+
+```  bash
+band(last(/host/Power_Unit_Stat),128)=128
+```
+This expression:
+
+- Takes the most recent value
+- Applies a bitmask of 128
+- Triggers only if the predictive failure bit is set
+
+This approach allows precise monitoring of hardware fault conditions that are
+otherwise hidden inside composite IPMI values.
+
+**Notes on Bitmask-Based Monitoring:**
+
+- Bitmask logic is common with IPMI but rare with modern APIs
+- Care should be taken not to poll too many IPMI sensors, as BMCs can easily be
+  overloaded
+- Since Zabbix 4.0, IPMI sensors can be referenced using name: or id: syntax,
+  improving reliability across firmware versions
+
+Because of this complexity, IPMI monitoring often requires more manual tuning than
+Redfish-based monitoring, where health states are typically exposed as explicit
+fields such as Status.Health.
+
 ---
 
 ### How Zabbix Uses IPMI Internally
@@ -450,7 +528,7 @@ Using ipmitool during setup and troubleshooting remains invaluable. If a sensor
 cannot be queried manually, Zabbix will not be able to retrieve it either.
 
 When these practices are followed, IPMI provides stable and useful visibility into
-hardware health — even if it shows its age in other areas.
+hardware health, even if it shows its age in other areas.
 
 ---
 
@@ -926,7 +1004,7 @@ And as a final step we can create a simple `Trigger prototype` to make the disco
 | Field | Configuration | notes |
 |:---   |:---           |:---   |
 | **Name:** | Chassis health is not OK | |
-| **Expression** | last(/Redfish Mockup Server/redfish.chassis.health[{#CHASSIS_URI}])<>"OK" | Adpat trigger names if needed |
+| **Expression** | last(/Redfish Mockup Server/redfish.chassis.health[{#CHASSIS_URI}])<>"OK" | Adapt trigger names if needed |
 
 ![ch04.56_trigger_prototype.png](ch04.56_trigger_prototype.png)
 
