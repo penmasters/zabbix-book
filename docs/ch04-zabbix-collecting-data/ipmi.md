@@ -19,6 +19,8 @@ This chapter introduces IPMI from a practical monitoring perspective and explain
 how it integrates with Zabbix, while also setting realistic expectations about where
 IPMI fits in modern environments.
 
+---
+
 ### Understanding IPMI
 
 IPMI allows administrators to monitor and manage physical server hardware independently
@@ -132,6 +134,8 @@ flowchart TB
 
 ```
 
+---
+
 ### IPMI Architecture and Sensors
 
 IPMI monitoring is built around hardware sensors exposed by the BMC. These sensors
@@ -156,6 +160,8 @@ Each sensor has a name, a type, and one or more thresholds that indicate warning
 or critical conditions. Importantly, sensor names are vendor-defined and case-sensitive,
 which has direct implications for monitoring tools such as Zabbix.
 
+---
+
 ### Communication and Protocols
 
 When accessed over the network, IPMI typically communicates using UDP port 623.
@@ -166,6 +172,8 @@ Although RMCP+ improves security compared to earlier versions, its real world
 effectiveness depends heavily on vendor configuration and firmware quality. As
 a result, IPMI traffic still lacks many of the security and observability features
 administrators expect from modern management interfaces.
+
+---
 
 ### Security Caveats
 
@@ -185,6 +193,8 @@ aggressively, and keep BMC firmware up to date. When used carefully, IPMI can be
 safe enough for monitoring, but it should never be treated like a normal application
 service.
 
+---
+
 ### Verifying IPMI Access with ipmitool
 
 Before configuring IPMI monitoring in Zabbix, it is often helpful to verify connectivity
@@ -197,6 +207,8 @@ configuration will usually work in Zabbix as well.
 These tools are primarily for validation and troubleshooting; they are not required
 for day-to-day monitoring once Zabbix is configured.
 
+---
+
 ### Native IPMI Monitoring in Zabbix
 
 Zabbix includes native IPMI support, allowing it to poll BMCs directly without
@@ -208,6 +220,8 @@ or template level, depending on how standardized the environment is.
 
 Once configured, Zabbix queries individual sensors and stores their values just
 like any other monitored metric.
+
+---
 
 ### IPMI Items and Templates
 
@@ -226,6 +240,8 @@ In practice, these templates are rarely “plug and play.” Sensors may be miss
 renamed, or behave differently across vendors. As a result, IPMI templates are
 best treated as baselines that are refined for specific hardware platforms.
 
+---
+
 ### Practical Limitations
 
 From a modern monitoring perspective, IPMI has clear limitations. Discovery
@@ -237,6 +253,8 @@ These constraints do not make IPMI obsolete, but they do define its role. IPMI i
 best suited for fundamental hardware health monitoring rather than deep observability
 or automation.
 
+---
+
 ### When IPMI Still Makes Sense
 
 IPMI remains relevant in many environments, particularly where hardware fleets
@@ -247,6 +265,8 @@ into physical system health.
 For many organizations, IPMI will continue to coexist with newer technologies
 for years to come.
 
+---
+
 ### Understanding How IPMI Tools Work
 
 Before Zabbix enters the picture, it helps to understand how IPMI is typically
@@ -256,12 +276,14 @@ with the BMC.
 
 ipmitool does not talk to the operating system. Instead, it connects straight to
 the BMC using IPMI over LAN, authenticates using the configured credentials, and
-requests sensor data or management actions. In many ways, Zabbix’s native IPMI
+requests sensor data or management actions. In many ways, Zabbix's native IPMI
 monitoring behaves very similarly, it simply automates and schedules the same
 type of queries.
 
 Using `ipmitool` manually is therefore an excellent way to validate connectivity,
 credentials, and available sensors before attempting to monitor a system with Zabbix.
+
+---
 
 #### Installing ipmitool
 
@@ -283,6 +305,8 @@ apt install -y ipmitool
 
 Once installed, no additional services are required. The tool is invoked directly
 from the command line and communicates with the BMC over the network.
+
+---
 
 #### Exploring IPMI Sensors with ipmitool
 
@@ -309,6 +333,8 @@ familiar patterns:
 This exploratory step is important because sensor names must be used exactly as
 shown when configuring Zabbix IPMI items.
 
+---
+
 ### How Zabbix Uses IPMI Internally
 
 Zabbix does not invoke ipmitool or external commands when monitoring IPMI. Instead,
@@ -323,6 +349,8 @@ or external processes.
 From the user’s perspective, this distinction is mostly invisible. Whether IPMI
 data is retrieved manually with ipmitool or automatically by Zabbix, the underlying
 interaction with the BMC follows the same IPMI standards and exposes the same sensors.
+
+---
 
 #### Configuring IPMI Pollers
 
@@ -347,6 +375,8 @@ Because IPMI pollers rely on network communication with management controllers, 
 - Network latency to the management network
 - Firmware quality and load on the BMC
 
+---
+
 #### Relationship Between ipmitool and Zabbix
 
 Although Zabbix does not use ipmitool internally, the two tools are closely related conceptually. Both rely on standard IPMI mechanisms and expose the same underlying sensor data.
@@ -359,6 +389,8 @@ For this reason, ipmitool remains the preferred tool for:
 - Troubleshooting authentication and firmware issues
 
 If a sensor cannot be queried successfully with ipmitool, it will almost certainly fail in Zabbix as well.
+
+---
 
 #### Configuring an IPMI Item in Zabbix
 
@@ -383,6 +415,8 @@ is strongly recommended.
 Triggers are typically defined on top of these items to detect warning and critical
 thresholds, either using vendor recommendations or operational experience.
 
+---
+
 ### Known Issues and Common Pitfalls
 
 IPMI monitoring works reliably once configured correctly, but several recurring
@@ -404,6 +438,8 @@ Finally, IPMI interfaces are sometimes overlooked during network changes. Firewa
 rules, VLAN reconfiguration, or routing changes can silently break access to the
 management network while leaving the operating system untouched.
 
+---
+
 ### Practical Advice for Reliable IPMI Monitoring
 
 From experience, IPMI monitoring works best when treated as infrastructure monitoring,
@@ -416,7 +452,7 @@ cannot be queried manually, Zabbix will not be able to retrieve it either.
 When these practices are followed, IPMI provides stable and useful visibility into
 hardware health — even if it shows its age in other areas.
 
-
+---
 
 ## Introduction to Redfish
 
@@ -428,6 +464,8 @@ being both human-readable and machine friendly.
 In practical terms, Redfish is what you wish IPMI had been: structured resources,
 predictable URIs, and data you can query using the same tools you already use for
 web services.
+
+---
 
 ### REST + HTTPS
 
@@ -441,14 +479,16 @@ That shift matters for monitoring:
 - You can retrieve structured JSON payloads.
 - You can monitor it with Zabbix HTTP agent items (no special IPMI subsystem needed).
 
+---
+
 ### JSON schema and standardized resources
 
 Redfish resources are delivered as JSON and described by formal schemas. DMTF
 publishes the schema index (including JSON Schema formats), which makes the ecosystem
 far more consistent than IPMI in practice.
 
-The big win for authors and operators is that Redfish revolves around standard resource types.
-You'll see the same patterns repeatedly across vendors:
+The big win for authors and operators is that Redfish revolves around standard
+resource types. You'll see the same patterns repeatedly across vendors:
 
 - **ServiceRoot:** /redfish/v1 (entry point)
 - **Systems:** server/compute view (CPU, memory, boot, power state)
@@ -459,11 +499,15 @@ You'll see the same patterns repeatedly across vendors:
 
 Even when vendors add OEM extensions, the baseline model stays recognizable.
 
+---
+
 ## Testing Redfish with a Simulator
 
 Since not everyone has an IPMI interface available and since we cannot use a
 standard that would work for everybody we will focus on a simulator. This should
 give you a good idea on how things work in real life.
+
+---
 
 ### DMTF Mockup Server
 
@@ -472,15 +516,23 @@ The Mockup Server serves static Redfish mockups and runs by `default` on `127.0.
 We will install for this a docker container on our Zabbix system or another
 system if you prefer.
 
-For the examples in this book, we use a fork of the official DMTF Redfish Mockup Server. The simulator runs in a container and provides a predictable, vendor-neutral Redfish API that is ideal for testing and monitoring examples.
+For the examples in this book, we use a fork of the official DMTF Redfish Mockup
+Server. The simulator runs in a container and provides a predictable, vendor neutral
+Redfish API that is ideal for testing and monitoring examples.
 
-The following sections show how to run the simulator on Rocky Linux using Podman and on Ubuntu 24.04 using Docker.
+The following sections show how to run the simulator on Rocky Linux using Podman
+and on Ubuntu 24.04 using Docker.
 
-In both cases, the result is the same: a Redfish service listening locally on port 8000.
+In both cases, the result is the same: a Redfish service listening locally on
+port 8000.
+
+---
 
 #### Rocky Linux (Podman)
 
-Rocky Linux uses Podman as its default container engine. Podman is daemonless, integrates well with system security, and can run Docker-compatible images without modification.
+Rocky Linux uses Podman as its default container engine. Podman is daemonless,
+integrates well with system security, and can run Docker-compatible images without
+modification.
 
 **Install Podman**
 
@@ -570,7 +622,8 @@ http://127.0.0.1:8000/redfish/v1
 
 **Verifying the Installation**
 
-On both Rocky Linux and Ubuntu, you can verify that the simulator is running by querying the Redfish service root:
+On both Rocky Linux and Ubuntu, you can verify that the simulator is running by
+querying the Redfish service root:
 
 ``` bash
 curl http://127.0.0.1:8000/redfish/v1
@@ -604,15 +657,22 @@ curl http://127.0.0.1:8000/redfish/v1
     }
 ```
 
+---
+
 ## Monitoring Redfish with Zabbix
 
-With the Redfish Mockup Server running, we can now move from exploration to actual monitoring. The most straightforward way to monitor Redfish in Zabbix is by using an HTTP agent item, which retrieves data from a REST endpoint and stores the response for further processing.
+With the Redfish Mockup Server running, we can now move from exploration to actual
+monitoring. The most straightforward way to monitor Redfish in Zabbix is by using an
+HTTP agent item, which retrieves data from a REST endpoint and stores the response
+for further processing.
 
-This approach mirrors how Redfish is used in real environments and avoids the need for any special protocols or poller types.
+This approach mirrors how Redfish is used in real environments and avoids the need
+for any special protocols or poller types.
 
 **Choosing the First Endpoint**
 
-Every Redfish service exposes a well-defined entry point called the Service Root, located at:
+Every Redfish service exposes a well-defined entry point called the Service Root,
+located at:
 
 ```bash
 /redfish/v1
@@ -640,8 +700,10 @@ In the Zabbix frontend, go to `Data collection` → `Hosts`
 2. Set:
     - **Host name:** Redfish Mockup Server
     - **Interface:** none required (HTTP agent does not use host interfaces)
-4. Assign the host to a suitable group, for example Redfish or Servers
-5. Save the host
+3. Assign the host to a suitable group, for example Redfish or Servers
+4. Save the host
+
+---
 
 ![ch04.50_create_redfish_host.png](ch04.50_create_redfish_host.png)
 
@@ -673,12 +735,15 @@ Configure the item as follows:
 No authentication or headers are required for the mock server.
 
 ???+ note
-    At this stage, we are deliberately storing the entire response. In the next step, we will extract individual values.
+    At this stage, we are deliberately storing the entire response. In the next
+    step, we will extract individual values.
 
 After a short wait, the item should start collecting data. This can be verified
 under `Monitoring` → `Lastest data`
 
 If this works we can move over to the next step and create an item.
+
+---
 
 ### Extracting a Value with JSON Preprocessing
 
@@ -711,8 +776,9 @@ Let's go to our latest data page and have a look at our newly created item.
 
 _4.52 Latest data_
 
+---
 
-### LLD examples
+### LLD example
 
 ???+ note
     If you have no idea how LLD (Low Level Discovery works it's best to skip
@@ -727,6 +793,8 @@ In this example, we will discover chassis resources from the Redfish endpoint:
 ``` bash
 /redfish/v1/Chassis
 ```
+
+---
 
 #### Create the Master HTTP Agent Item
 
@@ -753,6 +821,8 @@ Save the item and confirm in Latest data that it returns JSON similar to:
   ]
 }
 ```
+
+---
 
 #### Create the LLD Rule
 
@@ -791,6 +861,8 @@ After this step, Zabbix will discover:
 {#CHASSIS_URI} = /redfish/v1/Chassis/1U
 ```
 
+---
+
 #### Create an Item Prototype (Raw Chassis Data)
 
 Now that we have our discovery rule it's time to create an item prototype that queries each discovered chassis.
@@ -810,6 +882,8 @@ This produces one HTTP item per discovered chassis.
 ![ch04.54_item_prototype_raw.png](ch04.54_item_prototype_raw.png)
 
 _4.54 Item prototype raw_
+
+---
 
 #### Create a Dependent Item Prototype (Health)
 
@@ -843,6 +917,8 @@ _4.55 Dependent discovery item health_
 Once done clone this item and create one for the `Status state`. You can use
 this JSONPath `$.Status.State` for it.
 
+---
+
 #### Create a Trigger Prototype
 
 And as a final step we can create a simple `Trigger prototype` to make the discovery useful.
@@ -855,6 +931,8 @@ And as a final step we can create a simple `Trigger prototype` to make the disco
 ![ch04.56_trigger_prototype.png](ch04.56_trigger_prototype.png)
 
 _4.56 Trigger Prototype_
+
+---
 
 ## Conclusion
 
@@ -881,19 +959,30 @@ environments are gradually transitioning from IPMI to Redfish.
 
 In practice, the choice is rarely binary.
 
-IPMI remains valuable in environments with older hardware or where Redfish support is limited or inconsistent. It provides reliable access to fundamental hardware health metrics and continues to work well when deployed on isolated management networks.
+IPMI remains valuable in environments with older hardware or where Redfish support
+is limited or inconsistent. It provides reliable access to fundamental hardware
+health metrics and continues to work well when deployed on isolated management
+networks.
 
-Redfish, on the other hand, is clearly the direction of the industry. Its REST-based design, structured data model, and native discoverability make it far better suited for modern monitoring platforms such as Zabbix. Redfish scales naturally, integrates cleanly with automation workflows, and is significantly easier to reason about and troubleshoot.
+Redfish, on the other hand, is clearly the direction of the industry. Its REST
+based design, structured data model, and native discoverability make it far better
+suited for modern monitoring platforms such as Zabbix. Redfish scales naturally,
+integrates cleanly with automation workflows, and is significantly easier to
+reason about and troubleshoot.
 
 For many organizations, the most realistic approach is coexistence: IPMI for
 legacy systems, Redfish for new deployments.
 
+
 ## Questions
 
-- What problem do IPMI and Redfish both aim to solve, and how do their approaches differ?
-- How does the Redfish resource model (Systems, Chassis, Managers) differ from IPMI's sensor based model?
+- What problem do IPMI and Redfish both aim to solve, and how do their approaches
+  differ?
+- How does the Redfish resource model (Systems, Chassis, Managers) differ from
+  IPMI's sensor based model?
 - What role does JSONPath play in making Redfish monitoring scalable?
 - When designing a new monitoring template, why is vendor neutrality important?
+
 
 ## Useful URLs
 
@@ -902,4 +991,3 @@ legacy systems, Redfish for new deployments.
 - [https://github.com/ipmitool/ipmitool](https://github.com/ipmitool/ipmitool)
 - [https://www.dmtf.org/standards/redfish](https://www.dmtf.org/standards/redfish)
 - [https://github.com/DMTF/Redfish-Mockup-Server](https://github.com/DMTF/Redfish-Mockup-Server)
-
