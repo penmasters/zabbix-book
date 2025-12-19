@@ -59,10 +59,13 @@ flowchart TB
   %% ---------- Zabbix ----------
   subgraph Z["Zabbix"]
     direction TB
-    UI["Frontend\nItems • Triggers • Templates"]
+    UI["Frontend
+    Items • Triggers • Templates"]
     S["Zabbix Server"]
-    P["Zabbix Proxy\n(optional)"]
-    IP["IPMI pollers\n(StartIPMIPollers)"]
+    P["Zabbix Proxy
+    (optional)"]
+    IP["IPMI pollers
+    (StartIPMIPollers)"]
     OI["OpenIPMI library"]
 
     UI --> S
@@ -77,7 +80,7 @@ flowchart TB
   %% ---------- Network ----------
   subgraph Net["Management network"]
     direction TB
-    FW["Firewall / ACLs\nVLAN isolation"]
+    FW["Firewall / ACLs<br/>VLAN isolation"]
   end
 
   class FW network
@@ -88,18 +91,28 @@ flowchart TB
 
     subgraph V["Vendor implementation"]
       direction TB
-      VND["Vendor platform\nDell iDRAC\nHPE iLO\nLenovo XClarity\nSupermicro IPMI"]
-      BMC["BMC\n(Baseboard Management Controller)"]
+      VND["Vendor platform
+      Dell iDRAC
+      HPE iLO
+      Lenovo XClarity
+      Supermicro IPMI"]
+      BMC["BMC
+      (Baseboard Mgmt Controller)"]
       VND --> BMC
     end
 
     subgraph SNS["IPMI sensors"]
       direction TB
-      T["Temperature\nCPU • System • Inlet • Exhaust"]
-      F["Fans\nRPM • Presence • Failure"]
-      VLT["Voltages\nCPU • Memory • Rails"]
-      PS["Power\nPSU • Redundancy • Watts"]
-      CH["Chassis\nIntrusion • Lid"]
+      T["Temperature
+      CPU • System • Inlet • Exhaust"]
+      F["Fans
+      RPM • Presence • Failure"]
+      VLT["Voltages
+      CPU • Memory • Rails"]
+      PS["Power
+      PSU • Redundancy • Watts"]
+      CH["Chassis
+      Intrusion • Lid"]
     end
 
     BMC --> T
@@ -113,11 +126,12 @@ flowchart TB
   class T,F,VLT,PS,CH sensor
 
   %% ---------- Connectivity ----------
-  OI -->|"IPMI over LAN\nUDP 623 (RMCP / RMCP+)"| FW
+  OI -->|"IPMI over LAN<br/>UDP 623 (RMCP / RMCP+)"| FW
   FW --> BMC
 
   %% ---------- Zabbix item mapping ----------
-  UI -.->|"Item key maps to sensor name\nipmi.get[<Sensor Name>]"| T
+  UI -.->|"Item key maps to sensor name
+  ipmi.get[<Sensor Name>]"| T
   UI -.-> F
   UI -.-> VLT
   UI -.-> PS
@@ -125,13 +139,13 @@ flowchart TB
 
   %% ---------- Tooling ----------
   subgraph Tools["Admin tooling"]
-    IPT["ipmitool\nManual validation & discovery"]
+    IPT["ipmitool
+    Manual validation & discovery"]
   end
 
   class IPT tools
 
-  IPT -.->|"IPMI over LAN\n(troubleshooting only)"| FW
-
+  IPT -.->|"IPMI over LAN<br/>(troubleshooting only)"| FW
 ```
 
 ---
