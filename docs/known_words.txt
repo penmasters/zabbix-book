@@ -410,3 +410,9 @@ lenovo
 untrusted
 pi
 exe
+ipmi
+ipmitool
+mockups
+odata
+pdf
+
