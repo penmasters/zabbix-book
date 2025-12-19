@@ -376,57 +376,341 @@ For example, to monitor a CPU temperature sensor, the item key might look like:
 ipmi.get[CPU Temp]
 ```
 
-If the sensor name does not match exactly — including case and spacing — the item will fail. For this reason, copying sensor names directly from ipmitool output is strongly recommended.
+If the sensor name does not match exactly, including case and spacing, the item
+will fail. For this reason, copying sensor names directly from ipmitool output
+is strongly recommended.
 
-Triggers are typically defined on top of these items to detect warning and critical thresholds, either using vendor recommendations or operational experience.
+Triggers are typically defined on top of these items to detect warning and critical
+thresholds, either using vendor recommendations or operational experience.
 
 ### Known Issues and Common Pitfalls
 
-IPMI monitoring works reliably once configured correctly, but several recurring issues are worth calling out explicitly.
+IPMI monitoring works reliably once configured correctly, but several recurring
+issues are worth calling out explicitly.
 
-One common problem is inconsistent sensor naming. The same server model may expose different sensor names depending on firmware version, making templates fragile across hardware revisions.
+One common problem is inconsistent sensor naming. The same server model may expose
+different sensor names depending on firmware version, making templates fragile
+across hardware revisions.
 
-Another frequent issue is slow or unresponsive BMCs. Some management controllers respond slowly under load, which can cause timeouts or delayed data in Zabbix. This becomes more noticeable as the number of monitored systems grows.
+Another frequent issue is slow or unresponsive BMCs. Some management controllers
+respond slowly under load, which can cause timeouts or delayed data in Zabbix.
+This becomes more noticeable as the number of monitored systems grows.
 
-Authentication problems are also common. Incorrect cipher suite settings, locked user accounts, or firmware bugs can all prevent successful IPMI polling even when credentials appear correct.
+Authentication problems are also common. Incorrect cipher suite settings, locked
+user accounts, or firmware bugs can all prevent successful IPMI polling even when
+credentials appear correct.
 
-Finally, IPMI interfaces are sometimes overlooked during network changes. Firewall rules, VLAN reconfiguration, or routing changes can silently break access to the management network while leaving the operating system untouched.
+Finally, IPMI interfaces are sometimes overlooked during network changes. Firewall
+rules, VLAN reconfiguration, or routing changes can silently break access to the
+management network while leaving the operating system untouched.
 
 ### Practical Advice for Reliable IPMI Monitoring
 
-From experience, IPMI monitoring works best when treated as infrastructure monitoring, not application monitoring. Polling intervals should be reasonable, sensor counts kept under control, and templates carefully validated per vendor.
+From experience, IPMI monitoring works best when treated as infrastructure monitoring,
+not application monitoring. Polling intervals should be reasonable, sensor counts
+kept under control, and templates carefully validated per vendor.
 
-Using ipmitool during setup and troubleshooting remains invaluable. If a sensor cannot be queried manually, Zabbix will not be able to retrieve it either.
+Using ipmitool during setup and troubleshooting remains invaluable. If a sensor
+cannot be queried manually, Zabbix will not be able to retrieve it either.
 
-When these practices are followed, IPMI provides stable and useful visibility into hardware health — even if it shows its age in other areas.
-
-
-
-
+When these practices are followed, IPMI provides stable and useful visibility into
+hardware health — even if it shows its age in other areas.
 
 
 
 ## Introduction to Redfish
 
+If IPMI feels like a tool from another era, Redfish is what replaced it: a modern,
+web friendly management standard designed for automation and secure operations.
+Redfish exposes hardware management through a RESTful interface and focuses on
+being both human-readable and machine friendly. 
+
+In practical terms, Redfish is what you wish IPMI had been: structured resources,
+predictable URIs, and data you can query using the same tools you already use for
+web services.
+
 ### REST + HTTPS
 
-### JSON schema
+Redfish is built around REST concepts and is typically accessed over HTTPS. Instead
+of vendor specific “sensor names” or proprietary client utilities, you access resources
+using URLs and standard HTTP methods. 
 
-### Standardized resources
+That shift matters for monitoring:
+
+- You can test endpoints with curl.
+- You can retrieve structured JSON payloads.
+- You can monitor it with Zabbix HTTP agent items (no special IPMI subsystem needed).
+
+### JSON schema and standardized resources
+
+Redfish resources are delivered as JSON and described by formal schemas. DMTF
+publishes the schema index (including JSON Schema formats), which makes the ecosystem
+far more consistent than IPMI in practice.
+
+The big win for authors and operators is that Redfish revolves around standard resource types.
+You'll see the same patterns repeatedly across vendors:
+
+- **ServiceRoot:** /redfish/v1 (entry point)
+- **Systems:** server/compute view (CPU, memory, boot, power state)
+- **Chassis:** physical enclosure view
+- **Managers:** the management controller (think BMC/iDRAC/iLO)
+- **Power / Thermal:** structured telemetry for PSUs, fans, temperatures (often
+  via chassis-related resources)
+
+Even when vendors add OEM extensions, the baseline model stays recognizable.
 
 ## Testing Redfish with a Simulator
 
+Since not everyone has an IPMI interface available and since we cannot use a
+standard that would work for everybody we will focus on a simulator. This should
+give you a good idea on how things work in real life.
+
 ### DMTF Mockup Server
 
-### curl examples
+The Mockup Server serves static Redfish mockups and runs by `default` on `127.0.0.1:8000`.
 
-### Browser screenshots
+We will install for this a docker container on our Zabbix system or another
+system if you prefer.
+
+For the examples in this book, we use a fork of the official DMTF Redfish Mockup Server. The simulator runs in a container and provides a predictable, vendor-neutral Redfish API that is ideal for testing and monitoring examples.
+
+The following sections show how to run the simulator on Rocky Linux using Podman and on Ubuntu 24.04 using Docker.
+
+In both cases, the result is the same: a Redfish service listening locally on port 8000.
+
+#### Rocky Linux (Podman)
+
+Rocky Linux uses Podman as its default container engine. Podman is daemonless, integrates well with system security, and can run Docker-compatible images without modification.
+
+**Install Podman**
+
+Podman is available in the default Rocky repositories:
+
+```bash
+dnf install -y podman
+```
+
+No additional services need to be enabled.
+
+Clone the Redfish Mockup Server Repository.
+
+```bash
+git clone https://github.com/penmasters/Redfish-Mockup-Server.git
+cd Redfish-Mockup-Server
+```
+
+This repository is a fork of the upstream DMTF project and is used here for documentation and monitoring examples.
+
+Build the Container Image (optional but recommended)
+Building the image locally ensures reproducible behavior:
+
+```bash
+podman build -t redfish-mockup-server .
+```
+
+**Run the Redfish Mockup Server**
+
+Start the container and expose port 8000:
+
+```bash
+podman run --rm -p 8000:8000 redfish-mockup-server
+```
+
+Once running, the Redfish service root is available at:
+
+```bash
+http://127.0.0.1:8000/redfish/v1
+```
+
+#### Ubuntu 24.04 (Docker)
+
+On Ubuntu, Docker remains the most widely used container runtime and is familiar to many administrators.
+
+**Install Docker from the Ubuntu repositories:**
+
+``` 
+apt update
+apt install -y docker.io
+```
+
+Enable and start the Docker service:
+
+```bash
+systemctl enable --now docker
+```
+
+(Optional) To avoid running Docker as root, add your user to the docker group and re-login.
+
+**Clone the Redfish Mockup Server Repository**
+
+``` bash
+git clone https://github.com/penmasters/Redfish-Mockup-Server.git
+cd Redfish-Mockup-Server
+```
+
+**Build the Container Image**
+
+``` bash
+docker build -t redfish-mockup-server .
+```
+
+**Run the Redfish Mockup Server**
+
+Start the container:
+
+```
+docker run --rm -p 8000:8000 redfish-mockup-server
+```
+
+The Redfish API is now available at:
+
+``` bash
+http://127.0.0.1:8000/redfish/v1
+```
+
+**Verifying the Installation**
+
+On both Rocky Linux and Ubuntu, you can verify that the simulator is running by querying the Redfish service root:
+
+``` bash
+curl http://127.0.0.1:8000/redfish/v1
+```
+
+A JSON response confirms that the mock server is working correctly.
+
+At this point, the simulator can be used for:
+
+- Exploring Redfish resources with curl
+- Viewing JSON responses in a web browser
+- Configuring Zabbix HTTP agent items
+- Building preprocessing and LLD examples
+
+```json
+curl http://127.0.0.1:8000/redfish/v1
+{
+    "@odata.id": "/redfish/v1/",
+    "@odata.type": "#ServiceRoot.v1_16_1.ServiceRoot",
+    "AccountService": {
+        "@odata.id": "/redfish/v1/AccountService"
+    },
+    "CertificateService": {
+        "@odata.id": "/redfish/v1/CertificateService"
+...
+...
+    },
+    "UUID": "92384634-2938-2342-8820-489239905423",
+    "UpdateService": {
+        "@odata.id": "/redfish/v1/UpdateService"
+    }
+```
 
 ## Monitoring Redfish with Zabbix
 
-### HTTP agent
+With the Redfish Mockup Server running, we can now move from exploration to actual monitoring. The most straightforward way to monitor Redfish in Zabbix is by using an HTTP agent item, which retrieves data from a REST endpoint and stores the response for further processing.
 
-### JSON preprocessing
+This approach mirrors how Redfish is used in real environments and avoids the need for any special protocols or poller types.
+
+**Choosing the First Endpoint**
+
+Every Redfish service exposes a well-defined entry point called the Service Root, located at:
+
+```bash
+/redfish/v1
+```
+
+This endpoint is ideal for a first test because it:
+
+- Is always present
+- Returns a small, predictable JSON document
+- Confirms basic connectivity and parsing
+
+In the mock environment, the full URL is:
+
+```
+http://127.0.0.1:8000/redfish/v1
+```
+
+**Creating a Test Host in Zabbix**
+
+Start by creating a dedicated host for the Redfish simulator.
+
+In the Zabbix frontend, go to `Data collection` → `Hosts`
+
+1. Click Create host
+2. Set:
+    - **Host name:** Redfish Mockup Server
+    - **Interface:** none required (HTTP agent does not use host interfaces)
+4. Assign the host to a suitable group, for example Redfish or Servers
+5. Save the host
+
+![ch04.50_create_redfish_host.png](ch04.50_create_redfish_host.png)
+
+_4.50 create Redfish host_
+
+This host will represent the Redfish endpoint rather than a traditional server.
+Next we can create an HTTP item on our host.
+
+**Creating the HTTP Agent Item**
+
+Next, create the actual monitoring item.
+
+- Open the newly created host
+- Go to the Items tab
+- Click Create item
+
+Configure the item as follows:
+
+| Field | Configuration | notes |
+|:---   |:---           |:---   |
+| **Name:** | Redfish service root | |
+| **Type:** | HTTP agent | |
+| **Key:** | redfish.service.root | |
+| **URL:** | http://127.0.0.1:8000/redfish/v1 | |
+| **Request method** | GET | |
+| **Update interval** | 1m | |
+| **Type of information** | Text | |
+
+No authentication or headers are required for the mock server.
+
+???+ note
+    At this stage, we are deliberately storing the entire response. In the next step, we will extract individual values.
+
+After a short wait, the item should start collecting data. This can be verified
+under `Monitoring` → `Lastest data`
+
+If this works we can move over to the next step and create an item.
+
+### Extracting a Value with JSON Preprocessing
+
+Let's create a dependent item by pressing on the '...' before our item `Redfish
+service root` and select `create dependent item`.
+
+Now we can create our dependent item so that we can extract a single value from
+the master item using preprocessing.
+
+| Field | Configuration | notes |
+|:---   |:---           |:---   |
+| **Name:** | Redfish Version | |
+| **Type** | Dependent item | |
+| **Key** | redfish.version | |
+| **Master item** | Redfish service root | |
+| **Type of information** | Character | |
+| **Update interval** | | not available inherited from master item |
+| **Preprocessing :** |              |   |
+| - JSONPath | $.RedfishVersion | Add as preprocessing step |
+
+Press `Add` to save the item.
+
+![ch04.51_create_dependent_item.png](ch04.51_create_dependent_item.png)
+
+_4.51 Dependent item_
+
+Let's go to our latest data page and have a look at our newly created item.
+
+![ch04.52_latest_data.png](ch04.52_latest_data.png)
+
+_4.52 Latest data_
+
 
 ### LLD examples
 
@@ -442,3 +726,6 @@ When these practices are followed, IPMI provides stable and useful visibility in
 ## Questions
 
 ## Useful URLs
+
+[https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview)
+
