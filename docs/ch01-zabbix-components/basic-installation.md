@@ -579,26 +579,26 @@ Once the update process is complete, you can move forward with the PostgreSQL in
 
 
 As of writing PostgreSQL 13-17 are supported by Zabbix. Check the Zabbix documentation
-for an up-to-date list for your Zabbix version. Usually it's a good idea to go with
-the latest version that is supported by Zabbix. Zabbix also supports the extension
-TimescaleDB but due to its advanced nature, we won't cover it in this chapter. Refer
-to [Partitioning PostgreSQL with TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md)
-for detailed instructions. 
+for an up-to-date list of supported versions for your Zabbix version. Usually it's
+a good idea to go with the latest version that is supported by Zabbix. 
 
-As you will see, the setup from PostgreSQL is very different from MySQL in terms of
-securing the DB.
+???+ tip 'TimescaleDB extension'
 
----
+    Zabbix also supports the extension TimescaleDB but due to its advanced nature, 
+    we won't cover it in this chapter. Refer to [Partitioning PostgreSQL with TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md)
+    for detailed instructions on that topic. 
 
-### Install the PostgreSQL databases
+    Do note that if you want to use TimescaleDB RPM packages provided
+    by Timescale, you will need to install PostgreSQL from the official
+    PostgreSQL repositories instead of the OS vendor-provided packages.
+    If you choose to install PostgreSQL from the OS vendor-provided packages,
+    you will need to compile and install the TimescaleDB extension from source.
 
-With the operating system updated, you are now ready to install the PostgreSQL 
-server packages. This will provide the necessary components to run and manage
-your database.
+???+ note 'PostgreSQL Official packages'
 
-For the installation of the official PostgreSQL packages, you will need to follow the
-distribution specific instructions at <https://www.postgresql.org/download>, select
-Linux and then select your distribution.
+    For the installation of the official PostgreSQL packages, you will need to follow the
+    distribution specific instructions at <https://www.postgresql.org/download>, select
+    Linux and then select your distribution.
 
 To install the distribution default PostgreSQL server, execute the 
 following commands:
