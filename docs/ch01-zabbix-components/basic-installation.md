@@ -22,7 +22,7 @@ which we will discuss in detail.
 
 !!! info "Creation of DB users"
 
-    ``` yaml
+    ```
     In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
     zabbix-web user will be used for the frontend to connect to our zabbix database.
     The zabbix-srv user will be used by our zabbix server to connect to the database.
@@ -182,7 +182,7 @@ following command:
 !!! info "Install distribution version of Mariadb"
 
     Red Hat
-    ```yaml
+    ```bash
     dnf install mariadb-server
     ```
 
@@ -192,7 +192,7 @@ following command:
     ```
 
     Ubuntu
-    ``` yaml
+    ```bash
     sudo apt install mariadb-server
     ```
 
@@ -206,7 +206,7 @@ upon boot and start it immediately. Use the following command to accomplish this
 !!! info "Enable mariadb service"
 
     Red Hat / SUSE / Ubuntu
-    ```yaml
+    ```bash
     systemctl enable mariadb --now
     ```
 
@@ -217,7 +217,7 @@ version of MariaDB using the following command:
 !!! info "Check Mariadb version"
 
     Red Hat / SUSE / Ubuntu
-    ```yaml
+    ```bash
     mariadb -V
     ```
 
@@ -225,7 +225,7 @@ The expected output should resemble this:
 
 !!! info ""
 
-    ```yaml
+    ```
     mariadb  Ver 15.1 Distrib 10.11.14-MariaDB, for Linux (x86_64) using  EditLine wrapper
     ```
 
@@ -235,7 +235,7 @@ with the following command:
 !!! info "Get mariadb status"
 
     Red Hat / SUSE / Ubuntu
-    ```yaml
+    ```bash
     sudo systemctl status mariadb
     ```
 
@@ -244,7 +244,7 @@ is active and running:
 
 !!! info "mariadb service status example"
 
-    ```yaml
+    ```console
     ● mariadb.service - MariaDB database server
      Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
      Active: active (running) since Wed 2025-12-03 00:16:04 CET; 5s ago
@@ -282,13 +282,13 @@ Run the following command:
 !!! info "Secure Mariadb setup"
 
     Red Hat / SUSE / Ubuntu
-    ```yaml
+    ```bash
      sudo mariadb-secure-installation
     ```
 
 !!! info ""
 
-    ```yaml
+    ```console
     NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
           SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
 
@@ -384,7 +384,7 @@ process.
 !!! info "Enter Mariadb as user root"
 
     Red Hat / SUSE / Ubuntu
-    ```yaml
+    ```bash
     mariadb -uroot -p
     ```
 
@@ -470,7 +470,7 @@ If we want our Zabbix server to connect to our DB then we also need to open our 
 !!! info "Add firewall rules"
 
     Red Hat
-    ``` yaml
+    ``` bash
     firewall-cmd --add-port=3306/tcp --permanent
     firewall-cmd --reload
     ```
@@ -482,7 +482,7 @@ If we want our Zabbix server to connect to our DB then we also need to open our 
     ```
 
     Ubuntu
-    ``` yaml
+    ``` bash
     sudo ufw allow 3306/tcp
     ```
 
@@ -500,7 +500,7 @@ with our Zabbix schemas.
 !!! info "Add Zabbix repo and install scripts"
 
     Red Hat
-    ``` yaml
+    ``` bash
     rpm -Uvh https://repo.zabbix.com/zabbix/7.4/release/rocky/9/noarch/zabbix-release-latest-7.4.el9.noarch.rpm
     dnf clean all
     dnf install zabbix-sql-scripts
@@ -514,7 +514,7 @@ with our Zabbix schemas.
     ```
 
     Ubuntu
-    ``` yaml
+    ``` bash
     sudo wget https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu24.04_all.deb
     sudo dpkg -i zabbix-release_latest_7.4+ubuntu24.04_all.deb
     sudo apt update
@@ -532,7 +532,7 @@ for this we make use of the user `zabbix-srv` and we upload it all in our DB `za
 !!! info "Populate the database"
 
     Red Hat / SUSE / Ubuntu
-    ``` yaml
+    ``` bash
     sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
     ```
 
@@ -606,7 +606,7 @@ following commands:
 !!! info "Install the Postgres server"
 
     Red Hat
-    ``` yaml
+    ``` bash
     # Install Postgres server:
     dnf install postgresql17-server
 
@@ -616,12 +616,12 @@ following commands:
     ```
 
     SUSE
-    ``` yaml
+    ``` bash
     zypper install postgresql17-server
     ```
 
     Ubuntu
-    ``` yaml
+    ``` bash
     sudo apt install postgresql-17
     ```
 ---
@@ -645,17 +645,17 @@ Add the following lines, the order here is important.
 !!! info "Edit the pg_hba file"
 
     Red hat
-    ``` yaml
+    ``` bash
     vi /var/lib/pgsql/17/data/pg_hba.conf
     ```
 
     SUSE
-    ``` yaml
+    ``` bash
     vi /var/lib/pgsql/data/pg_hba.conf
     ```
 
     Ubuntu
-    ``` yanl
+    ``` bash
     sudo vi /etc/postgresql/17/main/pg_hba.conf
     ```
 
@@ -663,7 +663,7 @@ The result should look like :
 
 !!! info "pg_hba example"
 
-    ``` yaml
+    ``` text
     # "local" is for Unix domain socket connections only
     local    zabbix     zabbix-srv                                                              scram-sha-256
     local    all            all                                                                            peer
@@ -681,17 +681,17 @@ from the zabbix server. Postgresql will standard only allow connections from the
 !!! info "Edit postgresql.conf file"
 
     Red Hat
-    ``` yaml
+    ```bash
     vi /var/lib/pgsql/17/data/postgresql.conf
     ```
 
     SUSE
-    ```
+    ```bash
     vi /var/lib/pgsql/data/postgresql.conf
     ```
 
     Ubuntu
-    ``` yaml
+    ``` bash
     sudo vi /etc/postgresql/17/main/postgresql.conf
     ```
 
@@ -753,7 +753,7 @@ To begin, add the Zabbix repository to your system by running the following comm
 !!! info "Add zabbix schema repos package"
 
     Red Hat
-    ``` yaml
+    ``` bash
     dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
     dnf install zabbix-sql-scripts
     ```
@@ -766,7 +766,7 @@ To begin, add the Zabbix repository to your system by running the following comm
     ```
 
     Ubuntu
-    ``` yaml
+    ``` bash
     sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
     sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
     sudo apt update
@@ -1151,10 +1151,8 @@ To check the current status of SELinux, you can use the following command: `sest
 
 !!! info "Selinux status"
 
-    ```yaml
-    sestatus
-    ```
-    ```yaml
+    ```console
+    ~# sestatus
     SELinux status:                 enabled
     SELinuxfs mount:                /sys/fs/selinux
     SELinux root directory:         /etc/selinux
@@ -1172,11 +1170,9 @@ you can run the following command: `setenforce 0`
 
 !!! info "Disable SeLinux"
 
-    ```yaml
-    setenforce 0
-    sestatus
-    ```
-    ```
+    ```console
+    ~# setenforce 0
+    ~# sestatus
     SELinux status:                 enabled
     SELinuxfs mount:                /sys/fs/selinux
     SELinux root directory:         /etc/selinux
@@ -1200,7 +1196,7 @@ following command:
 !!! info "Disable SeLinux permanent"
 
     Red Hat
-    ``` yaml
+    ``` bash
     sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
     ```
 
@@ -1210,10 +1206,8 @@ file is also in permissive mode.
 
 !!! info "Verify selinux status again"
 
-    ```yaml
-    sestatus
-    ```
-    ```yaml
+    ```console
+    ~# sestatus
     SELinux status:                 enabled
     SELinuxfs mount:                /sys/fs/selinux
     SELinux root directory:         /etc/selinux
@@ -1251,7 +1245,7 @@ to disable the EPEL repository by default:
 !!! info "exclude packages"
 
     Red Hat
-    ``` yaml
+    ``` ini
     [epel]
     ...
     excludepkgs=zabbix*
@@ -1290,7 +1284,7 @@ by running:
 !!! info "Add the zabbix repo"
 
     Red Hat
-    ``` yaml
+    ``` bash
     rpm -Uvh https://repo.zabbix.com/zabbix/8.0/release/rocky/9/noarch/zabbix-release-latest-8.0.el9.noarch.rpm
     dnf clean all
     ```
@@ -1302,7 +1296,7 @@ by running:
     ```
 
     Ubuntu
-    ``` yaml
+    ``` bash
     sudo wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
     sudo dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
     sudo apt update
@@ -1340,7 +1334,7 @@ To install the Zabbix server components for MySQL/MariaDB, run the following com
 !!! info "Install the zabbix server"
 
     Red Hat
-    ``` yaml
+    ``` bash
     dnf install zabbix-server-mysql
     ```
 
@@ -1349,7 +1343,7 @@ To install the Zabbix server components for MySQL/MariaDB, run the following com
     zypper install zabbix-server-mysql
 
     Ubuntu
-    ``` yaml
+    ``` bash
     sudo apt install zabbix-server-mysql
     ```
 
@@ -1361,10 +1355,10 @@ and update the following lines to match your database configuration:
 !!! info "Edit zabbix server config"
 
     Red Hat, SUSE and Ubuntu
-    ``` yaml
+    ``` bash
     sudo vi /etc/zabbix/zabbix_server.conf
     ```
-    ``` yaml
+    ``` ini
     DBHost=<database-host>
     DBName=<database-name>
     DBUser=<database-user>
@@ -1384,7 +1378,7 @@ For our setup, the configuration will look like this:
 
 !!! info "Example config"
 
-    ```yaml
+    ```ini
     DBHost=<ip or dns of your MariaDB server>
     DBName=zabbix
     DBUser=zabbix-srv
@@ -1416,13 +1410,13 @@ To install the Zabbix server components for PostgreSQL, run the following comman
 
     Red Hat
 
-    ```yaml
+    ```bash
     dnf install zabbix-server-pgsql
     ```
 
     Ubuntu
 
-    ```yaml
+    ```bash
     sudo apt install zabbix-server-pgsql
     ```
 
@@ -1459,7 +1453,7 @@ For our setup, the configuration will look like this:
 
 !!! info "Example config"
 
-    ```yaml
+    ```ini
     DBHost=<ip or dns of your PostgreSQL server>
     DBName=zabbix
     DBSchema=zabbix_server
@@ -1525,7 +1519,7 @@ to enable the Zabbix server and ensure it starts automatically on boot:
 !!! info "enable and start zabbix-server service"
 
     Red Hat, SUSE and Ubuntu
-    ``` yaml
+    ``` bash
     sudo systemctl enable zabbix-server --now
     ```
 
@@ -1536,7 +1530,7 @@ check the log file for any messages. You can view the latest entries in the
 
 !!! info "Check the log file"
 
-    ```yaml
+    ```bash
     tail /var/log/zabbix/zabbix_server.log
     ```
 
@@ -1545,7 +1539,7 @@ are any issues, the log file will provide details to help with troubleshooting.
 
 !!! info "Example output"
 
-    ```yaml
+    ```
     12074:20250225:145333.529 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
     12074:20250225:145333.530 ****** Enabled features ******
     12074:20250225:145333.530 SNMP monitoring:           YES
@@ -1579,7 +1573,7 @@ would see something like this in the server log file :
 
 !!! info "Example log with errors"
 
-    ```yaml
+    ```
     12068:20250225:145309.018 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
     12068:20250225:145309.018 ****** Enabled features ******
     12068:20250225:145309.018 SNMP monitoring:           YES
@@ -1602,7 +1596,7 @@ a reboot
 
 !!! info "check status of zabbix-server service"
 
-    ```yaml
+    ```bash
     systemctl status zabbix-server
     ```
     ```
@@ -1659,7 +1653,7 @@ and perform all subsequent steps on the server designated for the frontend.
 !!! info "install frontend packages"
 
     Red Hat
-    ```yaml
+    ```bash
     # When using MySQL/MariaDB
     dnf install zabbix-nginx-conf zabbix-web-mysql
     # or when using PostgreSQL
@@ -1673,7 +1667,7 @@ and perform all subsequent steps on the server designated for the frontend.
     zypper install zabbix-nginx-conf zabbix-web-pgsql
 
     Ubuntu
-    ```yaml
+    ```bash
     # When using MySQL/MariaDB
     sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
     # or when using PostgreSQL
@@ -1688,7 +1682,7 @@ use the standard config and serve the Zabbix frontend on port 80.
 
 !!! info "edit nginx config for Red Hat"
 
-    ```yaml
+    ```bash
     vi /etc/nginx/nginx.conf
     ```
 
@@ -1696,11 +1690,11 @@ In this configuration file look for the following block that starts with :
 
 !!! info "original config"
 
-    ```yaml
+    ```nginx
     server {
     listen 80;
     listen [::]:80;
-    server*name *;
+    server_name *;
     root /usr/share/nginx/html;
 
              # Load configuration files for the default server block.
@@ -1711,11 +1705,11 @@ Then, comment out the following server block within the configuration file:
 
 !!! info "config after edit"
 
-    ```yaml
+    ```nginx
     server {
     # listen 80;
     # listen [::]:80;
-    # server*name *;
+    # server_name *;
     # root /usr/share/nginx/html;
     ```
 
@@ -1724,7 +1718,7 @@ Open the following file for editing:
 
 !!! info "edit zabbix config for nginx"
 
-    ```yaml
+    ```bash
     vi /etc/nginx/conf.d/zabbix.conf
     ```
 
@@ -1732,7 +1726,7 @@ And alter the following lines:
 
 !!! info "original config"
 
-    ```yaml
+    ```nginx
     server {
     listen 8080;
     server_name example.com;
@@ -1748,7 +1742,7 @@ example below:
 
 !!! info "config after the edit"
 
-    ```yaml
+    ```nginx
     server { # listen 8080; # server*name example.com;
     listen 80;
     server_name *;
@@ -1763,7 +1757,7 @@ startup. Execute the following commands to enable and start them immediately:
 
 !!! info "edit nginx config for ubuntu"
 
-    ```yaml
+    ```bash
     sudo vi /etc/zabbix/nginx.conf
     ```
 
@@ -1771,7 +1765,7 @@ replace the Following lines:
 
 !!! info "original config"
 
-    ```yaml
+    ```nginx
     server {
     #        listen          8080;
     #        server_name     example.com;
@@ -1781,10 +1775,10 @@ with :
 
 !!! info "config after edit"
 
-    ```yaml
+    ```nginx
     server {
-    listen xxx.xxx.xxx.xxx:80;
-    server_name "";
+            listen xxx.xxx.xxx.xxx:80;
+            server_name "";
     ```
 
 where xxx.xxx.xxx.xxx is your IP or DNS name.
@@ -1797,13 +1791,13 @@ where xxx.xxx.xxx.xxx is your IP or DNS name.
 !!! info "restart the front-end services"
 
     Red Hat
-    ```yaml
+    ```bash
     systemctl enable php-fpm --now
     systemctl enable nginx --now
     ```
 
     Ubuntu
-    ```yaml
+    ```bash
     sudo systemctl enable nginx php8.3-fpm
     sudo systemctl restart nginx php8.3-fpm
     ```
@@ -1813,7 +1807,7 @@ our reboot next time.
 
 !!! info "check if the service is running"
 
-    ```yaml
+    ```bash
     systemctl status nginx
     ```
     ```
@@ -1857,24 +1851,17 @@ Open your browser and go to the url or ip of your front-end :
 
 !!! info "front-end configuration"
 
-    ```yaml
+    ```
     http://<ip or dns of the zabbix frontend server>/
     ```
 
 If all goes well you should be greeted with a Zabbix welcome page. In case you
-have an error check the configuration again or have a look at the nginx log file:
+have an error check the configuration again or have a look at the nginx log file
+`/var/log/nginx/error.log` or run the following command :
 
 !!! info ""
 
-    ```yaml
-     /var/log/nginx/error.log
-    ```
-
-or run the following command :
-
-!!! info ""
-
-    ```yaml
+    ```bash
     journalctl -xe
     ```
 
@@ -1901,12 +1888,12 @@ Run the next command to get a list of all locales available for your OS.
 !!! info "install language packs"
 
     Red Hat
-    ```yaml
+    ```bash
     dnf list glibc-langpack-*
     ```
 
     Ubuntu
-    ```yaml
+    ```bash
     apt-cache search language-pack
     ```
 
@@ -1915,7 +1902,7 @@ is not found on the web server."``
 
 !!! info "This can be solved easy with the following commands."
 
-    ```
+    ```bash
     sudo locale-gen en_US.UTF-8
     sudo update-locale
     sudo systemctl restart nginx php8.3-fpm
@@ -1925,7 +1912,7 @@ This will give you on Red Hat based systems a list like:
 
 !!! info ""
 
-    ```yaml
+    ```
     Installed Packages
     glibc-langpack-en.x86_64
     Available Packages
@@ -1936,7 +1923,7 @@ This will give you on Red Hat based systems a list like:
 
 !!! info "on Ubuntu it will look like :"
 
-    ```yaml
+    ```
     language-pack-kab - translation updates for language Kabyle
     language-pack-kab-base - translations for language Kabyle
     language-pack-kn - translation updates for language Kannada
@@ -1955,7 +1942,7 @@ the code starts with zh.
 !!! info "search for language pack"
 
     Red Hat
-    ```yaml
+    ```bash
     dnf list glibc-langpack-* | grep zh
     ```
 
@@ -1975,12 +1962,12 @@ The command outputs two lines; however, given the identified language code,
 !!! info "install the package"
 
     Red Hat
-    ```yaml
+    ```bash
     dnf install glibc-langpack-zh.x86_64
     ```
 
     Ubuntu
-    ```yaml
+    ```bash
     sudo apt install language-pack-zh-hans
     sudo systemctl restart nginx php8.3-fpm
     ```
