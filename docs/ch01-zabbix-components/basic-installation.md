@@ -63,7 +63,25 @@ Zabbix database.
     that needs some extra attention when we split it so for this reason we have
     chosen in this example to split the database from the rest of the setup.
 
-## Choosing a Database Backend for Zabbix
+We will cover the following topics:
+
+- Install our Database based on MariaDB.
+- Install our Database based on PostgreSQL.
+- Installing the Zabbix server.
+- Install the frontend.
+
+---
+
+## Installing the Zabbix database
+
+Before proceeding with the database installation, it's a best practice to ensure
+your operating system is up-to-date with the latest patches and security fixes.
+This will help maintain system stability and compatibility with the software you're
+about to install.
+Once the update process is complete, you can move forward with the database software
+installation.
+
+### Choosing a Database Backend for Zabbix
 
 A critical decision when managing Zabbix installations is selecting the database
 backend. Zabbix supports several database options: MySQL/Percona, MariaDB, 
@@ -91,10 +109,20 @@ built-in compression to reduce storage requirements. However, these advantages
 come with added complexity during installation and a few restrictions on historical
 data retention.
 
-Given its advanced nature, TimescaleDB is not essential for most Zabbix users.
-As such, its installation is beyond the scope of this chapter. If you plan to
-use TimescaleDB, refer to [Partitioning PostgreSQL with TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md)
-for detailed guidance.
+???+ note
+
+    Given its advanced nature, TimescaleDB is not essential for most Zabbix users.
+    As such, its installation is beyond the scope of this chapter. If you plan to
+    use TimescaleDB, refer to [Partitioning PostgreSQL with TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md)
+    for detailed guidance after installing PostgreSQL.
+
+---
+
+### Choosing the Source for Database Installation
+
+In this chapter we will focus on installing MariaDB and PostgreSQL, as they are
+the most commonly used databases with Zabbix. For MySQL or Percona installations,
+except for the package installation commands, the steps are very similar to MariaDB.
 
 When installing MariaDB or PostgreSQL you must determine the source 
 from which you will want to install the database server. Two primary options are 
@@ -148,24 +176,9 @@ if you want to use those.
     to avoid potential integration issues. Check the Zabbix documentation for the 
     latest supported versions.
 
-We will cover the following topics:
-
-- Install our Database based on MariaDB.
-- Install our Database based on PostgreSQL.
-- Installing the Zabbix server.
-- Install the frontend.
-
-## Installing the MariaDB database
-
-Before proceeding with the MariaDB installation, it's a best practice to ensure
-your operating system is up-to-date with the latest patches and security fixes.
-This will help maintain system stability and compatibility with the software you're
-about to install.
-Once the update process is complete, you can move forward with the MariaDB installation.
-
 ---
 
-### Install the MariaDB database
+### Installing the MariaDB Database
 
 With the operating system updated, you are now ready to install the MariaDB 
 server and client packages. This will provide the necessary components to run 
@@ -270,7 +283,7 @@ is active and running:
 
 This confirms that your MariaDB server is up and running, ready for further configuration.
 
-### Securing the MariaDB Database
+#### Securing the MariaDB Database
 
 To enhance the security of your MariaDB server, it's essential to remove unnecessary
 test databases, anonymous users, and set a root password. This can be done using
@@ -369,7 +382,7 @@ now ready to configure the database for Zabbix.
 
 ---
 
-### Create the Zabbix database
+#### Creating the Zabbix database instance
 
 With MariaDB now set up and secured, we can move on to creating the database for
 Zabbix. This database will store all the necessary data related to your Zabbix server,
@@ -439,39 +452,15 @@ when binary logging is enabled.
 At this point, your Zabbix database is ready, and you can proceed with configuring
 the Zabbix server to connect to the database.
 
-???+ warning
-
-    In the Zabbix documentation, it is explicitly stated that deterministic
-    triggers need to be created during the schema import. On MySQL and MariaDB
-    systems, this requires setting `GLOBAL log_bin_trust_function_creators = 1`
-    if binary logging is enabled, and you lack superuser privileges.
-
-    If the `log_bin_trust_function_creators` option is not set in the MySQL
-    configuration file, it will block the creation of these triggers during
-    schema import. This is essential because, without superuser access,
-    non-root users cannot create triggers or stored functions unless this setting is applied.
-
-    To summarize:
-
-    - Binary logging enabled: If binary logging is enabled and the user does not
-      have superuser privileges, the creation of necessary Zabbix triggers will
-      fail unless `log_bin_trust_function_creators = 1` is set.
-
-    - Solution: Add `log_bin_trust_function_creators = 1` to the `[mysqld]` section
-      in your MySQL/MariaDB configuration file or temporarily set it at runtime
-      with `SET GLOBAL log_bin_trust_function_creators = 1` if you have sufficient
-      permissions.
-
-    This ensures that Zabbix can successfully create the required triggers during
-    schema import without encountering privilege-related errors.
-
-If we want our Zabbix server to connect to our DB then we also need to open our firewall port.
+If you intent to install Zabbix server on a different machine than the one hosting
+the database you will need to open the host firewall to allow incoming connections
+to the database server. By default, MariaDB listens on port 3306.
 
 !!! info "Add firewall rules"
 
     Red Hat
     ``` bash
-    firewall-cmd --add-port=3306/tcp --permanent
+    firewall-cmd --add-service=mysql --permanent
     firewall-cmd --reload
     ```
 
@@ -486,97 +475,15 @@ If we want our Zabbix server to connect to our DB then we also need to open our 
     sudo ufw allow 3306/tcp
     ```
 
----
-
-### Populate the Zabbix MariaDB
-
-With the users and permissions set up correctly, you can now populate the database
-with the Zabbix schema created and other required elements. Follow these steps:
-
-One of the first things we need to do is add the Zabbix repository to our machine.
-This may sound weird but actually makes sense because we need to populate our DB
-with our Zabbix schemas.
-
-!!! info "Add Zabbix repo and install scripts"
-
-    Red Hat
-    ``` bash
-    rpm -Uvh https://repo.zabbix.com/zabbix/7.4/release/rocky/9/noarch/zabbix-release-latest-7.4.el9.noarch.rpm
-    dnf clean all
-    dnf install zabbix-sql-scripts
-    ```
-
-    SUSE
-    ``` bash
-    zypper install https://repo.zabbix.com/zabbix/7.4/release/sles/15/noarch/zabbix-release-latest-7.4.sles15.noarch.rpm
-    zypper refresh
-    zypper install zabbix-sql-scripts
-    ```
-
-    Ubuntu
-    ``` bash
-    sudo wget https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu24.04_all.deb
-    sudo dpkg -i zabbix-release_latest_7.4+ubuntu24.04_all.deb
-    sudo apt update
-    sudo apt install zabbix-sql-scripts
-    ```
-
-!!! tip
-
-    Check <https://www.zabbix.com/download> for instructions on how to install 
-    the Zabbix repository of any support version on any supported distribution. 
-
-Now lets upload the data from zabbix (db structure, images, user, ... )
-for this we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
-
-!!! info "Populate the database"
-
-    Red Hat / SUSE / Ubuntu
-    ``` bash
-    sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
-    ```
-
-???+ note
-
-    Depending on the speed of your hardware or virtual machine, the process may
-    take anywhere from a few seconds to several minutes. Please be patient and
-    avoid cancelling the operation; just wait for the prompt to appear.
-
-Log back into your MariaDB Database as root
-
-!!! info "Enter mariadb as user root"
-
-    `mariadb -uroot -p`
-
-Once the import of the Zabbix schema is complete and you no longer need the
-`log_bin_trust_function_creators` global parameter, it is a good practice to remove
-it for security reasons.
-
-To revert the change and set the global parameter back to 0, use the following
-command in the MariaDB shell:
-
-!!! info "Disable function log_bin_trust again"
-
-    ```sql
-    mysql> SET GLOBAL log_bin_trust_function_creators = 0;
-    Query OK, 0 rows affected (0.001 sec)
-    ```
-
-This command will disable the setting, ensuring that the servers security
-posture remains robust.
-
 This concludes our installation of the MariaDB
 
 ---
 
-## Installing the PostgreSQL database
+### Installing the PostgreSQL database
 
-Before proceeding with the PostgreSQL installation, it's a best practice to ensure
-your operating system is up-to-date with the latest patches and security fixes.
-This will help maintain system stability and compatibility with the software you're
-about to install.
-Once the update process is complete, you can move forward with the PostgreSQL installation.
-
+With the operating system updated, you are now ready to install the MariaDB 
+server and client packages. This will provide the necessary components to run 
+and manage your database.
 
 As of writing PostgreSQL 13-17 are supported by Zabbix. Check the Zabbix documentation
 for an up-to-date list of supported versions for your Zabbix version. Usually it's
@@ -600,8 +507,8 @@ a good idea to go with the latest version that is supported by Zabbix.
     distribution specific instructions at <https://www.postgresql.org/download>, select
     Linux and then select your distribution.
 
-To install the distribution default PostgreSQL server, execute the 
-following commands:
+To install the distribution default PostgreSQL server, execute the following 
+commands:
 
 !!! info "Install the Postgres server"
 
@@ -626,7 +533,7 @@ following commands:
     ```
 ---
 
-### Securing the PostgreSQL database
+#### Securing the PostgreSQL database
 
 PostgreSQL handles access permissions differently from MySQL and MariaDB.
 PostgreSQL relies on a file called `pg_hba.conf` to manage who can access the database,
@@ -748,35 +655,14 @@ Zabbix application.
 
 ### Create the Zabbix database with PostgreSQL
 
-To begin, add the Zabbix repository to your system by running the following commands:
+With the necessary packages installed, you are now ready to create the Zabbix 
+database and users for both the server and frontend.
 
-!!! info "Add zabbix schema repos package"
+The PostgreSQL packages automatically create a default `postgres` linux-user 
+during installation which has administrative privileges on the PostgreSQL instance.
+To administer the database, you will need to execute commands as the `postgres` user.
 
-    Red Hat
-    ``` bash
-    dnf install https://repo.zabbix.com/zabbix/7.2/release/rocky/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
-    dnf install zabbix-sql-scripts
-    ```
-
-    SUSE
-    ``` bash
-    zypper install https://repo.zabbix.com/zabbix/7.4/release/sles/15/noarch/zabbix-release-latest-7.4.sles15.noarch.rpm
-    zypper refresh
-    zypper install zabbix-sql-scripts
-    ```
-
-    Ubuntu
-    ``` bash
-    sudo wget https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
-    sudo dpkg -i zabbix-release_latest_7.2+ubuntu24.04_all.deb
-    sudo apt update
-    sudo apt install zabbix-sql-scripts
-    ```
-
-With the necessary packages installed, you are now ready to create the Zabbix users
-for both the server and frontend.
-
-First, switch to the `postgres` linux-user and create the Zabbix server database user:
+First, create the Zabbix server database user:
 
 !!! info "create server users"
 
@@ -796,33 +682,9 @@ Next, create the Zabbix frontend user, which will be used to connect to the data
     Enter it again: <frontend-password>
     ```
 
-After creating the users, you need to prepare the database schema. As the root
-or your regular user, unzip the necessary schema files by running the following command:
-
-!!! info "Unzip the DB patch"
-
-    Red Hat / SUSE
-    ``` bash
-    gzip -d /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz
-    ```
-
-    Ubuntu
-    ``` bash
-    sudo gzip -d /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz
-    ```
-
-???+ note
-
-    Zabbix seems to like to change the locations of the script to populate the
-    DB every version or in between versions. If you encounter an error take a
-    look at the Zabbix documentation there is a good chance that some location was
-    changed.
-
-This will extract the database schema required for the Zabbix server.
-
-Now that the users are created, the next step is to create the Zabbix database.
-First, switch to the `postgres` user and execute the following command to create
-the database with the owner set to zabbix-srv:
+Now with the users created, the next step is to create the Zabbix database.
+Execute the following command to create the database with the owner set to 
+`zabbix-srv`:
 
 !!! info "Create DB"
 
@@ -832,7 +694,7 @@ the database with the owner set to zabbix-srv:
 
 Once the database is created, you should verify the connection and ensure that
 the correct user session is active. To do this, log into the zabbix database using
-the zabbix-srv user:
+the `zabbix-srv` user:
 
 !!! info "Login as user zabbix-srv"
 
@@ -845,7 +707,7 @@ and `current_user` are set to `zabbix-srv`:
 
 !!! info ""
 
-    ```sql
+    ```psql
     zabbix=> SELECT session_user, current_user;
      session_user | current_user
     --------------+--------------
@@ -856,7 +718,7 @@ and `current_user` are set to `zabbix-srv`:
 If the output matches, you are successfully connected to the database with the correct
 user.
 
-PostgreSQL indeed differs significantly from MySQL or MariaDB in several aspects,
+PostgreSQL differs significantly from MySQL or MariaDB in several aspects,
 and one of the key features that sets it apart is its use of schemas. Unlike MySQL,
 where databases are more standalone, PostgreSQL's schema system provides a structured,
 multi-user environment within a single database.
@@ -864,12 +726,12 @@ multi-user environment within a single database.
 Schemas act as logical containers within a database, enabling multiple users or
 applications to access and manage data independently without conflicts. This feature
 is especially valuable in environments where several users or applications need to
-interact with the same database concurrently. Each user or application can have
+interact with the same database server concurrently. Each user or application can have
 its own schema, preventing accidental interference with each other's data.
 
 ???+ note
 
-    PostgreSQL comes with a default schema, typically called public, but it's in
+    PostgreSQL comes with a default schema, typically called `public`, but it's in
     general best practice to create custom schemas to better organize and separate
     database objects, especially in complex or multi-user environments.
 
@@ -877,7 +739,7 @@ its own schema, preventing accidental interference with each other's data.
     this URI, [https://hevodata.com/learn/postgresql-schema/#schema](https://hevodata.com/learn/postgresql-schema/#schema)
     which explains the benefits and use cases for schemas in PostgreSQL.
 
-To finalize the database setup for Zabbix, we need to configure schema permissions
+To finalize the initial database setup for Zabbix, we need to configure schema permissions
 for both the `zabbix-srv` and `zabbix-web` users.
 
 First, we create a custom schema named `zabbix_server` and assign ownership to
@@ -885,7 +747,7 @@ the `zabbix-srv` user:
 
 !!! info "create the db schema"
 
-    ```sql
+    ```psql
     zabbix=> CREATE SCHEMA zabbix_server AUTHORIZATION "zabbix-srv";
     ```
 
@@ -894,7 +756,7 @@ for the current session:
 
 !!! info "Set search path"
 
-    ```sql
+    ```psql
     zabbix=> SET search_path TO "zabbix_server";
     ```
 
@@ -902,7 +764,7 @@ To confirm the schema setup, you can list the existing schemas:
 
 !!! info "verify schema access"
 
-    ```sql
+    ```psql
     zabbix=> \dn
               List of schemas
          Name      |       Owner
@@ -918,192 +780,12 @@ First, we grant `USAGE` privileges on the schema to allow `zabbix-web` to connec
 
 !!! info "Grant access to schema for user zabbix-web"
 
-    ```sql
+    ```psql
     zabbix=> GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
     ```
 
----
-
-### Populate the Zabbix PostgreSQL DB
-
 Now, the `zabbix-web` user has appropriate access to interact with the schema
 while maintaining security by limiting permissions to essential operations.
-
-With the users and permissions set up correctly, you can now populate the database
-with the Zabbix schema created and other required elements. Follow these steps:
-
-- Execute the SQL file to populate the database. Run the following command in the
-  `psql` shell:
-
-???+ warning
-
-    Make sure you did previous steps carefully so that you have selected the correct
-    search_path.
-
-!!! info "upload the DB schema to db zabbix"
-
-    ```sql
-    zabbix=> \i /usr/share/zabbix-sql-scripts/postgresql/server.sql
-    ```
-
-???+ warning
-
-    Depending on your hardware or VM performance, this process can take anywhere
-    from a few seconds to several minutes. Please be patient and avoid cancelling
-    the operation.
-
-- Monitor the progress as the script runs. You will see output similar to:
-
-!!! info "Output example"
-
-    ```sql
-    zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
-    CREATE TABLE
-    CREATE INDEX
-    CREATE TABLE
-    CREATE INDEX
-    CREATE TABLE
-    ...
-    ...
-    ...
-    INSERT 0 10444
-    DELETE 90352
-    COMMIT
-    ```
-
-Once the script completes and you return to the `zabbix=>` prompt, the database
-should be successfully populated with all the required tables, schemas,
-images, and other elements needed for Zabbix.
-
-However, `zabbix-web` still cannot perform any operations on the tables or sequences.
-To allow basic data interaction without giving too many privileges, grant the
-following permissions:
-
-- For tables: SELECT, INSERT, UPDATE, and DELETE.
-- For sequences: SELECT and UPDATE.
-
-!!! info "Grant rights on the schema to user zabbix-web"
-
-    ```sql
-    zabbix=> GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server
-    TO "zabbix-web";
-    zabbix=> GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
-    ```
-
-Verify if the rights are correct on the schema :
-
-!!! info "Example schema rights"
-
-    ```sql
-    zabbix=> \dn+
-                                               List of schemas
-         Name      |       Owner       |           Access privileges            |      Description
-    ---------------+-------------------+----------------------------------------+------------------------
-     public        | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
-                   |                   | =U/pg_database_owner                   |
-     zabbix_server | zabbix-srv        | "zabbix-srv"=UC/"zabbix-srv"          +|
-                   |                   | "zabbix-web"=U/"zabbix-srv"            |
-    ```
-
-???+ note
-
-    If you encounter the following error during the SQL import:
-    `vbnet psql:/usr/share/zabbix-sql-scripts/postgresql/server.sql:7: ERROR: no
-        schema has been selected to create in` It indicates that the search_path setting
-    might not have been correctly applied. This setting is crucial because it specifies
-    the schema where the tables and other objects should be created. By correctly
-    setting the search path, you ensure that the SQL script will create tables
-    and other objects in the intended schema.
-
-To ensure that the Zabbix tables were created successfully and have the correct
-permissions, you can verify the table list and their ownership using the `psql` command:
-
-- List the Tables: Use the following command to list all tables in the `zabbix_server` schema:
-
-!!! info "List tables"
-
-    ```sql
-    sql zabbix=# \dt
-    ```
-
-You should see a list of tables with their schema, name, type, and owner.
-For example:
-
-!!! info "List table with relations"
-
-    ```sql
-    zabbix=> \dt
-                            List of relations
-        Schema     |            Name            | Type  |   Owner
-    ---------------+----------------------------+-------+------------
-     zabbix_server | acknowledges               | table | zabbix-srv
-     zabbix_server | actions                    | table | zabbix-srv
-     zabbix_server | alerts                     | table | zabbix-srv
-     zabbix_server | auditlog                   | table | zabbix-srv
-     zabbix_server | autoreg_host               | table | zabbix-srv
-     zabbix_server | changelog                  | table | zabbix-srv
-     zabbix_server | conditions                 | table | zabbix-srv
-    ...
-    ...
-    ...
-     zabbix_server | valuemap                   | table | zabbix-srv
-     zabbix_server | valuemap_mapping           | table | zabbix-srv
-     zabbix_server | widget                     | table | zabbix-srv
-     zabbix_server | widget_field               | table | zabbix-srv
-    (203 rows)
-    ```
-
-- Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
-  the necessary permissions. You can check permissions for specific tables using
-  the \dp command:
-
-!!! info ""
-
-    ```sql
-    sql zabbix=# \dp zabbix_server.*
-    ```
-
-    ```sql
-                                                         Access privileges
-        Schema     |            Name            |   Type   |         Access privileges          | Column privileges | Policies
-    ---------------+----------------------------+----------+------------------------------------+-------------------+----------
-     zabbix_server | acknowledges               | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
-     zabbix_server | actions                    | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
-     zabbix_server | alerts                     | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
-     zabbix_server | auditlog                   | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-    ```
-
-This will display the access privileges for all tables in the `zabbix_server`
-schema. Ensure that `zabbix-srv` has the required privileges.
-
-If everything looks correct, your tables are properly created and the `zabbix-srv`
-user has the appropriate ownership and permissions. If you need to adjust any
-permissions, you can do so using the GRANT commands as needed.
-
-???+ note
-
-    If you prefer not to set the search path manually each time you log in as the
-    `zabbix-srv` user, you can configure PostgreSQL to automatically use the desired
-    search path. Run the following SQL command to set the default search path for
-    the `zabbix-srv` role:
-
-    ```sql
-    zabbix=> ALTER ROLE "zabbix-srv" SET search_path = "$user", public, zabbix_server;
-    ```
-
-    This command ensures that every time the `zabbix-srv` user connects to the
-    database, the `search_path` is automatically set to include `$user`, `public`, and `zabbix_server`.
-
-If you are ready you can exit the database and return as user root.
-
-!!! info "Exit the database"
-
-    ```sql
-    zabbix=> \q
-    ```
 
 If we want our Zabbix server to be able to connect to our DB then we also need to
 open our firewall port.
@@ -1322,12 +1004,16 @@ This will refresh the repository metadata and prepare the system for Zabbix inst
 
 ---
 
-## Installation and configuration of Zabbix server for MySQL/MariaDB
+## Installation and configuration of Zabbix server
 
 Now that we've added the Zabbix repository with the necessary software, we are
 ready to install both the Zabbix server and the web server. Keep in mind that the
 web server doesn't need to be installed on the same machine as the Zabbix server;
 they can be hosted on separate systems if desired.
+
+---
+
+### Installation and configuration of Zabbix server for MySQL/MariaDB
 
 To install the Zabbix server components for MySQL/MariaDB, run the following command:
 
@@ -1369,8 +1055,8 @@ Replace `<database-host>`, `<database-name>`, `<database-user>`, and `<database-
 with the appropriate values for your setup. This ensures that the Zabbix server
 can communicate with your database.
 
-Ensure that there is no # (comment symbol) in front of the configuration parameters,
-as Zabbix will treat lines beginning with # as comments, ignoring them during execution.
+Ensure that there is no `#` (comment symbol) in front of the configuration parameters,
+as Zabbix will treat lines beginning with `#` as comments, ignoring them during execution.
 Additionally, double-check for duplicate configuration lines; if there are multiple
 lines with the same parameter, Zabbix will use the value from the last occurrence.
 
@@ -1398,7 +1084,124 @@ Make sure the settings reflect your environment's database configuration.
 
 ---
 
-### Configuring the Zabbix server for PostgreSQL
+#### Populate the Zabbix MySQL/MariaDB database instance
+
+During the installation of the database software earlier, we created the 
+necessary users and database for Zabbix, however, Zabbix expects certain tables,
+schemas, images, and other elements to be present in the database.
+To set up the database correctly, we need to populate it with the required schema.
+
+Execute next steps on the machine where the database is installed. 
+
+???+ note
+
+    If this is not the same machine as the Zabbix server, you will need to install 
+    the Zabbix repository on the database server to gain access to the necessary SQL
+    scripts.  Refer to [Install the Zabbix repository](#install-the-zabbix-repository) for instructions on
+    adding the Zabbix repository also in this system.
+
+When the repository is added we can install the package:
+
+!!! info "Install SQL scripts"
+
+    Red Hat
+    ``` bash
+    dnf install zabbix-sql-scripts
+    ```
+
+    SUSE
+    ``` bash
+    zypper install zabbix-sql-scripts
+    ```
+
+    Ubuntu
+    ``` bash
+    sudo apt install zabbix-sql-scripts
+    ```
+
+???+ tip
+    If you have already installed the Zabbix server package on this machine,
+    the SQL scripts package may already be installed as a dependency.
+    You can verify this by checking if the `/usr/share/zabbix-sql-scripts/`
+    directory exists on your system.
+
+???+ warning
+
+    In the Zabbix documentation, it is explicitly stated that deterministic
+    triggers need to be created during the schema import. On MySQL and MariaDB
+    systems, this requires setting `GLOBAL log_bin_trust_function_creators = 1`
+    if binary logging is enabled, and you lack superuser privileges.
+
+    If the `log_bin_trust_function_creators` option is not set in the MySQL
+    configuration file, it will block the creation of these triggers during
+    schema import. This is essential because, without superuser access,
+    non-root users cannot create triggers or stored functions unless this setting is applied.
+
+    To summarize:
+
+    - Binary logging enabled: If binary logging is enabled and the user does not
+      have superuser privileges, the creation of necessary Zabbix triggers will
+      fail unless `log_bin_trust_function_creators = 1` is set.
+
+    - Solution: Add `log_bin_trust_function_creators = 1` to the `[mysqld]` section
+      in your MySQL/MariaDB configuration file or temporarily set it at runtime
+      with `SET GLOBAL log_bin_trust_function_creators = 1` if you have sufficient
+      permissions.
+
+    This ensures that Zabbix can successfully create the required triggers during
+    schema import without encountering privilege-related errors.
+
+Now lets upload the data from zabbix (db structure, images, user, ... )
+for this we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
+
+!!! info "Populate the database"
+
+    Red Hat / SUSE / Ubuntu
+    ``` bash
+    sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
+    ```
+
+???+ note
+
+    Depending on the speed of your hardware or virtual machine, the process may
+    take anywhere from a few seconds to several minutes. Please be patient and
+    avoid cancelling the operation; just wait for the prompt to appear.
+
+???+ note
+
+    Zabbix seems to like to change the locations of the script to populate the
+    DB every version or even in between versions. If you encounter an error take a
+    look at the Zabbix documentation, there is a good chance that some location was
+    changed.
+
+Log into your MySQL/MariaDB Database as root
+
+!!! info "Enter mariadb as user root"
+
+    ```bash
+    mariadb -uroot -p
+    ```
+
+Once the import of the Zabbix schema is complete, you should no longer need the
+`log_bin_trust_function_creators` global parameter. It is a good practice to remove
+it for security reasons.
+
+To revert the global parameter back to 0, use the following command in the 
+MySQL/MariaDB shell:
+
+!!! info "Disable function log_bin_trust again"
+
+    ```mysql
+    mysql> SET GLOBAL log_bin_trust_function_creators = 0;
+    Query OK, 0 rows affected (0.001 sec)
+    ```
+
+This command will disable the setting, ensuring that the servers security
+posture remains robust.
+
+---
+
+### Installation and configuration of Zabbix server for PostgreSQL
 
 We are ready to install both the Zabbix server and the web server. Keep in mind that
 the web server doesn't need to be installed on the same machine as the Zabbix
@@ -1412,6 +1215,12 @@ To install the Zabbix server components for PostgreSQL, run the following comman
 
     ```bash
     dnf install zabbix-server-pgsql
+    ```
+
+    SUSE
+
+    ```bash
+    zypper install zabbix-server-pgsql
     ```
 
     Ubuntu
@@ -1474,6 +1283,248 @@ Make sure the settings reflect your environment's database configuration.
 
 ---
 
+#### Populate the Zabbix PostgreSQL DB
+
+During the installation of the database software earlier, we created the 
+necessary users and database for Zabbix, however, Zabbix expects certain tables,
+schemas, images, and other elements to be present in the database.
+To set up the database correctly, we need to populate it with the required schema.
+
+Execute next steps on the machine where the PostgreSQL database is installed. 
+
+???+ note
+
+    If this is not the same machine as the Zabbix server, you will need to install 
+    the Zabbix repository on the database server to gain access to the necessary SQL
+    scripts.  Refer to [Install the Zabbix repository](#install-the-zabbix-repository) for instructions on
+    adding the Zabbix repository also in this system.
+
+When the repository is added we can install the package:
+
+!!! info "Install SQL scripts"
+
+    Red Hat
+    ``` bash
+    dnf install zabbix-sql-scripts
+    ```
+
+    SUSE
+    ``` bash
+    zypper install zabbix-sql-scripts
+    ```
+
+    Ubuntu
+    ``` bash
+    sudo apt install zabbix-sql-scripts
+    ```
+
+???+ tip
+    If you have already installed the Zabbix server package on this machine,
+    the SQL scripts package may already be installed as a dependency.
+    You can verify this by checking if the `/usr/share/zabbix-sql-scripts/`
+    directory exists on your system.
+
+- Unzip the Zabbix database schema file for PostgreSQL:
+
+First you need to prepare the database schema: unzip the necessary schema files 
+by running the following command:
+
+!!! info "Unzip the DB patch"
+
+    Red Hat / SUSE
+    ``` bash
+    gzip -d /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz
+    ```
+
+    Ubuntu
+    ``` bash
+    sudo gzip -d /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz
+    ```
+
+???+ note
+
+    Zabbix seems to like to change the locations of the script to populate the
+    DB every version or even in between versions. If you encounter an error take a
+    look at the Zabbix documentation, there is a good chance that some location was
+    changed.
+
+This will extract the database schema required for the Zabbix server.
+
+- Execute the SQL file to populate the database. Run the following command in the
+  `psql` shell:
+
+???+ warning
+
+    Make sure you performed previous steps as outlined in (Create the Zabbix database with PostgreSQL)[#create_the_zabbix_database_with_postgresql]
+    carefully so that you have set the correct `search_path`.
+
+!!! info "upload the DB schema to db zabbix"
+
+    ```psql
+    zabbix=> \i /usr/share/zabbix-sql-scripts/postgresql/server.sql
+    ```
+
+???+ warning
+
+    Depending on your hardware or VM performance, this process can take anywhere
+    from a few seconds to several minutes. Please be patient and avoid cancelling
+    the operation.
+
+- Monitor the progress as the script runs. You will see output similar to:
+
+!!! info "Output example"
+
+    ```sql
+    zabbix=> \i /usr/share/zabbix-sql-scripts/postgresql/server.sql
+    CREATE TABLE
+    CREATE INDEX
+    CREATE TABLE
+    CREATE INDEX
+    CREATE TABLE
+    ...
+    ...
+    ...
+    INSERT 0 10444
+    DELETE 90352
+    COMMIT
+    ```
+
+Once the script completes and you return to the `zabbix=>` prompt, the database
+should be successfully populated with all the required tables, schemas,
+images, and other elements needed for Zabbix.
+
+However, `zabbix-web` still cannot perform any operations on the tables or sequences.
+To allow basic data interaction without giving too many privileges, grant the
+following permissions:
+
+- For tables: SELECT, INSERT, UPDATE, and DELETE.
+- For sequences: SELECT and UPDATE.
+
+!!! info "Grant rights on the schema to user zabbix-web"
+
+    ```sql
+    zabbix=> GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server
+    TO "zabbix-web";
+    zabbix=> GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
+    ```
+
+Verify if the rights are correct on the schema :
+
+!!! info "Example schema rights"
+
+    ```sql
+    zabbix=> \dn+
+                                               List of schemas
+         Name      |       Owner       |           Access privileges            |      Description
+    ---------------+-------------------+----------------------------------------+------------------------
+     public        | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
+                   |                   | =U/pg_database_owner                   |
+     zabbix_server | zabbix-srv        | "zabbix-srv"=UC/"zabbix-srv"          +|
+                   |                   | "zabbix-web"=U/"zabbix-srv"            |
+    ```
+
+???+ note
+
+    If you encounter the following error during the SQL import:
+    `vbnet psql:/usr/share/zabbix-sql-scripts/postgresql/server.sql:7: ERROR: no
+        schema has been selected to create in` It indicates that the `search_path` setting
+    might not have been correctly applied. This setting is crucial because it specifies
+    the schema where the tables and other objects should be created. By correctly
+    setting the search path, you ensure that the SQL script will create tables
+    and other objects in the intended schema.
+
+To ensure that the Zabbix tables were created successfully and have the correct
+permissions, you can verify the table list and their ownership using the `psql` command:
+
+- List the Tables: Use the following command to list all tables in the `zabbix_server` schema:
+
+!!! info "List tables"
+
+    ```sql
+    sql zabbix=# \dt
+    ```
+
+You should see a list of tables with their schema, name, type, and owner.
+For example:
+
+!!! info "List table with relations"
+
+    ```sql
+    zabbix=> \dt
+                            List of relations
+        Schema     |            Name            | Type  |   Owner
+    ---------------+----------------------------+-------+------------
+     zabbix_server | acknowledges               | table | zabbix-srv
+     zabbix_server | actions                    | table | zabbix-srv
+     zabbix_server | alerts                     | table | zabbix-srv
+     zabbix_server | auditlog                   | table | zabbix-srv
+     zabbix_server | autoreg_host               | table | zabbix-srv
+     zabbix_server | changelog                  | table | zabbix-srv
+     zabbix_server | conditions                 | table | zabbix-srv
+    ...
+    ...
+    ...
+     zabbix_server | valuemap                   | table | zabbix-srv
+     zabbix_server | valuemap_mapping           | table | zabbix-srv
+     zabbix_server | widget                     | table | zabbix-srv
+     zabbix_server | widget_field               | table | zabbix-srv
+    (203 rows)
+    ```
+
+- Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
+  the necessary permissions. You can check permissions for specific tables using
+  the \dp command:
+
+!!! info ""
+
+    ```sql
+    sql zabbix=# \dp zabbix_server.*
+    ```
+
+    ```sql
+                                                         Access privileges
+        Schema     |            Name            |   Type   |         Access privileges          | Column privileges | Policies
+    ---------------+----------------------------+----------+------------------------------------+-------------------+----------
+     zabbix_server | acknowledges               | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+     zabbix_server | actions                    | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+     zabbix_server | alerts                     | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+     zabbix_server | auditlog                   | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+    ```
+
+This will display the access privileges for all tables in the `zabbix_server`
+schema. Ensure that `zabbix-srv` has the required privileges.
+
+If everything looks correct, your tables are properly created and the `zabbix-srv`
+user has the appropriate ownership and permissions. If you need to adjust any
+permissions, you can do so using the GRANT commands as needed.
+
+???+ note
+
+    If you prefer not to set the search path manually each time you log in as the
+    `zabbix-srv` user, you can configure PostgreSQL to automatically use the desired
+    search path. Run the following SQL command to set the default search path for
+    the `zabbix-srv` role:
+
+    ```sql
+    zabbix=> ALTER ROLE "zabbix-srv" SET search_path = "$user", public, zabbix_server;
+    ```
+
+    This command ensures that every time the `zabbix-srv` user connects to the
+    database, the `search_path` is automatically set to include `$user`, `public`, and `zabbix_server`.
+
+If you are ready you can exit the database and return as user root.
+
+!!! info "Exit the database"
+
+    ```sql
+    zabbix=> \q
+    ```
+
+---
+
 ### Allow Zabbix server to use additional configuration files
     
 The Zabbix server configuration file offers an option to include additional
@@ -1494,8 +1545,8 @@ To enable this feature, add the next line `/etc/zabbix/zabbix_server.conf`:
     ```
 
 The path `/etc/zabbix_server/zabbix_server.d/` should already be created by the
-installed package, but ensure it really exists and
-create a custom configuration file in this directory.
+installed package, but ensure it really exists and create a custom configuration 
+file in this directory.
 This file should be readable by the `zabbix` user. By doing so, you can add
 or modify parameters without modifying the default configuration file,
 making system management and upgrades smoother.
