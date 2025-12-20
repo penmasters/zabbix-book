@@ -1713,9 +1713,9 @@ and perform all subsequent steps on the server designated for the frontend.
     SUSE
     ```bash
     # When using MySQL/MariaDB
-    zypper install zabbix-nginx-conf zabbix-web-mysql
+    zypper install zabbix-nginx-conf php8-mysql zabbix-web-mysql
     # or when using PostgreSQL
-    zypper install zabbix-nginx-conf zabbix-web-pgsql
+    zypper install zabbix-nginx-conf php8-pgsql zabbix-web-pgsql
 
     Ubuntu
     ```bash
@@ -1841,7 +1841,7 @@ where xxx.xxx.xxx.xxx is your IP or DNS name.
 
 !!! info "restart the front-end services"
 
-    Red Hat
+    Red Hat / SUSE
     ```bash
     systemctl enable php-fpm --now
     systemctl enable nginx --now
@@ -1943,6 +1943,11 @@ Run the next command to get a list of all locales available for your OS.
     dnf list glibc-langpack-*
     ```
 
+    SUSE
+    ```bash
+    localectl list-locales
+    ```
+
     Ubuntu
     ```bash
     apt-cache search language-pack
@@ -1972,6 +1977,19 @@ This will give you on Red Hat based systems a list like:
     glibc-langpack-zu.x86_64
     ```
 
+!!! info "on SUSE it will look like :"
+
+    ```
+    C.UTF-8
+    aa_DJ.UTF-8
+    af_ZA.UTF-8
+    an_ES.UTF-8
+    ---
+    zh_SG.UTF-8
+    zh_TW.UTF-8
+    zu_ZA.UTF-8
+    ```
+
 !!! info "on Ubuntu it will look like :"
 
     ```
@@ -1993,28 +2011,44 @@ the code starts with zh.
 !!! info "search for language pack"
 
     Red Hat
-    ```bash
-    dnf list glibc-langpack-* | grep zh
-    ```
-
-    ```
+    ```console
+    ~# dnf list glibc-langpack-* | grep zh
     glibc-langpack-zh.x86_64
     glibc-langpack-lzh.x86_64
     ```
 
-    Ubuntu
+    SUSE
+    ```console
+    ~> localectl list-locales | grep zh
+    zh_CN.UTF-8
+    zh_HK.UTF-8
+    zh_SG.UTF-8
+    zh_TW.UTF-8
     ```
+
+    Ubuntu
+    ```bash
     sudo apt-cache search language-pack | grep -i zh
     ```
 
-The command outputs two lines; however, given the identified language code,
+On RedHat and Ubuntu, the command outputs two lines; however, given the identified language code,
 'zh_CN,' only the first package requires installation.
+on SUSE either only locales `C.UTF-8` and `en_US.UTF-8` are available or all
+available locales are available, depending on wether the package `glibc-locale`
+is installed or not. 
 
 !!! info "install the package"
 
     Red Hat
     ```bash
     dnf install glibc-langpack-zh.x86_64
+    sudo systemctl restart nginx php-fpm
+    ```
+
+    SUSE
+    ```bash
+    zypper install glibc-locale
+    sudo systemctl restart nginx php-fpm
     ```
 
     Ubuntu
@@ -2129,7 +2163,7 @@ additional guidance and best practices.
 ## Conclusion
 
 With this, we conclude our journey through setting up Zabbix and configuring it
-with MySQL or PostgreSQL on RHEL-based systems and Ubuntu. We have walked through
+with MySQL or PostgreSQL on RHEL or SUSE-based systems or Ubuntu. We have walked through
 the essential steps of preparing the environment, installing the necessary components,
 and ensuring a fully functional Zabbix server. From database selection to web frontend
 configuration with Nginx, each decision has been aimed at creating a robust and
