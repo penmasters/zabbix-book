@@ -63,13 +63,11 @@ Zabbix database.
     that needs some extra attention when we split it so for this reason we have
     chosen in this example to split the database from the rest of the setup.
 
-A crucial consideration for those managing Zabbix installations is the database
-back-end. Zabbix supports a few different databases: MySQL/Percona, MariaDB 
-and PostgreSQL(/TimescaleDB) and up to Zabbix 7.0 also Oracle. 
+## Choosing a Database Backend for Zabbix
 
-All those databases are supported equally by Zabbix and perform mostly similar 
-with Zabbix load, so the choice mostly comes down to which database software you
-are the most familiar with. 
+A critical decision when managing Zabbix installations is selecting the database
+backend. Zabbix supports several database options: MySQL/Percona, MariaDB, 
+PostgreSQL (including TimescaleDB), and Oracle (up to Zabbix 7.0).
 
 ???+ note
 
@@ -79,6 +77,24 @@ are the most familiar with.
     as MariaDB before upgrading to a later Zabbix release. This migration is a
     mandatory step to ensure continued functionality and compatibility with future
     Zabbix versions.
+
+All supported databases perform similarly under typical Zabbix workloads, and 
+Zabbix treats them equally in terms of functionality. As such, the choice 
+primarily depends on your or your team’s familiarity with a particular database system. 
+One notable exception is TimescaleDB, a PostgreSQL extension optimized for 
+time-series data. This makes it especially well-suited for monitoring applications 
+like Zabbix, which handle large volumes of timestamped data.
+
+In large-scale environments with high-frequency data collection, TimescaleDB can
+deliver significant performance benefits, including improved query speeds and
+built-in compression to reduce storage requirements. However, these advantages
+come with added complexity during installation and a few restrictions on historical
+data retention.
+
+Given its advanced nature, TimescaleDB is not essential for most Zabbix users.
+As such, its installation is beyond the scope of this chapter. If you plan to
+use TimescaleDB, refer to [Partitioning PostgreSQL with TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md)
+for detailed guidance.
 
 When installing MariaDB or PostgreSQL you must determine the source 
 from which you will want to install the database server. Two primary options are 
@@ -565,11 +581,12 @@ Once the update process is complete, you can move forward with the PostgreSQL in
 As of writing PostgreSQL 13-17 are supported by Zabbix. Check the Zabbix documentation
 for an up-to-date list for your Zabbix version. Usually it's a good idea to go with
 the latest version that is supported by Zabbix. Zabbix also supports the extension
-TimescaleDB this is something we will talk about later. As you will see the setup
-from PostgreSQL is very different from MySQL not only the installation but
-also securing the DB.
+TimescaleDB but due to its advanced nature, we won't cover it in this chapter. Refer
+to [Partitioning PostgreSQL with TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md)
+for detailed instructions. 
 
-The table of compatibility can be found [https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/](https://docs.timescale.com/self-hosted/latest/upgrades/upgrade-pg/)
+As you will see, the setup from PostgreSQL is very different from MySQL in terms of
+securing the DB.
 
 ---
 
@@ -1643,26 +1660,31 @@ and perform all subsequent steps on the server designated for the frontend.
 
     Red Hat
     ```yaml
-    # dnf install zabbix-nginx-conf zabbix-web-mysql
-    or if you used PostgreSQL
-    # dnf install zabbix-nginx-conf zabbix-web-pgsql
+    # When using MySQL/MariaDB
+    dnf install zabbix-nginx-conf zabbix-web-mysql
+    # or when using PostgreSQL
+    dnf install zabbix-nginx-conf zabbix-web-pgsql
     ```
+    SUSE
+    ```bash
+    # When using MySQL/MariaDB
+    zypper install zabbix-nginx-conf zabbix-web-mysql
+    # or when using PostgreSQL
+    zypper install zabbix-nginx-conf zabbix-web-pgsql
 
     Ubuntu
     ```yaml
-    # sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
-    or if you use PostgreSQL
-    # sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
+    # When using MySQL/MariaDB
+    sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
+    # or when using PostgreSQL
+    sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
 This command will install the front-end packages along with the required dependencies
-for Nginx. If you are installing the front-end on a different server, make sure to
-execute this command on that specific machine.
-
-If you don't remember how to add the repository, have a look at the topic [Adding the zabbix repository](#adding-the-zabbix-repository)
+for Nginx. 
 
 First thing we have to do is alter the Nginx configuration file so that we don't
-use the standard config.
+use the standard config and serve the Zabbix frontend on port 80.
 
 !!! info "edit nginx config for Red Hat"
 
@@ -1820,15 +1842,14 @@ following commands:
 
 !!! info "configure the firewall"
 
-    Red Hat
-
-    ```yaml
+    Red Hat / SUSE
+    ```bash
     firewall-cmd --add-service=http --permanent
     firewall-cmd --reload
     ```
 
     Ubuntu
-    ```yaml
+    ```bash
     sudo ufw allow 80/tcp
     ```
 
