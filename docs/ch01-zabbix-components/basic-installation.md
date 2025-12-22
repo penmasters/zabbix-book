@@ -74,13 +74,6 @@ We will cover the following topics:
 
 ## Installing the Zabbix database
 
-Before proceeding with the database installation, it's a best practice to ensure
-your operating system is up-to-date with the latest patches and security fixes.
-This will help maintain system stability and compatibility with the software you're
-about to install.
-Once the update process is complete, you can move forward with the database software
-installation.
-
 ### Choosing a Database Backend for Zabbix
 
 A critical decision when managing Zabbix installations is selecting the database
@@ -1550,6 +1543,35 @@ file in this directory.
 This file should be readable by the `zabbix` user. By doing so, you can add
 or modify parameters without modifying the default configuration file,
 making system management and upgrades smoother.
+
+---
+
+### Configure firewall to allow Zabbix trapper connections
+
+Your Zabbix server needs to accept incoming connections from Zabbix agents, senders,
+and proxies. By default, Zabbix uses port `10051/tcp` for these connections.
+To allow these connections, you need to open this port in your firewall.
+
+!!! info "Open firewall for zabbix-trapper"
+
+    Red Hat / SUSE
+    ``` bash
+    sudo firewall-cmd --add-service=zabbix-server --permanent
+    sudo firewall-cmd --reload
+    ```
+
+    Ubuntu
+    ``` bash
+    sudo ufw allow 10051/tcp
+    ```
+
+If the service is not recognized using `firewall-cmd`, you can manually specify the port:
+
+!!! info "Add port instead of the service name"
+
+    ```bash
+    firewall-cmd --add-port=10051/tcp --permanent
+    ```
 
 ---
 

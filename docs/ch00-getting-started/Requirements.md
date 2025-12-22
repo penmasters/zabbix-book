@@ -71,86 +71,117 @@ Ubuntu LTS 24.04.x.
 - <https://opensuse.org/>
 - <https://ubuntu.com/>
 
+???+ note
+
+    OS installation steps are outside the scope of this book, but a default or even a
+    minimal installation of your preferred OS should be sufficient. Please refrain from
+    installing graphical user interfaces (GUIs) or desktop environments, as they are
+    unnecessary for server setups and consume valuable resources.
+
+Once you have your preferred OS installed, there are a few essential configurations
+to perform before proceeding with the Zabbix installation. Perform the following
+steps on **all** the servers that will host Zabbix components (i.e., Zabbix server, 
+database server, and web server).
+
+---
+
+### Update the System
+
+Before installing the Zabbix components, it's a best practice to ensure
+your operating system is up-to-date with the latest patches and security fixes.
+This will help maintain system stability and compatibility with the software you're
+about to install.
+Even if your OS installation is recent, it's still advisable to run an update
+to ensure you have the latest packages.
+
+To update your system, run the following command based on your OS:
+
+!!! info "Update your system"
+
+    Red Hat
+    ```bash
+    dnf update
+    ```
+
+    SUSE
+    ```bash
+    zypper refresh
+    zypper update
+    ```
+
+    Ubuntu
+    ```bash
+    sudo apt update
+    sudo apt upgrade
+    ```
+???+ note "what is apt, dnf or zypper"
+
+    dnf is a package manager used in Red Hat-based systems. Zypper is the package
+    manager used on SUSE-based systems and apt is the package manager used on 
+    Debian/Ubuntu-based systems. If you're using another distribution, replace 
+    `dnf` with your appropriate package manager, such as `zypper`, `apt`, or `yum`.
+    Do note that packagenames may also vary from distribution to distribution.
+
+---
+
 ### Firewall
 
 Before installing Zabbix, it's essential to properly prepare the operating system.
-The first step is to ensure that the firewall is installed and configured.
+The first step is to ensure that the firewall is installed and configured
 
 To install and enable the firewall, run the following command:
 
 !!! info "Install and enable the firewall"
 
     Red Hat
-    ```yaml
+    ```bash
     dnf install firewalld
     systemctl enable firewalld --now
     ```
     SUSE
-    ```yaml
+    ```bash
     zypper install firewalld
     systemctl enable firewalld --now
     ```
 
     Ubuntu
-    ```yaml
+    ```bash
     sudo apt install ufw
     sudo ufw enable
     ```
+???+ note "what is firewalld / ufw"
 
-Once installed, you can configure the necessary ports.
-For Zabbix, we need to allow access to port `10051/tcp`, which is where the
-Zabbix trapper listens for incoming data. Use the following command to open
-this port in the firewall:
-
-!!! info "Allow Zabbix trapper access"
-
-    Red Hat / SUSE
-    ```yaml
-    firewall-cmd --add-service=zabbix-server --permanent
-    ```
-
-    Ubuntu
-    ```yaml
-    sudo ufw allow 10051/tcp
-    ```
-
-If the service is not recognized, you can manually specify the port:
-
-!!! info "Add port instead of the service name"
-
-    ```yaml
-    firewall-cmd --add-port=10051/tcp --permanent
-    ```
-
-???+ note
-
-    "Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
+    Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
     changes to take effect immediately without needing to restart the service.
     If your distribution does not use [Firewalld](https://www.firewalld.org),
-    refer to your OS documentation for the appropriate firewall configuration steps."
-    Ubuntu makes use of UFW and is merely a frontend for iptables.
+    refer to your OS documentation for the appropriate firewall configuration steps.
+    Ubuntu makes use of UFW which is merely a frontend for iptables.
 
-An alternative approach is to define dedicated firewall zones for specific use cases.
+During the Zabbix installation in the next chapters, we will need to open specific
+ports in the firewall to allow communication between Zabbix components.
+
+Alternatively to just opening ports, as we will do in the next chapters, you can
+also choose to define dedicated firewall zones for specific use cases. This 
+approach enhances security by isolating services and restricting access based on
+trust levels.
 For example...
 
-!!! info "Create a firewalld zone"
+!!! info "Create a firewalld zone for database access"
 
-    ```yaml
-    firewall-cmd --new-zone=postgresql-access --permanent
+    ```bash
+    firewall-cmd --new-zone=db_zone --permanent
     ```
 
 You can confirm the creation of the zone by executing the following command:
 
 !!! info "Verify the zone creation"
 
-    ```yaml
-    firewall-cmd --get-zones
+    ```console
+    ~# firewall-cmd --get-zones
+    block dmz drop external home internal nm-shared db_zone public trusted work
     ```
 
-block dmz drop external home internal nm-shared postgresql-access public
-trusted work
-
-Using zones in firewalld to configure firewall rules for PostgreSQL provides several
+Using zones in firewalld to configure firewall rules provides several
 advantages in terms of security, flexibility, and ease of management.
 Here’s why zones are beneficial:
 
@@ -162,7 +193,7 @@ Here’s why zones are beneficial:
   - Instead of manually defining complex iptables rules, zones provide an organized
     way to group and manage firewall rules based on usage scenarios.
 - **Enhanced security:**
-  - By restricting PostgreSQL access to a specific zone, you prevent unauthorized
+  - By restricting application access to a specific zone, you prevent unauthorized
     connections from other interfaces or networks.
 - **Dynamic configuration:**
   - firewalld supports runtime and permanent rule configurations, allowing changes
@@ -171,11 +202,12 @@ Here’s why zones are beneficial:
   - If the server has multiple network interfaces, zones allow different security
     policies for each interface.
 
-Bringing everything together it would look like this:
+Bringing everything together to add a zone for, in this example, PostgreSQL it
+would look like this:
 
-!!! info "Firewalld with zone config"
+!!! info "Firewalld with zone config for PostgreSQL database access"
 
-    ```yaml
+    ```bash
     firewall-cmd --new-zone=db_zone --permanent
     firewall-cmd --zone=db_zone --add-service=postgresql --permanent
     firewall-cmd --zone=db_zone --add-source=xxx.xxx.xxx.xxx/32 --permanent
@@ -184,6 +216,9 @@ Bringing everything together it would look like this:
 
 Where the `source IP` is the only address permitted to establish a connection to
 the database.
+
+If you wish to use zones when using firewalld, ensure to adapt the instructions
+in the following chapters accordingly.
 
 ---
 
@@ -202,19 +237,19 @@ To install and enable chrony, our NTP client, use the following command:
 !!! info "Install NTP client"
 
     Red Hat
-    ```yaml
+    ```bash
     dnf install chrony
     systemctl enable chronyd --now
     ```
 
     SUSE
-    ```yaml
+    ```bash
     zypper install chrony
     systemctl enable chronyd --now
     ```
 
     Ubuntu
-    ```yaml
+    ```bash
     sudo apt install chrony
     ```
 
@@ -223,17 +258,9 @@ status with the following command:
 
 !!! info "Check status chronyd"
 
-    ```yaml
+    ```bash
     systemctl status chronyd
     ```
-
-???+ note "what is apt, dnf or zypper"
-
-    dnf is a package manager used in Red Hat-based systems. Zypper is the package
-    manager used on SUSE-based systems and apt is the package manager used on 
-    Debian/Ubuntu-based systems.If you're using another distribution, replace 
-    `dnf` with your appropriate package manager, such as `zypper`, `apt`, or `yum`.
-    Do note that packagenames may also vary from distribution to distribution.
 
 ???+ note "what is Chrony"
 
@@ -247,18 +274,15 @@ You can view your current time configuration using the `timedatectl` command:
 
 !!! info "check the time config"
 
-    ```yaml
-    timedatectl
-    ```
-
-    ``` yaml
-    Local time: Thu 2023-11-16 15:09:14 UTC
-    Universal time: Thu 2023-11-16 15:09:14 UTC
-    RTC time: Thu 2023-11-16 15:09:15
-    Time zone: UTC (UTC, +0000)
+    ```console
+    ~# timedatectl
+                   Local time: Thu 2023-11-16 15:09:14 UTC
+               Universal time: Thu 2023-11-16 15:09:14 UTC
+                     RTC time: Thu 2023-11-16 15:09:15
+                    Time zone: UTC (UTC, +0000)
     System clock synchronized: yes
-    NTP service: active
-    RTC in local TZ: no
+                  NTP service: active
+              RTC in local TZ: no
     ```
 
 Ensure that the Chrony service is active (refer to the previous steps if needed).
@@ -267,7 +291,7 @@ the following command:
 
 !!! info "list the timezones"
 
-    ```yaml
+    ```bash
     timedatectl list-timezones
     ```
 
@@ -276,7 +300,8 @@ the one closest to your location. For example:
 
 !!! info "List of all the timezones available"
 
-    ```yaml
+    ```console
+    ~# timedatectl list-timezones
     Africa/Abidjan
     Africa/Accra
     ...
@@ -290,7 +315,7 @@ Once you've identified your time zone, configure it using the following command:
 
 !!! info "Set the timezone"
 
-    ```yaml
+    ```bash
     timedatectl set-timezone Europe/Brussels
     ```
 
@@ -299,18 +324,15 @@ command again:
 
 !!! info "Check the time and zone"
 
-    ```yaml
-    timedatectl
-    ```
-
-    ``` yaml
-    Local time: Thu 2023-11-16 16:13:35 CET
-    Universal time: Thu 2023-11-16 15:13:35 UTC
-    RTC time: Thu 2023-11-16 15:13:36
-    **Time zone: Europe/Brussels (CET, +0100)**
+    ```console
+    ~# timedatectl
+                   Local time: Thu 2023-11-16 16:13:35 CET
+               Universal time: Thu 2023-11-16 15:13:35 UTC
+                     RTC time: Thu 2023-11-16 15:13:36
+                    Time zone: Europe/Brussels (CET, +0100)
     System clock synchronized: yes
-    NTP service: active
-    RTC in local TZ: no
+                  NTP service: active
+              RTC in local TZ: no
     ```
 
 ???+ note
@@ -323,14 +345,14 @@ command again:
 
 ---
 
-### Verifying Chrony Synchronization
+#### Verifying Chrony Synchronization
 
 To ensure that Chrony is synchronizing with the correct time servers, you can
 run the following command:
 
 !!! info "Verify chrony"
 
-    ```yaml
+    ```bash
     chronyc
     ```
 
@@ -338,7 +360,7 @@ The output should resemble:
 
 !!! info "Verify your chrony output"
 
-    ```yaml
+    ```
     chrony version 4.2
     Copyright (C) 1997-2003, 2007, 2009-2021 Richard P. Curnow and others
     chrony comes with ABSOLUTELY NO WARRANTY. This is free software, and
@@ -352,7 +374,7 @@ Once inside the Chrony prompt, type the following to check the sources:
 
 !!! info ""
 
-    ```yaml
+    ```
     chronyc> sources
     ```
 
@@ -376,17 +398,18 @@ to a dedicated company time server. You can find local NTP servers here:
 
 ---
 
-### Updating Time Servers
+#### Updating Time Servers
 
-To update the time servers, modify the `/etc/chrony.conf` file for Red Hat and SUSE
-based systems, and if you use Ubuntu edit `/etc/chrony/chrony.conf`. Replace the
-existing NTP server with one closer to your location.
+To update the time servers, modify the `/etc/chrony.conf` file for Red Hat 
+based systems, `/etc/chrony.d/pool.conf` on SUSE based systems and if you use 
+Ubuntu edit `/etc/chrony/chrony.conf`. Replace the existing NTP server with 
+one closer to your location.
 
 Example of the current configuration:
 
 !!! info "example ntp pool config"
 
-    ```yaml
+    ```
     # Use public servers from the pool.ntp.org project.
     # Please consider joining the pool (http://www.pool.ntp.org/join.html).
     pool 2.centos.pool.ntp.org iburst
@@ -394,7 +417,7 @@ Example of the current configuration:
 
     Change the pools you want to a local time server:
 
-    ```yaml
+    ```
     # Use public servers from the pool.ntp.org project.
     # Please consider joining the pool (http://www.pool.ntp.org/join.html).
     pool be.pool.ntp.org iburst
@@ -404,17 +427,17 @@ After making this change, restart the Chrony service to apply the new configurat
 
 !!! info "restart the chrony service"
 
-    ```yaml
+    ```bash
     systemctl restart chronyd
     ```
 
-### Verifying Updated Time Servers
+#### Verifying Updated Time Servers
 
 Check the time sources again to ensure that the new local servers are in use:
 
 !!! info "Check chrony sources"
 
-    ```yaml
+    ```
     chronyc> sources
     ```
 
@@ -422,7 +445,7 @@ Example of expected output with local servers:
 
 !!! info "Example output"
 
-    ```yaml
+    ```
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
     ===============================================================================
     ^- ntp1.unix-solutions.be        2   6    17    43   -375us[ -676us] +/-   28ms
@@ -436,7 +459,7 @@ This confirms that the system is now using local time servers.
 ## Conclusion
 
 As we have seen, before even considering the Zabbix packages, attention must be
-paid to the environment in which it will reside. A properly configured operating
+paid to the environment in which it will reside. A properly configured and up-to-date operating
 system, an open path through the firewall, and accurate timekeeping are not mere
 suggestions, but essential building blocks. Having laid this groundwork, we can
 now proceed with confidence to the Zabbix installation, knowing that the underlying
