@@ -42,9 +42,10 @@ For simplicity, take note of the server details:
     like `zabbix_sender` or `zabbix_server`. This naming discrepancy can sometimes
     be confusing, particularly if you are using packages from non-official Zabbix
     repositories.
+
     Always check if a binary uses a dash or an underscore when troubleshooting.
 
-???+ note
+???+ warning
 
     Starting from Zabbix 7.2, only MySQL (including its forks) and PostgreSQL are
     supported as back-end databases. Earlier versions of Zabbix also included support
@@ -114,15 +115,17 @@ To update your system, run the following command based on your OS:
     sudo apt update
     sudo apt upgrade
     ```
-???+ note "what is apt, dnf or zypper"
+???+ note "What is apt, dnf or zypper"
 
-    DNF (Dandified YUM) is a package manager used in recent Red Hat-based systems (invoked as `dnf`). 
-    ZYpp (Zen / YaST Packages Patches Patterns Products) is the package manager 
-    used on SUSE-based systems (invoked as `zypper`) and APT (Advanced Package Tool) is the package 
-    manager used on Debian/Ubuntu-based systems (invoked as `apt`). 
+    - DNF (Dandified YUM) is a package manager used in recent Red Hat-based systems (invoked as `dnf`).
+    - ZYpp (Zen / YaST Packages Patches Patterns Products) is the package manager 
+    used on SUSE-based systems (invoked as `zypper`) and 
+    - APT (Advanced Package Tool) is the package manager used on Debian/Ubuntu-based systems (invoked as `apt`). 
+
     If you're using another distribution, replace `dnf`/`zypper`/`apt` with your appropriate 
     package manager, such as `yum`, `pacman`, `emerge`, `apk` or ... .
-    Do note that packagenames may also vary from distribution to distribution.
+
+    Do note that package names may also vary from distribution to distribution.
 
 ---
 
@@ -151,7 +154,7 @@ To install and enable the firewall, run the following command:
     sudo apt install ufw
     sudo ufw enable
     ```
-???+ note "what is firewalld / ufw"
+???+ note "What is firewalld / ufw"
 
     Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
     changes to take effect immediately without needing to restart the service.
@@ -168,7 +171,7 @@ approach enhances security by isolating services and restricting access based on
 trust levels.
 For example...
 
-!!! info "Create a firewalld zone for database access"
+!!! example "Create a firewalld zone for database access"
 
     ```bash
     firewall-cmd --new-zone=db_zone --permanent
@@ -176,10 +179,10 @@ For example...
 
 You can confirm the creation of the zone by executing the following command:
 
-!!! info "Verify the zone creation"
+!!! example "Verify the zone creation"
 
-    ```console
-    ~# firewall-cmd --get-zones
+    ```shell-session
+    localhost:~ # firewall-cmd --get-zones
     block dmz drop external home internal nm-shared db_zone public trusted work
     ```
 
@@ -216,7 +219,7 @@ Here’s why zones are beneficial:
 Bringing everything together to add a zone for, in this example, PostgreSQL it
 would look like this:
 
-!!! info "Firewalld with zone config for PostgreSQL database access"
+!!! example "Firewalld with zone config for PostgreSQL database access"
 
     ```bash
     firewall-cmd --new-zone=db_zone --permanent
@@ -283,10 +286,10 @@ status with the following command:
 Once Chrony is installed, the next step is to ensure the correct time zone is set.
 You can view your current time configuration using the `timedatectl` command:
 
-!!! info "check the time config"
+!!! example "Check the time config"
 
-    ```console
-    ~# timedatectl
+    ```shell-session
+    localhost:~ # timedatectl
                    Local time: Thu 2023-11-16 15:09:14 UTC
                Universal time: Thu 2023-11-16 15:09:14 UTC
                      RTC time: Thu 2023-11-16 15:09:15
@@ -300,7 +303,7 @@ Ensure that the Chrony service is active (refer to the previous steps if needed)
 To set the correct time zone, first, you can list all available time zones with
 the following command:
 
-!!! info "list the timezones"
+!!! info "List the timezones"
 
     ```bash
     timedatectl list-timezones
@@ -309,10 +312,10 @@ the following command:
 This command will display a list of available time zones, allowing you to select
 the one closest to your location. For example:
 
-!!! info "List of all the timezones available"
+!!! example "List of all the timezones available"
 
-    ```console
-    ~# timedatectl list-timezones
+    ```shell-session
+    localhost:~ # timedatectl list-timezones
     Africa/Abidjan
     Africa/Accra
     ...
@@ -333,10 +336,10 @@ Once you've identified your time zone, configure it using the following command:
 To verify that the time zone has been configured correctly, use the `timedatectl`
 command again:
 
-!!! info "Check the time and zone"
+!!! example "Check the time and zone"
 
-    ```console
-    ~# timedatectl
+    ```shell-session
+    localhost:~ # timedatectl
                    Local time: Thu 2023-11-16 16:13:35 CET
                Universal time: Thu 2023-11-16 15:13:35 UTC
                      RTC time: Thu 2023-11-16 15:13:36
@@ -369,9 +372,10 @@ run the following command:
 
 The output should resemble:
 
-!!! info "Verify your chrony output"
+!!! example "Verify your chrony output"
 
-    ```
+    ``` shell-session
+    localhost:~ # chronyc
     chrony version 4.2
     Copyright (C) 1997-2003, 2007, 2009-2021 Richard P. Curnow and others
     chrony comes with ABSOLUTELY NO WARRANTY. This is free software, and
@@ -381,19 +385,14 @@ The output should resemble:
     chronyc>
     ```
 
-Once inside the Chrony prompt, type the following to check the sources:
-
-!!! info ""
-
-    ```
-    chronyc> sources
-    ```
+Once inside the Chrony prompt, type the `sources` command  to check the used time sources:
 
 Example output:
 
-!!! info "Check your time server sources"
+!!! example "Check your time server sources"
 
-    ```bash
+    ```shell-session
+    chronyc> sources
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
     ===============================================================================
     ^- 51-15-20-83.rev.poneytel>     2   9   377   354   +429us[ +429us] +/-  342ms
@@ -418,7 +417,7 @@ one closer to your location.
 
 Example of the current configuration:
 
-!!! info "example ntp pool config"
+!!! example "Example ntp pool config"
 
     ```
     # Use public servers from the pool.ntp.org project.
@@ -426,7 +425,9 @@ Example of the current configuration:
     pool 2.centos.pool.ntp.org iburst
     ```
 
-    Change the pools you want to a local time server:
+Change the pools you want to a local time server:
+
+!!! info "Change ntp pool config"
 
     ```
     # Use public servers from the pool.ntp.org project.
@@ -436,7 +437,7 @@ Example of the current configuration:
 
 After making this change, restart the Chrony service to apply the new configuration:
 
-!!! info "restart the chrony service"
+!!! info "Restart the chrony service"
 
     ```bash
     systemctl restart chronyd
@@ -454,9 +455,10 @@ Check the time sources again to ensure that the new local servers are in use:
 
 Example of expected output with local servers:
 
-!!! info "Example output"
+!!! example "Example output"
 
-    ```
+    ```shell-session
+    chronyc> sources
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
     ===============================================================================
     ^- ntp1.unix-solutions.be        2   6    17    43   -375us[ -676us] +/-   28ms
