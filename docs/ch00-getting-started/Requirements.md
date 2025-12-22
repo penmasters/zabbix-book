@@ -116,10 +116,12 @@ To update your system, run the following command based on your OS:
     ```
 ???+ note "what is apt, dnf or zypper"
 
-    dnf is a package manager used in Red Hat-based systems. Zypper is the package
-    manager used on SUSE-based systems and apt is the package manager used on 
-    Debian/Ubuntu-based systems. If you're using another distribution, replace 
-    `dnf` with your appropriate package manager, such as `zypper`, `apt`, or `yum`.
+    DNF (Dandified YUM) is a package manager used in recent Red Hat-based systems (invoked as `dnf`). 
+    ZYpp (Zen / YaST Packages Patches Patterns Products) is the package manager 
+    used on SUSE-based systems (invoked as `zypper`) and APT (Advanced Package Tool) is the package 
+    manager used on Debian/Ubuntu-based systems (invoked as `apt`). 
+    If you're using another distribution, replace `dnf`/`zypper`/`apt` with your appropriate 
+    package manager, such as `yum`, `pacman`, `emerge`, `apk` or ... .
     Do note that packagenames may also vary from distribution to distribution.
 
 ---
