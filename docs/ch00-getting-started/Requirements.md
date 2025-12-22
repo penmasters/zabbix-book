@@ -88,7 +88,7 @@ database server, and web server).
 
 ### Update the System
 
-Before installing the Zabbix components, it's a best practice to ensure
+Before installing the Zabbix components, or any new software, it's a best practice to ensure
 your operating system is up-to-date with the latest patches and security fixes.
 This will help maintain system stability and compatibility with the software you're
 about to install.
@@ -127,12 +127,69 @@ To update your system, run the following command based on your OS:
 
     Do note that package names may also vary from distribution to distribution.
 
+???+ tip
+
+    Regularly updating your system is crucial for security and performance.
+    Consider setting up automatic updates or scheduling regular maintenance windows
+    to keep your systems current.
+
+---
+
+### Sudo
+
+By default the Zabbix processes like the Zabbix server and agent run under their
+own unprivileged user accounts (e.g., `zabbix`). However, there are scenarios where
+elevated privileges are required, such as executing custom scripts or commands
+that need root access.
+Also throughout this book, we will perform certain administrative tasks that
+require `sudo` on the system.
+
+Usually, `sudo` is already present on most systems, but when you performed
+a minimal installation of your OS, it might be missing. Therefore we need to
+ensure it's installed.
+
+This will also allow the Zabbix user to execute specific configured commands
+with elevated privileges without needing to switch to the root user entirely.
+
+!!! info "What is sudo"
+
+    `sudo` (short for "superuser do") is a command-line utility that allows
+    permitted users to execute commands with the security privileges of another
+    user, typically the superuser (root). It is commonly used in Unix-like
+    operating systems to perform administrative tasks without needing to log in
+    as the root user.
+
+To install `sudo`, run the following command based on your OS:
+
+!!! info "Install sudo"
+
+    Red Hat
+    ```bash
+    dnf install sudo
+    ```
+
+    SUSE
+    ```bash
+    zypper install sudo
+    ```
+
+    Ubuntu
+
+    On Ubuntu, `sudo` is normally installed by default. Root access is managed
+    through `sudo` for the initial user created during installation.
+
+If `sudo` is already installed, these commands will inform you that the latest version
+is already present and no further action is needed. If not, the package manager
+will proceed to install it.
+
 ---
 
 ### Firewall
 
-Before installing Zabbix, it's essential to properly prepare the operating system.
-The first step is to ensure that the firewall is installed and configured
+Next, we need to ensure that the firewall is installed and configured. 
+A firewall is a crucial security component that helps protect your server
+from unauthorized access and potential threats by controlling incoming and
+outgoing network traffic based on predetermined security rules.
 
 To install and enable the firewall, run the following command:
 
