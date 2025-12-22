@@ -121,43 +121,49 @@ When installing MariaDB or PostgreSQL you must determine the source
 from which you will want to install the database server. Two primary options are 
 available:
 
-1. **Vendor-Provided Packages**\
-   These are included in the software repositories of most Linux distributions 
-   and are maintained by the distribution vendor.
+1. **Vendor-Provided Packages**
 
-   **Advantages:**
-   - **Simplified installation:** Packages are readily available via the 
-     distribution’s package manager.
-   - **Vendor support:** For enterprise distributions (e.g., RHEL, SLES), 
-     active subscriptions include official support.
-   - **Compatibility:** Guaranteed integration with other system packages and 
-     dependencies.
-   - **Distribution-specific optimizations:** Includes tailored configurations 
-     (e.g., logrotate, bash completion,...).
-   - **Long-term maintenance:** Security and bug fixes are backported by the 
-     vendor for the duration of the distribution’s support lifecycle.
+:   These are included in the software repositories of most Linux distributions 
+    and are maintained by the distribution vendor.
+ 
+    **Advantages:**
 
-   **Disadvantages:**
-   - **Version lock-in:** Major distribution upgrades may automatically introduce
-     newer database versions, potentially requiring compatibility checks with
-     Zabbix.
-   - **Vendor modifications:** Default configurations, log directories, and data
-     paths may be altered to align with distribution-specific standards.
+    - **Simplified installation:** Packages are readily available via the
+      distribution’s package manager.
+    - **Vendor support:** For enterprise distributions (e.g., RHEL, SLES),
+      active subscriptions include official support.
+    - **Compatibility:** Guaranteed integration with other system packages and
+      dependencies.
+      - **Distribution-specific optimizations:** Includes tailored configurations
+        (e.g., logrotate, bash completion,...).
+      - **Long-term maintenance:** Security and bug fixes are backported by the
+        vendor for the duration of the distribution’s support lifecycle.
+
+    **Disadvantages:**
+
+      - **Version lock-in:** Major distribution upgrades may automatically introduce
+        newer database versions, potentially requiring compatibility checks with
+        Zabbix.
+      - **Vendor modifications:** Default configurations, log directories, and data
+        paths may be altered to align with distribution-specific standards.
 
 2. **Official MariaDB/PostgreSQL Repositories**
-   These repositories provide packages directly from MariaDB/PostgreSQL and offer
-   access to the latest stable releases.
 
-   **Advantages:**
-   - **Up-to-date versions:** Immediate access to the latest features, security
-     patches, and bug fixes. However, make sure Zabbix is compatible with the
-     chosen version.
-   - **Enterprise support:** Option to purchase MariaDB Enterprise or Enterprise DB
-     respectively, which includes professional support and additional features.
+:   These repositories provide packages directly from MariaDB/PostgreSQL and offer
+    access to the latest stable releases.
 
-   **Disadvantages:**
-   - **Manual version management:** Users must proactively monitor and upgrade 
-     to new major versions to ensure continued security and bug fix coverage.
+    **Advantages:**
+
+    - **Up-to-date versions:** Immediate access to the latest features, security
+      patches, and bug fixes. However, make sure Zabbix is compatible with the
+      chosen version.
+    - **Enterprise support:** Option to purchase MariaDB Enterprise or Enterprise DB
+      respectively, which includes professional support and additional features.
+
+    **Disadvantages:**
+
+    - **Manual version management:** Users must proactively monitor and upgrade 
+      to new major versions to ensure continued security and bug fix coverage.
 
 In this chapter we will concentrate on the OS vendor-provided packages but we will
 point you to the instructions on how to use the official database-vendor packages

@@ -188,20 +188,29 @@ advantages in terms of security, flexibility, and ease of management.
 Here’s why zones are beneficial:
 
 - **Granular Access Control :**
-  - firewalld zones allow different levels of trust for different network interfaces
+
+:   Firewalld zones allow different levels of trust for different network interfaces
     and IP ranges. You can define which systems are allowed to connect to PostgreSQL
     based on their trust level.
+
 - **Simplified Rule management:**
-  - Instead of manually defining complex iptables rules, zones provide an organized
+
+:   Instead of manually defining complex iptables rules, zones provide an organized
     way to group and manage firewall rules based on usage scenarios.
+
 - **Enhanced security:**
-  - By restricting application access to a specific zone, you prevent unauthorized
+
+:   By restricting application access to a specific zone, you prevent unauthorized
     connections from other interfaces or networks.
+
 - **Dynamic configuration:**
-  - firewalld supports runtime and permanent rule configurations, allowing changes
+
+:   Firewalld supports runtime and permanent rule configurations, allowing changes
     without disrupting existing connections.
+
 - **Multi-Interface support:**
-  - If the server has multiple network interfaces, zones allow different security
+
+:   If the server has multiple network interfaces, zones allow different security
     policies for each interface.
 
 Bringing everything together to add a zone for, in this example, PostgreSQL it
