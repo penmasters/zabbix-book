@@ -467,10 +467,26 @@ to a dedicated company time server. You can find local NTP servers here:
 
 #### Updating Time Servers
 
-To update the time servers, modify the `/etc/chrony.conf` file for Red Hat 
-based systems, `/etc/chrony.d/pool.conf` on SUSE based systems and if you use 
-Ubuntu edit `/etc/chrony/chrony.conf`. Replace the existing NTP server with 
-one closer to your location.
+To update the time servers, modify the Chrony configuration file:
+
+!!! info "Edit chrony config file"
+
+    Red Hat
+    ```bash
+    vi /etc/chrony.conf
+    ```
+
+    SUSE
+    ```bash
+    vi /etc/chrony.d/pool.conf
+    ```
+
+    Ubuntu
+    ```bash
+    sudo vi /etc/chrony/chrony.conf
+    ```
+
+Replace the existing NTP server pool with one closer to your location.
 
 Example of the current configuration:
 
@@ -549,3 +565,4 @@ system is prepared for the task.
 
 - [https://www.ntppool.org/zone](https://www.ntppool.org/zone)
 - [https://www.redhat.com/en/blog/beginners-guide-firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
+- [https://www.linuxjournal.com/content/understanding-firewalld-multi-zone-configurations](https://www.linuxjournal.com/content/understanding-firewalld-multi-zone-configurations)
