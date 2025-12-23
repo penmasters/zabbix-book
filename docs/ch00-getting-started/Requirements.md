@@ -480,6 +480,10 @@ To update the time servers, modify the Chrony configuration file:
     ```bash
     vi /etc/chrony.d/pool.conf
     ```
+    On SUSE, the pool configuration is located in a separate file. You can
+    edit that file directly or add a new configuration file in the same directory.
+    In the latter case, ensure to disable or remove the existing pool configuration
+    to avoid conflicts.
 
     Ubuntu
     ```bash
