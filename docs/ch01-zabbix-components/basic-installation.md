@@ -1706,14 +1706,16 @@ and perform all subsequent steps on the server designated for the frontend.
 This command will install the front-end packages along with the required dependencies
 for Nginx. 
 
-As of SUSE 16, PHP-FPM is not allowed by SELinux to map exec memory. We need to
-tell SELinux to allow this:
+As of SUSE 16, PHP-FPM is not allowed by SELinux to map exec memory or to connect
+to the Zabbix server. We need to tell SELinux to allow this:
     
 !!! info "Allow PHP-FPM to map exec memory on SUSE"
 
     ```bash
     setsebool -P httpd_execmem 1
+    setsebool -P httpd_can_connect_zabbix 1
     ```
+
 Also on SUSE, PHP-FPM is by default not allowed by SystemD to write to the 
 `/etc/zabbix/web` directory. We need to create a drop-in file to allow this:
 
