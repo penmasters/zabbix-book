@@ -1741,9 +1741,10 @@ and perform all subsequent steps on the server designated for the frontend.
     SUSE
     ```bash
     # When using MySQL/MariaDB
-    zypper install zabbix-nginx-conf php8-mysql zabbix-web-mysql
+    zypper install zabbix-nginx-conf zabbix-web-mysql php8-openssl php8-xmlreader php8-xmlwriter
     # or when using PostgreSQL
-    zypper install zabbix-nginx-conf php8-pgsql zabbix-web-pgsql
+    zypper install zabbix-nginx-conf zabbix-web-pgsql php8-openssl php8-xmlreader php8-xmlwriter
+    ```
 
     Ubuntu
     ```bash
@@ -1756,75 +1757,115 @@ and perform all subsequent steps on the server designated for the frontend.
 This command will install the front-end packages along with the required dependencies
 for Nginx. 
 
+As of SUSE 16, PHP-FPM is not allowed by SELinux to map exec memory. We need to
+tell SELinux to allow this:
+    
+!!! info "Allow PHP-FPM to map exec memory on SUSE"
+
+    ```bash
+    setsebool -P httpd_execmem 1
+    ```
+Also on SUSE, PHP-FPM is by default not allowed by SystemD to write to the 
+`/etc/zabbix/web` directory. We need to create a drop-in file to allow this:
+
+!!! info "Allow PHP-FPM to write to /etc/zabbix/web on SUSE"
+
+    ```bash
+    mkdir -p /etc/systemd/system/php-fpm.service.d/
+    vi /etc/systemd/system/php-fpm.service.d/zabbix-web.conf
+    ```
+
+    Add the following lines to the file:
+
+    ```ini
+    [Service]
+    ReadWritePaths=/etc/zabbix/web
+    ```
+
+    Then reload the SystemD configuration:
+
+    ```bash
+    systemctl daemon-reload
+    ```
+
 First thing we have to do is alter the Nginx configuration file so that we don't
 use the standard config and serve the Zabbix frontend on port 80.
 
-!!! info "edit nginx config for Red Hat"
+!!! info "Edit nginx config for Red Hat"
 
     ```bash
     vi /etc/nginx/nginx.conf
     ```
 
-In this configuration file look for the following block that starts with :
+In this configuration file look for the following block that starts with `server {`:
 
-!!! info "original config"
-
-    ```nginx
-    server {
-    listen 80;
-    listen [::]:80;
-    server_name *;
-    root /usr/share/nginx/html;
-
-             # Load configuration files for the default server block.
-             include /etc/nginx/default.d/*.conf;
-    ```
-
-Then, comment out the following server block within the configuration file:
-
-!!! info "config after edit"
+!!! example "Original config"
 
     ```nginx
     server {
-    # listen 80;
-    # listen [::]:80;
-    # server_name *;
-    # root /usr/share/nginx/html;
+        listen 80;
+        listen [::]:80;
+        server_name *;
+    ...
+    ```
+    ???+ tip
+
+        This block may be different depending on your distribution and Nginx version.
+
+
+Then, comment out the any `listen` and `server_name` directives to disable the default
+http server configuration. You can do this by adding a `#` at the beginning of
+each line, like in the example below:
+
+!!! example "Config after edit"
+
+    ```nginx
+    server {
+        #listen 80;
+        #listen [::]:80;
+        #server_name *;
+    ...
     ```
 
-The Zabbix configuration file must now be modified to reflect the current environment.
+The Zabbix configuration file must now be modified to take over the default 
+service on port 80 we just disabled.
 Open the following file for editing:
 
-!!! info "edit zabbix config for nginx"
+!!! info "Edit Zabbix config for nginx"
 
     ```bash
-    vi /etc/nginx/conf.d/zabbix.conf
+    sudo vi /etc/nginx/conf.d/zabbix.conf
     ```
 
 And alter the following lines:
 
-!!! info "original config"
+!!! example "Original config"
 
     ```nginx
     server {
-    listen 8080;
-    server_name example.com;
+    #       listen          8080;
+    #       server_name     example.com;
 
-    root    /usr/share/zabbix;
+            root    /usr/share/zabbix;
 
-    index   index.php;
+            index   index.php;
+    ...
     ```
 
-Replace the first 2 lines with the correct port and domain for your front-end in
-case you don't have a domain you can replace `servername` with `_;` like in the
-example below:
+Remove the `#` in front of the first 2 lines and modify them with the correct 
+port and domain for your front-end. 
 
-!!! info "config after the edit"
+???+ tip 
+
+    In case you don't have a domain you can replace `servername` with `_` 
+    like in the example below:
+
+!!! example "Config after the edit"
 
     ```nginx
-    server { # listen 8080; # server*name example.com;
-    listen 80;
-    server_name *;
+    server {
+            listen          80;
+            server_name     _;
 
              root    /usr/share/zabbix;
 
@@ -1834,51 +1875,16 @@ example below:
 The web server and PHP-FPM service are now ready for activation and persistent
 startup. Execute the following commands to enable and start them immediately:
 
-!!! info "edit nginx config for ubuntu"
-
-    ```bash
-    sudo vi /etc/zabbix/nginx.conf
-    ```
-
-replace the Following lines:
-
-!!! info "original config"
-
-    ```nginx
-    server {
-    #        listen          8080;
-    #        server_name     example.com;
-    ```
-
-with :
-
-!!! info "config after edit"
-
-    ```nginx
-    server {
-            listen xxx.xxx.xxx.xxx:80;
-            server_name "";
-    ```
-
-where xxx.xxx.xxx.xxx is your IP or DNS name.
-
-???+ note
-
-    server_name is normally replaced with the fqdn name of your machine. If you
-    have no fqdn you can keep it open like in this example.
-
-!!! info "restart the front-end services"
+!!! info "Restart the front-end services"
 
     Red Hat / SUSE
     ```bash
-    systemctl enable php-fpm --now
-    systemctl enable nginx --now
+    systemctl enable nginx php-fpm --now
     ```
 
     Ubuntu
     ```bash
-    sudo systemctl enable nginx php8.3-fpm
-    sudo systemctl restart nginx php8.3-fpm
+    sudo systemctl enable nginx php8.3-fpm --now
     ```
 
 Let's verify if the service is properly started and enabled so that it survives
@@ -1887,9 +1893,12 @@ our reboot next time.
 !!! info "check if the service is running"
 
     ```bash
-    systemctl status nginx
+    sudo systemctl status nginx
     ```
-    ```
+???+ example "Example output"
+
+    ```shell-session
+    localhost:~> sudo systemctl status nginx
     ● nginx.service - The nginx HTTP and reverse proxy server
           Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
          Drop-In: /usr/lib/systemd/system/nginx.service.d
@@ -1913,7 +1922,7 @@ With the service operational and configured for automatic startup, the final pre
 step involves adjusting the firewall to permit inbound HTTP traffic. Execute the
 following commands:
 
-!!! info "configure the firewall"
+!!! info "Configure the firewall"
 
     Red Hat / SUSE
     ```bash
@@ -1928,7 +1937,7 @@ following commands:
 
 Open your browser and go to the url or ip of your front-end :
 
-!!! info "front-end configuration"
+!!! info "Front-end configuration"
 
     ```
     http://<ip or dns of the zabbix frontend server>/
@@ -1941,7 +1950,7 @@ have an error check the configuration again or have a look at the nginx log file
 !!! info ""
 
     ```bash
-    journalctl -xe
+    journalctl -xeu nginx
     ```
 
 This should help you in locating the errors you made.
@@ -2096,7 +2105,7 @@ language_
 ???+ note
 
     If your preferred language is not available in the Zabbix front-end, don't
-    worry it simply means that the translation is either incomplete or not yet
+    worry, it simply means that the translation is either incomplete or not yet
     available. Zabbix is an open-source project that relies on community contributions
     for translations, so you can help improve it by contributing your own translations.
 
@@ -2141,7 +2150,8 @@ connections_
 You're almost finished with the setup! The final steps involve:
 
 1. `Assigning an Instance Name`: Choose a descriptive name for your Zabbix instance.
-2. `Selecting the Timezone`: Choose the timezone that matches your location or your preferred time zone for the Zabbix interface.
+2. `Selecting the Timezone`: Choose the timezone that matches your location or 
+   your preferred time zone for the Zabbix interface.
 3. `Setting the Default Time Format`: Select the default time format you prefer to use.
 4. **Encrypt connections from Web interface**: I marked this box but you should
    not. This box is to encrypt communications between Zabbix frontend and your
