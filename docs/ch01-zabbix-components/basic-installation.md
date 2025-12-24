@@ -20,15 +20,13 @@ which we will discuss in detail.
 - The Zabbix web server
 - The Zabbix database
 
-!!! info "Creation of DB users"
+!!! abstract "Creation of DB users"
 
-    ```
     In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
     zabbix-web user will be used for the frontend to connect to our zabbix database.
     The zabbix-srv user will be used by our zabbix server to connect to the database.
     This allows us to limit the permissions for every user to only what is strictly
     needed.
-    ```
 
 
 ![overview](ch01-basic-installation-zabbixserver.png){ align=left }
@@ -56,12 +54,13 @@ Zabbix database.
 
 ???+ note
 
-    It's perfect possible to install all components on 1 single VM or every component
+    It is perfectly possible to install all components on one single VM or every component
     on a separate VM.
-    Reason we split the DB as an example is because the database will probably be
-    the first component giving you performance headaches. It's also the component
-    that needs some extra attention when we split it so for this reason we have
-    chosen in this example to split the database from the rest of the setup.
+    The reason why we split the DB in our example is because the database will probably be
+    the first component giving you performance headaches. It is also the component
+    that needs some extra attention when we split it from the other components,
+    so for this reason we have chosen in this example to split the database 
+    from the rest of the setup.
 
 We will cover the following topics:
 
@@ -80,7 +79,7 @@ A critical decision when managing Zabbix installations is selecting the database
 backend. Zabbix supports several database options: MySQL/Percona, MariaDB, 
 PostgreSQL (including TimescaleDB), and Oracle (up to Zabbix 7.0).
 
-???+ note
+???+ warning "Oracle Database deprecation"
 
     Zabbix 7.0 marks the final release to offer support for Oracle Database.
     Consequently, systems running Zabbix 7.0 or any prior version must undertake
@@ -102,7 +101,7 @@ built-in compression to reduce storage requirements. However, these advantages
 come with added complexity during installation and a few restrictions on historical
 data retention.
 
-???+ note
+???+ tip "TimescaleDB installation"
 
     Given its advanced nature, TimescaleDB is not essential for most Zabbix users.
     As such, its installation is beyond the scope of this chapter. If you plan to
@@ -169,24 +168,38 @@ In this chapter we will concentrate on the OS vendor-provided packages but we wi
 point you to the instructions on how to use the official database-vendor packages
 if you want to use those.
 
-???+ tip
+???+ warning "Database version compatibility"
 
     Always ensure that your chosen database version is compatible with your Zabbix version
-    to avoid potential integration issues. Check the Zabbix documentation for the 
+    to avoid potential integration issues. Check the [Zabbix documentation](https://www.zabbix.com/documentation/current/en/manual/installation/requirements#required-software) for the 
     latest supported versions.
+
+
+Before installing the database software, ensure that the server(s)
+meet the configuration requirements outlined in the previous section: 
+[System Requirements](../ch00-getting-started/Requirements.md).
 
 ---
 
 ### Installing the MariaDB Database
 
-With the operating system updated, you are now ready to install the MariaDB 
-server and client packages. This will provide the necessary components to run 
-and manage your database.
+In this section we will install the MariaDB server and -client packages. This will
+provide the necessary components to run and manage MariaDB as your Zabbix database backend.
 
-For the installation of the official MariaDB packages, you will need to follow the
-distribution specific instructions at <https://mariadb.org/download/?t=repo-config>
-to configure the MariaDB repository and to install the MariaDB-server and -client
-package.
+If you prefer to use PostgreSQL as your database backend, you can skip this section 
+and proceed to the PostgreSQL installation section.
+
+???+ tip "MySQL/Percona"
+    If you prefer to use MySQL or Percona instead of MariaDB, the installation 
+    steps are very similar. Generally, you would replace `mariadb` with `mysql` 
+    in the package names and commands.
+
+???+ note "MariaDB Official packages"
+
+    For the installation of the official MariaDB packages, you will need to follow the
+    distribution specific instructions at [https://mariadb.org/download/?t=repo-config](https://mariadb.org/download/?t=repo-config)
+    to configure the MariaDB repository and to install the MariaDB-server and -client
+    package.
 
 To install the distribution default MariaDB server and client, execute the 
 following command:
@@ -217,27 +230,27 @@ upon boot and start it immediately. Use the following command to accomplish this
 
 !!! info "Enable mariadb service"
 
-    Red Hat / SUSE / Ubuntu
     ```bash
-    systemctl enable mariadb --now
+    sudo systemctl enable mariadb --now
     ```
 
-This command will both enable and start the MariaDB service. Once the service is
-running, you can verify that the installation was successful by checking the
-version of MariaDB using the following command:
+This command will both enable and start the MariaDB service and since this will be
+the first time the service is started, it will initialize the database directory.
+With the MariaDB service now up and running, you can verify that the installation
+was successful by checking the version of MariaDB using the following command:
 
 !!! info "Check Mariadb version"
 
-    Red Hat / SUSE / Ubuntu
     ```bash
     mariadb -V
     ```
 
 The expected output should resemble this:
 
-!!! info ""
+???+ example "MariaDB version example"
 
-    ```
+    ```shell-session
+    localhost:~ $ mariadb -V
     mariadb  Ver 15.1 Distrib 10.11.14-MariaDB, for Linux (x86_64) using  EditLine wrapper
     ```
 
@@ -246,7 +259,6 @@ with the following command:
 
 !!! info "Get mariadb status"
 
-    Red Hat / SUSE / Ubuntu
     ```bash
     sudo systemctl status mariadb
     ```
@@ -254,22 +266,23 @@ with the following command:
 You should see an output similar to this, indicating that the MariaDB service
 is active and running:
 
-!!! info "mariadb service status example"
+???+ example "Mariadb service status example"
 
-    ```console
+    ```shell-session
+    localhost:~ $ sudo systemctl status mariadb
     ● mariadb.service - MariaDB database server
-     Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
-     Active: active (running) since Wed 2025-12-03 00:16:04 CET; 5s ago
-       Docs: man:mysqld(8)
-             https://mariadb.com/kb/en/library/systemd/
-    Process: 11148 ExecStartPre=/usr/lib/mysql/mysql-systemd-helper install (code=exited, status=0/SUCCESS)
-    Process: 11155 ExecStartPre=/usr/lib/mysql/mysql-systemd-helper upgrade (code=exited, status=0/SUCCESS)
-   Main PID: 11162 (mysqld)
-     Status: "Taking your SQL requests now..."
-      Tasks: 18 (limit: 4670)
-        CPU: 340ms
-     CGroup: /system.slice/mariadb.service
-             └─11162 /usr/sbin/mysqld --defaults-file=/etc/my.cnf --user=mysql --socket=/run/mysql/mysql.sock
+         Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
+         Active: active (running) since Wed 2025-12-03 00:16:04 CET; 5s ago
+           Docs: man:mysqld(8)
+                 https://mariadb.com/kb/en/library/systemd/
+        Process: 11148 ExecStartPre=/usr/lib/mysql/mysql-systemd-helper install (code=exited, status=0/SUCCESS)
+        Process: 11155 ExecStartPre=/usr/lib/mysql/mysql-systemd-helper upgrade (code=exited, status=0/SUCCESS)
+       Main PID: 11162 (mysqld)
+         Status: "Taking your SQL requests now..."
+          Tasks: 18 (limit: 4670)
+            CPU: 340ms
+         CGroup: /system.slice/mariadb.service
+                 └─11162 /usr/sbin/mysqld --defaults-file=/etc/my.cnf --user=mysql --socket=/run/mysql/mysql.sock
 
     Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] Plugin 'FEEDBACK' is disabled.
     Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
@@ -293,14 +306,24 @@ Run the following command:
 
 !!! info "Secure Mariadb setup"
 
-    Red Hat / SUSE / Ubuntu
     ```bash
-     sudo mariadb-secure-installation
+    sudo mariadb-secure-installation
     ```
 
-!!! info ""
+The mariadb-secure-installation script will guide you through several key steps:
 
-    ```console
+1. Set a root password if one isn't already set.
+2. Remove anonymous users.
+3. Disallow remote root logins.
+4. Remove the test database.
+5. Reload the privilege tables to ensure the changes take effect.
+
+Once complete, your MariaDB instance will be significantly more secure. 
+
+!!! example "mariadb-secure-installation example output"
+
+    ```shell-session
+    localhost:~ $ sudo mariadb-secure-installation
     NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
           SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
 
@@ -368,16 +391,7 @@ Run the following command:
     Thanks for using MariaDB!
     ```
 
-The mariadb-secure-installation script will guide you through several key steps:
-
-1. Set a root password if one isn't already set.
-2. Remove anonymous users.
-3. Disallow remote root logins.
-4. Remove the test database.
-5. Reload the privilege tables to ensure the changes take effect.
-
-Once complete, your MariaDB instance will be significantly more secure. You are
-now ready to configure the database for Zabbix.
+You are now ready to configure the database for Zabbix.
 
 ---
 
@@ -395,7 +409,6 @@ process.
 
 !!! info "Enter Mariadb as user root"
 
-    Red Hat / SUSE / Ubuntu
     ```bash
     mariadb -uroot -p
     ```
@@ -405,48 +418,48 @@ database for Zabbix:
 
 !!! info "Create the database"
 
-    `MariaDB [(none)]> CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;`
+    ```mysql
+    MariaDB [(none)]> CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+    ```
 
-???+ note
+???+ note "What is utf8mb4"
 
      utf8mb4 is a proper implementation of UTF-8 in MySQL/MariaDB, supporting all
      Unicode characters, including emojis. The older utf8 charset in MySQL/MariaDB
      only supports up to three bytes per character and is not a true UTF-8 implementation,
      which is why utf8mb4 is recommended.
 
-This command creates a new database named zabbix with the UTF-8 character set,
+This command creates a new database named `zabbix` with the UTF-8 character set,
 which is required for Zabbix.
 
 Create a dedicated user for Zabbix and grant the necessary privileges: Next, you
-need to create a user that Zabbix will use to access the database. Replace password
+need to create a user that Zabbix will use to access the database. Replace `<password>`
 with a strong password of your choice.
 
 !!! info "Create users and grant privileges"
 
-    ```sql
-    MariaDB [(none)]> CREATE USER 'zabbix-web'@'<zabbix server ip>' IDENTIFIED BY '<password>';
+    ```mysql
+    MariaDB [(none)]> CREATE USER 'zabbix-web'@'<zabbix frontend ip>' IDENTIFIED BY '<password>';
     MariaDB [(none)]> CREATE USER 'zabbix-srv'@'<zabbix server ip>' IDENTIFIED BY '<password>';
     MariaDB [(none)]> GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix-srv'@'<zabbix server ip>';
     MariaDB [(none)]> GRANT SELECT, UPDATE, DELETE, INSERT ON zabbix.* TO 'zabbix-web'@'<zabbix server ip>';
     MariaDB [(none)]> FLUSH PRIVILEGES;
     ```
 
+    - Replace `<zabbix server ip>` with the actual IP address of your server
+      where the Zabbix server  will be installed.
+    - Replace `<zabbix frontend ip>` with the actual IP address of your server
+      where the Zabbix frontend will be installed.
+
+    If both components are installed on the same server, use the same IP address.
+
+    ???+ tip
+
+        If your Zabbix server, frontend and database are on the same machine, you can replace
+        `<zabbix server ip>` and `<zabbix frontend ip>` with `localhost` or `127.0.0.1`.
+
 This creates new users `zabbix-web` and `zabbix-srv`, grants them access to the
-zabbix database, and ensures that the privileges are applied immediately.
-
-In some cases, especially when setting up Zabbix with MariaDB, you might encounter
-issues related to stored functions and triggers if binary logging is enabled.
-To address this, you need to set the `log_bin_trust_function_creators` option to `1`
-in the MariaDB configuration file. This allows non-root users to create stored
-functions and triggers without requiring `SUPER` privileges, which are restricted
-when binary logging is enabled.
-
-!!! info "Activate temporarily extra privileges for non root users"
-
-    ```sql
-    MariaDB [(none)]> SET GLOBAL log_bin_trust_function_creators = 1;
-    MariaDB [(none)]> QUIT
-    ```
+Zabbix database, and ensures that the privileges are applied immediately.
 
 At this point, your Zabbix database is ready, and you can proceed with configuring
 the Zabbix server to connect to the database.
@@ -457,13 +470,7 @@ to the database server. By default, MariaDB listens on port 3306.
 
 !!! info "Add firewall rules"
 
-    Red Hat
-    ``` bash
-    firewall-cmd --add-service=mysql --permanent
-    firewall-cmd --reload
-    ```
-
-    SUSE
+    Red Hat / SUSE
     ``` bash
     firewall-cmd --add-service=mysql --permanent
     firewall-cmd --reload
@@ -474,21 +481,23 @@ to the database server. By default, MariaDB listens on port 3306.
     sudo ufw allow 3306/tcp
     ```
 
-This concludes our installation of the MariaDB
+This concludes our installation of the MariaDB. You can now proceed to [Preparing the Zabbix server](#preparing-the-server-for-zabbix).
 
 ---
 
 ### Installing the PostgreSQL database
 
-With the operating system updated, you are now ready to install the MariaDB 
-server and client packages. This will provide the necessary components to run 
-and manage your database.
+Alternatively to MariaDB/MySQL, you can choose to use PostgreSQL as the database backend for Zabbix.
+Similar to MariaDB, PostgreSQL can be installed using either the OS vendor-provided
+packages or the official PostgreSQL repositories.
+
+If you already have installed MariaDB in the previous section, you can skip this section.
 
 As of writing PostgreSQL 13-17 are supported by Zabbix. Check the Zabbix documentation
 for an up-to-date list of supported versions for your Zabbix version. Usually it's
 a good idea to go with the latest version that is supported by Zabbix. 
 
-???+ tip 'TimescaleDB extension'
+???+ tip "TimescaleDB extension"
 
     Zabbix also supports the extension TimescaleDB but due to its advanced nature, 
     we won't cover it in this chapter. Refer to [Partitioning PostgreSQL with TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md)
@@ -500,11 +509,10 @@ a good idea to go with the latest version that is supported by Zabbix.
     If you choose to install PostgreSQL from the OS vendor-provided packages,
     you will need to compile and install the TimescaleDB extension from source.
 
-???+ note 'PostgreSQL Official packages'
+???+ note "PostgreSQL Official packages"
 
     For the installation of the official PostgreSQL packages, you will need to follow the
-    distribution specific instructions at <https://www.postgresql.org/download>, select
-    Linux and then select your distribution.
+    distribution specific instructions at [https://www.postgresql.org/download/linux](https://www.postgresql.org/download/linux).
 
 To install the distribution default PostgreSQL server, execute the following 
 commands:
@@ -538,7 +546,7 @@ PostgreSQL handles access permissions differently from MySQL and MariaDB.
 PostgreSQL relies on a file called `pg_hba.conf` to manage who can access the database,
 from where, and what encryption method is allowed for authentication.
 
-???+ note
+???+ note "About pg_hba.conf"
 
     Client authentication in PostgreSQL is configured through the `pg_hba.conf`
     file, where "HBA" stands for Host-Based Authentication. This file specifies
@@ -567,9 +575,9 @@ Add the following lines, the order here is important.
 
 The result should look like :
 
-!!! info "pg_hba example"
+!!! example "pg_hba example"
 
-    ``` text
+    ```
     # "local" is for Unix domain socket connections only
     local    zabbix     zabbix-srv                                                              scram-sha-256
     local    all            all                                                                            peer
@@ -579,10 +587,10 @@ The result should look like :
     host     all            all                         127.0.0.1/32                            scram-sha-256
     ```
 
-After we changed the pg_hba file don't forget to restart postgres otherwise the settings
+After we changed the `pg_hba.conf` file don't forget to restart postgres otherwise the settings
 will not be applied. But before we restart, let us also edit the file `postgresql.conf`
 and allow our database to listen on our network interface for incoming connections
-from the zabbix server. Postgresql will standard only allow connections from the socket.
+from the Zabbix server. PostgreSQL will by default only allow connections from a unix socket.
 
 !!! info "Edit postgresql.conf file"
 
@@ -641,18 +649,20 @@ After making this change, restart the PostgreSQL service to apply the new settin
     sudo systemctl restart postgresql
     ```
 
-If the service fails to restart, review the `pg_hba.conf` file for any syntax errors,
-as incorrect entries here may prevent PostgreSQL from starting.
+???+ tip
+
+    If the service fails to restart, review the `pg_hba.conf` file for any syntax errors,
+    as incorrect entries here may prevent PostgreSQL from starting.
 
 Next, to prepare your PostgreSQL instance for Zabbix, you'll need to create the
-necessary database tables. Begin by installing the Zabbix repository, as you did
+necessary database tables. Start by installing the Zabbix repository, as you did
 for the Zabbix server. Then, install the appropriate Zabbix package that contains
 the predefined tables, images, icons, and other database elements needed for the
 Zabbix application.
 
 ---
 
-### Create the Zabbix database with PostgreSQL
+#### Creating the Zabbix database instance
 
 With the necessary packages installed, you are now ready to create the Zabbix 
 database and users for both the server and frontend.
@@ -908,7 +918,7 @@ file is also in permissive mode.
 From the Zabbix Download page [https://www.zabbix.com/download](https://www.zabbix.com/download),
 select the appropriate Zabbix version you wish to install. In this case, we will
 be using Zabbix 8.0 LTS. Additionally, ensure you choose the correct OS distribution
-for your environment, which will be Rocky Linux 9, openSUSE Leap 15. or Ubuntu 24.04 in our case.
+for your environment, which will be Rocky Linux 9, openSUSE Leap 16 or Ubuntu 24.04 in our case.
 
 We will be installing the Zabbix Server along with NGINX as the web server for
 the front-end. Make sure to download the relevant packages for your chosen configuration.
@@ -917,6 +927,10 @@ the front-end. Make sure to download the relevant packages for your chosen confi
 
 _1.2 Zabbix
 download_
+
+---
+
+#### Red Hat specific remarks
 
 If you make use of a RHEL based system like Rocky then the first step is to disable
 the Zabbix packages provided by the EPEL repository, if it's installed on your system.
@@ -940,6 +954,10 @@ to disable the EPEL repository by default:
     the following command during installations: dnf install --enablerepo=epel <package-name>
     This ensures that EPEL is only enabled when explicitly required.
 
+---
+
+#### OpenSUSE specific remarks
+
 On openSUSE, Zabbix packages are also available in the default `repo-oss` repository. 
 Unlike RHEL-based systems, openSUSE does not provide a built-in way to exclude
 specific packages from individual repositories. However, the Zabbix packages
@@ -947,15 +965,28 @@ included in the default repositories are typically one to two LTS versions behin
 the latest releases. As a result, they are unlikely to interfere with your
 installation unless they are already installed.
 
-In the next step, you will configure the official Zabbix repositories. As long
+In the next step, we will configure the official Zabbix repositories. As long
 as you select a Zabbix repository version newer than the packages available in 
 `repo-oss`, zypper will automatically install the most recent version.
-If you have already installed Zabbix packages from the default repositories, 
-it is recommended to either:
 
-  - Remove them before proceeding, or
-  - Upgrade them after adding the new Zabbix repositories, using the zypper 
-    option `--allow-vendor-change`.
+???+ tip
+
+    If you have already installed Zabbix packages from the default repositories, 
+    it is recommended to either:
+
+    - Remove them before proceeding, or
+    - Upgrade them after adding the new Zabbix repositories, using the zypper 
+      option `--allow-vendor-change`.
+
+???+ note "Suse Linux Enterprise Server (SLES)"
+
+    If you are using SLES, the Zabbix packages are not included in the default
+    repositories. Therefore, you can proceed to add the official Zabbix repository
+    without any concerns about conflicts with existing packages.
+
+---
+
+#### Adding the Zabbix repository
 
 Next, we will install the Zabbix repository on our operating system. After adding
 the Zabbix repository, it is recommended to perform a repository cleanup to remove
@@ -972,7 +1003,7 @@ by running:
 
     SUSE
     ``` bash
-    rpm -Uvh --nosignature https://repo.zabbix.com/zabbix/8.0/release/sles/15/noarch/zabbix-release-latest-8.0.sles15.noarch.rpm
+    rpm -Uvh --nosignature https://repo.zabbix.com/zabbix/8.0/release/sles/16/noarch/zabbix-release-latest-8.0.sles16.noarch.rpm
     zypper --gpg-auto-import-keys refresh 'Zabbix Official Repository'
     ```
 
@@ -985,7 +1016,7 @@ by running:
 
 This will refresh the repository metadata and prepare the system for Zabbix installation.
 
-???+ note
+???+ note "What is a repository?"
 
     A repository in Linux is a configuration that allows you to access and install
     software packages. You can think of it like an "app store" where you find and
@@ -1527,7 +1558,7 @@ check the log file for any messages. You can view the latest entries in the
 Look for messages indicating that the server has started successfully. If there
 are any issues, the log file will provide details to help with troubleshooting.
 
-!!! info "Example output"
+!!! example "Example output"
 
     ```
     12074:20250225:145333.529 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
@@ -1561,7 +1592,7 @@ are any issues, the log file will provide details to help with troubleshooting.
 If there was an error and the server was not able to connect to the database you
 would see something like this in the server log file :
 
-!!! info "Example log with errors"
+!!! example "Example log with errors"
 
     ```
     12068:20250225:145309.018 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
@@ -1580,6 +1611,9 @@ would see something like this in the server log file :
     12068:20250225:145309.027 [Z3005] query failed: [1146] Table 'zabbix.users' doesn't exist [select userid from users limit 1]
     12068:20250225:145309.027 cannot use database "zabbix": database is not a Zabbix database
     ```
+If that is the case, double-check your database connection settings in the
+`/etc/zabbix/zabbix_server.d/database.conf` file and ensure that the database
+is properly populated as described in the previous steps.
 
 Let's check the Zabbix server service to see if it's enabled so that it survives
 a reboot
@@ -1587,9 +1621,13 @@ a reboot
 !!! info "check status of zabbix-server service"
 
     ```bash
-    systemctl status zabbix-server
+    sudo systemctl status zabbix-server
     ```
-    ```
+
+???+ example "Example output"
+    ```shell-session
+    localhost:~> sudo systemctl status zabbix-server
+
     ● zabbix-server.service - Zabbix Server
          Loaded: loaded (/usr/lib/systemd/system/zabbix-server.service; enabled; preset: disabled)
          Active: active (running) since Tue 2025-02-25 14:53:33 CET; 26min ago
