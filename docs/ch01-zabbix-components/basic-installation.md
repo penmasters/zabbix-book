@@ -1642,7 +1642,9 @@ would see something like this in the server log file :
     ```
 If that is the case, double-check your database connection settings in the
 `/etc/zabbix/zabbix_server.d/database.conf` file and ensure that the database
-is properly populated as described in the previous steps.
+is properly populated as described in the previous steps. Also check firewall rules
+and when using PostgreSQL make sure that `pg_hba.conf` is correctly configured 
+to allow connections from the Zabbix server.
 
 Let's check the Zabbix server service to see if it's enabled so that it survives
 a reboot
@@ -1723,6 +1725,20 @@ and perform all subsequent steps on the server designated for the frontend.
     # or when using PostgreSQL
     zypper install zabbix-nginx-conf zabbix-web-pgsql php8-openssl php8-xmlreader php8-xmlwriter
     ```
+    ???+ note "Suse Linux Enterprise Server"
+
+        On SUSE Linux Enterprise Server (SLES), ensure you are subscribed to the
+        "SUSE Linux Enterprise Module Web and Scripting" repository to access
+        the necessary PHP 8 packages required for the Zabbix frontend installation:
+
+        ```bash
+        SUSEConnect -p sle-module-web-scripting/16/x86_64
+        ```
+        The actual URL for web scripting module may be different depending on particular service pack. Use the following command to determine the right one.
+        ```bash
+        SUSEConnect --list-extensions
+        ```
+
 
     Ubuntu
     ```bash
