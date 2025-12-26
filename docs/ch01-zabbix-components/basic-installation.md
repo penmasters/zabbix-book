@@ -1739,7 +1739,6 @@ and perform all subsequent steps on the server designated for the frontend.
         SUSEConnect --list-extensions
         ```
 
-
     Ubuntu
     ```bash
     # When using MySQL/MariaDB
@@ -1751,18 +1750,29 @@ and perform all subsequent steps on the server designated for the frontend.
 This command will install the front-end packages along with the required dependencies
 for Nginx. 
 
-As of SUSE 16, PHP-FPM is not allowed by SELinux to map exec memory or to connect
-to the Zabbix server. We need to tell SELinux to allow this:
+As of SUSE 16 SELinux is now the default security module instead of AppArmor.
+By default PHP-FPM is not allowed by SELinux on SUSE to 
+- map exec memory required for PHP JIT compilation,
+- connect to Zabbix server or
+- connect to the database server over TCP.
+We need to tell SELinux to allow all this:
     
 !!! info "SELinux: Allow PHP-FPM to map exec memory"
 
     ```bash
     setsebool -P httpd_execmem 1
     setsebool -P httpd_can_connect_zabbix 1
+    setsebool -P httpd_can_network_connect_db 1
     ```
+???+ tip
 
-Also on SUSE, PHP-FPM is by default not allowed by SystemD to write to the 
-`/etc/zabbix/web` directory. We need to create a drop-in file to allow this:
+    To troubleshoot SELinux issues, it is recommended to install the `setroubleshoot`
+    package which will log any SELinux denials in the system log and provide
+    suggestions on how to resolve them.
+
+Depending on your Linux distribution defaults, PHP-FPM may by default not be 
+allowed by SystemD to write to the `/etc/zabbix/web` directory required for the
+Zabbix frontend setup. To enable this we need to create a drop-in file to allow this:
 
 !!! info "SystemD: Allow PHP-FPM to write to /etc/zabbix/web"
 
@@ -1786,7 +1796,7 @@ Also on SUSE, PHP-FPM is by default not allowed by SystemD to write to the
     systemctl daemon-reload
     ```
 
-???+ note How is SystemD preventing PHP-FPM from writing to /etc/zabbix/web?
+???+ note "How is SystemD preventing PHP-FPM from writing to /etc/zabbix/web?"
 
     On many modern Linux distributions, SystemD employs a security feature known as
     sandboxing to restrict the capabilities of services. This is done to enhance
@@ -1795,6 +1805,12 @@ Also on SUSE, PHP-FPM is by default not allowed by SystemD to write to the
     including `/etc/zabbix/web`, to prevent potential security vulnerabilities.
     This is enforced through SystemD's `ProtectSystem` and `ReadWritePaths` directives, which
     control the file system access of services.
+
+???+ tip
+
+    Normaly write access to `/etc/zabbix/web` is only needed during the initial setup
+    of the Zabbix frontend. After the setup is complete you can remove the drop-in
+    file again to further harden the security of your system.
 
 First thing we have to do is alter the Nginx configuration file so that we don't
 use the standard config and serve the Zabbix frontend on port 80.
@@ -1898,7 +1914,7 @@ startup. Execute the following commands to enable and start them immediately:
 Let's verify if the service is properly started and enabled so that it survives
 our reboot next time.
 
-!!! info "check if the service is running"
+!!! info "Check if the service is running"
 
     ```bash
     sudo systemctl status nginx
@@ -1981,7 +1997,7 @@ choice_
 What if we want to install Chinese as language or another language from the list?
 Run the next command to get a list of all locales available for your OS.
 
-!!! info "install language packs"
+!!! info "Install language packs"
 
     Red Hat
     ```bash
@@ -2009,10 +2025,11 @@ is not found on the web server."``
     sudo systemctl restart nginx php8.3-fpm
     ```
 
-This will give you on Red Hat based systems a list like:
+This will give you a list like:
 
-!!! info ""
+???+ example "Example output"
 
+    Red Hat
     ```
     Installed Packages
     glibc-langpack-en.x86_64
@@ -2022,8 +2039,7 @@ This will give you on Red Hat based systems a list like:
     glibc-langpack-zu.x86_64
     ```
 
-!!! info "on SUSE it will look like :"
-
+    SUSE
     ```
     C.UTF-8
     aa_DJ.UTF-8
@@ -2035,8 +2051,7 @@ This will give you on Red Hat based systems a list like:
     zu_ZA.UTF-8
     ```
 
-!!! info "on Ubuntu it will look like :"
-
+    Ubuntu
     ```
     language-pack-kab - translation updates for language Kabyle
     language-pack-kab-base - translations for language Kabyle
@@ -2056,14 +2071,14 @@ the code starts with zh.
 !!! info "search for language pack"
 
     Red Hat
-    ```console
+    ```shell-session
     ~# dnf list glibc-langpack-* | grep zh
     glibc-langpack-zh.x86_64
     glibc-langpack-lzh.x86_64
     ```
 
     SUSE
-    ```console
+    ```shell-session
     ~> localectl list-locales | grep zh
     zh_CN.UTF-8
     zh_HK.UTF-8
@@ -2078,11 +2093,11 @@ the code starts with zh.
 
 On RedHat and Ubuntu, the command outputs two lines; however, given the identified language code,
 'zh_CN,' only the first package requires installation.
-on SUSE either only locales `C.UTF-8` and `en_US.UTF-8` are available or all
-available locales are available, depending on wether the package `glibc-locale`
+on SUSE either only locales `C.UTF-8` and `en_US.UTF-8` are install or all
+available locales are installed, depending on wether the package `glibc-locale`
 is installed or not. 
 
-!!! info "install the package"
+!!! info "Install the locale package"
 
     Red Hat
     ```bash
@@ -2142,8 +2157,10 @@ On the next page, you'll configure the database connection parameters:
 3. `Enter the Database Name`: Specify the name of your database. In our case, it
    is zabbix. If you are using PostgreSQL, you will also need to provide the schema
    name, which is zabbix_server in our case.
+4. `Enther the Database Schema`: Only for PostgreSQL users, enter the schema name
+   created for Zabbix server, which is `zabbix_server` in our case.
 4. `Enter the Database User`: Input the database user created for the web front-end,
-   remember in our basic installation guide we created 2 users zabbix-web and zabbix-srv.
+   remember in our basic installation guide we created 2 users `zabbix-web` and `zabbix-srv`.
    One for the frontend and the other one for our zabbix server so here we will use 
    the user `zabbix-web`. Enter the corresponding password for this user.
 
