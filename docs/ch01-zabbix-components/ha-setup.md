@@ -8,7 +8,7 @@ tags: [expert]
 # HA Setup
 
 In this section, we will set up Zabbix in a High Availability (HA) configuration.
-This feature, introduced in Zabbix 6, is a crucial enhancement that ensures continued
+This native feature, introduced in Zabbix 6, is a crucial enhancement that ensures continued
 monitoring even if a Zabbix server fails. With HA, when one Zabbix server goes down,
 another can take over seamlessly.
 
@@ -21,7 +21,12 @@ _1.1 HA
 Setup_
 
 It's important to note that Zabbix HA setup is straightforward, providing redundancy
-without complex features like load balancing.
+without complex features like load balancing. Only one node will be an active node, 
+all other nodes will be on standby. All standby Zabbix servers in the HA cluster will
+monitor the active node through heartbeats using the shared database. It does not
+require any additional clustering software or even firewall ports for the Zabbix
+server itself. However, for the frontend, we will use Keepalived to provide a 
+Virtual IP (VIP) for failover purposes.
 
 Just as in our basic configuration, we will document key details for the servers
 in this HA setup. Below is the list of servers and some place to add their
@@ -77,7 +82,7 @@ Do note that:
   is configured to allow connections from all Zabbix servers.
 - all Zabbix servers should use the same database name, user, and password
   to connect to the database.
-- all Zabbix servers should be of the same version.
+- all Zabbix servers should be of the same major version.
 
 When all Zabbix servers are installed and configured to access the database,
 we can proceed with the HA configuration.
