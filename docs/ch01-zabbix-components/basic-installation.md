@@ -1709,7 +1709,7 @@ for Nginx.
 As of SUSE 16, PHP-FPM is not allowed by SELinux to map exec memory or to connect
 to the Zabbix server. We need to tell SELinux to allow this:
     
-!!! info "Allow PHP-FPM to map exec memory on SUSE"
+!!! info "SELinux: Allow PHP-FPM to map exec memory"
 
     ```bash
     setsebool -P httpd_execmem 1
@@ -1719,12 +1719,14 @@ to the Zabbix server. We need to tell SELinux to allow this:
 Also on SUSE, PHP-FPM is by default not allowed by SystemD to write to the 
 `/etc/zabbix/web` directory. We need to create a drop-in file to allow this:
 
-!!! info "Allow PHP-FPM to write to /etc/zabbix/web on SUSE"
+!!! info "SystemD: Allow PHP-FPM to write to /etc/zabbix/web"
 
     ```bash
-    mkdir -p /etc/systemd/system/php-fpm.service.d/
-    vi /etc/systemd/system/php-fpm.service.d/zabbix-web.conf
+    systemctl edit php-fpm
     ```
+    
+    This will open an editor to create a drop-in file `/etc/systemd/system/php-fpm.service.d/override.conf`
+    which will override or extend the existing service file.
 
     Add the following lines to the file:
 
@@ -1733,11 +1735,21 @@ Also on SUSE, PHP-FPM is by default not allowed by SystemD to write to the
     ReadWritePaths=/etc/zabbix/web
     ```
 
-    Then reload the SystemD configuration:
+    Then exit the editor and reload the SystemD configuration:
 
     ```bash
     systemctl daemon-reload
     ```
+
+???+ note How is SystemD preventing PHP-FPM from writing to /etc/zabbix/web?
+
+    On many modern Linux distributions, SystemD employs a security feature known as
+    sandboxing to restrict the capabilities of services. This is done to enhance
+    security by limiting the access of services to only the resources they need to function.
+    By default, PHP-FPM may be restricted from writing to certain directories,
+    including `/etc/zabbix/web`, to prevent potential security vulnerabilities.
+    This is enforced through SystemD's `ProtectSystem` and `ReadWritePaths` directives, which
+    control the file system access of services.
 
 First thing we have to do is alter the Nginx configuration file so that we don't
 use the standard config and serve the Zabbix frontend on port 80.
