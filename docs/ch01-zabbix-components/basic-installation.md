@@ -1364,10 +1364,16 @@ Next we will execute the SQL file to populate the database. Open a `psql` shell:
     psql -d zabbix -U zabbix-srv
     ```
 
-???+ warning
+???+ warning "Ensure correct search_path is set"
 
-    Make sure you performed previous steps as outlined in (Create the Zabbix database with PostgreSQL)[#create_the_zabbix_database_with_postgresql]
+    Make sure you performed previous steps as outlined in [Creating the Zabbix database instance with PostgreSQL](#creating-the-zabbix-database-instance_1)
     carefully so that you have set the correct `search_path`.
+
+    If you did not set the default `search_path` for the `zabbix-srv` user,
+    ensure you set it manually in the current session before proceeding:
+    ```psql
+    zabbix=> SET search_path TO "zabbix_server";
+    ```
 
 Now run the following commands:
 
