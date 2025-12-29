@@ -164,16 +164,13 @@ available:
     - **Manual version management:** Users must proactively monitor and upgrade 
       to new major versions to ensure continued security and bug fix coverage.
 
-In this chapter we will concentrate on the OS vendor-provided packages but we will
-point you to the instructions on how to use the official database-vendor packages
-if you want to use those.
-
 ???+ warning "Database version compatibility"
 
-    Always ensure that your chosen database version is compatible with your Zabbix version
-    to avoid potential integration issues. Check the [Zabbix documentation](https://www.zabbix.com/documentation/current/en/manual/installation/requirements#required-software) for the 
-    latest supported versions.
-
+    Whether you plan to use the OS vendor-provided packages or the official 
+    database-vendor packages, ensure that the database version is supported
+    by your Zabbix version to avoid potential integration issues. 
+    Check the [Zabbix documentation](https://www.zabbix.com/documentation/current/en/manual/installation/requirements#required-software)
+    for the latest supported versions.
 
 Before installing the database software, ensure that the server(s)
 meet the configuration requirements outlined in the previous section: 
@@ -187,19 +184,14 @@ In this section we will install the MariaDB server and -client packages. This wi
 provide the necessary components to run and manage MariaDB as your Zabbix database backend.
 
 If you prefer to use PostgreSQL as your database backend, you can skip this section 
-and proceed to the PostgreSQL installation section.
+and proceed to the [_Installing the PostgreSQL Database_](#installing-the-postgresql-database) section.
 
 ???+ tip "MySQL/Percona"
     If you prefer to use MySQL or Percona instead of MariaDB, the installation 
-    steps are very similar. Generally, you would replace `mariadb` with `mysql` 
-    in the package names and commands.
+    and configuration steps are very similar. Generally, you would replace 
+    `mariadb` with `mysql` in the package names and commands.
 
-???+ note "MariaDB Official packages"
-
-    For the installation of the official MariaDB packages, you will need to follow the
-    distribution specific instructions at [https://mariadb.org/download/?t=repo-config](https://mariadb.org/download/?t=repo-config)
-    to configure the MariaDB repository and to install the MariaDB-server and -client
-    package.
+#### Installing MariaDB Server and Client from OS Vendor-Provided Packages
 
 To install the distribution default MariaDB server and client, execute the 
 following command:
@@ -223,12 +215,140 @@ following command:
 
 This command will download and install both the server and client packages, enabling
 you to set up, configure, and interact with your MariaDB database. Once the
-installation is complete, you can proceed to start and configure the MariaDB service.
+installation is complete, you can proceed to the [_Starting the MariaDB database_](#starting-the-mariadb-database) section.
+
+---
+
+#### Installing MariaDB Server and Client from Official MariaDB Repositories
+
+If you prefer to install MariaDB from the official MariaDB repositories instead
+of the OS vendor-provided packages, the first step is to add the MariaDB repository
+to your system.
+
+---
+
+##### Adding the MariaDB Repository
+To create the MariaDB repository file, execute the following command in your terminal:
+
+!!! info "Define the MariaDB repository"
+
+    Red Hat
+    ``` bash
+    vi /etc/yum.repos.d/mariadb.repo
+    ```
+
+    SUSE
+    ``` bash
+    sudo vi /etc/zypp/repos.d/mariadb.repo
+    ```
+
+    Ubuntu
+    ``` bash
+    sudo apt install apt-transport-https curl
+    sudo mkdir -p /etc/apt/keyrings
+    sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+
+    sudo vi /etc/apt/sources.list.d/mariadb.sources
+    ```
+
+This will open a text editor where you can input the repository configuration details.
+Once the repository is configured, you can proceed with the installation of MariaDB
+using your package manager.
+
+The latest config can be found here: [https://mariadb.org/download/?t=repo-config](https://mariadb.org/download/?t=repo-config)
+
+Here's an example configuration for MariaDB 11.4 repositories:
+
+!!! example "Mariadb repository configuration"
+
+    Red Hat
+    ```ini
+    # MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-02-21 10:15 UTC
+    # https://mariadb.org/download/
+    [mariadb]
+    name = MariaDB
+    # rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+    # baseurl = https://rpm.mariadb.org/11.4/rhel/$releasever/$basearch
+    baseurl = https://mirror.bouwhuis.network/mariadb/yum/11.4/rhel/$releasever/$basearch
+    # gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+    gpgkey = https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
+    gpgcheck = 1
+    ```
+
+    SUSE
+    ```ini
+    # MariaDB 11.4 openSUSE repository list - created 2025-12-29 14:34 UTC
+    # https://mariadb.org/download/
+    [mariadb]
+    name = MariaDB
+    # rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+    # baseurl = https://rpm.mariadb.org/11.4/opensuse/$releasever/$basearch
+    # baseurl = https://rpm.mariadb.org/11.4/opensuse/$releasever/$basearch
+    baseurl = https://mirror.bouwhuis.network/mariadb/yum/11.4/opensuse/$releasever/$basearch
+    # gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+    gpgkey = https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
+    gpgcheck = 1
+    ```
+
+    Ubuntu
+    ```  yaml
+    # MariaDB 11.4 repository list - created 2025-02-21 11:42 UTC
+    # https://mariadb.org/download/
+    X-Repolib-Name: MariaDB
+    Types: deb
+    # deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+    # URIs: https://deb.mariadb.org/11.4/ubuntu
+    URIs: https://mirror.bouwhuis.network/mariadb/repo/11.4/ubuntu
+    Suites: noble
+    Components: main main/debug
+    Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+    ```
+
+After saving the file, ensure that everything is properly set up and that your
+prefered MariaDB version is compatible with your Zabbix version to avoid potential
+integration issues.
+
+---
+
+##### Installing MariaDB Server and Client
+
+With the MariaDB repository configured, you are now ready to install the MariaDB
+server and client packages. This will provide the necessary components to run
+and manage your database.
+
+To install the MariaDB server and client, execute the following command:
+
+!!! info "Install MariaDB from official repository"
+
+    Red Hat
+    ```bash
+    dnf install MariaDB-server
+    ```
+
+    SUSE
+    ```bash
+    sudo rpm --import https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
+    sudo zypper install MariaDB-server MariaDB-client
+    ```
+
+
+    Ubuntu
+    ```bash
+    sudo apt install mariadb-server
+    ```
+
+This command will download and install both the server and client packages, enabling
+you to set up, configure, and interact with your MariaDB database. Once the
+installation is complete, you can proceed to the [_Starting the MariaDB database_](#starting-the-mariadb-database) section.
+
+---
+
+#### Starting the MariaDB Database
 
 Now that MariaDB is installed, we need to enable the service to start automatically
 upon boot and start it immediately. Use the following command to accomplish this:
 
-!!! info "Enable mariadb service"
+!!! info "Enable MariaDB service"
 
     ```bash
     sudo systemctl enable mariadb --now
@@ -294,6 +414,8 @@ is active and running:
     ```
 
 This confirms that your MariaDB server is up and running, ready for further configuration.
+
+---
 
 #### Securing the MariaDB Database
 
@@ -501,7 +623,7 @@ a good idea to go with the latest version that is supported by Zabbix.
 ???+ tip "TimescaleDB extension"
 
     Zabbix also supports the extension TimescaleDB but due to its advanced nature, 
-    we won't cover it in this chapter. Refer to [Partitioning PostgreSQL with TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md)
+    we won't cover it in this chapter. Refer to [_Partitioning PostgreSQL with TimescaleDB_](../ch13-advanced-security/partitioning-postgresql-database.md)
     for detailed instructions on that topic. 
 
     Do note that if you want to use TimescaleDB RPM packages provided
@@ -510,10 +632,9 @@ a good idea to go with the latest version that is supported by Zabbix.
     If you choose to install PostgreSQL from the OS vendor-provided packages,
     you will need to compile and install the TimescaleDB extension from source.
 
-???+ note "PostgreSQL Official packages"
+---
 
-    For the installation of the official PostgreSQL packages, you will need to follow the
-    distribution specific instructions at [https://www.postgresql.org/download/linux](https://www.postgresql.org/download/linux).
+#### Installing PostgreSQL Server and Client from OS Vendor-Provided Packages
 
 To install the distribution default PostgreSQL server, execute the following 
 commands:
@@ -522,27 +643,250 @@ commands:
 
     Red Hat
     ``` bash
-    # Install Postgres server:
-    dnf install postgresql17-server
-
-    # Initialize the database and enable automatic start:
-    /usr/pgsql-17/bin/postgresql-17-setup initdb
-    systemctl enable postgresql-17 --now
+    dnf install postgresql-server postgresql-client	postgresql-contrib
     ```
 
     SUSE
     ``` bash
-    # Install Postgres server:
-    zypper install postgresql17-server
-
-    # Initialize the database and enable automatic start:
-    systemctl enable postgresql --now
+    zypper install postgresql-server postgresql postgresql-contrib
     ```
 
     Ubuntu
     ``` bash
-    sudo apt install postgresql-17
+    sudo apt install postgresql postgresql-client postgresql-contrib
     ```
+
+This command will download and install both the server and client packages, enabling
+you to set up, configure, and interact with your PostgreSQL database.
+
+!!! warning "Database initialization required on Red Hat"
+
+    Due to policies for Red Hat family distributions, the PostgreSQL service
+    does not initialize an empty database required for PostgreSQL to function.
+    So for Red Hat we need to initialize an empty database before continuing:
+
+    Red Hat
+    ```bash
+    postgresql-setup --initdb --unit postgresql
+    ```
+
+    On SUSE and Ubuntu the OS provided SystemD service will automatically initialize
+    an empty database on first startup.
+
+Once the installation is complete, you can proceed to the [_Starting the PostgreSQL Database_](#starting-the-postgresql-database) section.
+
+---
+
+#### Installing PostgreSQL from Official PostgreSQL Repositories
+
+If you prefer to install PostgreSQL from the official PostgreSQL repositories instead
+of the OS vendor-provided packages, the first step is to add the PostgreSQL repository
+to your system.
+
+---
+
+##### Adding the PostgreSQL Repository
+
+Set up the PostgreSQL repository with the following commands:
+
+Check [https://www.postgresql.org/download/linux/](https://www.postgresql.org/download/linux/)
+for more information.
+
+!!! info "Add PostgreSQL repo"
+
+    Red Hat
+    ```bash
+    # Install the repository RPM:
+    dnf install https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+
+    # Disable the built-in PostgreSQL module:
+    dnf -qy module disable postgresql
+    ```
+
+    SUSE
+    ```bash
+    # Import the repository signing key:
+    rpm --import https://zypp.postgresql.org/keys/PGDG-RPM-GPG-KEY-SLES16
+
+    # Install the repository RPM:
+    zypper install https://download.postgresql.org/pub/repos/zypp/reporpms/SLES-16-x86_64/pgdg-suse-repo-latest.noarch.rpm
+
+    # Update the package lists:
+    zypper refresh
+    ```
+
+    !!! warning "openSUSE Leap"
+    
+        Since the official PostgreSQL packages are specificaly built for use on 
+        SUSE Linux Enterprise Server (SLES), you will get an error trying to install the
+        repository on openSUSE Leap. We can however safely ignore this problem by
+        choosing to "break the package by ignoring some of its dependencies" as
+        long as you match the SLES version with your openSUSE version:
+
+        ```
+        Problem: 1: nothing provides 'sles-release' needed by the to be installed pgdg-suse-repo-42.0-48PGDG.noarch
+         Solution 1: do not install pgdg-suse-repo-42.0-48PGDG.noarch
+         Solution 2: break pgdg-suse-repo-42.0-48PGDG.noarch by ignoring some of its dependencies
+
+        Choose from above solutions by number or cancel [1/2/c/d/?] (c): 2
+        ```
+
+    ???+ note "Suse Linux Enterprise Server"
+
+        On SUSE Linux Enterprise Server (SLES), ensure you are subscribed to the
+        "SUSE Package Hub extension" repository to access necessary dependency
+        packages required for the Official PostgreSQL installation. On SLES 15
+        you will also need the "Desktop Applications Module":
+
+        ```bash
+        # On SLES 16
+        suseconnect -p PackageHub/16.0/x86_64
+
+        # On SLES 15
+        SUSEConnect -p sle-module-desktop-applications/15.7/x86_64
+        SUSEConnect -p PackageHub/15.7/x86_64
+        ```
+
+    Ubuntu
+    ```bash
+    # Import the repository signing key:
+    sudo apt install curl ca-certificates
+    sudo install -d /usr/share/postgresql-common/pgdg
+    sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+    # Create the repository configuration file:
+    sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+    # Update the package lists:
+    sudo apt update
+    ```
+
+---
+
+##### Installing the PostgreSQL Server and Client
+
+With the PostgreSQL repositories configured, you are now ready to install the PostgreSQL
+server and client packages. This will provide the necessary components to run
+and manage your database.
+
+!!! info "Install PostgreSQL from official repositories"
+
+    Red Hat
+    ```bash
+    # Install Postgres server:
+    dnf install postgresql17 postgresql17-server postgresql17-contrib
+    ```
+
+    SUSE
+    ```bash
+    zypper install postgresql17 postgresql17-server postgresql17-contrib
+    ```
+
+    Ubuntu
+    ```bash
+    sudo apt install postgresql-17 postgresql-client-17
+    ```
+
+This command will download and install both the server and client packages, enabling
+you to set up, configure, and interact with your PostgreSQL database. 
+
+Next, before we can start the PostgreSQL server we need to initialize a new
+empty database:
+
+!!! info "Initialize empty PostgreSQL database"
+
+    ```
+    sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
+    ```
+
+Once the installation is complete, you can proceed to the [Starting the PostgreSQL Database](#starting-the-postgresql-database) section.
+
+---
+
+#### Starting the PostgreSQL Database
+
+Now that PostgreSQL is installed, we need to enable the service to start automatically
+upon boot as well as start it immediately. Use the following command to accomplish this:
+
+!!! info "Enable and start PostgreSQL service"
+
+    for OS-provided packages
+    ```bash
+    sudo systemctl enable postgresql --now
+    ```
+
+    for official PostgreSQL packages:
+    ```bash
+    sudo systemctl enable postgresql-17 --now
+    ```
+
+This command will both enable and start the PostgreSQL service.
+With the service now up and running, you can verify that the installation
+was successful by checking the version of PostgreSQL using the following command:
+
+!!! info "Check PostgreSQL version"
+
+    ```bash
+    psql -V
+    ```
+
+The expected output should resemble this:
+
+???+ example "PostgreSQL version example"
+
+    ```shell-session
+    localhost:~ $ psql -V
+    psql (PostgreSQL) 17.7
+    ```
+
+To ensure that the PostgreSQL service is running properly, you can check its status
+with the following command:
+
+!!! info "Get PostgreSQL status"
+
+    for OS-provided packages
+    ```bash
+    sudo systemctl status postgresql
+    ```
+
+    for official PostgreSQL packages:
+    ```bash
+    sudo systemctl status postgresql-17
+    ```
+
+You should see an output similar to this, indicating that the PostgreSQL service
+is active and running:
+
+???+ example "PostgreSQL service status example"
+
+    ```shell-session
+    localhost:~ $ sudo systemctl status postgresql-17
+    ● postgresql-17.service - PostgreSQL 17 database server
+        Loaded: loaded (/usr/lib/systemd/system/postgresql-17.service; enabled; preset: disabled)
+        Active: active (running) since Mon 2025-12-29 17:24:07 CET; 6s ago
+    Invocation: 43ba47dfee5b415db223e3452c3cfacc
+        Docs: https://www.postgresql.org/docs/17/static/
+        Process: 11131 ExecStartPre=/usr/pgsql-17/bin/postgresql-17-check-db-dir ${PGDATA} (code=exited, status=0/SUCCESS)
+    Main PID: 11137 (postgres)
+        Tasks: 7 (limit: 4672)
+            CPU: 471ms
+        CGroup: /system.slice/postgresql-17.service
+                ├─11137 /usr/pgsql-17/bin/postgres -D /var/lib/pgsql/17/data/
+                ├─11138 "postgres: logger "
+                ├─11139 "postgres: checkpointer "
+                ├─11140 "postgres: background writer "
+                ├─11142 "postgres: walwriter "
+                ├─11143 "postgres: autovacuum launcher "
+                └─11144 "postgres: logical replication launcher "
+
+    Dec 29 17:24:07 localhost.localdomain systemd[1]: Starting PostgreSQL 17 database server...
+    Dec 29 17:24:07 localhost.localdomain postgres[11137]: 2025-12-29 17:24:07.650 CET [11137] LOG:  redirecting log output to logging co>
+    Dec 29 17:24:07 localhost.localdomain postgres[11137]: 2025-12-29 17:24:07.650 CET [11137] HINT:  Future log output will appear in di>
+    Dec 29 17:24:07 localhost.localdomain systemd[1]: Started PostgreSQL 17 database server.
+    ```
+
+This confirms that your PostgreSQL server is up and running, ready for further configuration.
+
 ---
 
 #### Securing the PostgreSQL database
@@ -563,24 +907,37 @@ Add the following lines, the order here is important.
 
 !!! info "Edit the pg_hba file"
 
-    Red hat
+    Red Hat / SUSE
     ``` bash
-    vi /var/lib/pgsql/17/data/pg_hba.conf
-    ```
-
-    SUSE
-    ``` bash
+    # for OS-provided packages
     vi /var/lib/pgsql/data/pg_hba.conf
+
+    # for official packages
+    vi /var/lib/pgsql/17/data/pg_hba.conf
     ```
 
     Ubuntu
     ``` bash
+    # for OS-provided packages
+    sudo vi /etc/postgresql/current/main/pg_hba.conf
+
+    # for official packages
     sudo vi /etc/postgresql/17/main/pg_hba.conf
     ```
 
-The result should look like :
+!!! warning "Location of pg_hba file"
 
-!!! example "pg_hba example"
+    If you don't find the `pg_hba.conf` and `postgres.conf` files in the above 
+    mentioned location you can ask PostgreSQL itself for the location using
+    this command (provided that PostgreSQL is currently running):
+
+    ```bash
+    sudo -u postgres psql -t -c 'show hba_file';
+    ```
+
+The resulting pg_hba file should look like :
+
+!!! example "Pg_hba example"
 
     ```
     # "local" is for Unix domain socket connections only
@@ -610,18 +967,21 @@ from the Zabbix server. PostgreSQL will by default only allow connections from a
 
 !!! info "Edit postgresql.conf file"
 
-    Red Hat
+    Red Hat / SUSE
     ```bash
-    vi /var/lib/pgsql/17/data/postgresql.conf
-    ```
-
-    SUSE
-    ```bash
+    # for OS-provided packages
     vi /var/lib/pgsql/data/postgresql.conf
+
+    # for official packages
+    vi /var/lib/pgsql/17/data/postgresql.conf
     ```
 
     Ubuntu
     ``` bash
+    # for OS-provided packages
+    sudo vi /etc/postgresql/current/main/postgresql.conf
+
+    # for official packages
     sudo vi /etc/postgresql/17/main/postgresql.conf
     ```
 
@@ -649,27 +1009,22 @@ and replace it with:
 
 After making this change, restart the PostgreSQL service to apply the new settings:
 
-!!! info "restart the DB server"
+!!! info "Restart the DB server"
 
-    Red Hat
-    ``` bash
-    systemctl restart postgresql-17
-    ```
-    SUSE
-    ``` bash
-    systemctl restart postgresql
-    ```
-
-    Ubuntu
+    for OS-provided packages
     ``` bash
     sudo systemctl restart postgresql
+    ```
+
+    for official packages
+    ```bash
+    sudo systemctl restart postgresql-17
     ```
 
 ???+ tip
 
     If the service fails to restart, review the `pg_hba.conf` file for any syntax errors,
     as incorrect entries here may prevent PostgreSQL from starting.
-
 
 ---
 
@@ -684,7 +1039,7 @@ To administer the database, you will need to execute commands as the `postgres` 
 
 First, create the Zabbix server database user (also referred to as a "role" in PostgreSQL):
 
-!!! info "create server users"
+!!! info "Create server users"
 
     ```bash
     sudo -u postgres createuser --pwprompt zabbix-srv
@@ -1736,13 +2091,14 @@ and perform all subsequent steps on the server designated for the frontend.
         On SUSE Linux Enterprise Server (SLES), ensure you are subscribed to the
         "SUSE Linux Enterprise Module Web and Scripting" repository to access
         the necessary PHP 8 packages required for the Zabbix frontend installation:
+        (on SLES versions < 16, the command is "`SUSEConnect`" instead of "`suseconnect`")
 
         ```bash
-        SUSEConnect -p sle-module-web-scripting/16/x86_64
+        suseconnect -p sle-module-web-scripting/16/x86_64
         ```
         The actual URL for web scripting module may be different depending on particular service pack. Use the following command to determine the right one.
         ```bash
-        SUSEConnect --list-extensions
+        suseconnect --list-extensions
         ```
 
     Ubuntu
@@ -2254,6 +2610,8 @@ Now that your Zabbix environment is up and running, let’s take it to the next 
 
 ## Useful URLs
 
+- <https://en.opensuse.org/SDB:PostgreSQL>
+- <https://help.ubuntu.com/community/PostgreSQL>
 - <https://www.postgresql.org/docs/current/ddl-priv.html>
 - <https://www.zabbix.com/download>
 - <https://www.zabbix.com/documentation/current/en/manual>
