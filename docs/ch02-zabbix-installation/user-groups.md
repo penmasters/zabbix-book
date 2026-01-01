@@ -132,6 +132,7 @@ tags, the user will see it.
 ???+ example "Example: Database Administrator Filter"
     To ensure a Database Administrator group only sees relevant issues, the problem
     tag filter would be configured to specify:
+
     - **Tag name:** `service`
     - **Value:** `mysql`
     
