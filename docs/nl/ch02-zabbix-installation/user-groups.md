@@ -5,7 +5,7 @@ description: |
 tags: [beginner]
 ---
 
-# User Groups
+# Gebruikersgroepen
 
 In elk bedrijfsmonitoringplatform is het instellen van **rolgebaseerde
 toegangscontrole (RBAC)** van cruciaal belang voor het handhaven van zowel de
@@ -363,7 +363,7 @@ This table outlines the combined, **effective rights** for the user
 | **`HG_Critical_Databases`** | Read-only                          | Deny                                | **Deny**                 | Access is **Blocked** (host is hidden). |
 
 
-## Conclusion
+## Conclusie
 
 Because test_junior belongs to a group that explicitly denies access to the
 Critical Databases, the host is hidden entirely, proving that Deny Always Wins
