@@ -36,6 +36,9 @@ para as comunidades de monitoramento e de código aberto.
   [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
 - Giedrius Stasiulionis :
   [https://github.com/b1nary1](https://github.com/b1nary1)
+- Leonardo Cardoso:
+  [https://github.com/leocardosoo](https://github.com/leocardosoo)
+- Robin Roevens: [https://github.com/RobinR1](https://github.com/RobinR1)
 
 Uma lista de todos os colaboradores que tiveram a gentileza de corrigir erros de
 digitação etc. pode ser encontrada aqui:

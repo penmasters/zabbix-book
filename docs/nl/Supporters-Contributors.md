@@ -36,6 +36,9 @@ open-source gemeenschappen.
   [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
 - Giedrius Stasiulionis :
   [https://github.com/b1nary1](https://github.com/b1nary1)
+- Leonardo Cardoso:
+  [https://github.com/leocardosoo](https://github.com/leocardosoo)
+- Robin Roevens: [https://github.com/RobinR1](https://github.com/RobinR1)
 
 Een lijst van alle medewerkers die zo vriendelijk waren om typefouten etc. te
 corrigeren kan hier gevonden worden :

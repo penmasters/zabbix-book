@@ -36,6 +36,9 @@ resource into something valuable for the monitoring and open-source communities.
   [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
 - Giedrius Stasiulionis :
   [https://github.com/b1nary1](https://github.com/b1nary1)
+- Leonardo Cardoso:
+  [https://github.com/leocardosoo](https://github.com/leocardosoo)
+- Robin Roevens: [https://github.com/RobinR1](https://github.com/RobinR1)
 
 A list of all the contributors who where so kind to fix typos etc .. can be
 found here :
