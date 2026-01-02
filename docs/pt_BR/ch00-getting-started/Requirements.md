@@ -35,7 +35,7 @@ simplificar, anote os detalhes do servidor:
 | Servidor de banco de dados |             |
 | Servidor Web               |             |
 
-???+ dica
+???+ tip
 
     Zabbix package names often use dashes (`-`) in their names, such as `zabbix-get`
     or `zabbix-sender`, but the binaries themselves may use underscores (`_`),
@@ -127,7 +127,7 @@ To update your system, run the following command based on your OS:
 
     Do note that package names may also vary from distribution to distribution.
 
-???+ dica
+???+ tip
 
     Regularly updating your system is crucial for security and performance.
     Consider setting up automatic updates or scheduling regular maintenance windows
