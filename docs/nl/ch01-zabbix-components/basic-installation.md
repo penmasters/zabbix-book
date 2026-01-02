@@ -7,10 +7,10 @@ tags: [beginner]
 
 # Basisinstallatie
 
-In this chapter, we will walk through the process of installing the Zabbix
-server. There are many different ways to setup a Zabbix server. We will cover
-the most common setups with MariaDB and PostgreSQL on RHEL- and SLES-based
-distro's and Ubuntu.
+In dit hoofdstuk doorlopen we het installatieproces van de Zabbix server. Er
+zijn veel verschillende manieren om een Zabbix server op te zetten. We
+behandelen de meest voorkomende opstellingen met MariaDB en PostgreSQL op RHEL-
+en SLES-gebaseerde distro's en Ubuntu.
 
 Voordat je begint met de installatie, is het belangrijk om de architectuur van
 Zabbix te begrijpen. De Zabbix server is modulair opgebouwd en bestaat uit drie
@@ -2624,7 +2624,7 @@ for additional guidance and best practices.
     is disabled. It is possible that it will block access to certain files or even
     the database.
 
-## Conclusion
+## Conclusie
 
 With this, we conclude our journey through setting up Zabbix and configuring it
 with MySQL or PostgreSQL on RHEL or SUSE-based systems or Ubuntu. We have walked
