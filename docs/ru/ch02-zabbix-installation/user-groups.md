@@ -18,6 +18,8 @@ entities. This chapter details the function of user groups, guides you through
 their configuration, and outlines best practices for applying them in a robust,
 real world deployment.
 
+---
+
 ## The Role of a User Group
 
 A **User Group** in Zabbix is a logical collection of individual user accounts.
@@ -131,12 +133,16 @@ When a user is a member of multiple groups, the tag filters apply with **OR
 logic**. If any of the user's groups allows visibility of a specific problem
 based on its tags, the user will see it.
 
-???+ info "Example: Database Administrator Filter" To ensure a Database
+???+ example "Example: Database Administrator Filter" To ensure a Database
 Administrator group only sees relevant issues, the problem tag filter would be
-configured to specify: - **Tag name:** `service` - **Value:** `mysql`
+configured to specify:
+
+    - **Tag name:** `service`
+    - **Value:** `mysql`
 
     This ensures the user only sees problems tagged with `service:mysql` on the
     host groups they have permission to view.
+
 ---
 
 ### Template Permissions — Frontend Behavior and Editing Limitations
@@ -381,6 +387,5 @@ user can see and configure (via host/template permissions).
 
 ## Useful URLs
 
-- https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/usergroup
-- https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions
-
+- <https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/usergroup>
+- <https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions>
