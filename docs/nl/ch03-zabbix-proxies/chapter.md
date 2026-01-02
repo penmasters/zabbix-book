@@ -8,11 +8,11 @@ description: |
 
 # Proxy's en de webservicescomponent
 
-Proxies are often regarded as an advanced topic in Zabbix, but in reality, they
-are a fundamental part of many installations and one of the first components we
-set up for numerous customers. In this chapter, we'll make proxies the third
-subject we cover, encouraging you to consider them from the very beginning of
-your Zabbix journey.
+Proxies worden vaak beschouwd als een geavanceerd onderwerp in Zabbix, maar in
+werkelijkheid zijn ze een fundamenteel onderdeel van veel installaties en een
+van de eerste componenten die we instellen voor veel klanten. In dit hoofdstuk
+maken we van proxies het derde onderwerp dat we behandelen en moedigen we je aan
+om er vanaf het begin van je Zabbix-reis rekening mee te houden.
 
 We'll start with a basic proxy setup, providing straightforward steps to get you
 up and running quickly. Then, we'll take a deep dive into the mechanics of
