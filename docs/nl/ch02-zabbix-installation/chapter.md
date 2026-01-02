@@ -1,15 +1,15 @@
-# Getting started with the Zabbix installation
+# Aan de slag met de Zabbix installatie
 
-We begin this chapter with a **deep dive into the Zabbix frontend**, the central
-hub where all monitoring and configuration tasks come together. Alongside the
-basic introduction to navigating the frontend, this chapter also covers **user
-and group setup**, focusing on creating a secure and efficient user management
-system.
+We beginnen dit hoofdstuk met een **diepgaande duik in de Zabbix frontend**, de
+centrale hub waar alle monitoring en configuratietaken samenkomen. Naast de
+basisintroductie in het navigeren door de frontend, behandelt dit hoofdstuk ook
+**het instellen van gebruikers en groepen**, gericht op het creëren van een
+veilig en efficiënt gebruikersbeheersysteem.
 
-We'll walk through setting up **internal authentication** with best practices
-for security, including **dual-factor authentication**. For those needing
-advanced integration, we'll explore options like **SAML, LDAP**, and other
-external authentication methods.
+We lopen door het opzetten van **interne authenticatie** met best practices voor
+beveiliging, waaronder **dual-factor authenticatie**. Voor degenen die
+geavanceerde integratie nodig hebben, verkennen we opties zoals **SAML, LDAP**
+en andere externe verificatiemethoden.
 
 This chapter strikes a balance between a straightforward overview “this is the
 frontend” and a more in depth look at the **advanced choices** you can make to
