@@ -57,17 +57,18 @@ servergegevens:
 
 ## Basis OS-configuratie
 
-Operating systems, so many choices, each with its own advantages and loyal user
-base. While Zabbix can be installed on a wide range of platforms, documenting
-the process for every available OS would be impractical. To keep this book
-focused and efficient, we have chosen to cover only the most widely used
-options: Ubuntu, Red Hat and Suse based distributions.
+Besturingssystemen, zoveel keuzes, elk met zijn eigen voordelen en trouwe
+gebruikers. Hoewel Zabbix op een groot aantal platformen geïnstalleerd kan
+worden, zou het onpraktisch zijn om het proces voor elk beschikbaar
+besturingssysteem te documenteren. Om dit boek doelgericht en efficiënt te
+houden, hebben we ervoor gekozen om alleen de meest gebruikte opties te
+behandelen: Ubuntu en Red Hat gebaseerde distributies.
 
-Since not everyone has access to a Red Hat Enterprise Linux (RHEL) or a SUSE
-Linux Enterprise Server (SLES) subscription even though a developer account
-provides limited access we have opted for Rocky Linux respectively openSUSE Leap
-as a readily available alternative. For this book, we will be using Rocky Linux
-9.x, openSUSE Leap 16 and Ubuntu LTS 24.04.x.
+Omdat niet iedereen toegang heeft tot een Red Hat Enterprise Linux (RHEL) of een
+SUSE Linux Enterprise Server (SLES) abonnement, ook al biedt een
+ontwikkelaarsaccount beperkte toegang, hebben we gekozen voor Rocky Linux
+respectievelijk openSUSE Leap als een gemakkelijk beschikbaar alternatief. Voor
+dit boek gebruiken we Rocky Linux 9.x, openSUSE Leap 16 en Ubuntu LTS 24.04.x.
 
 - <https://rockylinux.org/>
 - <https://opensuse.org/>
@@ -80,25 +81,27 @@ as a readily available alternative. For this book, we will be using Rocky Linux
     installing graphical user interfaces (GUIs) or desktop environments, as they are
     unnecessary for server setups and consume valuable resources.
 
-Once you have your preferred OS installed, there are a few essential
-configurations to perform before proceeding with the Zabbix installation.
-Perform the following steps on **all** the servers that will host Zabbix
-components (i.e., Zabbix server, database server, and web server).
+Zodra je het OS van je voorkeur hebt geïnstalleerd, zijn er een paar essentiële
+configuraties die je moet uitvoeren voordat je verder gaat met de installatie
+van Zabbix. Voer de volgende stappen uit op **alle** de servers die Zabbix
+componenten zullen hosten (d.w.z., Zabbix server, database server en webserver).
 
 ---
 
-### Update the System
+### Het systeem bijwerken
 
-Before installing the Zabbix components, or any new software, it's a best
-practice to ensure your operating system is up-to-date with the latest patches
-and security fixes. This will help maintain system stability and compatibility
-with the software you're about to install. Even if your OS installation is
-recent, it's still advisable to run an update to ensure you have the latest
-packages.
+Voordat je de Zabbix componenten of andere nieuwe software installeert, is het
+verstandig om ervoor te zorgen dat je besturingssysteem up-to-date is met de
+laatste patches en beveiligingsfixes. Dit zal helpen om de stabiliteit van het
+systeem en de compatibiliteit met de software die je gaat installeren te
+behouden. Zelfs als je OS-installatie recent is, is het nog steeds aan te raden
+om een update uit te voeren om er zeker van te zijn dat je de nieuwste pakketten
+hebt.
 
-To update your system, run the following command based on your OS:
+Om je systeem bij te werken, voer je de volgende opdracht uit op basis van je
+OS:
 
-!!! info "Update your system"
+Info "Werk uw systeem bij
 
     Red Hat
     ```bash
@@ -116,7 +119,7 @@ To update your system, run the following command based on your OS:
     sudo apt update
     sudo apt upgrade
     ```
-???+ note "What is apt, dnf or zypper"
+???+ note "Wat is apt, dnf of zypper?"
 
     - DNF (Dandified YUM) is a package manager used in recent Red Hat-based systems (invoked as `dnf`).
     - ZYpp (Zen / YaST Packages Patches Patterns Products) is the package manager 
@@ -138,20 +141,22 @@ To update your system, run the following command based on your OS:
 
 ### Sudo
 
-By default the Zabbix processes like the Zabbix server and agent run under their
-own unprivileged user accounts (e.g., `zabbix`). However, there are scenarios
-where elevated privileges are required, such as executing custom scripts or
-commands that need root access. Also throughout this book, we will perform
-certain administrative tasks that require `sudo` on the system.
+Standaard draaien de Zabbix processen zoals de Zabbix server en agent onder hun
+eigen ongeprivilegieerde gebruikersaccounts (bijvoorbeeld `zabbix`). Er zijn
+echter scenario's waarbij verhoogde rechten nodig zijn, zoals het uitvoeren van
+aangepaste scripts of commando's waarvoor root-toegang nodig is. Ook zullen we
+door dit boek heen bepaalde administratieve taken uitvoeren waarvoor `sudo` op
+het systeem nodig is.
 
-Usually, `sudo` is already present on most systems, but when you performed a
-minimal installation of your OS, it might be missing. Therefore we need to
-ensure it's installed.
+Meestal is `sudo` al aanwezig op de meeste systemen, maar wanneer je een
+minimale installatie van je OS hebt uitgevoerd, kan het ontbreken. Daarom moeten
+we ervoor zorgen dat het geïnstalleerd is.
 
-This will also allow the Zabbix user to execute specific configured commands
-with elevated privileges without needing to switch to the root user entirely.
+Dit zal de Zabbix gebruiker ook toelaten om specifieke geconfigureerde
+commando's uit te voeren met verhoogde rechten zonder volledig te moeten
+overschakelen naar de root gebruiker.
 
-!!! info "What is sudo"
+!!! info "Wat is sudo"
 
     `sudo` (short for "superuser do") is a command-line utility that allows
     permitted users to execute commands with the security privileges of another
@@ -159,9 +164,9 @@ with elevated privileges without needing to switch to the root user entirely.
     operating systems to perform administrative tasks without needing to log in
     as the root user.
 
-To install `sudo`, run the following command based on your OS:
+Om `sudo` te installeren, voer het volgende commando uit op basis van je OS:
 
-!!! info "Install sudo"
+!!! info "sudo installeren"
 
     Red Hat
     ```bash
@@ -178,9 +183,9 @@ To install `sudo`, run the following command based on your OS:
     On Ubuntu, `sudo` is normally installed by default. Root access is managed
     through `sudo` for the initial user created during installation.
 
-If `sudo` is already installed, these commands will inform you that the latest
-version is already present and no further action is needed. If not, the package
-manager will proceed to install it.
+Als `sudo` al geïnstalleerd is, zullen deze commando's je informeren dat de
+laatste versie al aanwezig is en dat er geen verdere actie nodig is. Zo niet,
+dan zal de pakketbeheerder doorgaan met de installatie.
 
 ---
 
@@ -383,8 +388,8 @@ kunt selecteren die het dichtst bij je locatie ligt. Bijvoorbeeld:
     UTC
     ```
 
-Zodra je je tijdzone hebt geïdentificeerd, configureer je deze met het volgende
-commando:
+Zodra je de tijdzone hebt geïdentificeerd, kun je deze configureren met het
+volgende commando:
 
 !!! info "Tijdzone instellen"
 
