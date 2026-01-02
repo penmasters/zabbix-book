@@ -193,22 +193,24 @@ _2.9 Informations sur le système_
 | Scripts globaux sur le serveur Zabbix                     | Cela nous informe que les scripts globaux sont activés ou désactivés dans la configuration du serveur.                                                                                                                   | Les scripts globaux peuvent être utilisés dans le frontend, les actions, ... mais doivent être activés au préalable.                                                                                                                                                                                                                                              |
 | Cluster haute disponibilité                               | It will show us if Zabbix HA cluster is disabled or not                                                                                                                                                                  | Failover delay once HA is activated                                                                                                                                                                                                                                                                                                                               |
 
-???+ note
+???+ note "Enabling Global script execution"
 
-    `Global script` execution on Zabbix server can be enabled by going to the
-    zabbix server configuration file and setting `EnableGlobalScripts=1`. For new
-    installations, since Zabbix 7.0, global script execution on Zabbix server is
+    `Global script` execution on Zabbix server can be enabled by setting 
+    `EnableGlobalScripts=1` in the Zabbix server configuration at `/etc/zabbix/zabbix_server.d/`.
+    For new installations, since Zabbix 7.0, global script execution is
     disabled by default.
 
-???+ Tip
+???+ tip
 
-     System information may display some additional warnings like when your database
-     doesn't have the correct character set or collation UTF-8.
-     Also when the database you used is lower or higher then the recommended version
-     or when there are misconfigurations on housekeeper or TimescaleDB.
-     Another warning you can see is about database history tables that aren't
-     upgraded or primary keys that have not been set. This is possible if you are
-     coming from an older version before Zabbix 6 and never did the upgrade.
+    System information may display some additional warnings like:
+
+    - when your database doesn't have the correct character set or collation UTF-8.
+    - when the database you used is lower or higher then the recommended version or
+    - when there are misconfigurations on housekeeper or TimescaleDB.
+
+    Another warning you can see is about database history tables that aren't
+    upgraded or primary keys that have not been set. This is possible if you are
+    coming from an older version before Zabbix 6 and never did the upgrade.
 
 ---
 
@@ -376,14 +378,14 @@ _2.18 Administration menu_
 
     More information can be found in the online Zabbix documentation [here](https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections)
 
-???+ info
+???+ tip Movable modal forms
 
-    You will see that Zabbix is using the modal forms in the frontend on many places.
+    You will see that Zabbix is using modal forms in the frontend on many places.
     The problem is that they are not movable. [This](https://github.com/gr8b/zabbix-module-uitwix/)
     module created by one of the Zabbix developers `UI Twix` will solve this problem
     for you.
 
-???+ Note
+???+ warning
 
     At time of writing there is no Dashboard import/export functionality in zabbix.
     So when upgrading dashboards it needs to be created by hand. It was on the roadmap
@@ -431,8 +433,6 @@ mechanisms, and advanced monitoring workflows in the chapters that follow.
 
 ## URL utiles
 
-- https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards
-
-- https://blog.zabbix.com/handy-tips-6-organize-your-dashboards-and-create-slideshows-with-dashboard-pages/17511/
-
-- https://blog.zabbix.com/interactive-dashboard-creation-for-large-organizations-and-msps/30132/
+- <https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards>
+- <https://blog.zabbix.com/handy-tips-6-organize-your-dashboards-and-create-slideshows-with-dashboard-pages/17511/>
+- <https://blog.zabbix.com/interactive-dashboard-creation-for-large-organizations-and-msps/30132/>
