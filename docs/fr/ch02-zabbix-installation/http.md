@@ -23,12 +23,6 @@ de Zabbix WebUI.
 Un serveur HTTP dispose d'un fichier contenant des informations d'identification
 utilisées pour authentifier les utilisateurs.
 
-???+ note
-
-    IMPORTANT: usernames configured for basic authentication in HTTP server
-    must exit in Zabbix. But only passwords configured in HTTP server are used
-    for users authentication.
-
 Voyons d'abord comment configurer l'authentification de base dans le serveur
 HTTP.
 
@@ -38,98 +32,142 @@ HTTP.
     basic authentication. Please refer to respective HTTP server documentation
     for more details
 
-## Authentification de base dans Nginx
+## Basic authentication
 
-Trouvez le bloc `location / {` dans les fichiers de configuration de Nginx, qui
-définit votre WebUI Zabbix (ie : `/etc/nginx/conf.d/nginx.conf` file) et ajoutez
-ces deux lignes :
+To enable basic authentication, we first need a "password-file" containing all
+usernames and passwords that are allowed to access the frontend.
 
-```
-    location / {
-        ...
-        auth_basic "Basic Auth Protected Site";
-        auth_basic_user_file /etc/nginx/httpauth;
-    }
-```
+!!! warning "Important"
+
+    Usernames configured for basic authentication in HTTP server
+    must exist in Zabbix. But only passwords configured in HTTP server are used
+    for users authentication.
+
+To create this file we need the command `htpasswd`. Execute following commands
+to ensure we have this utility:
+
+!!! info "Install htpasswd utility"
+
+    Red Hat
+    ```bash
+    dnf install httpd-utils
+    ```
+
+    SUSE
+    ```bash
+    zypper install apache2-utils
+    ```
+
+    Ubuntu
+    ```bash
+    sudo apt install apache2-utils
+    ``` 
+
+Next we will create the required file and the `Admin` user in it:
+
+!!! info
+
+    NGINX
+    ```bash
+    sudo htpasswd -c /etc/nginx/httpauth Admin
+    ```
+
+    Apache on Red Hat
+    ```bash
+    sudo htpasswd -c /etc/httpd/.htpasswd Admin
+    ```
+
+    Apache on SUSE / Ubuntu
+    ```bash
+    sudo htpasswd -c /etc/apache2/.htpasswd Admin
+    ```
+
+This command will request you to input the desired password for the `Admin` user
+and will then create the specified password-file with the username and encrypted
+password in it.
+
+For any additional user we can use the same command but without the `-c` option
+as the file is now already created:
+
+???+ example "Add additional users"
+
+    ```shell-session
+    localhost:~> sudo htpasswd /etc/nginx/httpauth user1
+    New password: 
+    Re-type new password: 
+    Adding password for user user1
+    ```
+
+Which will add `user1` to the `/etc/nginx/httpauth`-file. Replace this path with
+the path of this file on your distribution/webserver.
+
+In the end the password-file should look something like:
+
+???+ example "Example password-file"
+
+    ```shell-session
+    localhost:~> sudo cat /etc/nginx/httpauth
+    Admin:$1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
+    user1:$1$GXoDIOCA$u/n1kkDeFwcI4KhyHkY6p/
+    ```
+
+Now that we have a password-file, we can continue to configure the web-browser
+to actually perform basic authentication, using this file.
+
+### Configure authentication file on Nginx
+
+Find `location / {` block in Nginx configuration file that defines your Zabbix
+WebUI (if you followed the installation steps as described in earlier chapters,
+this should be in `/etc/nginx/conf.d/zabbix.conf`) and add these two lines:
+
+!!! info
+
+    ```
+        location / {
+            ...
+            auth_basic "Basic Auth Protected Site";
+            auth_basic_user_file /etc/nginx/httpauth;
+        }
+    ```
 
 N'oubliez pas de redémarrer le service Nginx après avoir effectué cette
 modification.
 
-Ensuite, vous devez créer `/etc/nginx/httpauth` un fichier qui contiendra les
-mots de passe de tous les utilisateurs (assurez-vous de restreindre l'accès à ce
-fichier). Le format de ce fichier est `nom_utilisateur :mot_de_passe_haché`, par
-exemple, pour les utilisateurs `Admin` et `test` :
-
-```
-Admin:$1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
-test:$1$GXoDIOCA$u/n1kkDeFwcI4KhyHkY6p/
-```
-
-Pour générer un mot de passe haché, vous pouvez utiliser l'outil `openssl` en
-entrant le mot de passe deux fois :
-```
-openssl passwd
-Password:
-Verifying - Password:
-$1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
-```
-
-## Authentification de base dans Apache HTTPD
+## Configure authentication file on Apache HTTPD
 
 Trouvez le bloc `<Directory "/usr/share/zabbix">` dans le fichier de
 configuration Apache HTTP, il définit votre WebUI Zabbix (ie :
 `/etc/zabbix/apache.conf`) et ajoutez ces lignes :
 
-???+ note La configuration par défaut est `Require all granted`, supprimez cette
-ligne.
+???+ note
 
-Pour Ubuntu/Debian :
-```
-    <Directory "/usr/share/zabbix">
-        ...
-        AuthType Basic
-        AuthName "Restricted Content"
-        AuthUserFile /etc/apache2/.htpasswd
-        Require valid-user
-    </Directory>
-```
+    By default configuration has `Require all granted`, remove this line.
 
-Pour RedHat :
-```
-    <Directory "/usr/share/zabbix">
-        ...
-        AuthType Basic
-        AuthName "Restricted Content"
-        AuthUserFile /etc/httpd/.htpasswd
-        Require valid-user
-    </Directory>
-```
+???+ example
 
-N'oubliez pas de redémarrer le service apache2 après avoir effectué cette
-modification.
+    RedHat:
+    ```
+        <Directory "/usr/share/zabbix">
+            ...
+            AuthType Basic
+            AuthName "Restricted Content"
+            AuthUserFile /etc/httpd/.htpasswd
+            Require valid-user
+        </Directory>
+    ```
 
-Créez le fichier `/etc/apache2/.httpasswd` (`/etc/httpd/.htpassword` pour
-RedHat) qui contiendra tous les utilisateurs avec leurs mots de passe, en
-utilisant l'outil `htpasswd`, pour ajouter l'utilisateur `test` exécuter :
+    Ubuntu / SUSE
+    ```
+        <Directory "/usr/share/zabbix">
+            ...
+            AuthType Basic
+            AuthName "Restricted Content"
+            AuthUserFile /etc/apache2/.htpasswd
+            Require valid-user
+        </Directory>
+    ```
 
-Pour Ubuntu/Debian
-```
-sudo htpasswd -c /etc/apache2/.htpasswd test
-New password: 
-Re-type new password: 
-Adding password for user test
-```
-
-Pour RedHat
-```
-sudo htpasswd -c /etc/httpd/.htpasswd test
-New password: 
-Re-type new password: 
-Adding password for user test
-```
-
-Pour ajouter d'autres utilisateurs au fichier, répétez la commande sans l'option
-`-c`.
+Do not forget to restart apache2 or httpd service after making this change.
 
 ## Configuration de Zabbix pour l'authentification HTTP
 
@@ -195,6 +233,8 @@ de Zabbix, vous pouvez obtenir des flux de travail de connexion des utilisateurs
 transparents et sécurisés qui combinent la facilité d'utilisation frontale avec
 des mesures de protection robustes.
 
+---
+
 ## Questions
 
 - Quel est l'avantage de l'authentification HTTP (basée sur le serveur web) par
@@ -229,4 +269,4 @@ des mesures de protection robustes.
 
 ## URL utiles
 
-[https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http)
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http)
