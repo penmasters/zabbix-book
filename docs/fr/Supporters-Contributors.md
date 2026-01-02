@@ -14,7 +14,7 @@ contributions nous ont permis de maintenir un contenu de haute qualité, de
 soutenir des initiatives open-source et de veiller à ce que ce livre reste
 accessible au plus grand nombre.
 
-- **OICTS**: [https://oicts.com/](https://oicts.com/)
+- **OICTS** : [https ://oicts.com/](https://oicts.com/)
 - **ZABBIX** : [https://www.zabbix.com/](https://www.zabbix.com/)
 
 ---
