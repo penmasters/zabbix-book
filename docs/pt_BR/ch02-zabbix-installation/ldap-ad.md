@@ -47,31 +47,73 @@ now let's take a look at how to configure LDAP authentication.
 
 ## Configure LDAP
 
+In this section, we will be using a custom demo LDAP server with pre-loaded
+data. You can set this demo environment up to check out the Zabbix LDAP
+authentication possibilities. Or you can skip the setup of the demo environment
+if you just want to connect your Zabbix instance to your existing LDAP or AD
+server.
+
+### Set up local demo LDAP server
+
 We believe that it is better to learn this topic by example so we'll be using
-our own LDAP server that you can spin up in a container by executing:
+our own LDAP server that you can spin up in a container for demo purposes. First
+we will need to ensure that we have a container engine installed.
 
-```
-# Install docker if you don't have it
-# For Ubuntu
-apt install docker-ce
+!!! info "Install Podman container engine"
 
-# Start LDAP server container with pre-loaded data
-docker run -p 3389:389 -p 6636:636 --name openldap-server --detach bgmot42/openldap-server:0.1.1
-```
+Red Hat
+  ```bash
+  dnf install podman
+  ```
 
-All users (including `ldap_search`) in this test LDAP server for simplicity have
-the word `password` as their passwords.
+SUSE
+  ```bash
+  zypper install podman
+  ```
+
+Ubuntu
+  ```bash
+  sudo apt install podman
+  ```
+
+???+ note "What is Podman"
+
+Podman is a container engine designed as a drop-in replacement for Docker, but
+with a daemonless architecture. This means it runs containers directly under the
+user’s control, improving security and simplicity. Podman is fully compatible
+with Docker’s CLI and supports rootless containers, making it ideal for
+development, testing, and production environments where security and isolation
+are priorities.
+
+???+ tip
+
+If you want to use Docker instead of Podman, you can just replace any occurances
+of `podman` in following instructions by `docker`.
+
+Now we can start containers. Start an OpenLDAP server in a container:
+
+!!! info "Start an OpenLDAP server in a container with pre-loaded data"
+
+  ```bash
+  podman run -p 3389:389 -p 6636:636 --name openldap-server --detach bgmot42/openldap-server:0.1.1
+  ```
+
+For simplicity, all users (including `ldap_search`) in this test LDAP server
+have the word `password` as their passwords.
 
 Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
 `user3` is a member of `zabbix-users` LDAP group.
 
-???+ Optional
+???+ tip Tip: use phpLdapAdmin as an LDAP GUI
 
     To visually see LDAP server data (and add your own configuration like users
-    and groups) you can start this standard container
-    `docker run -p 8081:80 -p 4443:443 --name phpldapadmin --hostname phpldapadmin\
-    --link openldap-server:ldap-host --env PHPLDAPADMIN_LDAP_HOSTS=ldap-host\
-    --detach osixia/phpldapadmin:0.9.0`
+    and groups) you can start this standard container:
+
+    ```bash
+    podman run -p 8081:80 -p 4443:443 --name phpldapadmin --hostname phpldapadmin\
+      --link openldap-server:ldap-host --env PHPLDAPADMIN_LDAP_HOSTS=ldap-host\
+      --detach osixia/phpldapadmin:0.9.0
+    ```
     Now you can access this LDAP server via https://<ip_address>:4443 (or any
     other port you configure to access this Docker container), click Login,
     enter “cn=admin,dc=example,dc=org” in Login DN field and “password” in
@@ -81,6 +123,8 @@ Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
     ![LDAP server data](ch02.4-ldap-ldap-server-data.png){ align=center }
 
     _2.4 LDAP server data_
+
+### Configure Zabbix LDAP authentication
 
 Let's configure LDAP server settings in Zabbix. In Zabbix menu select `Users |
 Authentication | LDAP settings`, then check the check-box `Enable LDAP
@@ -107,9 +151,9 @@ LDAP data hierarchy where all your users are configured. In our case all the
 users configured “under” _ou=Users,dc=example,dc=org_, this DN is called base DN
 and used by Zabbix as so to say “starting point” to start searching.
 
-???+ Note
+???+ warning "Anonymous LDAP binding"
 
-    technically it is possible to bind to LDAP server anonymously, without
+    Technically it is possible to bind to the LDAP server anonymously, without
     providing a password but this is a huge breach in security as the whole
     users sub-tree becomes available for anonymous (unauthenticated) search,
     i.e. effectively exposed to any LDAP client that can connect to LDAP server
@@ -120,7 +164,7 @@ Click `Test` button and enter `user1` and `password` in the respective fields,
 the test should be successful confirming Zabbix can authenticate users against
 LDAP server.
 
-???+ Note
+???+ tip
 
     We can add multiple LDAP servers and use them for different `User groups`.
 
@@ -359,4 +403,4 @@ strategy.
 
 ## Useful URLs
 
-[https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap)
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap)
