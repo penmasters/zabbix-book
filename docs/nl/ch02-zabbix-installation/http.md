@@ -31,7 +31,7 @@ gebruikers te authenticeren.
 Laten we eerst eens kijken hoe we basisauthenticatie kunnen configureren in HTTP
 server.
 
-Waarschuwing
+???+ warning
 
     The examples below provide just minimum set of options to configure
     basic authentication. Please refer to respective HTTP server documentation
