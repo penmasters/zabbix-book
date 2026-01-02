@@ -7,12 +7,12 @@ description: |
 tags: [beginner]
 ---
 
-# Host Groups
+# Host groepen
 
-In Zabbix, **host groups** serve as a foundational mechanism for organizing
-monitored entities. They allow you to logically categorize hosts for easier
-management, simplified permissions, and streamlined configuration, especially
-useful in larger environments.
+In Zabbix dienen **hostgroepen** als een fundamenteel mechanisme voor het
+organiseren van gemonitorde entiteiten. Ze stellen je in staat om hosts logisch
+te categoriseren voor eenvoudiger beheer, vereenvoudigde rechten en
+gestroomlijnde configuratie, vooral handig in grotere omgevingen.
 
 Common examples include:
 
@@ -136,7 +136,7 @@ This is especially useful for user groups. For example:
     You can even try adding **emojis** to group names for a fun visual touch! 🎉
     For example: `🌍 Europe/🇧🇪 Belgium` or `📦 Containers/Docker`.
 
-## Conclusion
+## Conclusie
 
 Host groups are a key organizational tool in Zabbix. With the introduction of
 **template groups**, clearer group separation, and support for **nested
