@@ -8,11 +8,11 @@ description: |
 tags: [beginner]
 ---
 
-# Proxy basics
+# Proxy grondbeginselen
 
-In this chapter we will cover the basic needs for our proxies. We won't pay
-attention to active or passive proxies yet this is something we cover later in
-the next chapters.
+In dit hoofdstuk behandelen we de basisbehoeften voor onze proxies. We zullen
+geen aandacht besteden aan actieve of passieve proxies, maar dit is iets wat we
+later in de volgende hoofdstukken behandelen.
 
 ## Proxy requirements
 
