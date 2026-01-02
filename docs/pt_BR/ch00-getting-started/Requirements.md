@@ -42,9 +42,10 @@ simplificar, anote os detalhes do servidor:
     like `zabbix_sender` or `zabbix_server`. This naming discrepancy can sometimes
     be confusing, particularly if you are using packages from non-official Zabbix
     repositories.
+
     Always check if a binary uses a dash or an underscore when troubleshooting.
 
-???+ nota
+???+ warning
 
     Starting from Zabbix 7.2, only MySQL (including its forks) and PostgreSQL are
     supported as back-end databases. Earlier versions of Zabbix also included support
@@ -55,124 +56,227 @@ simplificar, anote os detalhes do servidor:
 
 ## Configuração básica do sistema operacional
 
-Sistemas operacionais, tantas opções, cada uma com suas próprias vantagens e
-base de usuários fiéis. Embora o Zabbix possa ser instalado em uma ampla gama de
-plataformas, documentar o processo para cada sistema operacional disponível
-seria impraticável. Para manter este livro focado e eficiente, optamos por
-abordar apenas as opções mais usadas: As distribuições baseadas no Ubuntu e no
-Red Hat.
+Operating systems, so many choices, each with its own advantages and loyal user
+base. While Zabbix can be installed on a wide range of platforms, documenting
+the process for every available OS would be impractical. To keep this book
+focused and efficient, we have chosen to cover only the most widely used
+options: Ubuntu, Red Hat and Suse based distributions.
 
-Como nem todo mundo tem acesso a uma assinatura do Red Hat Enterprise Linux
-(RHEL), mesmo que uma conta de desenvolvedor forneça acesso limitado, optamos
-pelo Rocky Linux como uma alternativa prontamente disponível. Para este livro,
-usaremos o Rocky Linux 9.x e o Ubuntu LTS 24.04.x.
+Since not everyone has access to a Red Hat Enterprise Linux (RHEL) or a SUSE
+Linux Enterprise Server (SLES) subscription even though a developer account
+provides limited access we have opted for Rocky Linux respectively openSUSE Leap
+as a readily available alternative. For this book, we will be using Rocky Linux
+9.x, openSUSE Leap 16 and Ubuntu LTS 24.04.x.
 
 - <https://rockylinux.org/>
+- <https://opensuse.org/>
 - <https://ubuntu.com/>
+
+???+ note
+
+    OS installation steps are outside the scope of this book, but a default or even a
+    minimal installation of your preferred OS should be sufficient. Please refrain from
+    installing graphical user interfaces (GUIs) or desktop environments, as they are
+    unnecessary for server setups and consume valuable resources.
+
+Once you have your preferred OS installed, there are a few essential
+configurations to perform before proceeding with the Zabbix installation.
+Perform the following steps on **all** the servers that will host Zabbix
+components (i.e., Zabbix server, database server, and web server).
+
+---
+
+### Update the System
+
+Before installing the Zabbix components, or any new software, it's a best
+practice to ensure your operating system is up-to-date with the latest patches
+and security fixes. This will help maintain system stability and compatibility
+with the software you're about to install. Even if your OS installation is
+recent, it's still advisable to run an update to ensure you have the latest
+packages.
+
+To update your system, run the following command based on your OS:
+
+!!! info "Update your system"
+
+    Red Hat
+    ```bash
+    dnf update
+    ```
+
+    SUSE
+    ```bash
+    zypper refresh
+    zypper update
+    ```
+
+    Ubuntu
+    ```bash
+    sudo apt update
+    sudo apt upgrade
+    ```
+???+ note "What is apt, dnf or zypper"
+
+    - DNF (Dandified YUM) is a package manager used in recent Red Hat-based systems (invoked as `dnf`).
+    - ZYpp (Zen / YaST Packages Patches Patterns Products) is the package manager 
+    used on SUSE-based systems (invoked as `zypper`) and 
+    - APT (Advanced Package Tool) is the package manager used on Debian/Ubuntu-based systems (invoked as `apt`). 
+
+    If you're using another distribution, replace `dnf`/`zypper`/`apt` with your appropriate 
+    package manager, such as `yum`, `pacman`, `emerge`, `apk` or ... .
+
+    Do note that package names may also vary from distribution to distribution.
+
+???+ dica
+
+    Regularly updating your system is crucial for security and performance.
+    Consider setting up automatic updates or scheduling regular maintenance windows
+    to keep your systems current.
+
+---
+
+### Sudo
+
+By default the Zabbix processes like the Zabbix server and agent run under their
+own unprivileged user accounts (e.g., `zabbix`). However, there are scenarios
+where elevated privileges are required, such as executing custom scripts or
+commands that need root access. Also throughout this book, we will perform
+certain administrative tasks that require `sudo` on the system.
+
+Usually, `sudo` is already present on most systems, but when you performed a
+minimal installation of your OS, it might be missing. Therefore we need to
+ensure it's installed.
+
+This will also allow the Zabbix user to execute specific configured commands
+with elevated privileges without needing to switch to the root user entirely.
+
+!!! info "What is sudo"
+
+    `sudo` (short for "superuser do") is a command-line utility that allows
+    permitted users to execute commands with the security privileges of another
+    user, typically the superuser (root). It is commonly used in Unix-like
+    operating systems to perform administrative tasks without needing to log in
+    as the root user.
+
+To install `sudo`, run the following command based on your OS:
+
+!!! info "Install sudo"
+
+    Red Hat
+    ```bash
+    dnf install sudo
+    ```
+
+    SUSE
+    ```bash
+    zypper install sudo
+    ```
+
+    Ubuntu
+
+    On Ubuntu, `sudo` is normally installed by default. Root access is managed
+    through `sudo` for the initial user created during installation.
+
+If `sudo` is already installed, these commands will inform you that the latest
+version is already present and no further action is needed. If not, the package
+manager will proceed to install it.
+
+---
 
 ### Firewall
 
-Antes de instalar o Zabbix, é essencial preparar adequadamente o sistema
-operacional. A primeira etapa é garantir que o firewall esteja instalado e
-configurado.
+Next, we need to ensure that the firewall is installed and configured. A
+firewall is a crucial security component that helps protect your server from
+unauthorized access and potential threats by controlling incoming and outgoing
+network traffic based on predetermined security rules.
 
 Para instalar e ativar o firewall, execute o seguinte comando:
 
 !!! info "Instalar e ativar o firewall"
 
     Red Hat
-    ```yaml
+    ```bash
     dnf install firewalld
+    systemctl enable firewalld --now
+    ```
+    SUSE
+    ```bash
+    zypper install firewalld
     systemctl enable firewalld --now
     ```
 
     Ubuntu
-    ```yaml
+    ```bash
     sudo apt install ufw
     sudo ufw enable
     ```
+???+ note "What is firewalld / ufw"
 
-Depois de instalado, você pode configurar as portas necessárias. Para o Zabbix,
-precisamos permitir o acesso à porta `10051/tcp`, que é onde o coletor do Zabbix
-escuta os dados recebidos. Use o seguinte comando para abrir essa porta no
-firewall:
-
-!!! info "Permitir acesso ao Zabbix trapper"
-
-    Red Hat
-    ```yaml
-    firewall-cmd --add-service=zabbix-server --permanent
-    ```
-
-    Ubuntu
-    ```yaml
-    sudo ufw allow 10051/tcp
-    ```
-
-Se o serviço não for reconhecido, você poderá especificar manualmente a porta:
-
-!!! info "Adicionar porta em vez do nome do serviço"
-
-    ```yaml
-    firewall-cmd --add-port=10051/tcp --permanent
-    ```
-
-???+ nota
-
-    "Firewalld is the replacement for iptables in RHEL-based systems and allows
+    Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
     changes to take effect immediately without needing to restart the service.
     If your distribution does not use [Firewalld](https://www.firewalld.org),
-    refer to your OS documentation for the appropriate firewall configuration steps."
-    Ubuntu makes use of UFW and is merely a frontend for iptables.
+    refer to your OS documentation for the appropriate firewall configuration steps.
+    Ubuntu makes use of UFW which is merely a frontend for iptables.
 
-Uma abordagem alternativa é definir zonas de firewall dedicadas para casos de
-uso específicos. Por exemplo...
+During the Zabbix installation in the next chapters, we will need to open
+specific ports in the firewall to allow communication between Zabbix components.
 
-!!! info "Criar uma zona firewalld"
+Alternatively to just opening ports, as we will do in the next chapters, you can
+also choose to define dedicated firewall zones for specific use cases. This
+approach enhances security by isolating services and restricting access based on
+trust levels. For example...
 
-    ```yaml
-    firewall-cmd --new-zone=postgresql-access --permanent
+!!! example "Create a firewalld zone for database access"
+
+    ```bash
+    firewall-cmd --new-zone=db_zone --permanent
     ```
 
 Você pode confirmar a criação da zona executando o seguinte comando:
 
-!!! info "Verificar a criação da zona"
+!!! example "Verify the zone creation"
 
-    ```yaml
-    firewall-cmd --get-zones
+    ```shell-session
+    localhost:~ # firewall-cmd --get-zones
+    block dmz drop external home internal nm-shared db_zone public trusted work
     ```
 
-Bloquear a DMZ e descartar todo o tráfego proveniente de redes externas,
-permitindo apenas o acesso interno por meio das redes home, internal, nm-shared,
-postgresql-access, public, trusted e work.
-
-O uso de zonas no firewalld para configurar regras de firewall para o PostgreSQL
-oferece várias vantagens em termos de segurança, flexibilidade e facilidade de
-gerenciamento. Veja por que as zonas são vantajosas:
+Using zones in firewalld to configure firewall rules provides several advantages
+in terms of security, flexibility, and ease of management. Here’s why zones are
+beneficial:
 
 - **Controle de acesso granular :**
-  - As zonas firewalld permitem diferentes níveis de confiança para diferentes
-    interfaces de rede e intervalos de IP. Você pode definir quais sistemas têm
-    permissão para se conectar ao PostgreSQL com base em seu nível de confiança.
+
+: Firewalld zones allow different levels of trust for different network
+interfaces and IP ranges. You can define which systems are allowed to connect to
+PostgreSQL based on their trust level.
+
 - **Gerenciamento simplificado de regras:**
-  - Em vez de definir manualmente regras complexas do iptables, as zonas
-    oferecem uma maneira organizada de agrupar e gerenciar regras de firewall
-    com base em cenários de uso.
+
+: Instead of manually defining complex iptables rules, zones provide an
+organized way to group and manage firewall rules based on usage scenarios.
+
 - **Segurança aprimorada:**
-  - Ao restringir o acesso do PostgreSQL a uma zona específica, você evita
-    conexões não autorizadas de outras interfaces ou redes.
+
+: By restricting application access to a specific zone, you prevent unauthorized
+connections from other interfaces or networks.
+
 - **Configuração dinâmica:**
-  - O firewalld suporta configurações de regras permanentes e em tempo de
-    execução, permitindo alterações sem interromper as conexões existentes.
+
+: Firewalld supports runtime and permanent rule configurations, allowing changes
+without disrupting existing connections.
+
 - **Suporte a várias interfaces:**
-  - Se o servidor tiver várias interfaces de rede, as zonas permitirão políticas
-    de segurança diferentes para cada interface.
 
-Juntando tudo, ficaria assim:
+: If the server has multiple network interfaces, zones allow different security
+policies for each interface.
 
-!!! info "Firewalld com configuração de zona"
+Bringing everything together to add a zone for, in this example, PostgreSQL it
+would look like this:
 
-    ```yaml
+!!! example "Firewalld with zone config for PostgreSQL database access"
+
+    ```bash
     firewall-cmd --new-zone=db_zone --permanent
     firewall-cmd --zone=db_zone --add-service=postgresql --permanent
     firewall-cmd --zone=db_zone --add-source=xxx.xxx.xxx.xxx/32 --permanent
@@ -181,6 +285,9 @@ Juntando tudo, ficaria assim:
 
 Onde o ` IP de origem` é o único endereço permitido para estabelecer uma conexão
 com o banco de dados.
+
+If you wish to use zones when using firewalld, ensure to adapt the instructions
+in the following chapters accordingly.
 
 ---
 
@@ -198,13 +305,19 @@ Para instalar e ativar o chrony, nosso cliente NTP, use o seguinte comando:
 !!! info "Instalar cliente NTP"
 
     Red Hat
-    ```yaml
+    ```bash
     dnf install chrony
     systemctl enable chronyd --now
     ```
 
+    SUSE
+    ```bash
+    zypper install chrony
+    systemctl enable chronyd --now
+    ```
+
     Ubuntu
-    ```yaml
+    ```bash
     sudo apt install chrony
     ```
 
@@ -213,15 +326,9 @@ seu status com o seguinte comando:
 
 !!! info "Verifique o status do serviço chronyd."
 
-    ```yaml
+    ```bash
     systemctl status chronyd
     ```
-
-???+ nota "O que é apt ou dnf"
-
-    dnf is a package manager used in Red Hat-based systems. If you're using another
-    distribution, replace `dnf` with your appropriate package manager, such as `zypper`,
-    `apt`, or `yum`.
 
 ???+ nota "O que é Chrony"
 
@@ -234,38 +341,36 @@ Depois que o Chrony estiver instalado, a próxima etapa é garantir que o fuso
 horário correto esteja definido. Você pode ver a configuração do horário atual
 usando o comando `timedatectl`:
 
-!!! info "verifique a configuração da hora"
+!!! example "Check the time config"
 
-    ```yaml
-    timedatectl
-    ```
-
-    ``` yaml
-    Local time: Thu 2023-11-16 15:09:14 UTC
-    Universal time: Thu 2023-11-16 15:09:14 UTC
-    RTC time: Thu 2023-11-16 15:09:15
-    Time zone: UTC (UTC, +0000)
+    ```shell-session
+    localhost:~ # timedatectl
+                   Local time: Thu 2023-11-16 15:09:14 UTC
+               Universal time: Thu 2023-11-16 15:09:14 UTC
+                     RTC time: Thu 2023-11-16 15:09:15
+                    Time zone: UTC (UTC, +0000)
     System clock synchronized: yes
-    NTP service: active
-    RTC in local TZ: no
+                  NTP service: active
+              RTC in local TZ: no
     ```
 
 Certifique-se de que o serviço Chrony esteja ativo (consulte as etapas
 anteriores, se necessário). Para definir o fuso horário correto, primeiro, você
 pode listar todos os fusos horários disponíveis com o seguinte comando:
 
-!!! info "listar os fusos horários"
+!!! info "List the timezones"
 
-    ```yaml
+    ```bash
     timedatectl list-timezones
     ```
 
 Esse comando exibirá uma lista de fusos horários disponíveis, permitindo que
 você selecione o mais próximo de sua localização. Por exemplo:
 
-!!! info "Lista de todos os fusos horários disponíveis"
+!!! example "List of all the timezones available"
 
-    ```yaml
+    ```shell-session
+    localhost:~ # timedatectl list-timezones
     Africa/Abidjan
     Africa/Accra
     ...
@@ -279,30 +384,27 @@ Depois de identificar seu fuso horário, configure-o usando o seguinte comando:
 
 !!! info "Definir o fuso horário"
 
-    ```yaml
+    ```bash
     timedatectl set-timezone Europe/Brussels
     ```
 
 Para verificar se o fuso horário foi configurado corretamente, use novamente o
 comando `timedatectl`:
 
-!!! info "Verifique a hora e o fuso horário"
+!!! example "Check the time and zone"
 
-    ```yaml
-    timedatectl
-    ```
-
-    ``` yaml
-    Local time: Thu 2023-11-16 16:13:35 CET
-    Universal time: Thu 2023-11-16 15:13:35 UTC
-    RTC time: Thu 2023-11-16 15:13:36
-    **Time zone: Europe/Brussels (CET, +0100)**
+    ```shell-session
+    localhost:~ # timedatectl
+                   Local time: Thu 2023-11-16 16:13:35 CET
+               Universal time: Thu 2023-11-16 15:13:35 UTC
+                     RTC time: Thu 2023-11-16 15:13:36
+                    Time zone: Europe/Brussels (CET, +0100)
     System clock synchronized: yes
-    NTP service: active
-    RTC in local TZ: no
+                  NTP service: active
+              RTC in local TZ: no
     ```
 
-???+ nota
+???+ note
 
     Some administrators prefer installing all servers in the UTC time zone to
     ensure that server logs across global deployments are synchronized.
@@ -312,22 +414,23 @@ comando `timedatectl`:
 
 ---
 
-### Verificação da sincronização do Chrony
+#### Verificação da sincronização do Chrony
 
 Para garantir que o Chrony esteja sincronizando com os servidores de horário
 corretos, você pode executar o seguinte comando:
 
 !!! info "Verificar chrony"
 
-    ```yaml
+    ```bash
     chronyc
     ```
 
 O resultado deve ser semelhante:
 
-!!! info "Verifique a saída do seu chrony"
+!!! example "Verify your chrony output"
 
-    ```yaml
+    ``` shell-session
+    localhost:~ # chronyc
     chrony version 4.2
     Copyright (C) 1997-2003, 2007, 2009-2021 Richard P. Curnow and others
     chrony comes with ABSOLUTELY NO WARRANTY. This is free software, and
@@ -337,20 +440,15 @@ O resultado deve ser semelhante:
     chronyc>
     ```
 
-Quando estiver no prompt do Chrony, digite o seguinte para verificar os
-códigos-fonte:
-
-!!! info ""
-
-    ```yaml
-    chronyc> sources
-    ```
+Once inside the Chrony prompt, type the `sources` command to check the used time
+sources:
 
 Exemplo de saída:
 
-!!! info "Verifique as fontes do seu servidor de horário"
+!!! example "Check your time server sources"
 
-    ```bash
+    ```shell-session
+    chronyc> sources
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
     ===============================================================================
     ^- 51-15-20-83.rev.poneytel>     2   9   377   354   +429us[ +429us] +/-  342ms
@@ -366,26 +464,48 @@ servidores NTP locais aqui: [www.ntppool.org](https://www.ntppool.org/).
 
 ---
 
-### Atualizando os servidores de horário
+#### Atualizando os servidores de horário
 
-Para atualizar os servidores de horário, modifique o arquivo `/etc/chrony.conf`
-para sistemas baseados no Red Hat e, se você usar o Ubuntu, edite
-`/etc/chrony/chrony.conf`. Substitua o servidor NTP existente por um mais
-próximo de sua localização.
+To update the time servers, modify the Chrony configuration file:
+
+!!! info "Edit chrony config file"
+
+    Red Hat
+    ```bash
+    vi /etc/chrony.conf
+    ```
+
+    SUSE
+    ```bash
+    vi /etc/chrony.d/pool.conf
+    ```
+    On SUSE, the pool configuration is located in a separate file. You can
+    edit that file directly or add a new configuration file in the same directory.
+    In the latter case, ensure to disable or remove the existing pool configuration
+    to avoid conflicts.
+
+    Ubuntu
+    ```bash
+    sudo vi /etc/chrony/chrony.conf
+    ```
+
+Replace the existing NTP server pool with one closer to your location.
 
 Exemplo da configuração atual:
 
-!!! info "exemplo de configuração do pool ntp"
+!!! example "Example ntp pool config"
 
-    ```yaml
+    ```
     # Use public servers from the pool.ntp.org project.
     # Please consider joining the pool (http://www.pool.ntp.org/join.html).
     pool 2.centos.pool.ntp.org iburst
     ```
 
-    Change the pools you want to a local time server:
+Change the pools you want to a local time server:
 
-    ```yaml
+!!! info "Change ntp pool config"
+
+    ```
     # Use public servers from the pool.ntp.org project.
     # Please consider joining the pool (http://www.pool.ntp.org/join.html).
     pool be.pool.ntp.org iburst
@@ -394,28 +514,29 @@ Exemplo da configuração atual:
 Depois de fazer essa alteração, reinicie o serviço Chrony para aplicar a nova
 configuração:
 
-!!! info "reinicie o serviço chrony"
+!!! info "Restart the chrony service"
 
-    ```yaml
+    ```bash
     systemctl restart chronyd
     ```
 
-### Verificação de servidores de horário atualizados
+#### Verificação de servidores de horário atualizados
 
 Verifique novamente as fontes de horário para garantir que os novos servidores
 locais estejam em uso:
 
 !!! info "Verificar as fontes do chrony "
 
-    ```yaml
+    ```
     chronyc> sources
     ```
 
 Exemplo de saída esperada com servidores locais:
 
-!!! info "Exemplo de saída"
+!!! example "Example output"
 
-    ```yaml
+    ```shell-session
+    chronyc> sources
     MS Name/IP address         Stratum Poll Reach LastRx Last sample
     ===============================================================================
     ^- ntp1.unix-solutions.be        2   6    17    43   -375us[ -676us] +/-   28ms
@@ -428,12 +549,12 @@ Isso confirma que o sistema agora está usando servidores de horário local.
 
 ## Conclusão
 
-Como vimos, antes mesmo de considerar os pacotes do Zabbix, é preciso prestar
-atenção ao ambiente em que ele residirá. Um sistema operacional configurado
-adequadamente, um caminho aberto através do firewall e um controle preciso do
-tempo não são meras sugestões, mas blocos de construção essenciais. Depois de
-estabelecer essa base, agora podemos prosseguir com confiança para a instalação
-do Zabbix, sabendo que o sistema subjacente está preparado para a tarefa.
+As we have seen, before even considering the Zabbix packages, attention must be
+paid to the environment in which it will reside. A properly configured and
+up-to-date operating system, an open path through the firewall, and accurate
+timekeeping are not mere suggestions, but essential building blocks. Having laid
+this groundwork, we can now proceed with confidence to the Zabbix installation,
+knowing that the underlying system is prepared for the task.
 
 ## Perguntas
 
@@ -449,3 +570,4 @@ do Zabbix, sabendo que o sistema subjacente está preparado para a tarefa.
 
 - [https://www.ntppool.org/zone](https://www.ntppool.org/zone)
 - [https://www.redhat.com/en/blog/beginners-guide-firewalld](https://www.redhat.com/en/blog/beginners-guide-firewalld)
+- [https://www.linuxjournal.com/content/understanding-firewalld-multi-zone-configurations](https://www.linuxjournal.com/content/understanding-firewalld-multi-zone-configurations)
