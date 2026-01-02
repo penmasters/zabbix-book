@@ -328,7 +328,7 @@ suivante :
 Après l'installation, vérifiez que Chrony est activé et fonctionne en contrôlant
 son état à l'aide de la commande suivante :
 
-!!! info "Vérifier le statut de Chrony"
+!!! info "Vérifier le statut de Chronyd"
 
     ```bash
     systemctl status chronyd
