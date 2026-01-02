@@ -40,9 +40,8 @@ In this menu under `Data collection`, you'll notice two distinct sections:
 - **Template groups**: A newer addition, specifically created for organizing
   templates.
 
-???+ info
+???+ info "Migrating from an older Zabbix version"
 
-    **If you're migrating from an older Zabbix version:**
     In previous versions, templates and hosts were often placed in the same groups.
     This led to confusion, particularly for new users, as templates don't technically
     belong to host groups in Zabbix. As of recent versions (starting from Zabbix
@@ -97,7 +96,7 @@ These nested group names are **just names** Zabbix does not require that parent
 folders (e.g., `Europe`) physically exist as separate groups unless you
 explicitly create them.
 
-???+ note
+???+ warning
 
     - You cannot escape the `/` character.
     - Group names **cannot** contain leading/trailing slashes or multiple consecutive
