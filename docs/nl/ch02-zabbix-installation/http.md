@@ -206,7 +206,7 @@ server basic authentication procedure again.
 
 ---
 
-## Conclusion
+## Conclusie
 
 Configuring HTTP level authentication adds a critical layer of access control to
 your Zabbix Web UI by leveraging your web server's native authentication

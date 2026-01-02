@@ -7,11 +7,11 @@ descripton: |
 tags: [advanced]
 ---
 
-# Multi factor authentication
+# Meervoudige verificatie
 
-We all know that before you can start configuring Zabbix via WebUI you have to
-sign in. Zabbix has several options to provide better security for user
-passwords by configuring password policy:
+We weten allemaal dat je moet inloggen voordat je Zabbix kunt configureren via
+WebUI. Zabbix heeft verschillende opties om gebruikerswachtwoorden beter te
+beveiligen door het wachtwoordbeleid te configureren:
 
 - Requirement for Minimum password length
 - Requirements for password to contain an uppercase and a lowercase Latin
@@ -313,7 +313,7 @@ user, or deactivate just click on it and experiment.
 
 _2.56 New user registered in DUO_
 
-## Conclusion
+## Conclusie
 
 Implementing Multi-Factor Authentication (MFA) in Zabbix is a powerful way to
 significantly advance your system’s security beyond the standard password
