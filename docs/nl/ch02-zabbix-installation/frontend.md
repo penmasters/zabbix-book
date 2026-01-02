@@ -7,15 +7,16 @@ description: |
 tags: [beginner]
 ---
 
-# Frontend explained
+# Frontend uitgelegd
 
-This chapter is going to cover the basics we need to know when it comes to the
-Zabbix user interface and the thing we need to know before we can start to fully
-dive into our monitoring tool. We will see how the user interface works how to
-add a host, groups users, items ... so that we have a good understanding of the
-basics. This is something that is sometimes missed and can lead to frustrations
-not knowing why things don't work like we had expected them to work. So even if
-you are an advanced user it may be useful to have a look into this chapter.
+Dit hoofdstuk gaat over de basis die we moeten weten als het gaat om de Zabbix
+gebruikersinterface en de dingen die we moeten weten voordat we volledig in onze
+monitoring tool kunnen duiken. We zullen zien hoe de gebruikersinterface werkt,
+hoe we een host, groepen gebruikers, items kunnen toevoegen ... zodat we een
+goed begrip hebben van de basis. Dit is iets dat soms gemist wordt en tot
+frustraties kan leiden als we niet weten waarom dingen niet werken zoals we
+verwacht hadden dat ze zouden werken. Dus zelfs als je een gevorderde gebruiker
+bent, kan het nuttig zijn om even naar dit hoofdstuk te kijken.
 
 Let's get started
 
@@ -380,7 +381,7 @@ _2.18 Administration menu_
     So when upgrading dashboards it needs to be created by hand. It was on the roadmap
     for 7 but didn't made it so feel free to vote <https://support.zabbix.com/browse/ZBXNEXT-5419>
 
-## Conclusion
+## Conclusie
 
 The Zabbix frontend serves as the central command center for monitoring,
 configuration, and system awareness. In this chapter, you explored how to

@@ -5,12 +5,13 @@ description: |
 tags: [expert]
 ---
 
-# HA Setup
+# HA-instelling
 
-In this section, we will set up Zabbix in a High Availability (HA)
-configuration. This native feature, introduced in Zabbix 6, is a crucial
-enhancement that ensures continued monitoring even if a Zabbix server fails.
-With HA, when one Zabbix server goes down, another can take over seamlessly.
+In dit gedeelte gaan we Zabbix instellen in een High Availability (HA)
+configuratie. Deze native functie, geïntroduceerd in Zabbix 6, is een cruciale
+verbetering die ervoor zorgt dat je kunt blijven monitoren, zelfs als een Zabbix
+server uitvalt. Met HA, als een Zabbix server uitvalt, kan een andere het
+naadloos overnemen.
 
 For this guide, we will use two Zabbix servers and one database, but the setup
 allows for adding more zabbix servers if necessary.
@@ -31,12 +32,12 @@ Just as in our basic configuration, we will document key details for the servers
 in this HA setup. Below is the list of servers and some place to add their
 respective IP addresses for your convenience :
 
-| Server          | IP Address |
-| --------------- | ---------- |
-| Zabbix Server 1 |            |
-| Zabbix Server 2 |            |
-| Database        |            |
-| Virtual IP      |            |
+| Server          | IP-adres |
+| --------------- | -------- |
+| Zabbix Server 1 |          |
+| Zabbix Server 2 |          |
+| Database        |          |
+| Virtual IP      |          |
 
 ???+ note
 
@@ -506,7 +507,7 @@ for managing high availability in Zabbix without requiring a full restart of the
 
 ---
 
-## Conclusion
+## Conclusie
 
 In this chapter, we have successfully set up a high-availability (HA) Zabbix
 environment by configuring both the Zabbix server and frontend for redundancy.
