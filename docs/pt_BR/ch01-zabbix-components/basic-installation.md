@@ -373,7 +373,7 @@ following command:
     mariadb -V
     ```
 
-A saída esperada deve ser similar a esta:
+The expected output should resemble this:
 
 ???+ example "MariaDB version example"
 
@@ -603,7 +603,7 @@ If you intent to install Zabbix server on a different machine than the one
 hosting the database you will need to open the host firewall to allow incoming
 connections to the database server. By default, MariaDB listens on port 3306.
 
-!!! info "Adicionar regras de firewall"
+!!! info "Add firewall rules"
 
     Red Hat / SUSE
     ``` bash
@@ -849,7 +849,7 @@ checking the version of PostgreSQL using the following command:
     psql -V
     ```
 
-A saída esperada deve ser similar a esta:
+The expected output should resemble this:
 
 ???+ example "PostgreSQL version example"
 
@@ -1232,7 +1232,7 @@ If you intent to install Zabbix server on a different machine than the one
 hosting the database you will need to open the host firewall to allow incoming
 connections to the database server. By default, PostgreSQL listens on port 5432.
 
-!!! info "Adicionar regras de firewall"
+!!! info "Add firewall rules"
 
     Red Hat / SUSE
     ``` bash
