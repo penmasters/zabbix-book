@@ -13,11 +13,11 @@ Gebruikersgroepen die de zichtbaarheid van gegevens bepalen Ex: (welke hosts een
 gebruiker kan zien en/of beheren), bepalen Gebruikersrollen de functionaliteit
 van applicaties (op welke knoppen een gebruiker kan klikken).
 
-## The role hierarchy
+## De rollenhiërarchie
 
-Every User Role, whether default or custom, is fundamentally based on one of the
-classic User Types (Super Admin, Admin or User). This User Type serves as the
-maximum allowed privilege for the role.
+Elke gebruikersrol, standaard of aangepast, is gebaseerd op een van de klassieke
+gebruikerstypes (Super Admin, Admin of User). Dit Gebruikerstype dient als de
+maximaal toegestane rechten voor de rol.
 
 ## Default Menu Access by User Type
 
