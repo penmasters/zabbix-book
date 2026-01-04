@@ -13,7 +13,7 @@ We weten allemaal dat je moet inloggen voordat je Zabbix kunt configureren via
 WebUI. Zabbix heeft verschillende opties om gebruikerswachtwoorden beter te
 beveiligen door het wachtwoordbeleid te configureren:
 
-- Requirement for Minimum password length
+- Vereiste voor minimale wachtwoordlengte
 - Requirements for password to contain an uppercase and a lowercase Latin
   letter, a digit, a special character
 - Requirement to avoid easy-to-guess passwords
