@@ -14,17 +14,16 @@ van de eerste componenten die we instellen voor veel klanten. In dit hoofdstuk
 maken we van proxies het derde onderwerp dat we behandelen en moedigen we je aan
 om er vanaf het begin van je Zabbix-reis rekening mee te houden.
 
-We'll start with a basic proxy setup, providing straightforward steps to get you
-up and running quickly. Then, we'll take a deep dive into the mechanics of
-proxies how they operate within the Zabbix ecosystem, their benefits, and the
-critical role they play in distributing monitoring load and enhancing system
-scalability.
+We beginnen met een basis proxy setup, met eenvoudige stappen om je snel op weg
+te helpen. Daarna gaan we dieper in op de werking van proxy's binnen het Zabbix
+ecosysteem, hun voordelen en de cruciale rol die ze spelen bij het verdelen van
+monitoring load en het verbeteren van de schaalbaarheid van het systeem.
 
-Understanding proxies from the start can significantly improve your
-architecture, especially in distributed or large scale environments. Whether
-you're new to Zabbix or looking to refine your existing setup, this chapter will
-offer valuable insights into why proxies should be an integral part of your
-monitoring strategy from the start.
+Proxies vanaf het begin begrijpen kan je architectuur aanzienlijk verbeteren,
+vooral in gedistribueerde of grootschalige omgevingen. Of je nu nieuw bent met
+Zabbix of je bestaande setup wilt verfijnen, dit hoofdstuk biedt waardevolle
+inzichten in waarom proxies vanaf het begin een integraal onderdeel van je
+monitoring strategie zouden moeten zijn.
 
 By the end, you'll not only know how to set up a basic proxy but also have a
 clear understanding of their underlying workings and strategic advantages,
