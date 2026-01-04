@@ -11,7 +11,10 @@ description : |
 ---
 
 # Backup strategies
-Zabbix relies heavily on the underlying database not only for the collected items (metrics), but also for storing the Zabbix configuration we create in the Zabbix frontend. This database should either be a MariaDB, PostgreSQL or MySQL database in Zabbix 8.0 as those are the official production supported database types. 
+Zabbix relies heavily on the underlying database not only for the collected items
+(metrics), but also for storing the Zabbix configuration we create in the Zabbix
+frontend. This database should either be a MariaDB, PostgreSQL or MySQL database
+in Zabbix 8.0 as those are the official production supported database types.
 
 Since our history, trends and configuration data is all stored in this central database, taking a meaningful backup of our Zabbix environment is fairly simple. All we have to do is pick a backup method we like for our chosen database and then use that to backup the database. Giving you a backup you can easily restore 99% of your Zabbix environment with.
 
@@ -116,9 +119,172 @@ This backup will include all tables of our `zabbix` database and compress it wit
 
 ## PostgreSQL
 
+When Zabbix uses PostgreSQL as its backend database, the database becomes the most
+critical component of the entire monitoring system. All configuration, state, history,
+and trends are stored there, and without a usable database backup, recovery of a
+failed Zabbix server is effectively impossible.
+
+Unlike file-based backups, PostgreSQL requires database-aware backup methods. Simply
+copying the data directory while the database is running will almost certainly
+result in a corrupted and unusable backup. For this reason, PostgreSQL provides
+its own backup mechanisms, and choosing the correct one depends largely on the size
+of the Zabbix environment and the acceptable recovery time.
+
+### Logical Backups with pg_dump
+
+The simplest way to back up a PostgreSQL database is by using pg_dump. This tool
+performs a logical backup, meaning it exports the contents of the database as SQL
+statements or a structured archive format.
+
+For small Zabbix installations or non-production environments, pg_dump can be sufficient.
+It is easy to use, requires no special PostgreSQL configuration, and produces backups
+that are portable across systems and PostgreSQL minor versions.
+
+A typical backup of a Zabbix database using pg_dump looks like this:
+
+``` bash
+sudo -u postgres pg_dump \
+  --format=custom \
+  --file=/backup/zabbix.dump \
+  zabbix
+```
+
+Restoring such a backup is equally straightforward:
+
+``` bash
+sudo -u postgres pg_restore \
+  --clean \
+  --dbname=zabbix \
+  zabbix.dump
+```
+
+While convenient, logical backups have important limitations in a Zabbix context.
+On systems with large history or trend tables, backups can take a long time to
+complete and may put noticeable load on the database server. Logical backups also
+do not support point-in-time recovery, meaning it is impossible to restore the
+database to a specific moment before a failure.
+
+For these reasons, pg_dump should be viewed as an entry-level solution rather than
+a long-term strategy for production Zabbix systems.
+
+### Physical Backups and WAL Archiving
+
+For medium and large Zabbix installations, physical backups are generally more
+appropriate. A physical backup captures the PostgreSQL data files directly, together
+with the write-ahead log (WAL) files required to replay changes. This approach
+allows for significantly faster restores and enables point-in-time recovery (PITR).
+
+Physical backups are usually created using pg_basebackup, while WAL files are
+archived continuously in the background. From PostgreSQL’s perspective, this
+is the same mechanism used for replication, which makes it both reliable and well
+tested.
+
+Once WAL archiving is enabled in PostgreSQL, a base backup of the Zabbix database
+cluster can be taken without stopping the database. In the event of a failure,
+PostgreSQL can be restored to a precise moment in time by replaying WAL files
+up to the desired point.
+
+This approach scales much better than logical backups and is well suited for
+Zabbix installations that generate a large volume of monitoring data. However,
+it requires more careful planning and disciplined retention management, as both
+base backups and WAL files must be preserved consistently.
+
+### PgBackRest and PgBarman: The Preferred Production Solution
+
+For production Zabbix environments, especially those with large databases or high
+availability requirements, dedicated PostgreSQL backup frameworks are strongly
+recommended. Among these, PgBackRest and PgBarman are the two most widely adopted
+and battle-tested solutions.
+
+Both tools are designed specifically for physical PostgreSQL backups with continuous
+WAL archiving, providing features that go far beyond what is possible with manual base
+backups. They support point-in-time recovery, enforce retention policies, and ensure
+backup integrity through automated verification steps.
+
+PgBackRest is often favored in environments where performance and flexibility are
+key concerns. It supports full, differential, and incremental backups, efficient
+compression, and parallel processing, which makes it particularly suitable for Zabbix
+databases with high write rates. PgBackRest integrates well with modern PostgreSQL
+high-availability setups and is commonly used in combination with cluster managers
+and load balancers.
+
+PgBarman, on the other hand, follows a more centralized backup model. It is typically
+deployed on a dedicated backup server that manages backups for one or more PostgreSQL
+instances. This approach can be attractive in environments where backup operations
+must be isolated from database servers or managed by a separate operations team.
+PgBarman also provides reliable WAL management and point-in-time recovery, making
+it a solid choice for enterprise Zabbix installations.
+
+From a Zabbix perspective, both tools solve the same fundamental problem: they allow
+the PostgreSQL database to be backed up consistently while Zabbix continues to
+ingest monitoring data. The choice between PgBackRest and PgBarman is usually
+driven by operational preferences, existing PostgreSQL standards, and infrastructure
+design rather than functional limitations.
+
+Regardless of which tool is chosen, the key requirement remains the same: backups
+must be automated, retained according to policy, and restored successfully during
+regular testing. Either PgBackRest or PgBarman meets these requirements and should
+be considered the baseline for serious, production-grade Zabbix deployments.
+
+### Backup Size and Zabbix Data Characteristics
+
+Zabbix databases grow continuously by design. History and trend tables receive
+constant inserts, and without proper housekeeping, backups can quickly become very
+large. This is not a backup problem but a data lifecycle issue.
+
+Before designing a PostgreSQL backup strategy for Zabbix, it is important to ensure
+that database retention settings are aligned with business needs. Keeping excessive
+history in the database not only increases backup size but also slows down backup
+and restore operations, directly affecting recovery time objectives.
+
+One way to better control database growth is the use of TimescaleDB, which is supported
+by Zabbix for handling historical data. By storing history and trends in hypertables,
+TimescaleDB allows for more efficient data management and automated data retention
+policies. This can significantly reduce the volume of data that must be retained
+and, by extension, the size of database backups.
+
+Another approach, typically reserved for advanced or highly specialized environments,
+is to exclude history and trend tables from certain backups. In such designs, configuration
+data is backed up separately from monitoring data, with the understanding that
+historical metrics can be discarded or rebuilt if necessary. This reduces backup
+size and restore time but comes at the cost of losing historical visibility after
+a recovery.
+
+A well-tuned Zabbix database, whether using native PostgreSQL tables or TimescaleDB,
+combined with physical backups and WAL archiving, results in manageable backup
+sizes and predictable recovery times.
+
+
+
 ## Other important (config) files
 
 ## Conclusion
+
+Backing up the Zabbix database is a fundamental part of any maintenance strategy,
+regardless of whether PostgreSQL or MySQL/MariaDB is used as the backend. While
+the specific tools and mechanisms differ between database engines, the underlying
+principles remain the same: backups must be consistent, automated, and aligned with
+the size and criticality of the environment.
+
+For PostgreSQL-based Zabbix installations, logical backups are suitable only for
+small or non-critical systems. Larger environments benefit from physical backups
+with WAL archiving, with dedicated tools such as PgBackRest or PgBarman providing
+the reliability, performance, and recovery options required in production. Database
+growth must be managed deliberately, whether through retention tuning, the use of
+TimescaleDB, or, in advanced cases, separating configuration data from historical
+data in backup design.
+
+For MySQL and MariaDB backends, equivalent considerations apply. Logical dumps may
+be sufficient for small systems, but physical or hot backup solutions are preferred
+as data volume and availability requirements increase. Regardless of the database engine,
+uncontrolled data growth directly affects backup size and recovery time and must be
+addressed as part of the overall strategy.
+
+Finally, a backup that has never been restored successfully cannot be considered
+reliable. Regular restore testing is essential to verify backup integrity, confirm
+recovery procedures, and establish realistic recovery time expectations. Only
+backups that have been tested end-to-end should be trusted to protect a Zabbix
+installation in production.
 
 ## Questions
 
