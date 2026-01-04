@@ -18,11 +18,11 @@ frustraties kan leiden als we niet weten waarom dingen niet werken zoals we
 verwacht hadden dat ze zouden werken. Dus zelfs als je een gevorderde gebruiker
 bent, kan het nuttig zijn om even naar dit hoofdstuk te kijken.
 
-Let's get started
+Aan de slag
 
 ---
 
-## Overview of the interface
+## Overzicht van de interface
 
 With Zabbix 7 the user interface after logging in is a bit changed. Our menu on
 the left side of the screen has has a small overhaul. Let's dive into it. When
