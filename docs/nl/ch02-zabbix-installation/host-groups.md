@@ -14,10 +14,10 @@ organiseren van gemonitorde entiteiten. Ze stellen je in staat om hosts logisch
 te categoriseren voor eenvoudiger beheer, vereenvoudigde rechten en
 gestroomlijnde configuratie, vooral handig in grotere omgevingen.
 
-Common examples include:
+Bekende voorbeelden zijn:
 
-- Grouping all **Linux servers** together.
-- Separating **database servers** (e.g., PostgreSQL, MySQL).
+- Groeperen van alle **Linux servers** samen.
+- Scheiden van **databaseservers** (bijv. PostgreSQL, MySQL).
 - Organizing hosts by **team**, **location**, or **function**.
 
 Host groups are not only for structuring your monitored hosts, they also play an
