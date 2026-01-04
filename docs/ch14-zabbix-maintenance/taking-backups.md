@@ -26,7 +26,92 @@ Various options exist for creating a database backup.
 
 
 ## MariaDB
-Creating database backups
+Creating database backups on MariaDB using the official `mariadb-dump` utility is fairly simple. When we have the mariadb-client installed we should already have the `mariadb-dump` utility installed as well. Double-check on your Zabbix database server CLI with the command below.
+
+!!! info "Check if mariadb-dump is installed"
+
+    Linux
+    ```bash
+    mariadb-dump --version
+    ```
+
+If your get no result, try to install the MariaDB client.
+
+!!! info "Install MariaDB client"
+
+    Red Hat
+    ```bash
+    dnf install mariadb
+    ```
+
+    Ubuntu
+    ```bash
+    sudo apt install mariadb-client
+    ```
+
+If the `mariadb-dump` tool is installed, creating a backup at this point is simple. We simple have to execute the command and point it to the right database. 
+
+!!! info "Create a Zabbix MariaDB database backup"
+
+    Linux
+    ```bash
+    mysqldump zabbix \
+    --add-drop-table \
+    --add-locks \
+    --extended-insert \
+    --single-transaction \
+    --quick
+    ```
+
+This will login using MariaDB Unix socket authentication and create a database backup in your current working directory. It is also possible to pass your username and password directly.
+
+!!! info "Create a Zabbix MariaDB database backup with username and password"
+
+    Linux
+    ```bash
+    mysqldump zabbix \
+    --add-drop-table \
+    --add-locks \
+    --extended-insert \
+    --single-transaction \
+    --quick \
+    -u<USER> \
+    -p<PASSWORD> 
+    ```
+
+Keep in mind that passing plain text passwords on the CLI might not be secure.
+
+One more issue with creating the database backup like this, it takes up a lot of space on your disk. There is one more improvement to recommend here to make sure the backup is created as efficiently as possible. We can compress the backup before storing it to disk. To do this, we can install a compression tool like `lz4`.
+
+Red Hat
+```bash
+dnf install lz4
+```
+
+Ubuntu
+```bash
+sudo apt install lz4
+```
+
+Using lz4, we can now compress our database backup by using a quick pipe in our `mariadb-dump` command.
+
+!!! info "Create a Zabbix MariaDB database backup with compression"
+
+    Linux
+    ```bash
+    mysqldump zabbix \
+    --add-drop-table \
+    --add-locks \
+    --extended-insert \
+    --single-transaction \
+    --quick | lz4 > zabbix.sql.lz4
+    ```
+
+This backup will include all tables of our `zabbix` database and compress it with lz4 to store it as `zabbix.sql.lz4`. Keep in mind, it is always recommended to store the database backup somewhere away from our database server. There are several options to make this work in a safe manner.
+
+- Attach a separate backup disk to store the backups on (still within the same server however)
+- Store to separate disk and then transfer to remote storage (more secure)
+- Directly pipe the lz4 compressed data to a tool like `rsync` to send it over SSH to a remote storage location (takes up the least amount of duplicated resources)
 
 
 ## PostgreSQL
