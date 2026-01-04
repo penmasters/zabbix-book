@@ -87,7 +87,7 @@ First we will need to ensure that we have a container engine installed.
 ???+ tip
 
   If you want to use Docker instead of Podman, you can just replace any 
-  occurances of `podman` in following instructions by `docker`.
+  occurrences of `podman` in following instructions by `docker`.
 
 Now we can start containers. Start an OpenLDAP server in a container:
 
