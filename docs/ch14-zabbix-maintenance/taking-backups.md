@@ -31,17 +31,17 @@ and file backups in this topic within the book.
 
 Various options exist for creating a database backup.
 
-- mariadb-dump utility: This is a built-in tool shipped with MariaDB, allowing you
+- **`mariadb-dump utility`:** This is a built-in tool shipped with MariaDB, allowing you
   to create reliable .sql file backups of the MariaDB database. It creates a file
   with SQL statements, allowing us to restore our database fully.
-- mysqldump utility: This tool allows us to do the same as mariadb-dump, but is
+- **`mysqldump utility`:** This tool allows us to do the same as mariadb-dump, but is
   the official MySQL variant. Keep in mind that MariaDB and MySQL are going in
   different directions with their codebase, so it is recommended to use the right
   tool for your database.
-- pg_dump utility: PostgreSQL also has a built-in tool to allow us to create .sql
+- **`pg_dump utility`:** PostgreSQL also has a built-in tool to allow us to create .sql
   file backups of our PostgreSQL database. This creates a very similar .sql file
   with SQL statements, allowing us to restore our database fully.
-- (Virtual) Machine disk snapshots: There are various utilities on the market to
+- **`(Virtual) Machine disk snapshots`:** There are various utilities on the market to
   create (incremental) snapshots of a database server. Some examples are snapshots
   built into Azure/Amazon AWS, Proxmox PBS server, Veeam, Rubrik and more.
 
@@ -91,9 +91,9 @@ to balance consistency, performance, and compatibility during restore operations
     --quick
     ```
 
-The --single-transaction option ensures a consistent snapshot for transactional
+The `--single-transaction` option ensures a consistent snapshot for transactional
 tables without locking them for extended periods, which is especially important
-for active Zabbix systems. The --quick option reduces memory usage during the dump
+for active Zabbix systems. The `--quick` option reduces memory usage during the dump
 process, making the backup more predictable under load.
 
 This will login using MariaDB Unix socket authentication and create a database
