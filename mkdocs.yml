@@ -65,7 +65,6 @@ nav:
       - ch04-zabbix-collecting-data/external-checks.md
       - ch04-zabbix-collecting-data/browser.md
       - ch04-zabbix-collecting-data/calculated.md
-      - ch04-zabbix-collecting-data/zabbix-internal.md
   - "Chapter 05 : Triggers":
       - ch05-zabbix-triggers/chapter.md
       - ch05-zabbix-triggers/triggers.md
