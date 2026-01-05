@@ -14,16 +14,17 @@ In dit hoofdstuk behandelen we de basisbehoeften voor onze proxies. We zullen
 geen aandacht besteden aan actieve of passieve proxies, maar dit is iets wat we
 later in de volgende hoofdstukken behandelen.
 
-## Proxy requirements
+## Proxy-vereisten
 
-If you like to setup a few proxies for test or in your environment you will need
-a few Linux hosts to install the Proxies on. Proxies are also available in
-containers so a full VM is not needed. However here we will use a VM so we can
-show you how to install a proxy. Don't worry we will cover containers as well.
-When it comes to proxies they are very lightweight however since Zabbix 4.2
-Proxies are able to do Item value preprocessing and this can use a lot of CPU
-power. So the number of CPUs and memory will depends on how many machines you
-will monitor and how many preprocessing rules you have on your hosts.
+Als je een paar proxies wilt instellen voor testdoeleinden of in je omgeving,
+dan heb je een paar Linux hosts nodig om de proxies op te installeren. Proxies
+zijn ook beschikbaar in containers, dus een volledige VM is niet nodig. Hier
+zullen we echter een VM gebruiken zodat we je kunnen laten zien hoe je een proxy
+installeert. Maak je geen zorgen, we zullen containers ook behandelen. Proxy's
+zijn erg licht, maar sinds Zabbix 4.2 zijn proxy's in staat om Item value
+preprocessing te doen en dit kan veel CPU kracht gebruiken. Dus het aantal CPU's
+en geheugen hangt af van hoeveel machines je wilt monitoren en hoeveel
+preprocessing regels je op je hosts hebt.
 
 So in short a Zabbix proxy can be used to:
 
