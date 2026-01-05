@@ -86,15 +86,17 @@ Keep in mind that passing plain text passwords on the CLI might not be secure.
 
 One more issue with creating the database backup like this, it takes up a lot of space on your disk. There is one more improvement to recommend here to make sure the backup is created as efficiently as possible. We can compress the backup before storing it to disk. To do this, we can install a compression tool like `lz4`.
 
-Red Hat
-```bash
-dnf install lz4
-```
+!!! info "Install lz4 compression tool"
 
-Ubuntu
-```bash
-sudo apt install lz4
-```
+    Red Hat
+    ```bash
+    dnf install lz4
+    ```
+
+    Ubuntu
+    ```bash
+    sudo apt install lz4
+    ```
 
 Using lz4, we can now compress our database backup by using a quick pipe in our `mariadb-dump` command.
 
@@ -257,6 +259,71 @@ sizes and predictable recovery times.
 
 
 ## Other important (config) files
+Often overlooked, since we focus so much on the database, are the Zabbix configuration files and possibly custom scripts. For a full restore of your Zabbix environment, these files can not be missed as they are vital to getting Zabbix back online in case of an issue. Of course, configuration files are easy to rebuild with a bit of time. However, it is best practice to also include these to make sure a speedy restoration can happen.
+
+Let's create a quick working folder to place our backups in.
+
+!!! info "Create a Zabbix backup folder"
+
+    Linux
+    ```bash
+    mkdir /opt/zabbix-backup/
+    ```
+
+When Zabbix is installed from packages, it will always store the configuration files in a single location. That location `/etc/zabbix/` should contain most of our important files already. We can take a manual backup with the following command.
+
+!!! info "Create a Zabbix configuration files backup"
+
+    Linux
+    ```bash
+    cp -R /etc/zabbix/* /opt/zabbix-backup/
+    ```
+
+You can run this command on all of your Zabbix server, Frontend, Database and Proxy hosts. This should cover the most important configuration files already, but there is another folder that could contain very important files.
+
+!!! info "Create other Zabbix files backup"
+
+    Linux
+    ```bash
+    cp -R /usr/share/zabbix/ /opt/zabbix-backup/
+    ```
+
+The /usr/share/zabbix/ folder contains important PHP files and Zabbix binaries. A similar folder we should backup is the `/usr/lib/zabbix` folder, which contains our custom `alertscripts` and `externalscripts`.
+
+!!! info "Create other Zabbix files backup"
+
+    Linux
+    ```bash
+    cp -R /usr/lib/zabbix/ /opt/zabbix-backup/
+    ```
+
+Lastly, it is also recommended to create a backup of your webserver configuration. Depending on if you have `httpd`, `apache2` or `nginx` we will need to create the backup slightly differently. 
+
+!!! info "Install MariaDB client"
+
+    Red Hat HTTPD
+    ```bash
+    cp -R /etc/httpd/ /opt/zabbix-backup/
+    cp -R /var/www/ /opt/zabbix-backup/
+    cp /etc/httpd/conf.d/zabbix.conf  /opt/zabbix-backup/    ```
+
+    Ubuntu Apache2
+    ```bash
+    cp -R /etc/apache2/ /opt/zabbix-backup/
+    cp -R /var/www/ /opt/zabbix-backup/
+    cp /etc/httpd/conf.d/zabbix.conf  /opt/zabbix-backup/
+    ```
+
+    NGINX
+    ```bash
+    cp -R /etc/nginx/ /opt/zabbix-backup/
+    ```
+
+That should cover all the important files here, but they are only written to a separate folder on the same Linux server now. To create a truly resilient backup, we should write these files somewhere else. There are various solutions here as well.
+
+- Write the files to `/opt/zabbix-backup/` and copy the folder to a remote location daily
+- Grab the files from the filesystem and store them in a Git repository (bonus: You get a nice diff)
+- The simple method, ...
 
 ## Conclusion
 
