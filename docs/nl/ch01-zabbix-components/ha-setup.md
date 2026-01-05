@@ -13,12 +13,12 @@ verbetering die ervoor zorgt dat je kunt blijven monitoren, zelfs als een Zabbix
 server uitvalt. Met HA, als een Zabbix server uitvalt, kan een andere het
 naadloos overnemen.
 
-For this guide, we will use two Zabbix servers and one database, but the setup
-allows for adding more zabbix servers if necessary.
+Voor deze handleiding gebruiken we twee Zabbix servers en één database, maar de
+setup maakt het mogelijk om meer Zabbix servers toe te voegen als dat nodig is.
 
 ![HA-Setup](./ha-setup/ch01-HA-setup.png)
 
-_1.1 HA Setup_
+_1.1 HA Configuratie_
 
 It's important to note that Zabbix HA setup is straightforward, providing
 redundancy without complex features like load balancing. Only one node will be
