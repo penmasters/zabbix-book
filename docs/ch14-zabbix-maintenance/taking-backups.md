@@ -16,20 +16,41 @@ Zabbix relies heavily on the underlying database not only for the collected item
 frontend. This database should either be a MariaDB, PostgreSQL or MySQL database
 in Zabbix 8.0 as those are the official production supported database types.
 
-Since our history, trends and configuration data is all stored in this central database, taking a meaningful backup of our Zabbix environment is fairly simple. All we have to do is pick a backup method we like for our chosen database and then use that to backup the database. Giving you a backup you can easily restore 99% of your Zabbix environment with.
+Since our history, trends and configuration data is all stored in this central
+database, taking a meaningful backup of our Zabbix environment is fairly simple.
+All we have to do is pick a backup method we like for our chosen database and then
+use that to backup the database. Giving you a backup you can easily restore 99%
+of your Zabbix environment with.
 
-Easily forgotten, there are also some important configuration files and you might even have some scripts hanging around on your filesystem that you need to backup. The configuration files could be restored manually with not too much effort, but those scripts could especially take a long time to restore. As such it is always important to also backup these additional files. We will explore both the database and file backups in this topic within the book.
+Easily forgotten, there are also some important configuration files and you might
+even have some scripts hanging around on your filesystem that you need to backup.
+The configuration files could be restored manually with not too much effort, but
+those scripts could especially take a long time to restore. As such it is always
+important to also backup these additional files. We will explore both the database
+and file backups in this topic within the book.
 
 Various options exist for creating a database backup.
 
-- mariadb-dump utility: This is a built-in tool shipped with MariaDB, allowing you to create reliable .sql file backups of the MariaDB database. It creates a file with SQL statements, allowing us to restore our database fully.
-- mysqldump utility: This tool allows us to do the same as mariadb-dump, but is the official MySQL variant. Keep in mind that MariaDB and MySQL are going in different directions with their codebase, so it is recommended to use the right tool for your database.
-- pg_dump utility: PostgreSQL also has a built-in tool to allow us to create .sql file backups of our PostgreSQL database. This creates a very similar .sql file with SQL statements, allowing us to restore our database fully.
-- (Virtual) Machine disk snapshots: There are various utilities on the market to create (incremental) snapshots of a database server. Some examples are snapshots built into Azure/Amazon AWS, Proxmox PBS server, Veeam, Rubrik and more. 
+- mariadb-dump utility: This is a built-in tool shipped with MariaDB, allowing you
+  to create reliable .sql file backups of the MariaDB database. It creates a file
+  with SQL statements, allowing us to restore our database fully.
+- mysqldump utility: This tool allows us to do the same as mariadb-dump, but is
+  the official MySQL variant. Keep in mind that MariaDB and MySQL are going in
+  different directions with their codebase, so it is recommended to use the right
+  tool for your database.
+- pg_dump utility: PostgreSQL also has a built-in tool to allow us to create .sql
+  file backups of our PostgreSQL database. This creates a very similar .sql file
+  with SQL statements, allowing us to restore our database fully.
+- (Virtual) Machine disk snapshots: There are various utilities on the market to
+  create (incremental) snapshots of a database server. Some examples are snapshots
+  built into Azure/Amazon AWS, Proxmox PBS server, Veeam, Rubrik and more.
 
 
 ## MariaDB
-Creating database backups on MariaDB using the official `mariadb-dump` utility is fairly simple. When we have the mariadb-client installed we should already have the `mariadb-dump` utility installed as well. Double-check on your Zabbix database server CLI with the command below.
+Creating database backups on MariaDB using the official `mariadb-dump` utility
+is fairly simple. When we have the mariadb-client installed we should already
+have the `mariadb-dump` utility installed as well. Double-check on your Zabbix
+database server CLI with the command below.
 
 !!! info "Check if mariadb-dump is installed"
 
@@ -52,7 +73,11 @@ If your get no result, try to install the MariaDB client.
     sudo apt install mariadb-client
     ```
 
-If the `mariadb-dump` tool is installed, creating a backup at this point is simple. We simple have to execute the command and point it to the right database. 
+### Creating a Logical Database Backup
+
+If the `mariadb-dump` tool is installed, a basic logical backup of a Zabbix database
+can be created with a single command. The options used below are specifically chosen
+to balance consistency, performance, and compatibility during restore operations.
 
 !!! info "Create a Zabbix MariaDB database backup"
 
@@ -66,7 +91,14 @@ If the `mariadb-dump` tool is installed, creating a backup at this point is simp
     --quick
     ```
 
-This will login using MariaDB Unix socket authentication and create a database backup in your current working directory. It is also possible to pass your username and password directly.
+The --single-transaction option ensures a consistent snapshot for transactional
+tables without locking them for extended periods, which is especially important
+for active Zabbix systems. The --quick option reduces memory usage during the dump
+process, making the backup more predictable under load.
+
+This will login using MariaDB Unix socket authentication and create a database
+backup in your current working directory. It is also possible to pass your `username`
+and `password` directly, if password-based authentication is required,
 
 !!! info "Create a Zabbix MariaDB database backup with username and password"
 
@@ -84,7 +116,10 @@ This will login using MariaDB Unix socket authentication and create a database b
 
 Keep in mind that passing plain text passwords on the CLI might not be secure.
 
-One more issue with creating the database backup like this, it takes up a lot of space on your disk. There is one more improvement to recommend here to make sure the backup is created as efficiently as possible. We can compress the backup before storing it to disk. To do this, we can install a compression tool like `lz4`.
+One more issue with creating the database backup like this, it takes up a lot of
+space on your disk. There is one more improvement to recommend here to make sure
+the backup is created as efficiently as possible. We can compress the backup before
+storing it to disk. To do this, we can install a compression tool like `lz4`.
 
 !!! info "Install lz4 compression tool"
 
@@ -98,7 +133,8 @@ One more issue with creating the database backup like this, it takes up a lot of
     sudo apt install lz4
     ```
 
-Using lz4, we can now compress our database backup by using a quick pipe in our `mariadb-dump` command.
+Using lz4, we can now compress our database backup by using a quick pipe in our
+`mariadb-dump` command.
 
 !!! info "Create a Zabbix MariaDB database backup with compression"
 
@@ -112,12 +148,33 @@ Using lz4, we can now compress our database backup by using a quick pipe in our 
     --quick | lz4 > zabbix.sql.lz4
     ```
 
-This backup will include all tables of our `zabbix` database and compress it with lz4 to store it as `zabbix.sql.lz4`. Keep in mind, it is always recommended to store the database backup somewhere away from our database server. There are several options to make this work in a safe manner.
+This backup will include all tables of our `zabbix` database and compress it with
+lz4 to store it as `zabbix.sql.lz4`. Keep in mind, it is always recommended to store
+the database backup somewhere away from our database server. There are several
+options to make this work in a safe manner.
 
-- Attach a separate backup disk to store the backups on (still within the same server however)
+- Attach a separate backup disk to store the backups on (still within the same
+  server however)
 - Store to separate disk and then transfer to remote storage (more secure)
-- Directly pipe the lz4 compressed data to a tool like `rsync` to send it over SSH to a remote storage location (takes up the least amount of duplicated resources)
+- Directly pipe the lz4 compressed data to a tool like `rsync` to send it over
+  SSH to a remote storage location (takes up the least amount of duplicated
+  resources)
 
+### Limitations of Logical Backups
+
+While logical backups are simple and reliable, they do not scale indefinitely.
+On large Zabbix installations with high data retention, dump times and restore
+times can become significant. Logical backups also do not support point-in-time
+recovery, meaning restores can only be performed to the moment the backup completed.
+
+For this reason, logical dumps are best suited for:
+
+- Small to medium-sized Zabbix installations
+- Environments with modest recovery time objectives
+- Systems without strict availability requirements
+
+Larger environments may benefit from physical or snapshot-based backup solutions,
+provided database consistency is guaranteed.
 
 ## PostgreSQL
 
@@ -256,6 +313,20 @@ A well-tuned Zabbix database, whether using native PostgreSQL tables or Timescal
 combined with physical backups and WAL archiving, results in manageable backup
 sizes and predictable recovery times.
 
+## Storage and Off-Host Backups
+
+Regardless of the backup method used, storing backups exclusively on the database
+server itself is insufficient. Hardware failures, filesystem corruption, or
+security incidents can render both the database and its backups unusable.
+
+Common approaches include:
+
+- Writing backups to a dedicated backup disk
+- Transferring backups to remote storage after creation
+- Streaming compressed backups directly to a remote system over SSH
+
+The exact method is less important than ensuring that backups are stored independently
+of the database server and can be accessed during a full system failure.
 
 
 ## Other important (config) files
@@ -355,4 +426,16 @@ installation in production.
 
 ## Questions
 
+- Why is backing up the Zabbix database sufficient to restore most of a Zabbix environment?
+- What role do WAL files play in PostgreSQL point-in-time recovery?
+- What risks exist if backups are never tested by performing a restore?
+- Why is database growth considered a data lifecycle issue rather than a backup issue?
+
 ## Useful URLs
+
+- https://www.postgresql.org/docs/current/backup.html
+- https://pgbarman.org/
+- https://pgbackrest.org/
+- https://mariadb.com/docs/server/clients-and-utilities/backup-restore-and-import-clients/mariadb-dump
+- https://www.percona.com/mysql/software/percona-xtrabackup
+

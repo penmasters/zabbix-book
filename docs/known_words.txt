@@ -444,3 +444,8 @@ mysqldump
 proxmox
 rubrik
 veeam
+basebackup
+hypertables
+pgbackrest
+pgbarman
+xtrabackup
