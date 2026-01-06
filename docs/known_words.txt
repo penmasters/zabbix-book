@@ -450,3 +450,4 @@ pgbackrest
 pgbarman
 xtrabackup
 backends
+reindexing
