@@ -234,6 +234,12 @@ Reindexing after a major OS or database upgrade is not superstition. It is an
 acknowledgement that databases inherit behavior from the systems they run on and
 that those systems do change.
 
+???+ note
+    Historically, major upgrades of CentOS, Ubuntu, and SUSE Linux Enterprise have 
+    all introduced updates to core system libraries, including the C standard library.
+    In some cases, these updates altered collation and sorting behavior in ways that
+    directly affected database indexes.
+
 #### PostgreSQL: Upgrade and Migration Strategies
 
 PostgreSQL offers administrators an unusual degree of flexibility when it comes to
