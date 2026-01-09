@@ -16,9 +16,9 @@ zijn, maar de relatieve complexiteit speelt een rol in elke
 LDAP-serverimplementatie. Zabbix staat erom bekend dat het goed werkt met
 Microsoft Active Directory en OpenLDAP-server.
 
-LDAP authentication can be configured in two modes:
+LDAP-authenticatie kan in twee modi worden geconfigureerd:
 
-- Users authentication
+- Gebruikers authenticatie
 - Users authentication with users provisioning
 
 ## Users authentication mode
@@ -88,8 +88,8 @@ are priorities.
 
 ???+ tip
 
-If you want to use Docker instead of Podman, you can just replace any occurances
-of `podman` in following instructions by `docker`.
+If you want to use Docker instead of Podman, you can just replace any
+occurrences of `podman` in following instructions by `docker`.
 
 Now we can start containers. Start an OpenLDAP server in a container:
 
