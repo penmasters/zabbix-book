@@ -152,6 +152,6 @@ your monitoring setup to your organization's structure and workflows.
 - Why are slashes (/) special in host group names?
 - Can a parent group exist only logically (i.e., not created in Zabbix)?
 
-## Useful URLs
+## URL utiles
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/hosts/host_groups](https://www.zabbix.com/documentation/current/en/manual/config/hosts/host_groups)
