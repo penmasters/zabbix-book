@@ -279,7 +279,7 @@ veranderingen mogelijk zijn zonder bestaande verbindingen te verstoren.
 
 - **Ondersteuning voor meerdere interfaces:**
 
-: Als de server meerdere netwerkinterfaces heeft, staan zones een verschillend
+Als de server meerdere netwerkinterfaces heeft, staan zones een verschillend
 beveiligingsbeleid toe voor elke interface.
 
 Om alles samen te voegen en een zone toe te voegen voor, in dit voorbeeld,
