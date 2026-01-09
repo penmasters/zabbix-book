@@ -310,7 +310,7 @@ Here's an example configuration for MariaDB 11.4 repositories:
     ```
 
 After saving the file, ensure that everything is properly set up and that your
-prefered MariaDB version is compatible with your Zabbix version to avoid
+preferred MariaDB version is compatible with your Zabbix version to avoid
 potential integration issues.
 
 ---
@@ -734,7 +734,7 @@ for more information.
 
     !!! warning "openSUSE Leap"
 
-        Since the official PostgreSQL packages are specificaly built for use on 
+        Since the official PostgreSQL packages are specifically built for use on 
         SUSE Linux Enterprise Server (SLES), you will get an error trying to install the
         repository on openSUSE Leap. We can however safely ignore this problem by
         choosing to "break the package by ignoring some of its dependencies" as
@@ -1671,7 +1671,7 @@ When the repository is added we can install the package:
     This allows non-root users to create stored functions and triggers without requiring
     `SUPER` privileges, which are restricted when binary logging is enabled.
 
-    Normaly we won't need the setting after the initial import of the Zabbix schema is done,
+    Normally we won't need the setting after the initial import of the Zabbix schema is done,
     so we will disable it again after the import is complete.
 
     !!! info "Activate temporarily extra privileges for non root users"
@@ -2220,7 +2220,7 @@ this:
 
 ???+ tip
 
-    Normaly write access to `/etc/zabbix/web` is only needed during the initial setup
+    Normally write access to `/etc/zabbix/web` is only needed during the initial setup
     of the Zabbix frontend. After the setup is complete you can remove the drop-in
     file again to further harden the security of your system.
 
@@ -2506,7 +2506,7 @@ the code starts with zh.
 On RedHat and Ubuntu, the command outputs two lines; however, given the
 identified language code, 'zh_CN,' only the first package requires installation.
 on SUSE either only locales `C.UTF-8` and `en_US.UTF-8` are install or all
-available locales are installed, depending on wether the package `glibc-locale`
+available locales are installed, depending on whether the package `glibc-locale`
 is installed or not.
 
 !!! info "Install the locale package"

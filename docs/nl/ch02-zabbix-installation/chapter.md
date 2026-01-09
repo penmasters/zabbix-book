@@ -11,12 +11,12 @@ beveiliging, waaronder **dual-factor authenticatie**. Voor degenen die
 geavanceerde integratie nodig hebben, verkennen we opties zoals **SAML, LDAP**
 en andere externe verificatiemethoden.
 
-This chapter strikes a balance between a straightforward overview “this is the
-frontend” and a more in depth look at the **advanced choices** you can make to
-enhance your system's security and manageability. Whether you're just getting
-started or looking to implement robust security measures, there's something here
-for everyone.
+Dit hoofdstuk houdt het midden tussen een eenvoudig overzicht "dit is de
+voorkant" en een meer diepgaande blik op de **geavanceerde keuzes** die je kunt
+maken om de beveiliging en beheersbaarheid van je systeem te verbeteren. Of je
+nu net begint of robuuste beveiligingsmaatregelen wilt implementeren, er is hier
+iets voor iedereen.
 
-By the end, you'll be well equipped to navigate the Zabbix frontend with
-confidence and set up a secure, scalable user management system tailored to your
-organization's needs.
+Aan het eind ben je goed uitgerust om met vertrouwen door de Zabbix frontend te
+navigeren en een veilig, schaalbaar gebruikersbeheersysteem op te zetten dat is
+afgestemd op de behoeften van jouw organisatie.
