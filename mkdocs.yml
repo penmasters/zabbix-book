@@ -21,8 +21,17 @@ nav:
       - Initial steps: ch00-getting-started/initial-steps.md
       - System Requirements: ch00-getting-started/Requirements.md
   - "Chapter 01 : Zabbix components":
-      - Zabbix components: ch01-zabbix-components/chapter.md
-      - Basic Installation: ch01-zabbix-components/basic-installation.md
+      - ch01-zabbix-components/chapter.md
+      - "Basic Installation": 
+        - ch01-zabbix-components/architecture.md
+        - "Database":
+          - ch01-zabbix-components/database.md
+          - ch01-zabbix-components/mariadb.md
+          - ch01-zabbix-components/postgresql.md
+        - ch01-zabbix-components/preparation.md
+        - ch01-zabbix-components/zabbix-server.md
+        - ch01-zabbix-components/zabbix-frontend.md
+        - ch01-zabbix-components/conclusion.md
       - HA Setup: ch01-zabbix-components/ha-setup.md
   - "Chapter 02 : Installation":
       - ch02-zabbix-installation/chapter.md
