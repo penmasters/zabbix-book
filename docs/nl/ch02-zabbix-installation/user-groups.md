@@ -23,11 +23,12 @@ het toepassen ervan in een robuuste, echte implementatie.
 
 ## De rol van een gebruikersgroep
 
-A **User Group** in Zabbix is a logical collection of individual user accounts.
-Rather than managing permissions for hundreds of users individually, Zabbix
-requires that users be assigned to one or more groups. Access rights, such as
-the ability to view host groups, configure templates, or see specific problem
-tags are then granted at the **group level**.
+Een **Gebruikersgroep** in Zabbix is een logische verzameling van individuele
+gebruikersaccounts. In plaats van de rechten voor honderden gebruikers
+afzonderlijk te beheren, vereist Zabbix dat gebruikers worden toegewezen aan een
+of meer groepen. Toegangsrechten, zoals de mogelijkheid om hostgroepen te
+bekijken, sjablonen te configureren of specifieke probleemtags te zien, worden
+dan toegekend op het **groepsniveau**.
 
 This group centric architecture provides several major benefits:
 

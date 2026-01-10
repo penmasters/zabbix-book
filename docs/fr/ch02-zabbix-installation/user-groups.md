@@ -385,7 +385,7 @@ user can see and configure (via host/template permissions).
   Alice's effective permissions for the hosts in HG_Webservers? Can she view or
   modify them, and why?
 
-## Useful URLs
+## URL utiles
 
 - <https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/usergroup>
 - <https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions>
