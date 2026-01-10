@@ -218,3 +218,21 @@ When it comes to port for the proxy it depends on our proxy being `active` or `p
   connect.
 - **Passive Proxy:** Needs to have port `10051/tcp` open on the proxy so that the
   `server` can connect to the proxy.
+
+Do note that for an active Zabbix Agent or Sender to communicate with your proxy, 
+wether it is an active or a passive one, this will require port `10051/tcp` to be
+open on your proxy server:
+
+!!! info "Open firewall for zabbix-trapper"
+
+    Red Hat / SUSE
+    ``` bash
+    sudo firewall-cmd --add-service=zabbix-trapper --permanent
+    sudo firewall-cmd --reload
+    ```
+
+    Ubuntu
+    ``` bash
+    sudo ufw allow 10051/tcp
+    ```
+
