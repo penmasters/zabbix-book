@@ -123,7 +123,7 @@ theme:
   custom_dir: docs/overrides
   font:
     text: Roboto
-    code: Nunito
+    code: Roboto Mono
   icon:
     logo: material/library
   features:
