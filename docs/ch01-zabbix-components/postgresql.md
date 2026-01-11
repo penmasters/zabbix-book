@@ -1,4 +1,16 @@
-# Installing the PostgreSQL database
+---
+description: |
+    This section from The Zabbix Book titled "Installing a PostgreSQL database"
+    guides you through installing PostgreSQL as an alternative database backend
+    for Zabbix. It covers installation methods using OS vendor-provided packages
+    or official PostgreSQL repositories, with specific commands for Red Hat, SUSE,
+    and Ubuntu systems. The section also includes steps to start and secure the
+    PostgreSQL server, create the Zabbix database and users, and configure
+    firewall rules if necessary.
+tags: [beginner]
+---
+
+# Installing a PostgreSQL database
 
 Alternatively to MariaDB/MySQL, you can choose to use PostgreSQL as the database backend for Zabbix.
 Similar to MariaDB, PostgreSQL can be installed using either the OS vendor-provided
@@ -604,5 +616,256 @@ to the database server. By default, PostgreSQL listens on port 5432.
     ``` bash
     sudo ufw allow 5432/tcp
     ```
+---
+
+## Populate the Zabbix database
+
+During the installation of the database software earlier, we created the 
+necessary users, database and schema for Zabbix, however, Zabbix expects certain tables,
+schemas, images, and other elements to be present in the database.
+To set up the database correctly, we need to populate it with the required schema.
+
+First we need to install the Zabbix SQL scripts that contain the required
+import scripts for the database.
+
+!!! info "Install SQL scripts"
+
+    Red Hat
+    ``` bash
+    dnf install zabbix-sql-scripts
+    ```
+
+    SUSE
+    ``` bash
+    zypper install zabbix-sql-scripts
+    ```
+
+    Ubuntu
+    ``` bash
+    sudo apt install zabbix-sql-scripts
+    ```
+
+Next you need to prepare the database schema: unzip the necessary schema files 
+by running the following command:
+
+!!! info "Unzip the DB patch"
+
+    Red Hat / SUSE
+    ``` bash
+    gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+    ```
+
+    Ubuntu
+    ``` bash
+    sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+    ```
+
+???+ note
+
+    Zabbix seems to like to change the locations of the script to populate the
+    DB every version or even in between versions. If you encounter an error take a
+    look at the Zabbix documentation, there is a good chance that some location was
+    changed.
+
+This will extract the database schema required for the Zabbix server.
+
+Now we will execute the SQL file to populate the database. Open a `psql` shell:
+
+!!! info "Open psql shell"
+
+    ``` bash
+    psql -d zabbix -U zabbix-srv
+    ```
+
+???+ warning "Ensure correct search_path is set"
+
+    Make sure you performed previous steps as outlined in [Creating the Zabbix database instance with PostgreSQL](postgresql.md#creating-the-zabbix-database-instance)
+    carefully so that you have set the correct `search_path`.
+
+    If you did not set the default `search_path` for the `zabbix-srv` user,
+    ensure you set it manually in the current session before proceeding:
+    ```psql
+    zabbix=> SET search_path TO "zabbix_server";
+    ```
+
+Upload the DB schema to the database using the following commands:
+
+!!! info "Upload the DB schema to db zabbix"
+
+    ```psql
+    zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
+    ```
+
+???+ warning
+
+    Depending on your hardware or VM performance, this process can take anywhere
+    from a few seconds to several minutes. Please be patient and avoid cancelling
+    the operation.
+
+Monitor the progress as the script runs. You will see output similar to:
+
+!!! example "Output example"
+
+    ```psql
+    zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
+    CREATE TABLE
+    CREATE INDEX
+    CREATE TABLE
+    CREATE INDEX
+    CREATE TABLE
+    ...
+    ...
+    ...
+    INSERT 0 10444
+    DELETE 90352
+    COMMIT
+    ```
+
+Once the script completes and you return to the `zabbix=>` prompt, the database
+should be successfully populated with all the required tables, schemas,
+images, and other elements needed for Zabbix.
+
+However, `zabbix-web` still cannot perform any operations on the tables or sequences.
+To allow basic data interaction without giving too many privileges, grant the
+following permissions:
+
+- For tables: SELECT, INSERT, UPDATE, and DELETE.
+- For sequences: SELECT and UPDATE.
+
+!!! info "Grant rights on the schema to user zabbix-web"
+
+    ```psql
+    zabbix=> GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server
+    TO "zabbix-web";
+    zabbix=> GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
+    ```
+
+Verify if the rights are correct on the schema :
+
+!!! example "Example schema rights"
+
+    ```psql
+    zabbix=> \dn+
+                                               List of schemas
+         Name      |       Owner       |           Access privileges            |      Description
+    ---------------+-------------------+----------------------------------------+------------------------
+     public        | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
+                   |                   | =U/pg_database_owner                   |
+     zabbix_server | zabbix-srv        | "zabbix-srv"=UC/"zabbix-srv"          +|
+                   |                   | "zabbix-web"=U/"zabbix-srv"            |
+    ```
+
+???+ note
+
+    If you encounter the following error during the SQL import:
+    `vbnet psql:/usr/share/zabbix/sql-scripts/postgresql/server.sql:7: ERROR: no
+        schema has been selected to create in` It indicates that the `search_path` setting
+    might not have been correctly applied. This setting is crucial because it specifies
+    the schema where the tables and other objects should be created. By correctly
+    setting the search path, you ensure that the SQL script will create tables
+    and other objects in the intended schema.
+
+To ensure that the Zabbix tables were created successfully and have the correct
+permissions, you can verify the table list and their ownership using the `psql` command:
+
+- List the Tables: Use the following command to list all tables in the `zabbix_server` schema:
+
+!!! info "List tables"
+
+    ```psql
+    zabbix=# \dt
+    ```
+
+You should see a list of tables with their schema, name, type, and owner.
+For example:
+
+???+ example "List table with relations"
+
+    ```psql
+    zabbix=> \dt
+                            List of relations
+        Schema     |            Name            | Type  |   Owner
+    ---------------+----------------------------+-------+------------
+     zabbix_server | acknowledges               | table | zabbix-srv
+     zabbix_server | actions                    | table | zabbix-srv
+     zabbix_server | alerts                     | table | zabbix-srv
+     zabbix_server | auditlog                   | table | zabbix-srv
+     zabbix_server | autoreg_host               | table | zabbix-srv
+     zabbix_server | changelog                  | table | zabbix-srv
+     zabbix_server | conditions                 | table | zabbix-srv
+    ...
+    ...
+    ...
+     zabbix_server | valuemap                   | table | zabbix-srv
+     zabbix_server | valuemap_mapping           | table | zabbix-srv
+     zabbix_server | widget                     | table | zabbix-srv
+     zabbix_server | widget_field               | table | zabbix-srv
+    (203 rows)
+    ```
+
+- Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
+  the necessary permissions. You can check permissions for specific tables using
+  the \dp command:
+
+!!! info "Verify table permissions"
+
+    ```psql
+    zabbix=> \dp zabbix_server.*
+    ```
+
+???+ example "Example output"
+
+    ```psql
+    zabbix=> \dp zabbix_server.*
+                                                         Access privileges
+        Schema     |            Name            |   Type   |         Access privileges          | Column privileges | Policies
+    ---------------+----------------------------+----------+------------------------------------+-------------------+----------
+     zabbix_server | acknowledges               | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+     zabbix_server | actions                    | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+     zabbix_server | alerts                     | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
+     zabbix_server | auditlog                   | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+    ```
+
+This will display the access privileges for all tables in the `zabbix_server`
+schema. Ensure that `zabbix-srv` has the required privileges.
+
+If everything looks correct, your tables are properly created and the `zabbix-srv`
+user has the appropriate ownership and permissions. If you need to adjust any
+permissions, you can do so using the GRANT commands as needed.
 
 This concludes our installation of the PostgreSQL database.
+
+---
+
+## Conclusion
+
+With the installation and configuration of PostgreSQL as the database backend for
+Zabbix complete, you now have a powerful and efficient database system ready for
+your monitoring needs. We've covered the installation of PostgreSQL from both
+vendor-provided packages and official repositories, securing the database, creating
+the necessary Zabbix database and users, and populating the database with the
+required schema and initial data.
+
+Your Zabbix environment is now ready for the next stages of setup and configuration.
+
+---
+
+## Questions
+
+1. What version of PostgreSQL should I install for compatibility and stability?
+2. What port does my DB use ?
+3. Which database users did I create and why?
+
+---
+
+## Useful URLs
+
+- [https://yum.postgresql.org](ttps://yum.postgresql.org)
+- [https://zypp.postgresql.org/howtozypp/](https://zypp.postgresql.org/howtozypp/)
+- [https://wiki.postgresql.org/wiki/Apt](https://wiki.postgresql.org/wiki/Apt)
+- [https://en.opensuse.org/SDB:PostgreSQL](https://en.opensuse.org/SDB:PostgreSQL)
+- [https://help.ubuntu.com/community/PostgreSQL](https://help.ubuntu.com/community/PostgreSQL)
+- [https://www.postgresql.org/docs/current/ddl-priv.html](https://www.postgresql.org/docs/current/ddl-priv.html)

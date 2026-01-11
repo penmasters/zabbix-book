@@ -1,4 +1,11 @@
-# Installing the Zabbix database
+---
+description: |
+  This section from The Zabbix Book titled "Database choices" helps you select
+  the appropriate database backend and packages for your Zabbix installation.
+tags: [beginner]
+---
+
+# Database choices
 
 ## Choosing a Database Backend for Zabbix
 
@@ -99,6 +106,43 @@ available:
     Check the [Zabbix documentation](https://www.zabbix.com/documentation/current/en/manual/installation/requirements#required-software)
     for the latest supported versions.
 
-Before installing the database software, ensure that the server(s)
-meet the configuration requirements outlined in the previous section: 
-[System Requirements](../ch00-getting-started/Requirements.md).
+Before installing the database software, ensure that the server
+meets the configuration requirements and is prepared as outlined in the previous 
+chapter: [_Getting started_](../ch00-getting-started/Requirements.md).
+
+---
+
+## Conclusion
+
+We have discussed the various database backends supported by Zabbix. We've also
+examined the advantages and disadvantages of using vendor-provided packages
+versus official repositories for installing MariaDB and PostgreSQL.
+
+Armed with this knowledge, you are now ready to proceed with the installation 
+of your chosen database backend. In the following chapters, we will guide you 
+through the installation process for MariaDB or PostgreSQL, ensuring that your 
+Zabbix instance is equipped with a robust and efficient database system.
+
+Now that you have a clear understanding of the database options available, let's
+move on to the installation of your preferred database backend.
+
+---
+
+## Questions
+
+1. Should I choose MySQL or PostgreSQL as the database back-end? Why?
+2. Should I use the packages provided by the OS vendor, or should I install
+   database-vendor official packages? Why?
+
+---
+
+## Useful URLs
+
+- [https://mariadb.org](https://mariadb.org)
+- [https://mariadb.com](https://mariadb.com)
+- [https://www.mysql.com](https://www.mysql.com)
+- [https://www.percona.com](https://www.percona.com)
+- [https://www.postgresql.org](https://www.postgresql.org)
+- [https://www.tigerdata.com/timescaledb](https://www.tigerdata.com/timescaledb)
+- [https://www.enterprisedb.com](https://www.enterprisedb.com)
+- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements)

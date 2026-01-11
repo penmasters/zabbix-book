@@ -1,7 +1,9 @@
 ---
 description: |
-    Step‑by‑step guide to install Zabbix with MariaDB or PostgreSQL, setup server
-    & frontend on Ubuntu or Rocky Linux, including security & repo configuration.
+    This section from The Zabbix Book titled "Zabbix architecture" explains the 
+    modular structure of a Zabbix setup. It highlights the roles of each component
+    and their interdependencies, while providing an introduction to how we will 
+    perform the installation of the components in next sections.
 tags: [beginner]
 ---
 

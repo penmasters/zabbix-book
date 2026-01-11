@@ -1,10 +1,24 @@
+---
+description: |
+    This section from The Zabbix Book titled "Installing the frontend" provides
+    step-by-step instructions for installing the Zabbix frontend with NGINX on
+    various Linux distributions. It covers the installation of necessary packages,
+    configuration of SELinux and SystemD for PHP-FPM, and modification of the
+    NGINX configuration to serve the Zabbix frontend on port 80. Additionally, 
+    it guides users through the initial setup of the Zabbix frontend, including
+    database connection configuration and basic settings such as instance name,
+    timezone, and time format.
+tags: [beginner]
+---
+
 # Installing the frontend
 
-Before configuring the Zabbix frontend, ensure the required packages are installed
-on your chosen frontend server. This server can be the same one where the Zabbix
-server packages were previously installed, or it can be a separate machine. 
-Make sure the frontend machine is prepared as outlined in [Preparing the server for Zabbix](preparation.md),
-and perform all subsequent steps on the server designated for the frontend.
+Before configuring the Zabbix frontend, ensure the system meets the requirements
+and is prepared as outlined in the previous chapter: [_Getting started_](../ch00-getting-started/Requirements.md). This server can be the same one where 
+the Zabbix server packages were previously installed, or it can be a separate
+machine. 
+
+Perform all subsequent steps on the server designated for the frontend.
 
 ---
 
@@ -519,8 +533,37 @@ This concludes our topic on setting up the Zabbix server. If you're interested i
 securing your front-end, I recommend checking out the topic Securing Zabbix for
 additional guidance and best practices.
 
-???+ note
+???+ tip
 
-    If you are not able to safe your configuration at the end make sure SeLinux
-    is disabled. It is possible that it will block access to certain files or even
-    the database.
+    If you are not able to save your configuration at the end, make sure you
+    executed the SELinux related instructions or have SELinux disabled.
+    Also check if the `/etc/zabbix/web` directory is writable by the webservice
+    user (usually `wwwrun` or `www`)
+
+---
+
+## Conclusion
+
+With the installation and configuration of the Zabbix frontend now complete,
+you have successfully set up the user interface for your Zabbix monitoring system.
+This process included installing the necessary packages, configuring a web server and
+PHP engine, setting up the database connection, and customizing the frontend settings.
+
+At this stage, your Zabbix instance is operational, providing the foundation for
+advanced monitoring and alerting. In the upcoming chapters, we will delve into
+fine-tuning Zabbix, optimizing performance, and exploring key features that transform
+it into a powerful observability platform.
+
+Now that your Zabbix environment is up and running, let’s take it to the next level.
+
+---
+
+## Questions
+
+---
+
+## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
+- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)
+- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)

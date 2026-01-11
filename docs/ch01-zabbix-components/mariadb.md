@@ -1,4 +1,15 @@
-# Installing the MariaDB Database
+---
+description: |
+    This section from The Zabbix Book titled "Installing a MariaDB Database"
+    guides you through installing MariaDB as the database backend for Zabbix.
+    It covers two installation methods: using OS vendor-provided packages or the
+    official MariaDB repositories. The section includes steps to start and 
+    secure the MariaDB server, create a Zabbix database with appropriate users,
+    and configure firewall rules if necessary. 
+tags: [beginner]
+---
+
+# Installing a MariaDB Database
 
 In this section we will install the MariaDB server and -client packages. This will
 provide the necessary components to run and manage MariaDB as your Zabbix database backend.
@@ -424,4 +435,122 @@ to the database server. By default, MariaDB listens on port 3306.
     sudo ufw allow 3306/tcp
     ```
 
+---
+
+## Populate the Zabbix database
+
+During the installation of the database software earlier, we created the 
+necessary users and database for Zabbix, however, Zabbix expects certain tables,
+schemas, images, and other elements to be present in the database.
+To set up the database correctly, we need to populate it with the required schema.
+
+First we need to install the Zabbix SQL scripts that contain the required
+import scripts for the database.
+
+!!! info "Install SQL scripts"
+
+    Red Hat
+    ``` bash
+    dnf install zabbix-sql-scripts
+    ```
+
+    SUSE
+    ``` bash
+    zypper install zabbix-sql-scripts
+    ```
+
+    Ubuntu
+    ``` bash
+    sudo apt install zabbix-sql-scripts
+    ```
+
+???+ warning
+
+    When using a recent version of MySQL or MariaDB as the database backend for 
+    Zabbix, you may encounter issues related to the creation of triggers during
+    the schema import process. This is particularly relevant if binary logging
+    is enabled on your database server. (Binary logging is often enabled by default)
+    To address this, you need to set the `log_bin_trust_function_creators` option to `1`
+    in the MySQL/MariaDB configuration file or temporarily at runtime.
+    This allows non-root users to create stored functions and triggers without requiring
+    `SUPER` privileges, which are restricted when binary logging is enabled.
+
+    Normally we won't need the setting after the initial import of the Zabbix schema is done,
+    so we will disable it again after the import is complete.
+
+    !!! info "Activate temporarily extra privileges for non root users"
+
+        ```bash
+        mariadb -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 1;"
+        ```
+
+Now lets upload the data from zabbix (db structure, images, user, ... )
+for this we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
+
+!!! info "Populate the database"
+
+    ``` bash
+    sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
+    ```
+
+!!! warning
+
+    Depending on the speed of your hardware or virtual machine, the process may
+    take anywhere from a few seconds to several minutes without any visual feedback
+    after entering the root password.
+
+    Please be patient and avoid cancelling the operation; just wait for the linux 
+    prompt to reappear.
+
+???+ note
+
+    Zabbix seems to like to change the locations of the script to populate the
+    DB every version or even in between versions. If you encounter an error take a
+    look at the Zabbix documentation, there is a good chance that some location was
+    changed.
+
+Once the import of the Zabbix schema is complete, you should no longer need the
+`log_bin_trust_function_creators` global parameter. It is a good practice to remove
+it for security reasons.
+
+To revert the global parameter back to 0, use the following command in the 
+MySQL/MariaDB shell:
+
+!!! info "Disable function log_bin_trust again"
+
+    ```bash
+    mariadb -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 0;"
+    ```
+
+This command will disable the setting, ensuring that the servers security
+posture remains robust.
+
 This concludes our installation of the MariaDB. You can now proceed to [Preparing the Zabbix server](preparation.md).
+
+---
+
+## Conclusion
+
+With the successful installation and configuration of MariaDB as the database 
+backend for Zabbix, you now have a robust foundation for your monitoring solution.
+We've covered the installation of MariaDB from both vendor-provided packages and
+official repositories, securing the database, creating the necessary Zabbix 
+database and users, and populating the database with the required schema and 
+initial data.
+
+Your Zabbix environment is now ready for the next stages of setup and configuration.
+
+---
+
+## Questions
+
+1. What version of MariaDB should I install for compatibility and stability?
+2. What port does my DB use ?
+3. Which database users did I create and why?
+
+---
+
+## Useful URLs
+
+- [https://mariadb.org/download/](https://mariadb.org/download/)
+- [https://mariadb.com/docs/server/server-usage/stored-routines/binary-logging-of-stored-routines](https://mariadb.com/docs/server/server-usage/stored-routines/binary-logging-of-stored-routines)

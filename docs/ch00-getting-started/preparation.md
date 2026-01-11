@@ -1,10 +1,23 @@
+---
+description: |
+    This section from The Zabbix Book titled "Preparing the system for Zabbix" 
+    outlines the preliminary steps required before installing any Zabbix component.
+    It includes instructions adding the official Zabbix repository for different
+    Linux distributions, such as Rocky Linux, openSUSE, and Ubuntu. The section
+    also provides specific remarks and tips for each operating system to ensure
+    a smooth installation process.
+tags: [beginner]
+---
+
 # Preparing the system for Zabbix
 
-Before installing the Zabbix server and/or frontend, ensure that the server(s)
-meet the configuration requirements outlined in the previous section: [System Requirements](../ch00-getting-started/Requirements.md).
+Before installing any Zabbix component, we need to ensure that the server(s)
+meet the configuration requirements outlined in the previous section: [System Requirements](Requirements.md).
 
-If you plan to install the Zabbix server and frontend on separate machines,
-prepare each server individually according to the instructions provided here.
+If you plan to install the Zabbix database, server and/or frontend on separate 
+machines, prepare each server individually according to the instructions provided
+here. Also servers that will host a Zabbix Proxy, need to be prepared in the same
+way.
 
 ---
 
@@ -211,4 +224,25 @@ This will refresh the repository metadata and prepare the system for Zabbix inst
     However, always exercise caution when adding new repositories to ensure
     system security and stability.
 
--
+---
+
+## Conclusion
+
+With the preparation of your system for Zabbix now complete, you have successfully
+configured your environment for the installation of Zabbix components. We've covered 
+the steps to add the official Zabbix repository to your system, preparing it for the 
+installation of Zabbix server, database, and frontend components.
+
+Your system is now ready for the next steps. In the following chapter, we will
+delve into the installation of the Zabbix components, guiding you through the
+process of setting up the Zabbix server, database, and frontend. 
+
+---
+
+## Questions
+
+---
+
+## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)
