@@ -96,7 +96,7 @@ nav:
       - ch13-advanced-security/chapter.md
       - SELinux: ch13-advanced-security/selinux-zabbix.md
       - Securing the frontend: ch13-advanced-security/securing-frontend.md
-      - Securing the agent: ch13-advanced-security/agent-security.md
+      - Securing the Zabbix agent with encryption: ch13-advanced-security/agent-security.md
       - Storing secrets: ch13-advanced-security/using-vault.md
       - Partitioning MariaDB: ch13-advanced-security/partitioning-database.md
       - Partitioning PostgreSQL with TimescaleDB: ch13-advanced-security/partitioning-postgresql-database.md
