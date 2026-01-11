@@ -101,12 +101,12 @@ This will make sure only the zabbix user on your Linux system has read only acce
 
 Open you host configuration and go to the `Encryption` tab. By default it will be set to not use encryption.
 
-![Unencrypted agent](ch13.xx-frontend-agent-host-no-encryption){ align=center }
+![Unencrypted agent](ch13.xx-frontend-agent-host-no-encryption.png){ align=center }
 *13.xx Unencrypted agent settings*
 
 Let's fill our the details here, just as we did on the Zabbix agent host side.
 
-![Encrypted agent](ch13.xx-frontend-agent-host-encryption){ align=center }
+![Encrypted agent](ch13.xx-frontend-agent-host-encryption.png){ align=center }
 *13.xx Encrypted agent settings*
 
 As you can see, even though this is an Active Zabbix agent, I set up encryption requirements for both. Click on the `Update` button to save these changes and go back to the Zabbix agent host CLI to restart the agent.
@@ -120,7 +120,7 @@ As you can see, even though this is an Active Zabbix agent, I set up encryption 
 
 Your agent icon should remain green and you should now see that the agent is encrypted.
 
-![Encrypted agent staatus](ch13.xx-frontend-agent-host-encryption-status){ align=center }
+![Encrypted agent staatus](ch13.xx-frontend-agent-host-encryption-status.png){ align=center }
 *13.xx Encrypted agent status*
 
 ### Active agent autoregistration
