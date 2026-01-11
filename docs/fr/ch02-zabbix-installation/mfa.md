@@ -365,7 +365,7 @@ to your Zabbix environment and fortifying your monitoring infrastructure.n
 - How does adding MFA to Zabbix align with a broader security strategy, and what
   other complementary security measures should be considered?
 
-## Useful URLs
+## URL utiles
 
 [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/mfa](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/mfa)
 [https://duo.com/docs/sso-zabbix](https://duo.com/docs/sso-zabbix)

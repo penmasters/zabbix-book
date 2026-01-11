@@ -14,8 +14,8 @@ WebUI. Zabbix heeft verschillende opties om gebruikerswachtwoorden beter te
 beveiligen door het wachtwoordbeleid te configureren:
 
 - Vereiste voor minimale wachtwoordlengte
-- Requirements for password to contain an uppercase and a lowercase Latin
-  letter, a digit, a special character
+- Vereisten voor wachtwoord om een hoofdletter en een kleine Latijnse letter,
+  een cijfer, een speciaal teken te bevatten
 - Requirement to avoid easy-to-guess passwords
 
 To secure sign in process even more you can configure multi factor

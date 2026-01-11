@@ -191,10 +191,11 @@ dan zal de pakketbeheerder doorgaan met de installatie.
 
 ### Firewall
 
-Next, we need to ensure that the firewall is installed and configured. A
-firewall is a crucial security component that helps protect your server from
-unauthorized access and potential threats by controlling incoming and outgoing
-network traffic based on predetermined security rules.
+Vervolgens moeten we ervoor zorgen dat de firewall geïnstalleerd en
+geconfigureerd is. Een firewall is een cruciaal beveiligingsonderdeel dat helpt
+om je server te beschermen tegen ongeautoriseerde toegang en potentiële
+bedreigingen door inkomend en uitgaand netwerkverkeer te controleren op basis
+van vooraf bepaalde beveiligingsregels.
 
 Voer het volgende commando uit om de firewall te installeren en in te schakelen:
 
@@ -216,7 +217,7 @@ Voer het volgende commando uit om de firewall te installeren en in te schakelen:
     sudo apt install ufw
     sudo ufw enable
     ```
-???+ note "What is firewalld / ufw"
+???+ note "Wat is firewalld / ufw?"
 
     Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
     changes to take effect immediately without needing to restart the service.
@@ -224,15 +225,17 @@ Voer het volgende commando uit om de firewall te installeren en in te schakelen:
     refer to your OS documentation for the appropriate firewall configuration steps.
     Ubuntu makes use of UFW which is merely a frontend for iptables.
 
-During the Zabbix installation in the next chapters, we will need to open
-specific ports in the firewall to allow communication between Zabbix components.
+Tijdens de Zabbix installatie in de volgende hoofdstukken moeten we specifieke
+poorten openen in de firewall om communicatie tussen Zabbix componenten mogelijk
+te maken.
 
-Alternatively to just opening ports, as we will do in the next chapters, you can
-also choose to define dedicated firewall zones for specific use cases. This
-approach enhances security by isolating services and restricting access based on
-trust levels. For example...
+In plaats van alleen poorten te openen, zoals we in de volgende hoofdstukken
+zullen doen, kun je er ook voor kiezen om speciale firewall zones te definiëren
+voor specifieke gebruikssituaties. Deze aanpak verbetert de beveiliging door
+diensten te isoleren en toegang te beperken op basis van vertrouwensniveaus.
+Bijvoorbeeld...
 
-!!! example "Create a firewalld zone for database access"
+!!! example "Maak een firewalld zone voor databasetoegang"
 
     ```bash
     firewall-cmd --new-zone=db_zone --permanent
@@ -241,45 +244,46 @@ trust levels. For example...
 Je kunt het aanmaken van de zone bevestigen door het volgende commando uit te
 voeren:
 
-!!! example "Verify the zone creation"
+!!! example "Het aanmaken van de zone verifiëren"
 
     ```shell-session
     localhost:~ # firewall-cmd --get-zones
     block dmz drop external home internal nm-shared db_zone public trusted work
     ```
 
-Using zones in firewalld to configure firewall rules provides several advantages
-in terms of security, flexibility, and ease of management. Here’s why zones are
-beneficial:
+Het gebruik van zones in firewalld om firewallregels te configureren biedt
+verschillende voordelen op het gebied van veiligheid, flexibiliteit en
+beheergemak. Hier wordt uitgelegd waarom zones nuttig zijn:
 
 - **Granulaire toegangscontrole :**
 
-: Firewalld zones allow different levels of trust for different network
-interfaces and IP ranges. You can define which systems are allowed to connect to
-PostgreSQL based on their trust level.
+:firewalld zones staan verschillende vertrouwensniveaus toe voor verschillende
+netwerkinterfaces en IP bereiken. Je kunt definiëren welke systemen verbinding
+mogen maken met PostgreSQL op basis van hun vertrouwensniveau.
 
 - **Vereenvoudigd regelbeheer:**
 
-: Instead of manually defining complex iptables rules, zones provide an
-organized way to group and manage firewall rules based on usage scenarios.
+:In plaats van het handmatig definiëren van complexe iptable regels, bieden
+zones een georganiseerde manier om firewall regels te groeperen en te beheren op
+basis van gebruiksscenario's.
 
 - **Verbeterde beveiliging:**
 
-: By restricting application access to a specific zone, you prevent unauthorized
-connections from other interfaces or networks.
+: Door de toegang tot applicaties te beperken tot een specifieke zone, voorkom
+je ongeoorloofde verbindingen vanaf andere interfaces of netwerken.
 
 - **Dynamische configuratie:**
 
-: Firewalld supports runtime and permanent rule configurations, allowing changes
-without disrupting existing connections.
+: Firewalld ondersteunt runtime en permanente regelconfiguraties, waardoor
+veranderingen mogelijk zijn zonder bestaande verbindingen te verstoren.
 
 - **Ondersteuning voor meerdere interfaces:**
 
-: If the server has multiple network interfaces, zones allow different security
-policies for each interface.
+: Als de server meerdere netwerkinterfaces heeft, staan zones een verschillend
+beveiligingsbeleid toe voor elke interface.
 
-Bringing everything together to add a zone for, in this example, PostgreSQL it
-would look like this:
+Om alles samen te voegen en een zone toe te voegen voor, in dit voorbeeld,
+PostgreSQL zou het er als volgt uitzien:
 
 !!! example "Firewalld with zone config for PostgreSQL database access"
 

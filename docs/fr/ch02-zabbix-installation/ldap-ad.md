@@ -402,6 +402,6 @@ strategy.
   provisioning ensure that Zabbix access is also updated? What would happen if
   JIT was not enabled?
 
-## Useful URLs
+## URL utiles
 
 - [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap)
