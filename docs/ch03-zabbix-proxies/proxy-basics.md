@@ -14,6 +14,8 @@ In this chapter we will explain what a proxy is, why you may need or consider it
 what the basic requirements are and what the difference is between _Active proxies_
 and _Passive proxies_.
 
+---
+
 ## What is a Zabbix Proxy
 
 A Zabbix proxy is actually a kind of lightweight Zabbix server process that
@@ -36,6 +38,8 @@ So in short a Zabbix proxy can be used to:
 - Offload the Zabbix server when monitoring thousands of devices
 - Simplify the maintenance and management
 
+---
+
 ## Proxy requirements
 
 If you'd like to set up a few proxies for testing or in your production environment,
@@ -49,6 +53,8 @@ Therefore, the number of CPUs and memory you'll need depends on:
 
 - How many machines you'll be monitoring
 - How many preprocessing rules you'll implement on your hosts
+
+---
 
 ### Proxy configuration updates
 
@@ -91,6 +97,8 @@ consumption.
         - New or modified monitoring items, triggers, or templates assigned to the proxy.
         - Changes to host configurations or data collection rules. 
 
+---
+
 ## Proxy throttling
 
 Imagine that you need to restart your Zabbix server and that all proxies start
@@ -120,6 +128,8 @@ This may cause delays in detection of problems, as you will have to wait for all
 relevant data to be received and processed by the Zabbix server; but you won't lose
 any historical data.
 
+---
+
 ## Active versus Passive proxy
 
 Zabbix proxies have been available since Zabbix 1.6. At that time they where 
@@ -137,6 +147,8 @@ a proxy.
     Remember that choosing the proxy mode _active_ or _passive_ has no impact on 
     how Zabbix agents can communicate with this proxy. It's perfectly fine to have
     an _active proxy_ and a _passive agent_ working together.
+
+---
 
 ### Active proxy
 
@@ -179,6 +191,8 @@ utilize up to two trapper processes on the server:
 
 _3.1 Active proxy
 communication_
+
+---
 
 ### Passive proxy
 
@@ -226,6 +240,8 @@ And finally the config settings we need to change on our _Zabbix server_:
 _3.2 Passive proxy
 communication_
 
+---
+
 ## Proxy runtime control options
 
 Just like the _Zabbix server_ our proxy supports runtime control options always
@@ -272,6 +288,8 @@ options available to use.
     The section parameter can target areas like historycache, preprocessing or locks.
     *Example*: `diaginfo=preprocessing` would provide detailed statistics about 
     the preprocessing manager.
+
+---
 
 ## Proxy firewall
 

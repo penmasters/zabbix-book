@@ -12,6 +12,8 @@ tags: [advanced]
 Whether you want to install an Active proxy or a Passive one, much of the installation
 and configuration steps are the same.
 
+---
+
 ## Zabbix GUI configuration
 
 There are 2 things we need to do when we like to setup a Zabbix proxy and one of
@@ -23,6 +25,8 @@ those steps is adding the proxy in the frontend of Zabbix. So from the menu let'
 _3.3 Create proxy_
 
 Once pressed, a new modal form will pop-up where we need to fill in some information.
+
+---
 
 ### Active proxy
 
@@ -41,6 +45,8 @@ field you could enter some text to make it even more clear that this is an activ
 
 _3.4 New proxy_
 
+---
+
 ### Passive proxy
 
 For the passive proxy we will enter `ProxyP` as _Proxy name_ but now we also need
@@ -51,6 +57,8 @@ runs on. You also notice that we use the same port
 ![Passive proxy](ch03-new-passive-proxy.png)
 
 _3.5 New passive proxy_
+
+---
 
 ## Installing the proxy
 
@@ -100,6 +108,8 @@ in the [_Zabbix components and installation: Database_](../ch01-zabbix-component
 
     If you want to use MySQL or PostgreSQL then you can use the package `zabbix-proxy-mysql`
     or `zabbix-proxy-pgsql` depending on your needs.
+
+---
 
 ## Configuring the proxy
 
@@ -367,6 +377,8 @@ Zabbix server. Hence, all hosts you want to be monitored by the proxy will now
 have to be configured to have their `Server` and/or `ServerActive` configuration 
 values set to the IP/hostname of this proxy instead of the _Zabbix server_.
 
+---
+
 ## Conclusion
 
 This chapter has demonstrated the indispensable role of Zabbix proxies in building
@@ -401,12 +413,16 @@ reliability. The knowledge gained in this chapter will be instrumental in design
 and maintaining a Zabbix infrastructure that is not only robust today but also adaptable
 to future monitoring challenges.
 
+---
+
 ## Questions
 
 - What is the fundamental difference between an active proxy and a passive proxy
   in terms of who initiates the connection?
 - How does a network firewall configuration differ for active vs passive proxies
   when separated from the server by a network firewall?
+
+---
 
 ## Useful URLs
 
