@@ -315,7 +315,7 @@ Only once the replica behaves exactly as expected does the primary system change
 
 This transforms upgrades from leaps of faith into rehearsed procedures.
 
-**_“If you have a replica and didn’t test the upgrade on it first, you skipped
+**_“If you have a replica and didn't test the upgrade on it first, you skipped
 the best gift you were given.”_**
 
 ##### Logical Replication and Near-Zero Downtime
