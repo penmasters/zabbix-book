@@ -11,7 +11,7 @@ description: |
 tags: [beginner]
 ---
 
-# Installing the frontend
+# Frontend installeren
 
 Before configuring the Zabbix frontend, ensure the system meets the requirements
 and is prepared as outlined in the previous chapter: [_Getting

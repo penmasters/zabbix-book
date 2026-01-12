@@ -11,12 +11,13 @@ description: |
 tags: [beginner]
 ---
 
-# Installing the Zabbix server
+# De Zabbix-server installeren
 
-Now that we've added the Zabbix repository with the necessary software, we are
-ready to install both the Zabbix server and the web server. Keep in mind that
-the web server doesn't need to be installed on the same machine as the Zabbix
-server; they can be hosted on separate systems if desired.
+Nu we de Zabbix repository hebben toegevoegd met de benodigde software, zijn we
+klaar om zowel de Zabbix server als de webserver te installeren. Houd in
+gedachten dat de webserver niet op dezelfde machine hoeft te worden
+geïnstalleerd als de Zabbix server; ze kunnen op aparte systemen worden gehost
+indien gewenst.
 
 To install the Zabbix server components, run the following command:
 
@@ -222,7 +223,7 @@ in the `Zabbix server` log file using:
 Look for messages indicating that the server has started successfully. If there
 are any issues, the log file will provide details to help with troubleshooting.
 
-!!! example "Example output"
+!!! example "Voorbeeld uitvoer"
 
     ```
     12074:20250225:145333.529 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
