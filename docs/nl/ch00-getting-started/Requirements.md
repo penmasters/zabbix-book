@@ -285,7 +285,7 @@ beveiligingsbeleid toe voor elke interface.
 Om alles samen te voegen en een zone toe te voegen voor, in dit voorbeeld,
 PostgreSQL zou het er als volgt uitzien:
 
-!!! example "Firewalld with zone config for PostgreSQL database access"
+!!! example "Firewalld met zoneconfiguratie voor PostgreSQL databasetoegang"
 
     ```bash
     firewall-cmd --new-zone=db_zone --permanent
@@ -297,8 +297,8 @@ PostgreSQL zou het er als volgt uitzien:
 Waarbij het `bron IP` het enige adres is dat een verbinding met de database tot
 stand mag brengen.
 
-If you wish to use zones when using firewalld, ensure to adapt the instructions
-in the following chapters accordingly.
+Als je zones wilt gebruiken wanneer je firewalld gebruikt, zorg er dan voor dat
+je de instructies in de volgende hoofdstukken dienovereenkomstig aanpast.
 
 ---
 
@@ -353,7 +353,7 @@ Zodra Chrony geïnstalleerd is, is de volgende stap ervoor te zorgen dat de
 juiste tijdzone ingesteld is. U kan uw huidige tijdsconfiguratie bekijken met
 het commando `timedatectl`:
 
-!!! example "Check the time config"
+!!! example "Controleer de tijdconfiguratie"
 
     ```shell-session
     localhost:~ # timedatectl
@@ -370,7 +370,7 @@ Zorg ervoor dat de Chrony service actief is (raadpleeg indien nodig de vorige
 stappen). Om de juiste tijdzone in te stellen, kunt u eerst alle beschikbare
 tijdzones oplijsten met het volgende commando:
 
-!!! info "List the timezones"
+!!! info "lijst de tijdzones"
 
     ```bash
     timedatectl list-timezones
@@ -379,7 +379,7 @@ tijdzones oplijsten met het volgende commando:
 Deze opdracht toont een lijst met beschikbare tijdzones, zodat je de tijdzone
 kunt selecteren die het dichtst bij je locatie ligt. Bijvoorbeeld:
 
-!!! example "List of all the timezones available"
+!!! example "Lijst van alle beschikbare tijdzones"
 
     ```shell-session
     localhost:~ # timedatectl list-timezones
@@ -404,7 +404,7 @@ volgende commando:
 Gebruik het commando `timedatectl` opnieuw om te controleren of de tijdzone
 juist is ingesteld:
 
-!!! example "Check the time and zone"
+!!! example "Controleer de tijd en zone"
 
     ```shell-session
     localhost:~ # timedatectl
@@ -440,7 +440,7 @@ het volgende commando uitvoeren:
 
 De uitvoer moet lijken op:
 
-!!! example "Verify your chrony output"
+!!! example "Controleer uw chrony-uitvoer"
 
     ``` shell-session
     localhost:~ # chronyc
@@ -453,12 +453,12 @@ De uitvoer moet lijken op:
     chronyc>
     ```
 
-Once inside the Chrony prompt, type the `sources` command to check the used time
-sources:
+Typ op de Chrony prompt de opdracht `sources` om de gebruikte tijdbronnen te
+controleren:
 
 Voorbeelduitvoer:
 
-!!! example "Check your time server sources"
+!!! example "Controleer uw tijdserver bronnen"
 
     ```shell-session
     chronyc> sources
@@ -479,9 +479,9 @@ NTP-servers hier vinden: [www.ntppool.org](https://www.ntppool.org/).
 
 #### Tijdservers bijwerken
 
-To update the time servers, modify the Chrony configuration file:
+Wijzig het Chrony configuratiebestand om de tijdservers bij te werken:
 
-!!! info "Edit chrony config file"
+!!! info "Bewerk chrony config bestand"
 
     Red Hat
     ```bash
@@ -506,7 +506,7 @@ Replace the existing NTP server pool with one closer to your location.
 
 Voorbeeld van de huidige configuratie:
 
-!!! example "Example ntp pool config"
+!!! example "Voorbeeld ntp pool configuratie"
 
     ```
     # Use public servers from the pool.ntp.org project.
@@ -514,9 +514,9 @@ Voorbeeld van de huidige configuratie:
     pool 2.centos.pool.ntp.org iburst
     ```
 
-Change the pools you want to a local time server:
+Wijzig de gewenste pools naar een lokale tijdserver:
 
-!!! info "Change ntp pool config"
+!!! info "ntp-poolconfiguratie wijzigen"
 
     ```
     # Use public servers from the pool.ntp.org project.
@@ -527,7 +527,7 @@ Change the pools you want to a local time server:
 Herstart de Chrony service na deze wijziging om de nieuwe configuratie toe te
 passen:
 
-!!! info "Restart the chrony service"
+!!! info "De chrony service opnieuw starten"
 
     ```bash
     systemctl restart chronyd
@@ -546,7 +546,7 @@ servers in gebruik zijn:
 
 Voorbeeld van verwachte uitvoer met lokale servers:
 
-!!! example "Example output"
+!!! example "Voorbeeld uitvoer"
 
     ```shell-session
     chronyc> sources
@@ -562,12 +562,13 @@ Dit bevestigt dat het systeem nu lokale tijdservers gebruikt.
 
 ## Conclusie
 
-As we have seen, before even considering the Zabbix packages, attention must be
-paid to the environment in which it will reside. A properly configured and
-up-to-date operating system, an open path through the firewall, and accurate
-timekeeping are not mere suggestions, but essential building blocks. Having laid
-this groundwork, we can now proceed with confidence to the Zabbix installation,
-knowing that the underlying system is prepared for the task.
+Zoals we gezien hebben, moet er, voordat er over de Zabbix pakketten wordt
+nagedacht, aandacht worden besteed aan de omgeving waarin het zich zal bevinden.
+Een goed geconfigureerd besturingssysteem, een open pad door de firewall en
+nauwkeurige tijdregistratie zijn niet slechts suggesties, maar essentiële
+bouwstenen. Nu we deze basis gelegd hebben, kunnen we met vertrouwen verder gaan
+met de installatie van Zabbix, wetende dat het onderliggende systeem voorbereid
+is op de taak.
 
 ## Vragen
 
