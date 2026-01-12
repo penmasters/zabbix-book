@@ -50,7 +50,7 @@ local para adicionar seus respectivos endereços IP para sua conveniência:
 
 ## Instalação do banco de dados
 
-Refer to the [_Basic Installation_](basic-installation.md) chapter for detailed
+Refer to the [_Zabbix components: Database_](database.md) chapter for detailed
 instructions on setting up the database. That chapter provides step-by-step
 guidance on installing either a PostgreSQL or MariaDB database on a dedicated
 node running Ubuntu, SUSE or Rocky Linux. The same installation steps apply when
@@ -67,9 +67,9 @@ etapas adicionais de configuração necessárias para ativar a HA (High
 Availability).
 
 Start by preparing the systems for- and installing Zabbix server on all systems
-by following the steps in the _Preparing the server for Zabbix_ and
-_Installation and configuration of Zabbix server_ sections of the [_Basic
-Installation_](basic-installation.md#preparing-the-server-for-zabbix) chapter.
+by following the steps in the [_Preparing the server for
+Zabbix_](preparation.md) and [_Installing Zabbix server_](zabbix-server.md)
+sections of the _Zabbix components_ chapter.
 
 Do note that:
 
@@ -380,8 +380,8 @@ frontend.
 ### Instalar e configurar o front-end
 
 Install the Zabbix frontend on all Zabbix servers, part of the cluster by
-following the steps outlined in the _Installing the frontend_ section of the
-[_Basic Installation_](basic-installation.md#installing-the-frontend) chapter.
+following the steps outlined in the [_Installing the
+frontend_](zabbix-frontend.md) section.
 
 ???+ warning
 
