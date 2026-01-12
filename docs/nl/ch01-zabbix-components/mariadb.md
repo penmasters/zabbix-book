@@ -19,9 +19,9 @@ Als je liever PostgreSQL gebruikt als database backend, kun je deze sectie
 overslaan en doorgaan naar de [_Installatie van de PostgreSQL
 Database_](postgresql.md) sectie.
 
-Als je liever MySQL of Percona gebruikt in plaats van MariaDB, zijn de
-installatie- en configuratiestappen heel gelijkaardig. Over het algemeen vervang
-je `mariadb` door `mysql` in de pakketnamen en commando's.
+???+ tip "MySQL/Percona" Als je liever MySQL of Percona gebruikt in plaats van
+MariaDB, zijn de installatie- en configuratiestappen heel gelijkaardig. Over het
+algemeen vervang je `mariadb` door `mysql` in de pakketnamen en commando's.
 
 ## Installing MariaDB Server and Client from OS Vendor-Provided Packages
 
