@@ -10,7 +10,7 @@ description: |
 tags: [beginner]
 ---
 
-# Installing a PostgreSQL database
+# Een PostgreSQL-database installeren
 
 Alternatively to MariaDB/MySQL, you can choose to use PostgreSQL as the database
 backend for Zabbix. Similar to MariaDB, PostgreSQL can be installed using either
@@ -19,10 +19,10 @@ the OS vendor-provided packages or the official PostgreSQL repositories.
 If you already have installed MariaDB in the previous section, you can skip this
 section.
 
-As of writing PostgreSQL 13-17 are supported by Zabbix. Check the Zabbix
-documentation for an up-to-date list of supported versions for your Zabbix
-version. Usually it's a good idea to go with the latest version that is
-supported by Zabbix.
+Op het moment van schrijven worden PostgreSQL 13-17 ondersteund door Zabbix.
+Controleer de Zabbix documentatie voor een actuele lijst van ondersteunde
+versies voor jouw Zabbix versie. Meestal is het een goed idee om de laatste
+versie te gebruiken die wordt ondersteund door Zabbix.
 
 ???+ tip "TimescaleDB extension"
 
