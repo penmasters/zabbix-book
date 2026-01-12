@@ -19,7 +19,7 @@ the OS vendor-provided packages or the official PostgreSQL repositories.
 If you already have installed MariaDB in the previous section, you can skip this
 section.
 
-Op het moment van schrijven worden PostgreSQL 13-17 ondersteund door Zabbix.
+Op het moment van schrijven worden PostgreSQL 13-18 ondersteund door Zabbix.
 Controleer de Zabbix documentatie voor een actuele lijst van ondersteunde
 versies voor jouw Zabbix versie. Meestal is het een goed idee om de laatste
 versie te gebruiken die wordt ondersteund door Zabbix.
