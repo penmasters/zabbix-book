@@ -19,10 +19,10 @@ the OS vendor-provided packages or the official PostgreSQL repositories.
 If you already have installed MariaDB in the previous section, you can skip this
 section.
 
-Op het moment van schrijven worden PostgreSQL 13-18 ondersteund door Zabbix.
-Controleer de Zabbix documentatie voor een actuele lijst van ondersteunde
-versies voor jouw Zabbix versie. Meestal is het een goed idee om de laatste
-versie te gebruiken die wordt ondersteund door Zabbix.
+As of writing PostgreSQL 13-18 are supported by Zabbix. Check the Zabbix
+documentation for an up-to-date list of supported versions for your Zabbix
+version. Usually it's a good idea to go with the latest version that is
+supported by Zabbix.
 
 ???+ tip "TimescaleDB extension"
 
