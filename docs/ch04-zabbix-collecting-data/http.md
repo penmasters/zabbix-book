@@ -278,7 +278,12 @@ well-defined, and widely deployed.
 #### Authenticating to the API
 
 The Zabbix API uses JSON-RPC over HTTP. Authentication is performed by calling
-the user.login method.
+the user.login method. Another better way is to use an API token and pass it in the
+Authorization header in the headers section.
+
+```bash
+Authorization : Bearer {$YOUR_TOKEN_MACRO}
+```
 
 The endpoint is typically:
 
@@ -408,4 +413,6 @@ Or, as every experienced API engineer eventually learns:
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/http](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/http)
 - [https://curl.se/docs/](https://curl.se/docs/)
+- [https://www.zabbix.com/documentation/current/en/manual/api/reference/user/login?hl=user.login](https://www.zabbix.com/documentation/current/en/manual/api/reference/user/login?hl=user.login)
+- [https://www.zabbix.com/documentation/current/en/manual/api?hl=Bearer#by-authorization-header](https://www.zabbix.com/documentation/current/en/manual/api?hl=Bearer#by-authorization-header)
 
