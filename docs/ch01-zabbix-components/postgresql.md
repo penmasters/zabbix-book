@@ -18,7 +18,7 @@ packages or the official PostgreSQL repositories.
 
 If you already have installed MariaDB in the previous section, you can skip this section.
 
-As of writing PostgreSQL 13-17 are supported by Zabbix. Check the Zabbix documentation
+As of writing PostgreSQL 13-18 are supported by Zabbix. Check the Zabbix documentation
 for an up-to-date list of supported versions for your Zabbix version. Usually it's
 a good idea to go with the latest version that is supported by Zabbix. 
 
