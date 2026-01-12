@@ -204,7 +204,7 @@ configuration.
 
 ---
 
-## Installing the frontend
+## Frontend installeren
 
 Before proceeding with the installation and configuration of the web server, it
 is essential to install some sort of clustering software or use a load-balancer
