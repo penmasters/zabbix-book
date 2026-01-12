@@ -5,15 +5,16 @@ description: |
 tags: [beginner]
 ---
 
-# Database choices
+# Database keuzes
 
 ## Choosing a Database Backend for Zabbix
 
-A critical decision when managing Zabbix installations is selecting the database
-backend. Zabbix supports several database options: MySQL/Percona, MariaDB,
-PostgreSQL (including TimescaleDB), and Oracle (up to Zabbix 7.0).
+Een kritieke beslissing bij het beheren van Zabbix-installaties is het
+selecteren van de database backend. Zabbix ondersteunt verschillende database
+opties: MySQL/Percona, MariaDB, PostgreSQL (inclusief TimescaleDB) en Oracle
+(tot Zabbix 7.0).
 
-???+ warning "Oracle Database deprecation"
+Waarschuwing "Oracle Database deprecatie".
 
     Zabbix 7.0 marks the final release to offer support for Oracle Database.
     Consequently, systems running Zabbix 7.0 or any prior version must undertake
