@@ -276,13 +276,17 @@ with:
     b5716f8f379d  docker.io/zabbix/zabbix-proxy-sqlite3:7.0-centos-latest /usr/sbin/zabbix_...  2 hours ago   Up 2 hours   0.0.0.0:10051->10051/tcp  ZabbixProxySqlite-Quadlet
     ```
 
-When using Podman or Docker directly, container logs can be viewed using 
-`podman logs <CONTAINER ID>`. However, for containers started as SystemD Quadlet 
-services, this command will not show any output. Instead, the logs are written to 
-the host system's journal and can be accessed using:
+Take note of the `CONTAINER ID`—in this example, it is `b5716f8f379d`. You can
+then retrieve the container's logs using:
 
 ???+ info "Retrieve container logs"
 
+    ```bash
+    podman logs b5716f8f379d
+    ```
+    Where `b5716f8f379d` is the `CONTAINER ID` of your container
+
+    On some distributions, you can also view the logs directly through SystemD:
     ```bash
     journalctl --user -u zabbix-proxy-sqlite.service
     ```
