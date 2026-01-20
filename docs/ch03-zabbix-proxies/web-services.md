@@ -306,7 +306,7 @@ to accept connections on port 10053 (by default) from the Zabbix server.
 
 ---
 
-## Firewall configuration
+### Firewall configuration
 
 For the Zabbix server to communicate with the Zabbix web service, the firewall
 on the system where the web service is installed must allow incoming connections
@@ -326,6 +326,46 @@ firewall allows incoming connections on the new port.
     ```bash
     sudo ufw allow 10053/tcp
     ```
+---
+
+## Zabbix server configuration
+
+Finally, we need to configure the Zabbix server to use the Zabbix web service
+for generating scheduled reports. This is done by editing the Zabbix server
+configuration. If you followed the instructions for using separate config files
+in `/etc/zabbix/zabbix_server.d` in the [_Installing the Zabbix server_](../ch01-zabbix-components/zabbix-server.md) chapter, you can do this by
+creating or editing the `/etc/zabbix/zabbix_server.d/web_service.conf` file.
+
+!!! info "Edit zabbix_server.d/web_service.conf"
+
+    ```bash
+    sudo vi /etc/zabbix/zabbix_server.d/web_service.conf
+    ```
+
+    ```ini
+    # Number of report writers to start. Set to 1 or more depending on the
+    # expected load. Minimum is 1 to enable report writing functionality.
+    StartReportWriters=1 
+
+    # Zabbix web service IP address or DNS name
+    WebServiceURL=http://<ZABBIX_WEB_SERVICE_IP_OR_DNS>:10053/report
+    ```
+
+After making these changes, restart the Zabbix server to apply the new configuration.
+
+!!! info "Restart Zabbix server"
+
+    ```bash
+    sudo systemctl restart zabbix-server
+    ```
+
+Finally, you have to tell Zabbix where to find the Zabbix Frontend so that
+it can generate the reports correctly. This is done in the Frontend itself
+by navigating to **Administration → General → Other** and setting the
+**Frontend URL** parameter to the full URL of your Zabbix Frontend.
+
+With this, we have completed the installation and configuration of the Zabbix web service and integrated it with the Zabbix server. The Zabbix web service is now ready to generate scheduled reports as configured in the Zabbix server.
+
 ---
 
 ## Conclusion
