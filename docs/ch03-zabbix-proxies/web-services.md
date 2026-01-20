@@ -23,6 +23,11 @@ releases of Zabbix.
 The actual usage of the Zabbix web service to generate reports is covered in the
 [Scheduled reports](../ch11-zabbix-visualisation/scheduled-reports.md) chapter.
 
+![zabbix-web-service-overview](ch03-web-services-component.png){ align=left }
+
+_3.1 Zabbix web
+service overview_
+
 ---
 
 ## Zabbix web service requirements
