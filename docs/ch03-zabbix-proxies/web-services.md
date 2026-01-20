@@ -310,15 +310,19 @@ with:
     bfedb5d16505  docker.io/zabbix/zabbix-web-service:7.0-centos-latest    /usr/sbin/zabbix_...  12 minutes ago  Up 12 minutes  0.0.0.0:10053->10053/tcp  ZabbixWebService-Quadlet
     ```
 
-When using Podman or Docker directly, container logs can be viewed using 
-`podman logs <CONTAINER ID>`. However, for containers started as SystemD Quadlet 
-services, this command will not show any output. Instead, the logs are written to 
-the host system's journal and can be accessed using:
+Take note of the `CONTAINER ID`—in this example, it is `b5716f8f379d`. You can
+then retrieve the container's logs using:
 
 ???+ info "Retrieve container logs"
 
     ```bash
-    journalctl --user -u zabbix-web-service.service
+    podman logs b5716f8f379d
+    ```
+    Where `b5716f8f379d` is the `CONTAINER ID` of your container
+
+    On some distributions, you can also view the logs directly through SystemD:
+    ```bash
+    journalctl --user -u zabbix-proxy-sqlite.service
     ```
 
 This command will return the startup and runtime logs for the container, which
