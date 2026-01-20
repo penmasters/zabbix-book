@@ -296,6 +296,35 @@ Now you can start the Zabbix web service container using the
 After this, the Zabbix web service container should be up and running and ready
 to accept connections on port 10053 (by default) from the Zabbix server.
 
+This command may take a few minutes as it wil download the required Zabbix Web service
+container from the docker registry.
+
+To verify that the container started correctly, you can inspect the running containers
+with:
+
+???+ example "Inspect running containers"
+
+    ```shell-session
+    podman@localhost:~> podman ps
+    CONTAINER ID  IMAGE                                                   COMMAND               CREATED       STATUS       PORTS                     NAMES
+    bfedb5d16505  docker.io/zabbix/zabbix-web-service:7.0-centos-latest    /usr/sbin/zabbix_...  12 minutes ago  Up 12 minutes  0.0.0.0:10053->10053/tcp  ZabbixWebService-Quadlet
+    ```
+
+When using Podman or Docker directly, container logs can be viewed using 
+`podman logs <CONTAINER ID>`. However, for containers started as SystemD Quadlet 
+services, this command will not show any output. Instead, the logs are written to 
+the host system's journal and can be accessed using:
+
+???+ info "Retrieve container logs"
+
+    ```bash
+    journalctl --user -u zabbix-web-service.service
+    ```
+
+This command will return the startup and runtime logs for the container, which
+are helpful for troubleshooting and verifying that the Zabbix web service has started
+correctly.
+
 ???+ tip "Upgrading the Zabbix web service container"
 
     If, in the future, you need to update the Zabbix web service container to a newer
