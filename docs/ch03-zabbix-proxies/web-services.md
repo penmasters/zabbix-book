@@ -23,7 +23,7 @@ releases of Zabbix.
 The actual usage of the Zabbix web service to generate reports is covered in the
 [Scheduled reports](../ch11-zabbix-visualisation/scheduled-reports.md) chapter.
 
-![zabbix-web-service-overview](ch03-web-services-component.png){ align=left }
+![zabbix-web-service-overview](ch03-web-services-component.png)
 
 _3.1 Zabbix web
 service overview_
@@ -103,7 +103,7 @@ your operating system.
 
     Red Hat
     ```bash
-    sudo dnf install zabbix-web-service
+    dnf install zabbix-web-service
     ```
 
     SUSE
@@ -290,7 +290,7 @@ Now you can start the Zabbix web service container using the
 !!! info "Start Zabbix web service container"
 
     ```bash
-    systemctl --user start zabbix-web-service.container 
+    systemctl --user start zabbix-web-service
     ```
 
 After this, the Zabbix web service container should be up and running and ready
@@ -361,8 +361,13 @@ After making these changes, restart the Zabbix server to apply the new configura
 
 Finally, you have to tell Zabbix where to find the Zabbix Frontend so that
 it can generate the reports correctly. This is done in the Frontend itself
-by navigating to **Administration → General → Other** and setting the
-**Frontend URL** parameter to the full URL of your Zabbix Frontend.
+by navigating to 
+
+**Administration → General → Other** 
+
+and setting the
+
+- **Frontend URL** parameter to the full URL of your Zabbix Frontend.
 
 With this, we have completed the installation and configuration of the Zabbix web service and integrated it with the Zabbix server. The Zabbix web service is now ready to generate scheduled reports as configured in the Zabbix server.
 
