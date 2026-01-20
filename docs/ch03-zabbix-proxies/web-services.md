@@ -1,6 +1,7 @@
 ---
 description: |
-    +- 160 character description for seo
+    This chapter explains what the Zabbix Web service component is why you may
+    need or consider it, what the requirements are and finally how to install it.
 tags: [advanced]
 ---
 # Web services
@@ -29,7 +30,7 @@ The actual usage of the Zabbix web service to generate reports is covered in the
 The Zabbix web service requires a linux-based operating system and a headless
 Google Chrome or Chromium. 
 
-??? note "Google Chrome vs Chromium"
+???+ note "Google Chrome vs Chromium"
 
     Both Google Chrome and Chromium are supported by the Zabbix web service.
     However, Google Chrome is a proprietary browser developed by Google, while
@@ -286,3 +287,62 @@ Now you can start the Zabbix web service container using the
     ```bash
     systemctl --user start zabbix-web-service.container 
     ```
+
+After this, the Zabbix web service container should be up and running and ready
+to accept connections on port 10053 (by default) from the Zabbix server.
+
+???+ tip "Upgrading the Zabbix web service container"
+
+    If, in the future, you need to update the Zabbix web service container to a newer
+    version, you can do so by pulling the latest image from Docker Hub and then
+    restarting the container. Refer to the [Running Proxies as containers](../ch03-zabbix-proxies/proxies-as-container.md#upgrading-our-containers)
+    chapter where we discuss updating containers in more detail including
+    a way to automate the process.
+
+---
+
+## Firewall configuration
+
+For the Zabbix server to communicate with the Zabbix web service, the firewall
+on the system where the web service is installed must allow incoming connections
+on the port used by the web service. By default, this is port `10053`. If you 
+have changed the port in the Zabbix web service configuration, ensure that the
+firewall allows incoming connections on the new port.
+
+!!! info "Configure firewall for Zabbix web service"
+
+    Red Hat / SUSE
+    ```bash
+    sudo firewall-cmd --add-service=zabbix-web-service --permanent
+    sudo firewall-cmd --reload
+    ```
+
+    Ubuntu
+    ```bash
+    sudo ufw allow 10053/tcp
+    ```
+---
+
+## Conclusion
+
+This chapter has covered the installation and configuration of the Zabbix web service which is an essential component for generating scheduled reports
+in Zabbix. Whether you choose to install it as a package or run it as a container,
+we've learned how to set it up and ensure it is properly configured so that the Zabbix server can communicate with it. 
+
+---
+
+## Questions
+
+- What is the primary function of the Zabbix web service?
+- What are the system requirements for installing the Zabbix web service?
+- How do you configure the Zabbix web service to allow connections from the Zabbix server?
+- Should I choose to install the Zabbix web service as a package or run it as a container? Why?
+
+---
+
+## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/concepts/web_service](https://www.zabbix.com/documentation/current/en/manual/concepts/web_service)
+- [https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service](https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service)
+
+
