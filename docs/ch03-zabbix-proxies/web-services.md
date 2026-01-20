@@ -384,6 +384,16 @@ creating or editing the `/etc/zabbix/zabbix_server.d/web_service.conf` file.
     WebServiceURL=http://<ZABBIX_WEB_SERVICE_IP_OR_DNS>:10053/report
     ```
 
+If you have SELinux enabled on your Zabbix server, you may also need to allow the
+Zabbix server to make network connections for it to be able connect to the Zabbix
+web service. This can be done using the following command:
+
+!!! info "Allow Zabbix server to connect to Zabbix web service with SELinux"
+
+    ```bash
+    sudo setsebool -P zabbix_can_network=1
+    ```
+
 After making these changes, restart the Zabbix server to apply the new configuration.
 
 !!! info "Restart Zabbix server"
