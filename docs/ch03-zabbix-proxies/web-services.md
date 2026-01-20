@@ -316,13 +316,13 @@ then retrieve the container's logs using:
 ???+ info "Retrieve container logs"
 
     ```bash
-    podman logs b5716f8f379d
+    podman logs bfedb5d16505
     ```
-    Where `b5716f8f379d` is the `CONTAINER ID` of your container
+    Where `bfedb5d16505` is the `CONTAINER ID` of your container
 
     On some distributions, you can also view the logs directly through SystemD:
     ```bash
-    journalctl --user -u zabbix-proxy-sqlite.service
+    journalctl --user -u zabbix-web-service.service
     ```
 
 This command will return the startup and runtime logs for the container, which
