@@ -21,7 +21,7 @@ scheduled reports, but there are plans to expand its functionality in future
 releases of Zabbix.
 
 The actual usage of the Zabbix web service to generate reports is covered in the
-[Scheduled reports](../ch11-zabbix-visualisation/scheduled-reports.md) chapter.
+[_Scheduled reports_](../ch11-zabbix-visualisation/scheduled-reports.md) chapter.
 
 ![zabbix-web-service-overview](ch03-web-services-component.png)
 
@@ -329,7 +329,7 @@ correctly.
 
     If, in the future, you need to update the Zabbix web service container to a newer
     version, you can do so by pulling the latest image from Docker Hub and then
-    restarting the container. Refer to the [Running Proxies as containers](../ch03-zabbix-proxies/proxies-as-container.md#upgrading-our-containers)
+    restarting the container. Refer to the [_Running Proxies as containers_](../ch03-zabbix-proxies/proxies-as-container.md#upgrading-our-containers)
     chapter where we discuss updating containers in more detail including
     a way to automate the process.
 
