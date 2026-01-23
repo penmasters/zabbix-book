@@ -84,7 +84,7 @@ PostgreSQL Database starten_](#starting-the-postgresql-database).
 
 ---
 
-## PostgreSQL installeren vanuit officiële PostgreSQL Repositories
+## PostgreSQL installeren vanuit officiële PostgreSQL opslagplaatsen
 
 Als je PostgreSQL liever installeert vanuit de officiële PostgreSQL repositories
 in plaats van de door de OS-leverancier geleverde pakketten, is de eerste stap
