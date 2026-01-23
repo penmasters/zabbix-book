@@ -312,6 +312,6 @@ focused user experience for every role within the monitoring ecosystem.
 - How can role-based API permissions help reduce risk in automation or DevOps
   workflows?
 
-## Useful URLs
+## Nuttige URL's
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions#user-types](https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions#user-types)
