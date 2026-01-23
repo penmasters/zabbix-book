@@ -56,7 +56,7 @@ de stappen erg gelijkaardig aan die van MariaDB.
 Bij de installatie van MariaDB of PostgreSQL moet je bepalen vanaf welke bron je
 de databaseserver wilt installeren. Er zijn twee opties beschikbaar:
 
-1. **Door de leverancier geleverde pakketten**
+1. **Door leverancier geleverde pakketten**
 
 : Deze staan in de software repositories van de meeste Linux distributies en
 worden onderhouden door de distributieleverancier.
