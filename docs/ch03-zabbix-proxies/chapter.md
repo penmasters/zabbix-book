@@ -27,3 +27,11 @@ into why proxies should be an integral part of your monitoring strategy from the
 By the end, you'll not only know how to set up a basic proxy but also have a clear
 understanding of their underlying workings and strategic advantages,
 ensuring you make informed decisions as you scale your Zabbix installation.
+
+Secondly, we'll explore the Web services component, which is essential for generating
+scheduled reports in Zabbix. We'll discuss what it is, why you might need it,
+the requirements for running it, and how to install and configure it effectively.
+
+This chapter aims to provide a comprehensive understanding of both proxies
+and the Web services component, equipping you with the knowledge to enhance
+your Zabbix monitoring setup effectively.

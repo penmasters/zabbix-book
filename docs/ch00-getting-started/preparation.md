@@ -2,10 +2,8 @@
 description: |
     This section from The Zabbix Book titled "Preparing the system for Zabbix" 
     outlines the preliminary steps required before installing any Zabbix component.
-    It includes instructions adding the official Zabbix repository for different
-    Linux distributions, such as Rocky Linux, openSUSE, and Ubuntu. The section
-    also provides specific remarks and tips for each operating system to ensure
-    a smooth installation process.
+    It includes instructions adding the official Zabbix repository and preparing
+    the system for running containers using Podman.
 tags: [beginner]
 ---
 
@@ -226,12 +224,246 @@ This will refresh the repository metadata and prepare the system for Zabbix inst
 
 ---
 
+## Preparing the system for running containers using Podman
+
+If you plan to run Zabbix components as containers using Podman, you need to
+ensure that Podman is installed and properly configured on your system. Below
+are the instructions for installing Podman on different operating systems.
+
+You can skip this section if you do not plan to run any Zabbix components as containers on the current system.
+
+???+ note "Why Podman?"
+
+    Podman is a popular containerization tool that allows you to run and manage
+    containers without requiring a daemon like Docker. It is the recommended
+    container engine on most modern distributions and offers several advantages
+    over Docker.
+
+    Firstly, Podman enhances security by supporting rootless containers, allowing containers
+    to run under non-privileged user accounts. Secondly, it integrates seamlessly with
+    SELinux, enabling robust access control and policy enforcement. Thirdly, Podman
+    works natively with systemd, which facilitates container lifecycle management through
+    systemd units and quadlets.
+    
+### Installing Podman
+
+To be able to run containers using Podman, we first need to install Podman and
+some additional tools that will help us manage containers with SystemD.
+
+!!! info "Install podman and needed tools"
+
+    Red Hat
+    ```bash
+    dnf install podman policycoreutils-python-utils
+    ```
+
+    SUSE
+    ```bash
+    zypper install podman policycoreutils-python-utils
+    ```
+
+    Ubuntu
+    ```bash
+    sudo apt install podman
+    ```
+
+### Configure Podman for user-based container management
+
+Next, we will create a `podman`-user which will be running the container(s). You
+are free to use a different username, e.g. `zabbix-proxy` for a user that will
+be running only zabbix-proxy in a container.
+
+!!! info "Create and init podman user"
+
+    ```bash
+    sudo useradd --comment "User for running container workloads" podman
+    sudo -i -u podman
+    mkdir -p ~/.local/share/containers
+    mkdir -p ~/.config/containers/systemd/
+    exit
+    ```
+
+When your system has SELinux enabled, execute the following command as `root`. 
+
+!!! info "SELinux: Set file context mapping"
+
+    ```bash
+    semanage fcontext -a -e /var/lib/containers /home/podman/.local/share/containers
+    ```
+
+This command adds a SELinux file context mapping by creating an equivalence (-e)
+between the default container storage directory `/var/lib/containers` and the user’s
+Podman container storage path `/home/podman/.local/share/containers`. Essentially,
+it tells SELinux to treat files in the user's container storage the same way it
+treats files in the default system container storage, ensuring proper access
+permissions under SELinux policy.
+
+!!! info "SELinux: Apply file context mapping"
+
+    ```bash
+    restorecon -R -v /home/podman/.local/share/containers
+    ```
+
+After defining new SELinux contexts, this command recursively (`-R`) applies
+the correct SELinux security contexts to the files in the specified directory.
+The `-v` flag enables verbose output, showing what changes are made. This ensures
+that all files in the container storage directory have the correct SELinux labels
+as defined by the previous `semanage` commands.
+
+!!! info "Enable lingering user processes"
+
+    ```bash
+    loginctl enable-linger podman
+    ```
+
+This command enables “linger” for the user `podman`. Linger allows user services
+(such as containers managed by SystemD) to continue running even when the user
+is not actively logged in. This is useful for running Podman containers in the
+background and ensures that containerized proxies or other services remain active
+after logout or system reboots.
+
+As the final step in creating the Podman setup we need to to tell SystemD where 
+the user-specific runtime files are stored:
+
+!!! info "Set XDG_RUNTIME_DIR environment variable for podman user"
+
+    ```bash
+    sudo -u podman -i
+    echo export XDG_RUNTIME_DIR="/run/user/$(id -u podman)" >> ~/.bash_profile && \
+        source ~/.bash_profile
+    ```
+
+This line ensures that the `XDG_RUNTIME_DIR` environment variable is correctly set
+for the `podman` user and is loaded in current and next sessions. 
+This variable points to the location where user-specific runtime
+files are stored, including the systemd user session bus. Setting it is essential
+for enabling `systemctl --user` to function properly with Podman-managed containers.
+
+Your system is now prepared for running Zabbix components as containers using Podman.
+
+???+ warning "Known issue waiting for network-online.target"
+
+    In case the starting of your containers takes about 90s and then ultimately
+    fails to start. If you then see lines like this in your system logging 
+    (`journalctl`):
+
+    ```
+    systemd[1601]: Starting Wait for system level network-online.target as user....
+    sh[3128]: inactive
+    sh[3130]: inactive
+    sh[3132]: inactive
+    sh[3134]: inactive
+    sh[3136]: inactive
+    ...
+    ...
+    sh[3604]: inactive
+    sh[3606]: inactive
+    systemd[1601]: podman-user-wait-network-online.service: start operation timed out. Terminating.
+    systemd[1601]: podman-user-wait-network-online.service: Main process exited, code=killed, status=15/TERM
+    systemd[1601]: podman-user-wait-network-online.service: Failed with result 'timeout'.
+    systemd[1601]: Failed to start Wait for system level network-online.target as user..
+    ```
+
+    Then you are hitting a known [problem with the Podman Quadlets](https://github.com/containers/podman/issues/24796). 
+
+    This is caused by the fact that the SystemD generated Quadlet service contains
+    a dependency to the system-wide special target `network-online.target` which
+    normally indicates the system's network is fully up and running. However on
+    certain Linux distriutions or with specific networking configurations the
+    system network components may not correctly notify SystemD that the network is
+    "online", causing `network-online.target` to never get activated. This in turn
+    makes that Podman will wait until it times out, thinking the network is not 
+    yet available.
+
+    As a workaround, you can create a dummy system service that will trigger 
+    `network-online.target`:
+
+    ```bash
+    vi /etc/systemd/system/podman-network-online-dummy.service
+    ```
+    ```ini
+    [Unit]
+    Description=This is a dummy service to activate network-online.target
+    After=network-online.target
+    Wants=network-online.target
+
+    [Service]
+    ExecStart=/usr/bin/echo Activating network-online.target
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+    ```bash
+    systemctl daemon-reload
+    systemctl enable --now podman-network-online-dummy.service
+    ```
+
+???+ warning "Known issue waiting for network-online.target"
+
+    In case the starting of your containers takes about 90s and then ultimately
+    fail to start. If you then see lines like this in your system logging 
+    (`journalctl`):
+
+    ```
+    systemd[1601]: Starting Wait for system level network-online.target as user....
+    sh[3128]: inactive
+    sh[3130]: inactive
+    sh[3132]: inactive
+    sh[3134]: inactive
+    sh[3136]: inactive
+    ...
+    ...
+    sh[3604]: inactive
+    sh[3606]: inactive
+    systemd[1601]: podman-user-wait-network-online.service: start operation timed out. Terminating.
+    systemd[1601]: podman-user-wait-network-online.service: Main process exited, code=killed, status=15/TERM
+    systemd[1601]: podman-user-wait-network-online.service: Failed with result 'timeout'.
+    systemd[1601]: Failed to start Wait for system level network-online.target as user..
+    ```
+
+    Then you are hitting a known [problem with the Podman Quadlets](https://github.com/containers/podman/issues/24796). 
+
+    This is caused by the fact that the SystemD generated Quadlet service contains
+    a dependency to the system-wide special target `network-online.target` which
+    normally indicates the system's network is fully up and running. However on
+    certain Linux distriutions or with specific networking configurations the
+    system network components may not correctly notify SystemD that the network is
+    "online", causing `network-online.target` to never get activated. This in turn
+    makes that Podman will wait until it times out, thinking the network is not 
+    yet available.
+
+    As a workaround, you can create a dummy system service that will trigger 
+    `network-online.target`:
+
+    ```bash
+    vi /etc/systemd/system/podman-network-online-dummy.service
+    ```
+    ```ini
+    [Unit]
+    Description=This is a dummy service to activate network-online.target
+    After=network-online.target
+    Wants=network-online.target
+
+    [Service]
+    ExecStart=/usr/bin/echo Activating network-online.target
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+    ```bash
+    systemctl daemon-reload
+    systemctl enable --now podman-network-online-dummy.service
+    ```
+
+---
+
 ## Conclusion
 
 With the preparation of your system for Zabbix now complete, you have successfully
 configured your environment for the installation of Zabbix components. We've covered 
 the steps to add the official Zabbix repository to your system, preparing it for the 
 installation of Zabbix server, database, and frontend components.
+And we have also prepared the system for running containers using Podman, if needed.
 
 Your system is now ready for the next steps. In the following chapter, we will
 delve into the installation of the Zabbix components, guiding you through the
