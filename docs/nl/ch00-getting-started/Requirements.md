@@ -502,7 +502,8 @@ Wijzig het Chrony configuratiebestand om de tijdservers bij te werken:
     sudo vi /etc/chrony/chrony.conf
     ```
 
-Replace the existing NTP server pool with one closer to your location.
+Vervang de bestaande NTP-serverpool door eentje die dichter bij jouw locatie
+ligt.
 
 Voorbeeld van de huidige configuratie:
 
