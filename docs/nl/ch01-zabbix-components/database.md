@@ -37,7 +37,7 @@ query-snelheden en ingebouwde compressie om de opslagvereisten te verlagen. Deze
 voordelen gaan echter gepaard met extra complexiteit tijdens de installatie en
 enkele beperkingen voor het bewaren van historische gegevens.
 
-???+ tip "TimescaleDB installatie"
+Tip "TimescaleDB installatie".
 
     Given its advanced nature, TimescaleDB is not essential for most Zabbix users.
     As such, its installation is beyond the scope of this chapter. If you plan to
