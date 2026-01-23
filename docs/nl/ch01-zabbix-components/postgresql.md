@@ -92,7 +92,7 @@ het toevoegen van de PostgreSQL repository aan je systeem.
 
 ---
 
-### De PostgreSQL repository toevoegen
+### De PostgreSQL opslagplaats toevoegen
 
 Set up the PostgreSQL repository with the following commands:
 
