@@ -11,9 +11,9 @@ tags: [beginner]
 
 # Een MariaDB-database installeren
 
-In this section we will install the MariaDB server and -client packages. This
-will provide the necessary components to run and manage MariaDB as your Zabbix
-database backend.
+In deze sectie zullen we de MariaDB server en -client pakketten installeren. Dit
+zal de nodige componenten leveren om MariaDB te draaien en te beheren als je
+Zabbix database backend.
 
 Als je liever PostgreSQL gebruikt als database backend, kun je deze sectie
 overslaan en doorgaan naar de [_Installatie van de PostgreSQL
@@ -23,12 +23,12 @@ Database_](postgresql.md) sectie.
 MariaDB, zijn de installatie- en configuratiestappen heel gelijkaardig. Over het
 algemeen vervang je `mariadb` door `mysql` in de pakketnamen en commando's.
 
-## Installing MariaDB Server and Client from OS Vendor-Provided Packages
+## MariaDB-server en -client installeren vanuit door de leverancier van het besturingssysteem geleverde pakketten
 
-To install the distribution default MariaDB server and client, execute the
-following command:
+Voer het volgende commando uit om de standaard MariaDB server en client te
+installeren:
 
-!!! info "Install distribution version of Mariadb"
+!!! info "Distributieversie van Mariadb installeren"
 
     Red Hat
     ```bash
@@ -45,26 +45,27 @@ following command:
     sudo apt install mariadb-server
     ```
 
-This command will download and install both the server and client packages,
-enabling you to set up, configure, and interact with your MariaDB database. Once
-the installation is complete, you can proceed to the [_Starting the MariaDB
-database_](#starting-the-mariadb-database) section.
+Dit commando downloadt en installeert zowel de server- als de clientpakketten,
+zodat u uw MariaDB-database kunt instellen, configureren en ermee kunt werken.
+Als de installatie voltooid is, kun je doorgaan naar het gedeelte [_De MariaDB
+database starten_](#starting-the-mariadb-database).
 
 ---
 
-## Installing MariaDB Server and Client from Official MariaDB Repositories
+## MariaDB-server en -client installeren vanuit officiële MariaDB-opslagplaatsen
 
-If you prefer to install MariaDB from the official MariaDB repositories instead
-of the OS vendor-provided packages, the first step is to add the MariaDB
-repository to your system.
+Als je er de voorkeur aan geeft om MariaDB te installeren vanuit de officiële
+MariaDB repositories in plaats van de door de OS-leverancier geleverde
+pakketten, dan is de eerste stap om de MariaDB repository aan je systeem toe te
+voegen.
 
 ---
 
-### Adding the MariaDB Repository
-To create the MariaDB repository file, execute the following command in your
-terminal:
+### De MariaDB-opslagplaats toevoegen
+Om het MariaDB repository bestand aan te maken, voer je het volgende commando
+uit in je terminal:
 
-!!! info "Define the MariaDB repository"
+!!! info "De MariaDB-repository definiëren".
 
     Red Hat
     ``` bash
@@ -85,9 +86,9 @@ terminal:
     sudo vi /etc/apt/sources.list.d/mariadb.sources
     ```
 
-This will open a text editor where you can input the repository configuration
-details. Once the repository is configured, you can proceed with the
-installation of MariaDB using your package manager.
+Dit opent een teksteditor waar je de details van de repository-configuratie kunt
+invoeren. Zodra de opslagplaats is geconfigureerd, kun je doorgaan met de
+installatie van MariaDB met behulp van je pakketbeheerder.
 
 The latest config can be found here:
 [https://mariadb.org/download/?t=repo-config](https://mariadb.org/download/?t=repo-config)
@@ -172,10 +173,10 @@ To install the MariaDB server and client, execute the following command:
     sudo apt install mariadb-server
     ```
 
-This command will download and install both the server and client packages,
-enabling you to set up, configure, and interact with your MariaDB database. Once
-the installation is complete, you can proceed to the [_Starting the MariaDB
-database_](#starting-the-mariadb-database) section.
+Dit commando downloadt en installeert zowel de server- als de clientpakketten,
+zodat u uw MariaDB-database kunt instellen, configureren en ermee kunt werken.
+Als de installatie voltooid is, kun je doorgaan naar het gedeelte [_De MariaDB
+database starten_](#starting-the-mariadb-database).
 
 ---
 
@@ -191,11 +192,11 @@ accomplish this:
     sudo systemctl enable mariadb --now
     ```
 
-This command will both enable and start the MariaDB service and since this will
-be the first time the service is started, it will initialize the database
-directory. With the MariaDB service now up and running, you can verify that the
-installation was successful by checking the version of MariaDB using the
-following command:
+Dit commando zal zowel de MariaDB service inschakelen als starten en aangezien
+dit de eerste keer zal zijn dat de service gestart wordt, zal het de databasemap
+initialiseren. Nu de MariaDB service draait, kun je controleren of de
+installatie succesvol was door de versie van MariaDB te controleren met het
+volgende commando:
 
 !!! info "Check Mariadb version"
 
@@ -538,7 +539,7 @@ This concludes our installation of the MariaDB. You can now proceed to
 
 ---
 
-## Conclusion
+## Conclusie
 
 With the successful installation and configuration of MariaDB as the database
 backend for Zabbix, you now have a robust foundation for your monitoring
@@ -552,7 +553,7 @@ configuration.
 
 ---
 
-## Questions
+## Vragen
 
 1. What version of MariaDB should I install for compatibility and stability?
 2. What port does my DB use ?
@@ -560,7 +561,7 @@ configuration.
 
 ---
 
-## Useful URLs
+## Nuttige URL's
 
 - [https://mariadb.org/download/](https://mariadb.org/download/)
 - [https://mariadb.com/docs/server/server-usage/stored-routines/binary-logging-of-stored-routines](https://mariadb.com/docs/server/server-usage/stored-routines/binary-logging-of-stored-routines)
