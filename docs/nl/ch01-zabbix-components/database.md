@@ -37,7 +37,7 @@ query-snelheden en ingebouwde compressie om de opslagvereisten te verlagen. Deze
 voordelen gaan echter gepaard met extra complexiteit tijdens de installatie en
 enkele beperkingen voor het bewaren van historische gegevens.
 
-Tip "TimescaleDB installatie".
+???+ tip "TimescaleDB installatie"
 
     Given its advanced nature, TimescaleDB is not essential for most Zabbix users.
     As such, its installation is beyond the scope of this chapter. If you plan to
@@ -56,7 +56,7 @@ de stappen erg gelijkaardig aan die van MariaDB.
 Bij de installatie van MariaDB of PostgreSQL moet je bepalen vanaf welke bron je
 de databaseserver wilt installeren. Er zijn twee opties beschikbaar:
 
-1. **Door leverancier geleverde pakketten**
+1. **Door de leverancier geleverde pakketten**
 
 : Deze staan in de software repositories van de meeste Linux distributies en
 worden onderhouden door de distributieleverancier.
@@ -82,7 +82,7 @@ worden onderhouden door de distributieleverancier.
       - **Vendor modifications:** Default configurations, log directories, and data
         paths may be altered to align with distribution-specific standards.
 
-2. **Officiële MariaDB/PostgreSQL opslagplaatsen**
+2. **Officiële MariaDB/PostgreSQL repositories**
 
 : These repositories provide packages directly from MariaDB/PostgreSQL and offer
 access to the latest stable releases.
