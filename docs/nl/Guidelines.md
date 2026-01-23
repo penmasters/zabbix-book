@@ -24,7 +24,7 @@
   - Voeg uw branch samen met de hoofdbranch
     - git merge "<jouw branch naam\>"
     - git push
-  - je branch opschonen
+  - je branch opruimen
     - git branch -d "<jouw branch naam\>"
 - Maak een pull-verzoek zodat we het kunnen samenvoegen :)
 - Volg deze
