@@ -28,7 +28,7 @@ algemeen vervang je `mariadb` door `mysql` in de pakketnamen en commando's.
 Voer het volgende commando uit om de standaard MariaDB server en client te
 installeren:
 
-Info "Distributieversie van Mariadb installeren".
+!!! info "Distributieversie van Mariadb installeren"
 
     Red Hat
     ```bash
@@ -65,7 +65,7 @@ voegen.
 Om het MariaDB repository bestand aan te maken, voer je het volgende commando
 uit in je terminal:
 
-Info "De MariaDB-opslagplaats definiëren".
+!!! info "De MariaDB-repository definiëren".
 
     Red Hat
     ``` bash
