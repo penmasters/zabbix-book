@@ -1,4 +1,4 @@
-# Welcome
+# ยินดีต้อนรับ
 
 This book is born from a simple desire: **to give back**. After years of working
 with Zabbix, and authoring previous many other publications about the platform,
