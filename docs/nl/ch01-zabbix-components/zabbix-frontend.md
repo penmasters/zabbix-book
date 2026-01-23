@@ -74,7 +74,7 @@ AppArmor. Standaard mag PHP-FPM van SELinux op SUSE niet
 - verbinding maken met de databaseserver via TCP. We moeten SELinux vertellen
   dit allemaal toe te staan:
 
-!!! info "SELinux: PHP-FPM toestaan exec geheugen in kaart te brengen"
+Info "SELinux: PHP-FPM toestaan exec geheugen in kaart te brengen"
 
     ```bash
     setsebool -P httpd_execmem 1
