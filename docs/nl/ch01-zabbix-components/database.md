@@ -82,7 +82,7 @@ worden onderhouden door de distributieleverancier.
       - **Vendor modifications:** Default configurations, log directories, and data
         paths may be altered to align with distribution-specific standards.
 
-2. **Officiële MariaDB/PostgreSQL repositories**
+2. **Officiële MariaDB/PostgreSQL opslagplaatsen**
 
 : These repositories provide packages directly from MariaDB/PostgreSQL and offer
 access to the latest stable releases.
