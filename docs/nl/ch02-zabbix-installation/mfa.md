@@ -338,7 +338,7 @@ access but also fits within a broader strategy of robust authentication. Whether
 through TOTP or Duo, adding MFA demonstrates a commitment to safeguarding access
 to your Zabbix environment and fortifying your monitoring infrastructure.n
 
-## Questions
+## Vragen
 
 - Why is relying on a password alone not sufficient to secure access to a Zabbix
   instance? (Think about common attack methods like password reuse, brute force,
@@ -364,7 +364,7 @@ to your Zabbix environment and fortifying your monitoring infrastructure.n
 - How does adding MFA to Zabbix align with a broader security strategy, and what
   other complementary security measures should be considered?
 
-## Useful URLs
+## Nuttige URL's
 
 [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/mfa](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/mfa)
 [https://duo.com/docs/sso-zabbix](https://duo.com/docs/sso-zabbix)
