@@ -21,7 +21,7 @@ indien gewenst.
 
 Voer het volgende commando uit om de Zabbix servercomponenten te installeren:
 
-Info "Zabbix-server installeren".
+!!! info "Zabbix-server installeren"
 
     Red Hat
     ``` bash
@@ -87,7 +87,7 @@ Nu maken we een aangepast configuratiebestand `database.conf` in de
 `/etc/zabbix/zabbix_server.d/` directory dat onze database
 verbindingsinstellingen zal bevatten:
 
-Info "Zabbix databaseverbindingsinstellingen toevoegen".
+!!! info "Zabbix databaseverbindingsinstellingen toevoegen"
 
     ``` bash
     vi /etc/zabbix/zabbix_server.d/database.conf
