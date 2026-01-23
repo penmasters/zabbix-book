@@ -22,7 +22,7 @@ hoofdcomponenten, die we in detail zullen bespreken.
 - De Zabbix webserver
 - De Zabbix-database
 
-Samenvatting "Aanmaken van DB-gebruikers".
+!!! abstract "Aanmaken van DB-gebruikers"
 
     In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
     zabbix-web user will be used for the frontend to connect to our zabbix database.
