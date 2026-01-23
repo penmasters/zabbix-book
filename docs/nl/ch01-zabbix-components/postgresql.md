@@ -20,12 +20,12 @@ PostgreSQL-repositories.
 Als je MariaDB al geïnstalleerd hebt in de vorige sectie, kan je deze sectie
 overslaan.
 
-Op het moment van schrijven worden PostgreSQL 13-17 ondersteund door Zabbix.
+Op het moment van schrijven worden PostgreSQL 13-18 ondersteund door Zabbix.
 Controleer de Zabbix documentatie voor een actuele lijst van ondersteunde
 versies voor jouw Zabbix versie. Meestal is het een goed idee om de laatste
 versie te gebruiken die wordt ondersteund door Zabbix.
 
-Tip: "TimescaleDB uitbreiding".
+???+ tip "TimescaleDB uitbreiding"
 
     Zabbix also supports the extension TimescaleDB but due to its advanced nature, 
     we won't cover it in this chapter. Refer to [_Partitioning PostgreSQL with TimescaleDB_](../ch13-advanced-security/partitioning-postgresql-database.md)
@@ -44,7 +44,7 @@ Tip: "TimescaleDB uitbreiding".
 Voer de volgende commando's uit om de standaard PostgreSQL server van de
 distributie te installeren:
 
-Info "Installeer de Postgres-server".
+!!! info "Installeer de Postgres-server"
 
     Red Hat
     ``` bash
@@ -65,7 +65,7 @@ Dit commando downloadt en installeert zowel de server- als de clientpakketten,
 zodat je je PostgreSQL database kunt instellen, configureren en ermee kunt
 werken.
 
-Waarschuwing "Database-initialisatie vereist op Red Hat".
+!!! warning "Database-initialisatie vereist op Red Hat"
 
     Due to policies for Red Hat family distributions, the PostgreSQL service
     does not initialize an empty database required for PostgreSQL to function.
@@ -84,7 +84,7 @@ PostgreSQL Database starten_](#starting-the-postgresql-database).
 
 ---
 
-## PostgreSQL installeren vanuit officiële PostgreSQL opslagplaatsen
+## PostgreSQL installeren vanuit officiële PostgreSQL Repositories
 
 Als je PostgreSQL liever installeert vanuit de officiële PostgreSQL repositories
 in plaats van de door de OS-leverancier geleverde pakketten, is de eerste stap
@@ -92,7 +92,7 @@ het toevoegen van de PostgreSQL repository aan je systeem.
 
 ---
 
-### De PostgreSQL opslagplaats toevoegen
+### De PostgreSQL repository toevoegen
 
 Set up the PostgreSQL repository with the following commands:
 
