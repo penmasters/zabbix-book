@@ -25,7 +25,7 @@ Controleer de Zabbix documentatie voor een actuele lijst van ondersteunde
 versies voor jouw Zabbix versie. Meestal is het een goed idee om de laatste
 versie te gebruiken die wordt ondersteund door Zabbix.
 
-???+ tip "TimescaleDB uitbreiding"
+Tip: "TimescaleDB uitbreiding".
 
     Zabbix also supports the extension TimescaleDB but due to its advanced nature, 
     we won't cover it in this chapter. Refer to [_Partitioning PostgreSQL with TimescaleDB_](../ch13-advanced-security/partitioning-postgresql-database.md)
