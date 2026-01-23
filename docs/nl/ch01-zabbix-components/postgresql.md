@@ -65,7 +65,7 @@ Dit commando downloadt en installeert zowel de server- als de clientpakketten,
 zodat je je PostgreSQL database kunt instellen, configureren en ermee kunt
 werken.
 
-!!! warning "Database-initialisatie vereist op Red Hat"
+Waarschuwing "Database-initialisatie vereist op Red Hat".
 
     Due to policies for Red Hat family distributions, the PostgreSQL service
     does not initialize an empty database required for PostgreSQL to function.
