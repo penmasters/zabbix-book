@@ -405,7 +405,7 @@ maintain your environment more effectively. This foundational knowledge lays the
 groundwork for deeper exploration into host configuration, authentication
 mechanisms, and advanced monitoring workflows in the chapters that follow.
 
-## Questions
+## Vragen
 
 - Which frontend section (Monitoring, Data Collection, Alerts, Users, or
   Administration) do you think you'll use most often in your daily work, and
@@ -424,7 +424,7 @@ mechanisms, and advanced monitoring workflows in the chapters that follow.
 - If you were onboarding a new team member, which parts of the frontend would
   you show them first, and why?
 
-## Useful URLs
+## Nuttige URL's
 
 - <https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards>
 - <https://blog.zabbix.com/handy-tips-6-organize-your-dashboards-and-create-slideshows-with-dashboard-pages/17511/>
