@@ -28,7 +28,7 @@ algemeen vervang je `mariadb` door `mysql` in de pakketnamen en commando's.
 Voer het volgende commando uit om de standaard MariaDB server en client te
 installeren:
 
-!!! info "Distributieversie van Mariadb installeren"
+Info "Distributieversie van Mariadb installeren".
 
     Red Hat
     ```bash
