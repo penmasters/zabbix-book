@@ -391,7 +391,7 @@ IP/hostname of this proxy instead of the _Zabbix server_.
 
 ---
 
-## Conclusion
+## Conclusie
 
 This chapter has demonstrated the indispensable role of Zabbix proxies in
 building robust, scalable, and distributed monitoring infrastructures. We've
@@ -429,7 +429,7 @@ monitoring challenges.
 
 ---
 
-## Questions
+## Vragen
 
 - What is the fundamental difference between an active proxy and a passive proxy
   in terms of who initiates the connection?
@@ -438,7 +438,7 @@ monitoring challenges.
 
 ---
 
-## Useful URLs
+## Nuttige URL's
 
 - [https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy](https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy)
 

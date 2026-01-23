@@ -535,7 +535,7 @@ This activates a systemd timer that periodically invokes
 
 ---
 
-## Conclusion
+## Conclusie
 
 In this chapter, we deployed a Zabbix active proxy using Podman and SystemD
 Quadlets. We configured SELinux, enabled user lingering, and created both
@@ -549,7 +549,7 @@ efficiently.
 
 ---
 
-## Questions
+## Vragen
 
 - What are the main advantages of using Podman over Docker for running
   containers on Red Hat-based systems?
@@ -564,7 +564,7 @@ efficiently.
 
 ---
 
-## Useful URLs
+## Nuttige URL's
 
 - [https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3](https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3)
 - [https://podman.io/](https://podman.io/)
