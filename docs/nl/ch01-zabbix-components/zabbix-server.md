@@ -19,9 +19,9 @@ gedachten dat de webserver niet op dezelfde machine hoeft te worden
 geïnstalleerd als de Zabbix server; ze kunnen op aparte systemen worden gehost
 indien gewenst.
 
-To install the Zabbix server components, run the following command:
+Voer het volgende commando uit om de Zabbix servercomponenten te installeren:
 
-!!! info "Install the zabbix server"
+!!! info "Zabbix-server installeren"
 
     Red Hat
     ``` bash
@@ -47,29 +47,31 @@ To install the Zabbix server components, run the following command:
     sudo apt install zabbix-server-pgsql
     ```
 
-After successfully installing the Zabbix server package, we need to configure
-the Zabbix server to connect to the database. This requires modifying the Zabbix
-server configuration file.
+Na de succesvolle installatie van het Zabbix serverpakket moeten we de Zabbix
+server configureren om verbinding te maken met de database. Hiervoor moet het
+configuratiebestand van de Zabbix-server worden aangepast.
 
-The Zabbix server configuration file offers an option to include additional
-configuration files for custom parameters. For a production environment, it's
-often best to avoid altering the original configuration file directly. Instead,
-you can create and include separate configuration files for any additional or
-modified parameters. This approach ensures that your original configuration file
-remains untouched, which is particularly useful when performing upgrades or
-managing configurations with tools like Ansible, Puppet, or SaltStack.
+Het Zabbix server configuratiebestand biedt een optie om extra
+configuratiebestanden voor aangepaste parameters op te nemen. Voor een
+productieomgeving is het vaak het beste om het oorspronkelijke
+configuratiebestand niet direct te wijzigen. In plaats daarvan kun je aparte
+configuratiebestanden maken en toevoegen voor aanvullende of gewijzigde
+parameters. Deze aanpak zorgt ervoor dat je originele configuratiebestand
+onaangeroerd blijft, wat vooral handig is bij het uitvoeren van upgrades of het
+beheren van configuraties met tools zoals Ansible, Puppet of SaltStack.
 
-On SUSE 16 and later, this feature is already enabled and configured by default.
-(see also [SUSE
-documentation](https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)).
-Hence, on SUSE systems, the Zabbix server configuration file is located at
-`/usr/etc/zabbix/zabbix_server.conf`, and it is set up to include all `.conf`
-files from the `/etc/zabbix_server/zabbix_server.d/` directory.
+Op SUSE 16 en later is deze functie al standaard ingeschakeld en geconfigureerd.
+(zie ook [SUSE
+documentatie](https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)).
+Op SUSE-systemen bevindt het Zabbix serverconfiguratiebestand zich daarom in
+`/usr/etc/zabbix/zabbix_server.conf`, en het is zo ingesteld dat het alle
+`.conf` bestanden uit de `/etc/zabbix_server/zabbix_server.d/` directory bevat.
 
-On other distributions, you may need to enable it manually:
+Op andere distributies moet je het misschien handmatig inschakelen:
 
-To enable this feature, ensure the next line exists and is not commented (with a
-`#` in front of it) in `/etc/zabbix/zabbix_server.conf`:
+Om deze functie in te schakelen, moet je ervoor zorgen dat de volgende regel
+bestaat en niet is becommentarieerd (met een `#` ervoor) in
+`/etc/zabbix/zabbix_server.conf`:
 
 !!! info ""
 
@@ -78,14 +80,14 @@ To enable this feature, ensure the next line exists and is not commented (with a
     Include=/etc/zabbix/zabbix_server.d/*.conf
     ```
 
-The path `/etc/zabbix/zabbix_server.d/` should already be created by the
-installed package, but ensure it really exists.
+Het pad `/etc/zabbix/zabbix_server.d/` zou al aangemaakt moeten zijn door het
+geïnstalleerde pakket, maar controleer of het echt bestaat.
 
-Now we will create a custom configuration file `database.conf` in the
-`/etc/zabbix/zabbix_server.d/` directory that will hold our database connection
-settings:
+Nu maken we een aangepast configuratiebestand `database.conf` in de
+`/etc/zabbix/zabbix_server.d/` directory dat onze database
+verbindingsinstellingen zal bevatten:
 
-!!! info "Add Zabbix database connection settings"
+!!! info "Zabbix databaseverbindingsinstellingen toevoegen"
 
     ``` bash
     vi /etc/zabbix/zabbix_server.d/database.conf
@@ -103,10 +105,10 @@ settings:
     DBPort=<database-port>
     ```
 
-Replace `<database-host>`, `<database-name>`, `<database-schema>`,
-`<database-user>`, `<database-password>`, and `<database-port>` with the
-appropriate values for your setup. This ensures that the Zabbix server can
-communicate with your database.
+Vervang `<database-host>`, `<database-naam>`, `<database-schema>`,
+`<database-user>`, `<database-paswoord>`, en `<database-port>` door de juiste
+waarden voor jouw setup. Dit zorgt ervoor dat de Zabbix server kan communiceren
+met je database.
 
 Ensure that there is no `#` (comment symbol) in front of the configuration
 parameters, as Zabbix will treat lines beginning with `#` as comments, ignoring
@@ -332,7 +334,7 @@ This concludes our chapter on installing and configuring the Zabbix server.
 
 ---
 
-## Conclusion
+## Conclusie
 
 With the successful installation and configuration of the Zabbix server, you
 have now established the core component of your monitoring system. We've covered
@@ -349,14 +351,14 @@ Let's proceed to the next chapter to set up the Zabbix frontend.
 
 ---
 
-## Questions
+## Vragen
 
 1. What version of Zabbix should I install for compatibility and stability?
 2. What Zabbix logs should I check for troubleshooting common issues?
 
 ---
 
-## Useful URLs
+## Nuttige URL's
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)

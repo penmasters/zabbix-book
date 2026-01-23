@@ -20,9 +20,9 @@ hoofdcomponenten, die we in detail zullen bespreken.
 
 - De Zabbix server
 - De Zabbix webserver
-- The Zabbix database
+- De Zabbix-database
 
-!!! abstract "Creation of DB users"
+!!! abstract "Aanmaken van DB-gebruikers"
 
     In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
     zabbix-web user will be used for the frontend to connect to our zabbix database.
@@ -33,27 +33,27 @@ hoofdcomponenten, die we in detail zullen bespreken.
 
 ![overview](ch01-basic-installation-zabbixserver.png){ align=left }
 
-_1.1 Zabbix basic split installation_
+_1.1 Zabbix basissplit installatie_
 
-All of these components can either be installed on a single server or
-distributed across three separate servers. The core of the system is the Zabbix
-server, often referred to as the "brain." This component is responsible for
-processing trigger calculations and sending alerts. The database serves as the
-storage for the Zabbix server's configuration and all the data it collects. The
-web server provides the user interface (front-end) for interacting with the
-system. It is important to note that the Zabbix API is part of the front-end
-component, not the Zabbix server itself.
+Al deze componenten kunnen geïnstalleerd worden op één server of verdeeld worden
+over drie afzonderlijke servers. De kern van het systeem is de Zabbix server,
+vaak het "brein" genoemd. Deze component is verantwoordelijk voor het verwerken
+van triggerberekeningen en het versturen van waarschuwingen. De database dient
+als opslag voor de configuratie van de Zabbix server en alle gegevens die het
+verzamelt. De webserver biedt de gebruikersinterface (front-end) voor interactie
+met het systeem. Het is belangrijk op te merken dat de Zabbix API deel uitmaakt
+van de front-end component, niet van de Zabbix server zelf.
 
-These components must function together seamlessly, as illustrated in the
-diagram above. The Zabbix server must read configurations and store monitoring
-data in the database, while the front-end needs access to read and write
-configuration data. Furthermore, the front-end must be able to check the status
-of the Zabbix server and retrieve additional necessary information to ensure
-smooth operation.
+Deze componenten moeten naadloos samenwerken, zoals geïllustreerd in het
+bovenstaande diagram. De Zabbix server moet configuraties lezen en
+monitoringgegevens opslaan in de database, terwijl de front-end toegang nodig
+heeft om configuratiegegevens te lezen en te schrijven. Bovendien moet het
+front-end de status van de Zabbix server kunnen controleren en extra benodigde
+informatie ophalen om een soepele werking te garanderen.
 
-For our setup, we will be using two virtual machines (VMs): one VM will host
-both the Zabbix server and the Zabbix web front-end, while the second VM will
-host the Zabbix database.
+Voor onze opstelling gebruiken we twee virtuele machines (VM's): één VM host
+zowel de Zabbix server als de Zabbix web front-end, terwijl de tweede VM de
+Zabbix database host.
 
 ???+ note
 
@@ -65,7 +65,7 @@ host the Zabbix database.
     so for this reason we have chosen in this example to split the database 
     from the rest of the setup.
 
-We will cover the following topics:
+We behandelen de volgende onderwerpen:
 
 - Install our Database based on MariaDB.
 - Install our Database based on PostgreSQL.

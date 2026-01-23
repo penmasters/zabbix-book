@@ -20,24 +20,25 @@ setup maakt het mogelijk om meer Zabbix servers toe te voegen als dat nodig is.
 
 _1.1 HA Configuratie_
 
-It's important to note that Zabbix HA setup is straightforward, providing
-redundancy without complex features like load balancing. Only one node will be
-an active node, all other nodes will be on standby. All standby Zabbix servers
-in the HA cluster will monitor the active node through heartbeats using the
-shared database. It does not require any additional clustering software or even
-firewall ports for the Zabbix server itself. However, for the frontend, we will
-use Keepalived to provide a Virtual IP (VIP) for failover purposes.
+Het is belangrijk op te merken dat de Zabbix HA setup eenvoudig is en
+redundantie biedt zonder complexe functies zoals load balancing. Slechts één
+node is een actieve node, alle andere nodes zijn stand-by. Alle stand-by
+Zabbix-servers in het HA-cluster monitoren het actieve knooppunt via heartbeats
+met behulp van de gedeelde database. Er is geen extra clustersoftware of zelfs
+geen firewallpoort nodig voor de Zabbix server zelf. Voor de frontend gebruiken
+we echter Keepalived om een virtueel IP (VIP) te bieden voor
+failover-doeleinden.
 
-Just as in our basic configuration, we will document key details for the servers
-in this HA setup. Below is the list of servers and some place to add their
-respective IP addresses for your convenience :
+Net als in onze basisconfiguratie zullen we de belangrijkste details voor de
+servers in deze HA opstelling documenteren. Hieronder staat de lijst met servers
+en een plaats om hun respectievelijke IP-adressen toe te voegen:
 
 | Server          | IP-adres |
 | --------------- | -------- |
-| Zabbix Server 1 |          |
-| Zabbix Server 2 |          |
+| Zabbix server 1 |          |
+| Zabbix server 2 |          |
 | Database        |          |
-| Virtual IP      |          |
+| Virtuele IP     |          |
 
 ???+ note
 
@@ -528,7 +529,7 @@ needed.
 
 ---
 
-## Questions
+## Vragen
 
 1. What is Zabbix High Availability (HA), and why is it important?
 2. How does Zabbix determine which node is active in an HA setup?
@@ -538,7 +539,7 @@ needed.
 
 ---
 
-## Useful URLs
+## Nuttige URL's
 
 - <https://www.redhat.com/sysadmin/advanced-keepalived>
 - <https://keepalived.readthedocs.io/en/latest/introduction.html>

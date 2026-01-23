@@ -13,19 +13,19 @@ tags: [beginner]
 
 # Frontend installeren
 
-Before configuring the Zabbix frontend, ensure the system meets the requirements
-and is prepared as outlined in the previous chapter: [_Getting
-started_](../ch00-getting-started/Requirements.md). This server can be the same
-one where the Zabbix server packages were previously installed, or it can be a
-separate machine.
+Voordat je de Zabbix frontend configureert, moet je ervoor zorgen dat het
+systeem voldoet aan de vereisten en is voorbereid zoals beschreven in het vorige
+hoofdstuk: [_Aan de slag_](../ch00-getting-started/Requirements.md). Deze server
+kan dezelfde zijn waarop eerder de Zabbix serverpakketten zijn geïnstalleerd, of
+het kan een aparte machine zijn.
 
-Perform all subsequent steps on the server designated for the frontend.
+Voer alle volgende stappen uit op de server die is aangewezen voor de frontend.
 
 ---
 
-## Installing the frontend with NGINX
+## Frontend installeren met NGINX
 
-!!! info "install frontend packages"
+!!! info "frontend pakketten installeren"
 
     Red Hat
     ```bash
@@ -64,17 +64,17 @@ Perform all subsequent steps on the server designated for the frontend.
     sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
-This command will install the front-end packages along with the required
-dependencies for Nginx.
+Dit commando installeert de front-end pakketten samen met de benodigde
+afhankelijkheden voor Nginx.
 
-As of SUSE 16 SELinux is now the default security module instead of AppArmor. By
-default PHP-FPM is not allowed by SELinux on SUSE to
-- map exec memory required for PHP JIT compilation,
-- connect to Zabbix server or
-- connect to the database server over TCP. We need to tell SELinux to allow all
-  this:
+Vanaf SUSE 16 is SELinux nu de standaard beveiligingsmodule in plaats van
+AppArmor. Standaard mag PHP-FPM van SELinux op SUSE niet
+- map exec memory nodig voor PHP JIT compilatie,
+- verbinding maken met Zabbix-server of
+- verbinding maken met de databaseserver via TCP. We moeten SELinux vertellen
+  dit allemaal toe te staan:
 
-!!! info "SELinux: Allow PHP-FPM to map exec memory"
+!!! info "SELinux: PHP-FPM toestaan exec geheugen in kaart te brengen"
 
     ```bash
     setsebool -P httpd_execmem 1
@@ -87,10 +87,10 @@ default PHP-FPM is not allowed by SELinux on SUSE to
     package which will log any SELinux denials in the system log and provide
     suggestions on how to resolve them.
 
-Depending on your Linux distribution defaults, PHP-FPM may by default not be
-allowed by SystemD to write to the `/etc/zabbix/web` directory required for the
-Zabbix frontend setup. To enable this we need to create a drop-in file to allow
-this:
+Afhankelijk van de standaardinstellingen van je Linux-distributie, kan PHP-FPM
+standaard geen toestemming krijgen van SystemD om te schrijven naar de
+`/etc/zabbix/web` directory die nodig is voor de Zabbix frontend setup. Om dit
+in te schakelen moeten we een drop-in bestand maken om dit toe te staan:
 
 !!! info "SystemD: Allow PHP-FPM to write to /etc/zabbix/web"
 
@@ -194,8 +194,8 @@ And alter the following lines:
     ...
     ```
 
-Remove the `#` in front of the first 2 lines and modify them with the correct
-port and domain for your front-end.
+Verwijder de `#` voor de eerste 2 regels en pas ze aan met de juiste poort en
+domein voor je front-end.
 
 ???+ tip
 
@@ -542,7 +542,7 @@ for additional guidance and best practices.
 
 ---
 
-## Conclusion
+## Conclusie
 
 With the installation and configuration of the Zabbix frontend now complete, you
 have successfully set up the user interface for your Zabbix monitoring system.
@@ -560,11 +560,11 @@ level.
 
 ---
 
-## Questions
+## Vragen
 
 ---
 
-## Useful URLs
+## Nuttige URL's
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)

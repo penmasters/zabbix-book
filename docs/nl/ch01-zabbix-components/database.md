@@ -7,7 +7,7 @@ tags: [beginner]
 
 # Database keuzes
 
-## Choosing a Database Backend for Zabbix
+## Een database-backend kiezen voor Zabbix
 
 Een kritieke beslissing bij het beheren van Zabbix-installaties is het
 selecteren van de database backend. Zabbix ondersteunt verschillende database
@@ -23,20 +23,21 @@ opties: MySQL/Percona, MariaDB, PostgreSQL (inclusief TimescaleDB) en Oracle
     mandatory step to ensure continued functionality and compatibility with future
     Zabbix versions.
 
-All supported databases perform similarly under typical Zabbix workloads, and
-Zabbix treats them equally in terms of functionality. As such, the choice
-primarily depends on your or your team’s familiarity with a particular database
-system. One notable exception is TimescaleDB, a PostgreSQL extension optimized
-for time-series data. This makes it especially well-suited for monitoring
-applications like Zabbix, which handle large volumes of timestamped data.
+Alle ondersteunde databases presteren vergelijkbaar onder typische Zabbix
+workloads, en Zabbix behandelt ze gelijk in termen van functionaliteit. De keuze
+hangt dus vooral af van de bekendheid van jou of je team met een bepaald
+databasesysteem. Een opvallende uitzondering is TimescaleDB, een
+PostgreSQL-extensie die is geoptimaliseerd voor tijdreeksgegevens. Dit maakt het
+bijzonder geschikt voor monitoringtoepassingen zoals Zabbix, die grote
+hoeveelheden gegevens met tijdstempels verwerken.
 
-In large-scale environments with high-frequency data collection, TimescaleDB can
-deliver significant performance benefits, including improved query speeds and
-built-in compression to reduce storage requirements. However, these advantages
-come with added complexity during installation and a few restrictions on
-historical data retention.
+In grootschalige omgevingen met hoogfrequente gegevensverzameling kan
+TimescaleDB aanzienlijke prestatievoordelen opleveren, waaronder verbeterde
+query-snelheden en ingebouwde compressie om de opslagvereisten te verlagen. Deze
+voordelen gaan echter gepaard met extra complexiteit tijdens de installatie en
+enkele beperkingen voor het bewaren van historische gegevens.
 
-???+ tip "TimescaleDB installation"
+???+ tip "TimescaleDB installatie"
 
     Given its advanced nature, TimescaleDB is not essential for most Zabbix users.
     As such, its installation is beyond the scope of this chapter. If you plan to
@@ -45,20 +46,20 @@ historical data retention.
 
 ---
 
-## Choosing the Source for Database Installation
+## De bron voor de installatie van de database kiezen
 
-In this chapter we will focus on installing MariaDB and PostgreSQL, as they are
-the most commonly used databases with Zabbix. For MySQL or Percona
-installations, except for the package installation commands, the steps are very
-similar to MariaDB.
+In dit hoofdstuk concentreren we ons op de installatie van MariaDB en
+PostgreSQL, omdat dit de meest gebruikte databases zijn met Zabbix. Voor MySQL
+of Percona installaties, behalve de commando's voor de pakketinstallatie, zijn
+de stappen erg gelijkaardig aan die van MariaDB.
 
-When installing MariaDB or PostgreSQL you must determine the source from which
-you will want to install the database server. Two primary options are available:
+Bij de installatie van MariaDB of PostgreSQL moet je bepalen vanaf welke bron je
+de databaseserver wilt installeren. Er zijn twee opties beschikbaar:
 
-1. **Vendor-Provided Packages**
+1. **Door de leverancier geleverde pakketten**
 
-: These are included in the software repositories of most Linux distributions
-and are maintained by the distribution vendor.
+: Deze staan in de software repositories van de meeste Linux distributies en
+worden onderhouden door de distributieleverancier.
 
     **Advantages:**
 
@@ -81,7 +82,7 @@ and are maintained by the distribution vendor.
       - **Vendor modifications:** Default configurations, log directories, and data
         paths may be altered to align with distribution-specific standards.
 
-2. **Official MariaDB/PostgreSQL Repositories**
+2. **Officiële MariaDB/PostgreSQL repositories**
 
 : These repositories provide packages directly from MariaDB/PostgreSQL and offer
 access to the latest stable releases.
@@ -113,7 +114,7 @@ configuration requirements and is prepared as outlined in the previous chapter:
 
 ---
 
-## Conclusion
+## Conclusie
 
 We have discussed the various database backends supported by Zabbix. We've also
 examined the advantages and disadvantages of using vendor-provided packages
@@ -129,7 +130,7 @@ move on to the installation of your preferred database backend.
 
 ---
 
-## Questions
+## Vragen
 
 1. Should I choose MySQL or PostgreSQL as the database back-end? Why?
 2. Should I use the packages provided by the OS vendor, or should I install
@@ -137,7 +138,7 @@ move on to the installation of your preferred database backend.
 
 ---
 
-## Useful URLs
+## Nuttige URL's
 
 - [https://mariadb.org](https://mariadb.org)
 - [https://mariadb.com](https://mariadb.com)

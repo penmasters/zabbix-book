@@ -1,4 +1,4 @@
-# Zabbix components, basic functions and installation
+# ส่วนประกอบของ Zabbix, ฟังก์ชันพื้นฐาน และการติดตั้ง
 
 In this chapter, we expand on the foundational knowledge from the "Getting
 Started" section to provide a comprehensive guide for both beginners who are
