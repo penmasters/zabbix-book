@@ -69,7 +69,7 @@ afhankelijkheden voor Nginx.
 
 Vanaf SUSE 16 is SELinux nu de standaard beveiligingsmodule in plaats van
 AppArmor. Standaard mag PHP-FPM van SELinux op SUSE niet
-- map exec memory nodig voor PHP JIT compilatie,
+- map exec geheugen nodig voor PHP JIT compilatie,
 - verbinding maken met Zabbix-server of
 - verbinding maken met de databaseserver via TCP. We moeten SELinux vertellen
   dit allemaal toe te staan:
