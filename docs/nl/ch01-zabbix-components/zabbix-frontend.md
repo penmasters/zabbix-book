@@ -25,7 +25,7 @@ Voer alle volgende stappen uit op de server die is aangewezen voor de frontend.
 
 ## Frontend installeren met NGINX
 
-info "frontend pakketten installeren".
+!!! info "frontend pakketten installeren"
 
     Red Hat
     ```bash
@@ -69,12 +69,12 @@ afhankelijkheden voor Nginx.
 
 Vanaf SUSE 16 is SELinux nu de standaard beveiligingsmodule in plaats van
 AppArmor. Standaard mag PHP-FPM van SELinux op SUSE niet
-- map exec geheugen nodig voor PHP JIT compilatie,
+- map exec memory nodig voor PHP JIT compilatie,
 - verbinding maken met Zabbix-server of
 - verbinding maken met de databaseserver via TCP. We moeten SELinux vertellen
   dit allemaal toe te staan:
 
-Info "SELinux: PHP-FPM toestaan exec geheugen in kaart te brengen"
+!!! info "SELinux: PHP-FPM toestaan exec geheugen in kaart te brengen"
 
     ```bash
     setsebool -P httpd_execmem 1
