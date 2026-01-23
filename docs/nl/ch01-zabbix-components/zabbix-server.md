@@ -87,7 +87,7 @@ Nu maken we een aangepast configuratiebestand `database.conf` in de
 `/etc/zabbix/zabbix_server.d/` directory dat onze database
 verbindingsinstellingen zal bevatten:
 
-!!! info "Zabbix databaseverbindingsinstellingen toevoegen"
+Info "Zabbix databaseverbindingsinstellingen toevoegen".
 
     ``` bash
     vi /etc/zabbix/zabbix_server.d/database.conf
