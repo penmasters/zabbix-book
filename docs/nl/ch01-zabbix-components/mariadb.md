@@ -65,7 +65,7 @@ voegen.
 Om het MariaDB repository bestand aan te maken, voer je het volgende commando
 uit in je terminal:
 
-!!! info "De MariaDB-repository definiëren".
+Info "De MariaDB-opslagplaats definiëren".
 
     Red Hat
     ``` bash
