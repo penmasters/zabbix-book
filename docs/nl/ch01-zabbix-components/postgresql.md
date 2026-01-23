@@ -44,7 +44,7 @@ Tip: "TimescaleDB uitbreiding".
 Voer de volgende commando's uit om de standaard PostgreSQL server van de
 distributie te installeren:
 
-!!! info "Installeer de Postgres-server"
+Info "Installeer de Postgres-server".
 
     Red Hat
     ``` bash
