@@ -93,9 +93,13 @@ nav:
       - ch09-zabbix-extending/frontend-scripts.md
       - ch09-zabbix-extending/user-parameters.md
   - "Chapter 10 : Discovery":
-      - ch10-zabbix-discovery/chapter.md
+      - ch10-zabbix-discovery/network-host-discovery.md
+      - ch10-zabbix-discovery/active-agent-autoregistration.md
   - "Chapter 11 : Visualisation":
-      - ch11-zabbix-visualisation/chapter.md
+      - ch11-zabbix-visualisation/graphs.md
+      - ch11-zabbix-visualisation/dashboards.md
+      - ch11-zabbix-visualisation/maps.md
+      - ch11-zabbix-visualisation/built-in-reports.md
   - "Chapter 12 : Zabbix API":
       - ch12-zabbix-api/chapter.md
       - ch12-zabbix-api/self-engaging.md
