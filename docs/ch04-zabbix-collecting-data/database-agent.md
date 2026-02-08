@@ -17,7 +17,11 @@ The Zabbix agent 2 however, comes with built-in functionality to monitor some of
 - Redis
 - MongoDB
 
+## Setting up SQL monitoring
 
+### Custom SQL queries
+
+## Setting up Redis and MongoDB monitoring
 
 ## Conclusion
 
