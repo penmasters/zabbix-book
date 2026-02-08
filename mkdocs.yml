@@ -100,6 +100,7 @@ nav:
       - ch11-zabbix-visualisation/dashboards.md
       - ch11-zabbix-visualisation/maps.md
       - ch11-zabbix-visualisation/built-in-reports.md
+      - ch11-zabbix-visualisation/automated-pdf-reports.md
   - "Chapter 12 : Zabbix API":
       - ch12-zabbix-api/chapter.md
       - ch12-zabbix-api/self-engaging.md
