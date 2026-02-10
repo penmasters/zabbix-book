@@ -97,7 +97,7 @@ triggers:
 
 - **Problem event**: When the trigger goes from OK to PROBLEM
 - **Problem resolution event**: When the trigger goes from PROBLEM to OK
-- **Problem update event**: When someone manually updates a problem
+- **Problem update event**: When the problem is updated either manually or scripted through the Zabbix API.
 
 These problem events are what you will see in the frontend when you navigate to
 `Monitoring` | `Problems`, but they are also very important in the next step in
@@ -110,7 +110,7 @@ be important in making sure the action executes on the right time (conditions)
 and executes the right activity (operations). 
 
 What happens is, whenever a problem event in Zabbix is created it is sent to every
-single problem action in our Zabbix environment. All of these action will then
+single problem action in our Zabbix environment. All of these actions will then
 check the event details like what host did it come from, with which severity, when
 did it start, which tags are present. These event details are then checked against
 the action conditions and only when the conditions match will the operations be executed.
@@ -140,8 +140,8 @@ Here we can see the various steps coming together.
 Important to note here is that if an item is collecting metrics, it doesn't necessarily
 need to have a trigger attached to it. The trigger expression is a separate configuration
 where we can choose which items we want to define thresholds on. In the end, not
-ever item needs to start creating problems. We can also see that we can use several
-items or event several items from different hosts in a single trigger.
+every item needs to start creating problems. We can also see that we can use several
+items or even several items from different hosts in a single trigger.
 
 The same is the case for our events. Not every event will match the conditions on
 an action. In practice, this means that some problems will only show up in your
@@ -156,4 +156,14 @@ Now that we understand the various parts of our Zabbix dataflow we can dive deep
 
 ## Questions
 
+- Can you give two examples of what a "host" could represent in Zabbix, besides a server?
+- What is the difference between collecting a metric as-is and using preprocessing on an item?
+- What are the two possible states of a trigger, and what do they mean?
+- Why is it important to carefully define the conditions in an action?
+
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/config/items](https://www.zabbix.com/documentation/current/en/manual/config/items)
+- [https://www.zabbix.com/documentation/current/en/manual/config/triggers](https://www.zabbix.com/documentation/current/en/manual/config/triggers)
+- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/action](https://www.zabbix.com/documentation/current/en/manual/config/notifications/action)
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing)
