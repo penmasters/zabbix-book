@@ -34,14 +34,16 @@ we can create our host.
 ### Host name
 The `Host name` is very important. It functions as both the technical name of the host we will
 use in various different locations, but it is also used as the `Visible name` by default. This 
-means that we will work with this name to find through filters this host with its associated data.
+means that we will work with this name to find this host with its associated data through filters .
 
 Make sure to select a host name that is short and descriptive. For example:
 
-- linux-srv01-prd
-- www.thezabbixbook.com
-- docker-container-42
-- db-srv10 - Website database
+???+ example "a few good host names"
+
+    - `linux-srv01-prd`
+    - `www.thezabbixbook.com`
+    - `docker-container-42`
+    - `db-srv10 - Website database`
 
 The best practise is to keep the host name the same in Zabbix as it is configured on your
 monitoring target. The monitoring target, being whatever you are trying to monitor. 
@@ -73,11 +75,11 @@ This is the main difference. When you want to use a local language for example y
 That way you keep your local language in the frontend, but the technical name doesn't include the 
 special character. Keep in mind however, that this can create confusion. You now need to remember
 two different names for the same host. As such, visible names are only recommended when you really need
-them or if you are trying to work around something. Otherwise, there is not need to use them.
+them or if you are trying to work around something. Otherwise, there is no need to use them.
 
 ### Host groups
-In Chapter 02 of the book, we had a deep dive into setting up various different host groups to keep
-our Zabbix environment structured. When we create a host, we can now start using on of
+In [Chapter 02](../ch02-zabbix-installation/host-groups.md) of the book, we had a deep dive into setting up various different host groups to keep
+our Zabbix environment structured. When we create a host, we can now start using one of
 our created host groups. Keep in mind, to only add the host to the lowest level of the subgroups. For
 example when we have `Servers` and `Servers/Linux`, we will only add our host to `Servers/Linux`.
 
@@ -85,22 +87,32 @@ It's also possible to create a host straight from the host creation window. To d
 simply start typing the host group name into the `Host groups` field and it will ask you if
 you want to create the host group.
 
+Let's add the host `simple-checks` in the `Linux/Servers` host group:
+
 ![Host creation - new host group](ch04.4-host-creation-new-group.png){ align=center }
 
 *4.4 Host creation - new host group*
 
-Let's add the host `simple-checks` in the `Linux/Servers` host group.
-
-
-???+ note
-
-    It's recommended to read the simple checks recipe from here, as it 
-    contains useful tips on creating good items.
-
-
+And this is it for creating our first host in Zabbix. We can leave the rest of the
+fields empty as they are optional. Another very important element of a host is
+the interfaces field, but we will cover that in a later section.
+Finally click on the `Add` button to create the host.
 
 ## Conclusion
 
+In this section we have learned how to create a host in Zabbix. We have covered
+the important fields like `Host name`, `Visible name` and `Host groups`.
+We have also discussed best practices around naming conventions for hosts in Zabbix
+and when to use the visible name field. Finally, we created our first host
+called `simple-checks` in the `Linux/Servers` host group, which we will use
+in the next section to create our first items.
+
 ## Questions
 
+- What is the purpose of a host in Zabbix?
+- What is the difference between the "Host name" and "Visible name" fields when creating a host?
+- Why is it recommended to only add a host to the lowest level of subgroups when assigning host groups?
+
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/config/hosts/host](https://www.zabbix.com/documentation/current/en/manual/config/hosts/host)
