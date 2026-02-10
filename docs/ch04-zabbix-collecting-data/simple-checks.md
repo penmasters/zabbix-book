@@ -16,25 +16,27 @@ checks we can do, executed from the Zabbix server or proxy towards our monitorin
 checks contain protocol checks such as `ICMP Ping`, `TCP/UDP` but also built in `VMware` monitoring.
 
 Without further ado, let's set up our first items. Please keep in mind that we will be building
-everything on a host level for now. Check out Chapter 06 to learn how to do this properly on a template.
+everything on a host level for now. Check out [Chapter 06](../ch06-zabbix-templates/chapter.md) to learn how to do this properly on a template.
 
 ## Building the item
 
-We shall start with a simple ICMP Ping check. If you haven't already, at `Data collection` | `Hosts`
-let's create the host `simple-checks` in the host group `Servers/Linux`. Then, for this
-new host navigate to `Items`. You should see a `Create item` button in the top right corner. Click
-on this button and lets have a look at the item creation modal popup window:
+We shall start with a simple ICMP Ping check on our host `simple-checks` in the
+`Servers/Linux` host group, created in the [previous section](hosts.md). 
+Now go to **Data collection** | **Hosts** and click on the link `Items` next to
+the host `simple-checks`. You should see a `Create item` button in the top right
+corner. Click on this button and lets have a look at the item creation modal popup
+window:
 
 ![Empty Item creation](ch04.5-empty-item-creation.png){ align=left }
 
 *4.5 Empty Item creation window*
 
 Make sure to change the `Type` to `Simple check` to get a similar result. We can see there are
-only two fields (that aren't selectors) mandatory. These, we have to fill in to make our
+only two fields mandatory (that aren't selectors). These, we have to fill in to make our
 item work.
 
-- **Name** 
-- **Key**
+- **Name** - a descriptive name of the item
+- **Key** - the unique identifier of the item
 
 ### Item Name
 
@@ -51,11 +53,11 @@ the best practise here?
 - **Item names should contain suffixes where useful**
 
 Some examples of good item names:
-- Use `Memory utilization` not `The memory util of this host`. Keep it short and descriptive
-- Use `CPU load` or if you have multiple use a suffix `CPU load 1m` and
-`CPU load 5m` for example
+- Use `Memory utilization`, not `The memory util of this host`. Keep it short and descriptive
+- Use `CPU load` or if you have multiple use a suffix: `CPU load 1m` and
+  `CPU load 5m` for example
 - Use prefixes like `Interface eth0: Bits incoming` and
-`Interface eth1: Bits incoming` for similar items on different entities
+  `Interface eth1: Bits incoming` for similar items on different entities
 
 Using those techniques, we can create items that are easy to find and most importantly that
 your Zabbix users will want to read. After all, you can count on IT engineers to not read well,
@@ -86,9 +88,9 @@ the uniqueness criteria for the creation of this entity. There are two types of 
 - **Built in**
 - **User defined**
 
-The built in item keys is what we will use to create our simple check in a while. The user defined
+The **built in** item key is what we will use to create our simple check in a while. The **user defined**
 item key is what we will use on items types like `SNMP` and `Script`. The main difference is that
-built in item keys are defined by Zabbix and attach to a specific monitoring function. The user defined
+**built in** item keys are defined by Zabbix and attached to a specific monitoring function. The **user defined**
 item keys are just there to serve as the uniqueness criteria, while a different field in the item form
 will determine the monitoring function.
 
@@ -96,11 +98,11 @@ Item keys can also be of a `Flexible` or `Non-flexible` kind. Flexible meaning t
 parameters. These parameters change the function of the built-in item keys and also count as part
 of the uniqueness of the item keys. For example:
 
-- **agent.version** a `Zabbix agent` item key doesn't accept parameters and only serves one purpose. To
-get the version of the Zabbix agent installed.
-- **net.tcp.service[service,<ip>,<port>]** a `Simple check` item key that accepts 3 parameters,
-each parameter divided by a comma(`,`). Optional parameters are marked by the `<>` signs, whereas
-mandatory parameters have no pre/suffix.
+- `agent.version` - a **Zabbix agent** item key doesn't accept parameters and only serves one purpose. To
+  get the version of the Zabbix agent installed.
+- `net.tcp.service[service,<ip>,<port>]` - a **Simple check** item key that accepts 3 parameters,
+  each parameter divided by a comma(`,`). Optional parameters are marked by the `<>` signs, whereas
+  mandatory parameters have no pre/suffix.
 
 
 ### ICMP Ping
@@ -114,8 +116,8 @@ For the key, we will have to use the built-in key
 `icmpping[<target>,<packets>,<interval>,<size>,<timeout>,<options>]`. This key accepts 6 parameters, all
 of which are optional. However, when we do not select an interface on an `icmpping` item, we
 need to fill in at least `icmpping[<target>]` for it to work. Normally `icmpping` can use the interface
-IP or DNS, but since we will discuss the `Host interfaces` later in this chapter, let's use
-the parameter instead.
+IP or DNS, but we did not yet configure one on this host as we will discuss this in the [Host interfaces](host-interfaces.md) section later in this chapter. So, for
+now let's use the parameter instead.
 
 - **Key** = `icmpping[127.0.0.1]`
 
@@ -151,10 +153,10 @@ Another useful simple check you can create is the TCP (and UDP) port check. With
 we can monitor the availability and performance of TCP and UDP ports. There are 4 built-in keys
 available for these checks:
 
-- **net.tcp.service[service,<ip>,<port>]**
-- **net.tcp.service.perf[service,<ip>,<port>]**
-- **net.udp.service[service,<ip>,<port>]**
-- **net.udp.service.perf[service,<ip>,<port>]**
+- `net.tcp.service[service,<ip>,<port>]`
+- `net.tcp.service.perf[service,<ip>,<port>]`
+- `net.udp.service[service,<ip>,<port>]`
+- `net.udp.service.perf[service,<ip>,<port>]`
 
 Granted, the `net.udp.service` item keys only monitor the availability and performance of the NTP
 protocol due to the "take it our leave it" nature of UDP. But, the `net.tcp.service` item keys are
@@ -181,7 +183,13 @@ observability platform.
 
 ## Questions
 
+- What are simple checks in Zabbix and what are they used for?
+- What are the two mandatory fields when creating a simple check item in Zabbix?
+- What is the difference between built-in and user-defined item keys in Zabbix?
+- Why is it recommended to add a tag with the name `component` to every item created in Zabbix?
+
 ## Useful URLs
 
 [https://www.youtube.com/watch?v=5etxbNPrygU](https://www.youtube.com/watch?v=5etxbNPrygU)
-
+[https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/simple_checks](https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/simple_checks)
+[https://www.zabbix.com/documentation/guidelines/en/template_guidelines#items](https://www.zabbix.com/documentation/guidelines/en/template_guidelines#items)
