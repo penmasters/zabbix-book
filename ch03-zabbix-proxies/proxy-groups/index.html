@@ -1,0 +1,1882 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Optimize Zabbix monitoring with Proxy Groups for automated High Availability
+(HA) and Load Balancing (LB). Master configuration and failover logic.
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/ch03-zabbix-proxies/proxy-groups/" rel="canonical">
+<link href="../proxies-as-container/" rel="prev"/>
+<link href="../web-services/" rel="next"/>
+<link href="../../fr/ch03-zabbix-proxies/proxy-groups/" hreflang="fr" rel="alternate"/>
+<link href="../../nl/ch03-zabbix-proxies/proxy-groups/" hreflang="nl" rel="alternate"/>
+<link href="../../pt_BR/ch03-zabbix-proxies/proxy-groups/" hreflang="pt_BR" rel="alternate"/>
+<link href="../../ru/ch03-zabbix-proxies/proxy-groups/" hreflang="ru" rel="alternate"/>
+<link href="./" hreflang="en" rel="alternate"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Proxy groups - Zabbix Book</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141" rel="stylesheet"/>
+<link href="../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="Proxy groups" property="og:title"/>
+<meta content="Optimize Zabbix monitoring with Proxy Groups for automated High Availability (HA) and Load Balancing (LB). Master configuration and failover logic." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/ch03-zabbix-proxies/proxy-groups/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Proxy groups" name="twitter:title"/>
+<meta content="Optimize Zabbix monitoring with Proxy Groups for automated High Availability (HA) and Load Balancing (LB). Master configuration and failover logic." name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#proxy-groups">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<script>
+        const gGMC_SELECT_VERSION = "Select version";
+        const gGMC_TRANSLATE_CTA = "Support us and translate!";
+        const gGMC_PAGE_LOCALE = "en";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../.." title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Proxy groups
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Select language" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../fr/ch03-zabbix-proxies/proxy-groups/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../nl/ch03-zabbix-proxies/proxy-groups/" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../pt_BR/ch03-zabbix-proxies/proxy-groups/" hreflang="pt_BR">
+              Brazillian Portugese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../ru/ch03-zabbix-proxies/proxy-groups/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<a aria-label="Share" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Share">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch02-zabbix-installation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_8" type="checkbox"/>
+<label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_8_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_8">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../chapter/">
+<span class="md-ellipsis">
+    
+  
+    Proxies and the Web services component
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../proxy-basics/">
+<span class="md-ellipsis">
+    
+  
+    Proxy basics
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../active-passive-proxies/">
+<span class="md-ellipsis">
+    
+  
+    Active and Passive proxies
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../proxies-as-container/">
+<span class="md-ellipsis">
+    
+  
+    Running Proxies as containers
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Proxy groups
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Proxy groups
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-proxy-groups-high-availability-and-load-balancing">
+<span class="md-ellipsis">
+      
+        Zabbix Proxy Groups: High Availability and Load Balancing
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview-and-core-concepts">
+<span class="md-ellipsis">
+      
+        Overview and Core Concepts
+      
+    </span>
+</a>
+<nav aria-label="Overview and Core Concepts" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-high-availability-ha-through-automatic-failover">
+<span class="md-ellipsis">
+      
+        1. High Availability (HA) Through Automatic Failover
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-load-balancing-through-host-redistribution">
+<span class="md-ellipsis">
+      
+        2. Load Balancing Through Host Redistribution
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-proxy-groups-high-availability-and-load-balancing_1">
+<span class="md-ellipsis">
+      
+        Zabbix Proxy Groups: High Availability and Load Balancing
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview-and-core-concepts_1">
+<span class="md-ellipsis">
+      
+        Overview and Core Concepts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#advanced-operational-detail">
+<span class="md-ellipsis">
+      
+        Advanced Operational Detail
+      
+    </span>
+</a>
+<nav aria-label="Advanced Operational Detail" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#internal-management-and-communication">
+<span class="md-ellipsis">
+      
+        Internal Management and Communication
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#load-balancing-time-window">
+<span class="md-ellipsis">
+      
+        Load Balancing Time Window
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#agent-configuration-rules">
+<span class="md-ellipsis">
+      
+        Agent Configuration Rules
+      
+    </span>
+</a>
+<nav aria-label="Agent Configuration Rules" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#passive-agents-server">
+<span class="md-ellipsis">
+      
+        Passive Agents (Server=)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#active-agents-serveractive">
+<span class="md-ellipsis">
+      
+        Active Agents (ServerActive=)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#handling-proxy-network-loss">
+<span class="md-ellipsis">
+      
+        Handling Proxy Network Loss
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuration-workflow">
+<span class="md-ellipsis">
+      
+        Configuration Workflow
+      
+    </span>
+</a>
+<nav aria-label="Configuration Workflow" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-1-create-the-proxy-group">
+<span class="md-ellipsis">
+      
+        Step 1: Create the Proxy Group
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-2-assign-hosts-to-the-proxy-group">
+<span class="md-ellipsis">
+      
+        Step 2: Assign Hosts to the Proxy Group
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architecture-diagram">
+<span class="md-ellipsis">
+      
+        Architecture Diagram
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#important-considerations-and-limitations">
+<span class="md-ellipsis">
+      
+        Important Considerations and Limitations
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices">
+<span class="md-ellipsis">
+      
+        Some Good Practices
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#practical-example">
+<span class="md-ellipsis">
+      
+        Practical Example
+      
+    </span>
+</a>
+<nav aria-label="Practical Example" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-overview">
+<span class="md-ellipsis">
+      
+        Environment Overview
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-proxy-configuration-file-zabbix_proxyconf">
+<span class="md-ellipsis">
+      
+        Zabbix Proxy Configuration File (zabbix_proxy.conf)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-frontend-setup-administration">
+<span class="md-ellipsis">
+      
+        Zabbix Frontend Setup (Administration)
+      
+    </span>
+</a>
+<nav aria-label="Zabbix Frontend Setup (Administration)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#define-individual-proxies-administration-proxies">
+<span class="md-ellipsis">
+      
+        Define Individual Proxies (Administration -&gt; Proxies)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-the-proxy-group-administration-proxy-groups">
+<span class="md-ellipsis">
+      
+        Create the Proxy Group (Administration -&gt; Proxy groups)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#assign-proxies-to-the-group-administration-proxies">
+<span class="md-ellipsis">
+      
+        Assign Proxies to the Group (Administration -&gt; Proxies)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-agent-configuration-zabbix_agentdconf">
+<span class="md-ellipsis">
+      
+        Zabbix Agent Configuration (zabbix_agentd.conf)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#troubleshooting-tips">
+<span class="md-ellipsis">
+      
+        Troubleshooting Tips
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../web-services/">
+<span class="md-ellipsis">
+    
+  
+    Web services
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch04-zabbix-collecting-data/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch06-zabbix-templates/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/network-host-discovery/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/graphs/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch13-advanced-security/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-proxy-groups-high-availability-and-load-balancing">
+<span class="md-ellipsis">
+      
+        Zabbix Proxy Groups: High Availability and Load Balancing
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview-and-core-concepts">
+<span class="md-ellipsis">
+      
+        Overview and Core Concepts
+      
+    </span>
+</a>
+<nav aria-label="Overview and Core Concepts" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-high-availability-ha-through-automatic-failover">
+<span class="md-ellipsis">
+      
+        1. High Availability (HA) Through Automatic Failover
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-load-balancing-through-host-redistribution">
+<span class="md-ellipsis">
+      
+        2. Load Balancing Through Host Redistribution
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-proxy-groups-high-availability-and-load-balancing_1">
+<span class="md-ellipsis">
+      
+        Zabbix Proxy Groups: High Availability and Load Balancing
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview-and-core-concepts_1">
+<span class="md-ellipsis">
+      
+        Overview and Core Concepts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#advanced-operational-detail">
+<span class="md-ellipsis">
+      
+        Advanced Operational Detail
+      
+    </span>
+</a>
+<nav aria-label="Advanced Operational Detail" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#internal-management-and-communication">
+<span class="md-ellipsis">
+      
+        Internal Management and Communication
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#load-balancing-time-window">
+<span class="md-ellipsis">
+      
+        Load Balancing Time Window
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#agent-configuration-rules">
+<span class="md-ellipsis">
+      
+        Agent Configuration Rules
+      
+    </span>
+</a>
+<nav aria-label="Agent Configuration Rules" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#passive-agents-server">
+<span class="md-ellipsis">
+      
+        Passive Agents (Server=)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#active-agents-serveractive">
+<span class="md-ellipsis">
+      
+        Active Agents (ServerActive=)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#handling-proxy-network-loss">
+<span class="md-ellipsis">
+      
+        Handling Proxy Network Loss
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuration-workflow">
+<span class="md-ellipsis">
+      
+        Configuration Workflow
+      
+    </span>
+</a>
+<nav aria-label="Configuration Workflow" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-1-create-the-proxy-group">
+<span class="md-ellipsis">
+      
+        Step 1: Create the Proxy Group
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-2-assign-hosts-to-the-proxy-group">
+<span class="md-ellipsis">
+      
+        Step 2: Assign Hosts to the Proxy Group
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architecture-diagram">
+<span class="md-ellipsis">
+      
+        Architecture Diagram
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#important-considerations-and-limitations">
+<span class="md-ellipsis">
+      
+        Important Considerations and Limitations
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices">
+<span class="md-ellipsis">
+      
+        Some Good Practices
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#practical-example">
+<span class="md-ellipsis">
+      
+        Practical Example
+      
+    </span>
+</a>
+<nav aria-label="Practical Example" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-overview">
+<span class="md-ellipsis">
+      
+        Environment Overview
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-proxy-configuration-file-zabbix_proxyconf">
+<span class="md-ellipsis">
+      
+        Zabbix Proxy Configuration File (zabbix_proxy.conf)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-frontend-setup-administration">
+<span class="md-ellipsis">
+      
+        Zabbix Frontend Setup (Administration)
+      
+    </span>
+</a>
+<nav aria-label="Zabbix Frontend Setup (Administration)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#define-individual-proxies-administration-proxies">
+<span class="md-ellipsis">
+      
+        Define Individual Proxies (Administration -&gt; Proxies)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-the-proxy-group-administration-proxy-groups">
+<span class="md-ellipsis">
+      
+        Create the Proxy Group (Administration -&gt; Proxy groups)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#assign-proxies-to-the-group-administration-proxies">
+<span class="md-ellipsis">
+      
+        Assign Proxies to the Group (Administration -&gt; Proxies)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-agent-configuration-zabbix_agentdconf">
+<span class="md-ellipsis">
+      
+        Zabbix Agent Configuration (zabbix_agentd.conf)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#troubleshooting-tips">
+<span class="md-ellipsis">
+      
+        Troubleshooting Tips
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigation" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../..">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../chapter/">
+<span class="md-ellipsis">
+    Chapter 03 : Proxies and Webcomponents
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<nav class="md-tags">
+<span class="md-tag md-tag-icon" data-tag="advanced">
+      Advanced
+    </span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch03-zabbix-proxies/proxy-groups.md" title="View source of this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="proxy-groups">Proxy groups</h1>
+<h2 id="zabbix-proxy-groups-high-availability-and-load-balancing">Zabbix Proxy Groups: High Availability and Load Balancing</h2>
+<p>Zabbix Proxy Groups provide a robust foundation for <strong>enterprise-grade distributed
+monitoring</strong>, enabling automatic <strong>High Availability (HA)</strong> and <strong>Load Balancing
+(LB)</strong> across multiple proxies. Instead of binding a monitored host to a single
+proxy, the host is assigned to a <strong>Proxy Group</strong>. The Zabbix server then determines
+dynamically and continuously which proxy within the group is responsible for monitoring
+that host.</p>
+<p>This approach ensures uninterrupted monitoring during proxy failures and maintains
+an even workload across the proxy infrastructure.</p>
+<hr/>
+<h2 id="overview-and-core-concepts">Overview and Core Concepts</h2>
+<p>Proxy groups operate under the control of the <strong>Zabbix Server’s Proxy Group Manager</strong>, which continuously evaluates proxy status, host assignments, and overall group health. Two major capabilities define this feature: <strong>automatic failover</strong> and <strong>workload balancing</strong>.</p>
+<h3 id="1-high-availability-ha-through-automatic-failover">1. High Availability (HA) Through Automatic Failover</h3>
+<p><strong>Failover Mechanism:</strong>
+If a proxy stops communicating with the Zabbix server and exceeds the configured
+<strong>Failover period</strong>, it is marked <em>Offline</em>. The Proxy Group Manager then
+<strong>immediately reassigns</strong> all hosts monitored by that proxy to the remaining
+online proxies in the group.</p>
+<p><strong>Outcome:</strong>
+Monitoring continues with minimal disruption and without manual intervention.</p>
+<h3 id="2-load-balancing-through-host-redistribution">2. Load Balancing Through Host Redistribution</h3>
+<p><strong>Balancing Mechanism:</strong>
+The Zabbix server evaluates the number of hosts assigned to each proxy. # Proxy groups</p>
+<h2 id="zabbix-proxy-groups-high-availability-and-load-balancing_1">Zabbix Proxy Groups: High Availability and Load Balancing</h2>
+<p>Zabbix Proxy Groups provide a robust foundation for <strong>enterprise-grade distributed
+monitoring</strong>, enabling automatic <strong>High Availability (HA)</strong> and <strong>Load Balancing
+(LB)</strong> across multiple proxies. Instead of binding a monitored host to a single
+proxy, the host is assigned to a <strong>Proxy Group</strong>. The Zabbix server then determines
+dynamically and continuously which proxy within the group is responsible for monitoring
+that host.</p>
+<p>This approach ensures uninterrupted monitoring during proxy failures and maintains
+an even workload across the proxy infrastructure.</p>
+<hr/>
+<h2 id="overview-and-core-concepts_1">Overview and Core Concepts</h2>
+<p>Proxy groups operate under the control of the <strong>Zabbix Server’s Proxy Group Manager</strong>,Load balancing is triggered if an imbalance is detected, defined by <strong>two simultaneous conditions</strong>:</p>
+<ol>
+<li>A difference of <strong>greater than 10 hosts</strong>, <strong>and</strong></li>
+<li>The number of hosts assigned to a proxy is <strong>double the group average or more</strong>.</li>
+</ol>
+<p><strong>Redistribution Logic:</strong></p>
+<ol>
+<li>Compute the <strong>average hosts per proxy</strong>.</li>
+<li>Proxies with excess hosts move them into an <strong>unassigned pool</strong>.</li>
+<li>Proxies with a deficit receive hosts from this pool.</li>
+</ol>
+<p>Example:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Proxy Host Count</th>
+<th style="text-align: center;">Group Average</th>
+<th style="text-align: center;">Triggered?</th>
+<th style="text-align: left;">Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>100</strong></td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;"><strong>Yes</strong></td>
+<td style="text-align: left;">Host count is double the average (2×) and difference is 50 (&gt;10).</td>
+</tr>
+<tr>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: left;">Difference is 10 (not &gt;10); not sufficient to trigger rebalancing.</td>
+</tr>
+<tr>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: left;">Deficit of 10; insufficient to trigger balancing.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>25</strong></td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;"><strong>Yes</strong></td>
+<td style="text-align: left;">Proxy has 5× the average (≥2×) and difference is 20 (&gt;10).</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="advanced-operational-detail">Advanced Operational Detail</h2>
+<p>The following technical details govern the behavior of the Proxy Group Manager and agents.</p>
+<h3 id="internal-management-and-communication">Internal Management and Communication</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Mechanism</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Communication Flow</strong></td>
+<td style="text-align: left;">Proxies communicate <strong>only with the Proxy Group Manager</strong> on the Zabbix server. Proxies <strong>do not communicate with each other</strong>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Group Membership</strong></td>
+<td style="text-align: left;">Each proxy can belong <strong>only to a single proxy group</strong>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>State Change Trigger</strong></td>
+<td style="text-align: left;">Proxy and proxy group states change only <strong>after the configured failover period</strong> has expired.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Shared Knowledge</strong></td>
+<td style="text-align: left;">All proxies in the group are informed by the server about the status and addresses of other proxies in the same group.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="load-balancing-time-window">Load Balancing Time Window</h3>
+<ul>
+<li>If a proxy group is flagged as unbalanced, the Proxy Group Manager will <strong>wait until the grace period of $10 \times$ the failover delay has expired</strong>.</li>
+<li>This grace period prevents redistribution based on temporary spikes. If the imbalance persists, host redistribution is performed.</li>
+</ul>
+<h3 id="agent-configuration-rules">Agent Configuration Rules</h3>
+<h4 id="passive-agents-server">Passive Agents (<code>Server=</code>)</h4>
+<p>A Zabbix agent in passive mode <strong>must accept connections from all members of its proxy group</strong>.
+* Configure the <code>Server</code> parameter with a comma-separated list of all node IP addresses or DNS names.
+* It is also possible to specify entire network segments if appropriate.</p>
+<h4 id="active-agents-serveractive">Active Agents (<code>ServerActive=</code>)</h4>
+<p>The active agent (v7.0+) will dynamically learn the optimal proxy. It is configured in one of two ways:</p>
+<ol>
+<li><strong>Specify Multiple Proxies:</strong> Specify multiple proxy addresses using <strong>semicolons</strong>. Any proxy group member the agent connects to can redirect the agent to the currently assigned proxy.</li>
+<li><strong>Specify Zabbix Server:</strong> Specify the <strong>Zabbix server address</strong> instead of the proxy addresses. The Proxy Group Manager will redirect the agent to the assigned proxy. The active agent will then add all known proxies to its runtime <code>ServerActive</code> parameter.</li>
+</ol>
+<h3 id="handling-proxy-network-loss">Handling Proxy Network Loss</h3>
+<ul>
+<li>If a proxy loses its network connection to the Zabbix server, the Proxy Group Manager will automatically reassign the proxy's hosts to other online proxies.</li>
+<li>The disconnected proxy will mark itself as offline and will <strong>redirect any active agents</strong> attempting to connect to it toward the other proxies in the group.</li>
+</ul>
+<hr/>
+<h2 id="configuration-workflow">Configuration Workflow</h2>
+<p>Deploying proxy groups effectively involves three main steps.</p>
+<h3 id="step-1-create-the-proxy-group">Step 1: Create the Proxy Group</h3>
+<p>In the Zabbix frontend:</p>
+<ol>
+<li>Navigate to <strong>Administration → Proxy groups</strong>.</li>
+<li>Click <strong>Create proxy group</strong>.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Name</strong></td>
+<td style="text-align: left;">Descriptive group name (e.g., <code>EMEA_Prod_Proxies</code>).</td>
+<td style="text-align: left;">Use consistent naming tied to region, function, or environment.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Failover period</strong></td>
+<td style="text-align: left;">Maximum downtime allowed before proxy becomes <em>Offline</em> and failover is triggered.</td>
+<td style="text-align: left;">Default: <strong>1m</strong>. Supports <code>s</code>, <code>m</code>, <code>h</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Minimum number of proxies</strong></td>
+<td style="text-align: left;">Minimum required online proxies for the group to be considered <em>Online</em>.</td>
+<td style="text-align: left;">Use $N-1$ if you want one proxy failure tolerance.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Proxies</strong></td>
+<td style="text-align: left;">Members participating in load sharing and HA.</td>
+<td style="text-align: left;">Add all intended proxies.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-2-assign-hosts-to-the-proxy-group">Step 2: Assign Hosts to the Proxy Group</h3>
+<p>Hosts must be explicitly assigned to the proxy group:</p>
+<ol>
+<li>Select hosts in <strong>Hosts</strong>.</li>
+<li>Use <strong>Mass Update</strong>.</li>
+<li>Set <strong>Monitored by proxy = &lt;Proxy Group Name&gt;</strong>.</li>
+</ol>
+<p>Only hosts assigned to the group are eligible for automated failover and load balancing.</p>
+<hr/>
+<h2 id="architecture-diagram">Architecture Diagram</h2>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Server["Zabbix Server"]
+        PGM["Proxy Group Manager"]
+    end
+
+    subgraph ProxyGroup["Proxy Group"]
+        PX1["Proxy 1"]
+        PX2["Proxy 2"]
+        PX3["Proxy 3"]
+    end
+
+    subgraph Hosts["Monitored Hosts"]
+        H1["Host A"]
+        H2["Host B"]
+        H3["Host C"]
+        H4["Host D"]
+    end
+
+    PGM --&gt; PX1
+    PGM --&gt; PX2
+    PGM --&gt; PX3
+
+    PX1 &lt;---&gt; H1
+    PX2 &lt;---&gt; H2
+    PX3 &lt;---&gt; H3
+    PX2 &lt;---&gt; H4
+
+    %% Failover arrows
+    PX1 -.Failover/Load Balancing.-&gt; PX2
+    PX2 -.Failover/Load Balancing.-&gt; PX3
+</code></pre>
+<h2 id="important-considerations-and-limitations">Important Considerations and Limitations</h2>
+<ul>
+<li><strong>Version Requirements:</strong> All proxies must run Zabbix <strong>7.0 or later</strong> and match the server version.</li>
+<li><strong>Firewall Requirements:</strong> Agents must be able to communicate with <strong>every proxy</strong> in the group.</li>
+<li><strong>SNMP Traps Not Supported:</strong> Proxy groups <strong>cannot process SNMP traps</strong>. Traps must be routed to a dedicated, non-grouped proxy.</li>
+<li><strong>External Dependencies Must Be Identical:</strong> If proxies use external check scripts, ODBC configuration, or third-party integrations, ensure <strong>all proxies have identical configurations</strong>.</li>
+<li><strong>VMware Monitoring Impact:</strong> VMware hypervisors may be distributed across proxies, and each proxy will retrieve cached data from vCenter, increasing load.</li>
+</ul>
+<hr/>
+<h2 id="some-good-practices">Some Good Practices</h2>
+<ul>
+<li>Use at least three proxies for stable HA and load balancing.</li>
+<li>Ensure <strong>symmetric configuration</strong> across all proxies (scripts, credentials, ODBC drivers, time sync).</li>
+<li>Monitor proxy performance using built-in templates to understand load and redistribution frequency.</li>
+<li>Keep failover periods short for high-criticality environments.</li>
+<li>Test failover events regularly in non-production environments.</li>
+</ul>
+<hr/>
+<h2 id="practical-example">Practical Example</h2>
+<p>This example utilizes a single Zabbix Server and a three node Proxy Group to provide
+superior High Availability (HA) and load balancing for a large remote location.
+This configuration allows for failure tolerance and demonstrates mixed Active/Passive
+monitoring modes.</p>
+<p>You don't need multiple virtual machines but of course we won't stop you if you
+want too. :) An easy alternative is containers. Or running proxies with different
+configuration files manually from the command line with the option <code>-c</code> or <code>--config-file</code>.
+If you don't know how have a look at our previous chapter <code>Running proxies as containers</code>.</p>
+<h3 id="environment-overview">Environment Overview</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Quantity</th>
+<th style="text-align: left;">Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Zabbix Server</td>
+<td style="text-align: left;">1 (zbx-server-main)</td>
+<td style="text-align: left;">Central hub for all collected data.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zabbix Proxies</td>
+<td style="text-align: left;">3 (zbx-proxy-A1, A2, A3)</td>
+<td style="text-align: left;">Collect data locally at the branch office.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hosts</td>
+<td style="text-align: left;">300</td>
+<td style="text-align: left;">Monitored devices in the branch office.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Monitoring Group</td>
+<td style="text-align: left;">Branch-A_HA_Group</td>
+<td style="text-align: left;">The Zabbix entity responsible for distributing the</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">300 hosts across the 3 proxies for redundancy.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="zabbix-proxy-configuration-file-zabbix_proxyconf">Zabbix Proxy Configuration File (zabbix_proxy.conf)</h3>
+<p>The IPs are just examples, adapt them to your own setup.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">zbx-proxy-A1 (Active)</th>
+<th style="text-align: left;">zbx-proxy-A3 (Passive)</th>
+<th style="text-align: left;">zbx-proxy-A2 (Active)</th>
+<th style="text-align: left;">Critical Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">IP</td>
+<td style="text-align: left;">10.0.0.1</td>
+<td style="text-align: left;">10.0.0.2</td>
+<td style="text-align: left;">10.0.0.3</td>
+<td style="text-align: left;">IP/DNS of the the Proxy server.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hostname</td>
+<td style="text-align: left;">zbx-proxy-A1</td>
+<td style="text-align: left;">zbx-proxy-A3</td>
+<td style="text-align: left;">zbx-proxy-A2</td>
+<td style="text-align: left;">Must match the Proxy Name defined in the Zabbix Frontend.</td>
+</tr>
+<tr>
+<td style="text-align: left;">ProxyMode</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1 = Active (proxy connects to server). 0 = Passive (server connects to proxy).</td>
+</tr>
+<tr>
+<td style="text-align: left;">DBName</td>
+<td style="text-align: left;">/tmp/proxy_a1.db</td>
+<td style="text-align: left;">/tmp/proxy_a3.db</td>
+<td style="text-align: left;">/tmp/proxy_a2.db</td>
+<td style="text-align: left;">Each proxy must use a unique database file when use SQlite3 .</td>
+</tr>
+</tbody>
+</table>
+<h3 id="zabbix-frontend-setup-administration">Zabbix Frontend Setup (Administration)</h3>
+<p>Follow these steps in the Zabbix Web Interface (Administration section) to create and assign the Proxy Group.</p>
+<h4 id="define-individual-proxies-administration-proxies">Define Individual Proxies (Administration -&gt; Proxies)</h4>
+<ul>
+<li>Navigate to <code>Administration</code>-&gt; <code>Proxies</code>.</li>
+<li>Click <code>Create proxy</code>.</li>
+<li>Define all three proxies one by one:<ul>
+<li>Proxy name: Enter the <code>Hostname</code> (e.g., <code>zbx-proxy-A1</code>).</li>
+<li>Proxy mode: Select Active (1) for A1 and A2, and Passive (0) for A3.</li>
+<li>Proxy group: Leave as None for now.</li>
+</ul>
+</li>
+<li>Click Add.</li>
+</ul>
+<p><img alt="Proxy_groups/ch03-add-proxy.png" src="../Proxy_groups/ch03-add-proxy.png"/>
+<em>ch03 Add proxy</em></p>
+<h4 id="create-the-proxy-group-administration-proxy-groups">Create the Proxy Group (Administration -&gt; Proxy groups)</h4>
+<ul>
+<li>Navigate to <code>Administration</code>-&gt; <code>Proxy groups</code>.</li>
+<li>Click <code>Create proxy group</code>.</li>
+<li>Configure the group parameters for High Availability:<ul>
+<li>Name: <code>Branch-A_HA_Group</code></li>
+<li>Minimum proxies: Set to 2. This ensures if only one proxy remains, the group
+  will enter a Degrading state, preventing the single remaining proxy from
+  being overloaded.</li>
+<li>Failover period: <code>1m</code> (The time the server waits before redistributing hosts
+  from an offline proxy).</li>
+</ul>
+</li>
+</ul>
+<p><img alt="Proxy_groups/ch03-create-proxy-group.png" src="../Proxy_groups/ch03-create-proxy-group.png"/>
+<em>ch03 Create Proxy groups</em></p>
+<h4 id="assign-proxies-to-the-group-administration-proxies">Assign Proxies to the Group (Administration -&gt; Proxies)</h4>
+<ul>
+<li>Go back to <code>Administration -&gt;</code>Proxies`.</li>
+<li>Edit each proxy (<code>zbx-proxy-A1</code>, <code>zbx-proxy-A2</code>, and <code>zbx-proxy-A3</code>).</li>
+<li>Change the Proxy group dropdown from <code>None</code> to <code>Branch-A_HA_Group</code>.</li>
+<li>Define <code>Address for active agents</code> add the IP of the proxy.</li>
+<li>Click <code>Update</code>.</li>
+</ul>
+<p><img alt="Proxy_groups/ch03-add-proxy-to-group.png" src="../Proxy_groups/ch03-add-proxy-to-group.png"/>
+<em>ch03 Add proxy to proxy group</em></p>
+<p><img alt="Proxy_groups/ch03-all-proxy-linked.png" src="../Proxy_groups/ch03-all-proxy-linked.png"/>
+<em>ch03 All proxies linked with a proxy group</em></p>
+<h3 id="zabbix-agent-configuration-zabbix_agentdconf">Zabbix Agent Configuration (zabbix_agentd.conf)</h3>
+<p>To ensure hosts can be monitored by any proxy in the group, the <code>Zabbix Agent</code>
+configuration on the 300 hosts must be aware of all proxy IP addresses. Don't
+worry we will not install 300 hosts. Just one agent is fine, we will use a
+passive agent and just create 300 dummy agents in the frontend.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Configuration Value Example</th>
+<th style="text-align: left;">Rationale for HA/Load Balancing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Server</td>
+<td style="text-align: left;">"IP_A1,IP_A2,IP_A3,10.0.0.1"</td>
+<td style="text-align: left;">"Passive Checks: Allows the host to accept</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">incoming connections (checks) from any IP address in the group (and the Server,</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">for redundancy or occasional checks)."</td>
+</tr>
+<tr>
+<td style="text-align: left;">ServerActive</td>
+<td style="text-align: left;">IP_A1;IP_A2;IP_A3</td>
+<td style="text-align: left;">"Active Checks: The agent will attempt to</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">send data to the first proxy in the semi-colon list. If that fails, it automatically</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">tries the next one, providing agent-side failover."</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hostname</td>
+<td style="text-align: left;">[ Not too important ]</td>
+<td style="text-align: left;">We will use passive agents to the name is not important.</td>
+</tr>
+</tbody>
+</table>
+<p>As a final step you now have to create 300 hosts in the frontend and select
+<code>Monitored by proxy</code> field to the <code>proxy group :</code> <code>Branch-A_HA_Group</code>.</p>
+<p>Just here is a script for you that will handle those things. Just create an API
+token for the Zabbix Administrator account or any account with enough privileges
+and fill in the API token and the URL of the zabbix frontend. Make the script
+executable <code>chmod +x create_hosts.py</code> or whatever you used as name for the
+script. Verify also the <code>Host_group_id</code>, <code>Template_id</code> and the <code>Proxy_group_id</code>. 
+This can be done by looking at the URL when clicking on them.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>For this script to work you need to have python3 and you probably need
+ to install pip and the requests module.</p>
+</details>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="ch">#!/bin/python3</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="c1"># --- Configuration ---</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="n">ZABBIX_URL</span> <span class="o">=</span> <span class="s2">"http://&lt;Server URL&gt;/api_jsonrpc.php"</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="n">AUTH_TOKEN</span> <span class="o">=</span> <span class="s2">"&lt;API TOKEN&gt;"</span>  <span class="c1"># Replace with your Zabbix API token</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="n">HOST_COUNT</span> <span class="o">=</span> <span class="mi">300</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="n">HOST_GROUP_ID</span> <span class="o">=</span> <span class="s2">"2"</span>  <span class="c1"># Replace with the actual ID of your target Host Group (e.g., 'Branch A Servers')</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="n">TEMPLATE_ID</span> <span class="o">=</span> <span class="s2">"10561"</span> <span class="c1"># Replace with a common template ID (e.g., 'Template Module Zabbix agent')</span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="n">PROXY_GROUP_ID</span> <span class="o">=</span> <span class="s2">"1"</span> <span class="c1"># Replace with the actual ID of your 'Branch-A_HA_Group'</span>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">def</span><span class="w"> </span><span class="nf">api_call</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">id_val</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+</span><span id="__span-0-15"><a href="#__codelineno-0-15" id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">    </span><span class="sd">"""</span>
+</span><span id="__span-0-16"><a href="#__codelineno-0-16" id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="sd">    Generic function to make a Zabbix API call for 7.2+.</span>
+</span><span id="__span-0-17"><a href="#__codelineno-0-17" id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="sd">    - Token is passed via Authorization: Bearer header.</span>
+</span><span id="__span-0-18"><a href="#__codelineno-0-18" id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="sd">    - 'auth' is NOT included in the JSON body anymore.</span>
+</span><span id="__span-0-19"><a href="#__codelineno-0-19" id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">    """</span>
+</span><span id="__span-0-20"><a href="#__codelineno-0-20" id="__codelineno-0-20" name="__codelineno-0-20"></a>    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-0-21"><a href="#__codelineno-0-21" id="__codelineno-0-21" name="__codelineno-0-21"></a>        <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json-rpc"</span><span class="p">,</span>
+</span><span id="__span-0-22"><a href="#__codelineno-0-22" id="__codelineno-0-22" name="__codelineno-0-22"></a>        <span class="s2">"Authorization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Bearer </span><span class="si">{</span><span class="n">AUTH_TOKEN</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+</span><span id="__span-0-23"><a href="#__codelineno-0-23" id="__codelineno-0-23" name="__codelineno-0-23"></a>    <span class="p">}</span>
+</span><span id="__span-0-24"><a href="#__codelineno-0-24" id="__codelineno-0-24" name="__codelineno-0-24"></a>
+</span><span id="__span-0-25"><a href="#__codelineno-0-25" id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-0-26"><a href="#__codelineno-0-26" id="__codelineno-0-26" name="__codelineno-0-26"></a>        <span class="s2">"jsonrpc"</span><span class="p">:</span> <span class="s2">"2.0"</span><span class="p">,</span>
+</span><span id="__span-0-27"><a href="#__codelineno-0-27" id="__codelineno-0-27" name="__codelineno-0-27"></a>        <span class="s2">"method"</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+</span><span id="__span-0-28"><a href="#__codelineno-0-28" id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="s2">"params"</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+</span><span id="__span-0-29"><a href="#__codelineno-0-29" id="__codelineno-0-29" name="__codelineno-0-29"></a>        <span class="s2">"id"</span><span class="p">:</span> <span class="n">id_val</span>
+</span><span id="__span-0-30"><a href="#__codelineno-0-30" id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="p">}</span>
+</span><span id="__span-0-31"><a href="#__codelineno-0-31" id="__codelineno-0-31" name="__codelineno-0-31"></a>
+</span><span id="__span-0-32"><a href="#__codelineno-0-32" id="__codelineno-0-32" name="__codelineno-0-32"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-0-33"><a href="#__codelineno-0-33" id="__codelineno-0-33" name="__codelineno-0-33"></a>        <span class="c1"># using json= lets requests handle encoding</span>
+</span><span id="__span-0-34"><a href="#__codelineno-0-34" id="__codelineno-0-34" name="__codelineno-0-34"></a>        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">ZABBIX_URL</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-0-35"><a href="#__codelineno-0-35" id="__codelineno-0-35" name="__codelineno-0-35"></a>        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+</span><span id="__span-0-36"><a href="#__codelineno-0-36" id="__codelineno-0-36" name="__codelineno-0-36"></a>        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</span><span id="__span-0-37"><a href="#__codelineno-0-37" id="__codelineno-0-37" name="__codelineno-0-37"></a>    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-0-38"><a href="#__codelineno-0-38" id="__codelineno-0-38" name="__codelineno-0-38"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"API Request Error on method </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-0-39"><a href="#__codelineno-0-39" id="__codelineno-0-39" name="__codelineno-0-39"></a>        <span class="k">return</span> <span class="kc">None</span>
+</span><span id="__span-0-40"><a href="#__codelineno-0-40" id="__codelineno-0-40" name="__codelineno-0-40"></a>
+</span><span id="__span-0-41"><a href="#__codelineno-0-41" id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="k">def</span><span class="w"> </span><span class="nf">create_hosts</span><span class="p">():</span>
+</span><span id="__span-0-42"><a href="#__codelineno-0-42" id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="w">    </span><span class="sd">"""Creates the bulk hosts using the host.create API method."""</span>
+</span><span id="__span-0-43"><a href="#__codelineno-0-43" id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting host creation for </span><span class="si">{</span><span class="n">HOST_COUNT</span><span class="si">}</span><span class="s2"> hosts..."</span><span class="p">)</span>
+</span><span id="__span-0-44"><a href="#__codelineno-0-44" id="__codelineno-0-44" name="__codelineno-0-44"></a>
+</span><span id="__span-0-45"><a href="#__codelineno-0-45" id="__codelineno-0-45" name="__codelineno-0-45"></a>    <span class="c1"># --- AUTHENTICATION CHECK ---</span>
+</span><span id="__span-0-46"><a href="#__codelineno-0-46" id="__codelineno-0-46" name="__codelineno-0-46"></a>    <span class="n">auth_check_response</span> <span class="o">=</span> <span class="n">api_call</span><span class="p">(</span>
+</span><span id="__span-0-47"><a href="#__codelineno-0-47" id="__codelineno-0-47" name="__codelineno-0-47"></a>        <span class="s2">"user.get"</span><span class="p">,</span>
+</span><span id="__span-0-48"><a href="#__codelineno-0-48" id="__codelineno-0-48" name="__codelineno-0-48"></a>        <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"username"</span><span class="p">]},</span>
+</span><span id="__span-0-49"><a href="#__codelineno-0-49" id="__codelineno-0-49" name="__codelineno-0-49"></a>        <span class="n">id_val</span><span class="o">=</span><span class="mi">1000</span>
+</span><span id="__span-0-50"><a href="#__codelineno-0-50" id="__codelineno-0-50" name="__codelineno-0-50"></a>    <span class="p">)</span>
+</span><span id="__span-0-51"><a href="#__codelineno-0-51" id="__codelineno-0-51" name="__codelineno-0-51"></a>
+</span><span id="__span-0-52"><a href="#__codelineno-0-52" id="__codelineno-0-52" name="__codelineno-0-52"></a>    <span class="k">if</span> <span class="n">auth_check_response</span> <span class="ow">and</span> <span class="s1">'result'</span> <span class="ow">in</span> <span class="n">auth_check_response</span><span class="p">:</span>
+</span><span id="__span-0-53"><a href="#__codelineno-0-53" id="__codelineno-0-53" name="__codelineno-0-53"></a>        <span class="k">if</span> <span class="n">auth_check_response</span><span class="p">[</span><span class="s1">'result'</span><span class="p">]:</span>
+</span><span id="__span-0-54"><a href="#__codelineno-0-54" id="__codelineno-0-54" name="__codelineno-0-54"></a>            <span class="n">user_alias</span> <span class="o">=</span> <span class="n">auth_check_response</span><span class="p">[</span><span class="s1">'result'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">'username'</span><span class="p">]</span>
+</span><span id="__span-0-55"><a href="#__codelineno-0-55" id="__codelineno-0-55" name="__codelineno-0-55"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">" Authenticated successfully as: </span><span class="si">{</span><span class="n">user_alias</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-0-56"><a href="#__codelineno-0-56" id="__codelineno-0-56" name="__codelineno-0-56"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-0-57"><a href="#__codelineno-0-57" id="__codelineno-0-57" name="__codelineno-0-57"></a>            <span class="nb">print</span><span class="p">(</span><span class="s2">" Auth success, but no users returned. Check the token's permissions."</span><span class="p">)</span>
+</span><span id="__span-0-58"><a href="#__codelineno-0-58" id="__codelineno-0-58" name="__codelineno-0-58"></a>            <span class="k">return</span>
+</span><span id="__span-0-59"><a href="#__codelineno-0-59" id="__codelineno-0-59" name="__codelineno-0-59"></a>    <span class="k">elif</span> <span class="n">auth_check_response</span> <span class="ow">and</span> <span class="s1">'error'</span> <span class="ow">in</span> <span class="n">auth_check_response</span><span class="p">:</span>
+</span><span id="__span-0-60"><a href="#__codelineno-0-60" id="__codelineno-0-60" name="__codelineno-0-60"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">" Initial Authentication Error. Received: </span><span class="si">{</span><span class="n">auth_check_response</span><span class="p">[</span><span class="s1">'error'</span><span class="p">][</span><span class="s1">'data'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-0-61"><a href="#__codelineno-0-61" id="__codelineno-0-61" name="__codelineno-0-61"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">"Please double-check your ZABBIX_URL and AUTH_TOKEN."</span><span class="p">)</span>
+</span><span id="__span-0-62"><a href="#__codelineno-0-62" id="__codelineno-0-62" name="__codelineno-0-62"></a>        <span class="k">return</span>
+</span><span id="__span-0-63"><a href="#__codelineno-0-63" id="__codelineno-0-63" name="__codelineno-0-63"></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-0-64"><a href="#__codelineno-0-64" id="__codelineno-0-64" name="__codelineno-0-64"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">" Failed to establish connection for authentication check. Check ZABBIX_URL."</span><span class="p">)</span>
+</span><span id="__span-0-65"><a href="#__codelineno-0-65" id="__codelineno-0-65" name="__codelineno-0-65"></a>        <span class="k">return</span>
+</span><span id="__span-0-66"><a href="#__codelineno-0-66" id="__codelineno-0-66" name="__codelineno-0-66"></a>
+</span><span id="__span-0-67"><a href="#__codelineno-0-67" id="__codelineno-0-67" name="__codelineno-0-67"></a>    <span class="c1"># --- END AUTHENTICATION CHECK ---</span>
+</span><span id="__span-0-68"><a href="#__codelineno-0-68" id="__codelineno-0-68" name="__codelineno-0-68"></a>
+</span><span id="__span-0-69"><a href="#__codelineno-0-69" id="__codelineno-0-69" name="__codelineno-0-69"></a>    <span class="n">hosts_created_count</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-0-70"><a href="#__codelineno-0-70" id="__codelineno-0-70" name="__codelineno-0-70"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">HOST_COUNT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="__span-0-71"><a href="#__codelineno-0-71" id="__codelineno-0-71" name="__codelineno-0-71"></a>        <span class="n">host_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"SIM-HOST-</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="__span-0-72"><a href="#__codelineno-0-72" id="__codelineno-0-72" name="__codelineno-0-72"></a>
+</span><span id="__span-0-73"><a href="#__codelineno-0-73" id="__codelineno-0-73" name="__codelineno-0-73"></a>        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-0-74"><a href="#__codelineno-0-74" id="__codelineno-0-74" name="__codelineno-0-74"></a>            <span class="s2">"host"</span><span class="p">:</span> <span class="n">host_name</span><span class="p">,</span>
+</span><span id="__span-0-75"><a href="#__codelineno-0-75" id="__codelineno-0-75" name="__codelineno-0-75"></a>            <span class="s2">"name"</span><span class="p">:</span> <span class="n">host_name</span><span class="p">,</span>
+</span><span id="__span-0-76"><a href="#__codelineno-0-76" id="__codelineno-0-76" name="__codelineno-0-76"></a>            <span class="s2">"groups"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"groupid"</span><span class="p">:</span> <span class="n">HOST_GROUP_ID</span><span class="p">}],</span>
+</span><span id="__span-0-77"><a href="#__codelineno-0-77" id="__codelineno-0-77" name="__codelineno-0-77"></a>            <span class="s2">"templates"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"templateid"</span><span class="p">:</span> <span class="n">TEMPLATE_ID</span><span class="p">}],</span>
+</span><span id="__span-0-78"><a href="#__codelineno-0-78" id="__codelineno-0-78" name="__codelineno-0-78"></a>
+</span><span id="__span-0-79"><a href="#__codelineno-0-79" id="__codelineno-0-79" name="__codelineno-0-79"></a>            <span class="c1"># If you are using proxy groups in 7.x:</span>
+</span><span id="__span-0-80"><a href="#__codelineno-0-80" id="__codelineno-0-80" name="__codelineno-0-80"></a>            <span class="s2">"proxy_groupid"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">PROXY_GROUP_ID</span><span class="p">),</span>
+</span><span id="__span-0-81"><a href="#__codelineno-0-81" id="__codelineno-0-81" name="__codelineno-0-81"></a>            <span class="s2">"monitored_by"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span><span id="__span-0-82"><a href="#__codelineno-0-82" id="__codelineno-0-82" name="__codelineno-0-82"></a>
+</span><span id="__span-0-83"><a href="#__codelineno-0-83" id="__codelineno-0-83" name="__codelineno-0-83"></a>            <span class="s2">"interfaces"</span><span class="p">:</span> <span class="p">[{</span>
+</span><span id="__span-0-84"><a href="#__codelineno-0-84" id="__codelineno-0-84" name="__codelineno-0-84"></a>                <span class="s2">"type"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Zabbix Agent interface</span>
+</span><span id="__span-0-85"><a href="#__codelineno-0-85" id="__codelineno-0-85" name="__codelineno-0-85"></a>                <span class="s2">"main"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-0-86"><a href="#__codelineno-0-86" id="__codelineno-0-86" name="__codelineno-0-86"></a>                <span class="s2">"useip"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-0-87"><a href="#__codelineno-0-87" id="__codelineno-0-87" name="__codelineno-0-87"></a>                <span class="s2">"ip"</span><span class="p">:</span> <span class="s2">"127.0.0.1"</span><span class="p">,</span>
+</span><span id="__span-0-88"><a href="#__codelineno-0-88" id="__codelineno-0-88" name="__codelineno-0-88"></a>                <span class="s2">"dns"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+</span><span id="__span-0-89"><a href="#__codelineno-0-89" id="__codelineno-0-89" name="__codelineno-0-89"></a>                <span class="s2">"port"</span><span class="p">:</span> <span class="s2">"10050"</span>
+</span><span id="__span-0-90"><a href="#__codelineno-0-90" id="__codelineno-0-90" name="__codelineno-0-90"></a>            <span class="p">}],</span>
+</span><span id="__span-0-91"><a href="#__codelineno-0-91" id="__codelineno-0-91" name="__codelineno-0-91"></a>            <span class="s2">"status"</span><span class="p">:</span> <span class="mi">0</span>  <span class="c1"># enabled</span>
+</span><span id="__span-0-92"><a href="#__codelineno-0-92" id="__codelineno-0-92" name="__codelineno-0-92"></a>        <span class="p">}</span>
+</span><span id="__span-0-93"><a href="#__codelineno-0-93" id="__codelineno-0-93" name="__codelineno-0-93"></a>
+</span><span id="__span-0-94"><a href="#__codelineno-0-94" id="__codelineno-0-94" name="__codelineno-0-94"></a>        <span class="n">response</span> <span class="o">=</span> <span class="n">api_call</span><span class="p">(</span><span class="s2">"host.create"</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">id_val</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-0-95"><a href="#__codelineno-0-95" id="__codelineno-0-95" name="__codelineno-0-95"></a>
+</span><span id="__span-0-96"><a href="#__codelineno-0-96" id="__codelineno-0-96" name="__codelineno-0-96"></a>        <span class="k">if</span> <span class="n">response</span> <span class="ow">and</span> <span class="s1">'result'</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+</span><span id="__span-0-97"><a href="#__codelineno-0-97" id="__codelineno-0-97" name="__codelineno-0-97"></a>            <span class="n">host_id</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">'result'</span><span class="p">][</span><span class="s1">'hostids'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-0-98"><a href="#__codelineno-0-98" id="__codelineno-0-98" name="__codelineno-0-98"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✅ Created host </span><span class="si">{</span><span class="n">host_name</span><span class="si">}</span><span class="s2"> (ID: </span><span class="si">{</span><span class="n">host_id</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+</span><span id="__span-0-99"><a href="#__codelineno-0-99" id="__codelineno-0-99" name="__codelineno-0-99"></a>            <span class="n">hosts_created_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="__span-0-100"><a href="#__codelineno-0-100" id="__codelineno-0-100" name="__codelineno-0-100"></a>        <span class="k">elif</span> <span class="n">response</span> <span class="ow">and</span> <span class="s1">'error'</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+</span><span id="__span-0-101"><a href="#__codelineno-0-101" id="__codelineno-0-101" name="__codelineno-0-101"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">" Error creating </span><span class="si">{</span><span class="n">host_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">response</span><span class="p">[</span><span class="s1">'error'</span><span class="p">][</span><span class="s1">'data'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-0-102"><a href="#__codelineno-0-102" id="__codelineno-0-102" name="__codelineno-0-102"></a>            <span class="k">if</span> <span class="s2">"already exists"</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s1">'error'</span><span class="p">][</span><span class="s1">'data'</span><span class="p">]:</span>
+</span><span id="__span-0-103"><a href="#__codelineno-0-103" id="__codelineno-0-103" name="__codelineno-0-103"></a>                <span class="k">break</span>
+</span><span id="__span-0-104"><a href="#__codelineno-0-104" id="__codelineno-0-104" name="__codelineno-0-104"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-0-105"><a href="#__codelineno-0-105" id="__codelineno-0-105" name="__codelineno-0-105"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">" Unknown API error creating </span><span class="si">{</span><span class="n">host_name</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+</span><span id="__span-0-106"><a href="#__codelineno-0-106" id="__codelineno-0-106" name="__codelineno-0-106"></a>            <span class="k">break</span>
+</span><span id="__span-0-107"><a href="#__codelineno-0-107" id="__codelineno-0-107" name="__codelineno-0-107"></a>
+</span><span id="__span-0-108"><a href="#__codelineno-0-108" id="__codelineno-0-108" name="__codelineno-0-108"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">--- Script Finished ---"</span><span class="p">)</span>
+</span><span id="__span-0-109"><a href="#__codelineno-0-109" id="__codelineno-0-109" name="__codelineno-0-109"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Hosts Created: </span><span class="si">{</span><span class="n">hosts_created_count</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-0-110"><a href="#__codelineno-0-110" id="__codelineno-0-110" name="__codelineno-0-110"></a>
+</span><span id="__span-0-111"><a href="#__codelineno-0-111" id="__codelineno-0-111" name="__codelineno-0-111"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+</span><span id="__span-0-112"><a href="#__codelineno-0-112" id="__codelineno-0-112" name="__codelineno-0-112"></a>    <span class="n">create_hosts</span><span class="p">()</span>
+</span></code></pre></div>
+<p><img alt="Proxy_groups/ch03-proxy-groups.png" src="../Proxy_groups/ch03-proxy-groups.png"/>
+<em>ch03 proxy groups</em></p>
+<h2 id="troubleshooting-tips">Troubleshooting Tips</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Symptom</th>
+<th style="text-align: left;">Possible Cause</th>
+<th style="text-align: left;">Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Hosts remain on a failed proxy</strong></td>
+<td style="text-align: left;">Proxy is still within the <strong>Failover period</strong> OR proxy group is <em>Offline</em>.</td>
+<td style="text-align: left;"><strong>Reduce <code>Failover period</code></strong> in the group configuration. Ensure <code>Minimum number of proxies</code> is set correctly (e.g., $N-1$).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Load balancing does not occur</strong></td>
+<td style="text-align: left;">Host difference is below the imbalance threshold (less than 10 hosts difference <strong>or</strong> less than $2\times$ average).</td>
+<td style="text-align: left;">This is <strong>expected behavior</strong>. The imbalance must exceed the $10$ host and $2\times$ factor rules.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Proxy not receiving new configuration</strong></td>
+<td style="text-align: left;">Proxy is running a version older than the Zabbix server.</td>
+<td style="text-align: left;"><strong>Upgrade the proxy</strong> to match the Zabbix server's major version.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Active agents fail to report after failover</strong></td>
+<td style="text-align: left;">Incorrect <strong><code>ServerActive</code></strong> setting OR firewall blocks the redirected proxy.</td>
+<td style="text-align: left;">Ensure the agent can connect to <em>every</em> proxy IP address. Verify <code>ServerActive</code> includes all proxies or the Zabbix server IP.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SNMP devices not monitored</strong></td>
+<td style="text-align: left;">Proxy group is being used for SNMP Traps.</td>
+<td style="text-align: left;">Proxy groups <strong>do not support SNMP traps</strong>. Use a dedicated SNMP trap proxy.</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="questions">Questions</h2>
+<ol>
+<li><strong>What is the minimum Zabbix version required</strong> for both the proxy and agent to fully support Proxy Groups, including Active checks?</li>
+<li>Describe the difference between the <strong>High Availability (HA) mechanism</strong> and the <strong>Load Balancing (LB) mechanism</strong> in Zabbix Proxy Groups. When does each occur?</li>
+<li>What are the two specific conditions that must be met to trigger <strong>automatic host redistribution</strong> (Load Balancing) within a proxy group?</li>
+<li>When configuring a Zabbix Agent for a host assigned to a proxy group, why must the <code>ServerActive</code> parameter list <strong>multiple proxy IPs</strong> or the Zabbix server IP?</li>
+<li>What is the function of the <strong><code>Minimum number of proxies</code></strong> setting, and what happens when the number of online proxies drops below this value?</li>
+<li>Why is it critical that external dependencies (like custom scripts or ODBC configurations) are <strong>identical</strong> across all proxies within the group?</li>
+</ol>
+<hr/>
+<h2 id="conclusion">Conclusion</h2>
+<p>Zabbix Proxy Groups significantly enhance the resilience and scalability of distributed monitoring environments. Through seamless failover and intelligent workload balancing, they allow enterprises to maintain consistent monitoring coverage even during proxy outages or uneven load distribution. When combined with proper agent configuration, firewall rules, and aligned proxy setups, proxy groups form a foundational component of modern Zabbix deployments.</p>
+<hr/>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring">https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring/proxies/ha">https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring/proxies/ha</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/concepts/proxy">https://www.zabbix.com/documentation/current/en/manual/concepts/proxy</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/items/zabbix_agent/config">https://www.zabbix.com/documentation/current/en/manual/config/items/zabbix_agent/config</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>

@@ -1,0 +1,1577 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Learn how Zabbix user groups simplify access control, improve security, and
+organize monitoring teams efficiently for better network management.
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/pt_BR/ch02-zabbix-installation/user-groups/" rel="canonical">
+<link href="../host-groups/" rel="prev"/>
+<link href="../user-roles/" rel="next"/>
+<link href="../../../fr/ch02-zabbix-installation/user-groups/" hreflang="fr" rel="alternate"/>
+<link href="../../../nl/ch02-zabbix-installation/user-groups/" hreflang="nl" rel="alternate"/>
+<link href="./" hreflang="pt_BR" rel="alternate"/>
+<link href="../../../ru/ch02-zabbix-installation/user-groups/" hreflang="ru" rel="alternate"/>
+<link href="../../../ch02-zabbix-installation/user-groups/" hreflang="en" rel="alternate"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>User Groups - Zabbix Book</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141" rel="stylesheet"/>
+<link href="../../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="User Groups" property="og:title"/>
+<meta content="Learn how Zabbix user groups simplify access control, improve security, and organize monitoring teams efficiently for better network management." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/pt_BR/ch02-zabbix-installation/user-groups/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="User Groups" name="twitter:title"/>
+<meta content="Learn how Zabbix user groups simplify access control, improve security, and organize monitoring teams efficiently for better network management." name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#user-groups">
+          Pular para conteúdo
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "pt_BR";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Cabeçalho" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              User Groups
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Selecione o idioma" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../../fr/ch02-zabbix-installation/user-groups/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../nl/ch02-zabbix-installation/user-groups/" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="pt_BR">
+              Brazillian Portugese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ru/ch02-zabbix-installation/user-groups/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ch02-zabbix-installation/user-groups/" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Buscar" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Buscar" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Pesquisar" class="md-search__options">
+<a aria-label="Compartilhar" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Compartilhar">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Limpar" class="md-search__icon md-icon" tabindex="-1" title="Limpar" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../chapter/">
+<span class="md-ellipsis">
+    
+  
+    Getting started with the Zabbix installation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../frontend/">
+<span class="md-ellipsis">
+    
+  
+    Explicação do front-end
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../host-groups/">
+<span class="md-ellipsis">
+    
+  
+    Host Groups
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    User Groups
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    User Groups
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-role-of-a-user-group">
+<span class="md-ellipsis">
+      
+        The Role of a User Group
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-a-user-group">
+<span class="md-ellipsis">
+      
+        Configuring a User Group
+      
+    </span>
+</a>
+<nav aria-label="Configuring a User Group" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#group-creation-and-general-attributes">
+<span class="md-ellipsis">
+      
+        Group Creation and General Attributes
+      
+    </span>
+</a>
+<nav aria-label="Group Creation and General Attributes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-user-group-tab">
+<span class="md-ellipsis">
+      
+        The User group Tab
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permission-tabs-host-groups-and-template-groups">
+<span class="md-ellipsis">
+      
+        Permission Tabs: Host Groups and Template Groups
+      
+    </span>
+</a>
+<nav aria-label="Permission Tabs: Host Groups and Template Groups" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-permissions-tab">
+<span class="md-ellipsis">
+      
+        Template Permissions Tab
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#host-permissions-tab">
+<span class="md-ellipsis">
+      
+        Host Permissions Tab
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#problem-tag-filters-granular-alert-access">
+<span class="md-ellipsis">
+      
+        Problem Tag Filters: Granular Alert Access
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-permissions-frontend-behavior-and-editing-limitations">
+<span class="md-ellipsis">
+      
+        Template Permissions — Frontend Behavior and Editing Limitations
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-rule-of-precedence-deny-always-wins">
+<span class="md-ellipsis">
+      
+        The Rule of Precedence: Deny Always Wins
+      
+    </span>
+</a>
+<nav aria-label="The Rule of Precedence: Deny Always Wins" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hierarchy-of-precedence">
+<span class="md-ellipsis">
+      
+        Hierarchy of Precedence
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissions-in-the-update-problem-dialog">
+<span class="md-ellipsis">
+      
+        Permissions in the "Update Problem" Dialog
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#best-practices-for-enterprise-access-control">
+<span class="md-ellipsis">
+      
+        Best Practices for Enterprise Access Control
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-user-permissions">
+<span class="md-ellipsis">
+      
+        Example : User permissions
+      
+    </span>
+</a>
+<nav aria-label="Example : User permissions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#our-scenario">
+<span class="md-ellipsis">
+      
+        Our Scenario
+      
+    </span>
+</a>
+<nav aria-label="Our Scenario" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#host-group-preparation">
+<span class="md-ellipsis">
+      
+        Host Group Preparation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-the-user-groups">
+<span class="md-ellipsis">
+      
+        Configuring the User Groups
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#creating-the-test-user">
+<span class="md-ellipsis">
+      
+        Creating the Test User
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-the-hosts">
+<span class="md-ellipsis">
+      
+        Create the hosts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#test-the-outcome">
+<span class="md-ellipsis">
+      
+        Test the Outcome
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../user-roles/">
+<span class="md-ellipsis">
+    
+  
+    User Roles
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../http/">
+<span class="md-ellipsis">
+    
+  
+    External Authentication
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch03-zabbix-proxies/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch04-zabbix-collecting-data/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch06-zabbix-templates/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/network-host-discovery/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/graphs/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch13-advanced-security/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-role-of-a-user-group">
+<span class="md-ellipsis">
+      
+        The Role of a User Group
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-a-user-group">
+<span class="md-ellipsis">
+      
+        Configuring a User Group
+      
+    </span>
+</a>
+<nav aria-label="Configuring a User Group" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#group-creation-and-general-attributes">
+<span class="md-ellipsis">
+      
+        Group Creation and General Attributes
+      
+    </span>
+</a>
+<nav aria-label="Group Creation and General Attributes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-user-group-tab">
+<span class="md-ellipsis">
+      
+        The User group Tab
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permission-tabs-host-groups-and-template-groups">
+<span class="md-ellipsis">
+      
+        Permission Tabs: Host Groups and Template Groups
+      
+    </span>
+</a>
+<nav aria-label="Permission Tabs: Host Groups and Template Groups" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-permissions-tab">
+<span class="md-ellipsis">
+      
+        Template Permissions Tab
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#host-permissions-tab">
+<span class="md-ellipsis">
+      
+        Host Permissions Tab
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#problem-tag-filters-granular-alert-access">
+<span class="md-ellipsis">
+      
+        Problem Tag Filters: Granular Alert Access
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-permissions-frontend-behavior-and-editing-limitations">
+<span class="md-ellipsis">
+      
+        Template Permissions — Frontend Behavior and Editing Limitations
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-rule-of-precedence-deny-always-wins">
+<span class="md-ellipsis">
+      
+        The Rule of Precedence: Deny Always Wins
+      
+    </span>
+</a>
+<nav aria-label="The Rule of Precedence: Deny Always Wins" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hierarchy-of-precedence">
+<span class="md-ellipsis">
+      
+        Hierarchy of Precedence
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissions-in-the-update-problem-dialog">
+<span class="md-ellipsis">
+      
+        Permissions in the "Update Problem" Dialog
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#best-practices-for-enterprise-access-control">
+<span class="md-ellipsis">
+      
+        Best Practices for Enterprise Access Control
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-user-permissions">
+<span class="md-ellipsis">
+      
+        Example : User permissions
+      
+    </span>
+</a>
+<nav aria-label="Example : User permissions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#our-scenario">
+<span class="md-ellipsis">
+      
+        Our Scenario
+      
+    </span>
+</a>
+<nav aria-label="Our Scenario" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#host-group-preparation">
+<span class="md-ellipsis">
+      
+        Host Group Preparation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-the-user-groups">
+<span class="md-ellipsis">
+      
+        Configuring the User Groups
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#creating-the-test-user">
+<span class="md-ellipsis">
+      
+        Creating the Test User
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-the-hosts">
+<span class="md-ellipsis">
+      
+        Create the hosts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#test-the-outcome">
+<span class="md-ellipsis">
+      
+        Test the Outcome
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navegação" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../../">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../chapter/">
+<span class="md-ellipsis">
+    Chapter 02 : Zabbix Frontend
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<nav class="md-tags">
+<span class="md-tag md-tag-icon" data-tag="beginner">
+      Iniciante
+    </span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/pt_BR/ch02-zabbix-installation/user-groups.md" title="Exibir fonte desta página">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="user-groups">User Groups</h1>
+<p>In any enterprise monitoring platform, establishing <strong>role-based access control
+(RBAC)</strong> is critical for maintaining both security and clarity of operational
+responsibility. For Zabbix, this control is built upon the fundamental concept
+of <strong>User Groups</strong>.</p>
+<p>In Zabbix 8.0, user groups serve as the primary mechanism for assigning
+permissions and structuring access to the monitored data and configuration
+entities. This chapter details the function of user groups, guides you through
+their configuration, and outlines best practices for applying them in a robust,
+real world deployment.</p>
+<hr/>
+<h2 id="the-role-of-a-user-group">The Role of a User Group</h2>
+<p>A <strong>User Group</strong> in Zabbix is a logical collection of individual user accounts.
+Rather than managing permissions for hundreds of users individually, Zabbix
+requires that users be assigned to one or more groups. Access rights, such as
+the ability to view host groups, configure templates, or see specific problem
+tags are then granted at the <strong>group level</strong>.</p>
+<p>This group centric architecture provides several major benefits:</p>
+<ul>
+<li><strong>Simplified Management:</strong> Access rights are managed by <strong>role</strong> (e.g.,
+  "Network Engineers," "Database Administrators") instead of by individual user.</li>
+<li><strong>Consistency:</strong> Ensures that all users within the same role possess a
+  consistent, standardized set of permissions.</li>
+<li><strong>Segregation of Duties:</strong> Enables clear separation between viewing
+  (read-only) and configuration (read-write) access.</li>
+</ul>
+<blockquote>
+<p><strong>Technical Definition:</strong> User groups allow grouping users for both
+organizational purposes and for assigning permissions to data. Permissions to
+viewing and configuring data of host groups and template groups are assigned
+to user groups, not individual users. A user can belong to any number of
+groups.</p>
+</blockquote>
+<hr/>
+<h2 id="configuring-a-user-group">Configuring a User Group</h2>
+<p>In Zabbix, user groups are defined and maintained solely via the web frontend.
+The procedure has remained largely unchanged between version 8.0 and previous
+generations, ensuring a familiar configuration experience for administrators.</p>
+<h3 id="group-creation-and-general-attributes">Group Creation and General Attributes</h3>
+<ol>
+<li>Navigate to <strong>Administration</strong> → <strong>User groups</strong>.</li>
+<li>Click <strong>Create user group</strong> (or select an existing group to modify).</li>
+<li>The configuration form is divided into four critical tabs: <strong>User group</strong>,
+   <strong>Template permissions</strong>, <strong>Host permissions</strong>, and <strong>Problem tag filter</strong>.</li>
+</ol>
+<p><img alt="../../ch02-zabbix-installation/user-groups/ch02.20_user-groups_menu.png" src="../../../ch02-zabbix-installation/user-groups/ch02.20_user-groups_menu.png"/></p>
+<p><em>2.20 user group menu</em></p>
+<h4 id="the-user-group-tab">The <code>User group</code> Tab</h4>
+<p>This initial tab defines the group's general properties and its membership:</p>
+<ul>
+<li><strong>Group name:</strong> A unique, descriptive identifier (e.g., <code>NOC-RO</code>,
+  <code>System-Admins-RW</code>).</li>
+<li><strong>Users:</strong> Add existing users to this group. A user can be a member of
+  multiple groups.</li>
+<li><strong>Frontend access:</strong> Controls the authentication method for group members.
+  Options include <code>System default</code>, <code>Internal</code>, <code>LDAP</code>, or <code>Disabled</code> (useful
+  for API-only accounts or for temporarily locking frontend access for a role).</li>
+<li><strong>LDAP server:</strong> If <code>LDAP</code> access is chosen, select the specific LDAP server
+  configuration to be used for members of this group.</li>
+<li><strong>Multi-factor authentication (MFA):</strong> Select the method to be enforced for
+  the group. If a user is a member of multiple groups, the most secure MFA
+  setting will typically apply.</li>
+<li><strong>Enabled:</strong> The master switch to activate or deactivate the group and its
+  members.</li>
+<li><strong>Debug mode:</strong> A powerful, optional setting that enables detailed debug
+  logging for all group members in the Zabbix frontend.</li>
+</ul>
+<p>???+ tip "The Debug User Group" Zabbix includes a dedicated <code>Debug</code> user group
+out-of-the-box. Instead of activating the debug option for an existing
+production group, it is cleaner practice to simply add the required user to the
+pre-existing <code>Debug</code> group.</p>
+<hr/>
+<h3 id="permission-tabs-host-groups-and-template-groups">Permission Tabs: Host Groups and Template Groups</h3>
+<p>Permissions are configured by assigning access levels to <strong>Host Groups</strong> and
+<strong>Template Groups</strong>. These entities act as containers, meaning the permissions
+assigned to the group apply to all nested groups and all entities within them.</p>
+<h4 id="template-permissions-tab">Template Permissions Tab</h4>
+<p>This section controls access to the configuration elements of templates (items,
+triggers, graphs, etc.) via their Template Groups.</p>
+<p>For each assigned Template Group, one of the following permissions must be
+selected:</p>
+<ul>
+<li><strong>Read-only:</strong> Users can view the template configuration and see data derived
+  from it, but they <strong>cannot</strong> modify or link the template.</li>
+<li><strong>Read-write:</strong> Users can view, modify, and link/unlink the template and its
+  entities (items, triggers, etc.).</li>
+<li><strong>Deny:</strong> Explicitly blocks all access.</li>
+</ul>
+<h4 id="host-permissions-tab">Host Permissions Tab</h4>
+<p>This tab works identically to the Template Permissions tab but applies the
+access levels to <strong>Host Groups</strong> and the hosts contained within them.</p>
+<h4 id="problem-tag-filters-granular-alert-access">Problem Tag Filters: Granular Alert Access</h4>
+<p>The final configuration tab, <strong>Problem tag filter</strong>, allows for fine-grained
+control over which problems (alerts) a user group can see.</p>
+<p>This is invaluable for enterprise environments where users should only be
+alerted to issues relevant to their domain. For instance, a Database
+Administrator should not be distracted by network switch problems.</p>
+<p>Filters are applied to specific host groups and can be configured to display:</p>
+<ul>
+<li>All tags for the specified hosts.</li>
+<li>Only problems matching specific tag name/value pairs.</li>
+</ul>
+<p>When a user is a member of multiple groups, the tag filters apply with <strong>OR
+logic</strong>. If any of the user's groups allows visibility of a specific problem
+based on its tags, the user will see it.</p>
+<p>???+ example "Example: Database Administrator Filter" To ensure a Database
+Administrator group only sees relevant issues, the problem tag filter would be
+configured to specify:</p>
+<div class="language-text highlight"><pre><span></span><code>- **Tag name:** `service`
+- **Value:** `mysql`
+
+This ensures the user only sees problems tagged with `service:mysql` on the
+host groups they have permission to view.
+</code></pre></div>
+<hr/>
+<h3 id="template-permissions-frontend-behavior-and-editing-limitations">Template Permissions — Frontend Behavior and Editing Limitations</h3>
+<p>The behavior of the Data collection → Templates view and host configuration
+screens is strictly tied to the user’s permission level on template groups.
+Zabbix intentionally hides templates from users who have only Read-only access.
+This is by design, as described in
+<a href="https://support.zabbix.com/browse/ZBXNEXT-1070">https://support.zabbix.com/browse/ZBXNEXT-1070</a></p>
+<table>
+<thead>
+<tr>
+<th><strong>Action or Screen Element</strong></th>
+<th><strong>Read-only</strong></th>
+<th><strong>Read-write</strong></th>
+<th><strong>Description / Impact</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>View <em>Data collection → Templates</em></td>
+<td>❌</td>
+<td>✅</td>
+<td>Users with Read-only access do <strong>not see any templates</strong>. Template groups are only visible to users with Read-write rights. (<a href="https://support.zabbix.com/browse/ZBXNEXT-1070">ZBXNEXT-1070</a>)</td>
+</tr>
+<tr>
+<td>Open template configuration</td>
+<td>❌</td>
+<td>✅</td>
+<td>Not available for Read-only users — templates are hidden entirely</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-rule-of-precedence-deny-always-wins">The Rule of Precedence: Deny Always Wins</h2>
+<p>A user's effective permission is the result of combining the rights from <strong>all</strong>
+groups they belong to. Zabbix resolves these overlapping permissions by applying
+a simple, strict hierarchy based on the most restrictive level, unless a <code>Deny</code>
+is present.</p>
+<h3 id="hierarchy-of-precedence">Hierarchy of Precedence</h3>
+<p>The order of precedence is absolute: <strong>Deny</strong> is the highest, followed by
+<strong>Read-write</strong>, and finally <strong>Read-only</strong>.</p>
+<pre class="mermaid"><code>flowchart TB
+    A["Deny (highest precedence)"]:::deny
+    B["Read-write (overrides Read-only)"]:::rw
+    C["Read-only (lowest precedence)"]:::ro
+
+    A --&gt; B
+    B --&gt; C
+
+    classDef deny fill:#f87171,stroke:#7f1d1d,stroke-width:2px,color:white;
+    classDef rw fill:#60a5fa,stroke:#1e3a8a,stroke-width:2px,color:white;
+    classDef ro fill:#a7f3d0,stroke:#065f46,stroke-width:2px,color:black;
+</code></pre>
+<p>This precedence can be summarized by two core rules:</p>
+<ol>
+<li><strong>Deny Always Overrides:</strong> If any group grants <strong>Deny</strong> access to a host or
+   template group, that user <strong>will not</strong> have access, regardless of any other
+   <code>Read-only</code> or <code>Read-write</code> permissions.</li>
+<li><strong>Most Permissive Wins (Otherwise):</strong> If no <code>Deny</code> is present, the most
+   permissive right applies. <strong>Read-write</strong> always overrides <strong>Read-only</strong>.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Group A</th>
+<th>Group B</th>
+<th>Effective Permission</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RW Over RO</strong></td>
+<td>Read-only</td>
+<td>Read-write</td>
+<td><strong>Read-write</strong></td>
+<td>The most permissive right wins when <strong>Deny</strong> is absent.</td>
+</tr>
+<tr>
+<td><strong>Deny Over RO</strong></td>
+<td>Read-only</td>
+<td>Deny</td>
+<td><strong>Deny</strong></td>
+<td><strong>Deny</strong> always takes precedence and blocks all access.</td>
+</tr>
+<tr>
+<td><strong>Deny Over RW</strong></td>
+<td>Read-write</td>
+<td>Deny</td>
+<td><strong>Deny</strong></td>
+<td>The most restrictive right (Deny) overrides the most permissive.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="permissions-in-the-update-problem-dialog">Permissions in the "Update Problem" Dialog</h3>
+<p>In Zabbix 8.0, the actions available in the <strong>Monitoring</strong> → <strong>Problems</strong> view
+(via the <em>Update problem</em> dialog) are controlled by two distinct mechanisms
+working in tandem:</p>
+<ol>
+<li><strong>Host/Template Permissions:</strong> Governs basic access to the problem and
+   whether configuration-level changes can be made.</li>
+<li><strong>User Role Capabilities:</strong> Governs which specific administrative actions
+   (like acknowledging, changing severity, or closing) are enabled.</li>
+</ol>
+<p>The table below clarifies the minimum required permissions to perform actions on
+an active problem:</p>
+<table>
+<thead>
+<tr>
+<th>Action in “Update problem” dialog</th>
+<th>Required Host Permission</th>
+<th>Required Template Permission</th>
+<th>Required Role Capability / Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Message</strong> (add comment)</td>
+<td>Read-only or Read-write</td>
+<td>Same level as host</td>
+<td>Requires the role capability <strong>Acknowledge problems</strong>.</td>
+</tr>
+<tr>
+<td><strong>Acknowledge</strong></td>
+<td>Read-only or Read-write</td>
+<td>Same level as host</td>
+<td>Requires <strong>Acknowledge problems</strong>. Read-only access is sufficient.</td>
+</tr>
+<tr>
+<td><strong>Change severity</strong></td>
+<td><strong>Read-write</strong> required</td>
+<td><strong>Read-write</strong> if template trigger</td>
+<td>Requires the <strong>Change problem severity</strong> capability.</td>
+</tr>
+<tr>
+<td><strong>Suppress</strong> / <strong>Unsuppress</strong></td>
+<td><strong>Read-write</strong> required</td>
+<td><strong>Read-write</strong> if template trigger</td>
+<td>Requires the <strong>Suppress problems</strong> capability.</td>
+</tr>
+<tr>
+<td><strong>Convert to cause</strong></td>
+<td><strong>Read-write</strong> required</td>
+<td><strong>Read-write</strong> if template trigger</td>
+<td>Requires <strong>Manage problem correlations</strong> capability.</td>
+</tr>
+<tr>
+<td><strong>Close problem</strong></td>
+<td><strong>Read-write</strong> required</td>
+<td><strong>Read-write</strong> if template trigger</td>
+<td>Requires <strong>Close problems manually</strong> capability.</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="best-practices-for-enterprise-access-control">Best Practices for Enterprise Access Control</h2>
+<p>Building a maintainable, secure Zabbix environment requires discipline in
+defining groups and permissions.</p>
+<ol>
+<li><strong>Adopt Role-Based Naming:</strong> Use clear, standardized names that reflect the
+   user's role and their access level, such as <code>Ops-RW</code> (Operations Read/Write)
+   or <code>NOC-RO</code> (NOC Read-Only).</li>
+<li><strong>Grant Access via Groups Only:</strong> Never assign permissions directly to an
+   individual user; always rely on <strong>group membership</strong>. This ensures
+   auditability and maintainability.</li>
+<li><strong>Principle of Least Privilege:</strong> Start with the most restrictive access
+   (<strong>Read-only</strong>) and only escalate to <strong>Read-write</strong> when configuration-level
+   changes are an absolute requirement of the user's role.</li>
+<li><strong>Align with Organizational Structure:</strong> Ensure your Host Groups and Template
+   Groups mirror your organization's teams or asset categories (e.g.,
+   <code>EU-Network</code>, <code>US-Database</code>, <code>Finance-Templates</code>). This makes permission
+   assignment intuitive.</li>
+<li><strong>Regular Review and Audit:</strong> Periodically review group memberships and
+   permissions. A user's role may change, and their access in Zabbix must be
+   adjusted accordingly.</li>
+<li><strong>Test Restricted Views:</strong> After creating a group, always log in as a test
+   user belonging to that group to verify that dashboards, widgets, and
+   configuration pages display the correct restricted view.</li>
+</ol>
+<hr/>
+<h2 id="example-user-permissions">Example : User permissions</h2>
+<p>This exercise will demonstrate how Zabbix calculates a user's effective
+permissions when they belong to multiple User Groups, focusing exclusively on
+the core access levels: Read-only, Read-write, and Deny.</p>
+<h3 id="our-scenario">Our Scenario</h3>
+<p>You are managing access rights for a large Zabbix deployment. You need to grant
+general viewing access to all Linux servers but specifically prevent a junior
+team from even seeing, let alone modifying, your highly critical database
+servers.</p>
+<p>You will have to configure two overlapping User Groups to demonstrate the
+precedence rules:</p>
+<ul>
+<li>Group A (Junior Monitoring): Grants general Read-only access to a wide host
+  scope.</li>
+<li>Group B (Critical Exclusion): Applies an explicit Deny to a specific, critical
+  host subset.</li>
+</ul>
+<h4 id="host-group-preparation">Host Group Preparation</h4>
+<p>Ensure the following Host Groups exist in your Zabbix environment:</p>
+<ul>
+<li>HG_All_Linux_Servers (The wide scope of hosts)</li>
+<li>HG_Critical_Databases (A subset of servers that is also within
+  HG_All_Linux_Servers)</li>
+</ul>
+<p>You can create them under <code>Data collection</code> → <code>Host groups</code>.</p>
+<h4 id="configuring-the-user-groups">Configuring the User Groups</h4>
+<ul>
+<li>Create Group A: 'Junior Monitoring'<ul>
+<li>Navigate to Users → User groups.</li>
+<li>Create a new group named 'Junior Monitoring'.</li>
+<li>In the Host permissions tab, assign the following right:</li>
+<li>HG_All_Linux_Servers: Read-only (Read)</li>
+<li>HG_Critical_Databases: Read-only (Read)</li>
+</ul>
+</li>
+</ul>
+<p><img alt="../../ch02-zabbix-installation/user-groups/ch02.21_junior-monitoring.png" src="../../../ch02-zabbix-installation/user-groups/ch02.21_junior-monitoring.png"/> <em>2.21 Junior
+monitoring</em></p>
+<ul>
+<li>Create Group B: 'Critical Exclusion'<ul>
+<li>Create a second group named 'Critical Exclusion'.</li>
+<li>In the Host permissions tab, assign the following right:</li>
+<li>HG_Critical_Databases: Deny</li>
+</ul>
+</li>
+</ul>
+<p><img alt="../../ch02-zabbix-installation/user-groups/ch02.22_critical-exclusioin.png" src="../../../ch02-zabbix-installation/user-groups/ch02.22_critical-exclusioin.png"/> <em>ch02.22
+Critical exclusion</em></p>
+<h4 id="creating-the-test-user">Creating the Test User</h4>
+<p>We will create the user first, then assign them to the groups.</p>
+<ul>
+<li>Navigate to User Creation: Go to Users → Users in the Zabbix frontend.</li>
+<li>Click Create user.</li>
+<li>Details:<ul>
+<li>Username: test_junior</li>
+<li>Name &amp; Surname: (Optional)</li>
+<li>Password: Set a strong password and confirm it.</li>
+<li>Language &amp; Theme: Set as desired.</li>
+<li>Permissions: Select role <code>User role</code> as this has the type User (This is
+  important, as 'Super Admin' bypasses all group restrictions).</li>
+<li>Add the user to both group <code>Junior Monitoring</code> and <code>Critical Exclusion</code>.</li>
+</ul>
+</li>
+<li>Save: Click Add.</li>
+</ul>
+<p><img alt="../../ch02-zabbix-installation/user-groups/ch02.23_test-junior.png" src="../../../ch02-zabbix-installation/user-groups/ch02.23_test-junior.png"/> <em>ch02.23 test user</em></p>
+<h4 id="create-the-hosts">Create the hosts</h4>
+<p>We will create 2 host a linux server and a db server.</p>
+<ul>
+<li>Navigate to <code>Data collection</code> → <code>Hosts</code>.</li>
+<li>Click on create host.</li>
+<li>Details:<ul>
+<li>Host name: Linux server</li>
+<li>Templates: Linux by Zabbix agent</li>
+<li>Host groups: HG_All_Linux_Servers</li>
+<li>Interfaces: Agent with IP 127.0.0.1</li>
+</ul>
+</li>
+<li>Save: Click Add.</li>
+</ul>
+<p><img alt="../../ch02-zabbix-installation/user-groups/ch02.24_hosts.png" src="../../../ch02-zabbix-installation/user-groups/ch02.24_hosts.png"/> <em>ch02.24 Add hosts</em></p>
+<p>Add a DB server exact as above but change :</p>
+<ul>
+<li>Host name: DB server</li>
+<li>Host groups: HG_Critical_Databases</li>
+<li>Save: Click Add.</li>
+</ul>
+<p>This should work as long as you have your zabbix agent installed reporting back
+on <code>127.0.0.1</code>. This is how it's configured when you first setup the Zabbix
+server with an agent.</p>
+<h4 id="test-the-outcome">Test the Outcome</h4>
+<p>Logout as the <code>Super admin</code> user and log back in as user <code>test_junior</code>.</p>
+<p>When we now navigate to <code>Monitoring</code> → <code>Hosts</code>, we see that only the <code>Linux
+server</code> is visible in the list of hosts. When we click on <code>Select</code> behind <code>Host
+groups</code> we will only be able to see the group <code>HG_All_Linux_Servers</code>.</p>
+<p>This table outlines the combined, <strong>effective rights</strong> for the user
+<strong><code>test_junior</code></strong> (who is a member of both User Groups).</p>
+<table>
+<thead>
+<tr>
+<th>Host Group (HG)</th>
+<th>Permission via 'Junior Monitoring'</th>
+<th>Permission via 'Critical Exclusion'</th>
+<th><strong>Effective Permission</strong></th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>HG_All_Linux_Servers</code></strong></td>
+<td>Read-only</td>
+<td><em>No Explicit Rule</em></td>
+<td><strong>Read-only</strong></td>
+<td>Access to view data is <strong>Allowed</strong>.</td>
+</tr>
+<tr>
+<td><strong><code>HG_Critical_Databases</code></strong></td>
+<td>Read-only</td>
+<td>Deny</td>
+<td><strong>Deny</strong></td>
+<td>Access is <strong>Blocked</strong> (host is hidden).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="conclusion">Conclusion</h2>
+<p>Because test_junior belongs to a group that explicitly denies access to the
+Critical Databases, the host is hidden entirely, proving that Deny Always Wins
+regardless of other permissions. So we can conclude that user groups form the
+essential foundation of access control in Zabbix 8.0. They define <em>what</em> each
+user can see and configure (via host/template permissions).</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>If a user only has Read-only permissions assigned to a Template Group, will
+  they be able to see those templates listed under Data collection → Templates?</li>
+<li>Scenario: A user, Bob, is a member of two User Groups: 'NOC Viewers' (which
+  has Read-only access to HG_Routers) and 'Tier 2 Techs' (which has Read-write
+  access to the same HG_Routers). Question: Can Bob modify the configuration of
+  the routers in Zabbix, or is he limited to viewing data? Explain your answer
+  based on Zabbix's precedence rules.</li>
+<li>Scenario: A user, Alice, is a member of two User Groups: 'Ops Team' (which has
+  Read-write access to the Host Group HG_Webservers) and 'Security Lockdown'
+  (which has Deny access to the exact same HG_Webservers). Question: What are
+  Alice's effective permissions for the hosts in HG_Webservers? Can she view or
+  modify them, and why?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/usergroup">https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/usergroup</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions">https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Voltar para o topo
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>

@@ -1,0 +1,2699 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="nl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Monitor hardware health with Zabbix IPMI checks. Track temperature, voltage,
+and fan status directly from servers using built-in IPMI sensors.
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/nl/ch04-zabbix-collecting-data/ipmi/" rel="canonical">
+<link href="../jmx/" rel="prev"/>
+<link href="../database-odbc/" rel="next"/>
+<link href="../../../fr/ch04-zabbix-collecting-data/ipmi/" hreflang="fr" rel="alternate"/>
+<link href="./" hreflang="nl" rel="alternate"/>
+<link href="../../../pt_BR/ch04-zabbix-collecting-data/ipmi/" hreflang="pt_BR" rel="alternate"/>
+<link href="../../../ru/ch04-zabbix-collecting-data/ipmi/" hreflang="ru" rel="alternate"/>
+<link href="../../../ch04-zabbix-collecting-data/ipmi/" hreflang="en" rel="alternate"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>IPMI Monitoring - Zabbix Book</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141" rel="stylesheet"/>
+<link href="../../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="IPMI Monitoring" property="og:title"/>
+<meta content="Monitor hardware health with Zabbix IPMI checks. Track temperature, voltage, and fan status directly from servers using built-in IPMI sensors." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/nl/ch04-zabbix-collecting-data/ipmi/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="IPMI Monitoring" name="twitter:title"/>
+<meta content="Monitor hardware health with Zabbix IPMI checks. Track temperature, voltage, and fan status directly from servers using built-in IPMI sensors." name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#ipmi-monitoring">
+          Ga naar inhoud
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<div class="gmc-announce">
+            Deze pagina is nog niet in het Nederlands vertaald en wordt daarom in het Engels weergegeven.
+            <a href="/gmc/nl/contribute/#translations">Help ons en vertaal deze pagina!</a>
+</div>
+<script>
+        const gGMC_SELECT_VERSION = "Selecteer versie";
+        const gGMC_TRANSLATE_CTA = "Help ons en vertaal deze pagina!";
+        const gGMC_PAGE_LOCALE = "nl";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              IPMI Monitoring
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Selecteer taal" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../../fr/ch04-zabbix-collecting-data/ipmi/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../pt_BR/ch04-zabbix-collecting-data/ipmi/" hreflang="pt_BR">
+              Brazillian Portugese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ru/ch04-zabbix-collecting-data/ipmi/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ch04-zabbix-collecting-data/ipmi/" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Zoeken" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Zoeken" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Zoeken" class="md-search__options">
+<a aria-label="Delen" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Delen">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Leegmaken" class="md-search__icon md-icon" tabindex="-1" title="Leegmaken" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Zoeken initialiseren
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ga naar repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigatie" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ga naar repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch02-zabbix-installation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch03-zabbix-proxies/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 04 : Collecting data 
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../chapter/">
+<span class="md-ellipsis">
+    
+  
+    Collecting data with your Zabbix environment
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dataflow/">
+<span class="md-ellipsis">
+    
+  
+    Dataflow
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../hosts/">
+<span class="md-ellipsis">
+    
+  
+    Hosts
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../simple-checks/">
+<span class="md-ellipsis">
+    
+  
+    Simple checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../host-interfaces/">
+<span class="md-ellipsis">
+    
+  
+    Host Interfaces
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-passive/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent installation and Passive monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-active/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent Active monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-polling/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Polling
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-trapping/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Trapping
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../http/">
+<span class="md-ellipsis">
+    
+  
+    HTTP Items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../preprocessing/">
+<span class="md-ellipsis">
+    
+  
+    Preprocessing
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dependent/">
+<span class="md-ellipsis">
+    
+  
+    Dependent items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ssh-telnet/">
+<span class="md-ellipsis">
+    
+  
+    SSH / Telnet
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../script/">
+<span class="md-ellipsis">
+    
+  
+    Script item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../jmx/">
+<span class="md-ellipsis">
+    
+  
+    Monitoring Java Applications with JMX
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    IPMI Monitoring
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    IPMI Monitoring
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Inhoudsopgave" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-is-ipmi">
+<span class="md-ellipsis">
+      
+        What is IPMI
+      
+    </span>
+</a>
+<nav aria-label="What is IPMI" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-ipmi">
+<span class="md-ellipsis">
+      
+        Understanding IPMI
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ipmi-architecture-and-sensors">
+<span class="md-ellipsis">
+      
+        IPMI Architecture and Sensors
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#communication-and-protocols">
+<span class="md-ellipsis">
+      
+        Communication and Protocols
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#security-caveats">
+<span class="md-ellipsis">
+      
+        Security Caveats
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#verifying-ipmi-access-with-ipmitool">
+<span class="md-ellipsis">
+      
+        Verifying IPMI Access with ipmitool
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#native-ipmi-monitoring-in-zabbix">
+<span class="md-ellipsis">
+      
+        Native IPMI Monitoring in Zabbix
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ipmi-items-and-templates">
+<span class="md-ellipsis">
+      
+        IPMI Items and Templates
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#practical-limitations">
+<span class="md-ellipsis">
+      
+        Practical Limitations
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#when-ipmi-still-makes-sense">
+<span class="md-ellipsis">
+      
+        When IPMI Still Makes Sense
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-how-ipmi-tools-work">
+<span class="md-ellipsis">
+      
+        Understanding How IPMI Tools Work
+      
+    </span>
+</a>
+<nav aria-label="Understanding How IPMI Tools Work" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#installing-ipmitool">
+<span class="md-ellipsis">
+      
+        Installing ipmitool
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exploring-ipmi-sensors-with-ipmitool">
+<span class="md-ellipsis">
+      
+        Exploring IPMI Sensors with ipmitool
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#working-with-discrete-ipmi-sensors">
+<span class="md-ellipsis">
+      
+        Working with Discrete IPMI Sensors
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-zabbix-uses-ipmi-internally">
+<span class="md-ellipsis">
+      
+        How Zabbix Uses IPMI Internally
+      
+    </span>
+</a>
+<nav aria-label="How Zabbix Uses IPMI Internally" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-ipmi-pollers">
+<span class="md-ellipsis">
+      
+        Configuring IPMI Pollers
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relationship-between-ipmitool-and-zabbix">
+<span class="md-ellipsis">
+      
+        Relationship Between ipmitool and Zabbix
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-an-ipmi-item-in-zabbix">
+<span class="md-ellipsis">
+      
+        Configuring an IPMI Item in Zabbix
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#known-issues-and-common-pitfalls">
+<span class="md-ellipsis">
+      
+        Known Issues and Common Pitfalls
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#practical-advice-for-reliable-ipmi-monitoring">
+<span class="md-ellipsis">
+      
+        Practical Advice for Reliable IPMI Monitoring
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#introduction-to-redfish">
+<span class="md-ellipsis">
+      
+        Introduction to Redfish
+      
+    </span>
+</a>
+<nav aria-label="Introduction to Redfish" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rest-https">
+<span class="md-ellipsis">
+      
+        REST + HTTPS
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#json-schema-and-standardized-resources">
+<span class="md-ellipsis">
+      
+        JSON schema and standardized resources
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#testing-redfish-with-a-simulator">
+<span class="md-ellipsis">
+      
+        Testing Redfish with a Simulator
+      
+    </span>
+</a>
+<nav aria-label="Testing Redfish with a Simulator" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dmtf-mockup-server">
+<span class="md-ellipsis">
+      
+        DMTF Mockup Server
+      
+    </span>
+</a>
+<nav aria-label="DMTF Mockup Server" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rocky-linux-podman">
+<span class="md-ellipsis">
+      
+        Rocky Linux (Podman)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ubuntu-2404-docker">
+<span class="md-ellipsis">
+      
+        Ubuntu 24.04 (Docker)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#monitoring-redfish-with-zabbix">
+<span class="md-ellipsis">
+      
+        Monitoring Redfish with Zabbix
+      
+    </span>
+</a>
+<nav aria-label="Monitoring Redfish with Zabbix" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#extracting-a-value-with-json-preprocessing">
+<span class="md-ellipsis">
+      
+        Extracting a Value with JSON Preprocessing
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lld-example">
+<span class="md-ellipsis">
+      
+        LLD example
+      
+    </span>
+</a>
+<nav aria-label="LLD example" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-the-master-http-agent-item">
+<span class="md-ellipsis">
+      
+        Create the Master HTTP Agent Item
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-the-lld-rule">
+<span class="md-ellipsis">
+      
+        Create the LLD Rule
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-an-item-prototype-raw-chassis-data">
+<span class="md-ellipsis">
+      
+        Create an Item Prototype (Raw Chassis Data)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-a-dependent-item-prototype-health">
+<span class="md-ellipsis">
+      
+        Create a Dependent Item Prototype (Health)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-a-trigger-prototype">
+<span class="md-ellipsis">
+      
+        Create a Trigger Prototype
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../database-odbc/">
+<span class="md-ellipsis">
+    
+  
+    Database checks via odbc
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../database-agent/">
+<span class="md-ellipsis">
+    
+  
+    Database checks via agent
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-trapper/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix trapper
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../external-checks/">
+<span class="md-ellipsis">
+    
+  
+    External checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../browser/">
+<span class="md-ellipsis">
+    
+  
+    Browser item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../calculated/">
+<span class="md-ellipsis">
+    
+  
+    Calculated items
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch06-zabbix-templates/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/network-host-discovery/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/graphs/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch13-advanced-security/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Inhoudsopgave" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-is-ipmi">
+<span class="md-ellipsis">
+      
+        What is IPMI
+      
+    </span>
+</a>
+<nav aria-label="What is IPMI" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-ipmi">
+<span class="md-ellipsis">
+      
+        Understanding IPMI
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ipmi-architecture-and-sensors">
+<span class="md-ellipsis">
+      
+        IPMI Architecture and Sensors
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#communication-and-protocols">
+<span class="md-ellipsis">
+      
+        Communication and Protocols
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#security-caveats">
+<span class="md-ellipsis">
+      
+        Security Caveats
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#verifying-ipmi-access-with-ipmitool">
+<span class="md-ellipsis">
+      
+        Verifying IPMI Access with ipmitool
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#native-ipmi-monitoring-in-zabbix">
+<span class="md-ellipsis">
+      
+        Native IPMI Monitoring in Zabbix
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ipmi-items-and-templates">
+<span class="md-ellipsis">
+      
+        IPMI Items and Templates
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#practical-limitations">
+<span class="md-ellipsis">
+      
+        Practical Limitations
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#when-ipmi-still-makes-sense">
+<span class="md-ellipsis">
+      
+        When IPMI Still Makes Sense
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-how-ipmi-tools-work">
+<span class="md-ellipsis">
+      
+        Understanding How IPMI Tools Work
+      
+    </span>
+</a>
+<nav aria-label="Understanding How IPMI Tools Work" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#installing-ipmitool">
+<span class="md-ellipsis">
+      
+        Installing ipmitool
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exploring-ipmi-sensors-with-ipmitool">
+<span class="md-ellipsis">
+      
+        Exploring IPMI Sensors with ipmitool
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#working-with-discrete-ipmi-sensors">
+<span class="md-ellipsis">
+      
+        Working with Discrete IPMI Sensors
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-zabbix-uses-ipmi-internally">
+<span class="md-ellipsis">
+      
+        How Zabbix Uses IPMI Internally
+      
+    </span>
+</a>
+<nav aria-label="How Zabbix Uses IPMI Internally" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-ipmi-pollers">
+<span class="md-ellipsis">
+      
+        Configuring IPMI Pollers
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relationship-between-ipmitool-and-zabbix">
+<span class="md-ellipsis">
+      
+        Relationship Between ipmitool and Zabbix
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-an-ipmi-item-in-zabbix">
+<span class="md-ellipsis">
+      
+        Configuring an IPMI Item in Zabbix
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#known-issues-and-common-pitfalls">
+<span class="md-ellipsis">
+      
+        Known Issues and Common Pitfalls
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#practical-advice-for-reliable-ipmi-monitoring">
+<span class="md-ellipsis">
+      
+        Practical Advice for Reliable IPMI Monitoring
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#introduction-to-redfish">
+<span class="md-ellipsis">
+      
+        Introduction to Redfish
+      
+    </span>
+</a>
+<nav aria-label="Introduction to Redfish" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rest-https">
+<span class="md-ellipsis">
+      
+        REST + HTTPS
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#json-schema-and-standardized-resources">
+<span class="md-ellipsis">
+      
+        JSON schema and standardized resources
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#testing-redfish-with-a-simulator">
+<span class="md-ellipsis">
+      
+        Testing Redfish with a Simulator
+      
+    </span>
+</a>
+<nav aria-label="Testing Redfish with a Simulator" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dmtf-mockup-server">
+<span class="md-ellipsis">
+      
+        DMTF Mockup Server
+      
+    </span>
+</a>
+<nav aria-label="DMTF Mockup Server" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rocky-linux-podman">
+<span class="md-ellipsis">
+      
+        Rocky Linux (Podman)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ubuntu-2404-docker">
+<span class="md-ellipsis">
+      
+        Ubuntu 24.04 (Docker)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#monitoring-redfish-with-zabbix">
+<span class="md-ellipsis">
+      
+        Monitoring Redfish with Zabbix
+      
+    </span>
+</a>
+<nav aria-label="Monitoring Redfish with Zabbix" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#extracting-a-value-with-json-preprocessing">
+<span class="md-ellipsis">
+      
+        Extracting a Value with JSON Preprocessing
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lld-example">
+<span class="md-ellipsis">
+      
+        LLD example
+      
+    </span>
+</a>
+<nav aria-label="LLD example" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-the-master-http-agent-item">
+<span class="md-ellipsis">
+      
+        Create the Master HTTP Agent Item
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-the-lld-rule">
+<span class="md-ellipsis">
+      
+        Create the LLD Rule
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-an-item-prototype-raw-chassis-data">
+<span class="md-ellipsis">
+      
+        Create an Item Prototype (Raw Chassis Data)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-a-dependent-item-prototype-health">
+<span class="md-ellipsis">
+      
+        Create a Dependent Item Prototype (Health)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-a-trigger-prototype">
+<span class="md-ellipsis">
+      
+        Create a Trigger Prototype
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigatie" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../../">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../chapter/">
+<span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<nav class="md-tags">
+<span class="md-tag md-tag-icon" data-tag="advanced">
+      Gevorderde
+    </span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch04-zabbix-collecting-data/ipmi.md" title="Bron van deze pagina bekijken">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="ipmi-monitoring">IPMI Monitoring</h1>
+<h2 id="what-is-ipmi">What is IPMI</h2>
+<p>Out-of-band management has been part of enterprise server administration for decades,
+long before modern APIs and automation frameworks became common. One of the most widely
+adopted standards in this space is the Intelligent Platform Management Interface
+(IPMI). Despite its age and limitations, IPMI remains deeply embedded in data centers
+and continues to play a role in hardware monitoring today.</p>
+<p>This chapter introduces IPMI from a practical monitoring perspective and explains
+how it integrates with Zabbix, while also setting realistic expectations about where
+IPMI fits in modern environments.</p>
+<hr/>
+<h3 id="understanding-ipmi">Understanding IPMI</h3>
+<p>IPMI allows administrators to monitor and manage physical server hardware independently
+of the operating system. Even when a system is powered off, hung, or unable to
+boot, IPMI usually remains accessible as long as the server has power.</p>
+<p>At the center of IPMI is the Baseboard Management Controller (BMC). The BMC is
+a small embedded controller with its own firmware, network interface, and access
+to system sensors. Because it operates independently of the host operating system,
+it can continue reporting hardware health even when the OS is unavailable.</p>
+<p>Most server vendors implement IPMI through their own management platforms. While
+they share a common IPMI foundation, each adds vendor-specific features and naming
+conventions.</p>
+<p>Common BMC implementations include:</p>
+<ul>
+<li>Dell – iDRAC</li>
+<li>HPE – iLO</li>
+<li>Lenovo – XClarity Controller</li>
+<li>Supermicro – IPMI</li>
+<li>Fujitsu – iRMC</li>
+</ul>
+<p>From a monitoring perspective, these differences matter because sensor names,
+availability, and behavior often vary by vendor and even by firmware version.</p>
+<pre class="mermaid"><code>flowchart TB
+  %% ---------- Styles ----------
+  classDef zabbix fill:#e3f2fd,stroke:#1e88e5,color:#0d47a1
+  classDef ipmi fill:#ede7f6,stroke:#5e35b1,color:#311b92
+  classDef network fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef hardware fill:#fff3e0,stroke:#ef6c00,color:#e65100
+  classDef sensors fill:#fffde7,stroke:#fbc02d,color:#6d4c41
+
+  %% ---------- Nodes ----------
+  Z["Zabbix Server / Proxy"]
+  O["OpenIPMI"]
+  N["Management Network"]
+  B["BMC"]
+  H["Hardware Sensors"]
+
+  %% ---------- Flow ----------
+  Z --&gt; O
+  O --&gt;|"IPMI (UDP 623)"| N
+  N --&gt; B
+  B --&gt; H
+
+  %% ---------- Classes ----------
+  class Z zabbix
+  class O ipmi
+  class N network
+  class B hardware
+  class H sensors
+</code></pre>
+<hr/>
+<h3 id="ipmi-architecture-and-sensors">IPMI Architecture and Sensors</h3>
+<p>IPMI monitoring is built around hardware sensors exposed by the BMC. These sensors
+report real-time measurements and state information about the physical system.</p>
+<p>Typical sensor categories include:</p>
+<ul>
+<li>Temperature sensors
+  CPU temperature, system or motherboard temperature, inlet and exhaust air temperature</li>
+<li>Fan sensors
+  Fan speed (RPM), fan presence, fan failure states</li>
+<li>Voltage sensors
+  CPU voltage, memory voltage, standby voltage rails</li>
+<li>Power sensors
+  Power supply status, redundancy state, power consumption</li>
+<li>Chassis sensors
+  Chassis intrusion, lid open/closed state</li>
+<li>Miscellaneous sensors
+  Battery status, watchdog timers, hardware fault indicators</li>
+</ul>
+<p>Each sensor has a name, a type, and one or more thresholds that indicate warning
+or critical conditions. Importantly, sensor names are vendor-defined and case-sensitive,
+which has direct implications for monitoring tools such as Zabbix.</p>
+<hr/>
+<h3 id="communication-and-protocols">Communication and Protocols</h3>
+<p>When accessed over the network, IPMI typically communicates using UDP port 623.
+Older implementations rely on the Remote Management Control Protocol (RMCP), while
+newer systems support RMCP+, which adds authentication and encryption.</p>
+<p>Although RMCP+ improves security compared to earlier versions, its real world
+effectiveness depends heavily on vendor configuration and firmware quality. As
+a result, IPMI traffic still lacks many of the security and observability features
+administrators expect from modern management interfaces.</p>
+<hr/>
+<h3 id="security-caveats">Security Caveats</h3>
+<p>IPMI’s design reflects the assumptions of an earlier era, and this has lasting
+security implications. Many systems ship with IPMI enabled by default, sometimes
+with weak or unchanged credentials. Legacy authentication methods and insecure
+cipher suites may remain active unless explicitly disabled.</p>
+<p>Unlike modern APIs, IPMI does not natively use HTTPS or certificates. Logging and
+auditing capabilities are minimal, making it difficult to track access or investigate
+incidents. Because the BMC operates below the operating system, a compromised
+management controller can be extremely difficult to detect or remediate.</p>
+<p>For these reasons, IPMI should always be treated as a high-privilege interface.
+Best practice is to place it on a dedicated management network, restrict access
+aggressively, and keep BMC firmware up to date. When used carefully, IPMI can be
+safe enough for monitoring, but it should never be treated like a normal application
+service.</p>
+<hr/>
+<h3 id="verifying-ipmi-access-with-ipmitool">Verifying IPMI Access with ipmitool</h3>
+<p>Before configuring IPMI monitoring in Zabbix, it is often helpful to verify connectivity
+manually. On most Linux distributions, this is done using the <code>ipmitool</code> utility.</p>
+<p>A simple sensor query confirms that the BMC is reachable and that credentials are
+correct. If sensor data can be retrieved successfully with <code>ipmitool</code>, the same
+configuration will usually work in Zabbix as well.</p>
+<p>These tools are primarily for validation and troubleshooting; they are not required
+for day-to-day monitoring once Zabbix is configured.</p>
+<hr/>
+<h3 id="native-ipmi-monitoring-in-zabbix">Native IPMI Monitoring in Zabbix</h3>
+<p>Zabbix includes native IPMI support, allowing it to poll BMCs directly without
+agents or external scripts. This is done using the IPMI agent item type.</p>
+<p>To enable IPMI monitoring, a host must be configured with an IPMI interface specifying
+the BMC's management IP address and port. Credentials can be defined at the host
+or template level, depending on how standardized the environment is.</p>
+<p>Once configured, Zabbix queries individual sensors and stores their values just
+like any other monitored metric.</p>
+<hr/>
+<h3 id="ipmi-items-and-templates">IPMI Items and Templates</h3>
+<p>Each IPMI item in Zabbix corresponds to a specific sensor name exposed by the BMC.
+Because sensor naming is not standardized, templates often require customization.</p>
+<p>Zabbix ships with generic IPMI templates that provide a useful starting point.
+These templates usually include:</p>
+<ul>
+<li>Core temperature sensors</li>
+<li>Fan speed monitoring</li>
+<li>Power supply status</li>
+<li>Basic triggers for warning and critical states</li>
+</ul>
+<p>In practice, these templates are rarely “plug and play.” Sensors may be missing,
+renamed, or behave differently across vendors. As a result, IPMI templates are
+best treated as baselines that are refined for specific hardware platforms.</p>
+<hr/>
+<h3 id="practical-limitations">Practical Limitations</h3>
+<p>From a modern monitoring perspective, IPMI has clear limitations. Discovery
+capabilities are weak, sensor models are inconsistent, and extending IPMI beyond
+basic health checks is difficult. Automation and integration with external systems
+are also limited compared to API-driven approaches.</p>
+<p>These constraints do not make IPMI obsolete, but they do define its role. IPMI is
+best suited for fundamental hardware health monitoring rather than deep observability
+or automation.</p>
+<hr/>
+<h3 id="when-ipmi-still-makes-sense">When IPMI Still Makes Sense</h3>
+<p>IPMI remains relevant in many environments, particularly where hardware fleets
+are already deployed and newer management standards are unavailable. In controlled
+networks with proper isolation and access controls, it provides reliable insight
+into physical system health.</p>
+<p>For many organizations, IPMI will continue to coexist with newer technologies
+for years to come.</p>
+<hr/>
+<h3 id="understanding-how-ipmi-tools-work">Understanding How IPMI Tools Work</h3>
+<p>Before Zabbix enters the picture, it helps to understand how IPMI is typically
+accessed from a system administrator’s point of view. The most common tool for
+interacting with IPMI is <code>ipmitool</code>, a command-line utility that communicates directly
+with the BMC.</p>
+<p>ipmitool does not talk to the operating system. Instead, it connects straight to
+the BMC using IPMI over LAN, authenticates using the configured credentials, and
+requests sensor data or management actions. In many ways, Zabbix's native IPMI
+monitoring behaves very similarly, it simply automates and schedules the same
+type of queries.</p>
+<p>Using <code>ipmitool</code> manually is therefore an excellent way to validate connectivity,
+credentials, and available sensors before attempting to monitor a system with Zabbix.</p>
+<hr/>
+<h4 id="installing-ipmitool">Installing ipmitool</h4>
+<p>The <code>ipmitool</code> package is widely available and easy to install on all major Linux
+distributions.</p>
+<p>On Red Hat Enterprise Linux, Rocky Linux, AlmaLinux, and other RHEL-based systems,
+the package can be installed using:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>dnf install -y ipmitool
+</span></code></pre></div>
+<p>On Debian and Ubuntu systems, installation is done with:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>apt install -y ipmitool
+</span></code></pre></div>
+<p>Once installed, no additional services are required. The tool is invoked directly
+from the command line and communicates with the BMC over the network.</p>
+<hr/>
+<h4 id="exploring-ipmi-sensors-with-ipmitool">Exploring IPMI Sensors with ipmitool</h4>
+<p>The most common starting point is to list available sensors. This provides immediate
+insight into what the BMC exposes and what Zabbix will be able to monitor.</p>
+<p>A typical command looks like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>ipmitool -I lanplus -H &lt;BMC_IP&gt; -U &lt;USER&gt; sensor list
+</span></code></pre></div>
+<p>This command returns a list of sensors along with their current values and status.
+While the exact output varies by vendor, readers will usually see entries for
+temperatures, fans, voltages, and power supplies.</p>
+<p>To focus on specific types of data, administrators often scan the output for
+familiar patterns:</p>
+<ul>
+<li>Fan-related sensors usually include keywords like FAN, Fan1, or System Fan</li>
+<li>Temperature sensors often reference CPU, System, Inlet, or Exhaust</li>
+<li>Power supply sensors may indicate presence, redundancy, or failure states</li>
+</ul>
+<p>This exploratory step is important because sensor names must be used exactly as
+shown when configuring Zabbix IPMI items.</p>
+<p><strong>Example Output:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Sensor  Name</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Units</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">CPU Temp</td>
+<td style="text-align: left;">42.000</td>
+<td style="text-align: left;">degrees C</td>
+<td style="text-align: left;">ok</td>
+</tr>
+<tr>
+<td style="text-align: left;">System Temp</td>
+<td style="text-align: left;">35.000</td>
+<td style="text-align: left;">degrees C</td>
+<td style="text-align: left;">ok</td>
+</tr>
+<tr>
+<td style="text-align: left;">Inlet Temp</td>
+<td style="text-align: left;">22.000</td>
+<td style="text-align: left;">degrees C</td>
+<td style="text-align: left;">ok</td>
+</tr>
+<tr>
+<td style="text-align: left;">Exhaust Temp</td>
+<td style="text-align: left;">28.000</td>
+<td style="text-align: left;">degrees C</td>
+<td style="text-align: left;">ok</td>
+</tr>
+<tr>
+<td style="text-align: left;">FAN1</td>
+<td style="text-align: left;">4200.000</td>
+<td style="text-align: left;">RPM</td>
+<td style="text-align: left;">ok</td>
+</tr>
+<tr>
+<td style="text-align: left;">FAN2</td>
+<td style="text-align: left;">4100.000</td>
+<td style="text-align: left;">RPM</td>
+<td style="text-align: left;">ok</td>
+</tr>
+<tr>
+<td style="text-align: left;">PSU1 Status</td>
+<td style="text-align: left;">0x01</td>
+<td style="text-align: left;">discrete</td>
+<td style="text-align: left;">ok</td>
+</tr>
+<tr>
+<td style="text-align: left;">PSU2 Status</td>
+<td style="text-align: left;">0x01</td>
+<td style="text-align: left;">discrete</td>
+<td style="text-align: left;">ok</td>
+</tr>
+<tr>
+<td style="text-align: left;">Voltage 12V</td>
+<td style="text-align: left;">12.096</td>
+<td style="text-align: left;">Volts</td>
+<td style="text-align: left;">ok</td>
+</tr>
+<tr>
+<td style="text-align: left;">Chassis Intrusion</td>
+<td style="text-align: left;">0x00</td>
+<td style="text-align: left;">discrete</td>
+<td style="text-align: left;">ok</td>
+</tr>
+</tbody>
+</table>
+<p>Each line represents a sensor exposed by the BMC. While the exact sensors and names
+vary by vendor and hardware model, the structure is consistent.</p>
+<p><strong>The output columns represent:</strong></p>
+<ul>
+<li><strong>Sensor name:</strong> The identifier used by IPMI. This value is case-sensitive and
+  must match exactly when configuring Zabbix IPMI items.</li>
+<li><strong>Current reading:</strong> The latest measured value reported by the sensor.</li>
+<li><strong>Units:</strong> The measurement unit, such as degrees Celsius, RPM, or Volts.</li>
+<li><strong>Status:</strong> A simplified state indicating whether the sensor is operating normally.</li>
+</ul>
+<p>Discrete sensors (such as power supply status or chassis intrusion) may show
+hexadecimal values instead of numeric readings.</p>
+<hr/>
+<h3 id="working-with-discrete-ipmi-sensors">Working with Discrete IPMI Sensors</h3>
+<p>Some IPMI sensors do not return numeric measurements such as temperature or fan
+speed. Instead, they return discrete values, where individual bits represent different
+states or conditions. Common examples include power supply status, chassis intrusion,
+or predictive hardware failures.</p>
+<p>In these cases, Zabbix can evaluate specific bits using the bitwise AND trigger
+function, band().</p>
+<p><strong>Example: Predictive Power Supply Failure</strong></p>
+<p>Assume an IPMI sensor returns a value where the eighth bit indicates a predictive
+failure condition. To check whether this bit is set, Zabbix applies a bitmask using
+the band() function.</p>
+<p>In decimal notation:</p>
+<ul>
+<li>Bit 8 corresponds to the value 128</li>
+<li>The trigger expression checks whether this bit is set</li>
+</ul>
+<p>Example trigger expression:</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>band<span class="o">(</span>last<span class="o">(</span>/host/Power_Unit_Stat<span class="o">)</span>,128<span class="o">)=</span><span class="m">128</span>
+</span></code></pre></div>
+This expression:</p>
+<ul>
+<li>Takes the most recent value</li>
+<li>Applies a bitmask of 128</li>
+<li>Triggers only if the predictive failure bit is set</li>
+</ul>
+<p>This approach allows precise monitoring of hardware fault conditions that are
+otherwise hidden inside composite IPMI values.</p>
+<p><strong>Notes on Bitmask-Based Monitoring:</strong></p>
+<ul>
+<li>Bitmask logic is common with IPMI but rare with modern APIs</li>
+<li>Care should be taken not to poll too many IPMI sensors, as BMCs can easily be
+  overloaded</li>
+<li>Since Zabbix 4.0, IPMI sensors can be referenced using name: or id: syntax,
+  improving reliability across firmware versions</li>
+</ul>
+<p>Because of this complexity, IPMI monitoring often requires more manual tuning than
+Redfish-based monitoring, where health states are typically exposed as explicit
+fields such as Status.Health.</p>
+<hr/>
+<h3 id="how-zabbix-uses-ipmi-internally">How Zabbix Uses IPMI Internally</h3>
+<p>Zabbix does not invoke ipmitool or external commands when monitoring IPMI. Instead,
+it integrates directly with the OpenIPMI library, a widely used, open-source implementation
+of the IPMI specification.</p>
+<p>OpenIPMI handles the low-level details of IPMI communication, including protocol
+handling, authentication, and sensor access. Zabbix uses this library to communicate
+with the BMC in a structured and efficient way, without relying on shell commands
+or external processes.</p>
+<p>From the user’s perspective, this distinction is mostly invisible. Whether IPMI
+data is retrieved manually with ipmitool or automatically by Zabbix, the underlying
+interaction with the BMC follows the same IPMI standards and exposes the same sensors.</p>
+<hr/>
+<h4 id="configuring-ipmi-pollers">Configuring IPMI Pollers</h4>
+<p>By default, Zabbix does not enable IPMI pollers. You could start with a low
+number like 3 or 5. In environments with
+only a few monitored servers, this is usually sufficient. However, in larger environments,
+this configuration may quickly become a bottleneck.</p>
+<p>The number of IPMI pollers is controlled by the following configuration parameter:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>StartIPMIPollers
+</span></code></pre></div>
+<p>If IPMI checks begin to queue or time out, increasing this value is often necessary.
+As with other Zabbix poller types, changes require a restart of the Zabbix server
+or proxy to take effect.</p>
+<p>Because IPMI pollers rely on network communication with management controllers, their performance is influenced not only by Zabbix itself, but also by:</p>
+<ul>
+<li>BMC responsiveness</li>
+<li>Network latency to the management network</li>
+<li>Firmware quality and load on the BMC</li>
+</ul>
+<hr/>
+<h4 id="relationship-between-ipmitool-and-zabbix">Relationship Between ipmitool and Zabbix</h4>
+<p>Although Zabbix does not use ipmitool internally, the two tools are closely related conceptually. Both rely on standard IPMI mechanisms and expose the same underlying sensor data.</p>
+<p>For this reason, ipmitool remains the preferred tool for:</p>
+<ul>
+<li>Validating IPMI connectivity</li>
+<li>Discovering available sensors</li>
+<li>Verifying sensor names and behavior</li>
+<li>Troubleshooting authentication and firmware issues</li>
+</ul>
+<p>If a sensor cannot be queried successfully with ipmitool, it will almost certainly fail in Zabbix as well.</p>
+<hr/>
+<h4 id="configuring-an-ipmi-item-in-zabbix">Configuring an IPMI Item in Zabbix</h4>
+<p>Configuring an IPMI item in Zabbix is conceptually simple, but attention to detail is crucial.</p>
+<p>An IPMI item requires:</p>
+<ul>
+<li>Item type set to IPMI agent</li>
+<li>A key that references the exact sensor name</li>
+<li>An update interval appropriate for hardware metrics</li>
+</ul>
+<p>For example, to monitor a CPU temperature sensor, the item key might look like:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>ipmi.get[CPU Temp]
+</span></code></pre></div>
+<p>If the sensor name does not match exactly, including case and spacing, the item
+will fail. For this reason, copying sensor names directly from ipmitool output
+is strongly recommended.</p>
+<p>Triggers are typically defined on top of these items to detect warning and critical
+thresholds, either using vendor recommendations or operational experience.</p>
+<hr/>
+<h3 id="known-issues-and-common-pitfalls">Known Issues and Common Pitfalls</h3>
+<p>IPMI monitoring works reliably once configured correctly, but several recurring
+issues are worth calling out explicitly.</p>
+<p>One common problem is inconsistent sensor naming. The same server model may expose
+different sensor names depending on firmware version, making templates fragile
+across hardware revisions.</p>
+<p>Another frequent issue is slow or unresponsive BMCs. Some management controllers
+respond slowly under load, which can cause timeouts or delayed data in Zabbix.
+This becomes more noticeable as the number of monitored systems grows.</p>
+<p>Authentication problems are also common. Incorrect cipher suite settings, locked
+user accounts, or firmware bugs can all prevent successful IPMI polling even when
+credentials appear correct.</p>
+<p>Finally, IPMI interfaces are sometimes overlooked during network changes. Firewall
+rules, VLAN reconfiguration, or routing changes can silently break access to the
+management network while leaving the operating system untouched.</p>
+<hr/>
+<h3 id="practical-advice-for-reliable-ipmi-monitoring">Practical Advice for Reliable IPMI Monitoring</h3>
+<p>From experience, IPMI monitoring works best when treated as infrastructure monitoring,
+not application monitoring. Polling intervals should be reasonable, sensor counts
+kept under control, and templates carefully validated per vendor.</p>
+<p>Using ipmitool during setup and troubleshooting remains invaluable. If a sensor
+cannot be queried manually, Zabbix will not be able to retrieve it either.</p>
+<p>When these practices are followed, IPMI provides stable and useful visibility into
+hardware health, even if it shows its age in other areas.</p>
+<hr/>
+<h2 id="introduction-to-redfish">Introduction to Redfish</h2>
+<p>If IPMI feels like a tool from another era, Redfish is what replaced it: a modern,
+web friendly management standard designed for automation and secure operations.
+Redfish exposes hardware management through a RESTful interface and focuses on
+being both human-readable and machine friendly. </p>
+<p>In practical terms, Redfish is what you wish IPMI had been: structured resources,
+predictable URIs, and data you can query using the same tools you already use for
+web services.</p>
+<hr/>
+<h3 id="rest-https">REST + HTTPS</h3>
+<p>Redfish is built around REST concepts and is typically accessed over HTTPS. Instead
+of vendor specific “sensor names” or proprietary client utilities, you access resources
+using URLs and standard HTTP methods. </p>
+<p>That shift matters for monitoring:</p>
+<ul>
+<li>You can test endpoints with curl.</li>
+<li>You can retrieve structured JSON payloads.</li>
+<li>You can monitor it with Zabbix HTTP agent items (no special IPMI subsystem needed).</li>
+</ul>
+<hr/>
+<h3 id="json-schema-and-standardized-resources">JSON schema and standardized resources</h3>
+<p>Redfish resources are delivered as JSON and described by formal schemas. DMTF
+publishes the schema index (including JSON Schema formats), which makes the ecosystem
+far more consistent than IPMI in practice.</p>
+<p>The big win for authors and operators is that Redfish revolves around standard
+resource types. You'll see the same patterns repeatedly across vendors:</p>
+<ul>
+<li><strong>ServiceRoot:</strong> /redfish/v1 (entry point)</li>
+<li><strong>Systems:</strong> server/compute view (CPU, memory, boot, power state)</li>
+<li><strong>Chassis:</strong> physical enclosure view</li>
+<li><strong>Managers:</strong> the management controller (think BMC/iDRAC/iLO)</li>
+<li><strong>Power / Thermal:</strong> structured telemetry for PSUs, fans, temperatures (often
+  via chassis-related resources)</li>
+</ul>
+<p>Even when vendors add OEM extensions, the baseline model stays recognizable.</p>
+<hr/>
+<h2 id="testing-redfish-with-a-simulator">Testing Redfish with a Simulator</h2>
+<p>Since not everyone has an IPMI interface available and since we cannot use a
+standard that would work for everybody we will focus on a simulator. This should
+give you a good idea on how things work in real life.</p>
+<hr/>
+<h3 id="dmtf-mockup-server">DMTF Mockup Server</h3>
+<p>The Mockup Server serves static Redfish mockups and runs by <code>default</code> on <code>127.0.0.1:8000</code>.</p>
+<p>We will install for this a docker container on our Zabbix system or another
+system if you prefer.</p>
+<p>For the examples in this book, we use a fork of the official DMTF Redfish Mockup
+Server. The simulator runs in a container and provides a predictable, vendor neutral
+Redfish API that is ideal for testing and monitoring examples.</p>
+<p>The following sections show how to run the simulator on Rocky Linux using Podman
+and on Ubuntu 24.04 using Docker.</p>
+<p>In both cases, the result is the same: a Redfish service listening locally on
+port 8000.</p>
+<hr/>
+<h4 id="rocky-linux-podman">Rocky Linux (Podman)</h4>
+<p>Rocky Linux uses Podman as its default container engine. Podman is daemonless,
+integrates well with system security, and can run Docker-compatible images without
+modification.</p>
+<p><strong>Install Podman</strong></p>
+<p>Podman is available in the default Rocky repositories:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>podman
+</span></code></pre></div>
+<p>No additional services need to be enabled.</p>
+<p>Clone the Redfish Mockup Server Repository.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/penmasters/Redfish-Mockup-Server.git
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="nb">cd</span><span class="w"> </span>Redfish-Mockup-Server
+</span></code></pre></div>
+<p>This repository is a fork of the upstream DMTF project and is used here for documentation and monitoring examples.</p>
+<p>Build the Container Image (optional but recommended)
+Building the image locally ensures reproducible behavior:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>redfish-mockup-server<span class="w"> </span>.
+</span></code></pre></div>
+<p><strong>Run the Redfish Mockup Server</strong></p>
+<p>Start the container and expose port 8000:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>podman<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>redfish-mockup-server
+</span></code></pre></div>
+<p>Once running, the Redfish service root is available at:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>http://127.0.0.1:8000/redfish/v1
+</span></code></pre></div>
+<h4 id="ubuntu-2404-docker">Ubuntu 24.04 (Docker)</h4>
+<p>On Ubuntu, Docker remains the most widely used container runtime and is familiar to many administrators.</p>
+<p><strong>Install Docker from the Ubuntu repositories:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>apt update
+</span><span id="__span-11-2"><a href="#__codelineno-11-2" id="__codelineno-11-2" name="__codelineno-11-2"></a>apt install -y docker.io
+</span></code></pre></div>
+<p>Enable and start the Docker service:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>docker
+</span></code></pre></div>
+<p>(Optional) To avoid running Docker as root, add your user to the docker group and re-login.</p>
+<p><strong>Clone the Redfish Mockup Server Repository</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/penmasters/Redfish-Mockup-Server.git
+</span><span id="__span-13-2"><a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="nb">cd</span><span class="w"> </span>Redfish-Mockup-Server
+</span></code></pre></div>
+<p><strong>Build the Container Image</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>redfish-mockup-server<span class="w"> </span>.
+</span></code></pre></div>
+<p><strong>Run the Redfish Mockup Server</strong></p>
+<p>Start the container:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>docker run --rm -p 8000:8000 redfish-mockup-server
+</span></code></pre></div>
+<p>The Redfish API is now available at:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>http://127.0.0.1:8000/redfish/v1
+</span></code></pre></div>
+<p><strong>Verifying the Installation</strong></p>
+<p>On both Rocky Linux and Ubuntu, you can verify that the simulator is running by
+querying the Redfish service root:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>curl<span class="w"> </span>http://127.0.0.1:8000/redfish/v1
+</span></code></pre></div>
+<p>A JSON response confirms that the mock server is working correctly.</p>
+<p>At this point, the simulator can be used for:</p>
+<ul>
+<li>Exploring Redfish resources with curl</li>
+<li>Viewing JSON responses in a web browser</li>
+<li>Configuring Zabbix HTTP agent items</li>
+<li>Building preprocessing and LLD examples</li>
+</ul>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="err">curl</span><span class="w"> </span><span class="err">h</span><span class="kc">tt</span><span class="err">p</span><span class="p">:</span><span class="c1">//127.0.0.1:8000/redfish/v1</span>
+</span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="p">{</span>
+</span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="w">    </span><span class="nt">"@odata.id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/redfish/v1/"</span><span class="p">,</span>
+</span><span id="__span-18-4"><a href="#__codelineno-18-4" id="__codelineno-18-4" name="__codelineno-18-4"></a><span class="w">    </span><span class="nt">"@odata.type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#ServiceRoot.v1_16_1.ServiceRoot"</span><span class="p">,</span>
+</span><span id="__span-18-5"><a href="#__codelineno-18-5" id="__codelineno-18-5" name="__codelineno-18-5"></a><span class="w">    </span><span class="nt">"AccountService"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-6"><a href="#__codelineno-18-6" id="__codelineno-18-6" name="__codelineno-18-6"></a><span class="w">        </span><span class="nt">"@odata.id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/redfish/v1/AccountService"</span>
+</span><span id="__span-18-7"><a href="#__codelineno-18-7" id="__codelineno-18-7" name="__codelineno-18-7"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-18-8"><a href="#__codelineno-18-8" id="__codelineno-18-8" name="__codelineno-18-8"></a><span class="w">    </span><span class="nt">"CertificateService"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-9"><a href="#__codelineno-18-9" id="__codelineno-18-9" name="__codelineno-18-9"></a><span class="w">        </span><span class="nt">"@odata.id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/redfish/v1/CertificateService"</span>
+</span><span id="__span-18-10"><a href="#__codelineno-18-10" id="__codelineno-18-10" name="__codelineno-18-10"></a><span class="err">...</span>
+</span><span id="__span-18-11"><a href="#__codelineno-18-11" id="__codelineno-18-11" name="__codelineno-18-11"></a><span class="err">...</span>
+</span><span id="__span-18-12"><a href="#__codelineno-18-12" id="__codelineno-18-12" name="__codelineno-18-12"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-18-13"><a href="#__codelineno-18-13" id="__codelineno-18-13" name="__codelineno-18-13"></a><span class="w">    </span><span class="nt">"UUID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"92384634-2938-2342-8820-489239905423"</span><span class="p">,</span>
+</span><span id="__span-18-14"><a href="#__codelineno-18-14" id="__codelineno-18-14" name="__codelineno-18-14"></a><span class="w">    </span><span class="nt">"UpdateService"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-15"><a href="#__codelineno-18-15" id="__codelineno-18-15" name="__codelineno-18-15"></a><span class="w">        </span><span class="nt">"@odata.id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/redfish/v1/UpdateService"</span>
+</span><span id="__span-18-16"><a href="#__codelineno-18-16" id="__codelineno-18-16" name="__codelineno-18-16"></a><span class="w">    </span><span class="p">}</span>
+</span></code></pre></div>
+<hr/>
+<h2 id="monitoring-redfish-with-zabbix">Monitoring Redfish with Zabbix</h2>
+<p>With the Redfish Mockup Server running, we can now move from exploration to actual
+monitoring. The most straightforward way to monitor Redfish in Zabbix is by using an
+HTTP agent item, which retrieves data from a REST endpoint and stores the response
+for further processing.</p>
+<p>This approach mirrors how Redfish is used in real environments and avoids the need
+for any special protocols or poller types.</p>
+<p><strong>Choosing the First Endpoint</strong></p>
+<p>Every Redfish service exposes a well-defined entry point called the Service Root,
+located at:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a>/redfish/v1
+</span></code></pre></div>
+<p>This endpoint is ideal for a first test because it:</p>
+<ul>
+<li>Is always present</li>
+<li>Returns a small, predictable JSON document</li>
+<li>Confirms basic connectivity and parsing</li>
+</ul>
+<p>In the mock environment, the full URL is:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>http://127.0.0.1:8000/redfish/v1
+</span></code></pre></div>
+<p><strong>Creating a Test Host in Zabbix</strong></p>
+<p>Start by creating a dedicated host for the Redfish simulator.</p>
+<p>In the Zabbix frontend, go to <code>Data collection</code> → <code>Hosts</code></p>
+<ol>
+<li>Click Create host</li>
+<li>Set:<ul>
+<li><strong>Host name:</strong> Redfish Mockup Server</li>
+<li><strong>Interface:</strong> none required (HTTP agent does not use host interfaces)</li>
+</ul>
+</li>
+<li>Assign the host to a suitable group, for example Redfish or Servers</li>
+<li>Save the host</li>
+</ol>
+<hr/>
+<p><img alt="ipmi/ch04.50_create_redfish_host.png" src="../../../ch04-zabbix-collecting-data/ipmi/ch04.50_create_redfish_host.png"/></p>
+<p><em>4.50 create Redfish host</em></p>
+<p>This host will represent the Redfish endpoint rather than a traditional server.
+Next we can create an HTTP item on our host.</p>
+<p><strong>Creating the HTTP Agent Item</strong></p>
+<p>Next, create the actual monitoring item.</p>
+<ul>
+<li>Open the newly created host</li>
+<li>Go to the Items tab</li>
+<li>Click Create item</li>
+</ul>
+<p>Configure the item as follows:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Configuration</th>
+<th style="text-align: left;">notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Name:</strong></td>
+<td style="text-align: left;">Redfish service root</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type:</strong></td>
+<td style="text-align: left;">HTTP agent</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Key:</strong></td>
+<td style="text-align: left;">redfish.service.root</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>URL:</strong></td>
+<td style="text-align: left;">http://127.0.0.1:8000/redfish/v1</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Request method</strong></td>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Update interval</strong></td>
+<td style="text-align: left;">1m</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type of information</strong></td>
+<td style="text-align: left;">Text</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p>No authentication or headers are required for the mock server.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>At this stage, we are deliberately storing the entire response. In the next
+step, we will extract individual values.</p>
+</details>
+<p>After a short wait, the item should start collecting data. This can be verified
+under <code>Monitoring</code> → <code>Lastest data</code></p>
+<p>If this works we can move over to the next step and create an item.</p>
+<hr/>
+<h3 id="extracting-a-value-with-json-preprocessing">Extracting a Value with JSON Preprocessing</h3>
+<p>Let's create a dependent item by pressing on the '...' before our item <code>Redfish
+service root</code> and select <code>create dependent item</code>.</p>
+<p>Now we can create our dependent item so that we can extract a single value from
+the master item using preprocessing.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Configuration</th>
+<th style="text-align: left;">notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Name:</strong></td>
+<td style="text-align: left;">Redfish Version</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type</strong></td>
+<td style="text-align: left;">Dependent item</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Key</strong></td>
+<td style="text-align: left;">redfish.version</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Master item</strong></td>
+<td style="text-align: left;">Redfish service root</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type of information</strong></td>
+<td style="text-align: left;">Character</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Update interval</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">not available inherited from master item</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Preprocessing :</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">- JSONPath</td>
+<td style="text-align: left;">$.RedfishVersion</td>
+<td style="text-align: left;">Add as preprocessing step</td>
+</tr>
+</tbody>
+</table>
+<p>Press <code>Add</code> to save the item.</p>
+<p><img alt="ipmi/ch04.51_create_dependent_item.png" src="../../../ch04-zabbix-collecting-data/ipmi/ch04.51_create_dependent_item.png"/></p>
+<p><em>4.51 Dependent item</em></p>
+<p>Let's go to our latest data page and have a look at our newly created item.</p>
+<p><img alt="ipmi/ch04.52_latest_data.png" src="../../../ch04-zabbix-collecting-data/ipmi/ch04.52_latest_data.png"/></p>
+<p><em>4.52 Latest data</em></p>
+<hr/>
+<h3 id="lld-example">LLD example</h3>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If you have no idea how LLD (Low Level Discovery works it's best to skip
+this for now and cover the LLD chapter first.)</p>
+</details>
+<p>Redfish exposes many resources as collections containing a Members array. This
+structure is ideal for Zabbix Low-Level Discovery (LLD) because it allows
+discovery rules to be implemented using JSONPath.</p>
+<p>In this example, we will discover chassis resources from the Redfish endpoint:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>/redfish/v1/Chassis
+</span></code></pre></div>
+<hr/>
+<h4 id="create-the-master-http-agent-item">Create the Master HTTP Agent Item</h4>
+<p>First, create a master item that retrieves the chassis collection.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Configuration</th>
+<th style="text-align: left;">notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Host</strong></td>
+<td style="text-align: left;">Redfish Mockup Server</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Name:</strong></td>
+<td style="text-align: left;">Redfish Chassis collection (raw)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type</strong></td>
+<td style="text-align: left;">HTTP agent</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Key</strong></td>
+<td style="text-align: left;">redfish.chassis.collection.raw</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type of information</strong></td>
+<td style="text-align: left;">text</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Update interval</strong></td>
+<td style="text-align: left;">5m</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>URL</strong></td>
+<td style="text-align: left;">http://127.0.0.1:8000/redfish/v1/Chassis</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Request method</strong></td>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p>Save the item and confirm in Latest data that it returns JSON similar to:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="p">{</span>
+</span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a><span class="w">  </span><span class="nt">"Members"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"@odata.id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/redfish/v1/Chassis/1U"</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-22-4"><a href="#__codelineno-22-4" id="__codelineno-22-4" name="__codelineno-22-4"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-22-5"><a href="#__codelineno-22-5" id="__codelineno-22-5" name="__codelineno-22-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr/>
+<h4 id="create-the-lld-rule">Create the LLD Rule</h4>
+<p>Next we can now create a discovery rule based on the master item we just made.
+Press the <code>...</code> in front of the item and select <code>Create dependent discovery rule</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Configuration</th>
+<th style="text-align: left;">notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Name:</strong></td>
+<td style="text-align: left;">Discovery Redfish chassis</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type</strong></td>
+<td style="text-align: left;">Dependent item</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Key</strong></td>
+<td style="text-align: left;">redfish.chassis.discovery</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Master item</strong></td>
+<td style="text-align: left;">Redfish Chassis collection (raw)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Preprocessing</strong></td>
+<td style="text-align: left;">JSONPath</td>
+<td style="text-align: left;">$.Members[*]</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>LLD macros</strong></td>
+<td style="text-align: left;">{#CHASSIS_URI}</td>
+<td style="text-align: left;">$['@odata.id']</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="ipmi/ch04.53_discovery_rule.png" src="../../../ch04-zabbix-collecting-data/ipmi/ch04.53_discovery_rule.png"/></p>
+<p><em>4.53 LLD Discovery rule</em></p>
+<p>The JSONPath will output each member object individually, for example:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"@odata.id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/redfish/v1/Chassis/1U"</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p>This is exactly what Zabbix expects for JSONPath-based LLD.</p>
+<p>The LLD macros section define how values are extracted from each discovered object:</p>
+<ul>
+<li>The JSONPath must start with <code>$</code></li>
+<li>The macro path is evaluated per discovered object</li>
+</ul>
+<p>After this step, Zabbix will discover:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a><span class="p">{</span><span class="err">#CHASSIS_URI</span><span class="p">}</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">/red</span><span class="kc">f</span><span class="err">ish/v</span><span class="mi">1</span><span class="err">/Chassis/</span><span class="mi">1</span><span class="err">U</span>
+</span></code></pre></div>
+<hr/>
+<h4 id="create-an-item-prototype-raw-chassis-data">Create an Item Prototype (Raw Chassis Data)</h4>
+<p>Now that we have our discovery rule it's time to create an item prototype that queries each discovered chassis.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Configuration</th>
+<th style="text-align: left;">notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Name:</strong></td>
+<td style="text-align: left;">Redfish chassis {#CHASSIS_URI} (raw)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type:</strong></td>
+<td style="text-align: left;">HTTP agent</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Key:</strong></td>
+<td style="text-align: left;">redfish.chassis.raw[{#CHASSIS_URI}]</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>URL:</strong></td>
+<td style="text-align: left;">http://127.0.0.1:8000{#CHASSIS_URI}</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Request method</strong></td>
+<td style="text-align: left;">GET</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Update interval</strong></td>
+<td style="text-align: left;">5m</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type of information</strong></td>
+<td style="text-align: left;">Text</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p>This produces one HTTP item per discovered chassis.</p>
+<p><img alt="ipmi/ch04.54_item_prototype_raw.png" src="../../../ch04-zabbix-collecting-data/ipmi/ch04.54_item_prototype_raw.png"/></p>
+<p><em>4.54 Item prototype raw</em></p>
+<hr/>
+<h4 id="create-a-dependent-item-prototype-health">Create a Dependent Item Prototype (Health)</h4>
+<p>Our next step is to extract the health and the status with dependent items
+prototypes.</p>
+<p>The chassis resource already contains a standard Status object:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="nt">"Status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-25-2"><a href="#__codelineno-25-2" id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="w">  </span><span class="nt">"Health"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OK"</span><span class="p">,</span>
+</span><span id="__span-25-3"><a href="#__codelineno-25-3" id="__codelineno-25-3" name="__codelineno-25-3"></a><span class="w">  </span><span class="nt">"State"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Enabled"</span>
+</span><span id="__span-25-4"><a href="#__codelineno-25-4" id="__codelineno-25-4" name="__codelineno-25-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>We can extract this cleanly using a dependent item.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Configuration</th>
+<th style="text-align: left;">notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Name:</strong></td>
+<td style="text-align: left;">Chassis health</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type</strong></td>
+<td style="text-align: left;">Dependent item</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Key</strong></td>
+<td style="text-align: left;">redfish.chassis.health[{#CHASSIS_URI}]</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Master item</strong></td>
+<td style="text-align: left;">Redfish chassis {#CHASSIS_URI} (raw)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type of information</strong></td>
+<td style="text-align: left;">Character</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Preprocessing</strong></td>
+<td style="text-align: left;">JSONPath</td>
+<td style="text-align: left;">$.Status.Health</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="ipmi/ch04.55_item_prototype_health.png" src="../../../ch04-zabbix-collecting-data/ipmi/ch04.55_item_prototype_health.png"/></p>
+<p><em>4.55 Dependent discovery item health</em></p>
+<p>Once done clone this item and create one for the <code>Status state</code>. You can use
+this JSONPath <code>$.Status.State</code> for it.</p>
+<hr/>
+<h4 id="create-a-trigger-prototype">Create a Trigger Prototype</h4>
+<p>And as a final step we can create a simple <code>Trigger prototype</code> to make the discovery useful.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Configuration</th>
+<th style="text-align: left;">notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Name:</strong></td>
+<td style="text-align: left;">Chassis health is not OK</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expression</strong></td>
+<td style="text-align: left;">last(/Redfish Mockup Server/redfish.chassis.health[{#CHASSIS_URI}])&lt;&gt;"OK"</td>
+<td style="text-align: left;">Adapt trigger names if needed</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="ipmi/ch04.56_trigger_prototype.png" src="../../../ch04-zabbix-collecting-data/ipmi/ch04.56_trigger_prototype.png"/></p>
+<p><em>4.56 Trigger Prototype</em></p>
+<hr/>
+<h2 id="conclusion">Conclusion</h2>
+<p>Both IPMI and Redfish provide out-of-band management capabilities, but they
+reflect very different design philosophies and operational eras. Understanding
+these differences helps decide which technology to use — and why many
+environments are gradually transitioning from IPMI to Redfish.</p>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>IPMI</th>
+<th>Redfish</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standardization</td>
+<td>Older, widely implemented standard</td>
+<td>Modern DMTF standard designed for automation</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>Binary protocol over UDP (typically port 623)</td>
+<td>RESTful API over HTTPS</td>
+</tr>
+<tr>
+<td>Data format</td>
+<td>Sensor-based, vendor-defined naming</td>
+<td>Structured JSON with formal schemas</td>
+</tr>
+<tr>
+<td>Security model</td>
+<td>Historically weak, varies by firmware</td>
+<td>Designed with modern security in mind</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>Legacy mechanisms, cipher suites</td>
+<td>HTTP authentication, sessions, tokens</td>
+</tr>
+<tr>
+<td>Discoverability</td>
+<td>Limited, often manual</td>
+<td>Native via collections and <code>Members</code></td>
+</tr>
+<tr>
+<td>Resource model</td>
+<td>Individual sensors</td>
+<td>Linked resources (<code>Systems</code>, <code>Chassis</code>, <code>Managers</code>)</td>
+</tr>
+<tr>
+<td>Low-Level Discovery</td>
+<td>Difficult and vendor-specific</td>
+<td>Natural and scalable using JSONPath</td>
+</tr>
+<tr>
+<td>Poller behavior</td>
+<td>Specialized, limited scalability</td>
+<td>Uses existing HTTP infrastructure</td>
+</tr>
+<tr>
+<td>Template portability</td>
+<td>Often vendor- and model-specific</td>
+<td>Largely vendor-neutral</td>
+</tr>
+<tr>
+<td>Automation friendliness</td>
+<td>Limited</td>
+<td>Designed for automation and APIs</td>
+</tr>
+<tr>
+<td>Tooling</td>
+<td><code>ipmitool</code> and vendor utilities</td>
+<td><code>curl</code>, browsers, standard HTTP tools</td>
+</tr>
+<tr>
+<td>Typical use today</td>
+<td>Legacy fleets, basic hardware health</td>
+<td>Modern platforms, scalable monitoring</td>
+</tr>
+</tbody>
+</table>
+<p>In practice, the choice is rarely binary.</p>
+<p>IPMI remains valuable in environments with older hardware or where Redfish support
+is limited or inconsistent. It provides reliable access to fundamental hardware
+health metrics and continues to work well when deployed on isolated management
+networks.</p>
+<p>Redfish, on the other hand, is clearly the direction of the industry. Its REST
+based design, structured data model, and native discoverability make it far better
+suited for modern monitoring platforms such as Zabbix. Redfish scales naturally,
+integrates cleanly with automation workflows, and is significantly easier to
+reason about and troubleshoot.</p>
+<p>For many organizations, the most realistic approach is coexistence: IPMI for
+legacy systems, Redfish for new deployments.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>What problem do IPMI and Redfish both aim to solve, and how do their approaches
+  differ?</li>
+<li>How does the Redfish resource model (Systems, Chassis, Managers) differ from
+  IPMI's sensor based model?</li>
+<li>What role does JSONPath play in making Redfish monitoring scalable?</li>
+<li>When designing a new monitoring template, why is vendor neutrality important?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview">https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview</a></li>
+<li><a href="https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmi-second-gen-interface-spec-v2-rev1-1.pdf">https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmi-second-gen-interface-spec-v2-rev1-1.pdf</a></li>
+<li><a href="https://github.com/ipmitool/ipmitool">https://github.com/ipmitool/ipmitool</a></li>
+<li><a href="https://www.dmtf.org/standards/redfish">https://www.dmtf.org/standards/redfish</a></li>
+<li><a href="https://github.com/DMTF/Redfish-Mockup-Server">https://github.com/DMTF/Redfish-Mockup-Server</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Terug naar boven
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Gekopieerd naar klembord", "clipboard.copy": "Kopi\u00ebren naar klembord", "search.result.more.one": "1 extra overeenkomst op deze pagina", "search.result.more.other": "# extra overeenkomsten op deze pagina", "search.result.none": "Geen overeenkomende documenten", "search.result.one": "1 overeenkomende document", "search.result.other": "# overeenkomende documenten", "search.result.placeholder": "Typ om te beginnen met zoeken", "search.result.term.missing": "Ontbreekt", "select.version": "Selecteer versie"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>

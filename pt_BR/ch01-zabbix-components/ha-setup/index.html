@@ -1,0 +1,2685 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Set up Zabbix High Availability with clustered servers, shared DB, and Keepalived
+for VIP failover—ensuring zero-downtime monitoring.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/pt_BR/ch01-zabbix-components/ha-setup/">
+      
+      
+        <link rel="prev" href="../zabbix-frontend/">
+      
+      
+        <link rel="next" href="../../ch02-zabbix-installation/chapter/">
+      
+      
+        
+          <link rel="alternate" href="../../../fr/ch01-zabbix-components/ha-setup/" hreflang="fr">
+        
+          <link rel="alternate" href="../../../nl/ch01-zabbix-components/ha-setup/" hreflang="nl">
+        
+          <link rel="alternate" href="./" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../../ru/ch01-zabbix-components/ha-setup/" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch01-zabbix-components/ha-setup/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>HA Setup - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="HA Setup">
+    <meta property="og:description" content="Set up Zabbix High Availability with clustered servers, shared DB, and Keepalived for VIP failover—ensuring zero-downtime monitoring.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/pt_BR/ch01-zabbix-components/ha-setup/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HA Setup">
+    <meta name="twitter:description" content="Set up Zabbix High Availability with clustered servers, shared DB, and Keepalived for VIP failover—ensuring zero-downtime monitoring.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#configuracao-do-ha" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "pt_BR";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              HA Setup
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch01-zabbix-components/ha-setup/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch01-zabbix-components/ha-setup/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt_BR" class="md-select__link">
+              Brazillian Portugese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch01-zabbix-components/ha-setup/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch01-zabbix-components/ha-setup/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartilhar" aria-label="Compartilhar" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Componentes do Zabbix, funções básicas e instalação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../database/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installing the Zabbix server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installing the frontend
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HA Setup
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HA Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#instalacao-do-banco-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalação do banco de dados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instalando-o-cluster-no-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalando o cluster no Zabbix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Instalando o cluster no Zabbix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-do-zabbix-server-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do Zabbix Server 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-do-zabbix-server-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do Zabbix Server 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniciando-o-zabbix-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iniciando o Zabbix Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificacao-da-configuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificação da configuração
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instalando-o-front-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalando o front-end
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Instalando o front-end">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-do-keepalived" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do keepalived
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instalar-e-configurar-o-front-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalar e configurar o front-end
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-o-funcionamento-correto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar o funcionamento correto
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#perguntas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perguntas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#urls-uteis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        URLs úteis
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/network-host-discovery/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#instalacao-do-banco-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalação do banco de dados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instalando-o-cluster-no-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalando o cluster no Zabbix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Instalando o cluster no Zabbix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-do-zabbix-server-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do Zabbix Server 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-do-zabbix-server-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do Zabbix Server 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniciando-o-zabbix-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iniciando o Zabbix Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificacao-da-configuracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificação da configuração
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instalando-o-front-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalando o front-end
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Instalando o front-end">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-do-keepalived" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração do keepalived
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instalar-e-configurar-o-front-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instalar e configurar o front-end
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-o-funcionamento-correto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar o funcionamento correto
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#perguntas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perguntas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#urls-uteis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        URLs úteis
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navegação" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 01 : Zabbix components and installation
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="expert">
+      Expert
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/pt_BR/ch01-zabbix-components/ha-setup.md" title="Exibir fonte desta página" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="configuracao-do-ha">Configuração do HA</h1>
+<p>In this section, we will set up Zabbix in a High Availability (HA)
+configuration. This native feature, introduced in Zabbix 6, is a crucial
+enhancement that ensures continued monitoring even if a Zabbix server fails.
+With HA, when one Zabbix server goes down, another can take over seamlessly.</p>
+<p>Para este guia, usaremos dois servidores Zabbix e um banco de dados, mas a
+configuração permite adicionar mais servidores Zabbix, se necessário.</p>
+<p><img alt="Configuração-HA" src="../../../ch01-zabbix-components/ha-setup/ch01-HA-setup.png" /></p>
+<p><em>1.1 Configuração de HA</em></p>
+<p>It's important to note that Zabbix HA setup is straightforward, providing
+redundancy without complex features like load balancing. Only one node will be
+an active node, all other nodes will be on standby. All standby Zabbix servers
+in the HA cluster will monitor the active node through heartbeats using the
+shared database. It does not require any additional clustering software or even
+firewall ports for the Zabbix server itself. However, for the frontend, we will
+use Keepalived to provide a Virtual IP (VIP) for failover purposes.</p>
+<p>Assim como em nossa configuração básica, documentaremos os principais detalhes
+dos servidores nessa configuração de HA. Abaixo está a lista de servidores e um
+local para adicionar seus respectivos endereços IP para sua conveniência:</p>
+<table>
+<thead>
+<tr>
+<th>Servidor</th>
+<th>Endereço IP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Servidor Zabbix 1</td>
+<td></td>
+</tr>
+<tr>
+<td>Servidor Zabbix 2</td>
+<td></td>
+</tr>
+<tr>
+<td>Banco de dados</td>
+<td></td>
+</tr>
+<tr>
+<td>IP virtual</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Our database (DB) in this setup is not configured for HA. Since it's not a
+Zabbix component, you will need to implement your own solution for database
+HA, such as a HA SAN or a database cluster setup. A DB cluster configuration
+is out of the scope of this guide and unrelated to Zabbix, so it will not be
+covered here.</p>
+</details>
+<hr />
+<h2 id="instalacao-do-banco-de-dados">Instalação do banco de dados</h2>
+<p>Refer to the <a href="../database/"><em>Zabbix components: Database</em></a> chapter for detailed
+instructions on setting up the database. That chapter provides step-by-step
+guidance on installing either a PostgreSQL or MariaDB database on a dedicated
+node running Ubuntu, SUSE or Rocky Linux. The same installation steps apply when
+configuring the database for this setup.</p>
+<hr />
+<h2 id="instalando-o-cluster-no-zabbix">Instalando o cluster no Zabbix</h2>
+<p>A configuração de um cluster no Zabbix envolve a configuração de vários
+servidores Zabbix para trabalharem juntos, proporcionando alta disponibilidade.
+Embora o processo seja semelhante à configuração de um único servidor Zabbix, há
+etapas adicionais de configuração necessárias para ativar a HA (High
+Availability).</p>
+<p>Start by preparing the systems for- and installing Zabbix server on all systems
+by following the steps in the <a href="../../ch00-getting-started/preparation/"><em>Preparing the server for
+Zabbix</em></a> and <a href="../zabbix-server/"><em>Installing Zabbix server</em></a>
+sections of the <em>Zabbix components</em> chapter.</p>
+<p>Do note that:</p>
+<ul>
+<li>you need to skip the database population step on all but the first Zabbix
+  server as the database is shared between all Zabbix servers.</li>
+<li>you need to skip the enabling and starting of the zabbix-server service on all
+  servers as we will start it later after the HA configuration is done.</li>
+<li>you make sure that all Zabbix servers can connect to the database server. For
+  example, if you are using PostgreSQL, ensure that the <code>pg_hba.conf</code> file is
+  configured to allow connections from all Zabbix servers.</li>
+<li>all Zabbix servers should use the same database name, user, and password to
+  connect to the database.</li>
+<li>all Zabbix servers should be of the same major version.</li>
+</ul>
+<p>When all Zabbix servers are installed and configured to access the database, we
+can proceed with the HA configuration.</p>
+<hr />
+<h3 id="configuracao-do-zabbix-server-1">Configuração do Zabbix Server 1</h3>
+<p>Add a new configuration file for the HA setup on the first Zabbix server:</p>
+<div class="admonition info">
+<p class="admonition-title">Add High Availability Zabbix server configuration</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>vi<span class="w"> </span>/etc/zabbix/zabbix_server.d/high-availability.conf
+</span></code></pre></div>
+<p>Insert the following line into the configuration file to enable HA mode.</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="na">HANodeName</span><span class="o">=</span><span class="s">zabbix1</span><span class="w">  </span><span class="c1"># or choose a name you prefer</span>
+</span></code></pre></div>
+<p>Specify the frontend node address for failover scenarios:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="na">NodeAddress</span><span class="o">=</span><span class="s">&lt;Zabbix server 1 ip&gt;:10051</span>
+</span></code></pre></div>
+</div>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>The <code>NodeAddress</code> must match the IP or FQDN name of the Zabbix server node.
+Without this parameter the Zabbix front-end is unable to connect to the active
+node. The result will be that the frontend is unable to display the status
+the queue and other information.</p>
+</details>
+<hr />
+<h3 id="configuracao-do-zabbix-server-2">Configuração do Zabbix Server 2</h3>
+<p>Repita as etapas de configuração para o segundo servidor Zabbix. Ajuste o
+<code>HANodeName</code> e o <code>NodeAddress</code> conforme necessário para esse servidor.</p>
+<details class="example" open="open">
+<summary>Zabbix server 2 HA configuration high-availability.conf</summary>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="na">HANodeName</span><span class="o">=</span><span class="s">zabbix2</span><span class="w">  </span><span class="c1"># or choose a name you prefer</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="na">NodeAddress</span><span class="o">=</span><span class="s">&lt;Zabbix server 2 ip&gt;:10051</span>
+</span></code></pre></div>
+</details>
+<p>You can add more servers by repeating the same steps, ensuring each server has a
+unique <code>HANodeName</code> and the correct <code>NodeAddress</code> set.</p>
+<hr />
+<h3 id="iniciando-o-zabbix-server">Iniciando o Zabbix Server</h3>
+<p>Depois de configurar os dois servidores, ative e inicie o serviço zabbix-server
+em cada um deles:</p>
+<div class="admonition info">
+<p class="admonition-title">Enable and start zabbix-server service</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo systemctl enable zabbix-server --now
+</span></code></pre></div>
+</div>
+<hr />
+<h3 id="verificacao-da-configuracao">Verificação da configuração</h3>
+<p>Verifique os arquivos de registro em ambos os servidores para garantir que eles
+tenham sido iniciados corretamente e estejam operando em seus respectivos modos
+HA.</p>
+<p>No primeiro servidor:</p>
+<div class="admonition info">
+<p class="admonition-title">Check logs for HA messages</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>grep<span class="w"> </span>HA<span class="w"> </span>/var/log/zabbix/zabbix_server.log
+</span></code></pre></div>
+</div>
+<p>Nos logs do sistema, observe as seguintes entradas, indicando a inicialização do
+gerenciador de alta disponibilidade (HA):</p>
+<details class="example" open="open">
+<summary>HA log messages on active node</summary>
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">localhost:~&gt; sudo grep HA /var/log/zabbix/zabbix_server.log</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">22597:20240309:155230.353 starting HA manager</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="go">22597:20240309:155230.362 HA manager started in active mode</span>
+</span></code></pre></div>
+</details>
+<p>These log messages confirm that the HA manager process has started and has
+assumed the active role. This means that the Zabbix instance is now the primary
+node in the HA cluster, handling all monitoring operations. If a failover event
+occurs, another standby node will take over based on the configured HA strategy.</p>
+<p>Running the same command on the second server (and any additional nodes):</p>
+<details class="example" open="open">
+<summary>HA log messages on standby node</summary>
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="go">localhost:~&gt; sudo grep HA /var/log/zabbix/zabbix_server.log</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="go">22304:20240309:155331.163 starting HA manager</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="go">22304:20240309:155331.174 HA manager started in standby mode</span>
+</span></code></pre></div>
+</details>
+<p>Essas mensagens confirmam que o processo do gerenciador de HA foi invocado e
+iniciado com sucesso no modo de espera. Isso sugere que o nó está operacional,
+mas não está atuando no momento como a instância de HA ativa, aguardando outras
+transições de estado com base na estratégia de HA configurada.</p>
+<p>Nesta etapa, seu cluster do Zabbix está configurado com sucesso para alta
+disponibilidade (HA). Os registros do sistema confirmam que o gerenciador de HA
+foi inicializado e está sendo executado no modo de espera, indicando que os
+mecanismos de failover estão em vigor. Essa configuração garante o monitoramento
+ininterrupto, mesmo no caso de falha do servidor, permitindo transições
+automáticas de função com base na configuração de HA.</p>
+<hr />
+<h2 id="instalando-o-front-end">Instalando o front-end</h2>
+<p>Before proceeding with the installation and configuration of the web server, it
+is essential to install some sort of clustering software or use a load-balancer
+in front of the Zabbix frontends to be able to have a shared Virtual IP (VIP).</p>
+<details class="note there are several options available for clustering software and" open="open">
+<summary>Note</summary>
+</details>
+<p>load-balancers, including Pacemaker, Corosync, HAProxy, F5 Big-Ip, Citrix
+NetScaler, and various cloud load balancers. Each of these solutions offers a
+range of features and capabilities beyond just providing a VIP for failover
+purposes. But for the purpose of this guide, we will focus on a minimalistic
+approach to achieve high availability for the Zabbix frontend using Keepalived.</p>
+<p>Keepalived is like a helper that makes sure one computer takes over if another
+one stops working. It gives them a shared magic IP address so users don't notice
+when a server fails. If the main one breaks, the backup jumps in right away by
+taking over the IP.</p>
+<p>Keepalived is a minimal type of clustering software that enables the use of a
+(VIP) for frontend services, ensuring seamless failover and service continuity.</p>
+<div class="admonition warning">
+<p class="admonition-title">High Availability on SUSE Linux Enterprise Server (SLES)</p>
+<p>On SUSE Linux Enterprise Server (SLES), Keepalived is not included in the
+default subscription hence unavailable in the default repositories.</p>
+<p>To be able to install and use Keepalived on SLES in a supported way, you
+will need to obtain the additional 'SUSE Linux Enterprise High Availability
+Extension' subscription (SLE HA). This subscription provides access to the necessary
+packages and updates required for Keepalived and other high availability
+components.
+After obtaining the subscription, you can enable the appropriate
+repositories and proceed with the installation of Keepalived as outlined
+in this guide:</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>SUSEConnect<span class="w"> </span>-p<span class="w"> </span>sle-ha/16/x86_64<span class="w"> </span>-r<span class="w"> </span>ADDITIONAL_REGCODE
+</span></code></pre></div>
+Where <code>ADDITIONAL_REGCODE</code> is the registration code provided with your
+'SUSE Linux Enterprise High Availability Extension' subscription.</p>
+</div>
+<hr />
+<h3 id="configuracao-do-keepalived">Configuração do keepalived</h3>
+<p>On all Servers that will host the Zabbix fronted we have to install keepalived.
+As mentioned before, this can be done on separate servers to split up the server
+and frontend roles, but in this guide we will install keepalived on both Zabbix
+servers to ensure high availability of both the frontend and the server.</p>
+<div class="admonition info">
+<p class="admonition-title">Install keepalived</p>
+<p>Red Hat
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>dnf<span class="w"> </span>install<span class="w"> </span>keepalived
+</span></code></pre></div></p>
+<p>SUSE
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>zypper<span class="w"> </span>install<span class="w"> </span>keepalived
+</span></code></pre></div></p>
+<p>Ubuntu
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>keepalived
+</span></code></pre></div></p>
+</div>
+<p>Next, we need to modify the Keepalived configuration on all servers. While the
+configurations will be similar, each server requires slight adjustments. We will
+begin with Server 1. To edit the Keepalived configuration file, use the
+following command:</p>
+<div class="admonition info">
+<p class="admonition-title">Edit the keepalived config</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo<span class="w"> </span>vi<span class="w"> </span>/etc/keepalived/keepalived.conf
+</span></code></pre></div>
+</div>
+<p>If the file contains any existing content, it should be cleared and replaced
+with the following lines:</p>
+<div class="admonition info">
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>vrrp_track_process track_nginx {
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    process nginx
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    weight 10
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>}
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>vrrp_instance VI_1 {
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    state MASTER
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    interface enp0s1
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    virtual_router_id 51
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>    priority 244
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    advert_int 1
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>    authentication {
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>        auth_type PASS
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>        auth_pass 12345
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>    }
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>    virtual_ipaddress {
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>        xxx.xxx.xxx.xxx
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>    }
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>    track_process {
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>         track_nginx
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>      }
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>}
+</span></code></pre></div>
+</div>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>Replace <code>enp0s1</code> with the interface name of your machine and replace the <code>password</code>
+with something secure. For the <code>virtual_ipaddress</code> use a free IP from your network.
+This will be used as our VIP.</p>
+</details>
+<p>We can now do the same modification on our second or any subsequent Zabbix
+server. Delete again everything in the <code>/etc/keepalived/keepalived.conf</code> file
+like we did before and replace it with following lines:</p>
+<div class="admonition info">
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>vrrp_track_process track_nginx {
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>      process nginx
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>      weight 10
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>}
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>vrrp_instance VI_1 {
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    state BACKUP
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    interface enp0s1
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    virtual_router_id 51
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>    priority 243
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>    advert_int 1
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>    authentication {
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>        auth_type PASS
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>        auth_pass 12345
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>    }
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>    virtual_ipaddress {
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>       xxx.xxx.xxx.xxx
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>    }
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>    track_process {
+</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>         track_nginx
+</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>      }
+</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>}
+</span></code></pre></div>
+</div>
+<p>Just as with our 1st Zabbix server, replace <code>enp0s1</code> with the interface name of
+your machine and replace the <code>password</code> with your password and fill in the
+<code>virtual_ipaddress</code> as done before.</p>
+<p>Make sure that the firewall allows Keepalived traffic on all servers. The VRRP
+protocol is different than the standard IP protocol and uses multicast address
+<code>224.0.0.18</code>. Therefore, we need to explicitly allow this traffic through the
+firewall. Perform the following commands on all servers:</p>
+<div class="admonition info">
+<p class="admonition-title">Allow keepalived traffic through the firewall</p>
+<p>Red Hat / SUSE
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="l l-Scalar l-Scalar-Plain">firewall-cmd --add-rich-rule=&#39;rule protocol value=&quot;vrrp&quot; accept&#39; --permanent</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="l l-Scalar l-Scalar-Plain">firewall-cmd --reload</span>
+</span></code></pre></div></p>
+<p>Ubuntu
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="l l-Scalar l-Scalar-Plain">sudo ufw allow to 224.0.0.18 comment ‘keepalived multicast’</span>
+</span></code></pre></div></p>
+</div>
+<p>This ends the configuration of Keepalived. We can now continue adapting the
+frontend.</p>
+<hr />
+<h3 id="instalar-e-configurar-o-front-end">Instalar e configurar o front-end</h3>
+<p>Install the Zabbix frontend on all Zabbix servers, part of the cluster by
+following the steps outlined in the <a href="../zabbix-frontend/"><em>Installing the
+frontend</em></a> section.</p>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>Ubuntu users need to use the VIP in the setup of Nginx, together with the local
+IP in the listen directive of the config.</p>
+</details>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Don't forget to configure both front-ends. Also this is a new setup. Keep in
+mind that with an existing setup we need to comment out the lines  <code>$ZBX_SERVER</code>
+and <code>$ZBX_SERVER_PORT</code> in <code>/etc/zabbix/web/zabbix.conf.php</code>. Our frontend 
+will check what node is active by reading the node table in the database.</p>
+</details>
+<p>You can verify which node is active by querying the <code>ha_node</code> table in the
+Zabbix database. This table contains information about all nodes in the HA
+cluster, including their status. To check the status of the nodes, you can run
+the following SQL query:</p>
+<div class="admonition info">
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ha_node</span><span class="p">;</span>
+</span></code></pre></div>
+</div>
+<details class="example" open="open">
+<summary>Check the ha_node table in a PostgreSQL database</summary>
+<div class="language-psql highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="gp">zabbix=&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ha_node</span><span class="p">;</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="go">         ha_nodeid         |  name   |   address       | port  | lastaccess | status |       ha_sessionid</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="go">---------------------------+---------+-----------------+-------+------------+--------+---------------------------</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="go"> cm8agwr2b0001h6kzzsv19ng6 | zabbix1 | xxx.xxx.xxx.xxx | 10051 | 1742133911 |      0 | cm8apvb0c0000jkkzx1ojuhst</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="go"> cm8agyv830001ell0m2nq5o6n | zabbix2 | localhost       | 10051 | 1742133911 |      3 | cm8ap7b8u0000jil0845p0w51</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="go">(2 rows)</span>
+</span></code></pre></div>
+</details>
+<p>Nesse caso, o nó <code>zabbix2</code> é identificado como o nó ativo, conforme indicado por
+seu valor de status <code>3</code>, que designa um estado ativo. Os valores de status
+possíveis são os seguintes:</p>
+<ul>
+<li><code>0</code> - Vários nós podem permanecer em modo de espera.</li>
+<li><code>1</code> - Um nó detectado anteriormente foi desligado.</li>
+<li><code>2</code> - Um nó foi detectado anteriormente, mas ficou indisponível sem um
+  desligamento adequado.</li>
+<li><code>3</code> - O nó está ativo no momento.</li>
+</ul>
+<p>Essa classificação permite o monitoramento eficaz e o gerenciamento de estado
+dentro do cluster.</p>
+<p>Once the frontend is installed on all servers, we need to start and enable the
+Keepalived service to ensure it starts automatically on boot and begins managing
+the VIP:</p>
+<div class="admonition info">
+<p class="admonition-title">Start and enable keepalived</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="l l-Scalar l-Scalar-Plain">sudo systemctl enable keepalived nginx --now</span>
+</span></code></pre></div>
+</div>
+<hr />
+<h3 id="verificar-o-funcionamento-correto">Verificar o funcionamento correto</h3>
+<p>To verify that the setup is functioning correctly, access your Zabbix server
+using the Virtual IP (VIP). Navigate to Reports → System Information in the
+menu. At the bottom of the page, you should see a list of servers, with at least
+one marked as active. The number of servers displayed will depend on the total
+configured in your HA setup.</p>
+<p><img alt="1º frontend ativo" src="../../../ch01-zabbix-components/ha-setup/ch01-HA-check1.png" /></p>
+<p><em>1.2 verificar HA</em></p>
+<p>Shut down or reboot the active frontend server and observe that the Zabbix
+frontend remains accessible. Upon reloading the page, you will notice that the
+other frontend server has taken over as the active instance, ensuring an almost
+seamless failover and high availability.</p>
+<p><img alt="2st active frontend" src="../../../ch01-zabbix-components/ha-setup/ch01-HA-check2.png" /></p>
+<p><em>1.3 verify HA</em></p>
+<p>In addition to monitoring the status of HA nodes, Zabbix provides several
+runtime commands that allow administrators to manage failover settings and
+remove inactive nodes dynamically.</p>
+<p>One such command is:</p>
+<div class="admonition info">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>zabbix_server<span class="w"> </span>-R<span class="w"> </span><span class="nv">ha_set_failover_delay</span><span class="o">=</span>10m
+</span></code></pre></div>
+</div>
+<p>This command adjusts the failover delay, which defines how long Zabbix waits
+before promoting a standby node to active status. The delay can be set within a
+range of <strong>10 seconds</strong> to <strong>15 minutes</strong>.</p>
+<p>To remove a node that is either <strong>stopped</strong> or <strong>unreachable</strong>, the following
+runtime command must be used:</p>
+<div class="admonition info">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>sudo<span class="w"> </span>zabbix_server<span class="w"> </span>-R<span class="w"> </span><span class="nv">ha_remove_node</span><span class="o">=</span><span class="sb">`</span>zabbix1<span class="sb">`</span>
+</span></code></pre></div>
+</div>
+<p>Executing this command removes the node from the HA cluster. Upon successful
+removal, the output confirms the action:</p>
+<div class="admonition example">
+<p class="admonition-title">Removal of a node</p>
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="gp">localhost:~ # </span>zabbix_server<span class="w"> </span>-R<span class="w"> </span><span class="nv">ha_remove_node</span><span class="o">=</span><span class="sb">`</span>zabbix1<span class="sb">`</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="go">Removed node &quot;zabbix1&quot; with ID &quot;cm8agwr2b0001h6kzzsv19ng6&quot;</span>
+</span></code></pre></div>
+</div>
+<p>If the removed node becomes available again, it can be added back automatically
+when it reconnects to the cluster. These runtime commands provide flexibility
+for managing high availability in Zabbix without requiring a full restart of the
+<code>zabbix_server</code> process.</p>
+<hr />
+<h2 id="conclusao">Conclusão</h2>
+<p>In this chapter, we have successfully set up a high-availability (HA) Zabbix
+environment by configuring both the Zabbix server and frontend for redundancy.
+We first established HA for the Zabbix server, ensuring that monitoring services
+remain available even in the event of a failure. Next, we focused on the
+frontend, implementing a Virtual IP (VIP) with Keepalived to provide seamless
+failover and continuous accessibility.</p>
+<p>Additionally, we configured the firewall to allow Keepalived traffic and ensured
+that the service starts automatically after a reboot. With this setup, the
+Zabbix frontend can dynamically switch between servers, minimizing downtime and
+improving reliability.</p>
+<p>While database HA is an important consideration, it falls outside the scope of
+this setup. However, this foundation provides a robust starting point for
+building a resilient monitoring infrastructure that can be further enhanced as
+needed.</p>
+<hr />
+<h2 id="perguntas">Perguntas</h2>
+<ol>
+<li>What is Zabbix High Availability (HA), and why is it important?</li>
+<li>How does Zabbix determine which node is active in an HA setup?</li>
+<li>Can multiple Zabbix nodes be active simultaneously in an HA cluster? Why or
+   why not?</li>
+<li>What configuration file(s) are required to enable HA in Zabbix?</li>
+</ol>
+<hr />
+<h2 id="urls-uteis">URLs úteis</h2>
+<ul>
+<li><a href="https://www.redhat.com/sysadmin/advanced-keepalived">https://www.redhat.com/sysadmin/advanced-keepalived</a></li>
+<li><a href="https://keepalived.readthedocs.io/en/latest/introduction.html">https://keepalived.readthedocs.io/en/latest/introduction.html</a></li>
+<li><a href="https://www.zabbix.com/documentation/7.2/en/manual/concepts/server/ha">https://www.zabbix.com/documentation/7.2/en/manual/concepts/server/ha</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>

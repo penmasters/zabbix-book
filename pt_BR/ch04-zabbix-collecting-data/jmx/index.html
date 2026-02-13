@@ -1,0 +1,1779 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Monitor Java applications with Zabbix JMX checks. Collect performance metrics
+from JVMs to track memory, threads, and application health easily
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/pt_BR/ch04-zabbix-collecting-data/jmx/" rel="canonical">
+<link href="../script/" rel="prev"/>
+<link href="../ipmi/" rel="next"/>
+<link href="../../../fr/ch04-zabbix-collecting-data/jmx/" hreflang="fr" rel="alternate"/>
+<link href="../../../nl/ch04-zabbix-collecting-data/jmx/" hreflang="nl" rel="alternate"/>
+<link href="./" hreflang="pt_BR" rel="alternate"/>
+<link href="../../../ru/ch04-zabbix-collecting-data/jmx/" hreflang="ru" rel="alternate"/>
+<link href="../../../ch04-zabbix-collecting-data/jmx/" hreflang="en" rel="alternate"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Monitoring Java Applications with JMX - Zabbix Book</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141" rel="stylesheet"/>
+<link href="../../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="Monitoring Java Applications with JMX" property="og:title"/>
+<meta content="Monitor Java applications with Zabbix JMX checks. Collect performance metrics from JVMs to track memory, threads, and application health easily" property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/pt_BR/ch04-zabbix-collecting-data/jmx/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Monitoring Java Applications with JMX" name="twitter:title"/>
+<meta content="Monitor Java applications with Zabbix JMX checks. Collect performance metrics from JVMs to track memory, threads, and application health easily" name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#monitoring-java-applications-with-jmx">
+          Pular para conteúdo
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<div class="gmc-announce">
+            Esta página ainda não foi traduzida para o português. Portanto, está sendo exibida em inglês.
+            <a href="/gmc/pt_BR/contribute/#translations">Ajude-nos a traduzir!</a>
+</div>
+<script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Cabeçalho" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Monitoring Java Applications with JMX
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Selecione o idioma" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../../fr/ch04-zabbix-collecting-data/jmx/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../nl/ch04-zabbix-collecting-data/jmx/" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="pt_BR">
+              Brazillian Portugese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ru/ch04-zabbix-collecting-data/jmx/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ch04-zabbix-collecting-data/jmx/" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Buscar" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Buscar" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Pesquisar" class="md-search__options">
+<a aria-label="Compartilhar" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Compartilhar">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Limpar" class="md-search__icon md-icon" tabindex="-1" title="Limpar" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch02-zabbix-installation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch03-zabbix-proxies/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 04 : Collecting data 
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../chapter/">
+<span class="md-ellipsis">
+    
+  
+    Collecting data with your Zabbix environment
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dataflow/">
+<span class="md-ellipsis">
+    
+  
+    Dataflow
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../hosts/">
+<span class="md-ellipsis">
+    
+  
+    Hosts
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../simple-checks/">
+<span class="md-ellipsis">
+    
+  
+    Simple checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../host-interfaces/">
+<span class="md-ellipsis">
+    
+  
+    Host Interfaces
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-passive/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent installation and Passive monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-active/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent Active monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-polling/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Polling
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-trapping/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Trapping
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../http/">
+<span class="md-ellipsis">
+    
+  
+    HTTP Items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../preprocessing/">
+<span class="md-ellipsis">
+    
+  
+    Preprocessing
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dependent/">
+<span class="md-ellipsis">
+    
+  
+    Dependent items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ssh-telnet/">
+<span class="md-ellipsis">
+    
+  
+    SSH / Telnet
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../script/">
+<span class="md-ellipsis">
+    
+  
+    Script item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Monitoring Java Applications with JMX
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Monitoring Java Applications with JMX
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#key-concepts-in-jmx-monitoring">
+<span class="md-ellipsis">
+      
+        Key Concepts in JMX Monitoring
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#jmx-core-architecture">
+<span class="md-ellipsis">
+      
+        JMX Core Architecture
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#where-does-the-zabbix-java-gateway-fit-in-this-picture">
+<span class="md-ellipsis">
+      
+        Where Does the Zabbix Java Gateway Fit in this picture?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#setup-tomcat-to-monitor-with-zabbix">
+<span class="md-ellipsis">
+      
+        Setup Tomcat to monitor with Zabbix.
+      
+    </span>
+</a>
+<nav aria-label="Setup Tomcat to monitor with Zabbix." class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explanation-of-each-line">
+<span class="md-ellipsis">
+      
+        Explanation of Each Line
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#setup-zabbix-to-monitor-jmx">
+<span class="md-ellipsis">
+      
+        Setup Zabbix to monitor JMX
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-zabbix-and-the-java-gateway">
+<span class="md-ellipsis">
+      
+        Configuring Zabbix and the JAVA Gateway
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#monitoring-jmx-items">
+<span class="md-ellipsis">
+      
+        Monitoring JMX items
+      
+    </span>
+</a>
+<nav aria-label="Monitoring JMX items" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-our-first-item">
+<span class="md-ellipsis">
+      
+        Create our first item
+      
+    </span>
+</a>
+<nav aria-label="Create our first item" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#viewing-tabular-data">
+<span class="md-ellipsis">
+      
+        Viewing Tabular Data
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-jmx-item-keys">
+<span class="md-ellipsis">
+      
+        Zabbix JMX Item Keys
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#making-use-of-jmxget">
+<span class="md-ellipsis">
+      
+        Making use of jmx.get[]
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-considerations-for-jmx-monitoring">
+<span class="md-ellipsis">
+      
+        Performance Considerations for JMX Monitoring
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#monitoring-jmx-through-jolokia">
+<span class="md-ellipsis">
+      
+        Monitoring JMX through Jolokia
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ipmi/">
+<span class="md-ellipsis">
+    
+  
+    IPMI Monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../database-odbc/">
+<span class="md-ellipsis">
+    
+  
+    Database checks via odbc
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../database-agent/">
+<span class="md-ellipsis">
+    
+  
+    Database checks via agent
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-trapper/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix trapper
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../external-checks/">
+<span class="md-ellipsis">
+    
+  
+    External checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../browser/">
+<span class="md-ellipsis">
+    
+  
+    Browser item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../calculated/">
+<span class="md-ellipsis">
+    
+  
+    Calculated items
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch06-zabbix-templates/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/network-host-discovery/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/graphs/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch13-advanced-security/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#key-concepts-in-jmx-monitoring">
+<span class="md-ellipsis">
+      
+        Key Concepts in JMX Monitoring
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#jmx-core-architecture">
+<span class="md-ellipsis">
+      
+        JMX Core Architecture
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#where-does-the-zabbix-java-gateway-fit-in-this-picture">
+<span class="md-ellipsis">
+      
+        Where Does the Zabbix Java Gateway Fit in this picture?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#setup-tomcat-to-monitor-with-zabbix">
+<span class="md-ellipsis">
+      
+        Setup Tomcat to monitor with Zabbix.
+      
+    </span>
+</a>
+<nav aria-label="Setup Tomcat to monitor with Zabbix." class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explanation-of-each-line">
+<span class="md-ellipsis">
+      
+        Explanation of Each Line
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#setup-zabbix-to-monitor-jmx">
+<span class="md-ellipsis">
+      
+        Setup Zabbix to monitor JMX
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-zabbix-and-the-java-gateway">
+<span class="md-ellipsis">
+      
+        Configuring Zabbix and the JAVA Gateway
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#monitoring-jmx-items">
+<span class="md-ellipsis">
+      
+        Monitoring JMX items
+      
+    </span>
+</a>
+<nav aria-label="Monitoring JMX items" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#create-our-first-item">
+<span class="md-ellipsis">
+      
+        Create our first item
+      
+    </span>
+</a>
+<nav aria-label="Create our first item" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#viewing-tabular-data">
+<span class="md-ellipsis">
+      
+        Viewing Tabular Data
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-jmx-item-keys">
+<span class="md-ellipsis">
+      
+        Zabbix JMX Item Keys
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#making-use-of-jmxget">
+<span class="md-ellipsis">
+      
+        Making use of jmx.get[]
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-considerations-for-jmx-monitoring">
+<span class="md-ellipsis">
+      
+        Performance Considerations for JMX Monitoring
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#monitoring-jmx-through-jolokia">
+<span class="md-ellipsis">
+      
+        Monitoring JMX through Jolokia
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navegação" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../../">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../chapter/">
+<span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<nav class="md-tags">
+<span class="md-tag md-tag-icon" data-tag="advanced">
+      Avançado
+    </span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch04-zabbix-collecting-data/jmx.md" title="Exibir fonte desta página">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="monitoring-java-applications-with-jmx">Monitoring Java Applications with JMX</h1>
+<p>One of the neat features that Zabbix offers out of the box is the ability to monitor
+Java applications. To make this happen, Zabbix uses something called the
+<code>Java Gateway</code>, which communicates with Java applications via the
+<code>Java Management Extensions</code> JMX, for short.</p>
+<p><code>JMX</code> is a built-in Java technology designed specifically for monitoring and managing
+Java applications and the <code>Java Virtual Machine</code> (JVM). It works through components
+called <code>MBeans</code> (Managed Beans), which act like data sensors and control points.
+These MBeans can expose useful information like memory usage, thread counts, and
+even allow runtime configuration changes, all while the application is running.</p>
+<p>One of the strengths of JMX is its flexibility. It supports both local and remote
+access, so whether your Java app is on the same machine or halfway across the
+network, Zabbix can still keep an eye on it. Combined with the Java Gateway, this
+makes JMX a powerful and scalable option for monitoring Java-based environments
+with minimal setup. Also JMX was an extension but is part of JAVA SE since java 5.</p>
+<h2 id="key-concepts-in-jmx-monitoring">Key Concepts in JMX Monitoring</h2>
+<p>Before diving into JMX monitoring with Zabbix, it helps to get familiar with a
+few core building blocks that make it all work:</p>
+<p><strong>Managed Beans (MBeans):</strong>
+These are the heart of JMX. MBeans are Java objects that expose useful bits of
+data (called attributes) and operations (as regular methods) from your application.
+Think of them as little control panels inside your Java app, you can read metrics,
+tweak settings, or trigger actions through them.</p>
+<p><strong>JMX Agent:</strong>
+This is the engine behind the scenes. Running inside the Java Virtual Machine (JVM),
+the JMX agent connects everything together. It's what lets management tools
+(like Zabbix) interact with the MBeans.</p>
+<p><strong>MBean Server:</strong>
+A key part of the JMX agent, the MBean server is like a central registry where
+MBeans are registered and managed. It keeps everything organized and accessible.</p>
+<p><strong>Connectors:</strong>
+Want to monitor your Java app remotely? That's where connectors come in. They
+let external tools connect to the JMX agent over a network. So you're not limited
+to local monitoring.</p>
+<p><strong>Adaptors:</strong>
+Sometimes you need JMX data to speak a different language. Adaptors convert JMX
+info into formats that non-Java tools can understand, like HTTP or SNMP, making
+integration easier with broader monitoring ecosystems.</p>
+<h2 id="jmx-core-architecture">JMX Core Architecture</h2>
+<p>To understand how Zabbix collects data from Java applications, it helps to know
+the basic structure of JMX itself. JMX is built on a three-layer architecture that
+separates how metrics are defined, how they are stored inside the JVM, and how
+external tools can reach them.</p>
+<ul>
+<li>
+<p><strong>Instrumentation Layer:</strong> This is where the application exposes its internal
+  state through MBeans (Managed Beans). They can be standard, dynamic, or MXBeans,
+  and represent things like memory usage, thread counts, or application specific
+  metrics.</p>
+</li>
+<li>
+<p><strong>Agent Layer:</strong> – Every JVM contains an MBeanServer, which acts as a registry
+  and makes these MBeans available for management. When you start a JVM with
+  -Dcom.sun.management.jmxremote, you are exposing this server for external access.</p>
+</li>
+<li>
+<p><strong>Remote Management Layer:</strong> This is how outside tools connect to the JVM.
+  Connectors (such as RMI or JMXMP) and adaptors (such as HTTP or SNMP bridges)
+  allow Zabbix and other monitoring systems to fetch the metrics. By default,
+  Zabbix uses an RMI connector via the Java Gateway.</p>
+</li>
+</ul>
+<pre class="mermaid"><code>flowchart LR
+    A[Application] --&gt; B[MBeans]
+    B --&gt; C[MBeanServer]
+    C --&gt; D[Connector RMI - JMXMP]
+    D --&gt; E[Zabbix Java Gateway]
+    E --&gt; F[Zabbix Server / DB]
+    F --&gt; G[Frontend]
+
+    classDef app fill:#fef3c7,stroke:#111,stroke-width:1px,color:#111;
+    classDef mbean fill:#dbeafe,stroke:#111,stroke-width:1px,color:#111;
+    classDef gateway fill:#fde68a,stroke:#111,stroke-width:1px,color:#111;
+    classDef zabbix fill:#bbf7d0,stroke:#111,stroke-width:1px,color:#111;
+
+    class A app;
+    class B,C mbean;
+    class D,E gateway;
+    class F,G zabbix;
+
+</code></pre>
+<h2 id="where-does-the-zabbix-java-gateway-fit-in-this-picture">Where Does the Zabbix Java Gateway Fit in this picture?</h2>
+<p>The Zabbix Java Gateway is an external component in the Zabbix ecosystem specifically
+designed to handle JMX monitoring. While it's not part of the JMX framework itself,
+it acts as a JMX client that connects to your Java application’s JMX agent and
+collects data from MBeans. So, if we map it to the components we just discussed,
+here's how it fits: =&gt; <strong>Category: Connectors (Client-Side)</strong></p>
+<p>Why? Because the Zabbix Java Gateway is essentially a remote management application
+that connects to the JMX agent running inside your Java app’s JVM. It uses JMX's
+remote communication protocols (usually over RMI) to pull data from the MBean server.</p>
+<p>Think of it like this:</p>
+<ul>
+<li>Your Java app exposes data via MBeans.</li>
+<li>The JMX agent and MBean server inside the JVM make that data available.</li>
+<li>The Zabbix Java Gateway reaches in from the outside, asks for that data,
+  and passes it along to your Zabbix server.</li>
+</ul>
+<p>So, while connectors in JMX terminology usually refer to the part inside the JVM
+that allows remote access, the Java Gateway is the counterpart on the outside.
+The client that initiates those connections.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph JVM["Java Application (JVM)"]
+        subgraph JMX["JMX Agent"]
+            MBServer["MBean Server"]
+            Connector["Connectors"]
+            Adaptor["Adaptors"]
+            M1["MBean"]
+            M2["MBean"]
+
+            MBServer --- M1
+            MBServer --- M2
+            MBServer --- Connector
+            MBServer --- Adaptor
+        end
+    end
+
+    ZS["Zabbix Server"]
+    JGW["Zabbix Java Gateway"]
+
+    ZS --&gt; JGW
+    JGW --&gt; Connector
+
+</code></pre>
+<h2 id="setup-tomcat-to-monitor-with-zabbix">Setup Tomcat to monitor with Zabbix.</h2>
+<p>To ensure accurate testing of JMX monitoring with Zabbix, a dedicated host is essential.
+Although configuration on the Zabbix server is possible, a separate machine provides a
+more realistic representation of a production environment. For our setup, we'll
+use a new virtual machine running either Rocky Linux or Ubuntu. This machine will
+serve as our JMX-enabled target, and we'll install and configure Tomcat on it for
+this purpose.</p>
+<details class="info" open="open">
+<summary>Setup Tomcat</summary>
+<p>Red hat
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>dnf install tomcat
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>vi /etc/sysconfig/tomcat
+</span></code></pre></div>
+Ubuntu
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>apt install tomcat10
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>vi /etc/default/tomcat10
+</span></code></pre></div>
+Add the following config: in Ubuntu remove the original JAVA_OPTS line or
+place a # in front</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="l l-Scalar l-Scalar-Plain">JAVA_OPTS="\</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">-Dcom.sun.management.jmxremote=true \</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">-Dcom.sun.management.jmxremote.port=8686 \</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">-Dcom.sun.management.jmxremote.rmi.port=8686 \</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">-Dcom.sun.management.jmxremote.authenticate=false \</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">-Dcom.sun.management.jmxremote.ssl=false \</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">-Djava.rmi.server.hostname=&lt;local ip or hostname&gt;"</span>
+</span></code></pre></div>
+</details>
+<h3 id="explanation-of-each-line">Explanation of Each Line</h3>
+<p>Let's go over the lines we just configured. They are a set of configuration options,
+called <strong>JMX options</strong>, passed to the Java Virtual Machine (JVM) at startup. These
+options enable and configure the Java Management Extensions (JMX) agent, which
+allows for remote monitoring and management of the application, in this case,
+Apache Tomcat.</p>
+<ul>
+<li>
+<p><strong><code>JAVA_OPTS="... "</code></strong>
+  This is a variable used by Tomcat's startup scripts to hold a collection of
+  command-line arguments for the Java process. The backslash (<code>\</code>) at the end of
+  each line is a shell syntax feature that allows a single command or variable
+  to span multiple lines, making the configuration easier to read.</p>
+</li>
+<li>
+<p><strong><code>-Dcom.sun.management.jmxremote=true</code></strong>
+  This is the main switch to enable the JMX remote agent. By setting this to <code>true</code>,
+  you're telling the JVM to start the JMX management server.</p>
+</li>
+<li>
+<p><strong><code>-Dcom.sun.management.jmxremote.port=8686</code></strong>
+  This option specifies the <strong>port number</strong> for the JMX agent to listen on for
+  incoming connections. In this case, it's set to <code>8686</code>.</p>
+</li>
+<li>
+<p><strong><code>-Dcom.sun.management.jmxremote.rmi.port=8686</code></strong>
+  This sets the port for the <strong>RMI (Remote Method Invocation) server</strong>. The JMX
+  agent uses RMI to communicate with remote clients. In this configuration,
+  both the JMX agent and the RMI server are configured to use the same port,
+  simplifying the setup.</p>
+</li>
+<li>
+<p><strong><code>-Dcom.sun.management.jmxremote.authenticate=false</code></strong>
+  This disables authentication for JMX connections. For production environments,
+  this should be set to <code>true</code> to require a username and password. Setting it to
+  <code>false</code> is only suitable for development or testing environments.</p>
+</li>
+<li>
+<p><strong><code>-Dcom.sun.management.jmxremote.ssl=false</code></strong>
+  This disables Secure Sockets Layer (SSL) for JMX connections, meaning communication
+  is not encrypted. Like authentication, this should be set to <code>true</code> in a production
+  environment to secure the connection.</p>
+</li>
+<li>
+<p><strong><code>-Djava.rmi.server.hostname=&lt;local ip&gt;"</code></strong>
+  This is a crucial option that tells the RMI server which <strong>IP address</strong> to announce
+  to clients. Clients will use this hostname to connect to the server. If this
+  is not explicitly set, the RMI server might use the server's internal hostname
+  or a loopback address (<code>127.0.0.1</code>), which would prevent external connections.
+  By setting it to <code>&lt;your local IP&gt;</code>, you ensure that the JMX port is bound to
+  the correct network interface for remote access.</p>
+</li>
+</ul>
+<details class="note" open="open">
+<summary>Note</summary>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>There<span class="w"> </span>isn<span class="s1">'t a single, universally "standard" port for JMX that is accepted</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="s1">across all applications and vendors. The JMX specification itself does not</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="s1">define a default port, leaving it to the implementer to choose one.</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="s1">However, certain ports have become common or de facto standards within the Java</span>
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="s1">ecosystem. The most frequently seen ports for JMX are in the high-number range,</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="s1">typically:</span>
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="s1">- 1099: This port is a historic default for the RMI Registry, which JMX often</span>
+</span><span id="__span-3-10"><a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="s1">  uses for communication. While it'</span>s<span class="w"> </span>not<span class="w"> </span>strictly<span class="w"> </span>a<span class="w"> </span>JMX<span class="w"> </span>port,<span class="w"> </span>it<span class="s1">'s often</span>
+</span><span id="__span-3-11"><a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="s1">  associated with older JMX configurations.</span>
+</span><span id="__span-3-12"><a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a href="#__codelineno-3-13" id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="s1">- 8686: This port is a well-accepted and formally registered port for JMX with</span>
+</span><span id="__span-3-14"><a href="#__codelineno-3-14" id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="s1">  the Internet Assigned Numbers Authority (IANA). The IANA service name for port</span>
+</span><span id="__span-3-15"><a href="#__codelineno-3-15" id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="s1">  8686 is sun-as-jmxrmi. This makes it a great choice because it'</span>s<span class="w"> </span>officially
+</span><span id="__span-3-16"><a href="#__codelineno-3-16" id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="w">  </span>recognized<span class="w"> </span>and<span class="w"> </span>less<span class="w"> </span>likely<span class="w"> </span>to<span class="w"> </span>conflict<span class="w"> </span>with<span class="w"> </span>other<span class="w"> </span>common<span class="w"> </span>services.
+</span><span id="__span-3-17"><a href="#__codelineno-3-17" id="__codelineno-3-17" name="__codelineno-3-17"></a>
+</span><span id="__span-3-18"><a href="#__codelineno-3-18" id="__codelineno-3-18" name="__codelineno-3-18"></a>Why<span class="w"> </span>Port<span class="w"> </span><span class="m">8686</span><span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>Good<span class="w"> </span>Choice?
+</span><span id="__span-3-19"><a href="#__codelineno-3-19" id="__codelineno-3-19" name="__codelineno-3-19"></a>Port<span class="w"> </span><span class="m">8686</span><span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>User<span class="w"> </span>Port<span class="w"> </span><span class="o">(</span><span class="m">1024</span>-49151<span class="o">)</span>,<span class="w"> </span>which<span class="w"> </span>means<span class="w"> </span>it<span class="s1">'s available for registered</span>
+</span><span id="__span-3-20"><a href="#__codelineno-3-20" id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="s1">services but isn'</span>t<span class="w"> </span>a<span class="w"> </span><span class="s2">"well known"</span><span class="w"> </span>port<span class="w"> </span>that<span class="w"> </span>requires<span class="w"> </span>a<span class="w"> </span>special<span class="w"> </span>permission<span class="w"> </span>level
+</span><span id="__span-3-21"><a href="#__codelineno-3-21" id="__codelineno-3-21" name="__codelineno-3-21"></a>to<span class="w"> </span>use.<span class="w"> </span>It<span class="err">'</span>s<span class="w"> </span>IANA<span class="w"> </span>registration<span class="w"> </span>as<span class="w"> </span>sun-as-jmxrmi<span class="w"> </span>makes<span class="w"> </span>it<span class="w"> </span>a<span class="w"> </span>safe<span class="w"> </span>and<span class="w"> </span>logical
+</span><span id="__span-3-22"><a href="#__codelineno-3-22" id="__codelineno-3-22" name="__codelineno-3-22"></a>choice<span class="w"> </span><span class="k">for</span><span class="w"> </span>JMX<span class="w"> </span>monitoring,<span class="w"> </span>especially<span class="w"> </span>when<span class="w"> </span>you<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>standardize<span class="w"> </span>port<span class="w"> </span>assignments
+</span><span id="__span-3-23"><a href="#__codelineno-3-23" id="__codelineno-3-23" name="__codelineno-3-23"></a>across<span class="w"> </span>a<span class="w"> </span>large<span class="w"> </span>infrastructure.
+</span></code></pre></div>
+</details>
+<h2 id="setup-zabbix-to-monitor-jmx">Setup Zabbix to monitor JMX</h2>
+<p>Now that we've set up a JMX-enabled application, we need to configure Zabbix to
+monitor it. Since Zabbix can't connect directly to JMX endpoints, we need an
+intermediary tool: the <strong>Zabbix Java Gateway</strong>.</p>
+<p>This gateway needs to be installed and configured on your Zabbix server or proxy,
+allowing a single gateway to service multiple JMX applications. The gateway operates
+in a passive mode, which means it polls data directly from your JMX application.
+The Zabbix server or proxy then polls the gateway to retrieve this data, completing
+the connection chain.</p>
+<p><img alt="Zabbix java gateway" src="../../../ch04-zabbix-collecting-data/JMX/ch04.35-jmx-zabbix.png"/></p>
+<p><em>04.35 JMX Gateway</em></p>
+<details class="info" open="open">
+<summary>Install the JAVA Gateway</summary>
+<p>Red Hat
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>dnf install zabbix-java-gateway
+</span></code></pre></div>
+Ubuntu
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>apt install zabbix-java-gateway
+</span></code></pre></div></p>
+</details>
+<h2 id="configuring-zabbix-and-the-java-gateway">Configuring Zabbix and the JAVA Gateway</h2>
+<p>After installing the gateway, you'll find its configuration file at <code>/etc/zabbix/zabbix_java_gateway.conf</code>.
+The default <code>LISTEN_IP</code> is set to 0.0.0.0, which means it listens on all network
+interfaces, though you can change this. The gateway listens on port 10052, a non
+IANA registered port, which can also be adjusted using the <code>LISTEN_PORT</code> option
+if needed.</p>
+<p>The first setting we'll change is <code>START_POLLERS</code>. We need to uncomment this line
+and set a value, for example, <code>START_POLLERS=5</code> to define the number of concurrent
+connections. The TIMEOUT option controls network operation timeouts, while
+<code>PROPERTIES_FILE</code> allows you to define or override additional key-value properties,
+such as a keystore password, without exposing them in a command line.</p>
+<p>For your Zabbix server, you'll need to update the configuration file at <code>/etc/zabbix/zabbix_server.conf</code>.</p>
+<p>You'll need to modify three key options:</p>
+<ul>
+<li>
+<p><strong>JavaGateway:</strong> Uncomment this line and set its value to the IP address of
+  the host running your Java gateway. This will likely be your Zabbix
+  server itself, but it can be on a separate VM or proxy.</p>
+</li>
+<li>
+<p><strong>JavaGatewayPort:</strong> This option should remain at the default <code>10052</code> unless
+  you've changed the port in your gateway's configuration.</p>
+</li>
+<li>
+<p><strong>StartJavaPollers:</strong> Uncomment and set this option to define the number of
+  concurrent Java pollers the server will use. A good starting
+  point is to match the number you set on the gateway, for
+  example, 5.</p>
+</li>
+</ul>
+<p>After making the changes to <code>/etc/zabbix/zabbix_server.conf</code> and <code>/etc/zabbix/zabbix_java_gateway.conf</code>,
+you need to restart the following services:</p>
+<ul>
+<li>Zabbix Java Gateway</li>
+<li>Zabbix Server</li>
+</ul>
+<p>Restarting these two services applies the new configuration, allowing the server
+to communicate with the Java Gateway and begin polling for JMX data. Also don't
+forget to enable the <code>Zabbix Java Gateway</code> service.</p>
+<details class="info" open="open">
+<summary>Restart the services</summary>
+<p>RedHat and Ubuntu
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>systemctl enable zabbix-java-gateway --now
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>systemclt restart zabbix-server
+</span></code></pre></div></p>
+</details>
+<p>On the application side don't forget to open the firewall so that our
+<code>zabbix-java-gateway</code> can connect to our application.</p>
+<div class="admonition info">
+<p class="admonition-title">Allow JMX</p>
+<p>Red Hat
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>firewall-cmd --add-port=8686/tcp --permanent
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a>firewall-cmd --reload
+</span></code></pre></div></p>
+<p>Ubuntu
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>sudo ufw allow 8686/tcp
+</span></code></pre></div></p>
+</div>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>Don't forget to place SeLinux in permissive mode before you start else the
+</span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a>JAVA gateway will not work. You should fix SeLinux permissions once the setup
+</span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a>is working.
+</span></code></pre></div>
+</details>
+<h2 id="monitoring-jmx-items">Monitoring JMX items</h2>
+<p>After having setup everything, we can now connect to our Java application's JMX port to
+verify everything is working.</p>
+<p>For this, we can use JConsole, a monitoring tool that comes with the Java Development
+Kit (JDK). Another great option is VisualVM, which offers a more visual and feature
+rich experience. You can download it from <a href="https://visualvm.github.io/download.html">https://visualvm.github.io/download.html</a>.</p>
+<p>Start your preferred application and connect to our JMX port on 8686.</p>
+<p><img alt="Jconsole" src="../../../ch04-zabbix-collecting-data/JMX/ch04.36-jconsole.png"/></p>
+<p><em>04.36 Jconsole</em></p>
+<p>After a successful login you should be greeted with a screen like this. Were you
+have a tree view overview of all the Mbeans we can use to gather information
+from.</p>
+<p><img alt="ch04.37 Succesful login" src="../../../ch04-zabbix-collecting-data/JMX/ch04.37-jconsole-mbeans-tree.png"/></p>
+<p><em>04.37 Login screen</em></p>
+<p>Before we can do this we need to create a new host in our Zabbix server. Let's
+go to <code>Data collection</code> - <code>Hosts</code> and click on <code>Create host</code> in the upper right
+corner. Use the following settings to create our host:</p>
+<ul>
+<li>Hostname : Tomcat</li>
+<li>Host groups: JMX</li>
+<li>Interfaces: JMX<ul>
+<li>IP address: IP of your Tomcat server</li>
+<li>Port : 8686 or the port you specified in your Tomcat configuration.</li>
+</ul>
+</li>
+</ul>
+<p>Press the <code>Add</code> button when ready.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>It seems weird that we not specify the JavaGateway here but it's actually
+</span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a>normal. Zabbix knows from its configuration file where the gateway is. So we
+</span><span id="__span-10-3"><a href="#__codelineno-10-3" id="__codelineno-10-3" name="__codelineno-10-3"></a>need to specify the IP and the PORT of the JAVA application here that we would
+</span><span id="__span-10-4"><a href="#__codelineno-10-4" id="__codelineno-10-4" name="__codelineno-10-4"></a>like to monitor.
+</span></code></pre></div>
+</details>
+<h3 id="create-our-first-item">Create our first item</h3>
+<p>On our host Tomcat create a new item and add the following information.</p>
+<ul>
+<li><em>Name:</em> requestCount</li>
+<li><em>Type:</em> JMX Agent</li>
+<li><em>Key:</em> jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\"", "requestCount"]</li>
+<li><em>Type of information:</em> Numeric(unsigned)</li>
+<li><em>Host interface:</em> The JMX interface we just created on our host.</li>
+</ul>
+<p><img alt="JMX Item" src="../../../ch04-zabbix-collecting-data/JMX/ch04.38-jmx-requestCount-item.png"/></p>
+<p><em>ch04.38 JMX item</em></p>
+<details class="info" open="open">
+<summary>Verifying and Saving the Item</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>Before saving the configured item, use the Test button. Clicking Get value
+</span><span id="__span-11-2"><a href="#__codelineno-11-2" id="__codelineno-11-2" name="__codelineno-11-2"></a>or Get value and test should populate the value field with data, confirming
+</span><span id="__span-11-3"><a href="#__codelineno-11-3" id="__codelineno-11-3" name="__codelineno-11-3"></a>that the item is functional. Once the test is successful, you can save the
+</span><span id="__span-11-4"><a href="#__codelineno-11-4" id="__codelineno-11-4" name="__codelineno-11-4"></a>item.
+</span></code></pre></div>
+</details>
+<p>To understand how we constructed the item key, let's look at the process in JConsole.</p>
+<ol>
+<li>
+<p>Navigate to the MBeans tab and expand Catalina &gt; GlobalRequestProcessor &gt; http-nio-8080.</p>
+</li>
+<li>
+<p>The ObjectNAme field on the right displays the MBean's fully qualified name:
+   <code>Catalina:type=GlobalRequestProcessor,name="http-nio-8080"</code>. This is the base
+   for our Zabbix item key.</p>
+</li>
+</ol>
+<p>The primary challenge with this specific key is that it contains double quotes (")
+within the <code>name</code> attribute. Zabbix requires the entire JMX key to be enclosed
+in double quotes, which would conflict with the existing quotes. To resolve this,
+we must <strong>escape</strong> the inner double quotes with a backslash ().</p>
+<p>This results in the following structure for the Zabbix item key:
+<code>jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\""]</code>.</p>
+<p>This key is still incomplete. To specify the metric to be monitored, you must
+append an attribute name, such as maxTime, requestCount, or bytesReceived, at
+the end of the key, separated by a comma.
+<code>jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\"","requestCount"]</code></p>
+<p><img alt="requestCount item" src="../../../ch04-zabbix-collecting-data/JMX/ch04.39-jconsole-requestCount.png"/></p>
+<p><em>04.39 requestCount item</em></p>
+<p>The <code>java.lang.management.Memory</code> MBean provides a good example of how to handle
+CompositeData types in Zabbix. This MBean has an attribute called <code>HeapMemoryUsage</code>,
+which is not a simple value but rather an instance of <code>CompositeData</code>. This special
+JMX data type is used to represent complex structures.</p>
+<p>This means that attributes like <code>init</code>, <code>used</code>, <code>committed</code>, or <code>max</code> aren't accessed
+directly on the MBean itself. Instead, they are part of the <code>MemoryUsage</code> object
+that is returned when you query the <code>HeapMemoryUsage</code> attribute.</p>
+<p>To monitor a specific value from this composite object, you must specify the
+attribute name within the <code>CompositeData</code> structure. For example, to get the maximum
+heap memory usage, the Zabbix item key would be: <code>jmx["java.lang:type=Memory","HeapMemoryUsage.max"]</code>.</p>
+<p><img alt="" src="../../../ch04-zabbix-collecting-data/JMX/ch04.40-jconsole-HeapMemory.Max.png"/></p>
+<p>_04.40 HeapMemoryUsage</p>
+<h4 id="viewing-tabular-data">Viewing Tabular Data</h4>
+<p>To view the detailed breakdown of the <code>HeapMemoryUsage</code> attribute, double click on
+its value in the attribute value column. This action displays the composite data
+in a tabular format, making it easier to see individual metrics like <code>init</code>, <code>used</code>,
+<code>committed</code>, and <code>max</code>.</p>
+<h4 id="zabbix-jmx-item-keys">Zabbix JMX Item Keys</h4>
+<p>Zabbix offers three primary item keys for JMX monitoring:</p>
+<ul>
+<li>
+<p><strong>jmx[]:</strong> This is the standard key used for monitoring a specific JMX attribute.
+  It's the most common key for creating simple, direct checks.</p>
+</li>
+<li>
+<p><strong>jmx.get[]:</strong> This key is used to retrieve a full object from an MBean. It is
+  often paired with Low Level Discovery (LLD) rules and preprocessing steps to
+  extract specific values from the returned data, allowing for more flexible data
+  collection.</p>
+</li>
+<li>
+<p><strong>jmx.discovery[]:</strong> This key is specifically designed for use with Low Level
+  Discovery. It helps Zabbix automatically discover multiple JMX MBeans or attributes
+  on a monitored host, which is essential for scaling JMX monitoring across a large
+  number of components.</p>
+</li>
+</ul>
+<h3 id="making-use-of-jmxget">Making use of jmx.get[]</h3>
+<p>The <code>jmx.get[]</code> item key returns a JSON array containing a list of MBean objects or
+their attributes. Unlike <code>jmx.discovery[]</code>, it does not automatically define LLD
+macros. Instead, it is particularly useful when you need to retrieve a structured
+set of data and then process it using JSONPath in a dependent item or a low level
+discovery rule.</p>
+<p>While <code>jmx.get[]</code> is commonly used for Low Level Discovery (LLD), it is also highly
+effective for creating dependent items without using a full discovery rule. This
+allows you to collect multiple related metrics from a single request to the JMX
+agent, which is more efficient.</p>
+<p>For instance, the key <code>jmx.get[attributes,"*:type=GarbageCollector,name=PS MarkSweep"]</code>
+would return a comprehensive payload with all attributes of the specified garbage
+collector.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="p">[</span>
+</span><span id="__span-12-2"><a href="#__codelineno-12-2" id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-12-3"><a href="#__codelineno-12-3" id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CollectionCount"</span><span class="p">,</span>
+</span><span id="__span-12-4"><a href="#__codelineno-12-4" id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="w">    </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"java.lang:type=GarbageCollector,name=PS MarkSweep,CollectionCount"</span><span class="p">,</span>
+</span><span id="__span-12-5"><a href="#__codelineno-12-5" id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="w">    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"java.lang.Long"</span><span class="p">,</span>
+</span><span id="__span-12-6"><a href="#__codelineno-12-6" id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span>
+</span><span id="__span-12-7"><a href="#__codelineno-12-7" id="__codelineno-12-7" name="__codelineno-12-7"></a><span class="w">    </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"java.lang:type=GarbageCollector,name=PS MarkSweep"</span>
+</span><span id="__span-12-8"><a href="#__codelineno-12-8" id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-12-9"><a href="#__codelineno-12-9" id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="w">  </span><span class="err">...</span>
+</span><span id="__span-12-10"><a href="#__codelineno-12-10" id="__codelineno-12-10" name="__codelineno-12-10"></a><span class="w">  </span><span class="err">...</span>
+</span><span id="__span-12-11"><a href="#__codelineno-12-11" id="__codelineno-12-11" name="__codelineno-12-11"></a><span class="w">  </span><span class="err">...</span>
+</span><span id="__span-12-12"><a href="#__codelineno-12-12" id="__codelineno-12-12" name="__codelineno-12-12"></a><span class="w">  </span><span class="err">...</span>
+</span><span id="__span-12-13"><a href="#__codelineno-12-13" id="__codelineno-12-13" name="__codelineno-12-13"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-12-14"><a href="#__codelineno-12-14" id="__codelineno-12-14" name="__codelineno-12-14"></a><span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ObjectName"</span><span class="p">,</span>
+</span><span id="__span-12-15"><a href="#__codelineno-12-15" id="__codelineno-12-15" name="__codelineno-12-15"></a><span class="w">    </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"java.lang:type=GarbageCollector,name=PS MarkSweep,ObjectName"</span><span class="p">,</span>
+</span><span id="__span-12-16"><a href="#__codelineno-12-16" id="__codelineno-12-16" name="__codelineno-12-16"></a><span class="w">    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"javax.management.ObjectName"</span><span class="p">,</span>
+</span><span id="__span-12-17"><a href="#__codelineno-12-17" id="__codelineno-12-17" name="__codelineno-12-17"></a><span class="w">    </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"java.lang:type=GarbageCollector,name=PS MarkSweep"</span><span class="p">,</span>
+</span><span id="__span-12-18"><a href="#__codelineno-12-18" id="__codelineno-12-18" name="__codelineno-12-18"></a><span class="w">    </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"java.lang:type=GarbageCollector,name=PS MarkSweep"</span>
+</span><span id="__span-12-19"><a href="#__codelineno-12-19" id="__codelineno-12-19" name="__codelineno-12-19"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-12-20"><a href="#__codelineno-12-20" id="__codelineno-12-20" name="__codelineno-12-20"></a><span class="p">]</span>
+</span></code></pre></div>
+<p>This JSON output can then be used as the master item for multiple dependent items,
+each with a preprocessing step to extract a specific value (e.g., <code>CollectionCount</code>
+or <code>CollectionTime</code>) using a JSONPath expression. This technique is a powerful
+way to reduce the load on both the JMX agent and the Zabbix server by making a
+single call to collect multiple metrics.</p>
+<h2 id="performance-considerations-for-jmx-monitoring">Performance Considerations for JMX Monitoring</h2>
+<p>JMX monitoring is powerful but comes with higher overhead compared to traditional
+Zabbix agent checks. To ensure your monitoring remains efficient and doesn't impact
+either your Zabbix infrastructure or the monitored JVMs, keep the following points
+in mind.</p>
+<p>Zabbix communicates with the Java Gateway synchronously:</p>
+<ul>
+<li>The Zabbix server sends a request for a JMX item.</li>
+<li>The Java Gateway connects to the target JVM and retrieves the data.</li>
+<li>Only when the response comes back does the Zabbix server proceed with that item's
+  check.
+This means that if JMX queries are slow (due to network, JVM GC pauses, or overloaded
+gateways), your monitoring queue can back up.</li>
+</ul>
+<p>To optimize performance:</p>
+<ul>
+<li>The Java Gateway bundles multiple requests for the same host and processes them
+  in a single JVM connection.</li>
+<li>This reduces the overhead of repeatedly opening/closing JMX connections.</li>
+<li>
+<p>For example, if you monitor 20 JVM attributes on the same Tomcat, the gateway
+  will collect them in fewer, larger batches instead of 20 separate calls.</p>
+</li>
+<li>
+<p>Once a JMX connection to a JVM is established, the gateway keeps it alive and
+  reuses it for subsequent checks.</p>
+</li>
+<li>This avoids expensive RMI connection setup for
+  every metric.</li>
+<li>If the JVM restarts or the connection drops, the gateway will re-establish it automatically.</li>
+</ul>
+<p>Two important parameters in zabbix_server.conf and zabbix_java_gateway.conf directly
+affect JMX performance:</p>
+<ul>
+<li>StartJavaPollers (on Zabbix Server)<ul>
+<li>Defines how many parallel JMX pollers the server can use.</li>
+<li>Too few pollers → JMX checks queue up and fall behind.</li>
+<li>Too many pollers → high load on Java Gateway and JVMs.</li>
+</ul>
+</li>
+<li>StartPollers (general pollers)
+  Balance with Java pollers so your server can handle both JMX and regular agent
+  checks without bottlenecks.</li>
+<li>
+<p>Rule of thumb: start small (Ex: 5–10 Java pollers) and increase gradually while
+  monitoring load.</p>
+</li>
+<li>
+<p>Don't enable all MBeans just because you can.</p>
+</li>
+<li>Focus on actionable JVM metrics (heap, non-heap, GC, threads, JDBC pools) and
+  a few application-specific MBeans that map to real-world performance.</li>
+<li>Too many JMX items not only stress the JVM but also flood your Zabbix database
+  with unnecessary history data.</li>
+</ul>
+<h2 id="monitoring-jmx-through-jolokia">Monitoring JMX through Jolokia</h2>
+<p>While Zabbix can natively collect JMX data using the Zabbix Java Gateway, an
+alternative worth considering is Jolokia — a lightweight JMX-to-HTTP bridge.</p>
+<p>Jolokia exposes JMX MBeans over a simple REST/JSON interface, which means you
+can collect Java metrics using Zabbix's HTTP Agent items instead of the Java Gateway.
+The result is often lower overhead, easier network configuration, and greater flexibility.</p>
+<p>Why Jolokia?</p>
+<ul>
+<li>No Gateway Needed. Jolokia runs as a Java agent, servlet, or OSGi bundle directly
+  inside the JVM.</li>
+<li>Efficient Data Collection. You can request multiple attributes in a single HTTP
+  call and split them into dependent items using JSONPath preprocessing.</li>
+<li>Firewall-Friendly. Works over standard HTTP(S) ports, avoiding the complexity
+  of RMI and port ranges.</li>
+<li>Secure, it supports HTTPS, authentication, and access control policies out of
+  the box.</li>
+</ul>
+<p>Example:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8778/jolokia/read/java.lang:type<span class="o">=</span>Memory,java.lang:type<span class="o">=</span>Threading
+</span></code></pre></div>
+<p>In Zabbix:</p>
+<p>Create an HTTP Agent master item pointing to the Jolokia endpoint.
+Add dependent items to extract individual values, e.g.:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="err">$.value</span><span class="p">[</span><span class="err">'java.la</span><span class="kc">n</span><span class="err">g</span><span class="p">:</span><span class="kc">t</span><span class="err">ype=Memory'</span><span class="p">][</span><span class="err">'HeapMemoryUsage'</span><span class="p">][</span><span class="err">'used'</span><span class="p">]</span>
+</span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="err">$.value</span><span class="p">[</span><span class="err">'java.la</span><span class="kc">n</span><span class="err">g</span><span class="p">:</span><span class="kc">t</span><span class="err">ype=Threadi</span><span class="kc">n</span><span class="err">g'</span><span class="p">][</span><span class="err">'ThreadCou</span><span class="kc">nt</span><span class="err">'</span><span class="p">]</span>
+</span></code></pre></div>
+<p>This approach allows you to collect dozens of metrics with a single network request.</p>
+<details class="note" open="open">
+<summary>When to use it ?</summary>
+<p>Choose Jolokia if you prefer a stateless, agent-based setup or need to monitor
+many JVMs without maintaining a central Java Gateway. Stick with the Zabbix
+Java Gateway if you rely on built-in templates or want a fully integrated,
+out of the box JMX experience.</p>
+</details>
+<h2 id="conclusion">Conclusion</h2>
+<p>Zabbix handles JMX monitoring synchronously, but optimizes performance with request
+bundling and connection reuse. By tuning pollers, using reasonable update intervals,
+and selecting only the most valuable metrics, you can scale JMX monitoring without
+overloading your monitoring system or your Java applications.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Explain how the Zabbix Java Gateway fits into the overall JMX architecture.
+  Why is it needed?</li>
+<li>In Zabbix, what is the difference between the item keys jmx[], jmx.get[] and
+  jmx.discovery[]? Give an example use case for each.</li>
+<li>Reflect: In your environment, what Java-applications would benefit most from
+  JMX monitoring? What metrics would you pick first, and why?</li>
+<li>What are security considerations when enabling remote JMX monitoring in production?
+  What could go wrong if you leave flags like authenticate=false and ssl=false in
+  a live environment?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=aKGYa6Y9r60&amp;t=87s">https://www.youtube.com/watch?v=aKGYa6Y9r60&amp;t=87s</a></li>
+<li><a href="https://docs.oracle.com/javase/1.5.0/docs/guide/management/agent.html">https://docs.oracle.com/javase/1.5.0/docs/guide/management/agent.html</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/jmx_monitoring">https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/jmx_monitoring</a></li>
+<li><a href="https://jolokia.org/">https://jolokia.org/</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Voltar para o topo
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>

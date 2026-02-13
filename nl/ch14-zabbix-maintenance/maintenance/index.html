@@ -1,0 +1,3248 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Master Zabbix maintenance periods to suppress alerts during planned work.
+Learn scheduling, tag filtering, and API automation for maintenance.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/nl/ch14-zabbix-maintenance/maintenance/">
+      
+      
+        <link rel="prev" href="../chapter/">
+      
+      
+        <link rel="next" href="../internal-health/">
+      
+      
+        
+          <link rel="alternate" href="../../../fr/ch14-zabbix-maintenance/maintenance/" hreflang="fr">
+        
+          <link rel="alternate" href="./" hreflang="nl">
+        
+          <link rel="alternate" href="../../../pt_BR/ch14-zabbix-maintenance/maintenance/" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../../ru/ch14-zabbix-maintenance/maintenance/" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch14-zabbix-maintenance/maintenance/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>maintenance - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="maintenance">
+    <meta property="og:description" content="Master Zabbix maintenance periods to suppress alerts during planned work. Learn scheduling, tag filtering, and API automation for maintenance.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/nl/ch14-zabbix-maintenance/maintenance/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="maintenance">
+    <meta name="twitter:description" content="Master Zabbix maintenance periods to suppress alerts during planned work. Learn scheduling, tag filtering, and API automation for maintenance.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#maintenance" class="md-skip">
+          Ga naar inhoud
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Deze pagina is nog niet in het Nederlands vertaald en wordt daarom in het Engels weergegeven.
+            <a href="/gmc/nl/contribute/#translations">Help ons en vertaal deze pagina!</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Selecteer versie";
+        const gGMC_TRANSLATE_CTA = "Help ons en vertaal deze pagina!";
+        const gGMC_PAGE_LOCALE = "nl";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              maintenance
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecteer taal">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch14-zabbix-maintenance/maintenance/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt_BR/ch14-zabbix-maintenance/maintenance/" hreflang="pt_BR" class="md-select__link">
+              Brazillian Portugese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch14-zabbix-maintenance/maintenance/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch14-zabbix-maintenance/maintenance/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Zoeken" placeholder="Zoeken" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Zoeken">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Delen" aria-label="Delen" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Leegmaken" aria-label="Leegmaken" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Zoeken initialiseren
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Ga naar repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Ga naar repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/network-host-discovery/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_19">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 14 : Maintenance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    maintenance
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-purpose-of-maintenance-periods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Purpose of Maintenance Periods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-maintenance-configuration-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Maintenance Configuration Options
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Maintenance Configuration Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-maintenance-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Maintenance Type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-time-window-definition-active-since-active-till" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Time Window Definition (Active Since / Active Till)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-maintenance-periods-the-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Maintenance Periods (The Schedule)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-scope-hosts-and-host-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Scope (Hosts and Host Groups)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-problem-tag-filtering-advanced-suppression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Problem Tag Filtering (Advanced Suppression)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-maintenance-visibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Maintenance visibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-zones-and-maintenance-schedule-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time Zones and Maintenance Schedule Logic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Time Zones and Maintenance Schedule Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-zone-rules-for-maintenance-periods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time Zone Rules for Maintenance Periods
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend-process-and-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend Process and Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backend Process and Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-timer-process-the-engine-of-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Timer Process: The Engine of Maintenance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-zabbix-server-configuration-zabbix_serverconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Zabbix Server Configuration (zabbix_server.conf)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-monthly-recurring-maintenance-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Monthly Recurring Maintenance Setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example: Monthly Recurring Maintenance Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#execution-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-integration-for-maintenance-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Integration for Maintenance Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Integration for Maintenance Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-use-the-api-for-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Use the API for Maintenance?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-parameters-for-maintenancecreate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Parameters for maintenance.create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-timeperiods-parameter-schedule-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The timeperiods Parameter (Schedule Definition)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-example-creating-maintenance-via-the-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Example: Creating Maintenance via the API
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Example: Creating Maintenance via the API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-time-period-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the Time Period Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeperiod_type-4-monthly-period" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        timeperiod_type: 4 — Monthly Period
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start_time-0-start-of-the-day-000000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start_time: 0 — Start of the Day (00:00:00)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#period-7200-duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        period: 7200 — Duration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dayofweek-64-sunday" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dayofweek: 64 — Sunday
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#every-5-last-week-of-the-month" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        every: 5 — Last Week of the Month
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#month-4095-all-months" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        month: 4095 — All Months
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../internal-health/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internal health
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../taking-backups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backups
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upgrades
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-purpose-of-maintenance-periods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Purpose of Maintenance Periods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-maintenance-configuration-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Maintenance Configuration Options
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Maintenance Configuration Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-maintenance-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Maintenance Type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-time-window-definition-active-since-active-till" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Time Window Definition (Active Since / Active Till)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-maintenance-periods-the-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Maintenance Periods (The Schedule)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-scope-hosts-and-host-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Scope (Hosts and Host Groups)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-problem-tag-filtering-advanced-suppression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Problem Tag Filtering (Advanced Suppression)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-maintenance-visibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Maintenance visibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-zones-and-maintenance-schedule-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time Zones and Maintenance Schedule Logic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Time Zones and Maintenance Schedule Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-zone-rules-for-maintenance-periods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time Zone Rules for Maintenance Periods
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend-process-and-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend Process and Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backend Process and Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-timer-process-the-engine-of-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Timer Process: The Engine of Maintenance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-zabbix-server-configuration-zabbix_serverconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Zabbix Server Configuration (zabbix_server.conf)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-monthly-recurring-maintenance-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Monthly Recurring Maintenance Setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example: Monthly Recurring Maintenance Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#execution-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-integration-for-maintenance-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Integration for Maintenance Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Integration for Maintenance Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-use-the-api-for-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Use the API for Maintenance?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-parameters-for-maintenancecreate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Parameters for maintenance.create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-timeperiods-parameter-schedule-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The timeperiods Parameter (Schedule Definition)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-example-creating-maintenance-via-the-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Example: Creating Maintenance via the API
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Example: Creating Maintenance via the API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-time-period-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the Time Period Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeperiod_type-4-monthly-period" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        timeperiod_type: 4 — Monthly Period
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start_time-0-start-of-the-day-000000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start_time: 0 — Start of the Day (00:00:00)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#period-7200-duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        period: 7200 — Duration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dayofweek-64-sunday" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dayofweek: 64 — Sunday
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#every-5-last-week-of-the-month" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        every: 5 — Last Week of the Month
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#month-4095-all-months" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        month: 4095 — All Months
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 14 : Maintenance
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="advanced">
+      Gevorderde
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch14-zabbix-maintenance/maintenance.md" title="Bron van deze pagina bekijken" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="maintenance">Maintenance</h1>
+<h2 id="the-purpose-of-maintenance-periods">The Purpose of Maintenance Periods</h2>
+<p>A <strong>Maintenance Period</strong> in Zabbix is a defined time window for planned work
+(e.g., software updates, configuration changes). Its primary goal is to <strong>suppress
+problem notifications (alerts)</strong> for the affected hosts or applications to prevent
+alert fatigue.</p>
+<p>During maintenance, Zabbix still monitors systems, but alert actions (emails,
+tickets, etc.) are typically paused.</p>
+<hr />
+<h2 id="key-maintenance-configuration-options">Key Maintenance Configuration Options</h2>
+<h3 id="1-maintenance-type">1. Maintenance Type</h3>
+<p>The Maintenance section is located in the main menu under <code>Data collection</code>
+→ <code>Maintenance</code>. To create a new maintenance window, click Create maintenance.
+When doing so, Zabbix presents two available maintenance types, allowing you to
+choose the one that best fits your needs.</p>
+<p>This defines how Zabbix handles data during the maintenance window:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Trigger Processing</th>
+<th style="text-align: left;">Data Collection</th>
+<th style="text-align: left;">Best Used For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>With data collection</strong></td>
+<td style="text-align: left;">Data is collected as usual, but <strong>problem notifications are suppressed</strong> (via a default Action condition).</td>
+<td style="text-align: left;"><strong>Processed</strong></td>
+<td style="text-align: left;"><strong>Collected</strong></td>
+<td style="text-align: left;">Routine updates where data continuity is important.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>No data collection</strong></td>
+<td style="text-align: left;">Data collection is completely paused for the items on the maintained host(s).</td>
+<td style="text-align: left;"><strong>Not Processed</strong></td>
+<td style="text-align: left;"><strong>Ignored/Not Collected</strong></td>
+<td style="text-align: left;">Major hardware upgrades or OS reloads where the host is completely unavailable.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using <code>no data collection</code>, host and proxies will still sent data to the
+Zabbix server. However the server will not process the data and store it into
+the database.</p>
+</div>
+<h3 id="2-time-window-definition-active-since-active-till">2. Time Window Definition (<code>Active Since</code> / <code>Active Till</code>)</h3>
+<p>The Start and End dates determine the overall duration of the maintenance rule.
+Specific maintenance execution times are configured on the Periods tab. Each
+defined period must fall within the maintenance window’s overall lifespan.</p>
+<h3 id="3-maintenance-periods-the-schedule">3. Maintenance Periods (The Schedule)</h3>
+<p>This tab defines the precise scheduling:</p>
+<ul>
+<li><strong>One Time Only:</strong> A single, non-recurring window.</li>
+<li><strong>Daily:</strong> A recurring schedule every <em>N</em> days.</li>
+<li><strong>Weekly:</strong> A recurring schedule on specific days of the week.</li>
+<li><strong>Monthly:</strong> The most flexible, allowing selection by <strong>Day of Month</strong> or
+  <strong>Day of Week</strong> within a month (e.g., the last Sunday).</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Active Since/Till will not put the server in maintenance. It is the
+maintenance period that will show that the server is in maintenance or not
+in the frontend.</p>
+</div>
+<p><img alt="maintenance/ch14.01-maintenance.png" src="../../../ch14-zabbix-maintenance/maintenance/ch14.01-maintenance.png" /></p>
+<h3 id="4-scope-hosts-and-host-groups">4. Scope (Hosts and Host Groups)</h3>
+<p>You define the scope by selecting the specific <strong>Hosts</strong> and/or <strong>Host Groups</strong>
+that the rule applies to.</p>
+<h3 id="5-problem-tag-filtering-advanced-suppression">5. Problem Tag Filtering (Advanced Suppression)</h3>
+<p>This allows you to suppress <strong>only specific problems</strong> during maintenance by
+matching <strong>Problem Tags</strong> (e.g., <code>service:database</code>), which is useful if you
+need to be alerted to hardware failures during software maintenance.</p>
+<h3 id="6-maintenance-visibility">6. Maintenance visibility</h3>
+<p>When a server is placed into maintenance mode, this state is clearly indicated
+in the Zabbix frontend, making it easy to distinguish whether a host is currently
+under maintenance or not.</p>
+<p>During maintenance, an orange wrench <img alt="maintenance/ch14.04-maintenance-wrench.png" src="../../../ch14-zabbix-maintenance/maintenance/ch14.04-maintenance-wrench.png" />
+icon is displayed next to the host name in the following views:</p>
+<ul>
+<li><strong>Dashboards</strong></li>
+<li><strong>Monitoring → Problems</strong></li>
+<li><strong>Inventory → Hosts → Host inventory details</strong></li>
+<li><strong>Data collection → Hosts</strong></li>
+</ul>
+<p>In addition, hosts in maintenance are highlighted with an orange background on
+<strong>Monitoring → Maps</strong>.</p>
+<p>By default, problems associated with hosts in maintenance are <em>suppressed</em> and
+therefore not shown in the frontend. However, Zabbix can be configured to display
+these suppressed problems. This behavior can be enabled by selecting the
+<strong>Show suppressed problems</strong> option in the following locations:</p>
+<ul>
+<li><strong>Dashboards</strong> – in the configuration of the <em>Problem hosts</em>, <em>Problems</em>,
+  <em>Problems by severity</em>, and <em>Trigger overview</em> widgets</li>
+<li><strong>Monitoring → Problems</strong> – in the filter settings</li>
+<li><strong>Monitoring → Maps</strong> – in the map configuration</li>
+<li><strong>Global notifications</strong> – in the user profile configuration</li>
+</ul>
+<p>When suppressed problems are configured to be shown, a dedicated status icon is
+displayed next to the problem. Hovering the mouse pointer over this icon reveals
+additional details about the suppression state.</p>
+<p><img alt="maintenance/ch14.05-maintenance-icon.png" src="../../../ch14-zabbix-maintenance/maintenance/ch14.05-maintenance-icon.png" /></p>
+<hr />
+<h2 id="time-zones-and-maintenance-schedule-logic">Time Zones and Maintenance Schedule Logic</h2>
+<p>Understanding how time zones work in Zabbix is essential for scheduling reliable
+maintenance tasks. Zabbix handles time zones differently depending on whether
+a maintenance window is one-time or recurring.</p>
+<p>For one time maintenance, the start and end times are interpreted in the frontend
+user's local time zone. The same time zone configured for the logged-in user.
+In contrast, recurring maintenance is evaluated based on the Zabbix server's time
+zone, ensuring that the recurrence pattern remains consistent, even if users in
+different regions view it.</p>
+<p>This distinction is important to remember: a maintenance period that appears
+correct in your local time might execute at a different time if the server is in
+another time zone.</p>
+<h3 id="time-zone-rules-for-maintenance-periods">Time Zone Rules for Maintenance Periods</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Period Type</th>
+<th style="text-align: left;">Time Zone Used for Execution</th>
+<th style="text-align: left;">Displayed Time Zone</th>
+<th style="text-align: left;">Implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>One Time Only</strong></td>
+<td style="text-align: left;"><strong>User's Browser Time Zone</strong></td>
+<td style="text-align: left;"><strong>User's Browser Time Zone</strong></td>
+<td style="text-align: left;">The absolute UTC time is stored based on the user's view.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Daily, Weekly, Monthly</strong></td>
+<td style="text-align: left;"><strong>Zabbix Server Time Zone</strong></td>
+<td style="text-align: left;"><strong>User's Browser Time Zone</strong></td>
+<td style="text-align: left;">The recurring logic (e.g., "start at 02:00") is executed based on the time zone configured on the <strong>Zabbix Server operating system</strong>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>Active since</code> / <code>Active till</code></strong></td>
+<td style="text-align: left;"><strong>User's Browser Time Zone</strong></td>
+<td style="text-align: left;"><strong>User's Browser Time Zone</strong></td>
+<td style="text-align: left;">These bounding dates are based on the time zone of the user who configured them.</td>
+</tr>
+</tbody>
+</table>
+<details class="info" open="open">
+<summary>Info</summary>
+<p><strong>It's Good Practice:</strong> to use a common time zone (e.g., <strong>UTC</strong>) across the
+Zabbix Server, the database, and the PHP frontend configuration for predictable
+results, especially with recurring periods and DST changes. Another way is
+to add a clock widget to the dashboard with the <code>Zabbix server</code> time.</p>
+</details>
+<hr />
+<h2 id="backend-process-and-configuration">Backend Process and Configuration</h2>
+<h3 id="the-timer-process-the-engine-of-maintenance">The Timer Process: The Engine of Maintenance</h3>
+<p>The process responsible for calculating and initiating maintenance periods is the
+<strong>Zabbix Timer process</strong> (controlled by <code>StartTimers</code>).</p>
+<ol>
+<li><strong>Recalculation Interval (The Check):</strong> The Timer process checks whether a host's
+   status must change to/from maintenance at <strong>0 seconds of every minute</strong>.
+   * This means the maintenance window will start and stop with a <strong>maximum latency
+     of 60 seconds</strong> after the scheduled time.</li>
+<li><strong>Configuration Cache:</strong> Maintenance definitions are stored in the database
+   and loaded into the Zabbix Server's <strong>Configuration Cache</strong>. The Timer
+   uses this cache to determine host status.</li>
+</ol>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>Only the first timer process handles host maintenance updates. Problem
+ suppression updates are shared between all the timers.</p>
+</details>
+<h3 id="key-zabbix-server-configuration-zabbix_serverconf">Key Zabbix Server Configuration (<code>zabbix_server.conf</code>)</h3>
+<p>The overall efficiency of maintenance logic depends on these parameters:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Zabbix 8.0 Default Value</th>
+<th style="text-align: left;">Purpose in Relation to Maintenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>CacheUpdateFrequency</code></strong></td>
+<td style="text-align: left;"><strong>10</strong></td>
+<td style="text-align: left;">Defines how often (in seconds) the Zabbix Server updates its configuration cache from the database. A change to a maintenance period will take effect within <strong>10 seconds</strong>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>StartTimers</code></strong></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">The number of <strong>Timer processes</strong> to start. These are the processes that execute the maintenance calculation.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>CacheSize</code></strong></td>
+<td style="text-align: left;"><code>8M</code></td>
+<td style="text-align: left;">The size of the configuration cache. Insufficient size can impact the Timer's ability to quickly process status changes in large environments.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="example-monthly-recurring-maintenance-setup">Example: Monthly Recurring Maintenance Setup</h2>
+<p><strong>Scenario:</strong> Routine updates on all <strong>Database Servers</strong> on the <strong>last Sunday of
+every month</strong> at midnight for <strong>2 hours</strong>. Only suppress problems related to the
+<strong>Database Service</strong>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field/Tab</th>
+<th style="text-align: left;">Setting</th>
+<th style="text-align: left;">Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Name</strong></td>
+<td style="text-align: left;"><code>Monthly DB Patching - Last Sunday</code></td>
+<td style="text-align: left;">Descriptive name.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Maintenance type</strong></td>
+<td style="text-align: left;"><strong>With data collection</strong></td>
+<td style="text-align: left;">Continue data collection.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Periods Tab</strong></td>
+<td style="text-align: left;"><strong>Period type:</strong> <code>Monthly</code></td>
+<td style="text-align: left;">Selects the schedule type.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Periods Tab</strong></td>
+<td style="text-align: left;"><strong>Day of week:</strong> <code>Sunday</code> / <strong>Week of month:</strong> <code>Last</code></td>
+<td style="text-align: left;">Defines the precise day.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Periods Tab</strong></td>
+<td style="text-align: left;"><strong>Start time:</strong> <code>00:00</code> / <strong>Duration:</strong> <code>2 hours</code></td>
+<td style="text-align: left;">Defines the 00:00 to 02:00 window.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Hosts &amp; Groups Tab</strong></td>
+<td style="text-align: left;"><strong>Host Group:</strong> <code>Database Servers</code></td>
+<td style="text-align: left;">Defines the scope.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Tags Tab</strong></td>
+<td style="text-align: left;"><strong>Tag evaluation:</strong> <code>AND</code></td>
+<td style="text-align: left;">Ensures both conditions (maintenance and tag) are met for suppression.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Tags Tab</strong></td>
+<td style="text-align: left;"><strong>Tag:</strong> <code>service</code> <strong>Operator:</strong> <code>=</code> <strong>Value:</strong> <code>database</code></td>
+<td style="text-align: left;"><strong>Crucial:</strong> Only problems with the tag <code>service:database</code> are suppressed.</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="maintenance/ch14.02-maintenance-config.png" src="../../../ch14-zabbix-maintenance/maintenance/ch14.02-maintenance-config.png" /></p>
+<h3 id="execution-summary">Execution Summary</h3>
+<ol>
+<li>At 00:00 (Server Time Zone), the <strong>Timer</strong> changes the host status to "Maintenance."</li>
+<li>Data collection continues.</li>
+<li>Any problem event is filtered by the Action: If the host is in maintenance AND
+   the problem has the tag <code>service:database</code>, the alert is <strong>suppressed</strong>.</li>
+<li>If a hardware problem (e.g., no matching tag) occurs, the alert <strong>will still
+   be sent</strong>, as only the database service issues are suppressed.</li>
+<li>At 02:00, the Timer ends the maintenance, and all alerting resumes.</li>
+</ol>
+<hr />
+<h2 id="api-integration-for-maintenance-management">API Integration for Maintenance Management</h2>
+<p>For professional Zabbix monitoring setups that require dynamic scheduling, integration
+with change management workflows, or complex multi-system orchestration, the
+<strong>Zabbix API</strong> is the primary tool for managing maintenance periods.</p>
+<p>The key method used for maintenance management is <strong><code>maintenance.create</code></strong> (and
+corresponding <code>.get</code>, <code>.update</code>, and <code>.delete</code> methods).</p>
+<h3 id="why-use-the-api-for-maintenance">Why Use the API for Maintenance?</h3>
+<ul>
+<li><strong>ITSM Integration:</strong> Allows automated creation of maintenance windows when
+  a Change Request (CR) is approved in an external system (e.g., ServiceNow, Jira),
+  ensuring alerts are suppressed only during authorized work.</li>
+<li><strong>Automation:</strong> Facilitates the management of maintenance templates using
+  infrastructure-as-code tools (like Ansible or Terraform).</li>
+<li><strong>Dynamic Scheduling:</strong> Enables the creation of immediate, short-term maintenance
+  windows directly from operational scripts.</li>
+</ul>
+<h3 id="key-parameters-for-maintenancecreate">Key Parameters for <code>maintenance.create</code></h3>
+<p>When calling the <code>maintenance.create</code> method, you send a JSON-RPC request containing
+several crucial parameters that mirror the frontend configuration:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">API Parameter</th>
+<th style="text-align: left;">Frontend Equivalent</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>name</code></strong></td>
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">The name of the maintenance period.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>active_since</code></strong></td>
+<td style="text-align: left;">Active Since</td>
+<td style="text-align: left;"><strong>Unix timestamp</strong> (seconds) when the maintenance rule becomes active.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>active_till</code></strong></td>
+<td style="text-align: left;">Active Till</td>
+<td style="text-align: left;"><strong>Unix timestamp</strong> (seconds) when the maintenance rule is deactivated.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>maintenance_type</code></strong></td>
+<td style="text-align: left;">Maintenance Type</td>
+<td style="text-align: left;"><strong><code>0</code></strong> for "With data collection" (default), <strong><code>1</code></strong> for "No data collection".</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>hostids</code></strong></td>
+<td style="text-align: left;">Hosts</td>
+<td style="text-align: left;">An array of <strong>Host IDs</strong> (<code>hostid</code>) to be put into maintenance.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>groupids</code></strong></td>
+<td style="text-align: left;">Host Groups</td>
+<td style="text-align: left;">An array of <strong>Host Group IDs</strong> (<code>groupid</code>) to be put into maintenance.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>timeperiods</code></strong></td>
+<td style="text-align: left;">Periods Tab</td>
+<td style="text-align: left;">An array defining the precise recurring or one-time schedule.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>tags</code></strong></td>
+<td style="text-align: left;">Tags Tab</td>
+<td style="text-align: left;">An array defining the problem tags for filtering (optional).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-timeperiods-parameter-schedule-definition">The <code>timeperiods</code> Parameter (Schedule Definition)</h3>
+<p>The <strong><code>timeperiods</code></strong> array defines the exact schedule. Key elements include:</p>
+<ol>
+<li><strong><code>timeperiod_type</code></strong>: The type of schedule (<code>0</code> for one-time, <code>4</code> for monthly,
+   etc.).</li>
+<li><strong><code>start_time</code></strong>: The time of day the maintenance starts (in seconds from midnight,
+   <strong>based on Zabbix Server Time Zone</strong>).</li>
+<li><strong><code>period</code></strong>: The duration of the maintenance window in seconds.</li>
+<li><strong><code>dayofweek</code> / <code>dayofmonth</code></strong>: Used for recurring schedules.</li>
+</ol>
+<hr />
+<h2 id="practical-example-creating-maintenance-via-the-api">Practical Example: Creating Maintenance via the API</h2>
+<p>This <code>curl</code> command demonstrates how to programmatically create the "Last Sunday
+of the Month" maintenance window, which runs at midnight for 2 hours, and applies
+to host group ID <code>4</code>.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>You must replace <code>&lt;ZABBIX_SERVER_IP_OR_DNS&gt;</code> with your server's address and
+<code>"YOUR API TOKEN"</code> with an active token from a successful <code>user.login</code> API
+call. The <strong>Host Group ID</strong> (e.g., <code>"4"</code>) must be known beforehand. This id
+can be found in the url when going to the host group` in the Zabbix menu.</p>
+</details>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json-rpc&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Authorization: Bearer &lt;YOUR API TOKEN&gt;&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="s1">    &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="s1">    &quot;method&quot;: &quot;maintenance.create&quot;,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="s1">    &quot;params&quot;: {</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="s1">      &quot;name&quot;: &quot;Monthly DB Patching via API&quot;,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="s1">      &quot;active_since&quot;: 1748822400,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="s1">      &quot;active_till&quot;: 1780444800,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="s1">      &quot;maintenance_type&quot;: 0,</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="s1">      &quot;groups&quot;: [</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="s1">        { &quot;groupid&quot;: &quot;4&quot; }</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="s1">      ],</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="s1">      &quot;timeperiods&quot;: [</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="s1">        {</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="s1">          &quot;timeperiod_type&quot;: 4,</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="s1">          &quot;start_time&quot;: 0,</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="s1">          &quot;period&quot;: 7200,</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="s1">          &quot;dayofweek&quot;: 64,</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="s1">          &quot;every&quot;: 5,</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="s1">          &quot;month&quot;: 4095</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="s1">        }</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="s1">      ]</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="s1">    },</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="s1">    &quot;id&quot;: 1</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="s1">  }&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span>http://&lt;ZABBIX_SERVER_IP_OR_DNS&gt;/api_jsonrpc.php
+</span></code></pre></div>
+<hr />
+<h3 id="understanding-the-time-period-parameters">Understanding the Time Period Parameters</h3>
+<p>Let's go over what we just did here to have a better understanding.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">&quot;timeperiod_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">&quot;period&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7200</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">&quot;dayofweek&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">&quot;every&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nt">&quot;month&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4095</span>
+</span></code></pre></div>
+<hr />
+<h3 id="timeperiod_type-4-monthly-period"><code>timeperiod_type: 4</code> — Monthly Period</h3>
+<p>This defines the <strong>type of recurrence</strong> for the maintenance period.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">One-time</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Weekly</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Daily</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4</strong></td>
+<td style="text-align: left;"><strong>Monthly</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Setting it to <code>4</code> means the maintenance repeats <strong>every month</strong>.</p>
+<hr />
+<h3 id="start_time-0-start-of-the-day-000000"><code>start_time: 0</code> — Start of the Day (00:00:00)</h3>
+<p>The number of <strong>seconds past midnight</strong> when maintenance begins.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">00:00 (midnight)</td>
+</tr>
+<tr>
+<td style="text-align: left;">3600</td>
+<td style="text-align: left;">01:00</td>
+</tr>
+<tr>
+<td style="text-align: left;">9000</td>
+<td style="text-align: left;">02:30</td>
+</tr>
+</tbody>
+</table>
+<p>Here, it starts at <strong>midnight</strong>.</p>
+<hr />
+<h3 id="period-7200-duration"><code>period: 7200</code> — Duration</h3>
+<p>Defines how long the maintenance lasts, in <strong>seconds</strong>.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>7200 seconds = 2 hours
+</span></code></pre></div>
+<p>So this window runs from <strong>00:00 to 02:00</strong>.</p>
+<hr />
+<h3 id="dayofweek-64-sunday"><code>dayofweek: 64</code> — Sunday</h3>
+<p>Zabbix uses a <strong>bitmask</strong> for days of the week:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Day</th>
+<th style="text-align: left;">Bit Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Monday</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tuesday</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wednesday</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Thursday</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">Friday</td>
+<td style="text-align: left;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;">Saturday</td>
+<td style="text-align: left;">32</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sunday</strong></td>
+<td style="text-align: left;"><strong>64</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>64</code> means the maintenance occurs on <strong>Sunday</strong>.
+You can combine days — for example, Monday + Wednesday = <code>1 + 4 = 5</code>.</p>
+<hr />
+<h3 id="every-5-last-week-of-the-month"><code>every: 5</code> — Last Week of the Month</h3>
+<p>For monthly schedules, this field defines <strong>which week of the month</strong> to use:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">First week</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Second week</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Third week</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Fourth week</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5</strong></td>
+<td style="text-align: left;"><strong>Last week</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>5</code> means the <strong>last occurrence</strong> of the selected weekday. In this case, the
+  <strong>last Sunday of the month</strong>.</p>
+<hr />
+<h3 id="month-4095-all-months"><code>month: 4095</code> — All Months</h3>
+<p>Months also use a <strong>bitmask</strong>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Month</th>
+<th style="text-align: left;">Bit Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">January</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">February</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">March</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">April</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr>
+<td style="text-align: left;">May</td>
+<td style="text-align: left;">16</td>
+</tr>
+<tr>
+<td style="text-align: left;">June</td>
+<td style="text-align: left;">32</td>
+</tr>
+<tr>
+<td style="text-align: left;">July</td>
+<td style="text-align: left;">64</td>
+</tr>
+<tr>
+<td style="text-align: left;">August</td>
+<td style="text-align: left;">128</td>
+</tr>
+<tr>
+<td style="text-align: left;">September</td>
+<td style="text-align: left;">256</td>
+</tr>
+<tr>
+<td style="text-align: left;">October</td>
+<td style="text-align: left;">512</td>
+</tr>
+<tr>
+<td style="text-align: left;">November</td>
+<td style="text-align: left;">1024</td>
+</tr>
+<tr>
+<td style="text-align: left;">December</td>
+<td style="text-align: left;">2048</td>
+</tr>
+</tbody>
+</table>
+<p>To include all months, add them up:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 = 4095
+</span></code></pre></div>
+<p>So <code>4095</code> means <strong>every month</strong>.</p>
+<p>Ok, let's verify what we just did. Go to <code>Data collection</code> → <code>Maintenance</code>. If
+all went well you should now see a new maintenance that was created by our
+script.</p>
+<p>A working easy to use maintenance script can be found here : <a href="https://github.com/penmasters/trikke76-fork/tree/master/maintenance">https://github.com/penmasters/trikke76-fork/tree/master/maintenance</a></p>
+<p><img alt="maintenance/ch14.03-maintenance-api.png" src="../../../ch14-zabbix-maintenance/maintenance/ch14.03-maintenance-api.png" /></p>
+<hr />
+<h2 id="conclusion">Conclusion</h2>
+<p>Mastering Zabbix maintenance periods is crucial for operational maturity. By
+correctly applying precise scheduling, leveraging problem tag filtering, and
+integrating maintenance workflows via the Zabbix API, you ensure that alerts
+are accurately suppressed only during planned work. This practice is vital for
+maintaining the credibility of your monitoring data and preventing alert fatigue
+among your operations team, transforming Zabbix from a passive alarm system into
+a strategic tool for change management.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>What is the primary operational effect on triggers/alerts when a host enters
+  a defined maintenance period?</li>
+<li>Briefly explain the difference between "One time only" and "Daily" scheduling
+  for maintenance periods. When would you use one over the other?</li>
+<li>Does Zabbix continue to collect data from an item during a maintenance period?
+  Why is this important?</li>
+<li>Your Zabbix server is set to UTC, but the server you are maintaining is in EST.
+  When defining a "No Data Collection" maintenance window from 2:00 AM to 4:00 AM,
+  which time zone should you select for the schedule and why?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/maintenance">https://www.zabbix.com/documentation/current/en/manual/maintenance</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/create">https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/create</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/object#time-period">https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/object#time-period</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Gekopieerd naar klembord", "clipboard.copy": "Kopi\u00ebren naar klembord", "search.result.more.one": "1 extra overeenkomst op deze pagina", "search.result.more.other": "# extra overeenkomsten op deze pagina", "search.result.none": "Geen overeenkomende documenten", "search.result.one": "1 overeenkomende document", "search.result.other": "# overeenkomende documenten", "search.result.placeholder": "Typ om te beginnen met zoeken", "search.result.term.missing": "Ontbreekt", "select.version": "Selecteer versie"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>

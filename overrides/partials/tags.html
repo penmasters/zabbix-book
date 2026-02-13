@@ -1,0 +1,18 @@
+{# overrides/partials/tags.html #}
+{% set rawlang = page.lang or config.theme.language or "en" %}
+{% set lang = rawlang.split("-")[0] %}
+
+{# vertalingen uit mkdocs.yml -> extra.tag_labels #}
+{% set labels = (config.extra.tag_labels[lang] if config.extra and config.extra.tag_labels and config.extra.tag_labels.get(lang) else {}) %}
+
+{% if page.meta and page.meta.tags %}
+<nav class="md-tags">
+  {% for tag in page.meta.tags %}
+    {% set slug = tag|lower|replace(" ", "-") %}
+    <span class="md-tag md-tag-icon" data-tag="{{ slug }}">
+      {{ labels.get(slug, tag) }}
+    </span>
+  {% endfor %}
+</nav>
+{% endif %}
+

@@ -1,0 +1,3147 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Monitor websites and APIs with Zabbix HTTP checks. Track uptime, response codes,
+and content to ensure web services perform reliably and stay online.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/ch04-zabbix-collecting-data/http/">
+      
+      
+        <link rel="prev" href="../snmp-trapping/">
+      
+      
+        <link rel="next" href="../preprocessing/">
+      
+      
+        
+          <link rel="alternate" href="../../fr/ch04-zabbix-collecting-data/http/" hreflang="fr">
+        
+          <link rel="alternate" href="../../nl/ch04-zabbix-collecting-data/http/" hreflang="nl">
+        
+          <link rel="alternate" href="../../pt_BR/ch04-zabbix-collecting-data/http/" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../ru/ch04-zabbix-collecting-data/http/" hreflang="ru">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>HTTP Items - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141">
+    
+      <link rel="stylesheet" href="../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="HTTP Items">
+    <meta property="og:description" content="Monitor websites and APIs with Zabbix HTTP checks. Track uptime, response codes, and content to ensure web services perform reliably and stay online.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/ch04-zabbix-collecting-data/http/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HTTP Items">
+    <meta name="twitter:description" content="Monitor websites and APIs with Zabbix HTTP checks. Track uptime, response codes, and content to ensure web services perform reliably and stay online.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#http-items" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Select version";
+        const gGMC_TRANSLATE_CTA = "Support us and translate!";
+        const gGMC_PAGE_LOCALE = "en";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              HTTP Items
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../fr/ch04-zabbix-collecting-data/http/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../nl/ch04-zabbix-collecting-data/http/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../pt_BR/ch04-zabbix-collecting-data/http/" hreflang="pt_BR" class="md-select__link">
+              Brazillian Portugese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../ru/ch04-zabbix-collecting-data/http/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 04 : Collecting data 
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collecting data with your Zabbix environment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dataflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hosts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hosts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simple-checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simple checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-agent-passive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix Agent installation and Passive monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-agent-active/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix Agent Active monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snmp-polling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SNMP Polling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snmp-trapping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SNMP Trapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP Items
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP Items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-http-agent-item-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the HTTP Agent Item Works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How the HTTP Agent Item Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#efficiency-persistent-and-asynchronous-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Efficiency: Persistent and Asynchronous Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-request-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Request Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#https-certificates-and-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPS, Certificates, and Trust
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timeouts-what-they-really-mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timeouts: What They Really Mean
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-becomes-the-item-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Becomes the Item Value
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preprocessing-and-structured-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preprocessing and Structured Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-agent-pollers-and-server-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP Agent Pollers and Server Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accepted-http-response-codes-and-unsupported-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accepted HTTP Response Codes and Unsupported Items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redirect-handling-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redirect Handling Limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enable-trapping-pushing-data-instead-of-pulling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enable Trapping: Pushing Data Instead of Pulling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-example-monitoring-the-zabbix-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Example: Monitoring the Zabbix API
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Example: Monitoring the Zabbix API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authenticating-to-the-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authenticating to the API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieving-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieving Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-debugging-and-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Debugging and Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-agent-item-parameters-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP Agent Item Parameters Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../preprocessing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preprocessing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dependent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependent items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ssh-telnet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH / Telnet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script item
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jmx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitoring Java Applications with JMX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipmi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IPMI Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database-odbc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database checks via odbc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database checks via agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-trapper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix trapper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../external-checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../browser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Browser item
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../calculated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Calculated items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/network-host-discovery/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-http-agent-item-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the HTTP Agent Item Works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How the HTTP Agent Item Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#efficiency-persistent-and-asynchronous-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Efficiency: Persistent and Asynchronous Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-request-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Request Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#https-certificates-and-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPS, Certificates, and Trust
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timeouts-what-they-really-mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timeouts: What They Really Mean
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-becomes-the-item-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Becomes the Item Value
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preprocessing-and-structured-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preprocessing and Structured Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-agent-pollers-and-server-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP Agent Pollers and Server Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accepted-http-response-codes-and-unsupported-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accepted HTTP Response Codes and Unsupported Items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redirect-handling-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redirect Handling Limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enable-trapping-pushing-data-instead-of-pulling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enable Trapping: Pushing Data Instead of Pulling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-example-monitoring-the-zabbix-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Example: Monitoring the Zabbix API
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Example: Monitoring the Zabbix API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authenticating-to-the-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authenticating to the API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieving-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieving Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-debugging-and-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Debugging and Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-agent-item-parameters-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP Agent Item Parameters Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="advanced">
+      Advanced
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch04-zabbix-collecting-data/http.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="http-items">HTTP Items</h1>
+<p>In modern environments, monitoring stops being useful the moment you only check
+whether a port is open. Applications, platforms, and integrations increasingly
+communicate over HTTP-based APIs, and if you want to understand whether something
+is actually working, you need to monitor it at that level.</p>
+<p>The HTTP agent item allows Zabbix to act as a native HTTP client. It can send HTTP
+or HTTPS requests, authenticate, include custom headers, send payloads, and process
+responses as structured monitoring data. This makes it possible to monitor REST
+APIs, web services, internal microservices, SaaS integrations, and even the Zabbix
+API itself,without external scripts or custom agents.</p>
+<p>At a beginner level, the HTTP agent answers the question “does this endpoint respond?”.
+At an expert level, it answers “is this application behaving correctly, securely,
+and predictably under real conditions?”.</p>
+<p>With the release of the Zabbix 7.x serie, the HTTP agent has become more efficient and
+user friendly, featuring realtime configuration validation and improved connection
+handling.</p>
+<h3 id="how-the-http-agent-item-works">How the HTTP Agent Item Works</h3>
+<p>An HTTP agent item is executed by the Zabbix server or a Zabbix proxy. For each
+execution, Zabbix performs exactly one HTTP request based on the configured parameters
+and stores a result derived from the response.</p>
+<p>Zabbix does not decide whether a response is “good” or “bad”. It records facts:
+headers and body content. Interpretation is left entirely to preprocessing and
+triggers. This design makes the HTTP agent item flexible enough
+to support both simple availability checks and advanced API monitoring.</p>
+<p>Internally, Zabbix uses libcurl to perform HTTP and HTTPS requests. This is an
+important implementation detail. Redirect handling, TLS negotiation, proxy
+behavior, timeout semantics, and error reporting all follow curl behavior.
+If a request can be reproduced successfully using the curl command line, it can
+almost always be made to work in Zabbix with the same parameters.</p>
+<h4 id="efficiency-persistent-and-asynchronous-connections">Efficiency: Persistent and Asynchronous Connections</h4>
+<p>Since Zabbix 7.0, the HTTP agent supports Persistent Connections. Instead of
+opening and closing a new TCP connection for every check, Zabbix can keep the
+connection open. This significantly reduces CPU overhead and network latency,
+especially when polling high frequency API endpoints.</p>
+<p>Also since Zabbix 7.0 HTTP pollers are asynchronous, execution order and timing
+are not as simple as “one poller, one request”.</p>
+<p>An HTTP poller can initiate hundreds of requests, (1000 per poller to be precise)
+wait for responses, and process completed transactions while other requests are
+still in flight. This makes HTTP monitoring efficient, but it also means that
+slow endpoints do not block fast ones, as long as poller capacity is not exhausted.</p>
+<p>However, timeouts still matter. A large number of slow or failing endpoints with
+long timeouts can consume concurrency slots and reduce effective throughput. This
+is another reason why conservative timeout values and reasonable polling intervals
+are critical in large environments.</p>
+<p>Understanding that HTTP agent items are asynchronous helps explain why increasing
+poller counts rarely fixes poorly behaving endpoints.</p>
+<h3 id="core-request-configuration">Core Request Configuration</h3>
+<p>Every HTTP agent item starts with a URL. This must be a fully qualified HTTP or
+HTTPS endpoint, including the scheme and path. Zabbix sends exactly what you
+configure; it does not infer protocols or rewrite requests.</p>
+<p>The <strong>request method</strong> defines how the request is sent. GET is the default and works
+well for most health checks and read only API calls. POST, PUT, PATCH, and DELETE
+are available and commonly required for REST APIs that expect structured input.</p>
+<p>When the chosen method supports it, a request body can be defined. The body is
+sent verbatim. Zabbix does not validate JSON syntax, escape characters, or infer
+content types. Any formatting errors are passed directly to the remote endpoint.</p>
+<p>To ensure the request is interpreted correctly, HTTP headers can be defined explicitly.
+This is where authentication tokens, API keys, content types, and vendorspecific
+headers belong. Headers are static per item, which is intentional and has implications
+for advanced use cases discussed later.</p>
+<ul>
+<li><strong>Request Method:</strong> GET is the default, but POST, PUT, PATCH, and DELETE are
+  available for interactive APIs.</li>
+<li><strong>Request Body:</strong> You can define a body for methods like POST. Zabbix has improved
+  the handling of JSON and XML types. When you select these, Zabbix automatically
+  sets the correct Content-Type header (e.g., application/json) if you haven't
+  specified one manually.</li>
+</ul>
+<p>Headers: This is where authentication tokens and vendor-specific requirements belong.</p>
+<p><strong>Expert Tip :</strong> Always use Secret Macros (e.g., {$API.TOKEN}) for headers containing
+credentials to ensure they are masked in the UI and logs.</p>
+<h3 id="https-certificates-and-trust">HTTPS, Certificates, and Trust</h3>
+<p>HTTPS support for HTTP agent items depends on the environment in which the Zabbix
+server or proxy runs. HTTP agent items do not maintain their own certificate store.
+All TLS validation is performed using the system trust store available to the
+Zabbix process.</p>
+<p>If an endpoint uses an internal or private certificate authority, that CA must
+be trusted by the operating system running Zabbix. Installing a certificate in
+a browser does nothing for Zabbix.</p>
+<p>Disabling certificate verification at the item level may make errors disappear,
+but it also disables meaningful security checks, including hostname validation.
+In production environments, this should be treated as a temporary diagnostic step,
+not a solution.</p>
+<p>For APIs that require mutual TLS, Zabbix supports client certificates. The HTTP
+agent item references the certificate and private key, but the files themselves
+must exist on disk and be readable by the Zabbix process. Permission issues here
+often surface as generic TLS failures, so testing with curl using the same certificate
+and key is strongly recommended.</p>
+<h3 id="timeouts-what-they-really-mean">Timeouts: What They Really Mean</h3>
+<p>The timeout parameter of the HTTP agent item is often misunderstood, and the
+distinction matters in production.</p>
+<p>The configured timeout is not a single, shared budget for the entire request.
+Instead, it is applied to multiple blocking phases of the HTTP transaction,
+following libcurl behavior.</p>
+<p>Conceptually, the timeout applies to:</p>
+<ul>
+<li>DNS resolution</li>
+<li>TCP connection establishment</li>
+<li>TLS handshake (for HTTPS)</li>
+<li>Sending the request</li>
+<li>Waiting for the response</li>
+<li>Receiving the response body</li>
+</ul>
+<p>These phases occur sequentially, and each phase can consume up to the configured
+timeout.</p>
+<p>As a result, the total wall clock execution time can exceed the configured timeout.
+This is why users sometimes observe behavior that looks like “double timeout”.</p>
+<p>For example, with a timeout of 10 seconds:</p>
+<ul>
+<li>Connection and TLS negotiation take 9 seconds</li>
+<li>The server then takes 9 seconds to respond</li>
+</ul>
+<p>The request may complete after roughly 18 seconds without violating timeout rules.</p>
+<p>This is not a bug. It is a consequence of exposing a single timeout value rather
+than separate connect and read timeouts.</p>
+<p>From an expert perspective, this means the timeout should not be treated as a
+strict SLA boundary. Always leave margin between expected response time and
+configured timeout, especially for APIs that perform backend processing.</p>
+<h3 id="what-becomes-the-item-value">What Becomes the Item Value</h3>
+<p>The HTTP agent item allows you to choose what part of the HTTP response is stored
+as the item value.</p>
+<p>Zabbix can store the response body, the response headers, or the HTTP status code.
+This choice has architectural implications.</p>
+<p>Storing the full response body allows multiple dependent items to extract different
+values from a single request. Storing only the status code creates a lightweight
+availability or correctness check with minimal processing overhead.</p>
+<p>At scale, choosing the correct retrieval mode reduces API load, minimizes network
+traffic, and keeps Zabbix performance predictable.</p>
+<h3 id="preprocessing-and-structured-data">Preprocessing and Structured Data</h3>
+<p>Most APIs return structured data, commonly JSON. Preprocessing allows Zabbix to
+extract specific values using JSONPath expressions, regular expressions, or text
+transformations.</p>
+<p>A common expert pattern is to create one HTTP agent item that retrieves structured
+data and several dependent items that extract individual metrics. This avoids
+repeated API calls and ensures consistency between related values.</p>
+<p>Preprocessing is performed entirely on the Zabbix side after the request completes
+and does not affect the request itself.</p>
+<h3 id="http-agent-pollers-and-server-configuration">HTTP Agent Pollers and Server Configuration</h3>
+<p>HTTP agent items are executed by a dedicated pool of processes called HTTP pollers.
+These are separate from regular pollers and are configured explicitly in the Zabbix
+server or proxy configuration file.</p>
+<p>The number of HTTP pollers is controlled by the StartHTTPAgentPollers parameter.
+If this value is set to zero, HTTP agent items will not be executed at all, regardless
+of how many are configured in the frontend. This is an easy oversight when enabling
+HTTP monitoring for the first time.</p>
+<p>Choosing the correct number of HTTP pollers is not about matching the number of
+items one-to-one. Since Zabbix 7.0, HTTP pollers are fully asynchronous. A single
+HTTP poller can manage up to 1000 concurrent HTTP requests internally, using
+non-blocking I/O.</p>
+<p>This is a fundamental architectural change compared to older Zabbix versions and
+explains why HTTP agent items scale far better than many users expect. Increasing
+StartHTTPAgentPollers is usually only required when dealing with extreme request
+volumes, very slow endpoints, or aggressive timeout values.</p>
+<p>From an expert perspective, it is often better to tune timeouts and polling intervals
+before increasing the number of HTTP pollers. Adding pollers increases concurrency,
+but it also increases memory usage and outbound network pressure.</p>
+<h3 id="accepted-http-response-codes-and-unsupported-items">Accepted HTTP Response Codes and Unsupported Items</h3>
+<p>By default, Zabbix expects HTTP responses to return status codes that are explicitly
+allowed for the item. If the response code does not match what is configured, the
+item becomes unsupported.</p>
+<p>This behavior is often misunderstood. An unsupported item is not the same as a 
+failed check. It indicates that Zabbix considers the response invalid for this
+item's definition.</p>
+<p>Zabbix allows you to define accepted response codes in a flexible way. You can
+specify a single code, a comma-separated list of codes, or ranges of codes. This
+makes it possible to model real application behavior accurately.</p>
+<p>For example, some APIs legitimately return 204 No Content on success, while others
+use 202 Accepted for asynchronous processing. If these codes are not listed as
+acceptable, Zabbix will mark the item unsupported even though the service is
+behaving correctly.</p>
+<p>At an expert level, this mechanism is extremely useful. It allows you to distinguish
+between “the endpoint responded, but not in an acceptable way” and genuine
+transport-level failures such as timeouts or TLS errors.</p>
+<h3 id="redirect-handling-limits">Redirect Handling Limits</h3>
+<p>When redirect following is enabled, Zabbix will automatically follow HTTP redirects.
+However, this behavior is not unlimited.</p>
+<p>Zabbix follows up to 10 HTTP redirects per request. If this limit is exceeded,
+the request fails. This protects the server from redirect loops and misconfigured
+endpoints.</p>
+<p>In practice, production APIs and web services should never approach this limit.
+If they do, it usually indicates a configuration error that should be addressed
+rather than worked around.</p>
+<p>For authenticated APIs, redirects should be used with caution. Authentication
+headers are not always resent across redirects, especially when hosts or protocols
+change. Monitoring the final endpoint directly is often the safer choice.</p>
+<h3 id="enable-trapping-pushing-data-instead-of-pulling">Enable Trapping: Pushing Data Instead of Pulling</h3>
+<p>HTTP agent items are typically used in a polling model, where Zabbix initiates
+the request. However, Zabbix also supports a hybrid approach through the “Enable
+trapping” option.</p>
+<p>When trapping is enabled, the item can accept data pushed to it using zabbix_sender
+or the Zabbix API history.push method. This allows external systems or applications
+to send web content or processed results directly into Zabbix.</p>
+<p>This is particularly useful in scenarios where the web application itself is capable
+of detecting important events and generating alerts. Instead of Zabbix repeatedly
+polling an endpoint, the application can push meaningful data when something
+noteworthy happens.</p>
+<p>From an architectural standpoint, this turns the HTTP agent item into a flexible
+ingestion point rather than a pure polling mechanism. It is not a replacement for
+polling, but a powerful complement when event-driven monitoring makes more sense.</p>
+<h3 id="practical-example-monitoring-the-zabbix-api">Practical Example: Monitoring the Zabbix API</h3>
+<p>The Zabbix API itself is a good example of HTTP agent usage because it is strict,
+well-defined, and widely deployed.</p>
+<h4 id="authenticating-to-the-api">Authenticating to the API</h4>
+<p>The Zabbix API uses JSON-RPC over HTTP. Authentication is performed by calling
+the user.login method. Another better way is to use an API token and pass it in the
+Authorization header in the headers section.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Authorization<span class="w"> </span>:<span class="w"> </span>Bearer<span class="w"> </span><span class="o">{</span><span class="nv">$YOUR_TOKEN_MACRO</span><span class="o">}</span>
+</span></code></pre></div>
+<p>The endpoint is typically:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>http://&lt;IP Address&gt;/api_jsonrpc.php
+</span></code></pre></div>
+<p>The HTTP agent item is configured with a POST request and the following body:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>{
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  &quot;method&quot;: &quot;apiinfo.version&quot;,
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  &quot;params&quot;: {},
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  &quot;id&quot;: 1
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>}
+</span></code></pre></div>
+<p>The <code>Content-Type</code> header must be set to <code>application/json</code>. Without it, the API
+will reject the request.</p>
+<p>The response looks like this:</p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  &quot;result&quot;: &quot;8.0.0&quot;,
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  &quot;id&quot;: 1
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>}
+</span></code></pre></div>
+<img alt="http/ch04.60_http_item.png" src="ch04.60_http_item.png" /></p>
+<p>Using JSONPath preprocessing with $.result, the authentication token can be extracted.</p>
+<h4 id="retrieving-data">Retrieving Data</h4>
+<p>The returned version string can be stored as a text item or evaluated by triggers.
+While this example is simple, the same pattern applies to retrieving problem counts,
+host statistics, or internal API data.</p>
+<p>HTTP agent items are best suited for stateless, deterministic API calls. Token
+reuse and session orchestration are intentionally limited and should be handled
+externally if required.</p>
+<h3 id="runtime-debugging-and-logging">Runtime Debugging and Logging</h3>
+<p>Debugging HTTP agent items does not require restarting the Zabbix server or proxy.
+Zabbix supports runtime log level control, including per-process adjustments.</p>
+<p>HTTP agent items are executed by HTTP poller processes. To debug HTTP agent behavior
+specifically, logging should be increased only for those processes.</p>
+<p>This is done using runtime control commands:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>zabbix_server -R log_level_increase=http poller
+</span></code></pre></div>
+<p>or on a proxy:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>zabbix_server -R log_level_decrease=http poller
+</span></code></pre></div>
+<p>This approach allows detailed libcurl-level diagnostics without restarting services
+or flooding logs from unrelated processes.</p>
+<p>When debug logging is enabled, the Zabbix log will show detailed information about
+DNS resolution, TLS negotiation, certificate validation, proxy usage, and timeout
+behavior. These messages are the authoritative source of truth when troubleshooting
+HTTP agent issues.</p>
+<p>Always enable debugging on the node that actually executes the item. If a host is
+monitored via a proxy, increasing logging on the server will show nothing.</p>
+<h3 id="http-agent-item-parameters-reference">HTTP Agent Item Parameters Reference</h3>
+<p>The table below summarizes the key HTTP agent parameters and their purpose.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">URL</td>
+<td style="text-align: left;">Full HTTP or HTTPS endpoint Zabbix will request.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Request method</td>
+<td style="text-align: left;">HTTP method used for the request (GET, POST, PUT, PATCH, DELETE).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Request body</td>
+<td style="text-align: left;">Optional payload sent verbatim with supported methods.</td>
+</tr>
+<tr>
+<td style="text-align: left;">HTTP headers</td>
+<td style="text-align: left;">Custom headers such as authentication tokens or content types.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Timeout</td>
+<td style="text-align: left;">Maximum duration applied per blocking phase of the request lifecycle.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Follow redirects</td>
+<td style="text-align: left;">Enables or disables automatic redirect handling.</td>
+</tr>
+<tr>
+<td style="text-align: left;">HTTP authentication</td>
+<td style="text-align: left;">Built-in HTTP authentication supported by libcurl.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Proxy</td>
+<td style="text-align: left;">Optional HTTP proxy used for the request.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retrieve mode</td>
+<td style="text-align: left;">Determines whether body, headers, or status code is stored.</td>
+</tr>
+<tr>
+<td style="text-align: left;">SSL verify peer</td>
+<td style="text-align: left;">Enables or disables server certificate validation.</td>
+</tr>
+<tr>
+<td style="text-align: left;">SSL verify host</td>
+<td style="text-align: left;">Enables or disables hostname verification.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Client certificate</td>
+<td style="text-align: left;">Client certificate for mutual TLS authentication.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Client key</td>
+<td style="text-align: left;">Private key associated with the client certificate.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Preprocessing</td>
+<td style="text-align: left;">Transforms responses into usable metrics.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="conclusion">Conclusion</h2>
+<p>The HTTP agent item is one of the most powerful and misunderstood tools in Zabbix.
+It allows Zabbix to observe systems the same way applications and users do: through
+HTTP.</p>
+<p>Used casually, it checks availability. Used deliberately, it becomes a precise,
+scalable, and secure API monitoring mechanism.</p>
+<p>Understanding how it behaves internally — how timeouts are applied, how certificates
+are validated, and how logging really works — is what turns it from a feature into
+a tool.</p>
+<p>Or, as every experienced API engineer eventually learns:</p>
+<p><strong><em>“HTTP is simple — until you assume it is.”</em></strong></p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Why does the HTTP agent item treat an HTTP 500 response differently from a timeout
+  or TLS failure, and how should this influence trigger design?</li>
+<li>In what situations would using dependent items with a single HTTP agent item be
+  preferable to creating multiple independent HTTP agent items?</li>
+<li>How does the asynchronous execution model of HTTP pollers change the way HTTP
+  monitoring scales compared to traditional pollers?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/http">https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/http</a></li>
+<li><a href="https://curl.se/docs/">https://curl.se/docs/</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/api/reference/user/login?hl=user.login">https://www.zabbix.com/documentation/current/en/manual/api/reference/user/login?hl=user.login</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/api?hl=Bearer#by-authorization-header">https://www.zabbix.com/documentation/current/en/manual/api?hl=Bearer#by-authorization-header</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>

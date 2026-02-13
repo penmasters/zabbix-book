@@ -1,0 +1,2594 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This chapter from The Zabbix Book, titled "Frontend Installation," provides a
+step-by-step guide to setting up the Zabbix web interface. Learn how to install
+required packages, configure PHP, and integrate with Apache or Nginx for a
+secure and fully functional monitoring frontend.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/pt_BR/ch02-zabbix-installation/frontend/">
+      
+      
+        <link rel="prev" href="../chapter/">
+      
+      
+        <link rel="next" href="../host-groups/">
+      
+      
+        
+          <link rel="alternate" href="../../../fr/ch02-zabbix-installation/frontend/" hreflang="fr">
+        
+          <link rel="alternate" href="../../../nl/ch02-zabbix-installation/frontend/" hreflang="nl">
+        
+          <link rel="alternate" href="./" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../../ru/ch02-zabbix-installation/frontend/" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch02-zabbix-installation/frontend/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Explicação do front-end - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Explicação do front-end">
+    <meta property="og:description" content="This chapter from The Zabbix Book, titled &#34;Frontend Installation,&#34; provides a step-by-step guide to setting up the Zabbix web interface. Learn how to install required packages, configure PHP, and integrate with Apache or Nginx for a secure and fully functional monitoring frontend.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/pt_BR/ch02-zabbix-installation/frontend/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Explicação do front-end">
+    <meta name="twitter:description" content="This chapter from The Zabbix Book, titled &#34;Frontend Installation,&#34; provides a step-by-step guide to setting up the Zabbix web interface. Learn how to install required packages, configure PHP, and integrate with Apache or Nginx for a secure and fully functional monitoring frontend.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#explicacao-do-front-end" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "pt_BR";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Explicação do front-end
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch02-zabbix-installation/frontend/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch02-zabbix-installation/frontend/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt_BR" class="md-select__link">
+              Brazillian Portugese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch02-zabbix-installation/frontend/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch02-zabbix-installation/frontend/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartilhar" aria-label="Compartilhar" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started with the Zabbix installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Explicação do front-end
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Explicação do front-end
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral-da-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visão geral da interface
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menu-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu principal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menu-de-links" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu de links
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#informacoes-do-sistema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Informações do sistema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#o-menu-principal-explicado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        O menu principal explicado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#perguntas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perguntas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#urls-uteis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        URLs úteis
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host Groups
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Groups
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Roles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../http/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External Authentication
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/network-host-discovery/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral-da-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visão geral da interface
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menu-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu principal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menu-de-links" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu de links
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#informacoes-do-sistema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Informações do sistema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#o-menu-principal-explicado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        O menu principal explicado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#perguntas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perguntas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#urls-uteis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        URLs úteis
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navegação" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 02 : Zabbix Frontend
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="beginner">
+      Iniciante
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/pt_BR/ch02-zabbix-installation/frontend.md" title="Exibir fonte desta página" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="explicacao-do-front-end">Explicação do front-end</h1>
+<p>Este capítulo abordará os conceitos básicos que precisamos conhecer no que diz
+respeito à interface de usuário do Zabbix e o que precisamos saber antes de
+começar a mergulhar totalmente em nossa ferramenta de monitoramento. Veremos
+como a interface do usuário funciona, como adicionar um host, grupos de
+usuários, itens... para que tenhamos uma boa compreensão do básico. Isso é algo
+que às vezes é esquecido e pode levar a frustrações por não sabermos por que as
+coisas não funcionam como esperávamos que funcionassem. Portanto, mesmo que você
+seja um usuário avançado, pode ser útil dar uma olhada neste capítulo.</p>
+<p>Vamos começar</p>
+<hr />
+<h2 id="visao-geral-da-interface">Visão geral da interface</h2>
+<p>Com o Zabbix 7, a interface do usuário após o login foi um pouco alterada. Nosso
+menu no lado esquerdo da tela passou por uma pequena reformulação. Vamos nos
+aprofundar nisso. Quando fazemos login em nossa configuração do Zabbix pela
+primeira vez com nosso usuário Admin, vemos uma página</p>
+<p>Assim, temos nossa <code>janela principal</code>em <font color='green'>verde</font>,
+nosso <code>menu principal</code>marcado em <font color='red'>vermelho</font> e nossos
+<code>links</code> marcados em <font color='gold'>amarelo</font>.</p>
+<p><img alt="Visão geral" src="../../../ch02-zabbix-installation/frontend/ch02-frontend-overview.png" /></p>
+<p><em>2.1 Visão geral</em></p>
+<p>O menu principal pode ser ocultado, recolhendo-o completamente ou reduzindo-o a
+um conjunto de pequenos ícones. Quando clicamos no botão com as duas setas à
+esquerda:</p>
+<p><img alt="Recolher" src="../../../ch02-zabbix-installation/frontend/ch02-frontend-collapse.png" /></p>
+<p><em>2.2 Recolher</em></p>
+<p>Você verá que o menu se reduz a um conjunto de pequenos ícones. Pressionar "&gt;&gt;"
+fará com que o <code>menu principal do</code> volte ao seu estado original.</p>
+<p>Ao clicar no ícone que se parece com uma caixa com uma seta para fora, ao lado
+do botão "&lt;&lt;", você ocultará completamente o <code>menu principal do site</code> .</p>
+<p><img alt="Ocultar" src="../../../ch02-zabbix-installation/frontend/ch02-frontend-hide.png" /></p>
+<p><em>2.3 Ocultar</em></p>
+<p>Para trazer de volta nosso <code>menu principal</code> é bastante fácil, basta procurar o
+botão à esquerda com três linhas horizontais e clicar nele. Isso mostrará o
+<code>menu principal</code> , mas ele não permanecerá. Quando clicarmos na caixa com a
+seta apontando para o canto inferior direito, o <code>menu principal</code> será mantido
+em sua posição.</p>
+<p>Outra maneira de aumentar a tela, bastante útil para monitores em <code>equipes NOK</code>,
+por exemplo, é o botão <code>kiosk mode</code>. Esse botão, no entanto, está localizado no
+lado esquerdo da tela e se parece com quatro setas apontando para cada canto da
+tela. Pressionar esse botão removerá todos os menus e deixará apenas a<code>janela
+principal</code> para o foco.</p>
+<p><img alt="Expandir" src="../../../ch02-zabbix-installation/frontend/ch02-frontend-expand.png" /></p>
+<p><em>2.4 Expandir</em></p>
+<p>Quando quisermos sair do modo de quiosque, o botão será alterado para duas setas
+apontando para a parte interna da tela. Ao pressionar esse botão, voltaremos ao
+estado original.</p>
+<p><img alt="Expandir" src="../../../ch02-zabbix-installation/frontend/ch02-frontend-shrink.png" /></p>
+<p><em>2.5 Reduzir</em></p>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>We can also enter and exit kiosk mode by making use of parameters in our Zabbix
+url: <code>/zabbix.php?action=dashboard.view&amp;kiosk=1</code> - activate kiosk mode or
+<code>/zabbix.php?action=dashboard.view&amp;kiosk=0</code> - activate normal mode.</p>
+</details>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>There are many other page parameters we can use. A full list can be found at
+<a href="https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters">https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters</a>
+Zabbix also has a global search menu that we can use to find hosts, host groups
+and templates.</p>
+</details>
+<p>Se digitarmos na caixa de pesquisa a palavra <code>server</code>, você verá que teremos uma
+visão geral de todos os <code>modelos</code> , <code>grupos de hosts</code> e hosts <code>com o servidor
+de nomes. É por isso que essa caixa é chamada de</code>global search`.</p>
+<p><img alt="Pesquisa global" src="../../../ch02-zabbix-installation/frontend/ch02-global-search.png" /></p>
+<p><em>2.6 Pesquisa global</em></p>
+<p>Este é o nosso resultado depois de procurarmos a palavra <code>server</code>. Se você tiver
+uma configuração padrão do Zabbix, sua página deverá ter mais ou menos a mesma
+aparência.</p>
+<p><img alt="Resultado da pesquisa global" src="../../../ch02-zabbix-installation/frontend/ch02-global-search-result.png" /></p>
+<p><em>2.7 Resultado de pesquisa global</em></p>
+<hr />
+<h2 id="menu-principal">Menu principal</h2>
+<p>Vamos agora examinar brevemente as seções constituintes do menu principal do
+aplicativo. O <code>menu principal</code> , situado na interface à esquerda, compreende um
+total de nove seções distintas:</p>
+<table>
+<thead>
+<tr>
+<th>Nome do menu</th>
+<th>Detalhes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Painéis de controle</td>
+<td>Contém uma visão geral de todos os painéis aos quais temos acesso.</td>
+</tr>
+<tr>
+<td>Monitoramento</td>
+<td>Mostra-nos os hosts, problemas, dados mais recentes, mapas, ...</td>
+</tr>
+<tr>
+<td>Serviços</td>
+<td>Uma visão geral de todos os serviços e configurações de SLA.</td>
+</tr>
+<tr>
+<td>Inventário</td>
+<td>Uma visão geral de nossos dados de inventário coletados.</td>
+</tr>
+<tr>
+<td>Relatórios</td>
+<td>Mostra as informações do sistema, relatórios agendados, registros de auditoria, registros de ações, etc.</td>
+</tr>
+<tr>
+<td>Coleta de dados</td>
+<td>Contém todos os itens relacionados à coleta de dados, como hosts, modelos, manutenção, descoberta, ...</td>
+</tr>
+<tr>
+<td>Alerta</td>
+<td>A configuração de nossos tipos de mídia, scripts e ações</td>
+</tr>
+<tr>
+<td>Usuários</td>
+<td>Configuração do usuário, como funções de usuário, grupos de usuários, autenticação, toques de API, ...</td>
+</tr>
+<tr>
+<td>Administração</td>
+<td>A parte administrativa que contém todas as configurações globais, housekeeper, proxies, fila, ...</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="menu-de-links">Menu de links</h2>
+<p>Imediatamente subjacente ao menu principal do aplicativo na interface do lado
+esquerdo está o menu <code>Links</code>. Esse módulo fornece uma coleção de hiperlinks
+pertinentes para acesso do usuário.</p>
+<table>
+<thead>
+<tr>
+<th>Nome do menu</th>
+<th>Detalhes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Apoio</td>
+<td>Isso nos leva à página de suporte técnico que você pode comprar da Zabbix. Lembre-se de que seu parceiro local também pode vender esses contratos e ajudá-lo em seu próprio idioma. <a href="https://www.zabbix.com/distributors">Seus distribuidores locais</a></td>
+</tr>
+<tr>
+<td>Integrações</td>
+<td>A página oficial do zabbix <a href="https://www.zabbix.com/integrations">página de integração</a></td>
+</tr>
+<tr>
+<td>Ajuda</td>
+<td>O link para a documentação de sua <a href="https://www.zabbix.com/documentation/7.0/">versão do Zabbix</a></td>
+</tr>
+<tr>
+<td>Configurações do usuário</td>
+<td>As configurações do perfil do usuário.</td>
+</tr>
+<tr>
+<td>Sair</td>
+<td>Sair da sessão atual.</td>
+</tr>
+</tbody>
+</table>
+<p>Alguns elementos interativos ainda precisam ser abordados na parte direita da
+tela.</p>
+<p><img alt="Editar painel de controle" src="../../../ch02-zabbix-installation/frontend/ch02-edit-dashboard.png" /></p>
+<p><em>2.8 Editar painel de controle</em></p>
+<p>O botão <code>Edit dashboard</code> facilita a modificação da configuração do painel do
+usuário, um recurso que será detalhado nas seções seguintes. Localizado na
+margem esquerda extrema, há um ícone de marca de consulta ('?'), cuja ativação
+redireciona o usuário para o portal de documentação do Zabbix, fornecendo
+detalhes abrangentes sobre as funcionalidades do painel. Por outro lado, o
+controle situado na margem direita, representado por três linhas horizontais,
+fornece acesso a operações como compartilhamento, renomeação e exclusão de
+painéis definidos pelo usuário.</p>
+<hr />
+<h2 id="informacoes-do-sistema">Informações do sistema</h2>
+<p>O painel de controle também apresenta um painel dedicado denominado <code>Informações
+do sistema</code>. Esse widget fornece uma visão geral em tempo real do status
+operacional da implantação do Zabbix. Agora examinaremos os pontos de dados
+individuais apresentados nesse painel, pois sua interpretação é crucial para a
+compreensão do sistema.</p>
+<p></br></p>
+<p><img alt="Informações do sistema" src="../../../ch02-zabbix-installation/frontend/ch02-system-information.png" /></p>
+<p><em>2.9 Informações do sistema</em></p>
+<table>
+<thead>
+<tr>
+<th>Parâmetro</th>
+<th>Valor</th>
+<th>Detalhes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>O servidor Zabbix está em execução</td>
+<td>O status do nosso servidor zabbix, se ele estiver em execução, sim ou não, e se estiver em execução em nosso host local ou em outro IP e em qual porta o servidor zabbix está escutando. Se nenhum trapper estiver escutando, o restante das informações não poderá ser exibido</td>
+<td>IP e porta do servidor Zabbix</td>
+</tr>
+<tr>
+<td>Versão do servidor Zabbix</td>
+<td>Isso nos mostra a versão do servidor <code>Zabbix</code>. Portanto, a versão que você vê na parte inferior da tela é a versão do front-end do Zabbix e pode ser diferente, mas deve estar na mesma versão principal.</td>
+<td>Version Number</td>
+</tr>
+<tr>
+<td>Versão de front-end do Zabbix</td>
+<td>Essa é a versão do frontend e deve corresponder ao que você vê na parte inferior da tela.</td>
+<td>Version Number</td>
+</tr>
+<tr>
+<td>Número de hosts (ativado/desativado)</td>
+<td>O número total de hosts configurados em nosso sistema</td>
+<td>Quantos deles estão ativados e desativados</td>
+</tr>
+<tr>
+<td>Número de modelos</td>
+<td>O número de modelos instalados em nosso servidor Zabbix.</td>
+<td></td>
+</tr>
+<tr>
+<td>Número de itens (ativado/desativado/não suportado)</td>
+<td>Essa linha nos mostra o número de itens que configuramos no total, neste caso 99</td>
+<td>90 estão ativados e 0 estão desativados, mas 9 deles não têm suporte. Esse último número é importante, pois são itens que não estão funcionando. Veremos mais tarde por que isso acontece e como corrigi-lo. Por enquanto, lembre-se de que um grande número de itens sem suporte não é uma boa ideia.</td>
+</tr>
+<tr>
+<td>Número de gatilhos(Ativado/desativado [problema/ok])</td>
+<td>O número de gatilhos configurados</td>
+<td>Número de acionadores ativados e desativados. Assim como nos itens, também verificamos se há acionadores que estão em um estado problemático ou em um estado ok. Um acionador em um estado problemático é um acionador que não está funcionando, algo que precisamos monitorar e corrigir. Também abordaremos esse assunto mais adiante.</td>
+</tr>
+<tr>
+<td>Número de usuários (on-line)</td>
+<td>Aqui vemos o número de usuários que estão configurados em nosso sistema</td>
+<td>O número de usuários on-line no momento.</td>
+</tr>
+<tr>
+<td>Desempenho necessário do servidor, nvps</td>
+<td>O número de novos valores por segundo que o Zabbix processará por segundo.</td>
+<td>Esse é apenas um número estimado, pois alguns valores que recebemos são desconhecidos, portanto, o valor real provavelmente é maior. Assim, podemos ter alguma indicação de quantos IOPS precisamos e quão ocupado está nosso banco de dados. Uma indicação melhor é provavelmente o item interno <code>zabbix[wcache,values,all]</code></td>
+</tr>
+<tr>
+<td>Scripts globais no servidor Zabbix</td>
+<td>Ele nos notifica de que os scripts globais estão ativados ou desativados na configuração do servidor.</td>
+<td>Os scripts globais podem ser usados em nosso frontend, ações, ... mas precisam ser ativados primeiro</td>
+</tr>
+<tr>
+<td>Cluster de alta disponibilidade</td>
+<td>Ele nos mostrará se o cluster Zabbix HA está desativado ou não</td>
+<td>Atraso no failover quando o HA é ativado</td>
+</tr>
+</tbody>
+</table>
+<details class="note" open="open">
+<summary>Enabling Global script execution</summary>
+<p><code>Global script</code> execution on Zabbix server can be enabled by setting 
+<code>EnableGlobalScripts=1</code> in the Zabbix server configuration at <code>/etc/zabbix/zabbix_server.d/</code>.
+For new installations, since Zabbix 7.0, global script execution is
+disabled by default.</p>
+</details>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>System information may display some additional warnings like:</p>
+<ul>
+<li>when your database doesn't have the correct character set or collation UTF-8.</li>
+<li>when the database you used is lower or higher then the recommended version or</li>
+<li>when there are misconfigurations on housekeeper or TimescaleDB.</li>
+</ul>
+<p>Another warning you can see is about database history tables that aren't
+upgraded or primary keys that have not been set. This is possible if you are
+coming from an older version before Zabbix 6 and never did the upgrade.</p>
+</details>
+<hr />
+<h2 id="o-menu-principal-explicado">O menu principal explicado</h2>
+<p>É importante saber que até agora vimos nosso painel de controle com o usuário
+Admin e que esse usuário é um usuário <code>Zabbix Super Admin</code>. Isso tem um grande
+impacto sobre o que podemos ver e fazer no Zabbix, pois esse usuário não tem
+restrições. O Zabbix trabalha com três níveis diferentes de usuários: os
+<code>usuários comuns</code> , <code>Zabbix Admin</code> e <code>Zabbix Super Admin</code>. Vamos dar uma olhada
+mais profunda nas diferenças:</p>
+<p><img alt="Seções do menu principal" src="../../../ch02-zabbix-installation/frontend/ch02-main-menu.png" width="20%" /></p>
+<p><em>2.10 Seções do menu principal</em></p>
+<ul>
+<li>Um <code>usuário do Zabbix</code> verá apenas a parte <font color='red'>vermelha</font>
+  do nosso <code>menu principal</code> e poderá ver apenas os dados coletados.</li>
+<li>Um <code>administrador do Zabbix</code> verá a parte vermelha e a parte
+  <font color='gold'>amarela</font> do <code>menu principal do</code> e poderá alterar
+  nossa configuração.</li>
+<li>Um <code>Zabbix Super Admin</code> verá o <code>menu principal</code> completo e, portanto, poderá
+  alterar a configuração e todas as definições globais.</li>
+</ul>
+<hr />
+<p><img alt="Menu de monitoramento" src="../../../ch02-zabbix-installation/frontend/ch02-monitoring-menu.png" width="20%" /></p>
+<p><em>2.11 Menu de monitoramento</em></p>
+<ul>
+<li><strong>Problemas</strong>: Esta página nos dará uma visão geral de todos os problemas. Com
+  o filtro, podemos ver os problemas recentes, os problemas anteriores e os
+  problemas que estão ativos no momento. Há muitos outros filtros para detalhar
+  mais.</li>
+<li><strong>Hosts</strong>: Isso nos dará uma página de visão geral rápida com o que está
+  acontecendo em nossos hosts e nos permitirá acessar rapidamente os dados,
+  gráficos e painéis mais recentes.</li>
+<li><strong>Dados mais recentes</strong>: Essa página é provavelmente a que eu mais uso, pois
+  mostra todas as informações coletadas de todos os nossos hosts.</li>
+<li><strong>Mapas</strong>: O local onde podemos criar mapas que são uma visão geral da nossa
+  infraestrutura de TI, muito útil para obter uma visão geral de alto nível da
+  rede.</li>
+<li><strong>Descoberta</strong>: Quando executamos uma descoberta de rede, este é o local onde
+  podemos encontrar os resultados.</li>
+</ul>
+<hr />
+<p><img alt="Menu Serviços" src="../../../ch02-zabbix-installation/frontend/ch02-services-menu.png" width="20%" /></p>
+<p><em>2.12 Menu Serviços</em></p>
+<ul>
+<li><strong>Serviços</strong>: Esta página nos dará uma visão geral de alto nível de todos os
+  serviços configurados no Zabbix.</li>
+<li><strong>SLA</strong>: Uma visão geral de todos os SLAs configurados no Zabbix.</li>
+<li><strong>Relatório de SLA</strong>: Aqui podemos ver todos os relatórios de SLA com base em
+  nossos filtros.</li>
+</ul>
+<hr />
+<p><img alt="Menu Inventário" src="../../../ch02-zabbix-installation/frontend/ch02-inventory-menu.png" width="20%" /></p>
+<p><em>2.13 Menu Inventário</em></p>
+<ul>
+<li><strong>Visão geral</strong>: Um local onde podemos ver todos os dados de inventário que
+  recuperamos de nossos hosts.</li>
+<li><strong>Hosts</strong>: Aqui podemos filtrar por host e ver todos os dados de inventário
+  dos hosts que selecionamos.</li>
+</ul>
+<hr />
+<p><img alt="Menu de relatórios" src="../../../ch02-zabbix-installation/frontend/ch02-reports-menu.png" width="20%" /></p>
+<p><em>2.14 Menu Inventário</em></p>
+<ul>
+<li><strong>Informações do sistema</strong>: As informações do sistema são um resumo dos
+  principais dados do servidor Zabbix e do sistema.</li>
+<li><strong>Relatórios agendados</strong>: O local onde podemos agendar nossos relatórios, um
+  <code>pdf</code> do painel que será enviado em uma data e hora especificadas.</li>
+<li><strong>Relatório de disponibilidade</strong>: Uma boa visão geral em que podemos ver qual
+  acionador esteve em <code>ok</code>/<code>nok</code> estado por quanto % do tempo</li>
+<li><strong>Os 100 principais acionadores</strong>: Outra página que visito muito: aqui temos
+  nossa lista principal com os acionadores que estiveram em um estado <code>NOK</code>.</li>
+<li><strong>Registro de auditoria</strong>: Uma visão geral da atividade do usuário que ocorreu
+  em nosso sistema. Útil se quisermos saber quem fez o quê e quando.</li>
+<li><strong>Registro de ações</strong>: Uma visão geral detalhada de nossas ações pode ser
+  encontrada aqui. Que correspondência foi enviada para quem e quando...?</li>
+<li><strong>Notificações</strong>: Uma visão geral rápida do número de notificações enviadas a
+  cada usuário.</li>
+</ul>
+<hr />
+<p><img alt="Coleta de dados" src="../../../ch02-zabbix-installation/frontend/ch02-datacollection-menu.png" width="20%" /></p>
+<p><em>2.15 Coleta de dados</em></p>
+<ul>
+<li><strong>Grupos de modelos</strong>: Um local para agrupar logicamente todos os modelos em
+  diferentes grupos. Antes, eles eram misturados com hosts em grupos de hosts.</li>
+<li><strong>Grupos de hosts</strong>: Uma coleção lógica de diferentes hosts reunidos. Os
+  grupos de hosts são usados para nossas permissões.</li>
+<li><strong>Modelos</strong>: Um conjunto de entidades, como itens e acionadores, pode ser
+  agrupado em um modelo. Um modelo pode ser aplicado a um ou mais hosts.</li>
+<li><strong>Hosts</strong>: O que precisamos no Zabbix para monitorar um host, aplicativo,
+  serviço ...</li>
+<li><strong>Manutenção</strong>: O local para configurar nossas janelas de manutenção. Uma
+  manutenção pode ser planejada nesse local.</li>
+<li><strong>Correlação de eventos</strong>: Quando temos vários eventos que disparam gatilhos
+  relacionados, podemos configurar correlações neste local.</li>
+<li><strong>Descoberta</strong>: Às vezes gostamos de usar o Zabbix para descobrir
+  dispositivos, serviços,... em nossa rede. Isso pode ser feito aqui.</li>
+</ul>
+<hr />
+<p><img alt="Menu de alertas" src="../../../ch02-zabbix-installation/frontend/ch02-alerts-menu.png" width="20%" /></p>
+<p><em>2.16 Menu de alertas</em></p>
+<ul>
+<li><strong>Ações</strong>: Esse menu permite configurar ações com base nos <code>eventos</code> do
+  Zabbix. Podemos criar essas ações para gatilhos, serviços, descoberta,
+  registro automático e eventos internos.</li>
+<li><strong>Tipos de mídia</strong>: O Zabbix pode enviar mensagens, e-mails etc... com base
+  nas ações que configuramos. Esses tipos de mídia precisam de modelos e
+  precisam ser ativados.</li>
+<li><strong>Scripts</strong>: No Zabbix é possível utilizar scripts em nossas ações e
+  front-end. Essas ações precisam ser criadas aqui primeiro e configuradas.</li>
+</ul>
+<hr />
+<p><img alt="Menu de usuários" src="../../../ch02-zabbix-installation/frontend/ch02-users-menu.png" width="20%" /></p>
+<p><em>2.17 Menu de usuários</em></p>
+<ul>
+<li><strong>Grupos de usuários</strong>: A seção do menu <code>User groups</code> permite a criação e o
+  gerenciamento de grupos de usuários para simplificar o acesso e o controle de
+  permissões.</li>
+<li><strong>Funções de usuário</strong>: A seção do menu <code>User roles</code> define conjuntos de
+  permissões que podem ser atribuídas a usuários individuais, limitando suas
+  ações permitidas com base no tipo de usuário que eles têm no sistema.</li>
+<li><strong>Usuários</strong>: A seção do menu <code>Users</code> fornece a interface para gerenciar
+  contas de usuários individuais, incluindo configurações de criação e
+  modificação.</li>
+<li><strong>Tokens de API</strong>: A seção do menu <code>API tokens</code> gerencia credenciais de
+  autenticação especificamente projetadas para acesso programático à Interface
+  de Programação de Aplicativos (API) do sistema, permitindo a automação segura
+  e a integração com aplicativos externos.</li>
+<li><strong>Autenticação</strong>: A seção do menu <code>Authentication</code> define os métodos e as
+  configurações usados para verificar as identidades dos usuários e controlar o
+  acesso ao sistema.</li>
+</ul>
+<hr />
+<p><img alt="Menu de administração" src="../../../ch02-zabbix-installation/frontend/ch02-administration-menu.png" width="20%" /></p>
+<p><em>2.18 Menu de administração</em></p>
+<ul>
+<li><strong>Geral</strong>: A seção do menu <code>General</code> na administração permite a configuração
+  das principais definições e parâmetros de todo o sistema.</li>
+<li><strong>Registro de auditoria</strong>: A seção do menu <code>Audit log</code> fornece um registro
+  cronológico das atividades do sistema e das ações do usuário para
+  monitoramento de segurança e solução de problemas.</li>
+<li><strong>Housekeeping</strong>: A seção do menu <code>Housekeeping</code> configura tarefas de
+  manutenção automatizadas para gerenciar dados históricos e o desempenho do
+  sistema.</li>
+<li><strong>Proxies</strong>: A seção do menu <code>Proxies</code> gerencia a configuração e o
+  monitoramento de servidores proxy usados para comunicação com hosts
+  gerenciados em ambientes distribuídos.</li>
+<li><strong>Macros</strong>: A seção do menu <code>Macros</code> permite a definição e o gerenciamento de
+  variáveis globais para a configuração flexível do sistema.</li>
+<li><strong>Queue</strong>: A seção do menu <code>Queue</code> fornece informações em tempo real sobre o
+  status de processamento das tarefas internas do sistema e do tratamento de
+  dados.</li>
+</ul>
+<hr />
+<details class="info" open="open">
+<summary>Info</summary>
+<p>More information can be found in the online Zabbix documentation <a href="https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections">here</a></p>
+</details>
+<details class="tip movable modal forms" open="open">
+<summary>Tip</summary>
+<p>You will see that Zabbix is using modal forms in the frontend on many places.
+The problem is that they are not movable. <a href="https://github.com/gr8b/zabbix-module-uitwix/">This</a>
+module created by one of the Zabbix developers <code>UI Twix</code> will solve this problem
+for you.</p>
+</details>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>At time of writing there is no Dashboard import/export functionality in zabbix.
+So when upgrading dashboards it needs to be created by hand. It was on the roadmap
+for 7 but didn't made it so feel free to vote <a href="https://support.zabbix.com/browse/ZBXNEXT-5419">https://support.zabbix.com/browse/ZBXNEXT-5419</a></p>
+</details>
+<h2 id="conclusao">Conclusão</h2>
+<p>O frontend do Zabbix funciona como o centro de comando central para
+monitoramento, configuração e reconhecimento do sistema. Neste capítulo, você
+explorou como navegar pela interface, desde painéis e o menu principal
+personalizável até ferramentas poderosas, como informações do sistema e pesquisa
+global. Você aprendeu como cada seção do menu (Monitoramento, Coleta de Dados,
+Alertas, Usuários, Administração e outros) se alinha a funções distintas e como
+o modo de quiosque e os controles de layout ajudam a otimizar a visibilidade
+durante as operações diárias.</p>
+<p>Além disso, o widget de informações do sistema se destaca como um instantâneo de
+diagnóstico em tempo real, revelando métricas críticas, como status do servidor,
+número de hosts, modelos, itens, acionadores e atividade do usuário, o que ajuda
+na rápida solução de problemas e na avaliação do desempenho.</p>
+<p>Ao dominar esses componentes de front-end, você estará mais bem equipado para
+navegar com confiança no Zabbix, gerenciar o acesso do usuário, interpretar os
+dados de monitoramento e manter seu ambiente com mais eficiência. Esse
+conhecimento básico estabelece as bases para uma exploração mais profunda da
+configuração do host, dos mecanismos de autenticação e dos fluxos de trabalho de
+monitoramento avançado nos capítulos seguintes.</p>
+<h2 id="perguntas">Perguntas</h2>
+<ul>
+<li>
+<p>Qual seção do front-end (Monitoramento, Coleta de dados, Alertas, Usuários ou
+  Administração) você acha que usará com mais frequência no seu trabalho diário
+  e por quê?</p>
+</li>
+<li>
+<p>Como o modo quiosque pode ser útil em um ambiente de monitoramento do mundo
+  real e que tipos de painéis você exibiria com ele?</p>
+</li>
+<li>
+<p>Quais percepções o widget de informações do sistema pode fornecer durante a
+  solução de problemas e como ele pode ajudar a identificar problemas com o
+  desempenho do servidor?</p>
+</li>
+<li>
+<p>Por que é importante entender a diferença entre os dados exibidos em
+  "Monitoramento" e as opções de configuração encontradas em "Coleta de dados"?</p>
+</li>
+<li>
+<p>Se você estivesse integrando um novo membro da equipe, quais partes do
+  front-end você mostraria a ele primeiro e por quê?</p>
+</li>
+</ul>
+<h2 id="urls-uteis">URLs úteis</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards">https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards</a></li>
+<li><a href="https://blog.zabbix.com/handy-tips-6-organize-your-dashboards-and-create-slideshows-with-dashboard-pages/17511/">https://blog.zabbix.com/handy-tips-6-organize-your-dashboards-and-create-slideshows-with-dashboard-pages/17511/</a></li>
+<li><a href="https://blog.zabbix.com/interactive-dashboard-creation-for-large-organizations-and-msps/30132/">https://blog.zabbix.com/interactive-dashboard-creation-for-large-organizations-and-msps/30132/</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>

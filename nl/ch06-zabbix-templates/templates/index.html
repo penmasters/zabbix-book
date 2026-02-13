@@ -1,0 +1,2825 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="nl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Learn how to create, customize, and optimize Zabbix templates to monitor any
+system efficiently. Perfect for admins seeking automation and visibility.
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/nl/ch06-zabbix-templates/templates/" rel="canonical">
+<link href="../chapter/" rel="prev"/>
+<link href="../../ch07-zabbix-alerts/chapter/" rel="next"/>
+<link href="../../../fr/ch06-zabbix-templates/templates/" hreflang="fr" rel="alternate"/>
+<link href="./" hreflang="nl" rel="alternate"/>
+<link href="../../../pt_BR/ch06-zabbix-templates/templates/" hreflang="pt_BR" rel="alternate"/>
+<link href="../../../ru/ch06-zabbix-templates/templates/" hreflang="ru" rel="alternate"/>
+<link href="../../../ch06-zabbix-templates/templates/" hreflang="en" rel="alternate"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Working with templates - Zabbix Book</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141" rel="stylesheet"/>
+<link href="../../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="Working with templates" property="og:title"/>
+<meta content="Learn how to create, customize, and optimize Zabbix templates to monitor any system efficiently. Perfect for admins seeking automation and visibility." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/nl/ch06-zabbix-templates/templates/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Working with templates" name="twitter:title"/>
+<meta content="Learn how to create, customize, and optimize Zabbix templates to monitor any system efficiently. Perfect for admins seeking automation and visibility." name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#working-with-templates">
+          Ga naar inhoud
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<div class="gmc-announce">
+            Deze pagina is nog niet in het Nederlands vertaald en wordt daarom in het Engels weergegeven.
+            <a href="/gmc/nl/contribute/#translations">Help ons en vertaal deze pagina!</a>
+</div>
+<script>
+        const gGMC_SELECT_VERSION = "Selecteer versie";
+        const gGMC_TRANSLATE_CTA = "Help ons en vertaal deze pagina!";
+        const gGMC_PAGE_LOCALE = "nl";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Working with templates
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Selecteer taal" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../../fr/ch06-zabbix-templates/templates/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../pt_BR/ch06-zabbix-templates/templates/" hreflang="pt_BR">
+              Brazillian Portugese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ru/ch06-zabbix-templates/templates/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ch06-zabbix-templates/templates/" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Zoeken" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Zoeken" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Zoeken" class="md-search__options">
+<a aria-label="Delen" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Delen">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Leegmaken" class="md-search__icon md-icon" tabindex="-1" title="Leegmaken" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Zoeken initialiseren
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ga naar repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigatie" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ga naar repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch02-zabbix-installation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch03-zabbix-proxies/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch04-zabbix-collecting-data/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_11" type="checkbox"/>
+<label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_11_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_11">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 06 : Templates
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../chapter/">
+<span class="md-ellipsis">
+    
+  
+    Building and using templates
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Working with templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Working with templates
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Inhoudsopgave" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-fundamentals">
+<span class="md-ellipsis">
+      
+        Template Fundamentals
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-monolithic-template-model">
+<span class="md-ellipsis">
+      
+        The Monolithic Template Model
+      
+    </span>
+</a>
+<nav aria-label="The Monolithic Template Model" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-uuids">
+<span class="md-ellipsis">
+      
+        Template UUIDs
+      
+    </span>
+</a>
+<nav aria-label="Template UUIDs" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#purpose-of-uuids">
+<span class="md-ellipsis">
+      
+        Purpose of UUIDs
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#benefits">
+<span class="md-ellipsis">
+      
+        Benefits
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-happens-when-you-clone-a-template">
+<span class="md-ellipsis">
+      
+        What Happens When You Clone a Template
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-groups">
+<span class="md-ellipsis">
+      
+        Template Groups
+      
+    </span>
+</a>
+<nav aria-label="Template Groups" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissions-and-access-control">
+<span class="md-ellipsis">
+      
+        Permissions and Access Control
+      
+    </span>
+</a>
+<nav aria-label="Permissions and Access Control" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#impact-of-template-permissions">
+<span class="md-ellipsis">
+      
+        Impact of template permissions
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissions-and-roles-how-access-really-works">
+<span class="md-ellipsis">
+      
+        Permissions and Roles – How Access Really Works
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#best-practices-for-permissions">
+<span class="md-ellipsis">
+      
+        Best Practices for Permissions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-subgroups">
+<span class="md-ellipsis">
+      
+        Template Subgroups
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tags">
+<span class="md-ellipsis">
+      
+        Tags
+      
+    </span>
+</a>
+<nav aria-label="Tags" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#purpose-of-tags">
+<span class="md-ellipsis">
+      
+        Purpose of Tags
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples">
+<span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices-to-consider">
+<span class="md-ellipsis">
+      
+        Some good practices to consider
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tag-inheritance-and-merging-behavior">
+<span class="md-ellipsis">
+      
+        Tag Inheritance and Merging Behavior
+      
+    </span>
+</a>
+<nav aria-label="Tag Inheritance and Merging Behavior" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conflict-handling">
+<span class="md-ellipsis">
+      
+        Conflict Handling
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices-when-tagging">
+<span class="md-ellipsis">
+      
+        Some good practices when tagging
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-macros">
+<span class="md-ellipsis">
+      
+        Template macros
+      
+    </span>
+</a>
+<nav aria-label="Template macros" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#macro-precedence-and-conflict-resolution">
+<span class="md-ellipsis">
+      
+        Macro Precedence and Conflict Resolution
+      
+    </span>
+</a>
+<nav aria-label="Macro Precedence and Conflict Resolution" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices">
+<span class="md-ellipsis">
+      
+        Some good practices
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#value-maps">
+<span class="md-ellipsis">
+      
+        Value Maps
+      
+    </span>
+</a>
+<nav aria-label="Value Maps" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scope-and-availability">
+<span class="md-ellipsis">
+      
+        Scope and Availability
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#types-of-mappings">
+<span class="md-ellipsis">
+      
+        Types of Mappings
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-template-level-value-map">
+<span class="md-ellipsis">
+      
+        Example: Template-Level Value Map
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-host-level-value-map">
+<span class="md-ellipsis">
+      
+        Example: Host-Level Value Map
+      
+    </span>
+</a>
+<nav aria-label="Example: Host-Level Value Map" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices-for-value-maps">
+<span class="md-ellipsis">
+      
+        Some good practices for value maps
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-dashboards">
+<span class="md-ellipsis">
+      
+        Template Dashboards
+      
+    </span>
+</a>
+<nav aria-label="Template Dashboards" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#where-to-find-template-dashboards">
+<span class="md-ellipsis">
+      
+        Where to Find Template Dashboards
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#purpose-and-use-cases">
+<span class="md-ellipsis">
+      
+        Purpose and Use Cases
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dashboard-components">
+<span class="md-ellipsis">
+      
+        Dashboard Components
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices_1">
+<span class="md-ellipsis">
+      
+        Some Good Practices
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-template-app-postgresql">
+<span class="md-ellipsis">
+      
+        Example: Template App PostgreSQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#advantages-of-template-dashboards">
+<span class="md-ellipsis">
+      
+        Advantages of Template Dashboards
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-management-operations">
+<span class="md-ellipsis">
+      
+        Template Management Operations
+      
+    </span>
+</a>
+<nav aria-label="Template Management Operations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unlink-vs-unlink-and-clear">
+<span class="md-ellipsis">
+      
+        Unlink vs. Unlink and Clear
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#clone">
+<span class="md-ellipsis">
+      
+        Clone
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#delete-vs-delete-and-clear">
+<span class="md-ellipsis">
+      
+        Delete vs. Delete and Clear
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mass-update-of-templates">
+<span class="md-ellipsis">
+      
+        Mass Update of Templates
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#behavior-and-cautions">
+<span class="md-ellipsis">
+      
+        Behavior and Cautions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices_2">
+<span class="md-ellipsis">
+      
+        Some Good Practices
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#importing-and-exporting-templates">
+<span class="md-ellipsis">
+      
+        Importing and Exporting Templates
+      
+    </span>
+</a>
+<nav aria-label="Importing and Exporting Templates" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exporting">
+<span class="md-ellipsis">
+      
+        Exporting
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#importing-templates">
+<span class="md-ellipsis">
+      
+        Importing Templates
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#import-options-and-their-effects">
+<span class="md-ellipsis">
+      
+        Import Options and Their Effects
+      
+    </span>
+</a>
+<nav aria-label="Import Options and Their Effects" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#uuid-based-matching">
+<span class="md-ellipsis">
+      
+        UUID-Based Matching
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#diff-visualization">
+<span class="md-ellipsis">
+      
+        Diff Visualization
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#update-existing-behavior">
+<span class="md-ellipsis">
+      
+        “Update Existing” Behavior
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#delete-missing-behavior">
+<span class="md-ellipsis">
+      
+        “Delete Missing” Behavior
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#error-handling">
+<span class="md-ellipsis">
+      
+        Error Handling
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#safe-import-workflow">
+<span class="md-ellipsis">
+      
+        Safe Import Workflow
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/network-host-discovery/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/graphs/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch13-advanced-security/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Inhoudsopgave" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-fundamentals">
+<span class="md-ellipsis">
+      
+        Template Fundamentals
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-monolithic-template-model">
+<span class="md-ellipsis">
+      
+        The Monolithic Template Model
+      
+    </span>
+</a>
+<nav aria-label="The Monolithic Template Model" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-uuids">
+<span class="md-ellipsis">
+      
+        Template UUIDs
+      
+    </span>
+</a>
+<nav aria-label="Template UUIDs" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#purpose-of-uuids">
+<span class="md-ellipsis">
+      
+        Purpose of UUIDs
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#benefits">
+<span class="md-ellipsis">
+      
+        Benefits
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-happens-when-you-clone-a-template">
+<span class="md-ellipsis">
+      
+        What Happens When You Clone a Template
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-groups">
+<span class="md-ellipsis">
+      
+        Template Groups
+      
+    </span>
+</a>
+<nav aria-label="Template Groups" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissions-and-access-control">
+<span class="md-ellipsis">
+      
+        Permissions and Access Control
+      
+    </span>
+</a>
+<nav aria-label="Permissions and Access Control" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#impact-of-template-permissions">
+<span class="md-ellipsis">
+      
+        Impact of template permissions
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#permissions-and-roles-how-access-really-works">
+<span class="md-ellipsis">
+      
+        Permissions and Roles – How Access Really Works
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#best-practices-for-permissions">
+<span class="md-ellipsis">
+      
+        Best Practices for Permissions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-subgroups">
+<span class="md-ellipsis">
+      
+        Template Subgroups
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tags">
+<span class="md-ellipsis">
+      
+        Tags
+      
+    </span>
+</a>
+<nav aria-label="Tags" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#purpose-of-tags">
+<span class="md-ellipsis">
+      
+        Purpose of Tags
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples">
+<span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices-to-consider">
+<span class="md-ellipsis">
+      
+        Some good practices to consider
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tag-inheritance-and-merging-behavior">
+<span class="md-ellipsis">
+      
+        Tag Inheritance and Merging Behavior
+      
+    </span>
+</a>
+<nav aria-label="Tag Inheritance and Merging Behavior" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conflict-handling">
+<span class="md-ellipsis">
+      
+        Conflict Handling
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices-when-tagging">
+<span class="md-ellipsis">
+      
+        Some good practices when tagging
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-macros">
+<span class="md-ellipsis">
+      
+        Template macros
+      
+    </span>
+</a>
+<nav aria-label="Template macros" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#macro-precedence-and-conflict-resolution">
+<span class="md-ellipsis">
+      
+        Macro Precedence and Conflict Resolution
+      
+    </span>
+</a>
+<nav aria-label="Macro Precedence and Conflict Resolution" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices">
+<span class="md-ellipsis">
+      
+        Some good practices
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#value-maps">
+<span class="md-ellipsis">
+      
+        Value Maps
+      
+    </span>
+</a>
+<nav aria-label="Value Maps" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scope-and-availability">
+<span class="md-ellipsis">
+      
+        Scope and Availability
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#types-of-mappings">
+<span class="md-ellipsis">
+      
+        Types of Mappings
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-template-level-value-map">
+<span class="md-ellipsis">
+      
+        Example: Template-Level Value Map
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-host-level-value-map">
+<span class="md-ellipsis">
+      
+        Example: Host-Level Value Map
+      
+    </span>
+</a>
+<nav aria-label="Example: Host-Level Value Map" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices-for-value-maps">
+<span class="md-ellipsis">
+      
+        Some good practices for value maps
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-dashboards">
+<span class="md-ellipsis">
+      
+        Template Dashboards
+      
+    </span>
+</a>
+<nav aria-label="Template Dashboards" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#where-to-find-template-dashboards">
+<span class="md-ellipsis">
+      
+        Where to Find Template Dashboards
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#purpose-and-use-cases">
+<span class="md-ellipsis">
+      
+        Purpose and Use Cases
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dashboard-components">
+<span class="md-ellipsis">
+      
+        Dashboard Components
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices_1">
+<span class="md-ellipsis">
+      
+        Some Good Practices
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-template-app-postgresql">
+<span class="md-ellipsis">
+      
+        Example: Template App PostgreSQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#advantages-of-template-dashboards">
+<span class="md-ellipsis">
+      
+        Advantages of Template Dashboards
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#template-management-operations">
+<span class="md-ellipsis">
+      
+        Template Management Operations
+      
+    </span>
+</a>
+<nav aria-label="Template Management Operations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unlink-vs-unlink-and-clear">
+<span class="md-ellipsis">
+      
+        Unlink vs. Unlink and Clear
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#clone">
+<span class="md-ellipsis">
+      
+        Clone
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#delete-vs-delete-and-clear">
+<span class="md-ellipsis">
+      
+        Delete vs. Delete and Clear
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mass-update-of-templates">
+<span class="md-ellipsis">
+      
+        Mass Update of Templates
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#behavior-and-cautions">
+<span class="md-ellipsis">
+      
+        Behavior and Cautions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#some-good-practices_2">
+<span class="md-ellipsis">
+      
+        Some Good Practices
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#importing-and-exporting-templates">
+<span class="md-ellipsis">
+      
+        Importing and Exporting Templates
+      
+    </span>
+</a>
+<nav aria-label="Importing and Exporting Templates" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#exporting">
+<span class="md-ellipsis">
+      
+        Exporting
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#importing-templates">
+<span class="md-ellipsis">
+      
+        Importing Templates
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#import-options-and-their-effects">
+<span class="md-ellipsis">
+      
+        Import Options and Their Effects
+      
+    </span>
+</a>
+<nav aria-label="Import Options and Their Effects" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#uuid-based-matching">
+<span class="md-ellipsis">
+      
+        UUID-Based Matching
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#diff-visualization">
+<span class="md-ellipsis">
+      
+        Diff Visualization
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#update-existing-behavior">
+<span class="md-ellipsis">
+      
+        “Update Existing” Behavior
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#delete-missing-behavior">
+<span class="md-ellipsis">
+      
+        “Delete Missing” Behavior
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#error-handling">
+<span class="md-ellipsis">
+      
+        Error Handling
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#safe-import-workflow">
+<span class="md-ellipsis">
+      
+        Safe Import Workflow
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigatie" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../../">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../chapter/">
+<span class="md-ellipsis">
+    Chapter 06 : Templates
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<nav class="md-tags">
+<span class="md-tag md-tag-icon" data-tag="advanced">
+      Gevorderde
+    </span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch06-zabbix-templates/templates.md" title="Bron van deze pagina bekijken">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="working-with-templates">Working with templates</h1>
+<p>Templates are one of the most fundamental building blocks in Zabbix. They define
+what and how to monitor, and serve as reusable configuration blueprints that can
+be applied to any number of hosts. By grouping related items, triggers, graphs,
+discovery rules, and macros into a single logical entity, templates make it possible
+to standardize and scale monitoring efficiently.</p>
+<p>Zabbix 8.0 emphasizes a monolithic, self contained design. While template linking
+is still supported for compatibility, the recommended approach is to use standalone
+templates for simplicity and portability. A deliberate departure from the older
+inheritance based approach. used in previous versions. This design philosophy makes
+templates easier to export, share, and maintain, especially when managing multiple
+environments or distributing monitoring logic across teams.</p>
+<details class="info" open="open">
+<summary>Fun fact</summary>
+<p>In earlier releases such as Zabbix 3.0, there were only around 30–40 built-in
+templates available out of the box. In contrast, Zabbix 8.0 ships with hundreds
+of official templates and integrations, covering everything from operating systems
+and databases to cloud platforms and network devices. This dramatic growth
+highlights how Zabbix has evolved into a full-featured monitoring ecosystem
+with native support for nearly any technology stack.</p>
+</details>
+<h2 id="template-fundamentals">Template Fundamentals</h2>
+<p>A template in Zabbix encapsulates all the elements required to monitor a specific
+technology or system. This can range from a simple operating system agent to a
+complex multi-layer application such as PostgreSQL, VMware, or Kubernetes.</p>
+<p>Each template can include:</p>
+<ul>
+<li><strong>Items:</strong> definitions of data to collect (e.g., system.cpu.load, vfs.fs.size[/,free]).</li>
+<li><strong>Triggers:</strong> logical expressions that evaluate collected data to identify problem
+  conditions.</li>
+<li><strong>Graphs:</strong> visual representations of collected metrics.</li>
+<li><strong>Discovery Rules:</strong> automated mechanisms to detect entities (like filesystems
+  or interfaces) and dynamically create item prototypes.</li>
+<li><strong>Value Maps:</strong> mappings that translate raw data into human-readable text.</li>
+<li><strong>Macros:</strong> reusable variables that make templates configurable and environment
+  agnostic.</li>
+<li><strong>Tags:</strong> metadata used for filtering, correlation, and alert routing.</li>
+<li><strong>Dashboards:</strong> predefined visualization layouts attached to the template.</li>
+</ul>
+<p>Templates are linked to hosts to apply these monitoring definitions. Once linked,
+the host immediately inherits all monitoring logic from the template.</p>
+<h2 id="the-monolithic-template-model">The Monolithic Template Model</h2>
+<p>Before Zabbix 6.x, templates could be built hierarchically, using inheritance between
+parent and child templates. While powerful, this approach often led to dependency
+complexity, version mismatches, and export/import challenges.</p>
+<p>Starting with Zabbix 6.4 and refined in 7.x, the preferred design is monolithic
+templates meaning each template is self contained and does not rely on inheritance.
+This makes templates easier to:</p>
+<ul>
+<li>Export and share as standalone YAML files.</li>
+<li>Version control in Git or CI/CD environments.</li>
+<li>Import without dependency conflicts.</li>
+</ul>
+<p>Monolithic templates are also simpler to maintain, as all configuration elements
+are defined within one object, avoiding the “template chain” problem where one
+missing dependency breaks the import process.</p>
+<h3 id="template-uuids">Template UUIDs</h3>
+<p>Starting with Zabbix 6.2, every configuration entity, including templates, is
+assigned a Universally Unique Identifier (UUID). This fundamentally changed how
+Zabbix tracks and synchronizes configuration objects across different environments.</p>
+<h4 id="purpose-of-uuids">Purpose of UUIDs</h4>
+<p>Before UUIDs were introduced, Zabbix relied on template names to identify and match
+templates during import/export. This created issues when two templates had identical
+names or when renaming templates between environments.</p>
+<p>UUIDs solve this problem by providing a persistent, globally unique reference for
+each template, independent of its name or internal database ID.</p>
+<h4 id="benefits">Benefits</h4>
+<ul>
+<li><strong>Reliable synchronization:</strong> Imports and updates use the UUID, preventing duplication
+  and mismatched merges.</li>
+<li><strong>Conflict prevention:</strong> Avoids overwriting templates with the same name.</li>
+<li><strong>Version-control stability:</strong> Git-based workflows can track the same object
+  across environments.</li>
+<li><strong>Improved automation:</strong> APIs and pipelines can safely address templates by UUID
+  rather than numeric IDs.</li>
+</ul>
+<p>Example YAML template:</p>
+<div class="language-YAML highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">zabbix_export</span><span class="p">:</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">'8.0'</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">  </span><span class="nt">templates</span><span class="p">:</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uuid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a4c1d0f2d7de4a40a8b347afeb9a88df</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">'Template</span><span class="nv"> </span><span class="s">OS</span><span class="nv"> </span><span class="s">Rocky</span><span class="nv"> </span><span class="s">Linux'</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">      </span><span class="nt">groups</span><span class="p">:</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'Templates/Operating</span><span class="nv"> </span><span class="s">Systems/Linux'</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">      </span><span class="nt">items</span><span class="p">:</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uuid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">f0c1b836c81d4bba9419dc12bce7e411</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'System</span><span class="nv"> </span><span class="s">uptime'</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">'system.uptime'</span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZABBIX_AGENT</span>
+</span></code></pre></div>
+<details class="info" open="open">
+<summary>Behavior and Persistence</summary>
+<p>The UUID remains constant even if the template is renamed or moved between
+groups. However, when a template is cloned or copied, Zabbix generates new
+UUIDs for the template and all of its entities. This ensures the cloned template
+is treated as a distinct object and does not conflict with the original during
+import, export, or API synchronization.</p>
+</details>
+<h4 id="what-happens-when-you-clone-a-template">What Happens When You Clone a Template</h4>
+<p>When you clone or copy a template (for example, to customize it), Zabbix creates
+a completely new object. All nested entities like items, triggers, discovery rules,
+dashboards, etc. will receive new UUIDs.</p>
+<p>This means your cloned template is independent:</p>
+<ul>
+<li>It will not overwrite the original during imports.</li>
+<li>It can coexist safely even if it has a similar name.</li>
+<li>It is ideal for creating customized variants of official templates.</li>
+</ul>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If you manually remove or alter UUIDs in the YAML file, Zabbix treats it as
+a new object on import.</p>
+</details>
+<details class="info" open="open">
+<summary>Best practice</summary>
+<p>Add a suffix or prefix such as (Custom) to distinguish cloned templates and
+document their origin in the template notes like:
+- Origin: Linux by Zabbix agent
+- Based on UUID: a4c1d0f2d7de4a40a8b347afeb9a88df</p>
+</details>
+<h2 id="template-groups">Template Groups</h2>
+<p>Template groups in Zabbix are used for <code>organization</code> and <code>access control targeting</code>.
+They provide a logical way to categorize templates (for example, Operating Systems,
+Databases, Network Devices), but they do not themselves define access rights.</p>
+<p>A template group itself does not carry permissions.
+Instead, <code>user groups</code> are granted <code>permissions</code> on <code>template groups</code>.
+These permissions determine whether members of a user group can view (read-only)
+or modify (read-write) the templates contained within those groups when working
+in the frontend.</p>
+<p>In other words:</p>
+<ul>
+<li><strong>Template groups:</strong> organize and classify templates.</li>
+<li><strong>User groups:</strong> hold the permissions that control access to those template groups.</li>
+</ul>
+<p>This model provides flexible role based access control (RBAC): administrators can
+manage access centrally by assigning or revoking permissions for user groups
+rather than editing individual templates.</p>
+<p>If you like to make a new template group then they can be found under <code>Data collection</code>
+→ <code>Host groups</code> → <code>Create template group</code></p>
+<p><img alt="templates/ch06.01-template-group.png" src="../../../ch06-zabbix-templates/templates/ch06.01-template-group.png"/></p>
+<h3 id="permissions-and-access-control">Permissions and Access Control</h3>
+<p>In Zabbix 8.0, access to templates is controlled by a combination of <code>user roles</code>
+and <code>usergroup</code> permissions.</p>
+<ul>
+<li><strong>Roles</strong> define what actions a user can perform globally. Such as viewing problems,
+  acknowledging events, or modifying configuration.</li>
+<li><strong>User groups:</strong> define which objects the role can act on by granting <code>Read-only
+  (RO)</code> or <code>Read-write (RW)</code> permissions to specific object groups (host groups,
+  template groups, map groups, etc.).</li>
+<li>Template groups are simply one of those object groups: a scope to which permissions
+  can be applied.</li>
+</ul>
+<p>For example, a user role may allow configuration changes, but the user will only
+be able to modify templates that belong to template groups where their user group
+has RW access.</p>
+<p>This separation provides precise control between what actions are allowed and where
+they are allowed.</p>
+<h4 id="impact-of-template-permissions">Impact of template permissions</h4>
+<p>Although template group permissions primarily govern configuration access, they
+can also influence operational behavior in the frontend. When users view or interact
+with problems, their ability to take certain actions depends both on their role
+and their permissions for the underlying host or template.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Action</th>
+<th style="text-align: center;">Read-only (RO)</th>
+<th style="text-align: center;">Read-write (RW)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Acknowledge problem</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Add comment / update status</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Suppress problem</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Change problem severity</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Manually close problem</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Modify trigger severity</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Edit or link templates</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>Read-only users can acknowledge or suppress issues but cannot change severity
+or manually close problems.</p>
+</details>
+<p>As an example in Zabbix:</p>
+<p>Consider two distinct user groups with different roles and permissions:</p>
+<ul>
+<li><strong>Operations (RO):</strong> Members can view hosts and problems, acknowledge or suppress
+  issues, but cannot change severity levels or modify triggers.</li>
+<li><strong>Monitoring Admins (RW):</strong> Members can edit templates, adjust trigger logic,
+  and manually close problems.</li>
+</ul>
+<p>If both groups monitor hosts that use templates from Templates/Applications/Databases:</p>
+<ul>
+<li><strong>Operations:</strong> can acknowledge and suppress problems as part of daily triage.</li>
+<li><strong>Monitoring Admins:</strong> can modify or tune the underlying template configuration
+  when a systemic issue is detected.</li>
+</ul>
+<p>This segregation maintains stability. Operations staff can handle incidents, while
+admins manage definitions.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Template group permissions control configuration visibility, but operational
+access (to data and problems) still depends on host group permissions.</p>
+</details>
+<h3 id="permissions-and-roles-how-access-really-works">Permissions and Roles – How Access Really Works</h3>
+<p>Zabbix enforces permissions through user groups and roles, not through inheritance
+between objects. There is no automatic propagation of permissions from template
+groups to host groups or between templates and the hosts that use them.</p>
+<ul>
+<li>Roles determine what actions users may perform (view, edit, acknowledge,
+  configure, etc.).</li>
+<li>User groups determine where those actions may occur by assigning RO/RW/Deny
+  rights on object groups.</li>
+<li>Template groups and host groups are independent targets. A user with RW access
+  to a host group does not automatically gain rights to the related template group,
+  and vice versa.</li>
+</ul>
+<p>This clear separation ensures operational access (hosts) and configuration access
+(templates) remain distinct, preventing unintended modifications.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Roles (user, admin and super admin) define what you can do.
+Usergroup permissions define where you can do it.</p>
+</details>
+<h3 id="best-practices-for-permissions">Best Practices for Permissions</h3>
+<ul>
+<li><strong>Separate operational and design access:</strong> Grant RO rights to operations teams
+  for monitoring, and RW rights to administrators maintaining templates.</li>
+<li><strong>Align permissions logically:</strong> If a user group manages database hosts, grant
+  them RW access to both the relevant host groups and the corresponding <code>Templates/Databases</code>
+  group.</li>
+<li><strong>Review permissions regularly:</strong> Periodically audit usergroup assignments to
+  ensure only authorized teams have configuration privileges.</li>
+<li><strong>Use clear naming conventions for groups:</strong> Distinguish functional scopes (Templates/OS/Linux)
+  from organizational ones (Templates/Customers/Prod). This improves clarity when
+  assigning permissions in large environments.</li>
+</ul>
+<h3 id="template-subgroups">Template Subgroups</h3>
+<p>Zabbix 3.2 introduced nested template groups (subgroups), enabling a hierarchical
+structure similar to host groups. Subgroups allow administrators to build organized,
+multi-level collections of templates, which improves navigation and permission
+granularity.</p>
+<p>Subgroups are created in Zabbix by adding a <code>/</code> in the group names. For example if we
+want to create a group <code>Databases</code> as a subgroup of <code>Templates</code> then we only need
+to create the new group like this: <code>Templates/Databases</code>. However it's
+recommended to create <code>Templates</code> first.</p>
+<p>Example hierarchy:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>Templates
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>├── Operating Systems
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>│   ├── Linux
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>│   ├── Windows
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>│   └── Network Appliances
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>└── Applications
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>    ├── Databases
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>    │   ├── PostgreSQL
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>    │   ├── MySQL
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>    │   └── Oracle
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a>    └── Web Servers
+</span></code></pre></div>
+<ul>
+<li><strong>Hierarchy for organization and permissions only:</strong> Subgroups do not change how
+  templates link to hosts; they are purely structural.</li>
+<li><strong>Automatic downward inheritance:</strong> If a user group has RW or RO access to a
+  parent template group, that access automatically extends to all its existing
+  subgroups. You can still assign explicit permissions on individual subgroups
+  to override inherited rights.</li>
+<li><strong>Parent-creation edge case:</strong> When you create a new parent group for an already
+  existing subgroup (for example, creating Applications when Applications/Databases
+  already exists), no permissions are automatically assigned to the new parent.
+  Administrators must manually grant permissions on the parent group if required.</li>
+<li><strong>Search and filtering benefits:</strong> The hierarchical view makes it easier to locate
+  and manage templates in large environments.</li>
+<li><strong>Consistency with host groups:</strong> Subgroup behavior and inheritance are identical
+  for host groups and template groups, providing a uniform organizational model.</li>
+</ul>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>Use top-level groups for broad classifications (e.g., Templates/Applications)
+and subgroups for vendor or technology specialization. Assign RW rights at
+the top level for global administrators, and finer-grained access on subgroups
+for specialized teams.</p>
+</details>
+<h2 id="tags">Tags</h2>
+<p>Tags are metadata elements used throughout Zabbix for event classification, filtering,
+correlation, and alert routing. They attach semantic meaning to triggers, items,
+or templates, helping to describe what the metric or event represents.</p>
+<p><code>Data collection</code> → <code>Templates</code> → <code>Template</code> → <code>Tags</code></p>
+<p><img alt="templates/ch06.02-template-tags.png" src="../../../ch06-zabbix-templates/templates/ch06.02-template-tags.png"/></p>
+<h3 id="purpose-of-tags">Purpose of Tags</h3>
+<ul>
+<li><strong>Event correlation:</strong> tags are used by the event correlation engine to match
+  or suppress related problems.</li>
+<li><strong>Alerting and automation:</strong> tags appear in actions, allowing conditional notifications
+  or escalations.</li>
+<li><strong>Service mapping:</strong> tags link triggers and events to defined business services.</li>
+<li><strong>Filtering:</strong> dashboards, reports, and API queries can filter by tag values.</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<p>For a PostgreSQL database template:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">database</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="nt">component</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backend</span>
+</span></code></pre></div></p>
+<p>For a network device template:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cisco</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="nt">interface</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uplink</span>
+</span></code></pre></div></p>
+<h3 id="some-good-practices-to-consider">Some good practices to consider</h3>
+<ul>
+<li>Use consistent naming for tag keys across templates (e.g., service, component,
+  role).</li>
+<li>Avoid over tagging; focus on attributes useful for filtering or alerting.</li>
+<li>Use lower case, underscore separated keys for uniformity.</li>
+</ul>
+<h3 id="tag-inheritance-and-merging-behavior">Tag Inheritance and Merging Behavior</h3>
+<p>When templates are linked to hosts and hosts or items already define their own
+tags — Zabbix merges all tag sources into a single event level tag set.
+Understanding this inheritance order is crucial for predictable alerting and correlation.</p>
+<pre class="mermaid"><code>flowchart TB
+  %% --- TEMPLATED ENTITIES PATH (vertical) ---
+  subgraph TEMPLATED["Templated entities"]
+    direction TB
+    TPL["Template tags:
+service=database
+component=backend"]
+    H_TPL["Host tags (applied to templated entities):
+region=europe
+env=prod"]
+    TPL_TRIG["Template trigger tags:
+severity=high"]
+    TPL_ITEM["Template item tags:
+component=replication"]
+    EV1["Event (templated trigger)
+Merged tags:
+service=database
+component=backend
+component=replication
+severity=high
+region=europe
+env=prod"]
+    TPL --&gt; H_TPL --&gt; TPL_TRIG --&gt; TPL_ITEM --&gt; EV1
+  end
+
+  %% --- LOCAL ENTITIES PATH (vertical) ---
+  subgraph LOCAL["Local entities (on Host)"]
+    direction TB
+    H_LOC["Host tags (local entities):
+site=be-brussels
+team=ops"]
+    LOC_TRIG["Local trigger tags:
+class=local"]
+    LOC_ITEM["Local item tags:
+sensor=temp"]
+    EV2["Event (local trigger)
+Merged tags:
+site=be-brussels
+team=ops
+class=local
+sensor=temp"]
+    H_LOC --&gt; LOC_TRIG --&gt; LOC_ITEM --&gt; EV2
+  end
+</code></pre>
+<p>Interpretation:</p>
+<p>Zabbix merges tags from top to bottom.
+Template level tags are the most general, while item level tags are the most specific.
+All resulting tags flow into the generated event.</p>
+<p><strong>Inheritance Order explained:</strong></p>
+<ol>
+<li>Item-level tags → applied directly to collected metrics (most specific).</li>
+<li>Trigger-level tags → apply to problems generated by the trigger.</li>
+<li>Host-level tags → inherited only by items and triggers that originate from
+   linked templates on that host (they do not apply automatically to locally
+   defined host items/triggers).</li>
+<li>Template-level tags → base tags from all linked templates.</li>
+</ol>
+<p>The final event inherits all tags from these levels, with duplicates automatically
+removed.</p>
+<h4 id="conflict-handling">Conflict Handling</h4>
+<ul>
+<li>If the same tag key appears multiple times with different values, all values are
+  kept.</li>
+<li>Duplicate key–value pairs are deduplicated.</li>
+<li>Tags are additive, not overridden. Unlinking or clearing a template removes only
+  that template’s tags from future events.</li>
+</ul>
+<p><strong>Example :</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Source</th>
+<th style="text-align: left;">Tag Key</th>
+<th style="text-align: left;">Tag Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Linux by Zabbix agent</td>
+<td style="text-align: left;"><code>service</code></td>
+<td style="text-align: left;"><code>os</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">PostgreSQL by Zabbix agent 2</td>
+<td style="text-align: left;"><code>service</code></td>
+<td style="text-align: left;"><code>database</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Host</td>
+<td style="text-align: left;"><code>region</code></td>
+<td style="text-align: left;"><code>europe</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Item</td>
+<td style="text-align: left;"><code>component</code></td>
+<td style="text-align: left;"><code>replication</code></td>
+</tr>
+</tbody>
+</table>
+<p>The resulting event tags will be:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">os</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">database</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="nt">component</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replication</span>
+</span></code></pre></div></p>
+<h4 id="some-good-practices-when-tagging">Some good practices when tagging</h4>
+<ul>
+<li>Keep template level tags generic (e.g., service: database).</li>
+<li>Use host level tags for environmental context (e.g., region: europe, customer:
+  acme).</li>
+<li>Apply item/trigger-level tags for event specificity (component: disk, component:
+  replication).</li>
+<li>Regularly audit merged event tags under Monitoring → Problems → Tags to verify
+  inheritance behavior.</li>
+</ul>
+<h2 id="template-macros">Template macros</h2>
+<p>Macros are variables that make templates flexible and reusable. They define thresholds,
+credentials, or paths that can be adjusted per environment without editing template
+logic.</p>
+<p><code>Data collection</code> → <code>Templates</code> → <code>Template</code> → <code>Macros</code></p>
+<p><img alt="templates/ch06.03-template-macros.png" src="../../../ch06-zabbix-templates/templates/ch06.03-template-macros.png"/></p>
+<p>Example:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="o">{</span><span class="nv">$CPU_UTIL_MAX</span><span class="o">}=</span><span class="m">90</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="o">{</span><span class="nv">$MEMORY_WARN</span><span class="o">}=</span><span class="m">75</span>
+</span></code></pre></div>
+<p>Macros can be defined globally, at the template level, host-group level, or host
+level, and can be overridden according to a strict precedence order.</p>
+<h3 id="macro-precedence-and-conflict-resolution">Macro Precedence and Conflict Resolution</h3>
+<p>When multiple templates linked to the same host define the same macro, Zabbix
+resolves conflicts by comparing template IDs.</p>
+<p>:warning: The macro from the template with the lowest template ID takes precedence.</p>
+<p>Example:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Template Name</th>
+<th style="text-align: left;">Template ID</th>
+<th style="text-align: left;">Macro</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Template OS Linux</td>
+<td style="text-align: left;">10101</td>
+<td style="text-align: left;"><code>{$CPU_UTIL_MAX}</code></td>
+<td style="text-align: left;">85</td>
+</tr>
+<tr>
+<td style="text-align: left;">Template App PostgreSQL</td>
+<td style="text-align: left;">10115</td>
+<td style="text-align: left;"><code>{$CPU_UTIL_MAX}</code></td>
+<td style="text-align: left;">90</td>
+</tr>
+</tbody>
+</table>
+<p>→ The oldest template (lowest ID) wins → {$CPU_UTIL_MAX}=85.</p>
+<p>Precedence Hierarchy:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Level</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1. Host macro</td>
+<td style="text-align: left;">Defined on host</td>
+<td style="text-align: left;">Highest priority</td>
+</tr>
+<tr>
+<td style="text-align: left;">2. Template macro</td>
+<td style="text-align: left;">Lowest template ID wins if duplicate</td>
+<td style="text-align: left;">Applies to linked templates</td>
+</tr>
+<tr>
+<td style="text-align: left;">3. Global macro</td>
+<td style="text-align: left;">Default fallback</td>
+<td style="text-align: left;">Lowest priority</td>
+</tr>
+</tbody>
+</table>
+<h4 id="some-good-practices">Some good practices</h4>
+<ul>
+<li>Keep macro names unique within template families.</li>
+<li>Use host-level overrides for environment-specific adjustments.</li>
+<li>Document shared macros to prevent conflicts.</li>
+</ul>
+<h2 id="value-maps">Value Maps</h2>
+<p>Value maps convert raw numeric or coded values into meaningful, human readable text.
+They make dashboards, triggers, and data views more intuitive. For example, turning
+SNMP status codes like 1, 2, 3 into Up, Down, Unknown.</p>
+<p><code>Data collection</code> → <code>Templates</code> → <code>Template</code> → <code>Value maps</code></p>
+<p><img alt="templates/ch06.04-template-value%20maps.png" src="../../../ch06-zabbix-templates/templates/ch06.04-template-value%20maps.png"/></p>
+<h3 id="scope-and-availability">Scope and Availability</h3>
+<p>Value maps exist in two distinct scopes in Zabbix 8:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Scope</th>
+<th style="text-align: left;">Created In</th>
+<th style="text-align: left;">Can Be Used By</th>
+<th style="text-align: left;">Shared With</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Template-level value map</strong></td>
+<td style="text-align: left;">Inside a template definition</td>
+<td style="text-align: left;">Items belonging to that same template</td>
+<td style="text-align: left;">❌ Not accessible from other templates or hosts</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Host-level value map</strong></td>
+<td style="text-align: left;">Directly on a specific host</td>
+<td style="text-align: left;">Items defined directly on that host</td>
+<td style="text-align: left;">❌ Not accessible by other hosts or templates</td>
+</tr>
+</tbody>
+</table>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>There is no such thing as a global value map. Each map is strictly local to
+its parent template or host. To reuse a map elsewhere, you must export/import
+or recreate it under the new object.</p>
+</details>
+<h3 id="types-of-mappings">Types of Mappings</h3>
+<p>A value map can contain one or more mapping rules, which determine how an incoming
+raw value is translated.</p>
+<p>Zabbix 8 supports the following mapping rule types:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Mapping Type</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Exact value</strong></td>
+<td style="text-align: left;">One-to-one translation of a specific value</td>
+<td style="text-align: left;"><code>1 → Up</code>, <code>2 → Down</code>, <code>3 → Unknown</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Range mapping</strong></td>
+<td style="text-align: left;">Applies to any value within a range</td>
+<td style="text-align: left;"><code>0–49 → Normal</code>, <code>50–79 → Warning</code>, <code>80–100 → Critical</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Pattern (regex)</strong></td>
+<td style="text-align: left;">Matches values by regular expression</td>
+<td style="text-align: left;"><code>^ERR.* → Error detected</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Default value</strong></td>
+<td style="text-align: left;">Fallback if no other rule matches</td>
+<td style="text-align: left;"><code>* → Undefined</code></td>
+</tr>
+</tbody>
+</table>
+<p>Mappings are evaluated from top to bottom — the first match wins.</p>
+<h3 id="example-template-level-value-map">Example: Template-Level Value Map</h3>
+<p>In a custom Template Network Switch, you might define:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Raw value</th>
+<th style="text-align: left;">Mapped text</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Interface Up</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Interface Down</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Interface Testing</td>
+</tr>
+<tr>
+<td style="text-align: left;">*</td>
+<td style="text-align: left;">Unknown State</td>
+</tr>
+</tbody>
+</table>
+<p>Items inside the template that return SNMP interface status (ifOperStatus) can
+reference this value map directly.</p>
+<h3 id="example-host-level-value-map">Example: Host-Level Value Map</h3>
+<p>For a specific host, e.g. Switch A, you might define:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Raw value</th>
+<th style="text-align: left;">Mapped text</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Operational</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Non-operational</td>
+</tr>
+</tbody>
+</table>
+<p>Only items defined directly on Switch A (not inherited from a template) can use
+this map. If the same host a template is applied, that host will use the
+template’s value map instead of the host-level one for items from the template.</p>
+<h4 id="some-good-practices-for-value-maps">Some good practices for value maps</h4>
+<ul>
+<li>Keep template level value maps technology specific (e.g. SNMP interface, SMART
+  disk status).</li>
+<li>Define host level maps only when customization is necessary for that device.</li>
+<li>Maintain consistent naming conventions (Interface Status, Disk Health) across
+  templates to simplify export/import.</li>
+<li>If multiple templates require the same mapping logic, simply define identical
+  value maps within each template. Zabbix does not provide cross-template sharing,
+  so each template must contain its own copy of the map definition.</li>
+</ul>
+<h2 id="template-dashboards">Template Dashboards</h2>
+<p>Template dashboards allow you to attach pre-designed visual dashboards directly
+to a template. When the template is linked to a host, Zabbix automatically creates
+a <strong>host-specific dashboard instance</strong> based on that template. This makes it possible
+to provide consistent visualizations for every host or application without manually
+building dashboards for each one.</p>
+<h3 id="where-to-find-template-dashboards">Where to Find Template Dashboards</h3>
+<p>Template dashboards can be accessed and edited under:</p>
+<p><code>Data collection → Templates → [select template] → Dashboards tab</code></p>
+<p>Each template may include one or more dashboards.
+When a host is linked to a template containing a dashboard, that dashboard appears
+automatically under:</p>
+<p><code>Monitoring → Hosts → [select host] → Dashboards tab</code></p>
+<p>This dashboard is generated dynamically for the selected host, showing metrics
+and graphs populated with that host’s data.</p>
+<h3 id="purpose-and-use-cases">Purpose and Use Cases</h3>
+<p>Template dashboards are most useful for application-level or host-specific visualization.
+They provide a structured, ready-to-use view tailored to the technology being monitored.</p>
+<p>Typical Use Cases:</p>
+<ul>
+<li>Application dashboards:<ul>
+<li>A Template App PostgreSQL can include charts for query throughput, buffer
+  cache hit ratio, replication delay, and trigger problem widgets.</li>
+<li>When linked, each database instance automatically gains its own PostgreSQL
+  performance dashboard.</li>
+</ul>
+</li>
+<li>Operating system dashboards:<ul>
+<li>Template OS Linux may display CPU load, memory utilization, filesystem usage,
+  and system uptime widgets.</li>
+</ul>
+</li>
+<li>Network device dashboards:<ul>
+<li>Template Net Cisco SNMP could show interface bandwidth, packet errors, and
+  uptime.</li>
+</ul>
+</li>
+</ul>
+<p>These dashboards ensure consistent presentation and help operators quickly understand
+the health of any host using that template.</p>
+<h3 id="dashboard-components">Dashboard Components</h3>
+<p>Template dashboards support the same widget types as user dashboards, including:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Widget Examples</th>
+<th style="text-align: left;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Data visualization</strong></td>
+<td style="text-align: left;">Graphs, time series, top N</td>
+<td style="text-align: left;">Show trends and metric comparisons</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Status views</strong></td>
+<td style="text-align: left;">Problems, Item values, SLA widgets</td>
+<td style="text-align: left;">Real-time status per host/application</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Service overview</strong></td>
+<td style="text-align: left;">Business service state, SLA</td>
+<td style="text-align: left;">Map triggers to service impact</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Layout elements</strong></td>
+<td style="text-align: left;">Text, maps, URL embeds</td>
+<td style="text-align: left;">Add context, documentation, or external views</td>
+</tr>
+</tbody>
+</table>
+<p>Each widget automatically substitutes host-specific data when rendered under
+<code>Monitoring</code> → <code>Hosts</code> → <code>Dashboards</code>. No manual host configuration is required.</p>
+<p><img alt="templates/ch06.05-template-dashboards.png" src="../../../ch06-zabbix-templates/templates/ch06.05-template-dashboards.png"/></p>
+<h3 id="some-good-practices_1">Some Good Practices</h3>
+<ul>
+<li><strong>Keep dashboards concise:</strong> Focus on the key health indicators of that application
+  or system.</li>
+<li><strong>Leverage macros:</strong> Use template macros (e.g., {$PG.DBNAME}) inside widgets
+  to make them adaptive across instances.</li>
+<li><strong>Group widgets logically:</strong> Use grid layout — metrics at top, triggers below,
+  historical trends on the side.</li>
+<li><strong>Document context:</strong> Include a Text widget describing what each graph shows
+  or what thresholds mean.</li>
+<li><strong>Use template dashboards:</strong> for “per-instance” visibility, and user dashboards
+  for multi-host or environment-wide overviews.</li>
+</ul>
+<h3 id="example-template-app-postgresql">Example: Template App PostgreSQL</h3>
+<p>A typical Template App PostgreSQL dashboard might include:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Widget</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Graph</strong></td>
+<td style="text-align: left;">PostgreSQL transactions per second</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Graph</strong></td>
+<td style="text-align: left;">Replication lag in seconds</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Item Value</strong></td>
+<td style="text-align: left;">Cache hit ratio (<code>pg.stat.cache.hit</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Problem Widget</strong></td>
+<td style="text-align: left;">Current trigger status for this instance</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Text Widget</strong></td>
+<td style="text-align: left;">Notes: tuning guide, connection info, etc.</td>
+</tr>
+</tbody>
+</table>
+<p>Once the template is linked to hosts db01, db02, and db03, Zabbix automatically
+renders <strong>three dashboards,</strong> each showing real metrics for its respective instance.</p>
+<h3 id="advantages-of-template-dashboards">Advantages of Template Dashboards</h3>
+<ul>
+<li><strong>Consistency:</strong> every host or application gets the same visualization standard.</li>
+<li><strong>Zero manual setup:</strong> dashboards appear automatically on linking.</li>
+<li><strong>Version control:</strong> dashboards are stored inside templates and follow the same
+  YAML export/import flow.</li>
+<li><strong>Maintainability:</strong> when you update a template dashboard, all hosts using that
+  template receive the new version automatically.</li>
+<li><strong>Scalability:</strong> ideal for large environments — one dashboard design scales to
+  hundreds of hosts.</li>
+</ul>
+<h2 id="template-management-operations">Template Management Operations</h2>
+<p>Template management in Zabbix 8.0 offers multiple actions for maintaining, cloning,
+cleaning, and synchronizing templates efficiently.</p>
+<p>These operations are accessible under:</p>
+<p><code>Data collection → Hosts</code> on the host itself.</p>
+<p><img alt="templates/ch06.06-template-unlink-clear.png" src="../../../ch06-zabbix-templates/templates/ch06.06-template-unlink-clear.png"/></p>
+<h3 id="unlink-vs-unlink-and-clear">Unlink vs. Unlink and Clear</h3>
+<ul>
+<li>
+<p><strong>Unlink:</strong> Detaches the template from a host but retains all inherited items,
+  triggers, and discovery rules on the host.</p>
+</li>
+<li>
+<p><strong>Unlink and Clear:</strong> Removes the template and deletes all entities that originated
+  from it (items, triggers, graphs, and discoveries).</p>
+</li>
+</ul>
+<p>Use Unlink to preserve historical data, and Unlink and Clear when you need to remove
+the monitoring logic completely.</p>
+<h3 id="clone">Clone</h3>
+<p>The <code>clone</code> button creates an exact copy of an existing template, including all
+items, triggers, dashboards, macros, and value maps. Every entity within the clone
+receives a new UUID, ensuring full independence from the original.</p>
+<p><code>Data collection</code> → <code>Templates</code> on the template itself.</p>
+<p><img alt="templates/ch06.07-template-delete-clear.png" src="../../../ch06-zabbix-templates/templates/ch06.07-template-delete-clear.png"/></p>
+<p>Example:</p>
+<p><code>Template OS Linux → Clone → Template OS Rocky Linux (Custom)</code></p>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>Always rename cloned templates immediately to reflect their intended purpose
+or environment as we discussed before.</p>
+</details>
+<h3 id="delete-vs-delete-and-clear">Delete vs. Delete and Clear</h3>
+<ul>
+<li><strong>Delete:</strong> Removes the template definition but leaves all items and triggers
+  (now orphaned) on linked hosts.</li>
+<li><strong>Delete and Clear:</strong> Deletes both the template and any entities created on
+  linked hosts.</li>
+</ul>
+<p>When performing cleanup or migration, Delete and Clear ensures no residual items
+remain in configuration cache.</p>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>Deletes happen immediately so there is no undo. Also deletes are performed
+on the database immediately so a large scale delete could have a serious
+performance impact.</p>
+</details>
+<h3 id="mass-update-of-templates">Mass Update of Templates</h3>
+<p>Zabbix 8 provides a Mass update feature to modify multiple templates simultaneously.
+This is available via:</p>
+<p><code>Data collection → Templates → Mass update</code></p>
+<p>It’s particularly useful for enforcing consistent macro values, tags, or template
+group structures across many templates.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Examples of Updatable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>General</strong></td>
+<td style="text-align: left;">Template groups, name, description, tags</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Macros</strong></td>
+<td style="text-align: left;">Add, update, or remove template-level macros</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Discovery rules</strong></td>
+<td style="text-align: left;">Adjust update intervals or filter expressions</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dashboards</strong></td>
+<td style="text-align: left;">Replace or refresh template dashboards</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Permissions</strong></td>
+<td style="text-align: left;">Move templates between groups (changes RBAC context)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="behavior-and-cautions">Behavior and Cautions</h3>
+<ul>
+<li>Only the properties you select are overwritten.</li>
+<li>Existing macros or tags with identical names are replaced.</li>
+<li>Changes apply immediately; no rollback is available.</li>
+<li>When moving templates to a different group, verify that related user groups have
+  the proper permissions on that target group.</li>
+</ul>
+<h3 id="some-good-practices_2">Some Good Practices</h3>
+<ul>
+<li>Use mass update for homogeneous template sets (for example, all OS templates or
+  all network device templates).</li>
+<li>For larger or version-controlled environments, rely on YAML export/import through
+  Git or CI/CD to ensure traceability and change control.</li>
+<li>Always test mass updates on a staging instance before production rollout.</li>
+</ul>
+<h2 id="importing-and-exporting-templates">Importing and Exporting Templates</h2>
+<p>Templates can be imported or exported in both YAML, JSON and XML formats, although
+YAML is strongly preferred for readability and version control. It is also the
+standard now in Zabbix.</p>
+<h3 id="exporting">Exporting</h3>
+<p>Navigate to <code>Data collection</code> → <code>Templates</code> → <code>Select Your Template(s)</code> → <code>Export</code>, then select <code>YAML</code>.</p>
+<p><img alt="templates/ch06.08-template-export.png" src="../../../ch06-zabbix-templates/templates/ch06.08-template-export.png"/></p>
+<p>A typical export looks like:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nt">zabbix_export</span><span class="p">:</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">'8.0'</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">  </span><span class="nt">templates</span><span class="p">:</span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uuid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a4c1d0f2d7de4a40a8b347afeb9a88df</span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">'Template</span><span class="nv"> </span><span class="s">OS</span><span class="nv"> </span><span class="s">Rocky</span><span class="nv"> </span><span class="s">Linux'</span>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">      </span><span class="nt">groups</span><span class="p">:</span>
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'Templates/Operating</span><span class="nv"> </span><span class="s">Systems/Linux'</span>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">      </span><span class="nt">macros</span><span class="p">:</span>
+</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">macro</span><span class="p">:</span><span class="w"> </span><span class="s">'{$CPU_UTIL_MAX}'</span>
+</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">'90'</span>
+</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">      </span><span class="nt">items</span><span class="p">:</span>
+</span><span id="__span-6-12"><a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">'System</span><span class="nv"> </span><span class="s">uptime'</span>
+</span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">'system.uptime'</span>
+</span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZABBIX_AGENT</span>
+</span></code></pre></div>
+<h3 id="importing-templates">Importing Templates</h3>
+<p>The import process in Zabbix 8.0  is intelligent — it compares UUIDs, detects
+differences, and optionally merges or removes entities.
+You can import templates via:</p>
+<p><code>Data collection → Templates → Import</code></p>
+<p>The button is on the upper right side of your window.</p>
+<p><img alt="templates/ch06.09-template-export.png" src="../../../ch06-zabbix-templates/templates/ch06.09-template-export.png"/></p>
+<p>Zabbix supports both <code>YAML</code> <code>JSON and</code>XML`, though YAML is preferred due to its
+readability and UUID retention.</p>
+<h3 id="import-options-and-their-effects">Import Options and Their Effects</h3>
+<p>When importing a template, the import dialog presents several options that determine
+how conflicts and differences are handled:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Option</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Create new</strong></td>
+<td style="text-align: left;">Import entities that do not exist yet</td>
+<td style="text-align: left;">New templates and their entities are created</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Update existing</strong></td>
+<td style="text-align: left;">Update entities that already exist based on matching UUIDs</td>
+<td style="text-align: left;">Existing templates are modified to match the import file</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Delete missing</strong></td>
+<td style="text-align: left;">Remove entities that exist in Zabbix but not in the import file</td>
+<td style="text-align: left;">Entities absent from the import are deleted</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Replace existing template</strong></td>
+<td style="text-align: left;">Forcefully overwrite all existing definitions</td>
+<td style="text-align: left;">Full replacement, including dashboards and discovery rules</td>
+</tr>
+</tbody>
+</table>
+<h4 id="uuid-based-matching">UUID-Based Matching</h4>
+<p>Starting with Zabbix 6.2, template imports rely primarily on UUIDs, not names,
+for matching.</p>
+<ul>
+<li>If the UUID exists, Zabbix updates that object — even if the name differs.</li>
+<li>If no UUID matches, Zabbix treats the object as new and creates it.</li>
+<li>If an object shares the same name but has a different UUID, it is treated as
+  a different entity — no merge occurs.</li>
+</ul>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>When re-importing from version-controlled YAML, always keep original UUIDs
+intact. Editing or regenerating them will cause duplicates rather than updates.</p>
+</details>
+<h4 id="diff-visualization">Diff Visualization</h4>
+<p>Before confirming an import, Zabbix displays a visual diff screen showing what will change.
+This interface uses color coding to illustrate modifications at a granular level:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Color</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">🟩 <strong>Green</strong></td>
+<td style="text-align: left;">Elements that will be added or new attribute values</td>
+</tr>
+<tr>
+<td style="text-align: left;">🟥 <strong>Red</strong></td>
+<td style="text-align: left;">Elements that will be removed or replaced</td>
+</tr>
+</tbody>
+</table>
+<p>Zabbix compares entities by UUID and lists each difference per category, items,
+triggers, graphs, macros, value maps, discovery rules, and dashboards.
+Modified objects show their old values in red and new values in green, providing
+a clear preview of all pending changes.</p>
+<h4 id="update-existing-behavior">“Update Existing” Behavior</h4>
+<p>When Update existing is enabled:</p>
+<ul>
+<li>Entities with matching UUIDs are updated.</li>
+<li>Entities not in the import remain unchanged unless Delete missing is also checked.</li>
+<li>Template-level fields (name, groups, description, macros, dashboards) are replaced
+  by those from the import.</li>
+</ul>
+<p>This mode is ideal for incremental updates or synchronization with a Git-tracked source.</p>
+<h4 id="delete-missing-behavior">“Delete Missing” Behavior</h4>
+<p>With Delete missing enabled, Zabbix removes any element present in the database
+but absent in the import file:</p>
+<ul>
+<li>Items, triggers, discovery rules, graphs, dashboards, and value maps</li>
+<li>Orphaned macros and outdated entities</li>
+</ul>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p><strong>This action is destructive.</strong>
+It permanently removes definitions and historical associations.
+Use only when performing full synchronization from version-controlled sources
+or replacing obsolete templates.</p>
+</details>
+<p>When both Update existing and Delete missing are checked, the import performs a
+full sync. The resulting template will exactly match the import file.</p>
+<h4 id="error-handling">Error Handling</h4>
+<p>Zabbix validates all entities before applying the import.
+If inconsistencies are found, the import halts and reports detailed errors, such
+as:</p>
+<ul>
+<li>Missing referenced value maps or linked templates</li>
+<li>Invalid macro names or syntax</li>
+<li>Circular template linkage</li>
+<li>Version mismatches between export and server</li>
+</ul>
+<p>The error list shows affected entity names, allowing quick correction and re-import.</p>
+<h4 id="safe-import-workflow">Safe Import Workflow</h4>
+<p>For production grade environments:</p>
+<ul>
+<li><strong>Export first:</strong> always back up current templates.</li>
+<li><strong>Validate syntax:</strong> use yamllint or JSON validators.<ul>
+<li>yamllint template.yaml</li>
+<li>jq empty template.json</li>
+</ul>
+</li>
+<li><strong>Preview diff:</strong> check additions (green) and deletions (red).</li>
+<li><strong>Test in staging:</strong> confirm behavior before production import.</li>
+<li><strong>Promote via automation:</strong> use the Zabbix API (configuration.import) for reproducible
+  CI/CD deployments.</li>
+</ul>
+<p>???+ tip</p>
+<div class="language-text highlight"><pre><span></span><code>  Automating template synchronization via API and Git ensures identical configurations
+  across multiple Zabbix servers or environments.
+</code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>Templates in Zabbix 8.0 are now fully self-contained, UUID-tracked, and automation 
+ready. With improved import/export handling, color-coded diffs, and fine-grained
+RBAC, they deliver both control and scalability.</p>
+<p>By following some good practices, cloning instead of editing <code>built-ins</code>, organizing
+templates by group and tag, tuning intervals, maintaining YAML or JSON in Git,
+and verifying diffs before import, administrators achieve consistent, predictable
+monitoring deployments.</p>
+<p>Templates are no longer mere configuration helpers; they are core assets in a modern
+observability strategy, enabling reproducible, automated, and standards driven
+monitoring across diverse infrastructures.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>What are the main configuration elements a Zabbix template can contain, and how do they contribute to standardizing monitoring?</li>
+<li>Explain what happens to UUIDs when a template is cloned.</li>
+<li>Why is it important to preserve UUIDs when managing templates through YAML or Git?</li>
+<li>Describe how tags are inherited when a template is applied to a host.</li>
+<li>Which tags take precedence if both the host and the template define the same key?</li>
+<li>Why can't a template-level value map be used by local host items?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/templates">https://www.zabbix.com/documentation/current/en/manual/config/templates</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/items/mapping">https://www.zabbix.com/documentation/current/en/manual/config/items/mapping</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/templates/template">https://www.zabbix.com/documentation/current/en/manual/config/templates/template</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/xml_export_import">https://www.zabbix.com/documentation/current/en/manual/xml_export_import</a></li>
+<li><a href="https://git.zabbix.com/repos?visibility=public">https://git.zabbix.com/repos?visibility=public</a></li>
+<li><a href="https://jsonpathfinder.com/">https://jsonpathfinder.com/</a></li>
+<li><a href="https://www.yamllint.com/">https://www.yamllint.com/</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Terug naar boven
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Gekopieerd naar klembord", "clipboard.copy": "Kopi\u00ebren naar klembord", "search.result.more.one": "1 extra overeenkomst op deze pagina", "search.result.more.other": "# extra overeenkomsten op deze pagina", "search.result.none": "Geen overeenkomende documenten", "search.result.one": "1 overeenkomende document", "search.result.other": "# overeenkomende documenten", "search.result.placeholder": "Typ om te beginnen met zoeken", "search.result.term.missing": "Ontbreekt", "select.version": "Selecteer versie"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>

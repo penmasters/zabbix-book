@@ -1,0 +1,2604 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn how to back up Zabbix using PostgreSQL, MySQL, or MariaDB. Covers logical
+and physical backups, retention, dumps, restore testing, and best practices.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/ru/ch14-zabbix-maintenance/taking-backups/">
+      
+      
+        <link rel="prev" href="../internal-health/">
+      
+      
+        <link rel="next" href="../upgrades/">
+      
+      
+        
+          <link rel="alternate" href="../../../fr/ch14-zabbix-maintenance/taking-backups/" hreflang="fr">
+        
+          <link rel="alternate" href="../../../nl/ch14-zabbix-maintenance/taking-backups/" hreflang="nl">
+        
+          <link rel="alternate" href="../../../pt_BR/ch14-zabbix-maintenance/taking-backups/" hreflang="pt_BR">
+        
+          <link rel="alternate" href="./" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch14-zabbix-maintenance/taking-backups/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Backups - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Backups">
+    <meta property="og:description" content="Learn how to back up Zabbix using PostgreSQL, MySQL, or MariaDB. Covers logical and physical backups, retention, dumps, restore testing, and best practices.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/ru/ch14-zabbix-maintenance/taking-backups/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Backups">
+    <meta name="twitter:description" content="Learn how to back up Zabbix using PostgreSQL, MySQL, or MariaDB. Covers logical and physical backups, retention, dumps, restore testing, and best practices.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#backup-strategies" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Эта страница еще не переведена на ЯЗЫК, поэтому она отображается на английском языке.
+            <a href="/gmc/ru/contribute/#translations">Поддержите нас и переведите!</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Выберите версию";
+        const gGMC_TRANSLATE_CTA = "Поддержите нас и переведите!";
+        const gGMC_PAGE_LOCALE = "ru";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Backups
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch14-zabbix-maintenance/taking-backups/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch14-zabbix-maintenance/taking-backups/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt_BR/ch14-zabbix-maintenance/taking-backups/" hreflang="pt_BR" class="md-select__link">
+              Brazillian Portugese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch14-zabbix-maintenance/taking-backups/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/network-host-discovery/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_19">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 14 : Maintenance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../maintenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../internal-health/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internal health
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backups
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backups
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mariadb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MariaDB
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MariaDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-logical-database-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a Logical Database Backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-of-logical-dumps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations of Logical dumps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PostgreSQL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PostgreSQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logical-dumps-with-pg_dump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical dumps with pg_dump
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#physical-backups-and-wal-archiving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Physical Backups and WAL Archiving
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pgbackrest-and-pgbarman-the-preferred-production-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PgBackRest and PgBarman: The Preferred Production Solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup-size-and-zabbix-data-characteristics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backup Size and Zabbix Data Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-and-off-host-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage and Off-Host Backups
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage and Off-Host Backups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hot-standby-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hot standby database
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-important-config-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other important (config) files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upgrades/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upgrades
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mariadb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MariaDB
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MariaDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-logical-database-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a Logical Database Backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-of-logical-dumps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations of Logical dumps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PostgreSQL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PostgreSQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logical-dumps-with-pg_dump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical dumps with pg_dump
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#physical-backups-and-wal-archiving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Physical Backups and WAL Archiving
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pgbackrest-and-pgbarman-the-preferred-production-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PgBackRest and PgBarman: The Preferred Production Solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup-size-and-zabbix-data-characteristics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backup Size and Zabbix Data Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-and-off-host-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage and Off-Host Backups
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage and Off-Host Backups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hot-standby-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hot standby database
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-important-config-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other important (config) files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Навигация" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 14 : Maintenance
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="advanced">
+      advanced
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch14-zabbix-maintenance/taking-backups.md" title="Посмотреть исходный код страницы" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="backup-strategies">Backup strategies</h1>
+<p>A logical backup is a copy of the contents of the database, usually performed as a 
+dump of the contents to a single file, where as a physical backup is a copy of the
+files the database consists of. A physical backup can be either consistent or
+non-consistent, also called "hot". A consistent backup can be restored as is, but
+a non-consistent backup has to be recovered using archived log files. Taking a 
+consistent backup usually has performance implications, as all writes to the 
+datafiles must be postponed for the duration of the backup. 
+A logical backup can only restore data to the point in time where the dump has
+been taken, while a physical backup can be recovered to any point in time using 
+the archived logs. For this reason, a physical backup is a more secure and and
+mature method of protecting the database when compared to a logical backup.
+However, since Zabbix does not handle financial transactions, but only observations, 
+alerts and similar, it is usually not a big deal, if the backups are done with
+dumps instead of physical backups.
+Zabbix relies heavily on the underlying database not only for the collected items
+(metrics), but also for storing the Zabbix configuration we create in the Zabbix
+frontend. This database should either be a MariaDB, PostgreSQL or MySQL database
+in Zabbix 8.0 as those are the official production supported database types.</p>
+<p>Since our history, trends and configuration data is all stored in this central
+database, taking a meaningful backup of our Zabbix environment is fairly simple.
+All we have to do is pick a backup method we like for our chosen database and then
+use that to backup the database. Giving you a backup you can easily restore 99%
+of your Zabbix environment with.</p>
+<p>Easily forgotten, there are also some important configuration files and you might
+even have some scripts hanging around on your filesystem that you need to backup.
+The configuration files could be restored manually with not too much effort, but
+those scripts could especially take a long time to restore. As such it is always
+important to also backup these additional files. We will explore both the database
+and file backups in this topic within the book.</p>
+<p>Various options exist for creating a database backup.
+Dumping the database content to a flat file is the easiest and simplest method.
+Physical backups requires more effort, usually installing a backup agent and
+configuring the backup software as well as configuring the database to run with 
+archiving of the database logs, and continous deletion of the archived logs.
+With regular backups of the database and the archived logs, a restore is possible 
+to the latest committed transaction in most databases.</p>
+<p>For dumping the contents of the database, various tools exists:</p>
+<ul>
+<li><strong><code>mariadb-dump utility</code>:</strong> This is a built-in tool shipped with MariaDB, allowing you
+  to create reliable .sql file dumps of the MariaDB database. It creates a file with
+  SQL statements, allowing us to restore our database.</li>
+<li><strong><code>mysqldump utility</code>:</strong> This tool allows us to do the same as mariadb-dump, but is
+  the official MySQL variant. Keep in mind that MariaDB and MySQL are going in
+  different directions with their codebase, so it is recommended to use the right
+  tool for your database.</li>
+<li><strong><code>pg_dump utility</code>:</strong> PostgreSQL also has a built-in tool to allow us to create .sql
+  file dumps of our PostgreSQL database. This creates a very similar .sql file with
+  SQL statements, allowing us to restore our database fully.</li>
+<li><strong><code>(Virtual) Machine disk snapshots</code>:</strong> There are various utilities on the market to
+  create (incremental) snapshots of a database server. Some examples are snapshots
+  built into Azure/Amazon AWS, Proxmox PBS server, Veeam, Rubrik and more.
+  Beware, that VM disk snapshots cannot be considered safe backups of a database, as
+  there is a significant chance of the data not being consistent.</li>
+</ul>
+<h2 id="mariadb">MariaDB</h2>
+<p>Creating database dumps on MariaDB using the official <code>mariadb-dump</code> utility is
+fairly simple. When we have the mariadb-client installed we should already have the 
+<code>mariadb-dump</code> utility installed as well. Double-check on your Zabbix database server 
+CLI with the command below.</p>
+<div class="admonition info">
+<p class="admonition-title">Check if mariadb-dump is installed</p>
+<p>Linux
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mariadb-dump<span class="w"> </span>--version
+</span></code></pre></div></p>
+</div>
+<p>If your get no result, try to install the MariaDB client.</p>
+<div class="admonition info">
+<p class="admonition-title">Install MariaDB client</p>
+<p>Red Hat
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>dnf<span class="w"> </span>install<span class="w"> </span>mariadb
+</span></code></pre></div></p>
+<p>Ubuntu
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>mariadb-client
+</span></code></pre></div></p>
+</div>
+<h3 id="creating-a-logical-database-backup">Creating a Logical Database Backup</h3>
+<p>If the <code>mariadb-dump</code> tool is installed, a basic dump of a Zabbix database can be 
+created with a single command. The options used below are specifically chosen to 
+balance consistency, performance, and compatibility during restore operations.</p>
+<div class="admonition info">
+<p class="admonition-title">Create a Zabbix MariaDB database backup</p>
+<p>Linux
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>mysqldump<span class="w"> </span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>--add-drop-table<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>--add-locks<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>--extended-insert<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>--single-transaction<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>--quick
+</span></code></pre></div></p>
+</div>
+<p>The <code>--single-transaction</code> option ensures a consistent snapshot for transactional
+tables without locking them for extended periods, which is especially important
+for active Zabbix systems. The <code>--quick</code> option reduces memory usage during the dump
+process, making the dump of the database more predictable under load.</p>
+<p>This will login using MariaDB Unix socket authentication and create a database
+dump in your current working directory. It is also possible to pass your <code>username</code>
+and <code>password</code> directly, if password-based authentication is required,</p>
+<div class="admonition info">
+<p class="admonition-title">Create a Zabbix MariaDB database dump with username and password</p>
+<p>Linux
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>mysqldump<span class="w"> </span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>--add-drop-table<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>--add-locks<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>--extended-insert<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>--single-transaction<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>--quick<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>-u&lt;USER&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>-p&lt;PASSWORD&gt;<span class="w"> </span>
+</span></code></pre></div></p>
+</div>
+<p>Keep in mind that passing plain text passwords on the CLI might not be secure.</p>
+<p>One more issue with creating the database dump like this, it takes up a lot of space 
+on your disk. There is one more improvement to recommend here to make sure the 
+backup is created as efficiently as possible. We can compress the dump before
+storing it to disk. To do this, we can install a compression tool like <code>lz4</code>.</p>
+<div class="admonition info">
+<p class="admonition-title">Install lz4 compression tool</p>
+<p>Red Hat
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>dnf<span class="w"> </span>install<span class="w"> </span>lz4
+</span></code></pre></div></p>
+<p>Ubuntu
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>lz4
+</span></code></pre></div></p>
+</div>
+<p>Using lz4, we can now compress our database dump by using a quick pipe in our
+<code>mariadb-dump</code> command.</p>
+<div class="admonition info">
+<p class="admonition-title">Create a Zabbix MariaDB database dump with compression</p>
+<p>Linux
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>mysqldump<span class="w"> </span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>--add-drop-table<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>--add-locks<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>--extended-insert<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>--single-transaction<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>--quick<span class="w"> </span><span class="p">|</span><span class="w"> </span>lz4<span class="w"> </span>&gt;<span class="w"> </span>zabbix.sql.lz4
+</span></code></pre></div></p>
+</div>
+<p>This dump will include all tables of our <code>zabbix</code> database and compress it with lz4 
+to store it as <code>zabbix.sql.lz4</code>. Keep in mind, it is always recommended to store the 
+database dump somewhere away from our database server. There are several options to 
+make this work in a safe manner.</p>
+<ul>
+<li>Attach a separate dump disk to store the dumps on (still within the same
+  server however)</li>
+<li>Store to separate disk and then transfer to remote storage (more secure)</li>
+<li>Directly pipe the lz4 compressed data to a tool like <code>rsync</code> to send it over
+  SSH to a remote storage location (takes up the least amount of duplicated
+  resources)</li>
+</ul>
+<h3 id="limitations-of-logical-dumps">Limitations of Logical dumps</h3>
+<p>While logical backups are simple and reliable, they do not scale indefinitely.
+On large Zabbix installations with high data retention, dump times and restore
+times can become significant. Logical backups also do not support point-in-time
+recovery, meaning restores can only be performed to the moment the backup completed.</p>
+<p>For this reason, logical dumps are best suited for:</p>
+<ul>
+<li>Small to medium-sized Zabbix installations</li>
+<li>Environments with modest recovery time objectives</li>
+<li>Systems without strict availability requirements</li>
+</ul>
+<p>Larger environments may benefit from physical or snapshot-based backup solutions,
+provided database consistency is guaranteed.</p>
+<h2 id="postgresql">PostgreSQL</h2>
+<p>When Zabbix uses PostgreSQL as its backend database, the database becomes the most
+critical component of the entire monitoring system. All configuration, state, history,
+and trends are stored there, and without a usable database dump/backup, recovery of a
+failed Zabbix server is effectively impossible.</p>
+<p>Unlike file-based backups, PostgreSQL requires database-aware backup methods. Simply
+copying the data directory while the database is running will almost certainly
+result in a corrupted and unusable backup. For this reason, PostgreSQL provides
+its own backup mechanisms, and choosing the correct one depends largely on the size
+of the Zabbix environment and the acceptable recovery time.</p>
+<h3 id="logical-dumps-with-pg_dump">Logical dumps with pg_dump</h3>
+<p>The simplest way to dump a PostgreSQL database is by using pg_dump. This tool
+performs a logical dump, meaning it exports the contents of the database as SQL
+statements or a structured archive format.</p>
+<p>For small Zabbix installations or non-production environments, pg_dump can be sufficient.
+It is easy to use, requires no special PostgreSQL configuration, and produces dumps that 
+are portable across systems and PostgreSQL minor versions.</p>
+<p>A typical dump of a Zabbix database using pg_dump looks like this:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>pg_dump<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--format<span class="o">=</span>custom<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span>--file<span class="o">=</span>/backup/zabbix.dump<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span>zabbix
+</span></code></pre></div>
+<p>Restoring such a dump is equally straightforward:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>pg_restore<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span>--clean<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span>--dbname<span class="o">=</span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span>zabbix.dump
+</span></code></pre></div>
+<p>While convenient, dumps have important limitations in a Zabbix context. On systems 
+with large history or trend tables, dumps can take a long time to complete and may 
+put noticeable load on the database server. Logical dumps also do not support 
+point-in-time recovery, meaning it is impossible to restore the database to a 
+specific moment before a failure.</p>
+<p>For these reasons, pg_dump should be viewed as an entry-level solution rather than
+a long-term strategy for production Zabbix systems.</p>
+<h3 id="physical-backups-and-wal-archiving">Physical Backups and WAL Archiving</h3>
+<p>For medium and large Zabbix installations, physical backups are generally more
+appropriate. A physical backup captures the PostgreSQL data files directly, together
+with the write-ahead log (WAL) files required to replay changes. This approach
+allows for significantly faster restores and enables point-in-time recovery (PITR).</p>
+<p>Physical backups are usually created using pg_basebackup, while WAL files are
+archived continuously in the background. From PostgreSQL’s perspective, this
+is the same mechanism used for replication, which makes it both reliable and well
+tested.</p>
+<p>Once WAL archiving is enabled in PostgreSQL, a base backup of the Zabbix database
+cluster can be taken without stopping the database. In the event of a failure,
+PostgreSQL can be restored to a precise moment in time by replaying WAL files
+up to the desired point.</p>
+<p>This approach scales much better than logical backups and is well suited for
+Zabbix installations that generate a large volume of monitoring data. However,
+it requires more careful planning and disciplined retention management, as both
+base backups and WAL files must be preserved consistently.</p>
+<h3 id="pgbackrest-and-pgbarman-the-preferred-production-solution">PgBackRest and PgBarman: The Preferred Production Solution</h3>
+<p>For production Zabbix environments, especially those with large databases or high
+availability requirements, dedicated PostgreSQL backup frameworks are strongly
+recommended. Among these, PgBackRest and PgBarman are the two most widely adopted
+and battle-tested solutions.</p>
+<p>Both tools are designed specifically for physical PostgreSQL backups with continuous
+WAL archiving, providing features that go far beyond what is possible with manual base
+backups. They support point-in-time recovery, enforce retention policies, and ensure
+backup integrity through automated verification steps.</p>
+<p>PgBackRest is often favored in environments where performance and flexibility are
+key concerns. It supports full, differential, and incremental backups, efficient
+compression, and parallel processing, which makes it particularly suitable for Zabbix
+databases with high write rates. PgBackRest integrates well with modern PostgreSQL
+high-availability setups and is commonly used in combination with cluster managers
+and load balancers.</p>
+<p>PgBarman, on the other hand, follows a more centralized backup model. It is typically
+deployed on a dedicated backup server that manages backups for one or more PostgreSQL
+instances. This approach can be attractive in environments where backup operations
+must be isolated from database servers or managed by a separate operations team.
+PgBarman also provides reliable WAL management and point-in-time recovery, making
+it a solid choice for enterprise Zabbix installations.</p>
+<p>From a Zabbix perspective, both tools solve the same fundamental problem: they allow
+the PostgreSQL database to be backed up consistently while Zabbix continues to
+ingest monitoring data. The choice between PgBackRest and PgBarman is usually
+driven by operational preferences, existing PostgreSQL standards, and infrastructure
+design rather than functional limitations.</p>
+<p>Regardless of which tool is chosen, the key requirement remains the same: backups
+must be automated, retained according to policy, and restored successfully during
+regular testing. Either PgBackRest or PgBarman meets these requirements and should
+be considered the baseline for serious, production-grade Zabbix deployments.</p>
+<h3 id="backup-size-and-zabbix-data-characteristics">Backup Size and Zabbix Data Characteristics</h3>
+<p>Zabbix databases grow continuously by design. History and trend tables receive
+constant inserts, and without proper housekeeping, backups can quickly become very
+large. This is not a backup problem but a data lifecycle issue.</p>
+<p>Before designing a PostgreSQL backup strategy for Zabbix, it is important to ensure
+that database retention settings are aligned with business needs. Keeping excessive
+history in the database not only increases backup size but also slows down backup
+and restore operations, directly affecting recovery time objectives.</p>
+<p>One way to better control database growth is the use of TimescaleDB, which is supported
+by Zabbix for handling historical data. By storing history and trends in hypertables,
+TimescaleDB allows for more efficient data management and automated data retention
+policies. This can significantly reduce the volume of data that must be retained
+and, by extension, the size of database backups.</p>
+<p>Another approach, typically reserved for advanced or highly specialized environments,
+is to exclude history and trend tables from certain backups. In such designs, configuration
+data is backed up separately from monitoring data, with the understanding that
+historical metrics can be discarded or rebuilt if necessary. This reduces backup
+size and restore time but comes at the cost of losing historical visibility after
+a recovery.</p>
+<p>A well-tuned Zabbix database, whether using native PostgreSQL tables or TimescaleDB,
+combined with physical backups and WAL archiving, results in manageable backup
+sizes and predictable recovery times.</p>
+<h2 id="storage-and-off-host-backups">Storage and Off-Host Backups</h2>
+<p>Regardless of the backup method used, storing backups exclusively on the database
+server itself is insufficient. Hardware failures, filesystem corruption, or
+security incidents can render both the database and its backups unusable.</p>
+<p>Common approaches include:</p>
+<ul>
+<li>Writing backups to a dedicated backup disk</li>
+<li>Transferring backups to remote storage after creation</li>
+<li>Streaming compressed backups directly to a remote system over SSH</li>
+</ul>
+<p>The exact method is less important than ensuring that backups are stored independently
+of the database server and can be accessed during a full system failure.</p>
+<h3 id="hot-standby-database">Hot standby database</h3>
+<p>While it is important to take a backup/dump of the database at regular intervals, 
+it can be a timeconsuming task restoring this backup. For this reason, it can make
+sense to maintain a standby database, which is constantly synced with the changes
+that occurs in the active database, thus having a restored and recovered copy of
+the database running and ready to take over, should a disaster occur on the active 
+database.</p>
+<h2 id="other-important-config-files">Other important (config) files</h2>
+<p>Often overlooked, since we focus so much on the database, are the Zabbix configuration files and possibly custom scripts. For a full restore of your Zabbix environment, these files can not be missed as they are vital to getting Zabbix back online in case of an issue. Of course, configuration files are easy to rebuild with a bit of time. However, it is best practice to also include these to make sure a speedy restoration can happen.</p>
+<p>Let's create a quick working folder to place our backups in.</p>
+<div class="admonition info">
+<p class="admonition-title">Create a Zabbix backup folder</p>
+<p>Linux
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>mkdir<span class="w"> </span>/opt/zabbix-backup/
+</span></code></pre></div></p>
+</div>
+<p>When Zabbix is installed from packages, it will always store the configuration files in a single location. That location <code>/etc/zabbix/</code> should contain most of our important files already. We can take a manual backup with the following command.</p>
+<div class="admonition info">
+<p class="admonition-title">Create a Zabbix configuration files backup</p>
+<p>Linux
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cp<span class="w"> </span>-R<span class="w"> </span>/etc/zabbix/*<span class="w"> </span>/opt/zabbix-backup/
+</span></code></pre></div></p>
+</div>
+<p>You can run this command on all of your Zabbix server, Frontend, Database and Proxy hosts. This should cover the most important configuration files already, but there is another folder that could contain very important files.</p>
+<div class="admonition info">
+<p class="admonition-title">Create other Zabbix files backup</p>
+<p>Linux
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cp<span class="w"> </span>-R<span class="w"> </span>/usr/share/zabbix/<span class="w"> </span>/opt/zabbix-backup/
+</span></code></pre></div></p>
+</div>
+<p>The /usr/share/zabbix/ folder contains important PHP files and Zabbix binaries. A similar folder we should backup is the <code>/usr/lib/zabbix</code> folder, which contains our custom <code>alertscripts</code> and <code>externalscripts</code>.</p>
+<div class="admonition info">
+<p class="admonition-title">Create other Zabbix files backup</p>
+<p>Linux
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cp<span class="w"> </span>-R<span class="w"> </span>/usr/lib/zabbix/<span class="w"> </span>/opt/zabbix-backup/
+</span></code></pre></div></p>
+</div>
+<p>Lastly, it is also recommended to create a backup of your webserver configuration. Depending on if you have <code>httpd</code>, <code>apache2</code> or <code>nginx</code> we will need to create the backup slightly differently. </p>
+<div class="admonition info">
+<p class="admonition-title">Install MariaDB client</p>
+<p>Red Hat HTTPD
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>cp<span class="w"> </span>-R<span class="w"> </span>/etc/httpd/<span class="w"> </span>/opt/zabbix-backup/
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>cp<span class="w"> </span>-R<span class="w"> </span>/var/www/<span class="w"> </span>/opt/zabbix-backup/
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>cp<span class="w"> </span>/etc/httpd/conf.d/zabbix.conf<span class="w">  </span>/opt/zabbix-backup/<span class="w">    </span><span class="sb">```</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>Ubuntu<span class="w"> </span>Apache2
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="sb">```</span>bash
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>cp<span class="w"> </span>-R<span class="w"> </span>/etc/apache2/<span class="w"> </span>/opt/zabbix-backup/
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>cp<span class="w"> </span>-R<span class="w"> </span>/var/www/<span class="w"> </span>/opt/zabbix-backup/
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>cp<span class="w"> </span>/etc/httpd/conf.d/zabbix.conf<span class="w">  </span>/opt/zabbix-backup/
+</span></code></pre></div></p>
+<p>NGINX
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>cp<span class="w"> </span>-R<span class="w"> </span>/etc/nginx/<span class="w"> </span>/opt/zabbix-backup/
+</span></code></pre></div></p>
+</div>
+<p>That should cover all the important files here, but they are only written to a separate folder on the same Linux server now. To create a truly resilient backup, we should write these files somewhere else. There are various solutions here as well.</p>
+<ul>
+<li>Write the files to <code>/opt/zabbix-backup/</code> and copy the folder to a remote location daily</li>
+<li>Grab the files from the filesystem and store them in a Git repository (bonus: You get a nice diff)</li>
+<li>The simple method, ...</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Backing up the Zabbix database is a fundamental part of any maintenance strategy,
+regardless of whether PostgreSQL or MySQL/MariaDB is used as the backend. While
+the specific tools and mechanisms differ between database engines, the underlying
+principles remain the same: backups must be consistent, automated, and aligned with
+the size and criticality of the environment.</p>
+<p>For PostgreSQL-based Zabbix installations, logical backups are suitable only for
+small or non-critical systems. Larger environments benefit from physical backups
+with WAL archiving, with dedicated tools such as PgBackRest or PgBarman providing
+the reliability, performance, and recovery options required in production. Database
+growth must be managed deliberately, whether through retention tuning, the use of
+TimescaleDB, or, in advanced cases, separating configuration data from historical
+data in backup design.</p>
+<p>For MySQL and MariaDB backends, equivalent considerations apply. Logical dumps may
+be sufficient for small systems, but physical or hot backup solutions are preferred
+as data volume and availability requirements increase. Regardless of the database engine,
+uncontrolled data growth directly affects backup size and recovery time and must be
+addressed as part of the overall strategy.</p>
+<p>Finally, a backup that has never been restored successfully cannot be considered
+reliable. Regular restore testing is essential to verify backup integrity, confirm
+recovery procedures, and establish realistic recovery time expectations. Only
+backups that have been tested end-to-end should be trusted to protect a Zabbix
+installation in production.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Why is backing up the Zabbix database sufficient to restore most of a Zabbix environment?</li>
+<li>What role do WAL files play in PostgreSQL point-in-time recovery?</li>
+<li>What risks exist if backups are never tested by performing a restore?</li>
+<li>Why is database growth considered a data lifecycle issue rather than a backup issue?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li>https://www.postgresql.org/docs/current/backup.html</li>
+<li>https://pgbarman.org/</li>
+<li>https://pgbackrest.org/</li>
+<li>https://mariadb.com/docs/server/clients-and-utilities/backup-restore-and-import-clients/mariadb-dump</li>
+<li>https://www.percona.com/mysql/software/percona-xtrabackup</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>

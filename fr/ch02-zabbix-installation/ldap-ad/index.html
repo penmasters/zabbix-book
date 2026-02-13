@@ -1,0 +1,2674 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This section from The Zabbix Book, titled "LDAP/AD Authentication," explains
+how to integrate Zabbix with LDAP or Active Directory for centralized user
+management. It covers connection setup, binding options, and login verification,
+making user authentication more secure and easier to maintain.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/fr/ch02-zabbix-installation/ldap-ad/">
+      
+      
+        <link rel="prev" href="../http/">
+      
+      
+        <link rel="next" href="../saml/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+          <link rel="alternate" href="../../../nl/ch02-zabbix-installation/ldap-ad/" hreflang="nl">
+        
+          <link rel="alternate" href="../../../pt_BR/ch02-zabbix-installation/ldap-ad/" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../../ru/ch02-zabbix-installation/ldap-ad/" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch02-zabbix-installation/ldap-ad/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>LDAP / AD - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="LDAP / AD">
+    <meta property="og:description" content="This section from The Zabbix Book, titled &#34;LDAP/AD Authentication,&#34; explains how to integrate Zabbix with LDAP or Active Directory for centralized user management. It covers connection setup, binding options, and login verification, making user authentication more secure and easier to maintain.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/fr/ch02-zabbix-installation/ldap-ad/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LDAP / AD">
+    <meta name="twitter:description" content="This section from The Zabbix Book, titled &#34;LDAP/AD Authentication,&#34; explains how to integrate Zabbix with LDAP or Active Directory for centralized user management. It covers connection setup, binding options, and login verification, making user authentication more secure and easier to maintain.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ldap-ad" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Sélectionner la version";
+        const gGMC_TRANSLATE_CTA = "Soutenez-nous et traduisez !";
+        const gGMC_PAGE_LOCALE = "fr";
+        const gGMC_FILE_LOCALE = "fr";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LDAP / AD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch02-zabbix-installation/ldap-ad/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt_BR/ch02-zabbix-installation/ldap-ad/" hreflang="pt_BR" class="md-select__link">
+              Brazillian Portugese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch02-zabbix-installation/ldap-ad/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch02-zabbix-installation/ldap-ad/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Partager" aria-label="Partager" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Démarrer l'installation de Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend expliqué
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Groupes d'hôtes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Groupes d'utilisateurs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rôles des utilisateurs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External Authentication
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    External Authentication
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LDAP / AD
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LDAP / AD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#users-authentication-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users authentication mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-ldap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure LDAP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure LDAP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-up-local-demo-ldap-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set up local demo LDAP server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-zabbix-ldap-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure Zabbix LDAP authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#just-in-time-user-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Just-in-Time user provisioning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Just-in-Time user provisioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-configuration-method-memberof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group configuration method “memberOf”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-configuration-method-groupofnames" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group configuration method “groupOfNames”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ready-to-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ready to test
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#url-utiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        URL utiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../saml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SAML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mfa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentification multi-facteurs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/network-host-discovery/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#users-authentication-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users authentication mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-ldap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure LDAP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure LDAP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-up-local-demo-ldap-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set up local demo LDAP server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-zabbix-ldap-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure Zabbix LDAP authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#just-in-time-user-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Just-in-Time user provisioning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Just-in-Time user provisioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-configuration-method-memberof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group configuration method “memberOf”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-configuration-method-groupofnames" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Group configuration method “groupOfNames”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ready-to-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ready to test
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#url-utiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        URL utiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 02 : Zabbix Frontend
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../http/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    External Authentication
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="expert">
+      Avancé
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/fr/ch02-zabbix-installation/ldap-ad.md" title="Consulter la source de cette page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="ldap-ad">LDAP / AD</h1>
+<p>Comme tout système moderne, Zabbix peut procéder à l'authentification des
+utilisateurs en utilisant le protocole LDAP (Lightweight Directory Access
+Protocol). En théorie, LDAP est un protocole ouvert très bien défini qui devrait
+être indépendant des fournisseurs, mais sa complexité relative joue un rôle dans
+la mise en œuvre de chaque serveur LDAP. Zabbix est connu pour fonctionner
+correctement avec Microsoft Active Directory et le serveur OpenLDAP.</p>
+<p>L'authentification LDAP peut être configurée selon deux modes :</p>
+<ul>
+<li>Authentification des utilisateurs</li>
+<li>Users authentication with users provisioning</li>
+</ul>
+<h2 id="users-authentication-mode">Users authentication mode</h2>
+<p>The process of the authenticating users follows this diagram.</p>
+<p><img align="center" alt="LDAP users authentication" src="../../../ch02-zabbix-installation/external-auth/ch02.3-ldap-auth-diagram.png" /></p>
+<p><em>2.3 LDAP users authentication</em></p>
+<p>As shown on the diagram a user that tries to log in must be pre-created in
+Zabbix to be able to log in using LDAP. The database user records do not have
+any fields "saying" that the user will be authenticated via LDAP, it's just
+users' passwords stored in the database are ignored, instead, Zabbix goes to a
+LDAP server to verify whether:</p>
+<ul>
+<li>user with a given username exists</li>
+<li>user provided the correct password</li>
+</ul>
+<p>no other attributes configured for the user on the LDAP server side are taken
+into account.</p>
+<p>So when Zabbix is used by many users and groups, user management becomes not a
+very trivial task as new people join different teams (or leave). This problem is
+addressed by "users provisioning" and we'll cover this topic a bit later. For
+now let's take a look at how to configure LDAP authentication.</p>
+<h2 id="configure-ldap">Configure LDAP</h2>
+<p>In this section, we will be using a custom demo LDAP server with pre-loaded
+data. You can set this demo environment up to check out the Zabbix LDAP
+authentication possibilities. Or you can skip the setup of the demo environment
+if you just want to connect your Zabbix instance to your existing LDAP or AD
+server.</p>
+<h3 id="set-up-local-demo-ldap-server">Set up local demo LDAP server</h3>
+<p>We believe that it is better to learn this topic by example so we'll be using
+our own LDAP server that you can spin up in a container for demo purposes. First
+we will need to ensure that we have a container engine installed.</p>
+<div class="admonition info">
+<p class="admonition-title">Install Podman container engine</p>
+</div>
+<p>Red Hat
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>dnf<span class="w"> </span>install<span class="w"> </span>podman
+</span></code></pre></div></p>
+<p>SUSE
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>zypper<span class="w"> </span>install<span class="w"> </span>podman
+</span></code></pre></div></p>
+<p>Ubuntu
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>podman
+</span></code></pre></div></p>
+<details class="note" open="open">
+<summary>What is Podman</summary>
+</details>
+<p>Podman is a container engine designed as a drop-in replacement for Docker, but
+with a daemonless architecture. This means it runs containers directly under the
+user’s control, improving security and simplicity. Podman is fully compatible
+with Docker’s CLI and supports rootless containers, making it ideal for
+development, testing, and production environments where security and isolation
+are priorities.</p>
+<details class="tip" open="open">
+<summary>Tip</summary>
+</details>
+<p>If you want to use Docker instead of Podman, you can just replace any
+occurrences of <code>podman</code> in following instructions by <code>docker</code>.</p>
+<p>Now we can start containers. Start an OpenLDAP server in a container:</p>
+<div class="admonition info">
+<p class="admonition-title">Start an OpenLDAP server in a container with pre-loaded data</p>
+</div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>podman<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3389</span>:389<span class="w"> </span>-p<span class="w"> </span><span class="m">6636</span>:636<span class="w"> </span>--name<span class="w"> </span>openldap-server<span class="w"> </span>--detach<span class="w"> </span>bgmot42/openldap-server:0.1.1
+</span></code></pre></div>
+<p>For simplicity, all users (including <code>ldap_search</code>) in this test LDAP server
+have the word <code>password</code> as their passwords.</p>
+<p>Users <code>user1</code> and <code>user2</code> is a member of <code>zabbix-admins</code> LDAP group. User
+<code>user3</code> is a member of <code>zabbix-users</code> LDAP group.</p>
+<p>???+ tip Tip: use phpLdapAdmin as an LDAP GUI</p>
+<div class="language-text highlight"><pre><span></span><code>To visually see LDAP server data (and add your own configuration like users
+and groups) you can start this standard container:
+
+```bash
+podman run -p 8081:80 -p 4443:443 --name phpldapadmin --hostname phpldapadmin\
+  --link openldap-server:ldap-host --env PHPLDAPADMIN_LDAP_HOSTS=ldap-host\
+  --detach osixia/phpldapadmin:0.9.0
+```
+Now you can access this LDAP server via https://&lt;ip_address&gt;:4443 (or any
+other port you configure to access this Docker container), click Login,
+enter “cn=admin,dc=example,dc=org” in Login DN field and “password” in
+Password field, click Authenticate. You should see the following structure
+of the LDAP server (picture shows ‘zabbix-admins’ group configuration):
+
+![LDAP server data](../../ch02-zabbix-installation/external-auth/ch02.4-ldap-ldap-server-data.png){ align=center }
+
+_2.4 LDAP server data_
+</code></pre></div>
+<h3 id="configure-zabbix-ldap-authentication">Configure Zabbix LDAP authentication</h3>
+<p>Let's configure LDAP server settings in Zabbix. In Zabbix menu select <code>Users |
+Authentication | LDAP settings</code>, then check the check-box <code>Enable LDAP
+authentication</code> and click <code>Add</code> under <code>Servers</code> (change IP address of your LDAP
+server and port number according to your set up):</p>
+<p><img alt="LDAP server settings in Zabbix" src="../../../ch02-zabbix-installation/external-auth/ch02.5-ldap-server-settings-in-zabbix.png" />{
+align=center }</p>
+<p><em>2.5 LDAP server settings in Zabbix</em></p>
+<p>Following diagram can help you understand how to configure LDAP server in Zabbix
+based on your LDAP server data structure:</p>
+<p><img align="center" alt="LDAP server to Zabbix" src="../../../ch02-zabbix-installation/external-auth/ch02.6-ldap-server-to-zabbix.png" /></p>
+<p><em>2.6 LDAP server to Zabbix</em></p>
+<p>“Special” <em>Distinguished Name</em> (DN) <em>cn=ldap_search,dc=example,dc=org</em> is used
+for searching, i.e. Zabbix uses this DN to connect to LDAP server and of course
+when you connect to LDAP server you need to be authenticated – this is why you
+need to provide <em>Bind password</em>. This DN should have access to a sub-tree in
+LDAP data hierarchy where all your users are configured. In our case all the
+users configured “under” <em>ou=Users,dc=example,dc=org</em>, this DN is called base DN
+and used by Zabbix as so to say “starting point” to start searching.</p>
+<details class="warning" open="open">
+<summary>Anonymous LDAP binding</summary>
+<p>Technically it is possible to bind to the LDAP server anonymously, without
+providing a password but this is a huge breach in security as the whole
+users sub-tree becomes available for anonymous (unauthenticated) search,
+i.e. effectively exposed to any LDAP client that can connect to LDAP server
+over TCP. The LDAP server we deployed previously in Docker container does
+not provide this functionality.</p>
+</details>
+<p>Click <code>Test</code> button and enter <code>user1</code> and <code>password</code> in the respective fields,
+the test should be successful confirming Zabbix can authenticate users against
+LDAP server.</p>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>We can add multiple LDAP servers and use them for different <code>User groups</code>.</p>
+</details>
+<p>To test real users login using LDAP authentication we need to create user groups
+and users in Zabbix. In Zabbix menu select <code>Users | User groups</code>. Make sure
+<code>Zabbix administrators</code> group exists (we'll need it later) and create new group
+<code>Zabbix users</code> by clicking <code>Create user group</code> button. Enter "Zabbix users" in
+<code>Group name</code> field, select "LDAP" in <code>Frontend access</code> drop-down that will make
+Zabbix to authenticate users belonging to this group against LDAP server and in
+<code>LDAP server</code> drop-down select LDAP server we earlier configured "Test LDAP
+server". Click <code>Add</code> button to create this User group:</p>
+<p><img alt="Add user group in zabbix" src="../../../ch02-zabbix-installation/external-auth/ch02.7-ldap-add-user-group-in-zabbix.png" />{
+align=center }</p>
+<p><em>2.7 Add user group in zabbix</em></p>
+<p>Now we need to create our test user. In Zabbix menu select <code>Users | Users</code> and
+click <code>Create user</code> button. Then enter "user3" in <code>Username</code> field. Select
+"Zabbix users" in <code>Groups</code> field. What you enter in <code>Password</code> and <code>Password
+(once again)</code> fields does not matter as Zabbix will not try to use this
+password, instead it will go to LDAP server to authenticate this user since it's
+a member of the User group that has authentication method <code>LDAP</code>, just make sure
+you enter the same string in these two fields and it satisfied your password
+strength policy defined in <code>Users | Authentication</code>.</p>
+<p><img align="center" alt="Add user in Zabbix" src="../../../ch02-zabbix-installation/external-auth/ch02.8-ldap-add-user-in-zabbix.png" /></p>
+<p><em>2.8 Add user in Zabbix</em></p>
+<p>Then click <code>Permissions</code> tab and select "User role" in <code>Role</code> field:</p>
+<p><img align="center" alt="Add user in Zabbix -
+permissions" src="../../../ch02-zabbix-installation/external-auth/ch02.9-ldap-add-user-in-zabbix-permissions.png" /></p>
+<p><em>2.9 Add user in Zabbix - permissions</em></p>
+<p>Click <code>Add</code> button to create the user.</p>
+<p>We are ready to test our LDAP server authentication! Click <code>Sign out</code> in Zabbix
+menu and login with "user3" as Username and "password" as <code>Password</code>, if you
+carefully followed the steps above you should successfully login with User role
+permissions.</p>
+<p>Click <code>Sign out</code> again and login as Admin again to proceed.</p>
+<h2 id="just-in-time-user-provisioning">Just-in-Time user provisioning</h2>
+<p>Now let's talk about really cool feature Zabbix provides - "Just-in-Time user
+provisioning (JIT) available since Zabbix 6.4.</p>
+<p>This picture illustrates on high level how it works: <img align="center" alt="LDAP JIT
+explained" src="../../../ch02-zabbix-installation/external-auth/ch02.10-ldap-jit-explained.png" /></p>
+<p><em>2.10 LDAP JIT explained</em></p>
+<p>Here when Zabbix gets a username and password from the Zabbix Login form it goes
+to the LDAP server and gets all the information available for this user
+including his/her LDAP groups membership and e-mail address. Obviously, it gets
+all that only if the correct (from LDAP server perspective) username and
+password were provided. Then Zabbix goes through pre-configured mapping that
+defines users from which <code>LDAP group</code> goes to which <code>Zabbix user group</code>. If at
+least one match is found then a <code>Zabbix user</code> is created in the Zabbix database
+belonging to a <code>Zabbix user group</code> and having a <code>Zabbix user role</code> according to
+configured “match”. So far sounds pretty simple, right? Now let’s go into
+details about how all this should be configured.</p>
+<p>In <code>Users | Authentication</code> we need to do two things:</p>
+<ul>
+<li>
+<p>Set <code>Default authentication</code> to <em>LDAP</em>. When JIT is turned off then type of
+  authentication is defined based on the <em>User group</em> a user that tries to login
+  belongs to. In case of JIT the user does not exist in Zabbix yet thus
+  obviously does not belong to any <em>User group</em> so <em>Default</em> method
+  authentication is used and we want it to be <em>LDAP</em>.</p>
+</li>
+<li>
+<p>Provide <code>Deprovisioned users group</code>. This group must be literally <em>disabled</em>
+  otherwise you won't be able to select it here. This is the Zabbix user group
+  where all <em>de-provisioned</em> users will be put into so effectively will get
+  disabled from accessing Zabbix.</p>
+</li>
+</ul>
+<p><img alt="Default authentication" src="../../../ch02-zabbix-installation/external-auth/ch02.11-ldap-default-authentication.png" />{
+  align=center }</p>
+<p><em>2.11 Default authentication</em></p>
+<p>Click <code>Update</code> button`.</p>
+<ul>
+<li>Enable JIT provisioning check-box which obviously needs to be checked for this
+  feature to work. It's done in our <em>Test LDAP server</em> configuration - select
+  <code>Users | Authentication | LDAP settings</code> and click on our server in <code>Servers</code>
+  section. After enabling this check-box we'll see some other fields related to
+  JIT to be filled in and what we put in there depends on the method we choose
+  to perform JIT.</li>
+</ul>
+<h3 id="group-configuration-method-memberof">Group configuration method “memberOf”</h3>
+<p>All users in our LDAP server have <em>memberOf</em> attribute which defines what LDAP
+groups every user belongs to, e.g. if we perform a LDAP query for <em>user1</em> user
+we’ll get that its <em>memberOf</em> attribute has this value:</p>
+<p><strong>memberOf</strong>: cn=<strong>zabbix-admins</strong>,ou=Group,dc=example,dc=org</p>
+<p>Note, that your real LDAP server can have totally different LDAP attribute that
+provides users’ group membership, and of course, you can easily configure what
+attribute to use when searching for user’s LDAP groups by putting it into <code>User
+group membership attribute</code> field:</p>
+<p><img align="center" alt="LDAP groups mapping" src="../../../ch02-zabbix-installation/external-auth/ch02.12-ldap-groups-mapping.png" /></p>
+<p><em>2.12 LDAP groups mapping</em></p>
+<p>In the picture above we are telling Zabbix to use <em>memberOf</em> attribute to
+extract DN defining user’s group membership (in this case it is
+<em>cn=zabbix-admins,out=Group,dc=example,dc=org</em>) and take only <em>cn</em> attribute
+from that DN (in this case it is <em>zabbix-admins</em>) to use in searching for a
+match in User group mapping rules. Then we define as many mapping rules as we
+want. In the picture above we have two rules:</p>
+<ul>
+<li>All users belonging to <em>zabbix-users</em> LDAP group will be created in Zabbix as
+  members of <em>Zabbix users group</em> with <em>User</em> role</li>
+<li>All users belonging to <em>zabbix-admins</em> LDAP group will be created in Zabbix as
+  members of <em>Zabbix administrators</em> group with <em>Super admin</em> role</li>
+</ul>
+<h3 id="group-configuration-method-groupofnames">Group configuration method “groupOfNames”</h3>
+<p>There is another method of finding users’ group membership called “groupOfNames”
+it is not as efficient as “memberOf” method but can provide much more
+flexibility if needed. Here Zabbix is not querying LDAP server for a user
+instead it is searching for LDAP groups based on a given criterion (filter).
+It’s easier to explain with pictures depicting an example:</p>
+<p><img align="center" alt="LDAP server group of names" src="../../../ch02-zabbix-installation/external-auth/ch02.13-ldap-group-of-names.png" /></p>
+<p><em>2.13 LDAP server groupOfNames</em></p>
+<p>Firstly we define LDAP “sub-tree” where Zabbix will be searching for LDAP groups
+– note <em>ou=Group,dc=example,dc=org</em> in Group base DN field. Then in the field
+<code>Group name attribute</code> field we what attribute to use when we search in mapping
+rules (in this case we take <em>cn</em>, i.e. only <em>zabbix-admins</em> from full DN
+<em>cn=zabbix-admins,ou=Group,dc=example,dc=org</em>). Each LDAP group in our LDAP
+server has <em>member</em> attribute that has all users that belong to this LDAP group
+(look at the right picture) so we put <em>member</em> in <code>Group member attribute</code>
+field. Each user’s DN will help us construct <code>Group filter</code> field. Now pay
+attention: <code>Reference attribute</code> field defines what LDAP user’s attribute Zabbix
+will use in the <code>Group filter</code>, i.e. <em>%{ref}</em> will be replaced with the value of
+this attribute (here we are talking about the user’s attributes – we already
+authenticated this user, i.e. got all its attributes from LDAP server). To sum
+up what I've said above Zabbix:</p>
+<ol>
+<li>Authenticates the user with entered Username and Password against LDAP server
+   getting all user’s LDAP attributes</li>
+<li>Uses <code>Reference attribute</code> and <code>Group filter</code> fields to construct a filter
+   (when user1 logs in the filter will be
+   (<em>member=uid=user1,ou=Users,dc=example, dc=org</em>)</li>
+<li>Performs LDAP query to get all LDAP groups with member attribute (configured
+   in <code>Group member attribute</code> field) containing constructed in step 2) filter</li>
+<li>Goes through all LDAP groups received in step 3) and picks <code>cn</code> attribute
+   (configured in <code>Group name attribute</code> field) and finds a match in User group
+   mapping rules</li>
+</ol>
+<p>Looks a bit complicated but all you really need to know is the structure of your
+LDAP data.</p>
+<h3 id="ready-to-test">Ready to test</h3>
+<p>Now when you login with <em>user1</em> or <em>user2</em> username then these users will be
+created by Zabbix and put into <em>Zabbix administrators</em> user group, when you
+login with <em>user3</em> username then this user will be created by Zabbix and put
+into <em>Zabbix users</em> user group:</p>
+<p><img align="center" alt="Test user1" src="../../../ch02-zabbix-installation/external-auth/ch02.14-ldap-jit-test-user1.png" /></p>
+<p><em>2.14 Test user1</em></p>
+<p><img align="center" alt="Test user3" src="../../../ch02-zabbix-installation/external-auth/ch02.15-ldap-jit-test-user3.png" /></p>
+<p><em>2.15 Test user3</em></p>
+<hr />
+<h2 id="conclusion">Conclusion</h2>
+<p>Integrating Zabbix with LDAP—or specifically, Active Directory elevates your
+system's authentication capabilities by leveraging existing organizational
+credentials. It allows users to log in using familiar domain credentials, while
+Zabbix offloads the password verification process to a trusted external
+directory. Notably, even when configuring LDAP authentication, corresponding
+user accounts must still exist within Zabbix though their internal passwords
+become irrelevant once external authentication is active.</p>
+<p>Particularly powerful is the Just-In-Time (JIT) provisioning feature: this
+enables Zabbix to dynamically create user accounts upon first successful LDAP
+login streamlining onboarding and reducing manual administration. Beyond that,
+JIT supports ongoing synchronization updating user roles, group memberships, or
+even user removals in Zabbix to mirror changes in LDAP—either when a user logs
+in or during configured provisioning intervals.</p>
+<p>Important configuration details such as case sensitivity, authentication binding
+methods, search filters, and group mapping need careful attention to ensure
+reliable and secure operation. And while LDAP offers seamless integration,
+Zabbix still maintains control over roles, permissions, and access behavior
+through its own user and user group models Zabbix.</p>
+<p>In sum, LDAP/AD authentication offers a scalable, secure, and enterprise-aligned
+approach to centralizing identity management in Zabbix. With flexible
+provisioning and synchronization, organizations can reduce administrative load
+while reinforcing consistency across their access control and authentication
+strategy.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>
+<p>What are the main benefits of integrating Zabbix authentication with LDAP or
+  Active Directory compared to using only internal Zabbix accounts?</p>
+</li>
+<li>
+<p>Why must a user still exist in Zabbix even when LDAP authentication is
+  enabled, and what role does the internal password play in that case?</p>
+</li>
+<li>
+<p>How does Just-In-Time (JIT) provisioning simplify user management in Zabbix,
+  and what potential risks or caveats should an administrator consider when
+  enabling it?</p>
+</li>
+<li>
+<p>What is the difference between user authentication and user authorization in
+  the context of LDAP integration with Zabbix? (Hint: Authentication verifies
+  credentials, while authorization determines permissions inside Zabbix.)</p>
+</li>
+<li>
+<p>Imagine an administrator incorrectly configures the LDAP search filter. What
+  issues might users encounter when attempting to log in, and how could you
+  troubleshoot the problem?</p>
+</li>
+<li>
+<p>How could LDAP group mappings be used to streamline permission assignment in
+  Zabbix? Can you think of an example from your own environment?</p>
+</li>
+<li>
+<p>If an organization disables a user account in Active Directory, how does JIT
+  provisioning ensure that Zabbix access is also updated? What would happen if
+  JIT was not enabled?</p>
+</li>
+</ul>
+<h2 id="url-utiles">URL utiles</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap">https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>

@@ -1,0 +1,2489 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Optimize discovery with Zabbix dependent LLD rules. Reuse master discovery
+data to create related items efficiently without extra polling or load.”
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/pt_BR/ch08-zabbix-lld/lld-with-dependent-items/">
+      
+      
+        <link rel="prev" href="../custom/">
+      
+      
+        <link rel="next" href="../../ch09-zabbix-extending/chapter/">
+      
+      
+        
+          <link rel="alternate" href="../../../fr/ch08-zabbix-lld/lld-with-dependent-items/" hreflang="fr">
+        
+          <link rel="alternate" href="../../../nl/ch08-zabbix-lld/lld-with-dependent-items/" hreflang="nl">
+        
+          <link rel="alternate" href="./" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../../ru/ch08-zabbix-lld/lld-with-dependent-items/" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch08-zabbix-lld/lld-with-dependent-items/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Dependent LLD - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Dependent LLD">
+    <meta property="og:description" content="Optimize discovery with Zabbix dependent LLD rules. Reuse master discovery data to create related items efficiently without extra polling or load.”">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/pt_BR/ch08-zabbix-lld/lld-with-dependent-items/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dependent LLD">
+    <meta name="twitter:description" content="Optimize discovery with Zabbix dependent LLD rules. Reuse master discovery data to create related items efficiently without extra polling or load.”">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#low-level-discovery-with-dependent-items" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Esta página ainda não foi traduzida para o português. Portanto, está sendo exibida em inglês.
+            <a href="/gmc/pt_BR/contribute/#translations">Ajude-nos a traduzir!</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Dependent LLD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch08-zabbix-lld/lld-with-dependent-items/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch08-zabbix-lld/lld-with-dependent-items/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt_BR" class="md-select__link">
+              Brazillian Portugese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch08-zabbix-lld/lld-with-dependent-items/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch08-zabbix-lld/lld-with-dependent-items/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartilhar" aria-label="Compartilhar" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 08 : LLD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using Low level discovery to automate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom LLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependent LLD
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependent LLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-our-custom-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating our custom data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-master-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create a master item
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-lld-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create LLD Discovery
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-low-level-discovery-lld-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a Low-Level Discovery (LLD) Item
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a Low-Level Discovery (LLD) Item">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-jsonpath-expression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the JSONPath Expression
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakdown-of-the-jsonpath-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Breakdown of the JSONPath Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimizing-data-collection-and-discovery-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimizing Data Collection and Discovery Performance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-low-level-discovery-lld-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a Low-Level Discovery (LLD) Filter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/network-host-discovery/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-our-custom-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating our custom data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-master-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create a master item
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-lld-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create LLD Discovery
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-low-level-discovery-lld-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a Low-Level Discovery (LLD) Item
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a Low-Level Discovery (LLD) Item">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-jsonpath-expression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the JSONPath Expression
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakdown-of-the-jsonpath-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Breakdown of the JSONPath Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimizing-data-collection-and-discovery-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimizing Data Collection and Discovery Performance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-low-level-discovery-lld-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a Low-Level Discovery (LLD) Filter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navegação" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 08 : LLD
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="advanced">
+      Avançado
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch08-zabbix-lld/lld-with-dependent-items.md" title="Exibir fonte desta página" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="low-level-discovery-with-dependent-items">Low Level Discovery with Dependent items</h1>
+<p>Efficiency in monitoring isn't just about automation it's also about minimizing
+resource usage. Low-Level Discovery (LLD) with dependent items in Zabbix offers
+a powerful way to reduce agent load and database overhead by collecting data once
+and extracting multiple metrics from it.</p>
+<p>Instead of creating separate item queries for each discovered entity, dependent
+items allow you to process a single data source such as a JSON response, log entry,
+or SNMP bulk data and extract relevant metrics dynamically. This approach significantly
+optimizes performance while maintaining full automation.</p>
+<p>In this chapter, we'll explore how to implement LLD with dependent items, configure
+preprocessing rules, and leverage this technique to make your Zabbix monitoring
+more efficient, scalable, and resource friendly by using a practical example.</p>
+<p>Let’s get started!</p>
+<hr />
+<details class="note" open="open">
+<summary>Note</summary>
+<p>For this chapter we start with a working system with a passive Zabbix agent.
+You can always refer to Chapter 01 if you like to know how to setup Zabbix.
+It can be a good start to have a look at our previous topic <code>Custom LLD</code> to get
+a better understanding on how LLD works.</p>
+</details>
+<h2 id="creating-our-custom-data">Creating our custom data</h2>
+<p>Before we can implement our Low-Level Discovery (LLD) rule, we first need relevant
+data to work with. Consider a scenario where a print server provides a list of printers
+along with their status in JSON format. This structured data will serve as the foundation
+for our discovery process.  </p>
+<div class="admonition info">
+<p class="admonition-title">Example data</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Color Printer 1&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OK&quot;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Color Printer 2&quot;</span><span class="p">,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OK&quot;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;B&amp;W Printer 1&quot;</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OK&quot;</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;B&amp;W Printer 2&quot;</span><span class="p">,</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NOK&quot;</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<p>On your Zabbix server, log in and create a text file containing the example data
+that will serve as the master item for our Low-Level Discovery (LLD) rule.</p>
+<ol>
+<li><strong>Access the Server</strong>: Log in to your Zabbix server via SSH or directly.</li>
+<li><strong>Create the File</strong>: Run the following command to store the JSON data:</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Run the following command:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>echo
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&#39;{
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  &quot;data&quot;: [
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    {
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>      &quot;name&quot;: &quot;Color Printer 1&quot;,
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>      &quot;status&quot;: &quot;OK&quot;
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    },
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    {
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>      &quot;name&quot;: &quot;Color Printer 2&quot;,
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>      &quot;status&quot;: &quot;OK&quot;
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    },
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    {
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>      &quot;name&quot;: &quot;B&amp;W Printer 1&quot;,
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>      &quot;status&quot;: &quot;OK&quot;
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    },
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    {
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>      &quot;name&quot;: &quot;B&amp;W Printer 2&quot;,
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>      &quot;status&quot;: &quot;NOK&quot;
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    }
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>  ]
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>}&#39; | sudo tee /home/printer-status.txt &gt; /dev/null
+</span></code></pre></div>
+</div>
+<ol start="3">
+<li><strong>Verify the File</strong>: Ensure the file is correctly created by running:</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Test the file</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cat /home/printer-status.json
+</span></code></pre></div>
+</div>
+<h2 id="create-a-master-item">Create a master item</h2>
+<p>We are now ready to create an item in Zabbix to get the information in to our
+master item. But first we need to create a host.</p>
+<p>Go to <code>Data collection | Hosts</code> and click <code>Create host</code>. Fill in the <code>Host name</code>
+and the <code>Host group</code> and create an <code>Agent interface</code>. Those are the only things
+we need for our host and press <code>Add</code>.</p>
+<p>Go to the host and click on <code>items</code> the next step will be to create our item so
+that we can retrieve the data from our printers.</p>
+<p><img alt="Create Host" src="../../../ch08-zabbix-lld/dependent%20lld/ch08-dependent-lld-create-host.png" />
+<em>8.1 Create host</em></p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Remember this is just an example file we made in real life you will use probably
+a <code>HHTP agent</code> or a <code>Zabbix agent</code> to retrieve real life data.</p>
+</details>
+<p>Click on top right of the page on <code>Create item</code> to create a new item so that we
+can retrieve our master items data.</p>
+<p>Once the <code>New Item</code> popup is on the screen fill in the following details:</p>
+<ul>
+<li><strong>Name</strong> : RAW : Printer status page</li>
+<li><strong>Type</strong> : Zabbix agent</li>
+<li><strong>Key</strong> : vfs.file.contents[/home/printer-status.txt]</li>
+</ul>
+<p><img alt="Create lld item" src="../../../ch08-zabbix-lld/dependent%20lld/ch08-dependent-lld-item.png" />
+<em>8.2 Create a LLD item</em></p>
+<p>Before you press <code>Add</code> let's test our item first to see if we can retrieve the
+data we need.</p>
+<p>Press <code>Test</code> at the bottom of the page a popup will come and you can press at the
+bottom of the page <code>Get value and test</code> or <code>Get value</code> just above. Both should work
+and return you the information form the txt file.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>When you press <code>Get value</code> it
+will show you the value as is retrieved from the host. <code>Get value and test</code> on
+the other hand will also try to execute other pre processing steps if there are
+any. So the output of the data could be different. Also if you use secret macros
+Zabbix will not resolve them you will need to fill in the correct information
+first by yourself.</p>
+</details>
+<p><img alt="test lld item" src="../../../ch08-zabbix-lld/dependent%20lld/ch08-dependent-lld-test-item.png" />
+<em>8.3 Test LLD item</em></p>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>Keep a copy of the output somewhere you will need it in the following steps
+to create your LLD rule and LLD items etc ...</p>
+</details>
+<h2 id="create-lld-discovery">Create LLD Discovery</h2>
+<p>To create a discovery rule first to go <code>Discovery rules</code> on the top next to Items,
+Triggers and Graphs and click on <code>Create discovery rule</code>.</p>
+<p><img alt="Create discovery rule" src="../../../ch08-zabbix-lld/dependent%20lld/ch08-dependent-lld-create-discovery.png" />
+<em>8.4 Create a discovery rule</em></p>
+<p>Before configuring our Low-Level Discovery (LLD) rule, we can test our JSON queries
+using tools like <a href="https://www.jsonquerytool.com/">JSON Query Tool</a>. If we apply the
+query <code>$..name</code>, it extracts all printer names, while <code>$..status</code> retrieves
+their statuses.</p>
+<p>However, referring to the <a href="https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery">Zabbix documentation</a>,
+we see that starting from <strong>Zabbix 4.2</strong>, the expected JSON format for LLD has changed.
+The <code>data</code> object is no longer required; instead, LLD now supports a direct JSON
+array. This update enables features like <strong>item value preprocessing</strong> and
+<strong>custom JSONPath queries</strong> for macro extraction.</p>
+<p>While Zabbix still accepts legacy JSON structures containing a <code>data</code> object for
+backward compatibility, its use is discouraged. If the JSON consists of a single
+object with a <code>data</code> array, Zabbix will automatically extract its content using
+<code>$.data</code>. Additionally, LLD now allows <strong>user-defined macros</strong> with custom JSONPath
+expressions.  </p>
+<p>Due to these changes, we cannot use the filters <code>$..name</code> or <code>$..status</code> directly.
+Instead, we must use <code>$.name</code> and <code>$.status</code> for proper extraction. With this
+understanding, let's proceed with creating our LLD rule.  </p>
+<p>Head over to the <code>LLD macros</code> tab in our Discovery rule and map the following macros
+with our JSONpath filters to extract the needed info so that we can use it later
+in our LLD items, triggers, graphs .... .</p>
+<ul>
+<li><strong>{#PRINTER.NAME}</strong> : Map it with <code>$.name</code>.</li>
+<li><strong>{#PRINTER.STATUS}</strong> : Map it with <code>$.status</code>.</li>
+</ul>
+<p><img alt="LLD Macros" src="../../../ch08-zabbix-lld/dependent%20lld/ch08-dependent-lld-create-lldmacro.png" />
+<em>8.5 Create a LLD Macro</em></p>
+<p>When ready press <code>Update</code> at the bottom of the page.</p>
+<h2 id="creating-a-low-level-discovery-lld-item">Creating a Low-Level Discovery (LLD) Item</h2>
+<p>After defining the discovery rule and mapping the data to the corresponding LLD
+macros, the next step is to create an LLD item. This is done through item prototypes.</p>
+<ol>
+<li>Navigate to the <code>Item prototypes</code> tab.  </li>
+<li>Click Create <code>item prototype</code> in the upper-right corner.  </li>
+<li>Configure the following parameters:  </li>
+</ol>
+<ul>
+<li><strong>Name</strong>: <code>Status from {#PRINTER.NAME}</code>  </li>
+<li><strong>Type</strong>: <code>Dependent item</code>  </li>
+<li><strong>Key</strong>: <code>status.[{{#PRINTER.NAME}}]</code>  </li>
+<li><strong>Type of information</strong>: <code>Text</code>  </li>
+<li><strong>Master Item</strong>: Select the previously created raw item.  </li>
+</ul>
+<p>This setup ensures that the discovered printer statuses are correctly assigned and
+processed through the LLD mechanism.  </p>
+<p><img alt="LLD Item create" src="../../../ch08-zabbix-lld/dependent%20lld/ch08-dependent-lld-create-llditem.png" />
+<em>8.6 Create a LLD item</em></p>
+<p>Before saving the item, navigate to the <code>Preprocessing</code> tab to define the necessary
+preprocessing steps. These steps will ensure that the extracted data is correctly
+formatted for Zabbix. Configure the following preprocessing steps:</p>
+<ol>
+<li><strong>JSONPath</strong>: $.data..[?(@.name=='{#PRINTER.NAME}')].status.first()</li>
+<li><strong>Replace</strong>:<br />
+   - Convert <code>NOK</code> to <code>false</code>.<br />
+   - This step is required because Zabbix does not recognize <code>NOK</code> as a boolean
+     value but does recognize <code>false</code>.</li>
+<li><strong>Boolean to Decimal</strong>:<br />
+   - This conversion transforms boolean values into numerical representation
+   (<code>1</code> for <code>OK</code>, <code>0</code> for <code>false</code>).
+   - Numeric values are more suitable for graphing and analysis in Zabbix.</li>
+<li><strong>Type of Information</strong>:<br />
+   - Set to <strong>Numeric</strong> to ensure proper data processing and visualization.</li>
+</ol>
+<h3 id="understanding-the-jsonpath-expression">Understanding the JSONPath Expression</h3>
+<p>To derive the correct JSONPath query, use a tool such as the <code>JSON Query Tool</code>
+(<a href="https://www.jsonquerytool.com/">https://www.jsonquerytool.com/</a>). This tool
+allows testing and refining JSON queries using real data retrieved from the raw item.</p>
+<p>The JSONPath query used in this case is:</p>
+<div class="admonition info">
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$.data..[?(@.name==&#39;{#PRINTER.NAME}&#39;)].status.first()
+</span></code></pre></div>
+</div>
+<h3 id="breakdown-of-the-jsonpath-syntax">Breakdown of the JSONPath Syntax</h3>
+<ul>
+<li><strong><code>$</code></strong> → Refers to the root of the JSON document.</li>
+<li><strong><code>.data</code></strong> → Accesses the <code>data</code> key within the JSON structure.</li>
+<li><strong><code>..</code></strong> → The recursive descent operator, searching through all nested levels
+  for matching elements.</li>
+<li><strong><code>[?(@.name=='{#PRINTER.NAME}')]</code></strong> → A filter expression that:</li>
+<li>Uses <code>?(@.name=='Color Printer 1')</code> to match objects where the <code>name</code> field
+    equals <code>"Color Printer 1"</code>.</li>
+<li><code>{#PRINTER.NAME}</code> is a Zabbix macro that dynamically replaces
+    <code>"Color Printer 1"</code> with the discovered printer name.</li>
+<li><strong><code>@</code></strong> → Represents the current element being evaluated.</li>
+<li><strong><code>.status</code></strong> → Retrieves the <code>status</code> field from the filtered result.</li>
+<li><strong><code>.first()</code></strong> → Returns only the first matching <code>status</code> value instead of
+  an array.</li>
+<li>Without <code>.first()</code>, the result would be <code>["OK"]</code> instead of <code>"OK"</code>.</li>
+</ul>
+<p>By applying these preprocessing steps, we ensure that the extracted printer status
+is correctly formatted and can be efficiently used for monitoring and visualization
+in Zabbix.</p>
+<h2 id="optimizing-data-collection-and-discovery-performance">Optimizing Data Collection and Discovery Performance</h2>
+<p>Before finalizing our configuration, we need to make an important adjustment.
+The current settings may negatively impact system performance due to an overly frequent
+update interval.</p>
+<p>Navigate to <code>Data collection</code>|<code>Hosts</code> and click on <code>Items</code>. Select the <code>RAW item</code>
+that was created in the first step.</p>
+<p>By default, the update interval is set to <code>1 minute</code>. This means the item is
+refreshed every minute, and since our LLD rule is based on this item, Zabbix will
+rediscover printers every minute as well. While this ensures timely updates, it
+is inefficient and can impact performance.</p>
+<p>A common best practice is to configure <strong>discovery rules</strong> to run no more than
+<code>once per hour</code>. However, since our <code>LLD item</code> relies on this same RAW item, an
+hourly interval would be too infrequent for monitoring printer status updates.
+To strike a balance between efficiency and real-time monitoring, we can apply
+a <code>preprocessing trick</code>.</p>
+<p>Go to the <code>Preprocessing</code> tab and add the following preprocessing step:</p>
+<ul>
+<li><strong>Discard unchanged with heartbeat</strong> → <code>1h</code></li>
+</ul>
+<p>This ensures that the database is updated <code>only when a status change occurs</code>. If
+no status change is detected, <code>no new entry is written to the database</code>, reducing
+unnecessary writes and improving performance. However, to ensure some data is
+still recorded, the status will be written to the database at least <code>once per hour</code>,
+even if no changes occur.</p>
+<p>Before saving the changes, we can further optimize storage by preventing the
+master item from being stored in the database. Navigate back to the <code>Item</code> tab and
+set <code>History</code> to <code>Do not store</code>.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>If you change your mind and want to keep the history then our preprocessing step
+will at least not save it every minute but only when there are changes or once
+every hour.</p>
+</details>
+<p>The RAW item is only used to feed data into the <strong>LLD discovery rule</strong> and <code>LLD items</code>.
+Since we do not need to retain historical data for this master item,
+<code>discarding it</code> saves database space and improves efficiency.</p>
+<p>By applying these optimizations, we ensure that our monitoring system remains
+efficient while still capturing necessary status updates.</p>
+<h2 id="creating-a-low-level-discovery-lld-filter">Creating a Low-Level Discovery (LLD) Filter</h2>
+<p>Now lets have some fun and use a script that generates the output of our text file
+with random statuses so that we have a more close to real live environment.
+Create in the folder where your <code>printer-status.txt</code> file is a new file called
+<code>printer-demo.py</code> and paste following content in it.</p>
+<div class="admonition info">
+<p class="admonition-title">python script</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>#!/usr/bin/env python3
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>import json
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>import os
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>STATUS_FILE = &quot;printer-status.txt&quot;
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a># Define printers
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>printers = [
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    {&quot;name&quot;: &quot;Color Printer 1&quot;, &quot;status&quot;: &quot;OK&quot;},
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    {&quot;name&quot;: &quot;Color Printer 2&quot;, &quot;status&quot;: &quot;OK&quot;},
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    {&quot;name&quot;: &quot;B&amp;W Printer 1&quot;, &quot;status&quot;: &quot;OK&quot;},
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    {&quot;name&quot;: &quot;B&amp;W Printer 2&quot;, &quot;status&quot;: &quot;NOK&quot;},
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    {&quot;name&quot;: &quot;This is not a printer&quot;, &quot;status&quot;: &quot;NOK&quot;}
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>]
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a># Check if the status file exists
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>if os.path.exists(STATUS_FILE):
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    # Read the existing status from the file
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    with open(STATUS_FILE, &quot;r&quot;) as f:
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>        output = json.load(f)
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>    printers = output[&quot;data&quot;]
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>else:
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>    # If no file, set initial values
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>    output = {&quot;data&quot;: printers}
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a># Toggle statuses
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>for printer in printers:
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>    printer[&quot;status&quot;] = &quot;NOK&quot; if printer[&quot;status&quot;] == &quot;OK&quot; else &quot;OK&quot;
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a># Write the new status to file
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>with open(STATUS_FILE, &quot;w&quot;) as f:
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>    json.dump({&quot;data&quot;: printers}, f, indent=2)
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>print(f&quot;Printer status updated and written to {STATUS_FILE}&quot;)
+</span></code></pre></div>
+</div>
+<p>Once you have created the script make it executable with <code>chmod +x printer-demo.py</code>
+and then run the script with the following command <code>./printer-demo.py</code>.</p>
+<p>If you cannot run the script then check the python environment or try to run it
+as <code>python printer-demo.py</code>.</p>
+<p>This script will change the status of our printers you can verify this in the
+<code>Latest data</code> page.</p>
+<p><img alt="Latest data updated" src="../../../ch08-zabbix-lld/dependent%20lld/ch08-dependent-lld-create-latestdata-updated.png" />
+<em>8.7 Latest data</em></p>
+<p>But hey wait as we can see there is an extra devices detected with the name
+<code>This is not a printer</code> and Zabbix hasn't detected any status for it .....</p>
+<p>That we don't have any status yet is normal remember we did a check only once per
+hour with our Preprocessing step so first time the data was changed the new device
+was detected. If the status from the device changes again zabbix will create an update
+for the item and a status will be processed.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Low Level will work in 2 steps first step is the detection of the new devices
+and second step is populating the items with the correct data. Remember that
+we did an item interval of 1m so it can take up to 1m before our items gets a
+new value.</p>
+</details>
+<p>Lets see now how we can remove the device <code>this is not a printer</code> from our list
+since we don't want to monitor this one.</p>
+<p>Let's go back to our LLD discovery rule this time to the tab Filters and add the
+following to the fields:</p>
+<ul>
+<li><strong>Label</strong> : {#PRINTER.NAME} <code>does not match</code></li>
+<li><strong>regular expression</strong> : <code>{$PRINTERS.NOT.TO.DETECT}</code></li>
+</ul>
+<p><img alt="LLD Filters" src="../../../ch08-zabbix-lld/dependent%20lld/ch08-dependent-lld-create-filters.png" />
+<em>8.8 LLD Filters</em></p>
+<p>Press update and go to our Host and click on the tab <code>Macros</code>. Here we will create
+our macro and link it with a regular expression.
+Fill in the following values :</p>
+<ul>
+<li><strong>Macro</strong>: {$PRINTERS.NOT.TO.DETECT}</li>
+<li><strong>Value</strong> : ^This is not a printer$</li>
+</ul>
+<p><img alt="Filter macros" src="../../../ch08-zabbix-lld/dependent%20lld/ch08-dependent-lld-create-filter-macro.png" />
+<em>8.9 LLD Filter Macros</em></p>
+<p>After executing our discovery rule and sending updated values to Zabbix, we can
+verify the filter's effectiveness by checking the <code>Latest data</code> view, where the
+excluded device no longer appears.</p>
+<p>When navigating to the <code>Items</code> section of our host, we'll observe that the previously
+discovered item for the filtered device now displays a <code>Disabled</code> status with an
+accompanying orange exclamation mark icon. Hovering over this icon reveals the
+system notification: <code>The item is not discovered anymore and has been disabled,
+will be deleted in 6d 23h 36m.</code></p>
+<p>This automatic cleanup behavior for undiscovered items follows Zabbix's default
+retention policy, which can be customized by modifying the <code>Keep lost resources period</code>
+parameter in the Discovery rule settings to align with your organization's monitoring
+governance requirements.</p>
+<p>This concludes our chapter.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Low-Level Discovery in Zabbix represents a powerful approach to dynamic monitoring
+that scales efficiently with your infrastructure. Through this chapter, we've explored
+how the combination of LLD with dependent items and discovery filters creates a robust
+framework for automated monitoring that remains both comprehensive and manageable.</p>
+<p>By implementing dependent items within discovery rules, we've seen how to build
+sophisticated monitoring relationships without the performance overhead of multiple
+direct checks. This approach not only reduces the load on monitored systems but
+also simplifies the overall monitoring architecture by establishing clear parent-child
+relationships between metrics.</p>
+<p>The strategic application of LLD filters, as demonstrated in our examples, transforms
+raw discovery data into precisely targeted monitoring. Instead of drowning in irrelevant
+metrics, your Zabbix instance now focuses only on what matters to your organization's
+specific needs. Whether filtering by regex patterns, system types, or operational
+states, these filters act as the gatekeepers that maintain monitoring relevance
+as your environment expands.</p>
+<p>Perhaps most importantly, the techniques covered in this chapter enable truly scalable
+monitoring that grows automatically with your infrastructure. New servers, applications,
+or network devices are seamlessly incorporated into your monitoring framework without
+manual intervention, ensuring that visibility expands in lockstep with your environment.</p>
+<p>As you implement these concepts in your own Zabbix deployments, remember that effective
+monitoring is about balance and capturing sufficient detail while avoiding data overload.
+The combination of LLD, dependent items, and thoughtful filtering provides exactly
+this balance, giving you the tools to build monitoring systems that scale without
+sacrificing depth or precision.</p>
+<p>With these techniques at your disposal, your Zabbix implementation can evolve from
+a basic monitoring tool to an intelligent system that adapts to your changing infrastructure,
+providing actionable insights without constant reconfiguration.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>How do LLD filters change the monitoring paradigm from "collect everything"
+  to a more targeted approach?</li>
+<li>How does Zabbix LLD fundamentally differ from traditional static monitoring
+  approaches ?</li>
+<li>Break down the components of the JSONPath expression $.data..[?(@.name=='{#PRINTER.NAME}')].status.first()
+  and explain how each part contributes to extracting the correct data.</li>
+<li>How would you modify the example to monitor printer ink levels in addition to
+  printer status?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.jsonquerytool.com/">https://www.jsonquerytool.com/</a></li>
+<li><a href="https://regex101.com/">https://regex101.com/</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery#filter">https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery#filter</a></li>
+<li><a href="https://blog.zabbix.com/lld-filtering-with-macros/24959/">https://blog.zabbix.com/lld-filtering-with-macros/24959/</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>

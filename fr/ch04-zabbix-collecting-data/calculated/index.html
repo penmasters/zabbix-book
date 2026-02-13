@@ -1,0 +1,3343 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Simplify data analysis with Zabbix calculated items. Create formulas from existing
+metrics to generate new insights without extra load or checks.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/fr/ch04-zabbix-collecting-data/calculated/">
+      
+      
+        <link rel="prev" href="../browser/">
+      
+      
+        <link rel="next" href="../../ch05-zabbix-triggers/chapter/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+          <link rel="alternate" href="../../../nl/ch04-zabbix-collecting-data/calculated/" hreflang="nl">
+        
+          <link rel="alternate" href="../../../pt_BR/ch04-zabbix-collecting-data/calculated/" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../../ru/ch04-zabbix-collecting-data/calculated/" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch04-zabbix-collecting-data/calculated/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Calculated items - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Calculated items">
+    <meta property="og:description" content="Simplify data analysis with Zabbix calculated items. Create formulas from existing metrics to generate new insights without extra load or checks.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/fr/ch04-zabbix-collecting-data/calculated/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Calculated items">
+    <meta name="twitter:description" content="Simplify data analysis with Zabbix calculated items. Create formulas from existing metrics to generate new insights without extra load or checks.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#calculated-items" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Cette page n'a pas encore été traduite en Français, elle est donc affichée en anglais.
+            <a href="/gmc/fr/contribute/#translations">Soutenez-nous et traduisez !</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Sélectionner la version";
+        const gGMC_TRANSLATE_CTA = "Soutenez-nous et traduisez !";
+        const gGMC_PAGE_LOCALE = "fr";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Calculated items
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch04-zabbix-collecting-data/calculated/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt_BR/ch04-zabbix-collecting-data/calculated/" hreflang="pt_BR" class="md-select__link">
+              Brazillian Portugese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch04-zabbix-collecting-data/calculated/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch04-zabbix-collecting-data/calculated/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Partager" aria-label="Partager" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 04 : Collecting data 
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collecting data with your Zabbix environment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dataflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hosts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hosts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simple-checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simple checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-agent-passive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix Agent installation and Passive monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-agent-active/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix Agent Active monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snmp-polling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SNMP Polling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snmp-trapping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SNMP Trapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP Items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../preprocessing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preprocessing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dependent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependent items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ssh-telnet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH / Telnet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script item
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jmx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitoring Java Applications with JMX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipmi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IPMI Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database-odbc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database checks via odbc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database checks via agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-trapper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix trapper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../external-checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../browser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Browser item
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Calculated items
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Calculated items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-calculated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Are Calculated Items?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-calculated-items-fit-in-the-zabbix-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where Calculated Items Fit in the Zabbix Data Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-create-a-calculated-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to create a Calculated Item
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#some-good-practices-for-calculated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Some good practices for Calculated items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Example
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analysing-network-latency-with-percentiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysing Network Latency with Percentiles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analysing Network Latency with Percentiles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-this-trigger-detects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Trigger Detects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregated items
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Aggregated items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-of-aggregated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration of Aggregated Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-examples-of-aggregated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Examples of Aggregated Items
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Examples of Aggregated Items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-total-free-space-across-a-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 1: Total Free Space Across a Group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-average-cpu-load-for-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: Average CPU Load for a Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-counting-conditional-items-with-foreach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 3: Counting Conditional Items with foreach
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-aggregate-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Aggregate Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other Aggregate Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting-calculated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting Calculated Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/network-host-discovery/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-calculated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Are Calculated Items?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-calculated-items-fit-in-the-zabbix-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where Calculated Items Fit in the Zabbix Data Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-create-a-calculated-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to create a Calculated Item
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#some-good-practices-for-calculated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Some good practices for Calculated items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Example
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analysing-network-latency-with-percentiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysing Network Latency with Percentiles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analysing Network Latency with Percentiles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-this-trigger-detects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Trigger Detects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregated items
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Aggregated items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-of-aggregated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration of Aggregated Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-examples-of-aggregated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Examples of Aggregated Items
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Examples of Aggregated Items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-total-free-space-across-a-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 1: Total Free Space Across a Group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-average-cpu-load-for-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: Average CPU Load for a Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-counting-conditional-items-with-foreach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 3: Counting Conditional Items with foreach
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-aggregate-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Aggregate Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other Aggregate Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting-calculated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting Calculated Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="advanced">
+      Élémentaire
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch04-zabbix-collecting-data/calculated.md" title="Consulter la source de cette page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="calculated-items">Calculated items</h1>
+<p>As monitoring environments grow, so does the need to transform raw metrics into
+meaningful, actionable information. Not every value you need exists on the host
+itself. Sometimes the most important insights come from deriving new values, ratios,
+differences, rates, percentages, or complex expressions combining several items.</p>
+<p>In Zabbix, this capability is provided through calculated items. A calculated item
+does not collect data from the host; instead, it produces values based on an
+expression evaluated by the Zabbix server. This makes calculated items extremely
+powerful for analytics, SLA reporting, performance ratios, and synthetic metrics
+across multiple data sources.</p>
+<p>In earlier Zabbix versions, calculated metrics were split into two different item
+types:</p>
+<ul>
+<li>Calculated items</li>
+<li>Aggregate items</li>
+</ul>
+<p>Both were powerful but came with inconsistent syntax and separate configuration
+workflows. This led to confusion, especially when building larger monitoring
+models or template driven designs.</p>
+<p>Starting with Zabbix 7.0, these functions were unified into a single item type:
+Calculated with a single expression syntax. All former aggregation logic per host,
+per group, or cross group is now accessed directly through functions such as:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>avg<span class="o">()</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sum<span class="o">()</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>percentile<span class="o">()</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>grpavg<span class="o">()</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>grpsum<span class="o">()</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>groupcount<span class="o">()</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>etc.
+</span></code></pre></div>
+<p>This unification dramatically simplifies the platform:</p>
+<ul>
+<li>One place to create derived values</li>
+<li>One syntax to learn</li>
+<li>One template model for all calculations</li>
+<li>More powerful LLD integration</li>
+</ul>
+<p>Zabbix 8.0 continues this streamlined approach, making calculated items a
+cornerstone for building analytics, SLA metrics, and higher-level abstractions.</p>
+<hr />
+<h2 id="what-are-calculated-items">What Are Calculated Items?</h2>
+<p>A calculated item is a an item whose value is produced entirely by the Zabbix
+server. Instead of collecting external data, it uses:</p>
+<ul>
+<li>Other item values (last(), avg(), max(), etc.)</li>
+<li>Arithmetic operations</li>
+<li>Built-in functions</li>
+<li>Data aggregation across hosts or host groups</li>
+</ul>
+<p>The formula is evaluated at a defined interval, and results are stored exactly
+like any other metric.</p>
+<p><strong>Calculated items are especially useful when:</strong></p>
+<ul>
+<li>You need ratios (e.g., CPU steal % vs. total CPU time)</li>
+<li>You want to convert units (bytes → megabytes)<ul>
+<li>can also be done with preprocessing steps.</li>
+</ul>
+</li>
+<li>You want to calculate deltas (difference between two counters)<ul>
+<li>can also be done with preprocessing steps.</li>
+</ul>
+</li>
+<li>You want to aggregate values across multiple interfaces, disks, or services</li>
+<li>You want to normalize data (e.g., dividing by CPU count)</li>
+<li>You want to create synthetic KPIs that do not exist natively</li>
+</ul>
+<hr />
+<h2 id="where-calculated-items-fit-in-the-zabbix-data-model">Where Calculated Items Fit in the Zabbix Data Model</h2>
+<p>Calculated items are part of the broader set of Zabbix item types. They behave like:</p>
+<ul>
+<li>Dependent items (no host communication)</li>
+<li>Preprocessed items (transformation of raw data)</li>
+<li>Internal/virtual metrics (local to Zabbix)</li>
+</ul>
+<p>... but with a key distinction:</p>
+<p>The source data does not trigger an update, only the calculated item's own
+interval does. This means calculated items must be configured carefully to ensure:</p>
+<ul>
+<li>Their update interval matches the freshness of source data</li>
+<li>Their formulas reference items that exist and return numeric values</li>
+<li>They do not introduce unnecessary load through excessive recalculation</li>
+</ul>
+<hr />
+<h2 id="how-to-create-a-calculated-item">How to create a Calculated Item</h2>
+<p>To create a calculated item:</p>
+<ol>
+<li>Open Data collection → Hosts → <your host> → Items</li>
+<li>Click Create item</li>
+<li>Set Type: Calculated</li>
+<li>Define:<ul>
+<li>Name</li>
+<li>Type: Calculated</li>
+<li>Key (unique identifier)</li>
+<li>Value type (Numeric, float, etc.)</li>
+<li>Formula</li>
+<li>Units (optional)</li>
+<li>Update interval</li>
+<li>History/Trend storage</li>
+</ul>
+</li>
+<li>Save the item</li>
+</ol>
+<p><img alt="calculated/ch04.60-calculated-item.png" src="../../../ch04-zabbix-collecting-data/calculated/ch04.60-calculated-item.png" /></p>
+<p><em>calculated-item</em></p>
+<p><strong>Example Formula :</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>last<span class="o">(</span>/host/net.if.in<span class="o">[</span>eth0<span class="o">])</span><span class="w"> </span>+<span class="w"> </span>last<span class="o">(</span>/host/net.if.out<span class="o">[</span>eth0<span class="o">])</span>
+</span></code></pre></div>
+<p>Using this in our formula would calculate the total traffic by combining traffic
+in with traffic out. This will only work if we have 2 exact items like this on
+our host.</p>
+<p>Another more useful example as the item net.if.total exists for the example
+above could be the calculation of the interface utilization.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">(</span><span class="w"> </span>last<span class="o">(</span>/host/net.if.total<span class="o">[</span>eth0<span class="o">])</span><span class="w"> </span>*<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="o">)</span><span class="w"> </span>/<span class="w"> </span>last<span class="o">(</span>/host/net.if.speed<span class="o">[</span>eth0<span class="o">])</span>
+</span></code></pre></div>
+<p>Again on our host we would need the item <code>net.if.total[eth0]</code> and
+<code>net.if.speed[eth0]</code> for this to work.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Zabbix does not have an Built-in item net.if.speed but we can usually read
+the speed from network devices like switches. In Linux you could use as
+alternative method <code id="IFNAME">vfs.file.contents["/sys/class/net/{#IFNAME}/speed"]
+where you replace</code>` with the correct interface name.</p>
+</div>
+<h2 id="some-good-practices-for-calculated-items">Some good practices for Calculated items</h2>
+<ol>
+<li><strong>Align Update Intervals:</strong> If your source item updates every 60 seconds, avoid recalculating every 5 seconds.</li>
+<li><strong>Always Validate Item Existence:</strong> If one referenced item is missing, the calculated item returns unsupported.</li>
+<li><strong>Use Templates, Not Hosts:</strong> Especially important when building:<ul>
+<li>CPU utilization ratios</li>
+<li>Disk usage summaries</li>
+<li>Network traffic rollups
+   By using templates, calculated items become reusable and consistent across infrastructure.</li>
+</ul>
+</li>
+<li><strong>Use Value Type Carefully:</strong><ul>
+<li>Floating point is usually safer unless you specifically need integers.</li>
+</ul>
+</li>
+<li><strong>Combine with LLD (Low-Level Discovery)</strong>
+   Calculated LLD prototypes allow:<ul>
+<li>Per-disk KPIs</li>
+<li>Per-interface utilization percentages</li>
+<li>Storage pool ratios</li>
+<li>Multi-core CPU computations
+`</li>
+</ul>
+</li>
+</ol>
+<h2 id="practical-example">Practical Example</h2>
+<h3 id="analysing-network-latency-with-percentiles">Analysing Network Latency with Percentiles</h3>
+<p><strong>The Crucial Role of Percentile Analysis in Network Quality</strong>
+When assessing network latency, specifically using metrics like ICMP Ping response
+time, relying solely on the average (mean) can be profoundly misleading a pitfall
+analogous to analysing website performance without considering real world user
+experience.</p>
+<p><strong>Suppose :</strong></p>
+<ul>
+<li>99% of all ICMP responses are 5 ms</li>
+<li>1% spike to 500 ms due to congestion</li>
+</ul>
+<p>In this case, the arithmetic mean latency will still appear negligible and highly
+satisfactory. However, this statistical comfort masks a critical flaw: a significant
+fraction of users the 1% are intermittently encountering severe, perceptible network
+slowdowns.</p>
+<p>To accurately capture the real network quality and expose these intermittent performance
+degradations, engineers must employ percentile analysis. Key percentiles, such as
+the P95 (95th percentile) or P99 (99th percentile), immediately reveal symptoms of
+network issues that averages conceal.</p>
+<p>The use of percentiles effectively exposes sporadic but critical issues, including:</p>
+<ul>
+<li><strong>Congestion:</strong> High traffic leading to packet queuing.</li>
+<li><strong>Bufferbloat:</strong> Excessive buffering causing queueing delays.</li>
+<li><strong>Microbursts:</strong> Short, sharp spikes in traffic volume.</li>
+<li><strong>Jitter Spikes:</strong> Irregular variations in packet delay.</li>
+</ul>
+<p>Therefore, for a robust and accurate indication of the operational network quality
+experienced by the majority of users, percentile analysis is indispensable.</p>
+<p><strong>Required Item: ICMP Response Time</strong></p>
+<p>Zabbix provides a built-in Simple Check for ICMP response time (fping-based).
+For this exercise make sure the item is already on the system available as we
+need it for our calculated item.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Icmpping</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Simple check</td>
+</tr>
+<tr>
+<td>Key</td>
+<td>icmppingsec[&lt;target-IP&gt;]</td>
+</tr>
+<tr>
+<td>Units</td>
+<td>s</td>
+</tr>
+<tr>
+<td>Update interval</td>
+<td>typically 1–10 seconds</td>
+</tr>
+</tbody>
+</table>
+<p>The next step is to create our calculated item.</p>
+<hr />
+<p><strong>Calculated Item: P99 Network Latency (15 minutes)</strong></p>
+<p>For effective trend analysis and anomaly detection, the system aggregates the
+ICMP response times to derive the $99^{th}$ percentile using the last 15 minutes
+of collected data.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Network Latency P99 (15m)</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Calculated</td>
+</tr>
+<tr>
+<td>Key</td>
+<td>icmppingsec.p99 (example key)</td>
+</tr>
+<tr>
+<td>Value type</td>
+<td>Numeric (float)</td>
+</tr>
+<tr>
+<td>Units</td>
+<td>s</td>
+</tr>
+<tr>
+<td>Update interval</td>
+<td>30–60 seconds</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Formula:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>percentile<span class="o">(</span>/&lt;HOST&gt;/icmppingsec<span class="o">[</span>&lt;target-IP&gt;<span class="o">]</span>,15m,99<span class="o">)</span>
+</span></code></pre></div>
+<p>With the monitoring item now collecting data, our immediate next step is to define
+a trigger. This trigger will allow Zabbix to notify us instantly if the defined
+threshold for network quality degradation is breached.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>last(/&lt;HOST\&gt;/icmppingsec.p99)&gt;0.150
+</span></code></pre></div>
+<p>This will alert us if the P99 ping latency goes above 150 ms.</p>
+<h4 id="what-this-trigger-detects">What This Trigger Detects</h4>
+<p>This is not a simple reachability check (up/down).
+This trigger detects:</p>
+<ul>
+<li>Congestion</li>
+<li>Bufferbloat</li>
+<li>Packet-queue delays</li>
+<li>Bursty latency</li>
+<li>Intermittent slow responses</li>
+<li>Micro-outages impacting users</li>
+</ul>
+<p>It measures quality, not availability.
+Average latency might look fine, but P99 tells you:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>“1%<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>packets<span class="w"> </span>are<span class="w"> </span>delayed<span class="w"> </span>more<span class="w"> </span>than<span class="w"> </span><span class="m">150</span><span class="w"> </span>ms<span class="w"> </span>—<span class="w"> </span>users<span class="w"> </span>notice<span class="w"> </span>this.”
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>or
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>This<span class="w"> </span>trigger<span class="w"> </span>fires<span class="w"> </span><span class="k">if</span><span class="w"> </span>the<span class="w"> </span>worst<span class="w"> </span>latency<span class="w"> </span><span class="o">(</span>top<span class="w"> </span><span class="m">1</span>%<span class="o">)</span><span class="w"> </span>over<span class="w"> </span>the<span class="w"> </span>last<span class="w"> </span><span class="m">15</span><span class="w"> </span>minutes<span class="w"> </span>is<span class="w"> </span>higher<span class="w"> </span>than<span class="w"> </span><span class="m">150</span><span class="w"> </span>ms.
+</span></code></pre></div>
+<p>This is far more meaningful for:</p>
+<ul>
+<li>Internet links</li>
+<li>VPNs</li>
+<li>WiFi infrastructure</li>
+<li>Cloud interconnects</li>
+<li>SD-WAN</li>
+<li>VoIP/Video systems</li>
+</ul>
+<p>If we now go to latest data page we can take a look at our item and click on the
+graph button at the end of the screen.</p>
+<p><img alt="calculated/ch04.61-calculated-p99.png" src="../../../ch04-zabbix-collecting-data/calculated/ch04.61-calculated-p99.png" /></p>
+<p><em>p99 graph</em></p>
+<p>We now have a nice overview of the quality of our network thanks to our
+calculated item. Now that we have seen how to create calculated items lets have
+a look at aggregated items.</p>
+<h2 id="aggregated-items">Aggregated items</h2>
+<p>Now that we've seen how Calculated Items allow us to perform mathematical operations
+on data from a single host (like determining the P99 latency on one server), the
+next logical step is to consider the wider picture: network-wide or service wide
+performance.</p>
+<p>This is where <strong>Aggregated Items</strong> come into play.</p>
+<p><strong>What are Aggregated Items?</strong>
+Simply put, an Aggregated Item gathers and processes data from multiple hosts,
+host groups, or even other items across your entire monitored environment.</p>
+<p>Think of it as the tool you use to calculate the health of an entire service for
+instance, the average web server CPU load across your farm, or the total available
+disk space for all hosts in your "Database Servers" group.</p>
+<p>Aggregated Items enable the collection of crucial metrics that are inherently
+distributed. They perform functions like:</p>
+<ul>
+<li><strong>Average (avg):</strong> The mean value across a set of items.</li>
+<li><strong>Sum (sum):</strong> The total combined value (e.g., total incoming traffic).</li>
+<li><strong>Minimum (min) / Maximum (max):</strong> The worst or best value recorded across the group.</li>
+<li><strong>Count (count):</strong> The number of items that match a specific criteria (e.g., how many servers are currently unavailable).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Item Type</th>
+<th style="text-align: left;">Scope of Data</th>
+<th style="text-align: left;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Calculated</td>
+<td style="text-align: left;">Single Host (or Item)</td>
+<td style="text-align: left;">Mathematical transformation (e.g., P99, Rate of Change).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Aggregated</td>
+<td style="text-align: left;">Multiple Hosts/Groups</td>
+<td style="text-align: left;">Statistical combination (e.g., Average, Sum, Max).</td>
+</tr>
+</tbody>
+</table>
+<p>In short, while Calculated Items help you interpret the metric for one specific
+device, Aggregated Items help you determine the collective status of a group of
+devices or an entire service.</p>
+<h3 id="configuration-of-aggregated-items">Configuration of Aggregated Items</h3>
+<p>Aggregated Items use a special <strong>item key</strong> that differs significantly from standard
+data collection methods. Instead of defining a specific check (like <code>icmpping</code>),
+you define a calculation that operates over a set of other items.</p>
+<p>The general format for an Aggregated Item key is:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&lt;aggregation_function&gt;[&lt;target_selector&gt;,&lt;item_key&gt;,&lt;time_shift&gt;]
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Aggregation Function</strong></td>
+<td style="text-align: left;">The statistical operation to perform (e.g., <code>avg</code>, <code>sum</code>, <code>max</code>, <code>min</code>, <code>count</code>, <code>foreach</code>).</td>
+<td style="text-align: left;"><code>avg</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Target Selector</strong></td>
+<td style="text-align: left;">Defines the scope of the aggregation: the hosts or groups to include.</td>
+<td style="text-align: left;"><code>group:"Web Servers"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Item Key</strong></td>
+<td style="text-align: left;">Specifies the exact item to aggregate across the targets.</td>
+<td style="text-align: left;"><code>system.cpu.load[all,avg1]</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Time Shift (Optional)</strong></td>
+<td style="text-align: left;">A time window to shift the data collection back (for comparison).</td>
+<td style="text-align: left;"><code>1h</code> (1 hour ago)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="practical-examples-of-aggregated-items">Practical Examples of Aggregated Items</h3>
+<p>Here are several common scenarios demonstrating how to define these powerful global metrics:</p>
+<h4 id="example-1-total-free-space-across-a-group">Example 1: Total Free Space Across a Group</h4>
+<p><strong>Goal:</strong> Monitor the collective available disk space for all hosts in the
+"Database Cluster" group to prevent a system-wide outage.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Configuration</th>
+<th style="text-align: left;">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Key</strong></td>
+<td style="text-align: left;"><code>sum[group:"Database Cluster",vfs.fs.size[/,,free]]</code></td>
+<td style="text-align: left;">This key <strong>SUMS</strong> the free space (<code>vfs.fs.size[/,,free]</code>) from every host in the group.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Units</strong></td>
+<td style="text-align: left;"><code>B</code> (Bytes)</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-2-average-cpu-load-for-a-service">Example 2: Average CPU Load for a Service</h4>
+<p><strong>Goal:</strong> Determine the overall average CPU load experienced by your primary web
+service, which is running across the "Production Web" group.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Configuration</th>
+<th style="text-align: left;">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Key</strong></td>
+<td style="text-align: left;"><code>avg[group:"Production Web",system.cpu.load[all,avg1]]</code></td>
+<td style="text-align: left;">This calculates the <strong>AVERAGE</strong> 1-minute CPU load across all servers in the group.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-3-counting-conditional-items-with-foreach">Example 3: Counting Conditional Items with <code>foreach</code></h4>
+<p>The <strong><code>foreach</code></strong> function is a highly flexible tool that allows you to calculate
+statistics based on a <strong>condition</strong> within the target set. Instead of aggregating
+every item, you can aggregate only those that meet certain criteria.</p>
+<p><strong>Goal:</strong> Count how many Linux hosts in the "All Servers" group currently have a
+high CPU load (load average &gt; 4).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Configuration</th>
+<th style="text-align: left;">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Key</strong></td>
+<td style="text-align: left;"><code>count[group:"All Servers",system.cpu.load[all,avg1],last,0,gt,4]</code></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Type of Information</strong></td>
+<td style="text-align: left;">Numeric (integer)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Units</strong></td>
+<td style="text-align: left;"><code>hosts</code></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p>In the example above, the <code>count</code> function is performed on the results of the
+<code>foreach</code> mechanism (implied by the filters):</p>
+<ul>
+<li>It checks every host in <code>group:"All Servers"</code> for the item <code>system.cpu.load[all,avg1]</code>.</li>
+<li>The final filters (<code>gt,4</code>) ensure the function only counts hosts where the
+<strong>latest</strong> (<code>last</code>) value is <strong>greater than</strong> (<code>gt</code>) <strong>4</strong>. This gives you a clear
+count of servers currently under heavy load.</li>
+</ul>
+<hr />
+<h3 id="other-aggregate-functions">Other Aggregate Functions</h3>
+<p>Zabbix supports a wide array of aggregate functions beyond the basics shown here,
+including statistics like standard deviation (<code>stddevpop</code>) and more specialized
+counting and filtering.</p>
+<p>For a complete list of all supported aggregate functions, including detailed syntax
+and examples for <code>foreach</code>, consult the official Zabbix documentation.</p>
+<h4 id="troubleshooting-calculated-items">Troubleshooting Calculated Items</h4>
+<ol>
+<li>How to best troubleshoot unsupported calculated items.</li>
+</ol>
+<p><strong>Always Check first:</strong></p>
+<ul>
+<li>Does the formula reference items that do not exist?</li>
+<li>Are value types compatible?</li>
+<li>Does the function return something numeric?</li>
+</ul>
+<ol start="2">
+<li>When you have incorrect values</li>
+</ol>
+<p><strong>Check :</strong></p>
+<ul>
+<li>Unit mismatch (bytes vs bits)</li>
+<li>Wrong interval compared to source data</li>
+<li>Missing parentheses in expression</li>
+</ul>
+<ol start="3">
+<li>No Graphs Displaying</li>
+</ol>
+<p><strong>Ensure :</strong></p>
+<ul>
+<li>Value type is numeric</li>
+<li>Units are properly set</li>
+<li>History/trends retention is not zero</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>This chapter marks a critical turning point in our monitoring journey. We moved
+beyond simply collecting raw data and focused on the true value of a robust system:
+<strong>data transformation and interpretation.</strong> </p>
+<p>Key Takeaways
+- <strong>Percentile Power:</strong> We established that relying on average metrics can
+  dangerously obscure intermittent performance issues like microbursts and congestion.
+  Techniques like calculating the $99^{th}$ percentile ($P99$) with a Calculated
+  Item provide a far more accurate representation of actual user experience and
+  true network quality.
+- <strong>Calculated Items:</strong> These tools allow us to apply complex mathematical logic,
+  transformations, and filters to data collected from a single host, turning raw
+  response times into actionable quality scores.
+- <strong>Aggregated Items:</strong> We extended our view beyond the individual host by configuring
+  Aggregated Items. Using functions like avg, sum, and the powerful conditional
+  logic of foreach, we learned how to unify metrics from entire host groups or
+  services to derive crucial metrics like service-wide free space or the total
+  count of unhealthy hosts.</p>
+<p>By mastering these two item types, you gain the ability to define metrics that
+directly correlate with your business objectives not just the underlying machine
+statistics. You can now build alerts and dashboards that clearly expose the health
+of your entire infrastructure or service stack, replacing vague metrics with
+concrete, measurable KPIs.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>What is the primary difference in data scope between a Calculated Item and an
+  Aggregated Item?</li>
+<li>If you wanted to track the rate of change (the difference between the last two
+  readings) of a host's disk space, which type of Zabbix item would you use, and why?</li>
+<li>Explain the purpose of the foreach function in Zabbix aggregation. How does it
+  allow you to achieve a goal that a simple avg or sum function cannot?</li>
+<li>You need to calculate the total incoming network traffic for all devices in
+  the "Core Routers" host group. Write the correct Aggregated Item key using the
+  sum function, assuming the item key for incoming traffic is net.if.in[eth0]</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/appendix/functions/aggregate#aggregate-functions-1">https://www.zabbix.com/documentation/current/en/manual/appendix/functions/aggregate#aggregate-functions-1</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/calculated">https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/calculated</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>

@@ -1,0 +1,2686 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Complete guide to Zabbix upgrades covering major and minor versions, OS, database,
+and PHP upgrades, plus safe migration strategies.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/ch14-zabbix-maintenance/upgrades/">
+      
+      
+        <link rel="prev" href="../taking-backups/">
+      
+      
+        <link rel="next" href="../../ch15-zabbix-real-world-examples/chapter/">
+      
+      
+        
+          <link rel="alternate" href="../../fr/ch14-zabbix-maintenance/upgrades/" hreflang="fr">
+        
+          <link rel="alternate" href="../../nl/ch14-zabbix-maintenance/upgrades/" hreflang="nl">
+        
+          <link rel="alternate" href="../../pt_BR/ch14-zabbix-maintenance/upgrades/" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../ru/ch14-zabbix-maintenance/upgrades/" hreflang="ru">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Upgrades - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141">
+    
+      <link rel="stylesheet" href="../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Upgrades">
+    <meta property="og:description" content="Complete guide to Zabbix upgrades covering major and minor versions, OS, database, and PHP upgrades, plus safe migration strategies.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/ch14-zabbix-maintenance/upgrades/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Upgrades">
+    <meta name="twitter:description" content="Complete guide to Zabbix upgrades covering major and minor versions, OS, database, and PHP upgrades, plus safe migration strategies.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#zabbix-upgrades" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Select version";
+        const gGMC_TRANSLATE_CTA = "Support us and translate!";
+        const gGMC_PAGE_LOCALE = "en";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Upgrades
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../fr/ch14-zabbix-maintenance/upgrades/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../nl/ch14-zabbix-maintenance/upgrades/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../pt_BR/ch14-zabbix-maintenance/upgrades/" hreflang="pt_BR" class="md-select__link">
+              Brazillian Portugese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../ru/ch14-zabbix-maintenance/upgrades/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/network-host-discovery/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_19">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 14 : Maintenance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../maintenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../internal-health/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internal health
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../taking-backups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backups
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upgrades
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upgrades
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-zabbix-really-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Zabbix Really Upgrades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#major-and-minor-upgrades-two-very-different-beasts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Major and Minor Upgrades: Two Very Different Beasts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-stack-beneath-the-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Stack Beneath the Server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Stack Beneath the Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-short-story-about-an-upgrade-gone-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Short Story About an Upgrade Gone Wrong
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-migrations-are-often-safer-than-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Migrations Are Often Safer Than Upgrades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-actually-makes-a-zabbix-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Actually Makes a Zabbix System
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-scale-and-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time, Scale, and Reality
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Time, Scale, and Reality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-crucial-detour-primary-keys-and-database-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Crucial Detour: Primary Keys and Database Health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-primary-keys-matter-more-during-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Primary Keys Matter More During Upgrades
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-engines-are-not-neutral-observers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Engines Are Not Neutral Observers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-upgrade-and-migration-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PostgreSQL: Upgrade and Migration Strategies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mariadb-and-mysql-different-tools-same-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MariaDB and MySQL: Different Tools, Same Principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replication-as-an-upgrade-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replication as an Upgrade Tool
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Replication as an Upgrade Tool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logical-replication-and-near-zero-downtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical Replication and Near-Zero Downtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-replication-is-the-right-choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When Replication Is the Right Choice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bringing-it-back-to-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bringing It Back to Zabbix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-frontend-as-an-early-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Frontend as an Early Warning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-the-right-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing the Right Approach
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-zabbix-really-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Zabbix Really Upgrades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#major-and-minor-upgrades-two-very-different-beasts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Major and Minor Upgrades: Two Very Different Beasts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-stack-beneath-the-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Stack Beneath the Server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Stack Beneath the Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-short-story-about-an-upgrade-gone-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Short Story About an Upgrade Gone Wrong
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-migrations-are-often-safer-than-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Migrations Are Often Safer Than Upgrades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-actually-makes-a-zabbix-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Actually Makes a Zabbix System
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-scale-and-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time, Scale, and Reality
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Time, Scale, and Reality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-crucial-detour-primary-keys-and-database-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Crucial Detour: Primary Keys and Database Health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-primary-keys-matter-more-during-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Primary Keys Matter More During Upgrades
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-engines-are-not-neutral-observers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Engines Are Not Neutral Observers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-upgrade-and-migration-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PostgreSQL: Upgrade and Migration Strategies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mariadb-and-mysql-different-tools-same-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MariaDB and MySQL: Different Tools, Same Principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replication-as-an-upgrade-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replication as an Upgrade Tool
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Replication as an Upgrade Tool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logical-replication-and-near-zero-downtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical Replication and Near-Zero Downtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-replication-is-the-right-choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When Replication Is the Right Choice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bringing-it-back-to-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bringing It Back to Zabbix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-frontend-as-an-early-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Frontend as an Early Warning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-the-right-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing the Right Approach
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 14 : Maintenance
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="advanced">
+      Advanced
+    </span>
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="expert">
+      Expert
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch14-zabbix-maintenance/upgrades.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="zabbix-upgrades">Zabbix Upgrades</h1>
+<p>Upgrading Zabbix is one of those activities every administrator knows must happen
+eventually, and yet hopes to postpone just a little longer. Not because it is
+particularly complex, but because it touches the one system everyone depends on
+when things go wrong.</p>
+<p>A monitoring system that is unavailable during an incident is not just inconvenient
+it is actively harmful. This is why upgrades deserve planning, context, and restraint.</p>
+<p>This chapter is not a checklist. It is a guide to understanding what actually happens
+when you upgrade Zabbix, what can go wrong, and how to make sure it does not.</p>
+<p><em>“Good upgrades are quiet. Bad ones become stories.”</em></p>
+<h3 id="how-zabbix-really-upgrades">How Zabbix Really Upgrades</h3>
+<p>Zabbix does not upgrade like some other open-source software.</p>
+<p>At its core, Zabbix uses a versioned database schema. Every structural change ever
+made to the database since 2.0 is recorded as a patch. When the Zabbix server
+starts, it compares the current database version with the one it expects and applies
+all missing patches automatically.</p>
+<p>This means that a database created with Zabbix 2.0 can be upgraded directly to
+Zabbix 8.0. No intermediate versions are required. No manual schema juggling is
+needed.</p>
+<p>This capability is powerful, and often misunderstood.</p>
+<p>What matters is not the starting version of Zabbix, but whether the surrounding
+system, the operating system, database engine, PHP, and optional extensions can support
+the target version.</p>
+<h3 id="major-and-minor-upgrades-two-very-different-beasts">Major and Minor Upgrades: Two Very Different Beasts</h3>
+<p>Not all upgrades deserve the same level of concern.</p>
+<p>A minor upgrade for example from 8.0.1 to 8.0.8 focuses on stability. These releases
+fix bugs, close security issues, and improve performance. They are usually quick,
+safe, and should be applied regularly. Treating them as major events often leads
+to them being postponed, which quietly increases risk over time.</p>
+<p>A major upgrade, on the other hand, changes behavior. It may introduce new features,
+remove deprecated ones, and almost always involves database schema changes. While
+Zabbix can apply these changes automatically, the impact depends heavily on the
+size of your database and the age of your installation.</p>
+<p><em>“Skipping minor upgrades is how small problems grow up unsupervised.”</em></p>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>Zabbix follows a regular release cycle for minor updates, which are generally
+published on a monthly basis.</p>
+</details>
+<p>This book focuses on Zabbix 8.0 as the target version. Older releases matter only
+in how they shape the path toward it.</p>
+<h3 id="the-stack-beneath-the-server">The Stack Beneath the Server</h3>
+<p>Zabbix is not an island. It rests on a stack of software that evolves independently
+and sometimes forces upgrades on its own schedule.</p>
+<p>Operating systems reach end of life. Database engines deprecate versions. PHP moves
+forward whether the frontend is ready or not. TimescaleDB introduces performance
+gains and constraints in equal measure.</p>
+<p>Many Zabbix upgrades are triggered not by Zabbix itself, but by one of these layers.</p>
+<p>This is where many upgrades go wrong: everything changes at once.</p>
+<p><strong><em>“If the OS, database, PHP, and Zabbix all change in the same night, you did not
+perform an upgrade. You rolled the dice.”</em></strong></p>
+<h4 id="a-short-story-about-an-upgrade-gone-wrong">A Short Story About an Upgrade Gone Wrong</h4>
+<p><strong>Consider a real-world example:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>An administrator decides to upgrade an aging monitoring server. The OS is out of
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>support, so it gets upgraded. The new OS ships with a newer PostgreSQL version,
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>so that changes too. PHP is updated automatically as part of the process. Since
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Zabbix needs an upgrade anyway, that is done last.
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>The server starts. The database upgrade begins. Disk usage spikes. PostgreSQL
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>runs out of space halfway through rebuilding indexes. The Zabbix server refuses
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>to start. The frontend is broken because PHP extensions changed. Monitoring is
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>down, and restoring the backup takes hours.
+</span></code></pre></div>
+<p>Nothing <strong>“unexpected”</strong> happened. Everything that went wrong was predictable.</p>
+<p>The mistake was not technical. It was concurrent change without isolation.</p>
+<h3 id="why-migrations-are-often-safer-than-upgrades">Why Migrations Are Often Safer Than Upgrades</h3>
+<p>For this reason, many experienced administrators prefer migration based upgrades,
+especially when major versions or operating systems are involved.</p>
+<p>Instead of upgrading an existing system in place, a new system is built alongside
+it. The target operating system, database engine, PHP version, and Zabbix release
+are installed cleanly. Only once the new environment is stable does the data move.</p>
+<p>This approach has advantages that are hard to overstate. It allows testing without
+pressure, rollback without panic, and validation without guessing.</p>
+<p>It also forces clarity.</p>
+<h3 id="what-actually-makes-a-zabbix-system">What Actually Makes a Zabbix System</h3>
+<p>Despite appearances, a Zabbix system consists of remarkably few moving parts.</p>
+<p><strong>The database holds almost everything:</strong> configuration, history, trends, users,
+permissions. Migrating the database brings the environment with it. When restored
+into a new system and started with a newer Zabbix server, the schema is upgraded
+automatically.</p>
+<p>Configuration files matter too, but far less than many expect. Server and proxy
+configuration files, alert scripts, external checks, and certificates should be
+migrated deliberately, not copied blindly. Paths change. Defaults improve. Old
+workarounds often become unnecessary. As an example Zabbix now support
+preprocessing with JSONPath and JavaScript. This alone can reduce tons of
+scripts we used before.</p>
+<p>What does not deserve to follow you are old logs, temporary files, and forgotten
+overrides. Migration is not just movement, it is an opportunity to let go.</p>
+<p><strong><em>“If you copy every problem forward, you did not migrate. You embalmed.”</em></strong></p>
+<h3 id="time-scale-and-reality">Time, Scale, and Reality</h3>
+<p>Upgrade duration has little to do with version numbers and everything to do with
+data volume.</p>
+<p>A small installation with a modest database may complete a major upgrade in minutes.
+A large environment with years of retained history and TimescaleDB hypertables
+may take hours if not days. During that time, disk I/O will spike, tables may be
+locked, and patience will be tested.</p>
+<p>This is normal.</p>
+<p>What turns long upgrades into outages is not duration, but surprise.</p>
+<p>A well planned upgrade announces its timeline in advance. A poorly planned one
+discovers it in production.</p>
+<h4 id="a-crucial-detour-primary-keys-and-database-health">A Crucial Detour: Primary Keys and Database Health</h4>
+<p>At some point in every long running Zabbix installation, performance questions
+arise. Queries get slower. Housekeeping takes longer. Vacuuming or optimization
+jobs begin to dominate maintenance windows. Very often, the root cause is not
+hardware, scale, or even Zabbix itself.</p>
+<p>It is missing or late added primary keys.</p>
+<p>Historically, early Zabbix versions did not enforce primary keys on all large tables.
+This was not negligence it reflected the realities of database engines and workloads at the
+time. As Zabbix evolved, so did its expectations of the database beneath it.</p>
+<p>Modern Zabbix versions rely heavily on primary keys to ensure:</p>
+<ul>
+<li>Efficient housekeeping</li>
+<li>Predictable query plans</li>
+<li>Safe parallel operations</li>
+<li>TimescaleDB compatibility</li>
+</ul>
+<p>Adding them late is possible, but it is not free.</p>
+<p><strong><em>“A database without primary keys works… until it really, really doesn't.”</em></strong></p>
+<h4 id="why-primary-keys-matter-more-during-upgrades">Why Primary Keys Matter More During Upgrades</h4>
+<p>Database upgrades and migrations are moments of maximum leverage. Tables are already
+being rewritten, indexes rebuilt, and metadata refreshed. This makes them the ideal
+time to correct structural debt.</p>
+<p>Adding primary keys to large Zabbix tables on a live production system can be
+disruptive. Doing so during an upgrade or migration often costs little more than
+patience.</p>
+<p>This is why Zabbix documents primary key enforcement so explicitly: it is not a
+theoretical best practice, it is a practical necessity for modern workloads.</p>
+<p>If your database still lacks required primary keys, an upgrade is not just an
+opportunity to add them, it is the safest time you will ever get.</p>
+<h4 id="database-engines-are-not-neutral-observers">Database Engines Are Not Neutral Observers</h4>
+<p>database does not exist in a vacuum. It may feel self contained once it is running,
+but it is quietly shaped by the operating system beneath it, sometimes in ways that
+only become visible years later.</p>
+<p>One of the most striking examples of this is the C standard library.</p>
+<p>Database engines rely on the system’s C library for fundamental operations such as
+string comparison, sorting, and collation. When that library changes, the rules of
+order can change with it. What was considered correctly sorted yesterday may no
+longer be considered correct tomorrow.</p>
+<p>This is not hypothetical.</p>
+<p>During major Linux distribution upgrades such as the transition from CentOS 6 to 7,
+or across certain Ubuntu releases the underlying C library changed its collation
+behavior. Databases that were perfectly healthy before the upgrade suddenly contained
+indexes that no longer matched the new sorting rules.</p>
+<p>Nothing was “broken”. Queries still worked. Data was still there. But indexes were
+now built on assumptions that no longer held true.</p>
+<p>The only correct response in such situations is a rebuild.</p>
+<p>That is why database upgrades that coincide with operating system changes often
+benefit from index rebuilds, table rewrites, or full reindexing operations. Not
+because the database engine failed, but because the environment it depends on has
+evolved.</p>
+<p><strong><em>“A database upgraded without reindexing is carrying yesterday’s sorting rules
+into today's system.”</em></strong></p>
+<p><strong>Ignoring this can lead to subtle and difficult-to-diagnose issues:</strong> degraded
+performance, unexpected query plans, or in rare cases, incorrect index usage.
+These problems do not announce themselves loudly. They simply erode confidence
+over time.</p>
+<p>Reindexing after a major OS or database upgrade is not superstition. It is an
+acknowledgement that databases inherit behavior from the systems they run on and
+that those systems do change.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Historically, major upgrades of CentOS, Ubuntu, and SUSE Linux Enterprise have 
+all introduced updates to core system libraries, including the C standard library.
+In some cases, these updates altered collation and sorting behavior in ways that
+directly affected database indexes.</p>
+</details>
+<h4 id="postgresql-upgrade-and-migration-strategies">PostgreSQL: Upgrade and Migration Strategies</h4>
+<p>PostgreSQL offers administrators an unusual degree of flexibility when it comes to
+upgrades. That flexibility is a strength but only if it is understood.</p>
+<p>For smaller Zabbix installations, the most straightforward approach is often a
+logical dump and restore. A new PostgreSQL version is installed, data is exported
+from the old system, and restored into the new one. This method is slow, sometimes
+painfully so, but it has one decisive advantage: every table, index, and object is
+rebuilt from scratch using the new database engine and the current system libraries.</p>
+<p>It is difficult to carry historical baggage through a dump and restore, which is
+precisely why it remains such a reliable option.</p>
+<p>Larger environments tend to follow a different path. When databases grow to hundreds
+of gigabytes or more, full logical restores become impractical. In these cases,
+PostgreSQL’s native upgrade tooling is often used to perform an in-place upgrade.</p>
+<p>This is where installing multiple PostgreSQL versions side by side becomes important.</p>
+<p>Tools such as pg_upgrade rely on having both the old and the new PostgreSQL binaries
+available at the same time. By explicitly controlling which binaries operate on a
+given data directory, administrators can perform a fast upgrade while preserving
+the existing data layout. When executed correctly, this approach dramatically reduces
+downtime compared to logical migrations.</p>
+<p>Some teams take this one step further by carefully structuring filesystem layouts
+or using symbolic links to ensure that data directories remain stable while binaries
+change around them. This is not casual administration, it requires discipline, documentation,
+and rehearsals but it allows upgrades to be repeatable and predictable even at scale.</p>
+<p><strong><em>“Fast upgrades are never accidental. They are designed long before they are needed.”</em></strong></p>
+<p>Regardless of the chosen method, PostgreSQL upgrades benefit enormously from a few
+consistent practices.</p>
+<p>Testing the upgrade process on a restored copy of the database removes uncertainty.
+Performing explicit reindexing after major operating system or engine upgrades ensures
+that indexes reflect the behavior of the new environment. Verifying extensions
+particularly TimescaleDB before starting Zabbix prevents avoidable startup failures.</p>
+<p>PostgreSQL provides the tools to upgrade safely. The challenge lies not in choosing
+the fastest method, but in choosing the one that matches the size, risk tolerance,
+and operational maturity of your environment.</p>
+<h4 id="mariadb-and-mysql-different-tools-same-principles">MariaDB and MySQL: Different Tools, Same Principles</h4>
+<p>MariaDB and MySQL follow a different philosophy, but the fundamentals remain unchanged.</p>
+<p>Major engine upgrades should be treated as database migrations, not package updates.
+Replication can be used to great advantage here: upgrading a replica first, validating
+behavior, and only then promoting it.</p>
+<p>This approach reduces downtime and provides a clean rollback path.</p>
+<p>Primary key enforcement, index health, and collation consistency deserve special
+care in these environments. What works adequately on smaller systems can degrade
+sharply at scale.</p>
+<h4 id="replication-as-an-upgrade-tool">Replication as an Upgrade Tool</h4>
+<p>Replication is often discussed only in the context of high availability, but its
+value goes far beyond failover. Used correctly, replication is one of the most
+powerful tools available for safe upgrades.</p>
+<p>Whether using PostgreSQL replication or MariaDB replicas, maintaining a secondary
+system allows administrators to observe the effects of an upgrade without putting
+production at risk. Schema changes can be applied and evaluated, performance
+characteristics measured, and perhaps most importantly the true duration of the
+upgrade can be understood before it matters.</p>
+<p>Only once the replica behaves exactly as expected does the primary system change.</p>
+<p>This transforms upgrades from leaps of faith into rehearsed procedures.</p>
+<p><strong><em>“If you have a replica and didn't test the upgrade on it first, you skipped
+the best gift you were given.”</em></strong></p>
+<h5 id="logical-replication-and-near-zero-downtime">Logical Replication and Near-Zero Downtime</h5>
+<p><strong>PostgreSQL adds another powerful option:</strong> logical replication.</p>
+<p>Unlike physical replication, logical replication works at the level of database
+changes rather than raw data files. This makes it possible to replicate data between:</p>
+<ul>
+<li>Different PostgreSQL major versions</li>
+<li>Different database layouts</li>
+<li>Even different operating systems</li>
+</ul>
+<p>In upgrade scenarios, this opens the door to near zero downtime migrations.</p>
+<p>A new system can be built with the target PostgreSQL version, operating system,
+and Zabbix release. Data is streamed continuously from the old system into the
+new one while production remains fully active. When the time comes to switch over,
+downtime is reduced to the moment required to stop writes, let replication catch
+up, and redirect the application.</p>
+<p>This approach requires more planning and careful validation, but it fundamentally
+changes what “upgrade downtime” means especially for large installations where
+traditional upgrades would take hours.</p>
+<p>MariaDB offers similar concepts through replication and online schema changes,
+though the mechanisms differ. The underlying idea remains the same: decouple
+data movement from service interruption.</p>
+<p><strong><em>“The fastest upgrade is the one that finishes before users notice it
+started.”</em></strong></p>
+<h5 id="when-replication-is-the-right-choice">When Replication Is the Right Choice</h5>
+<p>Replication-based upgrades shine when:</p>
+<ul>
+<li>Databases are large</li>
+<li>Downtime windows are small</li>
+<li>OS or major database versions are changing</li>
+<li>A clean separation between old and new systems is desired</li>
+</ul>
+<p>They also impose discipline. Replication setups must be monitored, understood,
+and tested long before an upgrade is planned. This is not a last minute solution
+but when available, it is one of the safest ones.</p>
+<h5 id="bringing-it-back-to-zabbix">Bringing It Back to Zabbix</h5>
+<p>For Zabbix, replication based upgrades are particularly attractive. Configuration
+data changes slowly. History and trends are append-only. This makes the data model
+well suited to replication strategies.</p>
+<p>Used correctly, replication allows Zabbix upgrades to feel less like maintenance
+windows and more like controlled transitions.</p>
+<p><em>And that, ultimately, is the goal !</em></p>
+<h3 id="the-frontend-as-an-early-warning">The Frontend as an Early Warning</h3>
+<p><strong>One often overlooked lesson:</strong> the Zabbix frontend is your canary.</p>
+<p>After OS or PHP changes, the frontend is usually the first thing to break. When
+it does, it is a signal not an inconvenience. It tells you something in the
+environment is no longer aligned.</p>
+<p>If the frontend is unhealthy, do not proceed with the server upgrade. Fix the
+stack first. Zabbix itself is rarely the problem.</p>
+<h3 id="choosing-the-right-approach">Choosing the Right Approach</h3>
+<p>There is no universal rule that says every upgrade must be done in place, nor
+that every system requires migration. The decision depends on scale, risk tolerance,
+and what else is changing at the same time.</p>
+<p>Minor upgrades should be routine. Major upgrades should be deliberate. Operating
+system changes should be treated with respect. Database and TimescaleDB upgrades
+should never be rushed.</p>
+<p>Above all, changes should be isolated whenever possible.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Zabbix upgrades have a reputation they do not deserve. The software itself is
+capable, conservative, and predictable. When upgrades fail, it is almost always
+because too many things changed at once, or because preparation was mistaken for
+pessimism.</p>
+<p><strong><em>“Most upgrade failures are not technical. They are scheduling decisions.”</em></strong></p>
+<p>Treat upgrades as part of system lifecycle management, not emergency surgery. Plan
+them, rehearse them, and let them be boring.</p>
+<p>Because when your monitoring system needs attention, it is already too late to
+learn how it works.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>What is the fundamental difference between a major and a minor Zabbix upgrade,
+  and why does it matter when planning downtime?</li>
+<li>Why does Zabbix not require incremental upgrades between major versions, and
+  what role does the database play in this process?</li>
+<li>Which components of the stack should be considered before upgrading Zabbix itself,
+  and why can upgrading them all at once be risky?</li>
+<li>What problems can arise when upgrading an operating system without rebuilding
+  database indexes?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/installation/upgrade">https://www.zabbix.com/documentation/current/en/manual/installation/upgrade</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_primary_keys">https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_primary_keys</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_scripts">https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_scripts</a></li>
+<li></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/tags-data-attr.js?v=514f4d1ef40cb7c1bed03bcbf9a447d4f11fa141"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>
