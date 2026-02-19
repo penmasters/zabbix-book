@@ -171,9 +171,9 @@ All four interface types, also come with an icon that can turn <span style="colo
 <span style="color: grey;">Grey</span>. This color determines the interfaces'
 current availability and is shown in a few places in the Zabbix frontend:
 
-- On the host overview page (Monitoring → Hosts)
-- On the hosts configuration page (Data Collection → Hosts)
-- On the host configuration page when editing a host (Data Collection → Hosts → [Host name])
+- On the host overview page (**Monitoring** → **Hosts**)
+- On the hosts configuration page (**Data Collection** → **Hosts**)
+- On the host configuration page when editing a host (**Data Collection** → **Hosts** → *[Host name]*)
 
 When you hover over, or click on one of the availability icons, you will get a 
 tooltip with the current status and possible error reason of each individual 
@@ -188,16 +188,16 @@ attempt for items that use this interface:
   failed. (timeout, connection refused, authentication failure, etc.) Usually
   the details will also show the error reason for the failure.
 - <span style="color: grey;">Unknown</span> - This can have a few reasons:
-  - There has been no data collection attempt on this interface yet or
-  - The host is disabled or
-  - The host is set to be monitored by a proxy that is currently unavailable.
-  - The host is set to be monitored by a proxy that has not yet collected data 
-    from this host.
-  - All items that use this interface are disabled.
-  - Zabbix server or the proxy monitoring this host has no pollers configured
-    to collect data from this type of interface. (e.g. no SNMP pollers configured
-    to collect data from SNMP interfaces or no Agent pollers configured to collect
-    data from Zabbix Agent interfaces)
+    - There has been no data collection attempt on this interface yet or
+    - The host is disabled or
+    - The host is set to be monitored by a proxy that is currently unavailable.
+    - The host is set to be monitored by a proxy that has not yet collected data 
+      from this host.
+    - All items that use this interface are disabled.
+    - Zabbix server or the proxy monitoring this host has no pollers configured
+      to collect data from this type of interface. (e.g. no SNMP pollers configured
+      to collect data from SNMP interfaces or no Agent pollers configured to collect
+      data from Zabbix Agent interfaces)
 
 ### Active checks availability
 On the details popup of the Zabbix Agent availability icon (ZBX), you will see 
@@ -215,7 +215,7 @@ If the Zabbix server or proxy has not received a subsequent heartbeat from the a
 a period of 2 times the `HeartbeatFrequency`, the status will switch to 
 <span style="color: red;">Not available</span>.
 
-???+ warning Zabbix agents older than 6.2
+???+ warning "Zabbix agents older than 6.2"
 
     The heartbeat mechanism was introduced in Zabbix 6.2, so for Zabbix agents
     older than version 6.2, the Active checks interface status will always
