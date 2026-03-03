@@ -130,7 +130,7 @@ sudo dnf install unixODBC unixODBC-devel
 sudo dnf install mariadb-connector-odbc
 ```
 
-### Ubuntu 22.04 / 24.04
+### Ubuntu 24.04
 
 ```bash
 sudo apt update
