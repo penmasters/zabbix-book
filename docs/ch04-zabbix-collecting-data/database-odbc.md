@@ -121,23 +121,27 @@ chmod 600 /etc/odbc.ini
 
 ## Installing ODBC Components
 
-ODBC must be installed on the Zabbix Server or Proxy performing the check.
+ODBC and correct drivers must be installed on the Zabbix Server or Proxy performing the check.
 
 ### Rocky Linux 9
 
 ``` bash
 sudo dnf install unixODBC unixODBC-devel
-sudo dnf install mariadb-connector-odbc
+sudo dnf install mariadb-connector-odbc or mysql−connector−odbc postgresql-odbc
 ```
 
 ### Ubuntu 24.04
 
 ```bash
 sudo apt update
-sudo apt install unixodbc odbc-postgresql
+sudo apt install unixodbc unixodbc-dev odbc-mariadb odbc-postgresql
 ```
+###  SUSE
 
+``` bash
+zypper in unixODBC-devel mariadb-connector-odbc psqlODBC
 Verify drivers:
+```
 
 ```bash
 odbcinst -q -d
@@ -952,3 +956,7 @@ The difference lies not in the technology, but in the rigor of its implementatio
 ## Questions
 
 ## Useful URLs
+
+- https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker
+- https://blog.zabbix.com/database-odbc-monitoring-with-zabbix/8076/
+- https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks?hl=ODBC%2Cmonitoring
