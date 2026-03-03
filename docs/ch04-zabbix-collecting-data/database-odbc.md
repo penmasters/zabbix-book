@@ -68,6 +68,10 @@ Example:
 [MariaDB]
 Description = MariaDB ODBC Driver
 Driver      = /usr/lib64/libmaodbc.so
+
+[MySQL]
+Description = MySQL ODBC Driver
+Driver      = /usr/lib64/libmyodbc5.so
 ```
 
 Verify installed drivers:
