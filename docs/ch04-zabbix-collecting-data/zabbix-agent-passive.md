@@ -223,13 +223,9 @@ operating system.
 !!! warning "SUSE Linux"
 
     On SUSE Linux (SLES or OpenSUSE) 16 or higher, the Zabbix agent configuration
-    file is located at `/usr/etc/zabbix/zabbix_agent2.conf` and needs to be copied
-    to `/etc/zabbix/` before editing. This is because SUSE Linux has a specific way
-    of handling configuration files for packages and does not allow direct editing of
-    files in `/usr/etc/`. After copying the file to `/etc/zabbix/`, you can edit 
-    it as usual.
-
-    Alternatively, you can create an additional configuration file in the 
+    file is located at `/usr/etc/zabbix/zabbix_agent2.conf` and should not be edited
+    as it will be overwritten when the package is updated. 
+    Alternatively, you need to create an additional configuration file in the 
     `/etc/zabbix/zabbix_agent2.conf.d/` directory and include your custom 
     configuration there. This way you can keep the original configuration file 
     intact and only add your custom settings in the new file.
