@@ -264,12 +264,12 @@ FreeTDS can work reliably for simple monitoring queries, but it requires careful
 
 The following table summarizes commonly used driver packages per platform.
 
-| Database        | Rocky / RHEL / Alma      | Ubuntu / Debian                           | Vendor Repository Required |
-| --------------- | ------------------------ | ----------------------------------------- | -------------------------- |
-| MySQL / MariaDB | `mariadb-connector-odbc` | `mariadb-connector-odbc` or distro equivalent | No                         |
-| PostgreSQL      | `psqlodbc`               | `odbc-postgresql`                             | No                         |
-| MSSQL           | `msodbcsql18`            | `msodbcsql18`                                 | Yes (Microsoft repo)       |
-| MSSQL           | freetds  freetds-odbc  | freetds-bin tdsodbc                         |                            |
+| Database        | Rocky / RHEL / Alma      | Ubuntu / Debian                               |  Suse                  | Vendor Repository Required |
+| --------------- | ------------------------ | --------------------------------------------- | ---------------------- | -------------------        |
+| MySQL / MariaDB | `mariadb-connector-odbc` | `mariadb-connector-odbc` or distro equivalent | mariadb-connector-odbc | No                         |
+| PostgreSQL      | `psqlodbc`               | `odbc-postgresql`                             | psqlODBC               | No                         |
+| MSSQL           | `msodbcsql18`            | `msodbcsql18`                                 | msodbcsql18            | Yes (Microsoft repo)       |
+| MSSQL           | freetds  freetds-odbc    | freetds-bin tdsodbc                           | libtdsodbc0            |                            |
 
 
 ---
