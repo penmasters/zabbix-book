@@ -79,7 +79,7 @@ between them is in Programming language and features.
 | Storage on outage    | No                               | Sqlite                                  |
 | Item timeouts        | Agent wide                       | Per plugin                              |
 
-???* note 
+???+ note 
 
     As you can see, `Zabbix agent 2` is the more feature-rich agent and is the 
     recommended agent to use when available. However, `Zabbix agent` is equally 
@@ -230,7 +230,7 @@ operating system.
     configuration there. This way you can keep the original configuration file 
     intact and only add your custom settings in the new file.
 
-For `Passive` Zabbix agent connections we have only one important parameters to
+For `Passive` Zabbix agent connections we have only one important parameter to
 configure out of the box. The `Server=` parameter. This parameter functions as an
 allowlist, where we can add IP addresses, IP ranges and DNS entries to a list.
 All of the entries in this `Server=` allowlist will be allowed to make a connection
@@ -306,10 +306,6 @@ practice.
 
 _4.23 Zabbix Agent passive host item tag_
 
-Also on the server side, make sure to have the right firewall rules in place.
-For `Active` agent communication, the Zabbix agent will connect to the Zabbix
-server as service `zabbix-server` on port `10051/tcp`.
-
 ## Conclusion
 
 Installing the Zabbix agent can be done with either `Zabbix agent` or 
@@ -317,23 +313,17 @@ Installing the Zabbix agent can be done with either `Zabbix agent` or
 `Zabbix agent` is also fully supported. Make sure to install the Zabbix 
 agent through the most easily secured method and keep it updated.
 
-Once installed, for `Passive` communication we will use the `Server=` parameter 
-to keep our agent secured. We do not want everyone to be able to connect to this 
-agent, even when there might still be a firewall or two in between.
+Once installed, for `Passive` communication we used the `Server=` parameter 
+to keep our agent secured. We do not want everyone to be able to connect and query
+this agent, even when there might still be a firewall or two in between.
 
-Last but not least, keep `Active` versus `Passive` in mind. Depending on where
-the server is located, it might be preferred to open up ports through your firewall(s)
-incoming or outgoing. Usually we prefer `Active` communication, because it means
-we do not have to give a central server (Zabbix server and proxy) access to all
-our servers and we distribute a bit of the load. But in specific cases `Passive`
-might be preferred.
+Finaly, we created a host and an item to start monitoring with our `Passive` 
+Zabbix agent.
 
 ## Questions
 
 - What are the differences between `Zabbix agent` and `Zabbix agent 2`?
-- What are the differences between `Active` and `Passive` communication? And
-  which one is preferred in your environment? Why?
-- What are the differences in firewall rules when using `Active` versus `Passive` communication?
+- What are the differences between `Passive` and `Active` Zabbix agent communication?
 
 ## Useful URLs
 
