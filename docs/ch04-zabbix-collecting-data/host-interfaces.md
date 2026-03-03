@@ -200,6 +200,11 @@ attempt for items that use this interface:
       data from Zabbix Agent interfaces)
 
 ### Active checks availability
+Zabbix agent checks can be either passive or active. We will discuss the differences
+between these two types of checks in the next chapter, but for now it's important
+to know that both exist and differ in their communication methods with the Zabbix
+server or proxy.
+
 On the details popup of the Zabbix Agent availability icon (ZBX), you will see 
 that there is an additional interface **Active checks** automatically added whenever
 the host has any item of the type '*Zabbix agent (active)*' enabled.
