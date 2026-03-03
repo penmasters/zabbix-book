@@ -308,7 +308,7 @@ If successful:
 Connected!
 ```
 
-If not, resolve driver registration, authentication, or network issues first.
+If not, resolve driver registration, authentication, or network issues first. This saves you from the problems in Zabbix.
 
 ---
 
@@ -330,14 +330,114 @@ If this parameter is missing, ODBC items remain unsupported.
 
 ## Creating ODBC Items in Zabbix 8.0
 
-Use item type:
+Zabbix provides two database monitor item keys for ODBC-based monitoring:
 
-**Database monitor**
+* `db.odbc.select[]`
+* `db.odbc.get[]`
 
-Two key formats exist:
+Both keys execute SQL queries via ODBC, but they differ significantly in how results are returned and how they should be used.
 
-* `db.odbc.select[]` — returns a single value
-* `db.odbc.get[]` — returns JSON (recommended)
+---
+
+### `db.odbc.select[]`
+
+Syntax:
+
+```text
+db.odbc.select[<unique short description>,<dsn>,<connection string>]
+```
+
+Behavior:
+
+* Executes the defined SQL query.
+* Returns **a single value**.
+* Specifically, it returns:
+
+  * The first column
+  * Of the first row
+  * Of the query result set
+
+This makes it ideal for queries that produce one scalar result.
+
+### Example
+
+SQL query:
+
+```sql
+SELECT COUNT(*) FROM orders WHERE status = 'pending';
+```
+
+If the result is:
+
+```
+42
+```
+
+The item stores:
+
+```
+42
+```
+
+---
+
+#### When to Use `db.odbc.select`
+
+Recommended for:
+
+* Simple health checks
+* Aggregate counts
+* Boolean-style checks
+* Replication lag values
+* Single KPI metrics
+
+It item is particularly suitable when:
+
+* The query is complex
+* The result is intentionally singular
+* No further JSON processing is required
+
+Because it returns only one value, it is straightforward and lightweight.
+
+---
+
+## `db.odbc.get[]`
+
+Syntax:
+
+```text
+db.odbc.get[<unique short description>,<dsn>,<connection string>]
+```
+
+Behavior:
+
+* Executes the SQL query.
+* Returns the entire result set as a **JSON array**.
+
+Example result:
+
+```json
+[
+  {"status":"pending","total":"15"},
+  {"status":"shipped","total":"120"}
+]
+```
+
+Unlike `select`, this key preserves all returned rows and columns.
+
+---
+
+#### When to Use `db.odbc.get`
+
+Recommended for:
+
+* Collecting multiple metrics in one query
+* Feeding dependent items
+* Low-Level Discovery
+* Master item designs
+* Reducing database load through query consolidation
+
+`db.odbc.get` is the preferred modern approach in Zabbix 8.0 for scalable database monitoring.
 
 ---
 
@@ -377,6 +477,69 @@ Database drivers often return numbers as strings; type conversion prevents trigg
 
 ---
 
+## Understanding the Parameters
+
+Both keys share the same parameter structure:
+
+1. **Unique short description**
+
+   * An internal identifier.
+   * Must be unique per item.
+   * Does not affect execution logic.
+
+2. **DSN**
+
+   * The Data Source Name defined in `/etc/odbc.ini`.
+   * Points to the database connection configuration.
+
+3. **Connection string (optional)**
+
+   * Allows overriding or extending DSN parameters.
+   * Can include credentials or additional driver settings.
+   * Useful when DSN-level credentials are not defined.
+
+Example with connection string:
+
+```text
+db.odbc.select[check_users,InventoryDB,UID=zabbix_mon;PWD=secret]
+```
+
+In production environments, credentials should preferably be handled via macros or secure storage rather than hardcoded strings.
+
+---
+
+# Strategic Comparison
+
+| Feature                          | `db.odbc.select`     | `db.odbc.get`                |
+| -------------------------------- | -------------------- | ---------------------------- |
+| Returns                          | Single scalar value  | Full result set (JSON array) |
+| Suitable for                     | One metric per query | Multiple metrics per query   |
+| JSON preprocessing required      | No                   | Yes                          |
+| Ideal for dependent items        | No                   | Yes                          |
+| Recommended for modern templates | Limited use          | Yes                          |
+
+---
+
+## Design Guidance
+
+Use `db.odbc.select` when:
+
+* You need one value.
+* Simplicity is preferred.
+* No discovery or dependent logic is required.
+
+Use `db.odbc.get` when:
+
+* You want scalability.
+* You want to reduce database query count.
+* You are building reusable templates.
+* You are implementing LLD.
+* You want to follow modern Zabbix design patterns.
+
+In most structured deployments, `db.odbc.get` should be the default choice.
+
+---
+
 ## Low-Level Discovery with ODBC
 
 ODBC combined with `db.odbc.get` enables scalable Low-Level Discovery.
@@ -398,29 +561,6 @@ Configuration strategy:
 
 This approach reduces database load and improves template scalability.
 
----
-
-Excellent catch.
-
-If you’re writing a serious Zabbix book, **`db.odbc.discovery` absolutely must be covered**. Otherwise you’re only explaining half of the ODBC story.
-
-Right now your chapter explains:
-
-* `db.odbc.select`
-* `db.odbc.get`
-* JSON + dependent items
-
-But you did not explain the native discovery key:
-
-```
-db.odbc.discovery[]
-```
-
-Let’s fix that properly — and in a way that fits your book tone (structured, production-aware, not slide-style).
-
-Below is a clean, book-ready section you can insert after the LLD section.
-
----
 
 ## Native ODBC Low-Level Discovery (`db.odbc.discovery`)
 
