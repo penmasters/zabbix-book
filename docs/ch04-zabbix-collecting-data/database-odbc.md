@@ -28,16 +28,26 @@ environments.
 
 Zabbix does not communicate with databases directly. It relies on the ODBC stack.
 
-```
-Zabbix Server / Proxy
-        ↓
-ODBC poller process
-        ↓
-unixODBC Driver Manager
-        ↓
-Database-specific ODBC driver
-        ↓
-Target Database
+``` mermaid
+flowchart TD
+    subgraph Zabbix Layer
+        A[Zabbix Server / Proxy]
+        B[ODBC Poller Process]
+    end
+
+    subgraph ODBC Layer
+        C[unixODBC Driver Manager]
+        D[Database-Specific ODBC Driver]
+    end
+
+    subgraph Database Layer
+        E[Target Database]
+    end
+
+    A -->|Executes db.odbc.* item| B
+    B -->|ODBC API Call| C
+    C -->|Loads Driver| D
+    D -->|SQL Execution| E
 ```
 
 ### Execution Flow
@@ -64,7 +74,7 @@ Defines available ODBC drivers.
 
 Example:
 
-```ini
+``` ini
 [MariaDB]
 Description = MariaDB ODBC Driver
 Driver      = /usr/lib64/libmaodbc.so
@@ -76,7 +86,7 @@ Driver      = /usr/lib64/libmyodbc5.so
 
 Verify installed drivers:
 
-```bash
+``` bash
 odbcinst -q -d
 ```
 
@@ -88,7 +98,7 @@ If the driver is not listed here, the DSN will not function.
 
 Defines connection aliases.
 
-```ini
+``` ini
 [InventoryDB]
 Description = Production Inventory Database
 Driver      = MariaDB
@@ -103,7 +113,7 @@ The `Driver` name must match the definition in `/etc/odbcinst.ini`.
 
 Restrict file permissions:
 
-```bash
+``` bash
 chmod 600 /etc/odbc.ini
 ```
 
@@ -115,7 +125,7 @@ ODBC must be installed on the Zabbix Server or Proxy performing the check.
 
 ### Rocky Linux 9
 
-```bash
+``` bash
 sudo dnf install unixODBC unixODBC-devel
 sudo dnf install mariadb-connector-odbc
 ```
