@@ -746,7 +746,10 @@ Use proxies to isolate database monitoring from the central server.
 
 ##  Connection Pooling
 
-Enable unixODBC pooling to reduce connection overhead.
+Enable unixODBC pooling. Beginning with unixODBC 2.0.0, the driver manager supports
+connection pooling. Connection pooling reduces connection overhead by maintaining
+open database connections and reusing them for subsequent requests, rather than
+repeatedly establishing and terminating new connections.
 
 In `/etc/odbcinst.ini`:
 
@@ -791,7 +794,11 @@ Ensure consistent UTF-8 configuration across:
 * Operating system locale
 * ODBC driver
 
-Encoding mismatches can result in corrupted output or JSON parsing failures.
+
+If the database returns data encoded differently (for example, Latin1 or Windows-1252), 
+the ODBC driver must correctly translate it into UTF-8. If that conversion fails or is
+misconfigured, the returned data may be corrupted. So encoding mismatches can result in
+corrupted output or JSON parsing failures.
 
 ---
 
@@ -955,6 +962,12 @@ The difference lies not in the technology, but in the rigor of its implementatio
 
 ## Questions
 
+- Why does Zabbix rely on unixODBC instead of communicating directly with databases?
+- What is the difference between an ODBC driver manager and a database-specific ODBC driver?
+- Why are ODBC checks considered blocking operations?
+- What is the functional difference between db.odbc.select[] and db.odbc.get[]?
+- Why is consistent UTF-8 configuration important across the database, OS, and Zabbix?
+  
 ## Useful URLs
 
 - https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker
