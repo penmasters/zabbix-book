@@ -63,6 +63,108 @@ you want to use `Passive` mode for all communication, but still want to execute
 some items that are `Active` only. `Active` items can do everything `Passive` 
 items can do however.
 
+### Active vs Passive communication
+
+The Zabbix agent can operate in two modes: `Active` and `Passive`. Each 
+mode has distinct behaviors and use cases, affecting how the agent communicates 
+with the Zabbix server.
+
+#### Passive Agent Mode
+
+In `Passive` mode, the Zabbix server initiates the connection to the agent to 
+request data. 
+
+For each `Passive` item, the server will periodically poll the agent for 
+the metric, and then wait for the agent to collect and return the requested data
+or until the item `Timeout` setting is reached. The item data is then returned
+by the agent within the same TCP session which is then closed.
+
+The Zabbix agent can start multiple passive threads (default: 3), allowing for 
+simultaneous checks. This means that if one check (for example a custom script)
+takes longer to finish, the other threads can continue serving metrics on server
+request.
+
+This mode is straightforward and works well in environments where the server can
+reliably reach the agent.
+
+**Pros:**
+
+  - Simple to configure and manage.
+  - Works well when the Zabbix server or proxy can directly access the agent.
+  - Zabbix agent can start multiple passive threads (default: 3), allowing for 
+    simultaneous checks. 
+  - Is not bound to the hostname configured in the agent configuration file, 
+    which means that you can use the same agent configuration file on multiple
+    hosts and just change the hostname on the Zabbix frontend. Or even query the
+    same agent from multiple *hosts* in the Zabbix frontend.
+
+**Cons:**
+
+  - The server must actively poll each agent for each item, which can increase
+    network traffic and server load as the number of agents and passive items grows.
+  - If the agent is behind a firewall or NAT, additional configuration may be
+    required to allow incoming connections from the server. This however can be
+    a security risk or even not allowed by your network policies.
+  - If the server cannot reach the agent, data collection will be interrupted 
+    until the connection is restored.
+  - A few items, such as log item keys, can not be executed in passive mode.
+
+#### Active Agent Mode
+
+In `Active` mode, the Zabbix agent takes the initiative to send data to the 
+server. The agent will ask the server what items to check and then
+periodically collect and send requested metrics to the server or proxy without
+waiting for a request. This mode is particularly useful in environments where
+the agent cannot be directly accessed by the server due to network restrictions 
+or security policies.
+
+Additionally, when using Zabbix Agent 2, you can configure it to buffer active 
+check results in case the server or proxy is not available for a short time, 
+ensuring that data collection is not interrupted.
+
+**Pros:**
+
+  - Reduces the load on the Zabbix server by eliminating the need for constant 
+    polling.
+  - Works well in environments with strict firewall rules or NAT, as the agent 
+    initiates the connection.
+  - Can improve performance and scalability in large environments due to some
+    load being distributed.
+  - Zabbix Agent 2 can be configured to buffer active checks in case the server 
+    is not available for a short time, ensuring that data collection is not 
+    interrupted.
+
+**Cons:**
+
+  - Requires the hostname set in the Zabbix agent configuration to match the 
+    hostname configured in the Zabbix frontend, which can make it less flexible 
+    in certain scenarios.
+  - Active checks use a single thread for collecting andsending data, which means
+    that if a check takes longer to perform, it will delay subsequent checks.
+
+#### Choosing between Active and Passive modes
+
+As you see, both `Active` and `Passive` modes have their own advantages and 
+disadvantages. The choice between them depends on your specific environment and 
+requirements. If your Zabbix server can reliably access the agents and you prefer 
+a simpler configuration, `Passive` mode may be suitable. However, if you have 
+network restrictions or want to reduce server load, `Active` mode may be the better 
+choice.
+
+In many cases, a combination of both modes can be used to leverage the advantages
+of each. For example, you might use `Active` mode for most checks but configure
+specific items in `Passive` mode, such as longer running checks to prevent other
+checks from being delayed. Or checks that require a different hostname than the 
+one configured in the agent configuration file. 
+
+The flexibility of Zabbix allows you to tailor your monitoring solution to best 
+fit your needs.
+
+In the current section we will start with the `Passive` mode, and in the next 
+section we will look at the `Active` mode.
+
+### Zabbix agent vs Zabbix agent 2
+
 Before we can configure either though, we will have to install our Zabbix agent
 first. When installing on Linux and Windows we have a choice between two different
 agents, `Zabbix agent` and `Zabbix agent 2`. Both of these Zabbix agents are still
@@ -308,6 +410,11 @@ _4.23 Zabbix Agent passive host item tag_
 
 ## Conclusion
 
+We learned about the two communication methods of the Zabbix agent, `Active` and 
+`Passive`. We discussed the differences between these two methods and their pros 
+and cons so that you can make an informed decision on which method to use when 
+in your environment.
+
 Installing the Zabbix agent can be done with either `Zabbix agent` or 
 `Zabbix agent 2`. By now `Zabbix agent 2` is recommended when available, but 
 `Zabbix agent` is also fully supported. Make sure to install the Zabbix 
@@ -324,6 +431,7 @@ Zabbix agent.
 
 - What are the differences between `Zabbix agent` and `Zabbix agent 2`?
 - What are the differences between `Passive` and `Active` Zabbix agent communication?
+- Why may you want to use `Passive` mode for a long running custom script item?
 
 ## Useful URLs
 
