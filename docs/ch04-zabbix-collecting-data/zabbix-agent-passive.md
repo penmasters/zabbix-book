@@ -79,6 +79,10 @@ the metric, and then wait for the agent to collect and return the requested data
 or until the item `Timeout` setting is reached. The item data is then returned
 by the agent within the same TCP session which is then closed.
 
+The timestamp of the item is set by the server on the collected value, 
+not by the agent when it collects the item. This may result in less accurate 
+timestamps.
+
 The Zabbix agent can start multiple passive threads (default: 3), allowing for 
 simultaneous checks. This means that if one check (for example a custom script)
 takes longer to finish, the other threads can continue serving metrics on server
@@ -108,6 +112,8 @@ reliably reach the agent.
   - If the server cannot reach the agent, data collection will be interrupted 
     until the connection is restored.
   - A few items, such as log item keys, can not be executed in passive mode.
+  - Timestamps may be less accurate as they are set to the time when the server 
+    receives the data, not when the agent collects it.
 
 #### Active Agent Mode
 
@@ -122,6 +128,13 @@ Additionally, when using Zabbix Agent 2, you can configure it to buffer active
 check results in case the server or proxy is not available for a short time, 
 ensuring that data collection is not interrupted.
 
+During data collection, the agent will add a timestamp to the collected value 
+directly on the agent side, which can provide more accurate timestamps. However,
+this also means that if the agent's time is not synchronized with the server,
+it can lead to issues with data accuracy and trigger evaluations. So when using
+`Active` mode it is important to have a time server configured on your monitoring
+targets as outlined in the chapter: [_Getting started_](../ch00-getting-started/Requirements.md).
+
 **Pros:**
 
   - Reduces the load on the Zabbix server by eliminating the need for constant 
@@ -133,6 +146,8 @@ ensuring that data collection is not interrupted.
   - Zabbix Agent 2 can be configured to buffer active checks in case the server 
     is not available for a short time, ensuring that data collection is not 
     interrupted.
+  - Timestamps are more accurate as they are set by the agent at the time of
+    collection, not by the server when it receives the data.
 
 **Cons:**
 
@@ -141,6 +156,8 @@ ensuring that data collection is not interrupted.
     in certain scenarios.
   - Active checks use a single thread for collecting andsending data, which means
     that if a check takes longer to perform, it will delay subsequent checks.
+  - Correct time synchronization on both the agent and server is crucial for 
+    accurate data and trigger evaluations.
 
 #### Choosing between Active and Passive modes
 
