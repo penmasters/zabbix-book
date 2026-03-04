@@ -174,6 +174,18 @@ specific items in `Passive` mode, such as longer running checks to prevent other
 checks from being delayed. Or checks that require a different hostname than the 
 one configured in the agent configuration file. 
 
+Finally, let's do a bit of a comparison between the two modes.
+
+|                     | Active Zabbix agent                 | Passive Zabbix agent   |
+| :------------------ | :---------------------------------- | :--------------------- |
+| Timestamp           | Zabbix agent                        | Zabbix server or proxy |
+| (event)log items    | Supported                           | Not supported          |
+| Port                | No port listening, connect to 10051 | Listening on 10050     |
+| Hostname            | Has to match                        | Can be anything        |
+| Remote commands     | Supported                           | Supported              |
+| Concurrency         | Single thread                       | Multiple threads       |
+| Buffering on outage | Yes (if configured on Agent 2)      | No                     |
+
 The flexibility of Zabbix allows you to tailor your monitoring solution to best 
 fit your needs.
 
