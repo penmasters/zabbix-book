@@ -12,6 +12,8 @@ dataflow steps to get from collecting data to sending out alerts.
 The first part of the dataflow is to create a host, so that is what we are now going to tackle
 in this part.
 
+---
+
 ## Creating a host
 
 As we mentioned, Hosts in Zabbix are nothing more than a container (not the Docker kind).
@@ -30,6 +32,8 @@ There are a lot of fields we can fill in, but few are important to note here spe
 
 These are the only two mandatory fields in the host creation window. If we fill these two, 
 we can create our host. 
+
+---
 
 ### Host name
 The `Host name` is very important. It functions as both the technical name of the host we will
@@ -50,6 +54,8 @@ monitoring target. The monitoring target, being whatever you are trying to monit
 Whether that is a physical or virtual server, a website, a database server or 
 a specific database on that database server. Every host in Zabbix is a monitoring target, 
 i.e. something you are trying to monitor.
+
+---
 
 ### Visible name
 Now, we didn't mention it as it is not a mandatory field. Nevertheless, we need to discuss
@@ -77,6 +83,8 @@ special character. Keep in mind however, that this can create confusion. You now
 two different names for the same host. As such, visible names are only recommended when you really need
 them or if you are trying to work around something. Otherwise, there is no need to use them.
 
+---
+
 ### Host groups
 In [Chapter 02](../ch02-zabbix-installation/host-groups.md) of the book, we had a deep dive into setting up various different host groups to keep
 our Zabbix environment structured. When we create a host, we can now start using one of
@@ -98,6 +106,8 @@ fields empty as they are optional. Another very important element of a host is
 the interfaces field, but we will cover that in a later section.
 Finally click on the `Add` button to create the host.
 
+---
+
 ## Conclusion
 
 In this section we have learned how to create a host in Zabbix. We have covered
@@ -107,11 +117,15 @@ and when to use the visible name field. Finally, we created our first host
 called `simple-checks` in the `Linux/Servers` host group, which we will use
 in the next section to create our first items.
 
+---
+
 ## Questions
 
 - What is the purpose of a host in Zabbix?
 - What is the difference between the "Host name" and "Visible name" fields when creating a host?
 - Why is it recommended to only add a host to the lowest level of subgroups when assigning host groups?
+
+---
 
 ## Useful URLs
 

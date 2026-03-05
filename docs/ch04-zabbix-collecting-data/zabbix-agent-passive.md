@@ -202,7 +202,7 @@ files like `.rpm` and `.deb`, by building from sources and through packages pull
 from the repository. Installation through the packages is preferred as this means
 Zabbix agent will be updated when updating with commands like `dnf update` and
 `apt upgrade`. Keep in mind, Zabbix agent is a piece of software just like any
-other and as such news versions will contain security and bug fixes. Whatever
+other and as such new versions will contain security and bug fixes. Whatever
 installation method you choose, keep your Zabbix agent up-to-date.
 
 We will be using the packages on RedHat-, SUSE-based or Ubuntu to install 
@@ -351,7 +351,7 @@ to the `Passive` Zabbix agent and collect data from it.
 Edit your configuration file to include your Zabbix server (or proxy) IP address,
 IP range or DNS entry.
 
-!!! info "edit the Server= parameter"
+???+ example "Edit the Server= parameter"
 
     ```ini
     Server=127.0.0.1,192.168.46.30

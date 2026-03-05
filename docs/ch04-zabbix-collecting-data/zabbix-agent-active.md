@@ -23,6 +23,8 @@ your many agents to connect to your Zabbix servers or proxies instead.
 
 _4.24 Zabbix Agent active hosts_
 
+---
+
 ## Setting up the active agent
 
 It's possible to set-up a Zabbix agent to work in both passive and active mode 
@@ -49,7 +51,7 @@ by editing the Zabbix agent configuration file.
 There are two important parameters to configure. First, let's make sure our 
 Zabbix agent will know where to connect to.
 
-!!! example "edit ServerActive parameter"
+???+ example "Set ServerActive parameter"
 
     ```ini
     ServerActive=192.168.46.30
@@ -67,7 +69,7 @@ its `Hostname=` parameter. By default this is set to `Hostname=Zabbix server`
 which is incorrect in all cases except maybe on the Zabbix server itself.
 So we need to change this parameter:
 
-!!! example "Edit Hostname parameter"
+???+ example "Set Hostname parameter"
 
     Linux:
 
@@ -113,6 +115,8 @@ in the Zabbix agent configuration file. Keep in mind that the `Hostname` field
 has to match the `Hostname=` parameter in the configuration file. 
 The `Visible name` field does not have effect on the active agent functioning.
 
+---
+
 ## Creating active items
 
 Now that the agent is configured to perform active checks, we can now start to
@@ -135,6 +139,8 @@ _4.27 Zabbix Agent active item tag_
 
 Your `ZBX` icon for this host should now turn green, even in active mode.
 
+---
+
 ## Conclusion
 
 In this section we have seen how to set-up a Zabbix agent in `Active` mode. We
@@ -145,11 +151,15 @@ in the Zabbix agent configuration file. We have also created a new item of type
 We have now seen both the `Passive` and `Active` mode of the Zabbix agent. Both have their
 advantages and disadvantages, and both can be used in different scenarios.
 
+---
+
 ## Questions
 
 - Why does the `Hostname` parameter need to match the hostname in Zabbix?
 - Why is time synchronization important for active agents?
 - Can you use the same host for both passive and active checks?
+
+---
 
 ## Useful URLs
 

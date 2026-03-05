@@ -18,6 +18,8 @@ checks contain protocol checks such as `ICMP Ping`, `TCP/UDP` but also built in 
 Without further ado, let's set up our first items. Please keep in mind that we will be building
 everything on a host level for now. Check out [Chapter 06](../ch06-zabbix-templates/chapter.md) to learn how to do this properly on a template.
 
+---
+
 ## Building the item
 
 We shall start with a simple ICMP Ping check on our host `simple-checks` in the
@@ -37,6 +39,8 @@ item work.
 
 - **Name** - a descriptive name of the item
 - **Key** - the unique identifier of the item
+
+---
 
 ### Item Name
 
@@ -79,6 +83,7 @@ memory related items. It creates a bit of a mess, making Zabbix harder to read.
 If you want to spend (waste?) 30 minutes of your time hearing all about sorting data in various
 different places in Zabbix. The following video is highly recommended: https://www.youtube.com/watch?v=5etxbNPrygU
 
+---
 
 ### Item Key
 
@@ -104,6 +109,7 @@ of the uniqueness of the item keys. For example:
   each parameter divided by a comma(`,`). Optional parameters are marked by the `<>` signs, whereas
   mandatory parameters have no pre/suffix.
 
+---
 
 ### ICMP Ping
 
@@ -147,6 +153,8 @@ Zabbix server/proxy configuration file:
     Fping6Location=/usr/sbin/fping6
     ```
 
+---
+
 ## TCP/UDP Ports
 
 Another useful simple check you can create is the TCP (and UDP) port check. With these 4 item keys 
@@ -170,6 +178,8 @@ tcp, https, telnet` it will use the correct (default) port automatically, as wel
 as do an additional check to make sure the port is actually being used by that
 service.
 
+---
+
 ## Conclusion
 
 The simple checks are mainly used for ICMP ping and Port checks, which means they
@@ -181,12 +191,16 @@ create things like items. Keeping things structured in your environment means th
 you and your colleagues will have an easier time using your monitoring and
 observability platform.
 
+---
+
 ## Questions
 
 - What are simple checks in Zabbix and what are they used for?
 - What are the two mandatory fields when creating a simple check item in Zabbix?
 - What is the difference between built-in and user-defined item keys in Zabbix?
 - Why is it recommended to add a tag with the name `component` to every item created in Zabbix?
+
+---
 
 ## Useful URLs
 

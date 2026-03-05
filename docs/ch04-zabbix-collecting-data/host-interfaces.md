@@ -36,6 +36,8 @@ Besides these matches, there are also various items like the `Simple check` item
 that can use all four interface types. These items will then only use the interface
 IP or DNS to connect to the remote monitoring target.
 
+---
+
 ### Agent/ZBX and JMX
 
 The Zabbix agent type interface and JMX interface work quite similarly. Both
@@ -64,6 +66,8 @@ will be dependent on your DNS servers.
     If it's static use IP, as your monitoring will keep working even if DNS is
     down. If it's dynamic, use DNS as you will save yourself the administrative
     overhead.
+
+---
 
 ### SNMP
 
@@ -129,6 +133,8 @@ MD5 and DES are both no longer recommended due to the possibility to brute force
 the passwords with consumer grade hardware amongst other risks. That's why SHA1
 and AES128 or higher is always recommended. 
 
+---
+
 ### IPMI
 
 For `IPMI agent` type items we want to add the `IPMI` type interface. We can use
@@ -165,6 +171,8 @@ allow us to access monitoring data. If need higher privilege levels to execute
 commands on the `BMC` as well, this is possible. But keep in mind, write access
 from your monitoring system comes with additional security risks.
 
+---
+
 ## Interface availability
 All four interface types, also come with an icon that can turn <span style="color: green;">Green</span>,
 <span style="color: orange;">Orange</span>, <span style="color: red;">Red</span> or
@@ -199,6 +207,8 @@ attempt for items that use this interface:
       to collect data from SNMP interfaces or no Agent pollers configured to collect
       data from Zabbix Agent interfaces)
 
+---
+
 ### Active checks availability
 Zabbix agent checks can be either passive or active. We will discuss the differences
 between these two types of checks in the next chapter, but for now it's important
@@ -226,7 +236,9 @@ a period of 2 times the `HeartbeatFrequency`, the status will switch to
     older than version 6.2, the Active checks interface status will always
     remain <span style="color: grey;">Unknown</span> as there are no heartbeats
     being sent by the agent to determine the availability status.
-    
+
+---
+
 ### Overall interface availability
 The status of the interface type availability icon is determined by the status 
 of all interfaces of that specific type and can have the following colors:
@@ -237,6 +249,8 @@ of all interfaces of that specific type and can have the following colors:
 - <span style="color: red;">Red</span> - All interfaces of this type are unavailable.
 - <span style="color: grey;">Grey</span> - At least one interface of this type is unknown,
   but none of the interfaces of this type are unavailable.
+
+---
 
 ## Conclusion
 When configuring your host interfaces in Zabbix, we need to match our `Item type`
@@ -253,6 +267,8 @@ most secure option that your monitoring target supports. This will make sure you
 Zabbix environment is more secure, even if a bad actor would be present on your 
 network somehow.
 
+---
+
 ## Questions
 
 - What are the four types of host interfaces in Zabbix, and what is each used for?
@@ -265,6 +281,8 @@ network somehow.
   availability in Zabbix?
 - How is the availability of "Active checks" determined for Zabbix Agent 
   interfaces?
+
+---
 
 ## Useful URLs
 
