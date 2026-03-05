@@ -88,19 +88,19 @@ for the collected value, which may reduce accuracy.
   having the same agent being queried from multiple *hosts* in the Zabbix frontend.
 
 **Pros:**
-- Simple to configure and manage.
-- Ideal for environments where the server can directly access the agent.
-- Supports concurrent checks, reducing delays caused by slow scripts or commands.
+  - Simple to configure and manage.
+  - Ideal for environments where the server can directly access the agent.
+  - Supports concurrent checks, reducing delays caused by slow scripts or commands.
 
 **Cons:**
-- Increases server load and network traffic as the number of agents and items 
-  grows.
-- Requires additional firewall/NAT configuration for incoming connections on all
-  monitored hosts, which may pose security risks.
-- Data collection fails if the server cannot reach the agent.
-- Some items (e.g., log items) are not supported in passive mode.
-- Timestamps are less accurate, as they reflect when the server receives the data,
-  not when the agent collects it.
+  - Increases server load and network traffic as the number of agents and items 
+    grows.
+  - Requires additional firewall/NAT configuration for incoming connections on all
+    monitored hosts, which may pose security risks.
+  - Data collection fails if the server cannot reach the agent.
+  - Some items (e.g., log items) are not supported in passive mode.
+  - Timestamps are less accurate, as they reflect when the server receives the data,
+    not when the agent collects it.
 
 ---
 
@@ -116,31 +116,31 @@ cannot directly access the agent.
   accuracy but requiring synchronized time between the agent and server.
 
 **Pros:**
-- Reduces server load by eliminating constant polling.
-- Works well in restricted network environments, as the agent initiates the 
-  connection.
-- Improves scalability in large environments by distributing part of the load.
-- Supports buffering of item values during server outages (Agent 2 only).
-- Provides more accurate timestamps, as they are set by the agent at the time 
-  of collection.
+  - Reduces server load by eliminating constant polling.
+  - Works well in restricted network environments, as the agent initiates the 
+    connection.
+  - Improves scalability in large environments by distributing part of the load.
+  - Supports buffering of item values during server outages (Agent 2 only).
+  - Provides more accurate timestamps, as they are set by the agent at the time 
+    of collection.
 
 **Cons:**
-- Requires the hostname in the agent configuration to match the hostname in the 
-  Zabbix frontend, reducing flexibility.
-- Uses a single thread for data collection, so slow checks can delay subsequent 
-  ones.
-- Accurate time synchronization between the agent and server is critical for 
-  data integrity.
+  - Requires the hostname in the agent configuration to match the hostname in the 
+    Zabbix frontend, reducing flexibility.
+  - Uses a single thread for data collection, so slow checks can delay subsequent 
+    ones.
+  - Accurate time synchronization between the agent and server is critical for 
+    data integrity.
 
 ---
 
 #### Choosing Between Active and Passive Modes
 The choice depends on your environment and requirements:
-- Use **Passive** mode for simplicity and direct server-agent communication.
-- Use **Active** mode to reduce server load or navigate network restrictions.
-- A **hybrid approach** is often optimal: for example, use **Active** mode for 
-  most checks and **Passive** mode for specific items (e.g., long-running checks
-  or those requiring different hostnames).
+  - Use **Passive** mode for simplicity and direct server-agent communication.
+  - Use **Active** mode to reduce server load or navigate network restrictions.
+  - A **hybrid approach** is often optimal: for example, use **Active** mode for 
+    most checks and **Passive** mode for specific items (e.g., long-running checks
+    or those requiring different hostnames).
 
 Finally, let's do a bit of a comparison between the two modes.
 
