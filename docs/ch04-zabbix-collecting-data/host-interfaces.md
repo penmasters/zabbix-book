@@ -15,7 +15,7 @@ host or when you added the simple check.
 Host interfaces in Zabbix are used to define a remote monitoring target. We define
 the `IP address` or `DNS name` as well as the `Port` that we want our Zabbix server
 (or proxy) to connect to when collecting our monitoring information. There are
-three types of interfaces.
+four types of interfaces.
 
 - **Agent (or ZBX)** 
 - **SNMP**
@@ -35,6 +35,8 @@ the items for monitoring.
 Besides these matches, there are also various items like the `Simple check` items
 that can use all four interface types. These items will then only use the interface
 IP or DNS to connect to the remote monitoring target.
+
+---
 
 ### Agent/ZBX and JMX
 
@@ -64,6 +66,8 @@ will be dependent on your DNS servers.
     If it's static use IP, as your monitoring will keep working even if DNS is
     down. If it's dynamic, use DNS as you will save yourself the administrative
     overhead.
+
+---
 
 ### SNMP
 
@@ -117,49 +121,171 @@ to important information or worse write access to devices without authentication
 It's up to the Zabbix administrator to determine what the monitoring target supports,
 but higher security is better in this case. 
 
-noAuthNoPriv utilizes the `SNMPv3` protocol without authenticating and encrypting the data. 
-AuthNoPriv uses encrypted authentication, but sends monitoring data plain text over the network
-AuthPriv is the recommended method for high security, as it uses encrypted authentication and also sends monitoring data encrypted over the network. 
+- noAuthNoPriv utilizes the `SNMPv3` protocol without authenticating and encrypting 
+  the data. 
+- AuthNoPriv uses encrypted authentication, but sends monitoring data plain text 
+  over the network
+- AuthPriv is the recommended method for high security, as it uses encrypted 
+  authentication and also sends monitoring data encrypted over the network. 
 
-When using `SNMPv3` it is also best practice to use a strong authentication protocol. MD5 and DES are both no longer recommended due to the possibility to brute force the passwords with consumer grade hardware amongst other risks. That's why SHA1 and AES128 or higher is always recommended. 
+When using `SNMPv3` it is also best practice to use a strong authentication protocol.
+MD5 and DES are both no longer recommended due to the possibility to brute force
+the passwords with consumer grade hardware amongst other risks. That's why SHA1
+and AES128 or higher is always recommended. 
+
+---
 
 ### IPMI
 
-For `IPMI agent` type items we want to add the `IPMI` type interface. We can use it to connect to `BMC's (Baseboard Management Controller)` like `iDRAC` and `iLo`. This interface is slightly different again from the previous three interfaces.
+For `IPMI agent` type items we want to add the `IPMI` type interface. We can use
+it to connect to `BMC's (Baseboard Management Controller)` like `iDRAC` and `iLo`.
+This interface is slightly different again from the previous three interfaces.
 
 ![IPMI interface](ch04.12-ipmi-interface.png){ align=center }
 *4.12 IPMI interface*
 
-We have the same settings for `IP`, `DNS` and `Port` again, but in the case of IPMI we do not define credentials on the interface level. Instead these are provided on a different tab on the host configuration settings.
+We have the same settings for `IP`, `DNS` and `Port` again, but in the case of
+IPMI we do not define credentials on the interface level. Instead these are provided
+ on a different tab on the host configuration settings.
 
 ![IPMI host settings](ch04.13-ipmi-settings.png){ align=center }
 *4.13 IPMI host settings*
 
-For a host in Zabbix we can only define one IPMI use for authentication, regardless of the amount of interfaces we add. 
+For a host in Zabbix we can only define one IPMI use for authentication, 
+regardless of the amount of interfaces we add. 
 
-- **Authentication algorithm** None, MD2, MD5, Straight, OEM, RMCP+. Determines the encryption strength.
-- **Privilege level** Callback, User, Operator, Admin, OEM. Determines the privilege level our user should be allowed to connect with.
+- **Authentication algorithm** None, MD2, MD5, Straight, OEM, RMCP+. Determines 
+  the encryption strength.
+- **Privilege level** Callback, User, Operator, Admin, OEM. Determines the 
+  privilege level our user should be allowed to connect with.
 - **Username** The username to authenticate with.
 - **Password** The password to authenticate with.
 
-Once again, for security purposes `MD2` and `MD5` are not recommended. As well as `Straight` which is plain text unencrypted and `OEM` which is vendor specific. If possible, try to use `RMCP+`, which in most cases is the most secure.
+Once again, for security purposes `MD2` and `MD5` are not recommended. As well 
+as `Straight` which is plain text unencrypted and `OEM` which is vendor specific.
+If possible, try to use `RMCP+`, which in most cases is the most secure.
 
-For the `Privilege level` it is recommended to use either `Callback` or `User` in most scenarios. `Callback` will allow us to access alerts, `User` will also allow us to access monitoring data. If need higher privilege levels to execute commands on the `BMC` as well, this is possible. But keep in mind, write access from your monitoring system comes with additional security risks.
+For the `Privilege level` it is recommended to use either `Callback` or `User`
+in most scenarios. `Callback` will allow us to access alerts, `User` will also
+allow us to access monitoring data. If need higher privilege levels to execute
+commands on the `BMC` as well, this is possible. But keep in mind, write access
+from your monitoring system comes with additional security risks.
+
+---
 
 ## Interface availability
-All four interface types, also come with an icon that can turn <span style="color: green;">Green</span>, <span style="color: orange;">Orange</span>, <span style="color: red;">Red</span> or <span style="color: grey;">Grey</span>. This color determines the interface its availability.
+All four interface types, also come with an icon that can turn <span style="color: green;">Green</span>,
+<span style="color: orange;">Orange</span>, <span style="color: red;">Red</span> or
+<span style="color: grey;">Grey</span>. This color determines the interfaces'
+current availability and is shown in a few places in the Zabbix frontend:
 
-...
-...
-...
+- On the host overview page (**Monitoring** → **Hosts**)
+- On the hosts configuration page (**Data Collection** → **Hosts**)
+- On the host configuration page when editing a host (**Data Collection** → **Hosts** → *[Host name]*)
+
+When you hover over, or click on one of the availability icons, you will get a 
+tooltip with the current status and possible error reason of each individual 
+interface of that specific interface type.
+
+The availability status of each interface is determined by the last data collection
+attempt for items that use this interface:
+
+- <span style="color: green;">Available</span> - The last data collection attempt 
+  was successful. 
+- <span style="color: red;">Not available</span> - The last data collection attempt
+  failed. (timeout, connection refused, authentication failure, etc.) Usually
+  the details will also show the error reason for the failure.
+- <span style="color: grey;">Unknown</span> - This can have a few reasons:
+    - There has been no data collection attempt on this interface yet or
+    - The host is disabled or
+    - The host is set to be monitored by a proxy that is currently unavailable.
+    - The host is set to be monitored by a proxy that has not yet collected data 
+      from this host.
+    - All items that use this interface are disabled.
+    - Zabbix server or the proxy monitoring this host has no pollers configured
+      to collect data from this type of interface. (e.g. no SNMP pollers configured
+      to collect data from SNMP interfaces or no Agent pollers configured to collect
+      data from Zabbix Agent interfaces)
+
+---
+
+### Active checks availability
+Zabbix agent checks can be either passive or active. We will discuss the differences
+between these two types of checks in the next chapter, but for now it's important
+to know that both exist and differ in their communication methods with the Zabbix
+server or proxy.
+
+On the details popup of the Zabbix Agent availability icon (ZBX), you will see 
+that there is an additional interface **Active checks** automatically added whenever
+the host has any item of the type '*Zabbix agent (active)*' enabled.
+
+The availability of the Active checks is determined by heartbeats sent by the 
+Zabbix agent to the Zabbix server or proxy. The status remains <span style="color: grey;">Unknown</span> 
+until the first heartbeat is received. Once the first heartbeat is received, 
+the status will switch to <span style="color: green;">Available</span>.
+
+The frequency of there heartbeats is determined by the `HeartbeatFrequency` 
+parameter in the Zabbix agent configuration file and defaults to 60 seconds. 
+If the Zabbix server or proxy has not received a subsequent heartbeat from the agent for 
+a period of 2 times the `HeartbeatFrequency`, the status will switch to 
+<span style="color: red;">Not available</span>.
+
+???+ warning "Zabbix agents older than 6.2"
+
+    The heartbeat mechanism was introduced in Zabbix 6.2, so for Zabbix agents
+    older than version 6.2, the Active checks interface status will always
+    remain <span style="color: grey;">Unknown</span> as there are no heartbeats
+    being sent by the agent to determine the availability status.
+
+---
+
+### Overall interface availability
+The status of the interface type availability icon is determined by the status 
+of all interfaces of that specific type and can have the following colors:
+
+- <span style="color: green;">Green</span> - All interfaces of this type are available.
+- <span style="color: orange;">Orange</span> - At least one interface of this type 
+  is unavailable, but at least one other interface of this type is available or unknown.
+- <span style="color: red;">Red</span> - All interfaces of this type are unavailable.
+- <span style="color: grey;">Grey</span> - At least one interface of this type is unknown,
+  but none of the interfaces of this type are unavailable.
+
+---
 
 ## Conclusion
-When configuring your host interfaces in Zabbix, we need to match our `Item type` to our `Interface type`. When we have the correct `Host interface` configured we will be able to add the corresponding `Items` on our  host to collect data. Upon successful data collection, the interface availability icon will also turn `Green`.
+When configuring your host interfaces in Zabbix, we need to match our `Item type`
+to our `Interface type`. When we have the correct `Host interface` configured we
+will be able to add the corresponding `Items` on our  host to collect data. Upon
+successful data collection, the interface availability icon will also turn `Green`.
 
-Some item types like the `Simple check` also have the possibility to use host interfaces, but do not need them. These items, although they use the interface, do not have an affect on interface availability and the availability icon.
+Some item types like the `Simple check` also have the possibility to use host
+interfaces, but do not need them. These items, although they use the interface,
+do not have an effect on interface availability and the availability icon.
 
-When configuring host interfaces with security settings, keep in mind to use the most secure option that your monitoring target supports. This will make sure your Zabbix environment is more secure, even if a bad actor would be present on your network somehow.
+When configuring host interfaces with security settings, keep in mind to use the
+most secure option that your monitoring target supports. This will make sure your
+Zabbix environment is more secure, even if a bad actor would be present on your 
+network somehow.
+
+---
 
 ## Questions
 
+- What are the four types of host interfaces in Zabbix, and what is each used for?
+- When choosing between monitoring using the IP address or DNS name in a host
+  interface, what do you choose and why?
+- What is the purpose of the "Max repetition count" field in SNMPv2 and SNMPv3
+  interfaces?
+- Where are the credentials for IPMI interfaces configured in Zabbix?
+- What do the green, red, orange, and grey colors indicate for interface 
+  availability in Zabbix?
+- How is the availability of "Active checks" determined for Zabbix Agent 
+  interfaces?
+
+---
+
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/quickstart/host](https://www.zabbix.com/documentation/current/en/manual/quickstart/host)
+- [https://www.zabbix.com/documentation/current/en/manual/config/hosts/host](https://www.zabbix.com/documentation/current/en/manual/config/hosts/host)
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/monitoring/hosts](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/monitoring/hosts)
