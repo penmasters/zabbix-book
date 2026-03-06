@@ -156,22 +156,23 @@ need to configure the Zabbix web service to allow Zabbix server to make requests
 to the web service. This is done by editing the `/etc/zabbix/zabbix_web_service.conf` 
 configuration file.
 
+!!! warning "SUSE Linux"
+
+    On SUSE Linux (SLES or OpenSUSE) 16 or higher, the Zabbix web service configuration
+    file is located at `/usr/etc/zabbix/zabbix_web_service.conf` and should not be edited
+    as it will be overwritten when the package is updated. 
+    Alternatively, you need to create an additional configuration file in the 
+    `/etc/zabbix/zabbix_web_service.conf.d/` directory and include your custom 
+    configuration there. This way you can keep the original configuration file 
+    intact and only add your custom settings in the new file.
+
 For now, the only configuration parameter that needs to be set is the `AllowedIP`
 parameter, which defines the IP addresses that are allowed to connect to the
 Zabbix web service. That is, if you have installed the web service on a separate
 system than the Zabbix server or proxy:
 
-!!! info "Edit zabbix_web_service.conf"
+!!! info "Edit zabbix_web_service config file"
 
-    SUSE only:
-    On SUSE 16 and later, the configuration file is installed at `/usr/etc/zabbix/zabbix_web_service.conf` and needs to be copied to `/etc/zabbix/` before editing:
-    ```bash
-    cp /usr/etc/zabbix/zabbix_web_service.conf /etc/zabbix/
-    ```
-
-    ```bash
-    sudo vi /etc/zabbix/zabbix_web_service.conf
-    ```
     ```ini
     AllowedIP=<IP_ADDRESS_OF_ZABBIX_SERVER>
     ```
