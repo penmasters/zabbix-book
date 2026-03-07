@@ -55,8 +55,30 @@ On Windows we do have some additional steps, as we need to download an additiona
 
 It's also possible to download the packages from [https://www.zabbix.com/download_agents?](https://www.zabbix.com/download_agents?). At this website simply select `OS Distribution` as `Windows` and at `Encryption` select `No encryption`. This will show you the `Zabbix agent2 plugins vx.x.x` MSI download link for your selected Windows version.
 
+We are going to assume you have already installed the Zabbix agent 2 and the plugins on your server. If you do not know how, check out the previous part of this chapter titled `Zabbix Agent installation and Passive monitoring` and the steps above.
+
 ## Setting up Microsoft SQL monitoring
-Let's have a look at how to monitor a Microsoft SQL server using the Zabbix agent 2 database monitoring. 
+Let's have a look at how to monitor a Microsoft SQL server using the Zabbix agent 2 database monitoring. For the default setup with a Microsoft SQL server, things are fairly simple. First, we go to `Data collection` | `Hosts` and create a new host for our Windows server.
+
+![Host creation - Windows server SQL](ch04.x-host-creation-windows-server-sql.png){ align=center }
+
+*4.x Host creation - Windows server SQL*
+
+With the host created, it's important to note here we used the template `MSSQL by Zabbix agent 2`. This is a default template provided by Zabbix which will already include most of the important statistics you'd need monitoring a Microsoft SQL server. It's possible to monitor SQL servers using the Zabbix agent in both `passive` and `active` mode. If you'd like to use `active` mode just clone template `MSSQL by Zabbix agent 2` to `MSSQL by Zabbix agent 2 active` and change all `item types` to `Zabbix agent (active)`.
+
+In the end it does not matter if you use a passive or active agent, as long as you have the agent connection setup we can do the next step. We need to configure our Zabbix agent to connect to the database server via the network. We do this using the macros on the host.
+
+![Windows server SQL host macros](ch04.x-windows-server-sql-macros.png){ align=center }
+
+*4.x Windows server SQL host macros*
+
+Since the agent is installed on the server running Microsoft SQL, we can simply connect to `localhost` or `127.0.0.1`. That means the connection from the Zabbix agent towards the Microsoft SQL server never leaves the server itself and we do not need to expose our SQL server port to the network for our Zabbix server or proxy. Combined with Zabbix agent active mode and encryption, we can guarantee a secure setup that is ready for high-risk environments like banks, hospitals, air traffic and even military applications. This is the biggest advantage of using the Zabbix agent 2 database monitoring, compared to ODBC.
+
+Once we fill out the `{$MSSQL.USER}`, `{$MSSQL.PASSWORD}` and `{$MSSQL.URI}` macros, the Zabbix agent should be able to connect to our SQL server. Navigating to `Monitoring` | `Latest data` should now show us a bunch of data from the SQL server marking the successful configuration of our monitoring.
+
+![Windows server SQL host macros](ch04.x-windows-server-sql-macros.png){ align=center }
+
+*4.x Windows server SQL host macros*
 
 ### Custom SQL queries
 
