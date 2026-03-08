@@ -214,7 +214,7 @@ Typical package name:
 
 * `msodbcsql18`
 
-Installation usually requires enabling Microsoft’s official repository and accepting the license agreement.
+Installation usually requires enabling Microsoft's official repository and accepting the license agreement.
 
 Example (RHEL/Rocky-based systems):
 
@@ -898,7 +898,7 @@ database instability from affecting the central monitoring server.
 
 ### Monitor the Monitoring
 
-When you use ODBC checks on Zabbix dont't forget to monitor you congiguration in
+When you use ODBC checks on Zabbix don't forget to monitor you congiguration in
 Zabbix. It's always a goot idea to have a look at the following metrics:
 
 * ODBC poller busy percentage

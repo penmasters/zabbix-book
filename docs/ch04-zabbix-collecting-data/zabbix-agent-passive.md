@@ -70,7 +70,7 @@ items can do however.
 ### Active vs. Passive Communication in Zabbix Agent
 
 The Zabbix agent supports two communication modes: **Active** and **Passive**. 
-Each mode has distinct behaviors, use cases, and implications for performance and 
+Each mode has distinct behaviours, use cases, and implications for performance and 
 configuration.
 
 ---
@@ -438,7 +438,7 @@ Once installed, for `Passive` communication we used the `Server=` parameter
 to keep our agent secured. We do not want everyone to be able to connect and query
 this agent, even when there might still be a firewall or two in between.
 
-Finaly, we created a host and an item to start monitoring with our `Passive` 
+Finally, we created a host and an item to start monitoring with our `Passive` 
 Zabbix agent.
 
 ---

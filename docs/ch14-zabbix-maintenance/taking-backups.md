@@ -12,7 +12,7 @@ files the database consists of. A physical backup can be either consistent or
 non-consistent, also called "hot". A consistent backup can be restored as is, but
 a non-consistent backup has to be recovered using archived log files. Taking a 
 consistent backup usually has performance implications, as all writes to the 
-datafiles must be postponed for the duration of the backup. 
+data files must be postponed for the duration of the backup. 
 A logical backup can only restore data to the point in time where the dump has
 been taken, while a physical backup can be recovered to any point in time using 
 the archived logs. For this reason, a physical backup is a more secure and and
@@ -42,7 +42,7 @@ Various options exist for creating a database backup.
 Dumping the database content to a flat file is the easiest and simplest method.
 Physical backups requires more effort, usually installing a backup agent and
 configuring the backup software as well as configuring the database to run with 
-archiving of the database logs, and continous deletion of the archived logs.
+archiving of the database logs, and continuous deletion of the archived logs.
 With regular backups of the database and the archived logs, a restore is possible 
 to the latest committed transaction in most databases.
 
@@ -350,7 +350,7 @@ of the database server and can be accessed during a full system failure.
 ### Hot standby database
 
 While it is important to take a backup/dump of the database at regular intervals, 
-it can be a timeconsuming task restoring this backup. For this reason, it can make
+it can be a time consuming task restoring this backup. For this reason, it can make
 sense to maintain a standby database, which is constantly synced with the changes
 that occurs in the active database, thus having a restored and recovered copy of
 the database running and ready to take over, should a disaster occur on the active 
