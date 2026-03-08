@@ -369,7 +369,7 @@ Your system is now prepared for running Zabbix components as containers using Po
     This is caused by the fact that the SystemD generated Quadlet service contains
     a dependency to the system-wide special target `network-online.target` which
     normally indicates the system's network is fully up and running. However on
-    certain Linux distriutions or with specific networking configurations the
+    certain Linux distributions or with specific networking configurations the
     system network components may not correctly notify SystemD that the network is
     "online", causing `network-online.target` to never get activated. This in turn
     makes that Podman will wait until it times out, thinking the network is not 

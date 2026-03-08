@@ -474,4 +474,10 @@ mongodb
 redis
 codecs
 chronium
+enterprisedb
+tigerdata
+howtozypp
+zypp
+webservice
+homedir
 

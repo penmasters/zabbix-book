@@ -126,7 +126,7 @@ sudo -u zabbix /usr/lib/zabbix/externalscripts/check_logged_users.sh
 ### Create the Item in Zabbix
 
 Now that we have our script we need to create an item in Zabbix as our final
-step. In the Zabbix web interface, go to Data collection → Hosts, open the
+step. In the Zabbix web interface, go to `Data collection → Hosts`, open the
 Zabbix server host, and add a new item with these settings:
 
 | Field                  | Value                      |
@@ -141,7 +141,7 @@ Zabbix server host, and add a new item with these settings:
 
 ### Check the Result
 
-Save the item and navigate to 'Monitoring → Latest data'. Within a minute
+Save the item and navigate to `Monitoring → Latest data`. Within a minute
 you should see a value like 2 ( depending on your system ) appear next to your
 new item, reflecting the number of active sessions on the Zabbix server at that
 moment. Open a second terminal to SSH in, wait for the next collection cycle,
