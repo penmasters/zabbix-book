@@ -293,6 +293,7 @@ plugins:
       enabled: true
 
 extra_javascript:
+  - javascripts/mathjax.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
   - javascripts/tags-data-attr.js
 
@@ -320,3 +321,5 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - sane_lists
+  - pymdownx.arithmatex:
+      generic: true
