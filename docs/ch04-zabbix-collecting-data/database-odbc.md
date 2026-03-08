@@ -297,7 +297,7 @@ Not all ODBC drivers behave identically. Differences may exist in:
 In production environments, the ODBC driver should be treated as a critical infrastructure
 component.
 
-???+ note:
+???+ note
 
     There are many ODBC drivers available for additional databases such as Oracle,
     Db2, SAP HANA, and others. However, driver quality, maintenance cadence, and
@@ -739,8 +739,14 @@ Timeout=5
 ```
 
 Slow queries block pollers and may cascade into monitoring delays.
-
 Use proxies to isolate database monitoring from the central server.
+
+???+ note
+
+   Starting from Zabbix 7.0 This parameter will be less important as the
+   "Database monitor" item now can have custom Timeout per each SQL query/item
+   ranging from 1s to 10m
+
 
 ---
 
