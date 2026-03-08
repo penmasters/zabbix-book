@@ -56,7 +56,7 @@ I've used `zbx-agent-active-rocky` as the identity, as that is the hostname on m
 - *TLSPSKIdentity*: The plain text non-secret identity used for PSK encryption.
 - *TLSPSKFile*: The path to the file where the secret PSK is stored.
 
-As you might have noticed, I have set both `TLSConnect` and `TLSAccept`. This is something recommended to always do to safeguard against configuration mistakes. Let's say you only use the Active Zabbix agent connection, but left `TLSConnect` set to `unencrypted`. If your Zabbix agent allows passive agent connections (due to configuration error, history or on purpose) an unencrypted connection will still be allowed. Recommendation, set both alway unless you have a good reason not to.
+As you might have noticed, I have set both `TLSConnect` and `TLSAccept`. This is something recommended to always do to safeguard against configuration mistakes. Let's say you only use the Active Zabbix agent connection, but left `TLSConnect` set to `unencrypted`. If your Zabbix agent allows passive agent connections (due to configuration error, history or on purpose) an unencrypted connection will still be allowed. Recommendation, set both always unless you have a good reason not to.
 
 We're not done with the configuration on the Zabbix agent side however, we still need to create the PSK. There is a simple command to execute and create the PSK.
 

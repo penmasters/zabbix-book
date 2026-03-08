@@ -132,10 +132,10 @@ any historical data.
 
 ## Active versus Passive proxy
 
-Zabbix proxies have been available since Zabbix 1.6. At that time they where 
-available only as what we know today as **Active proxies**. _Active_ means that 
-the proxy will initiate the connection by itself to the Zabbix Server. In 
-version 1.8.3 _passive_ proxies where introduced. This allowes the server to 
+Zabbix proxies have been available since Zabbix 1.6. At that time they where
+available only as what we know today as **Active proxies**. _Active_ means that
+the proxy will initiate the connection by itself to the Zabbix Server. In
+version 1.8.3 _passive_ proxies where introduced. This allows the server to
 connect to the proxy instead of the other way around.
 
 As mentioned before Zabbix agents can be both active _and_ passive however proxies
@@ -152,12 +152,12 @@ a proxy.
 
 ### Active proxy
 
-In _active_ mode, the proxy takes full control of its operational settings. This 
-includes managing when it checks for new configuration updates and when it sends 
+In _active_ mode, the proxy takes full control of its operational settings. This
+includes managing when it checks for new configuration updates and when it sends
 collected data to the server. 
 
-It’s important to note that the key settings for an _active proxy_ are defined 
-exclusively in the _Zabbix proxy_ configuration. Any adjustments to these 
+It’s important to note that the key settings for an _active proxy_ are defined
+exclusively in the _Zabbix proxy_ configuration. Any adjustments to these
 parameters should be made directly within the proxy configuration files.
 
 These are the proxy configuration settings you will need to set in _active_ mode:
