@@ -29,6 +29,9 @@ Voer alle volgende stappen uit op de server die is aangewezen voor de frontend.
 
     Red Hat
     ```bash
+    # List all available php modules and active php-8.2
+    dnf module list php -y
+    dnf module enable php:8.2
     # When using MySQL/MariaDB
     dnf install zabbix-nginx-conf zabbix-web-mysql
     # or when using PostgreSQL
