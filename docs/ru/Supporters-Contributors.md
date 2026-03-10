@@ -1,4 +1,4 @@
-# Supporters & Contributors
+# Сторонники и участники
 
 This book would not have been possible without the dedication, generosity, and
 expertise of many individuals and organizations. We extend our heartfelt thanks
