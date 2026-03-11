@@ -1,30 +1,31 @@
 # Сторонники и участники
 
-This book would not have been possible without the dedication, generosity, and
-expertise of many individuals and organizations. We extend our heartfelt thanks
-to everyone who has supported this project, whether through financial
-contributions, technical expertise, content reviews, or community engagement.
+Эта книга была бы невозможна без самоотверженности, щедрости и опыта многих
+людей и организаций. Мы выражаем искреннюю благодарность всем, кто поддержал
+этот проект, будь то финансовыми взносами, техническими знаниями, рецензиями на
+содержание или участием в жизни сообщества.
 
-## Our Sponsors
+## Наши спонсоры
 
-We are deeply grateful to the sponsors who have provided financial or material
-support to help bring this book to life. Their contributions have enabled us to
-maintain high-quality content, support open-source initiatives, and ensure that
-this book remains accessible to as many people as possible.
+Мы глубоко признательны спонсорам, которые оказали финансовую или материальную
+поддержку, в помощи воплощения этой книги в жизнь. Их вклад позволил нам
+сохранить высокое качество контента, поддержать инициативы с открытым исходным
+кодом и гарантировать, что эта книга останется доступной для как можно большего
+числа людей.
 
 - **OICTS** : [https://oicts.com/](https://oicts.com/)
 - **ZABBIX** : [https://www.zabbix.com/](https://www.zabbix.com/)
 
 ---
 
-## Our Contributors
+## Наши участники
 
-This book is a community effort, and we sincerely appreciate the time and
-knowledge shared by our contributors. From writing and reviewing content to
-providing feedback and sharing expertise, your efforts have helped shape this
-resource into something valuable for the monitoring and open-source communities.
+Эта книга - плод усилий сообщества, и мы искренне ценим время и знания, которыми
+поделились наши соавторы. Ваши усилия помогли превратить этот ресурс в нечто
+ценное для сообществ мониторинга и открытого кода - от написания и
+рецензирования контента до предоставления отзывов и обмена опытом.
 
-- **Patrik Uytterhoeven** :
+- **Патрик Уйтерхевен** :
   [http://github.com/Trikke76](http://github.com/Trikke76)
 - **Nathan Liefting** :
   [https://github.com/larcorba](https://github.com/larcorba)
@@ -42,7 +43,7 @@ A list of all the contributors who where so kind to fix typos etc .. can be
 found here :
 [https://github.com/penmasters/zabbix-book/graphs/contributors](https://github.com/penmasters/zabbix-book/graphs/contributors)
 
-### Translators
+### Переводчики
 
 - Nicolas Hermel : [https://github.com/wityender](https://github.com/wityender)
 - Dimitry Q : [https://github.com/krotesk](https://github.com/krotesk)
@@ -60,11 +61,11 @@ in making this book a reality.
 
 - **Patrik Uytterhoeven** : http://github.com/Trikke76
 - **Nathan Liefting** : https://github.com/larcorba
-- **Alexei Vladishev** :
+- **Алексей Владищев** :
 
 ---
 
-## Every Contribution Matters
+## Каждый вклад имеет значение
 
 Open-source thrives on collaboration, and even the smallest contributions help
 make a difference. Whether it was reporting a typo, suggesting an improvement,
