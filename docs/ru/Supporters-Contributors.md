@@ -27,61 +27,60 @@
 
 - **Патрик Уйтерхевен** :
   [http://github.com/Trikke76](http://github.com/Trikke76)
-- **Nathan Liefting** :
-  [https://github.com/larcorba](https://github.com/larcorba)
-- Evgeny Yurchenko: [https://github.com/BGmot](https://github.com/BGmot)
-- Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
-- Aigars Kadikis :
+- **Натан Лифтинг** : [https://github.com/larcorba](https://github.com/larcorba)
+- Евгений Юрченко: [https://github.com/BGmot](https://github.com/BGmot)
+- Николас Гарофил: [https://github.com/ngaro](https://github.com/ngaro)
+- Айгарс Кадикис:
   [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
-- Giedrius Stasiulionis :
-  [https://github.com/b1nary1](https://github.com/b1nary1)
-- Leonardo Cardoso:
+- Гедриус Стасиулионис: [https://github.com/b1nary1](https://github.com/b1nary1)
+- Леонардо Кардозо:
   [https://github.com/leocardosoo](https://github.com/leocardosoo)
-- Robin Roevens: [https://github.com/RobinR1](https://github.com/RobinR1)
+- Робин Ровенс: [https://github.com/RobinR1](https://github.com/RobinR1)
 
-A list of all the contributors who where so kind to fix typos etc .. can be
-found here :
+Список всех участников, которые были так любезны исправить опечатки и т.д.,
+можно найти здесь:
 [https://github.com/penmasters/zabbix-book/graphs/contributors](https://github.com/penmasters/zabbix-book/graphs/contributors)
 
 ### Переводчики
 
-- Nicolas Hermel : [https://github.com/wityender](https://github.com/wityender)
-- Dimitry Q : [https://github.com/krotesk](https://github.com/krotesk)
-- Leonardo Cardoso:
+- Николя Эрмель: [https://github.com/wityender](https://github.com/wityender)
+- Дмитрий Кузнецов: [https://github.com/krotesk](https://github.com/krotesk)
+- Леонардо Кардозо:
   [https://github.com/leocardosoo](https://github.com/leocardosoo)
 
 ---
 
-## Special Thanks to Our Board Members
+## Особая благодарность нашим членам совета
 
-A special acknowledgment goes to the members of our board, whose vision,
-leadership, and dedication have guided this project from its inception. Their
-commitment to open-source principles and knowledge sharing has been instrumental
-in making this book a reality.
+Особая благодарность выражается членам нашего совета, чьё видение, руководство и
+преданность делу направляли этот проект с самого начала. Их приверженность
+принципам открытого кода и обмену знаниями сыграла ключевую роль в реализации
+этой книги.
 
-- **Patrik Uytterhoeven** : http://github.com/Trikke76
-- **Nathan Liefting** : https://github.com/larcorba
+- **Патрик Уиттерхувен**: http://github.com/Trikke76
+- **Натан Лифтинг**: https://github.com/larcorba
 - **Алексей Владищев** :
 
 ---
 
 ## Каждый вклад имеет значение
 
-Open-source thrives on collaboration, and even the smallest contributions help
-make a difference. Whether it was reporting a typo, suggesting an improvement,
-opening an issue, or simply sharing feedback, we appreciate everyone who took
-the time to help refine and improve this book. Your efforts, no matter how
-small, are a valuable part of this project. Check out [Everyone who created an
-issue](https://github.com/penmasters/zabbix-book/issues?q=is%3Aissue%20).
+Открытый исходный код процветает благодаря сотрудничеству, и даже самый
+незначительный вклад помогает изменить ситуацию. Мы благодарны всем, кто нашел
+время, чтобы помочь доработать и улучшить эту книгу, будь то сообщение об
+опечатке, предложение по улучшению, сообщение об ошибке или просто обмен
+мнениями. Ваши усилия, какими бы незначительными они ни были, являются ценной
+частью этого проекта. Посмотрите [Все, кто внёс
+вклад](https://github.com/penmasters/zabbix-book/issues?q=is%3Aissue%20).
 
 ---
 
-## Join the Community
+## Присоединяйтесь к сообществу
 
-We welcome new contributors and supporters! If you'd like to get involved
-whether by contributing content, providing feedback, or supporting this
-initiative you can find more details on how to participate at
-[Guidelines](./Guidelines.md).
+Мы приветствуем новых участников и сторонников! Если вы хотите принять участие в
+проекте, предоставив контент, отзывы или поддержав эту инициативу, то можете
+найти более подробную информацию о том, как принять участие в проекте, в разделе
+[Руководство](./Guidelines.md).
 
-Thank you for being part of this journey and helping us build a valuable
-resource for the open-source community!
+Спасибо, что являетесь частью этого пути и помогаете нам создавать ценный ресурс
+для сообщества open-source!
