@@ -5,38 +5,41 @@ description: |
 tags: [expert]
 ---
 
-# HA Setup
+# Настройка HA
 
-In this section, we will set up Zabbix in a High Availability (HA)
-configuration. This native feature, introduced in Zabbix 6, is a crucial
-enhancement that ensures continued monitoring even if a Zabbix server fails.
-With HA, when one Zabbix server goes down, another can take over seamlessly.
+В этом разделе мы настроим Zabbix в конфигурации высокой доступности (HA). Эта
+встроенная функция, появившаяся в Zabbix 6, являющаяся важным
+усовершенствованием, обеспечивающим непрерывный мониторинг даже в случае выхода
+из строя одного из серверов Zabbix. Благодаря HA, когда один сервер Zabbix
+выходит из строя, другой может беспрепятственно его заменить.
 
-For this guide, we will use two Zabbix servers and one database, but the setup
-allows for adding more zabbix servers if necessary.
+В этом руководстве мы будем использовать два сервера Zabbix и одну базу данных,
+но настройка позволяет добавить больше серверов zabbix при необходимости.
 
 ![HA-Setup](./ha-setup/ch01-HA-setup.png)
 
-_1.1 HA Setup_
+_1.1 Настройка HA_
 
-It's important to note that Zabbix HA setup is straightforward, providing
-redundancy without complex features like load balancing. Only one node will be
-an active node, all other nodes will be on standby. All standby Zabbix servers
-in the HA cluster will monitor the active node through heartbeats using the
-shared database. It does not require any additional clustering software or even
-firewall ports for the Zabbix server itself. However, for the frontend, we will
-use Keepalived to provide a Virtual IP (VIP) for failover purposes.
+Важно отметить, что настройка Zabbix HA проста и обеспечивает резервирование без
+сложных функций, таких как балансировка нагрузки. Только один узел будет
+активным, все остальные узлы будут находиться в режиме ожидания. Все резервные
+серверы Zabbix в кластере HA будут следить за активным узлом с помощью сигналов
+сердцебиений, используя общую базу данных. Для этого не требуется никакого
+дополнительного программного обеспечения для кластеризации или даже портов
+брандмауэра для самого сервера Zabbix. Однако для фронтенда мы будем
+использовать Keepalived, чтобы предоставить виртуальный IP (VIP) для целей
+обхода отказа.
 
-Just as in our basic configuration, we will document key details for the servers
-in this HA setup. Below is the list of servers and some place to add their
-respective IP addresses for your convenience :
+Как и в нашей базовой конфигурации, мы задокументируем ключевые детали для
+серверов в этой HA-настройке. Ниже приведен список серверов и место, куда нужно
+добавить их соответствующие IP-адреса для удобства:
 
-| Server          | IP Address |
-| --------------- | ---------- |
-| Zabbix Server 1 |            |
-| Zabbix Server 2 |            |
-| Database        |            |
-| Virtual IP      |            |
+| Сервер          | IP-адрес |
+| --------------- | -------- |
+| Zabbix Server 1 |          |
+| Zabbix Server 2 |          |
+| База данных     |          |
+| Виртуальный IP  |          |
 
 ???+ note
 
@@ -48,51 +51,51 @@ respective IP addresses for your convenience :
 
 ---
 
-## Installing the Database
+## Установка базы данных
 
-Refer to the [_Zabbix components: Database_](database.md) chapter for detailed
-instructions on setting up the database. That chapter provides step-by-step
-guidance on installing either a PostgreSQL or MariaDB database on a dedicated
-node running Ubuntu, SUSE or Rocky Linux. The same installation steps apply when
-configuring the database for this setup.
-
----
-
-## Installing the Zabbix cluster
-
-Setting up a Zabbix cluster involves configuring multiple Zabbix servers to work
-together, providing high availability. While the process is similar to setting
-up a single Zabbix server, there are additional configuration steps required to
-enable HA (High Availability).
-
-Start by preparing the systems for- and installing Zabbix server on all systems
-by following the steps in the [_Preparing the server for
-Zabbix_](preparation.md) and [_Installing Zabbix server_](zabbix-server.md)
-sections of the _Zabbix components_ chapter.
-
-Do note that:
-
-- you need to skip the database population step on all but the first Zabbix
-  server as the database is shared between all Zabbix servers.
-- you need to skip the enabling and starting of the zabbix-server service on all
-  servers as we will start it later after the HA configuration is done.
-- you make sure that all Zabbix servers can connect to the database server. For
-  example, if you are using PostgreSQL, ensure that the `pg_hba.conf` file is
-  configured to allow connections from all Zabbix servers.
-- all Zabbix servers should use the same database name, user, and password to
-  connect to the database.
-- all Zabbix servers should be of the same major version.
-
-When all Zabbix servers are installed and configured to access the database, we
-can proceed with the HA configuration.
+Подробные инструкции по настройке базы данных см. в главе [_Компоненты Zabbix:
+База данных_](database.md). В этой главе содержится пошаговое руководство по
+установке базы данных PostgreSQL или MariaDB на выделенном узле под управлением
+Ubuntu, SUSE или Rocky Linux. Те же шаги по установке применяются при настройке
+базы данных для этой установки.
 
 ---
 
-### Configuring Zabbix Server 1
+## Установка кластера Zabbix
 
-Add a new configuration file for the HA setup on the first Zabbix server:
+Настройка кластера Zabbix подразумевает конфигурирование нескольких серверов
+Zabbix для совместной работы, обеспечивающей высокую доступность. Хотя процесс
+похож на настройку одного сервера Zabbix, существуют дополнительные шаги по
+настройке, необходимые для обеспечения высокой доступности (HA).
 
-!!! info "Add High Availability Zabbix server configuration"
+Начните с подготовки систем к работе и установки сервера Zabbix на всех
+системах, выполнив действия, описанные в разделах [_Подготовка сервера для
+Zabbix_](preparation.md) и [_Установка сервера Zabbix_](zabbix-server.md) главы
+_Компоненты Zabbix_.
+
+Обратите внимание на то, что:
+
+- вам нужно пропустить шаг создания базы данных на всех серверах Zabbix, кроме
+  первого, поскольку база данных является общей для всех серверов Zabbix.
+- необходимо пропустить включение и запуск службы zabbix-server на всех
+  серверах, так как мы запустим ее позже, после завершения настройки HA.
+- убедитесь, что все серверы Zabbix могут подключаться к серверу базы данных.
+  Например, если вы используете PostgreSQL, убедитесь, что файл `pg_hba.conf`
+  настроен на разрешение соединений со всех серверов Zabbix.
+- все серверы Zabbix должны использовать одно и то же имя базы данных,
+  пользователя и пароль для подключения к базе данных.
+- все серверы Zabbix должны иметь одну и ту же основную версию.
+
+Когда все серверы Zabbix установлены и настроены на доступ к базе данных, мы
+можем приступить к настройке HA.
+
+---
+
+### Настройка Zabbix Server 1
+
+Добавьте новый файл конфигурации для настройки HA на первом сервере Zabbix:
+
+!!! info "Добавить конфигурацию сервера высокой доступности Zabbix"
 
     ``` bash
     sudo vi /etc/zabbix/zabbix_server.d/high-availability.conf
@@ -120,29 +123,29 @@ Add a new configuration file for the HA setup on the first Zabbix server:
 
 ---
 
-### Configuring Zabbix Server 2
+### Настройка Zabbix Server 2
 
-Repeat the configuration steps for the second Zabbix server. Adjust the
-`HANodeName` and `NodeAddress` as necessary for this server.
+Повторите шаги настройки для второго сервера Zabbix. Настройте параметры
+`HANodeName` и `NodeAddress`, так как это необходимо для данного сервера.
 
-???+ example "Zabbix server 2 HA configuration high-availability.conf"
+???+ example "Zabbix server 2 HA настройка high-availability.conf"
 
     ```ini
     HANodeName=zabbix2  # or choose a name you prefer
     NodeAddress=<Zabbix server 2 ip>:10051
     ```
 
-You can add more servers by repeating the same steps, ensuring each server has a
-unique `HANodeName` and the correct `NodeAddress` set.
+Вы можете добавить больше серверов, повторив те же шаги, убедившись, что каждый
+сервер имеет уникальное `HANodeName` и правильно установленный `NodeAddress`.
 
 ---
 
-### Starting Zabbix Server
+### Запуск сервера Zabbix
 
-After configuring both servers, enable and start the zabbix-server service on
-each:
+После настройки обоих серверов добавьте в автозапуск и запустите службу
+zabbix-server на каждом из них:
 
-!!! info "Enable and start zabbix-server service"
+!!! info "Добавить в автозапуск и запустить службу zabbix-server"
 
     ```
     sudo systemctl enable zabbix-server --now
@@ -150,23 +153,23 @@ each:
 
 ---
 
-### Verifying the Configuration
+### Проверка конфигурации
 
-Check the log files on both servers to ensure they have started correctly and
-are operating in their respective HA modes.
+Проверьте файлы журналов на обоих серверах, чтобы убедиться, что они запустились
+правильно и работают в соответствующих режимах HA.
 
-On the first server:
+На первом сервере:
 
-!!! info "Check logs for HA messages"
+!!! info "Проверьте журналы на наличие сообщений HA"
 
     ``` bash
     sudo grep HA /var/log/zabbix/zabbix_server.log
     ```
 
-In the system logs, you should observe the following entries, indicating the
-initialization of the High Availability (HA) manager:
+В системных журналах вы должны увидеть следующие записи, указывающие на
+инициализацию менеджера высокой доступности (HA):
 
-???+ example "HA log messages on active node"
+???+ example "Сообщения журнала HA на активном узле"
 
     ```shell-session
     localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log

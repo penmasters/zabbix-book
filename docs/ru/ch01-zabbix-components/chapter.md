@@ -1,33 +1,33 @@
 # Компоненты Zabbix, основные функции и установка
 
-In this chapter, we expand on the foundational knowledge from the "Getting
-Started" section to provide a comprehensive guide for both beginners who are
-installing Zabbix for the first time and advanced users who seek to optimize
-their setup. We’ll not only cover the essential steps for a basic installation
-but also delve into the finer details of Zabbix architecture, components, and
-best practices.
+В этой главе мы расширим базовые знания, полученные в разделе "Начало работы", и
+представим исчерпывающее руководство как для новичков, впервые устанавливающих
+Zabbix, так и для опытных пользователей, стремящихся оптимизировать свою
+установку. Мы не только рассмотрим основные шаги для базовой установки, но и
+углубимся в тонкие детали архитектуры Zabbix, компонентов и лучших практик.
 
-We’ll start by walking through the installation process, ensuring you have a
-solid foundation to build on. From there, we'll move into the core components of
-Zabbix, what each one does, how they interact, and why they are crucial to your
-monitoring solution. You'll learn about subprocesses, their roles, and how they
-contribute to Zabbix efficiency and reliability.
+Мы начнем с процесса установки, чтобы убедиться, что у вас есть прочный
+фундамент, на котором можно строить. Затем мы перейдем к рассмотрению основных
+компонентов Zabbix: что каждый из них делает, как они взаимодействуют и почему
+они имеют решающее значение для вашего решения по мониторингу. Вы узнаете о
+подпроцессах, их роли и о том, как они способствуют эффективности и надежности
+Zabbix.
 
-Additionally, we’ll explore good architectural choices that can make or break
-your monitoring setup. Whether you're managing a small network or a large-scale
-infrastructure, making the right design decisions early on will pay dividends in
-scalability, performance, and maintenance.
+Кроме того, мы рассмотрим хорошие архитектурные решения, которые помогут
+построить или сломать вашу систему мониторинга. Независимо от того, управляете
+ли вы небольшой сетью или крупномасштабной инфраструктурой, принятие правильных
+проектных решений на ранних этапах принесет дивиденды в виде масштабируемости,
+производительности и обслуживания.
 
-This chapter is designed to cater to a wide range of readers. If you're simply
-looking to get Zabbix up and running, you'll find clear, step-by-step
-instructions. For those wanting to dive deeper, we'll provide detailed insights
-into how Zabbix functions under the hood, helping you make informed choices that
-align with your needs and future growth plans.
+Эта глава рассчитана на широкий круг читателей. Если вы хотите просто запустить
+Zabbix, то найдете четкие пошаговые инструкции. Для тех, кто хочет погрузиться
+глубже, мы предоставим подробную информацию о том, как Zabbix функционирует под
+капотом, помогая вам сделать осознанный выбор, соответствующий вашим
+потребностям и планам будущего развития.
 
-By the end of this chapter, you will have not only a working Zabbix installation
-but also a thorough understanding of its components and architecture, empowering
-you to leverage Zabbix to its fullest potential, regardless of the complexity of
-your environment.
+К концу этой главы у вас будет не только рабочая установка Zabbix, но и глубокое
+понимание ее компонентов и архитектуры, что позволит использовать Zabbix в
+полной мере, независимо от сложности вашей среды.
 
-Let’s embark on this detailed journey into Zabbix and equip ourselves with the
-knowledge to both start and optimize a powerful monitoring solution.
+Давайте начнем это подробное путешествие в Zabbix и вооружимся знаниями для
+запуска и оптимизации мощного решения для мониторинга.
