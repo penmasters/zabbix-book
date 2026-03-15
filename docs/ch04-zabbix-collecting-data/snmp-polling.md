@@ -240,8 +240,8 @@ do this in your terminal:
       snmpstatus -v 2c -c public [IP-address_of_the_device]
     ```
 
-Replace `[IP-address_of_the_device]` with the actual IP address or hostname of the
-device you wish to test.
+    Replace `[IP-address_of_the_device]` with the actual IP address or hostname of the
+    device you wish to test.
 
 ---
 
@@ -628,7 +628,7 @@ From your Zabbix server or any SNMP client system with net-snmp-utils installed:
 
 ???+ example "Testing SNMP functionality with snmpwalk"
 
-    Repace `<IP_ADDRESS>` with the IP of the client where you installed the SNMP
+    Replace `<IP_ADDRESS>` with the IP of the client where you installed the SNMP
     config. If localhost you can use `127.0.0.1`.
 
     General system info (sysDescr, sysUptime, etc.)
@@ -703,6 +703,191 @@ work out of the box with what is already configured in our `snmpd.conf` file.
       sudo rm /var/lib/net-snmp/snmpd.conf
       ```
       It's quite brutal but in our test environment it should help you out.
+
+---
+### Deploying bare minimum MIB files
+
+Gathering proper MIB files might sounds a tedious and time consuming task.
+
+Installing too many MIBs will cause degradation for the
+SNMP trap translation process and slow down the SNMP polling process.
+
+Usually the Linux distribution comes with a set of basic MIB files. For example, on
+Ubuntu, the `snmp-mibs-downloader` package, or on Suse the `snmp-mibs` package
+provides a collection of MIB files that can be used for SNMP monitoring. However,
+these MIBs may not cover all the devices in your network, especially if you have
+equipment from multiple vendors.
+
+Here is an universal method (treat it as one of many possible options) on how 
+to obtain bare minimum MIBs to work with most of devices. This is useful for both
+SNMP polling and trapping.
+
+The project [https://github.com/netdisco/netdisco-mibs](https://github.com/netdisco/netdisco-mibs)
+exist for 20 years and is a collection of MIBs for a lot of vendors. Dare I say: all vendors?
+We will download the collection and install the MIB files in the `/usr/local/share/snmp/mibs` directory.
+After that we will configure SNMP to use only the MIBS we require. 
+
+!!! warning "Performance impact"
+
+    Loading lots of MIBs will cause degradation for the SNMP trap translation 
+    process and slow down the SNMP polling process.
+
+    Also, you might get warnings like:
+    
+    ```text
+    Warning: Module MAU-MIB was in /usr/local/share/snmp/mibs//DOT3-MAU-MIB.txt now is /usr/local/share/snmp/mibs//RFC2668-MIB.txt
+    Warning: Module DISMAN-EVENT-MIB was in /usr/local/share/snmp/mibs//EVENT-MIB.txt now is /usr/local/share/snmp/mibs//DISMAN-EVENT-MIB.txt
+    Warning: Module P-BRIDGE-MIB was in /usr/local/share/snmp/mibs//P-BRIDGE-MIB.txt now is /usr/local/share/snmp/mibs//P-BRIDGE.txt
+    ```
+    This is because several MIB files may have the same module name defined inside
+    them. This may result in incorrect translation of OIDs and unexpected behavior.
+    To avoid this, it's important to only load the MIB files that are necessary 
+    for your specific devices/vendors and use cases.
+
+???+ example "Install MIB files from Netdisco collection"
+
+    Download and unpack the Netdisco MIB collection, then move the relevant MIB 
+    files to the SNMP MIB directory:
+
+    ```bash
+    curl -kL https://github.com/netdisco/netdisco-mibs/archive/refs/heads/master.zip -o /tmp/netdisco-mibs.zip
+    unzip /tmp/netdisco-mibs.zip -d /tmp
+    ```
+
+    Next, move the MIB files from the Netdisco collection to the SNMP MIB directory.
+    The Netdisco collection organizes MIBs in subdirectories based on vendor names,
+    and we will move only those directories that start with a lowercase letter or
+    digit, which typically represent vendor-specific MIBs.
+
+    ```bash 
+    mkdir /usr/local/share/snmp/mibs
+    find /tmp/netdisco-mibs-master -mindepth 1 -maxdepth 1 -type d -name '[a-z0-9]*' -exec mv \{\} /usr/local/share/snmp/mibs/ \;
+    ```
+
+    Finally, we can clean up the temporary files:
+
+    ```bash
+    rm -rf /tmp/netdisco*
+    ```
+
+To enable bare minimum MIBs we need to enable two catalogs "rfc" and "net-snmp".
+
+Overwrite/replace `/etc/snmp/snmp.conf` by with:
+
+!!! info "Configure SNMP to use RFC and Net-SNMP MIBs"
+
+    ```bash
+    mibdirs /usr/local/share/snmp/mibs/rfc:/usr/local/share/snmp/mibs/net-snmp
+    ```
+
+    This will override the OS default MIB search path and set it to include only
+    the RFC and Net-SNMP MIBs, which are commonly used and provide a good starting
+    point for most SNMP monitoring scenarios.
+
+???+ tip "Fun fact"
+    
+    Changes to the `/etc/snmp/snmp.conf` file are applied on the fly.
+    No need to restart anything.
+
+!!! warning "Repeat on each Server/Proxy"
+
+    If you have multiple Zabbix servers and/or proxies that will be processing SNMP traps,
+    you will need to repeat this MIB installation and configuration process on each
+    of those servers to ensure consistent trap translation and processing across
+    your monitoring infrastructure.
+
+---
+
+#### Include another vendor
+
+Let's say we need to work with Cisco equipment. We can double-check if vendor
+is included in Netdisco bundle. Grep for case insensitive name:
+
+???+ example "Check if Cisco MIBs are included in Netdisco collection"
+
+    ```bash
+    ls -1 /usr/local/share/snmp/mibs | grep -i Cisco
+    ```
+
+If the vendor is in list, then include "cisco" directory by adding an additional
+line in `/etc/snmp/snmp.conf`:
+
+???+ example "Include Cisco MIBs in SNMP configuration"
+
+    ```bash
+        mibdirs /usr/local/share/snmp/mibs/rfc:/usr/local/share/snmp/mibs/net-snmp
+        # Cisco MIBs
+        mibdirs +/usr/local/share/snmp/mibs/cisco
+    ```
+
+    Note the `+` sign before the second `mibdirs` directive, which tells SNMP to append
+    the Cisco MIBs to the existing search path rather than replacing it. This allows us
+    to maintain the core RFC and Net-SNMP MIBs while adding vendor-specific MIBs as needed
+    in a maintainable way.
+
+!!! warning "Performance impact"
+
+    Adding multiple vendors is possible but it will slow down the translation speed.
+    Count on an additional 1s for each vendor added, as the SNMP engine needs to
+    load and parse all MIB files in the specified directories to translate OIDs into
+    human-readable names. 
+    To mitigate this, ensure that on each server/proxy you only include the MIBs 
+    that are relevant to the devices you are monitoring on that specific server/proxy,
+    rather than loading a large number of unnecessary MIBs that can bloat the
+    search path and slow down processing.
+
+---
+
+### (optional) Bulletproof, MIB-less solution
+
+Official Zabbix SNMP templates do not require installing MIB files, as they target
+raw OIDs for data polling. If we continue this style for trapping too
+we can create a dependency-free solution by enabling a "numerical" flag inside
+`/etc/snmp/snmptrapd.conf`.
+
+!!! info "Enable numerical traps in snmptrapd.conf"
+
+    Add or modify the following line in `/etc/snmp/snmptrapd.conf` to enable 
+    numerical traps:
+
+    ```text
+    outputOption n
+    ```
+
+Next, restart the snmptrapd service, send test anananany, and check the log:
+
+!!! info "Check log for numerical traps"
+
+    ```bash
+    tail -99 /var/log/zabbix_traps_archive/zabbix_traps.log
+    ```
+
+!!! warning "In the long run"
+
+    Using numerical OIDs in Zabbix SNMP items can significantly increase the 
+    time required to design a template, since the dot (`.`) in numerical OIDs is a
+    special character in regular expressions. This means that the dot must be
+    escaped (e.g., `\.`) in any regex preprocessing steps to ensure proper parsing.
+    Failing to escape the dot can lead to unexpected behavior, even if it appears
+    to work correctly 99.9% of the time. Without escaping, the dot acts as a 
+    wildcard, matching *any* character, which violates the principle of a precise
+    and bulletproof solution. Proper escaping ensures that the OID is interpreted
+    exactly as intended, eliminating ambiguity and potential errors in monitoring.
+
+---
+
+Using numerical traps can be best direction if:
+
+- There is a big passion about bulletproof solutions. Creating a solution with the
+  bare minimum of dependencies - MIBs are never required for Zabbix proxies.
+
+- Template readability is not an issue. You are the only person in the
+  monitoring department. There are no team mates.
+
+- Have a lot of time to design solution
+
+- You are willing to share your masterpiece with the internet.
+  Perhaps share it at GitHub
 
 ---
 
@@ -1001,7 +1186,7 @@ example as this item will return us a whole list of information.
 
 ![ch04.32-snmp-walk.png](ch04.32-snmp-walk.png)
 
-_4.32 SNMP Walk_
+_4.31 SNMP Walk_
 
 When we press the **Get value and test** button in the test item screen we get a
 whole list of data.
@@ -1075,7 +1260,7 @@ Fill in the new item with the following information:
 
 ![ch04.33-snmp-dependent-item.png](ch04.33-snmp-dependent-item.png)
 
-_4.33 Dependent SNMP Item_
+_4.32 Dependent SNMP Item_
 
 This item as is at the moment is an exact copy of our master item so we need to
 add some *preprocessing steps* first. Let's go to the tab **Preprocessing** and add
@@ -1132,6 +1317,7 @@ go.
 
 - Why is it better use SNMPv3 instead of v2c or v1 ?
 - Do I need to configure pollers for SNMP ? If so which pollers ?
+- Should I install MIB files on my Zabbix server ? What about proxies ?
 - Can I still use the old style to monitor SNMP ? Should I start using get[]
   and walk[] instead ?
 
