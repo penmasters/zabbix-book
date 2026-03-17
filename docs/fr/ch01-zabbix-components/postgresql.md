@@ -10,21 +10,22 @@ description: |
 tags: [beginner]
 ---
 
-# Installing a PostgreSQL database
+# Installation d'une base de données PostgreSQL
 
-Alternatively to MariaDB/MySQL, you can choose to use PostgreSQL as the database
-backend for Zabbix. Similar to MariaDB, PostgreSQL can be installed using either
-the OS vendor-provided packages or the official PostgreSQL repositories.
+En alternative à MariaDB/MySQL, vous pouvez choisir d'utiliser PostgreSQL comme
+base de données pour Zabbix. Comme pour MariaDB, PostgreSQL peut être installé
+en utilisant soit les paquets fournis par le fournisseur du système
+d'exploitation, soit les dépôts officiels de PostgreSQL.
 
-If you already have installed MariaDB in the previous section, you can skip this
-section.
+Si vous avez déjà installé MariaDB dans la section précédente, vous pouvez
+sauter cette section.
 
-As of writing PostgreSQL 13-18 are supported by Zabbix. Check the Zabbix
-documentation for an up-to-date list of supported versions for your Zabbix
-version. Usually it's a good idea to go with the latest version that is
-supported by Zabbix.
+A ce jour, PostgreSQL 13-18 est supporté par Zabbix. Consultez la documentation
+de Zabbix pour une liste à jour des versions supportées pour votre version de
+Zabbix. En général, c'est une bonne idée d'utiliser la dernière version
+supportée par Zabbix.
 
-???+ tip "TimescaleDB extension"
+Astuce "Extension de TimescaleDB" (en anglais)
 
     Zabbix also supports the extension TimescaleDB but due to its advanced nature, 
     we won't cover it in this chapter. Refer to [_Partitioning PostgreSQL with TimescaleDB_](../ch13-advanced-security/partitioning-postgresql-database.md)
@@ -38,7 +39,7 @@ supported by Zabbix.
 
 ---
 
-## Installing PostgreSQL Server and Client from OS Vendor-Provided Packages
+## Installation du serveur et du client PostgreSQL à partir des paquets fournis par l'éditeur du système d'exploitation
 
 To install the distribution default PostgreSQL server, execute the following
 commands:
