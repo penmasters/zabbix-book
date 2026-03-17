@@ -67,7 +67,7 @@ Effectuez toutes les étapes suivantes sur le serveur désigné pour le frontend
     sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
-Cette commande installera les paquets front-end ainsi que les dépendances
+Cette commande installera les paquets frontaux ainsi que les dépendances
 requises pour Nginx.
 
 As of SUSE 16 SELinux is now the default security module instead of AppArmor. By
