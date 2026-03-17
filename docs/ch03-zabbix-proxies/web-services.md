@@ -21,7 +21,7 @@ scheduled reports, but there are plans to expand its functionality in future
 releases of Zabbix.
 
 The actual usage of the Zabbix web service to generate reports is covered in the
-[_Scheduled reports_](../ch11-zabbix-visualisation/scheduled-reports.md) chapter.
+[_Scheduled reports_](../ch11-zabbix-visualisation/built-in-reports.md) chapter.
 
 ![zabbix-web-service-overview](ch03-web-services-component.png)
 
