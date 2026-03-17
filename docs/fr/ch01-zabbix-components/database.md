@@ -14,7 +14,7 @@ du backend de la base de données. Zabbix supporte plusieurs options de base de
 données : MySQL/Percona, MariaDB, PostgreSQL (y compris TimescaleDB) et Oracle
 (jusqu'à Zabbix 7.0).
 
-Avertissement "Dépréciation de la base de données Oracle".
+???+ warning "Dépréciation de la base de données Oracle"
 
     Zabbix 7.0 marks the final release to offer support for Oracle Database.
     Consequently, systems running Zabbix 7.0 or any prior version must undertake
