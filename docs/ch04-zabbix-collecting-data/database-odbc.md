@@ -743,9 +743,9 @@ Use proxies to isolate database monitoring from the central server.
 
 ???+ note
 
-   Starting from Zabbix 7.0 This parameter will be less important as the
-   "Database monitor" item now can have custom Timeout per each SQL query/item
-   ranging from 1s to 10m
+    Starting from Zabbix 7.0 This parameter will be less important as the
+    "Database monitor" item now can have custom Timeout per each SQL query/item
+    ranging from 1s to 10m
 
 
 ---
