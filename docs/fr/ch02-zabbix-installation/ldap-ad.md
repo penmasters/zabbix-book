@@ -19,11 +19,11 @@ correctement avec Microsoft Active Directory et le serveur OpenLDAP.
 L'authentification LDAP peut être configurée selon deux modes :
 
 - Authentification des utilisateurs
-- Users authentication with users provisioning
+- Authentification des utilisateurs avec provisionnement des utilisateurs
 
-## Users authentication mode
+## Mode d'authentification des utilisateurs
 
-The process of the authenticating users follows this diagram.
+Le processus d'authentification des utilisateurs suit ce schéma.
 
 ![LDAP users authentication](ch02.3-ldap-auth-diagram.png){ align=center }
 
