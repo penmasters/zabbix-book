@@ -11,21 +11,21 @@ description: |
 tags: [beginner]
 ---
 
-# Installing the frontend
+# Installation du frontend
 
-Before configuring the Zabbix frontend, ensure the system meets the requirements
-and is prepared as outlined in the previous chapter: [_Getting
-started_](../ch00-getting-started/Requirements.md). This server can be the same
-one where the Zabbix server packages were previously installed, or it can be a
-separate machine.
+Avant de configurer le frontend Zabbix, assurez-vous que le système répond aux
+exigences et qu'il est préparé comme indiqué dans le chapitre précédent :
+[_Démarrage_](../ch00-getting-started/Requirements.md). Ce serveur peut être le
+même que celui sur lequel les paquets du serveur Zabbix ont été précédemment
+installés, ou il peut s'agir d'une machine séparée.
 
-Perform all subsequent steps on the server designated for the frontend.
+Effectuez toutes les étapes suivantes sur le serveur désigné pour le frontend.
 
 ---
 
-## Installing the frontend with NGINX
+## Installer le frontend avec NGINX
 
-!!! info "install frontend packages"
+!!! info "installer les paquets frontend"
 
     Red Hat
     ```bash
@@ -67,8 +67,8 @@ Perform all subsequent steps on the server designated for the frontend.
     sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
-This command will install the front-end packages along with the required
-dependencies for Nginx.
+Cette commande installera les paquets front-end ainsi que les dépendances
+requises pour Nginx.
 
 As of SUSE 16 SELinux is now the default security module instead of AppArmor. By
 default PHP-FPM is not allowed by SELinux on SUSE to
