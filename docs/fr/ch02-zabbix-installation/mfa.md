@@ -17,17 +17,18 @@ politique de mot de passe :
 - Exigence relative à la longueur minimale du mot de passe
 - Exigences pour que le mot de passe contienne une lettre latine,une majuscule,
   une minuscule, un chiffre et un caractère spécial
-- Requirement to avoid easy-to-guess passwords
+- Obligation d'éviter les mots de passe faciles à deviner
 
-To secure sign in process even more you can configure multi factor
-authentication (MFA). MFA protects Zabbix by using a second source of validation
-before granting access to its WebUI after a user enters his/her password
-correctly. Zabbix offers to types of MFA - Time-based one-time password (TOTP)
-and Duo MFA provider.
+Pour sécuriser encore plus le processus de connexion, vous pouvez configurer
+l'authentification multi-facteurs (MFA). Le MFA protège Zabbix en utilisant une
+deuxième source de validation avant d'accorder l'accès à son interface WebUI
+après qu'un utilisateur ait entré son mot de passe correctement. Zabbix offre
+deux types de MFA - mot de passe unique basé sur le temps (TOTP) et le
+fournisseur Duo MFA.
 
 ---
 
-## Time-based one-time password
+## Mot de passe à usage unique basé sur le temps (OTP)
 
 In the menu select `Users` section and then `Authentication`
 
