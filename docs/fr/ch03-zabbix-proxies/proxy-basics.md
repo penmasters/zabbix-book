@@ -139,7 +139,7 @@ lose any historical data.
 Zabbix proxies have been available since Zabbix 1.6. At that time they where
 available only as what we know today as **Active proxies**. _Active_ means that
 the proxy will initiate the connection by itself to the Zabbix Server. In
-version 1.8.3 _passive_ proxies where introduced. This allowes the server to
+version 1.8.3 _passive_ proxies where introduced. This allows the server to
 connect to the proxy instead of the other way around.
 
 As mentioned before Zabbix agents can be both active _and_ passive however
