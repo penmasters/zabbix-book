@@ -167,8 +167,8 @@ you used a different one):
     systemctl --user start zabbix-proxy-sqlite.service
     ```
 
-This command may take a few minutes as it wil download the required Zabbix Proxy
-container from the docker registry.
+This command may take a few minutes as it will download the required Zabbix
+Proxy container from the docker registry.
 
 To verify that the container started correctly, you can inspect the running
 containers with:
@@ -378,7 +378,7 @@ This activates a systemd timer that periodically invokes
     This setup is not recommended for production environments without a proper rollback
     plan. Floating tags like `:latest` or `:trunk-centos` can introduce breaking
     changes unexpectedly. For production use, fixed version tags (e.g. `7.0.13-centos`)
-    are generaly recommended since they offer greater stability and control.
+    are generally recommended since they offer greater stability and control.
 
 ---
 
