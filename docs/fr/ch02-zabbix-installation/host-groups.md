@@ -17,12 +17,14 @@ configuration, ce qui est particulièrement utile dans les grands environnements
 Les exemples les plus courants sont les suivants :
 
 - Regroupement de tous **les serveurs Linux** ensemble.
-- Separating **database servers** (e.g., PostgreSQL, MySQL).
-- Organizing hosts by **team**, **location**, or **function**.
+- Séparation des serveurs de **base de données** (par exemple, PostgreSQL,
+  MySQL).
+- Organiser les hôtes par **team**, **location**, ou **function**.
 
-Host groups are not only for structuring your monitored hosts, they also play an
-important role in assigning templates, setting up user permissions, and
-filtering hosts in dashboards or maps.
+Les groupes d'hôtes ne servent pas seulement à structurer vos hôtes surveillés,
+ils jouent également un rôle important dans l'attribution des modèles, la
+configuration des autorisations des utilisateurs et le filtrage des hôtes dans
+les tableaux de bord ou les cartes.
 
 ## Accessing Host Groups
 

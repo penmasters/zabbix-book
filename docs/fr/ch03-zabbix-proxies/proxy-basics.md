@@ -8,29 +8,31 @@ description: |
 tags: [beginner]
 ---
 
-# Proxy basics
+# Les bases du proxy
 
-In this chapter we will explain what a proxy is, why you may need or consider
-it, what the basic requirements are and what the difference is between _Active
-proxies_ and _Passive proxies_.
+Dans ce chapitre, nous expliquerons ce qu'est un proxy, pourquoi vous pouvez en
+avoir besoin ou l'envisager, quelles sont les exigences de base et quelle est la
+différence entre _Proxy actifs_ et _Proxy passifs_.
 
 ---
 
-## What is a Zabbix Proxy
+## Qu'est-ce qu'un proxy Zabbix ?
 
-A Zabbix proxy is actually a kind of lightweight Zabbix server process that
-collects monitoring data from devices on behalf of the real Zabbix server. It's
-designed to offload the server by handling data collection tasks, which is
-particularly useful in distributed environments or when monitoring remote
-locations with limited connectivity.
+Un proxy Zabbix est en fait une sorte de processus serveur Zabbix léger qui
+collecte les données de surveillance des périphériques pour le compte du serveur
+Zabbix réel. Il est conçu pour décharger le serveur en gérant les tâches de
+collecte de données, ce qui est particulièrement utile dans les environnements
+distribués ou lors de la surveillance de sites distants avec une connectivité
+limitée.
 
-The proxy gathers the requested performance and availability data from monitored
-devices, applications, and services, then forwards this information to the
-Zabbix server for processing and storage. This architecture helps reduce network
-traffic, simplifies network firewall configurations and improves the overall
-efficiency of your monitoring system.
+Le proxy rassemble les données de performance et de disponibilité requises à
+partir des appareils, applications et services surveillés, puis transmet ces
+informations au serveur Zabbix en vue de leur traitement et de leur stockage.
+Cette architecture permet de réduire le trafic réseau, de simplifier les
+configurations de pare-feu et d'améliorer l'efficacité globale de votre système
+de surveillance.
 
-So in short a Zabbix proxy can be used to:
+En résumé, un proxy Zabbix peut être utilisé pour :
 
 - Monitor remote locations
 - Monitor devices on separate network segments
@@ -137,7 +139,7 @@ lose any historical data.
 Zabbix proxies have been available since Zabbix 1.6. At that time they where
 available only as what we know today as **Active proxies**. _Active_ means that
 the proxy will initiate the connection by itself to the Zabbix Server. In
-version 1.8.3 _passive_ proxies where introduced. This allowes the server to
+version 1.8.3 _passive_ proxies where introduced. This allows the server to
 connect to the proxy instead of the other way around.
 
 As mentioned before Zabbix agents can be both active _and_ passive however
