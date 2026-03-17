@@ -6,34 +6,38 @@ description: |
     helping you architect a resilient and efficient Zabbix infrastructure.
 ---
 
-# Proxies and the Web services component
+# Proxies et composants des Web services
 
-Proxies are often regarded as an advanced topic in Zabbix, but in reality, they
-are a fundamental part of many installations and one of the first components we
-set up for numerous customers. In this chapter, we'll make proxies the third
-subject we cover, encouraging you to consider them from the very beginning of
-your Zabbix journey.
+Les proxys sont souvent considérés comme un sujet avancé dans Zabbix, mais en
+réalité, ils sont une partie fondamentale de nombreuses installations et l'un
+des premiers composants que nous mettons en place pour de nombreux clients. Dans
+ce chapitre, nous ferons des proxies le troisième sujet que nous aborderons, en
+vous encourageant à les considérer dès le début de votre voyage dans Zabbix.
 
-We'll start with a basic proxy setup, providing straightforward steps to get you
-up and running quickly. Then, we'll take a deep dive into the mechanics of
-proxies how they operate within the Zabbix ecosystem, their benefits, and the
-critical role they play in distributing monitoring load and enhancing system
-scalability.
+Nous commencerons par une installation de proxy de base, en fournissant des
+étapes simples pour vous permettre d'être rapidement opérationnel. Ensuite, nous
+plongerons dans les mécanismes des proxys, comment ils fonctionnent dans
+l'écosystème Zabbix, leurs avantages, et le rôle critique qu'ils jouent dans la
+distribution de la charge de surveillance et l'amélioration de l'évolutivité du
+système.
 
-Understanding proxies from the start can significantly improve your
-architecture, especially in distributed or large scale environments. Whether
-you're new to Zabbix or looking to refine your existing setup, this chapter will
-offer valuable insights into why proxies should be an integral part of your
-monitoring strategy from the start.
+Comprendre les proxies dès le départ peut améliorer de manière significative
+votre architecture, en particulier dans les environnements distribués ou à
+grande échelle. Que vous soyez nouveau dans Zabbix ou que vous cherchiez à
+affiner votre configuration existante, ce chapitre vous donnera des indications
+précieuses sur les raisons pour lesquelles les proxies devraient faire partie
+intégrante de votre stratégie de surveillance dès le départ.
 
-By the end, you'll not only know how to set up a basic proxy but also have a
-clear understanding of their underlying workings and strategic advantages,
-ensuring you make informed decisions as you scale your Zabbix installation.
+À la fin, vous saurez non seulement comment configurer un proxy de base, mais
+vous aurez également une compréhension claire de leur fonctionnement sous-jacent
+et de leurs avantages stratégiques, ce qui vous permettra de prendre des
+décisions éclairées lorsque vous ferez évoluer votre installation Zabbix.
 
-Secondly, we'll explore the Web services component, which is essential for
-generating scheduled reports in Zabbix. We'll discuss what it is, why you might
-need it, the requirements for running it, and how to install and configure it
-effectively.
+Deuxièmement, nous allons explorer le composant Services Web, qui est essentiel
+pour générer des rapports planifiés dans Zabbix. Nous discuterons de ce qu'il
+est, des raisons pour lesquelles vous pourriez en avoir besoin, des conditions
+requises pour le faire fonctionner et de la manière de l'installer et de le
+configurer efficacement.
 
 This chapter aims to provide a comprehensive understanding of both proxies and
 the Web services component, equipping you with the knowledge to enhance your
