@@ -21,11 +21,11 @@ fondamentalement basé sur l'un des types d'utilisateurs classiques (Super Admin
 Admin ou Utilisateur). Ce type d'utilisateur sert de privilège maximum autorisé
 pour le rôle.
 
-## Default Menu Access by User Type
+## Menu d'accès par défaut par type d'utilisateur
 
-`User Roles` can be created in the menu under the `Users` → `User roles` menu.
-Or they can be set per user in the menu `Users` → `Users` → "some user" →
-`Permissions`.
+`Les rôles d'utilisateur` peuvent être créés dans le menu sous `Users` → `User
+roles`. Ils peuvent également être définis par utilisateur dans le menu `Users`
+→ `Users` → "some user" → `Permissions`.
 
 This table illustrates the default access rights granted to users based on their
 initial **User Type** before any **Custom User Role** adjustments are made.
