@@ -15,16 +15,17 @@ soutenir des initiatives open-source et de veiller à ce que ce livre reste
 accessible au plus grand nombre.
 
 - **OICTS** : [https ://oicts.com/](https://oicts.com/)
-- **ZABBIX** : [https://www.zabbix.com/](https://www.zabbix.com/)
+- **ZABBIX**: [https://www.zabbix.com/](https://www.zabbix.com/)
 
 ---
 
-## Our Contributors
+## Nos contributeurs
 
-This book is a community effort, and we sincerely appreciate the time and
-knowledge shared by our contributors. From writing and reviewing content to
-providing feedback and sharing expertise, your efforts have helped shape this
-resource into something valuable for the monitoring and open-source communities.
+Ce livre est le fruit d'un effort communautaire, et nous apprécions sincèrement
+le temps et les connaissances partagés par nos contributeurs. Qu'il s'agisse de
+la rédaction et de la révision du contenu, de la fourniture de commentaires ou
+du partage d'expertise, vos efforts ont contribué à faire de cette ressource un
+outil précieux pour les communautés de la surveillance et des logiciels libres.
 
 - **Patrik Uytterhoeven** :
   [http://github.com/Trikke76](http://github.com/Trikke76)
