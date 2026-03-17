@@ -19,7 +19,7 @@ Les exemples les plus courants sont les suivants :
 - Regroupement de tous **les serveurs Linux** ensemble.
 - Séparation des serveurs de base de données **** (par exemple, PostgreSQL,
   MySQL).
-- Organiser les hôtes par **team**, **location**, ou **function**.
+- Organiser les hôtes par **équipe**, **lieu**, ou **fonction**.
 
 Les groupes d'hôtes ne servent pas seulement à structurer vos hôtes surveillés,
 ils jouent également un rôle important dans l'attribution des modèles, la
