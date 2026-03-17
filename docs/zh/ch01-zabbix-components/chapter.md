@@ -31,3 +31,13 @@ your environment.
 
 Let’s embark on this detailed journey into Zabbix and equip ourselves with the
 knowledge to both start and optimize a powerful monitoring solution.
+
+???+ note
+
+    "Starting with version 7.0, Zabbix transitioned its licensing from GPLv2 to AGPLv3.
+    This is a significant shift for users and contributors to keep in mind. The adoption
+    of the AGPLv3 is designed to close the 'cloud loophole,' ensuring that any entity
+    offering Zabbix as a hosted service must contribute their modifications back to the
+    community. While this protects the project’s integrity and ensures long-term 
+    sustainability, it is a change that organizations should review to ensure compliance
+    with their internal open-source policies."
