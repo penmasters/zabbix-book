@@ -25,7 +25,7 @@ Effectuez toutes les étapes suivantes sur le serveur désigné pour le frontend
 
 ## Installer le frontend avec NGINX
 
-!!! info "installer les paquets frontend"
+! !! info "installer les paquets frontend"
 
     Red Hat
     ```bash
