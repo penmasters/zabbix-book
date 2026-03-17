@@ -19,7 +19,7 @@ Si vous préférez utiliser PostgreSQL comme base de données, vous pouvez saute
 cette section et passer à la section [_Installation de la base de données
 PostgreSQL_](postgresql.md).
 
-???+ tip "MySQL/Percona" Si vous préférez utiliser MySQL ou Percona au lieu de
+Astuce "MySQL/Percona" Si vous préférez utiliser MySQL ou Percona au lieu de
 MariaDB, les étapes d'installation et de configuration sont très similaires. En
 général, vous remplacerez `mariadb` par `mysql` dans les noms de paquets et les
 commandes.
