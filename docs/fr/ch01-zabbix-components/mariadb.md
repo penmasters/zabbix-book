@@ -9,24 +9,25 @@ description: |
 tags: [beginner]
 ---
 
-# Installing a MariaDB Database
+# Installation d'une base de données MariaDB
 
-In this section we will install the MariaDB server and -client packages. This
-will provide the necessary components to run and manage MariaDB as your Zabbix
-database backend.
+Dans cette section, nous allons installer les paquets MariaDB server et -client.
+Cela fournira les composants nécessaires pour exécuter et gérer MariaDB en tant
+que base de données Zabbix.
 
-If you prefer to use PostgreSQL as your database backend, you can skip this
-section and proceed to the [_Installing the PostgreSQL Database_](postgresql.md)
-section.
+Si vous préférez utiliser PostgreSQL comme base de données, vous pouvez sauter
+cette section et passer à la section [_Installation de la base de données
+PostgreSQL_](postgresql.md).
 
-???+ tip "MySQL/Percona" If you prefer to use MySQL or Percona instead of
-MariaDB, the installation and configuration steps are very similar. Generally,
-you would replace `mariadb` with `mysql` in the package names and commands.
+???+ tip "MySQL/Percona" Si vous préférez utiliser MySQL ou Percona au lieu de
+MariaDB, les étapes d'installation et de configuration sont très similaires. En
+général, vous remplacerez `mariadb` par `mysql` dans les noms de paquets et les
+commandes.
 
-## Installing MariaDB Server and Client from OS Vendor-Provided Packages
+## Installer le serveur et le client MariaDB à partir des paquets fournis par l'éditeur du système d'exploitation
 
-To install the distribution default MariaDB server and client, execute the
-following command:
+Pour installer le serveur et le client MariaDB par défaut de la distribution,
+exécutez la commande suivante :
 
 !!! info "Install distribution version of Mariadb"
 
