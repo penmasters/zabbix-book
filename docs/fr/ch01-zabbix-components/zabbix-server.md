@@ -11,16 +11,17 @@ description: |
 tags: [beginner]
 ---
 
-# Installing the Zabbix server
+# Installation du serveur Zabbix.
 
-Now that we've added the Zabbix repository with the necessary software, we are
-ready to install both the Zabbix server and the web server. Keep in mind that
-the web server doesn't need to be installed on the same machine as the Zabbix
-server; they can be hosted on separate systems if desired.
+Maintenant que nous avons ajouté le dépôt Zabbix avec les logiciels nécessaires,
+nous sommes prêts à installer le serveur Zabbix et le serveur web. Gardez à
+l'esprit que le serveur web n'a pas besoin d'être installé sur la même machine
+que le serveur Zabbix ; ils peuvent être hébergés sur des systèmes séparés si
+vous le souhaitez.
 
-To install the Zabbix server components, run the following command:
+Pour installer les composants du serveur Zabbix, exécutez la commande suivante :
 
-!!! info "Install the zabbix server"
+! !! info "Installer le serveur zabbix"
 
     Red Hat
     ``` bash
@@ -46,17 +47,19 @@ To install the Zabbix server components, run the following command:
     sudo apt install zabbix-server-pgsql
     ```
 
-After successfully installing the Zabbix server package, we need to configure
-the Zabbix server to connect to the database. This requires modifying the Zabbix
-server configuration file.
+Après avoir installé avec succès le paquetage du serveur Zabbix, nous devons
+configurer le serveur Zabbix pour qu'il se connecte à la base de données. Pour
+ce faire, il faut modifier le fichier de configuration du serveur Zabbix.
 
-The Zabbix server configuration file offers an option to include additional
-configuration files for custom parameters. For a production environment, it's
-often best to avoid altering the original configuration file directly. Instead,
-you can create and include separate configuration files for any additional or
-modified parameters. This approach ensures that your original configuration file
-remains untouched, which is particularly useful when performing upgrades or
-managing configurations with tools like Ansible, Puppet, or SaltStack.
+Le fichier de configuration du serveur Zabbix offre la possibilité d'inclure des
+fichiers de configuration supplémentaires pour les paramètres personnalisés.
+Dans un environnement de production, il est souvent préférable d'éviter de
+modifier directement le fichier de configuration original. Au lieu de cela, vous
+pouvez créer et inclure des fichiers de configuration distincts pour tous les
+paramètres supplémentaires ou modifiés. Cette approche garantit que votre
+fichier de configuration d'origine reste intact, ce qui est particulièrement
+utile lorsque vous effectuez des mises à niveau ou gérez des configurations avec
+des outils tels que Ansible, Puppet ou SaltStack.
 
 On SUSE 16 and later, this feature is already enabled and configured by default.
 (see also [SUSE
