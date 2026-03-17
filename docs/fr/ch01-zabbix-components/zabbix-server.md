@@ -21,7 +21,7 @@ vous le souhaitez.
 
 Pour installer les composants du serveur Zabbix, exécutez la commande suivante :
 
-! !! info "Installer le serveur zabbix"
+!!! info "Installer le serveur zabbix"
 
     Red Hat
     ``` bash
