@@ -7,20 +7,20 @@ description: |
 tags: [beginner]
 ---
 
-# Zabbix architecture
+# Architecture de Zabbix
 
-In this chapter, we will walk through the process of installing the Zabbix
-server. There are many different ways to setup a Zabbix server. We will cover
-the most common setups with MariaDB and PostgreSQL on RHEL- and SLES-based
-distro's and Ubuntu.
+Dans ce chapitre, nous allons suivre le processus d'installation du serveur
+Zabbix. Il existe de nombreuses façons de configurer un serveur Zabbix. Nous
+couvrirons les configurations les plus courantes avec MariaDB et PostgreSQL sur
+les distributions basées sur RHEL et SLES et Ubuntu.
 
-Before beginning the installation, it is important to understand the
-architecture of Zabbix. The Zabbix server is structured in a modular fashion,
-composed of three main components, which we will discuss in detail.
+Avant de commencer l'installation, il est important de comprendre l'architecture
+de Zabbix. Le serveur Zabbix est structuré de manière modulaire et se compose de
+trois éléments principaux, que nous allons examiner en détail.
 
-- The Zabbix server
-- The Zabbix web server
-- The Zabbix database
+- Le serveur Zabbix
+- Le serveur web Zabbix (frontend)
+- La base de données Zabbix
 
 !!! abstract "Creation of DB users"
 
