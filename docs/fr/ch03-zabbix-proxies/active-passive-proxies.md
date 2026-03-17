@@ -7,23 +7,23 @@ description: |
 tags: [advanced]
 ---
 
-# Active and Passive proxies
+# Proxies actifs et passifs
 
-Whether you want to install an Active proxy or a Passive one, much of the
-installation and configuration steps are the same.
+Que vous souhaitiez installer un proxy actif ou passif, la plupart des étapes
+d'installation et de configuration sont les mêmes.
 
 ---
 
-## Zabbix GUI configuration
+## Configuration de l'interface graphique de Zabbix
 
-There are 2 things we need to do when we like to setup a Zabbix proxy and one of
-those steps is adding the proxy in the frontend of Zabbix. So from the menu
-let's select `Administration` => `Proxies` and click in the upper right corner
-on `Create proxy`.
+Il y a deux choses que nous devons faire lorsque nous voulons configurer un
+proxy Zabbix et l'une de ces étapes est d'ajouter le proxy dans le frontend de
+Zabbix. Dans le menu, sélectionnez `Administration` => `Proxies` et cliquez dans
+le coin supérieur droit sur `Create proxy`.
 
-![Create proxy](ch03-add-active-proxy.png)
+![Créer un proxy](ch03-add-active-proxy.png)
 
-_3.3 Create proxy_
+_3.3 Créer un proxy_
 
 Once pressed, a new modal form will pop-up where we need to fill in some
 information.

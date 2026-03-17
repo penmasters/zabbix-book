@@ -8,32 +8,32 @@ description: |
 tags: [expert]
 ---
 
-# Running Proxies as containers
+# Exécuter des proxies en tant que conteneurs
 
-As discussed in the previous section, Zabbix proxies offer a lightweight and
-efficient solution for distributed monitoring. Leveraging SQLite as their
-backend database, they are inherently flexible and portable, making them
-well-suited for deployment in containerized environments. This chapter provides
-a step-by-step guide on deploying a Zabbix proxy within a container, outlining
-configuration options and best practices for optimal performance and
-maintainability.
+Comme nous l'avons vu dans la section précédente, les proxys Zabbix offrent une
+solution légère et efficace pour la surveillance distribuée. S'appuyant sur
+SQLite comme base de données, ils sont flexibles et portables, ce qui les rend
+bien adaptés au déploiement dans des environnements conteneurisés. Ce chapitre
+fournit un guide étape par étape sur le déploiement d'un proxy Zabbix dans un
+conteneur, en soulignant les options de configuration et les meilleures
+pratiques pour une performance et une maintenabilité optimales.
 
 ---
 
-## Setting up containers
+## Mise en place de conteneurs
 
-For this setup, you will need a virtual machine (VM) with Podman installed to
-deploy the Zabbix proxy container. This container will then be configured to
-communicate with your Zabbix server.
+Pour cette configuration, vous aurez besoin d'une machine virtuelle (VM) avec
+Podman installé pour déployer le conteneur proxy Zabbix. Ce conteneur sera
+ensuite configuré pour communiquer avec votre serveur Zabbix.
 
-Refer to the [_Preparing the system for
+Reportez-vous au chapitre [_Préparer le système pour
 Zabbix_](../ch00-getting-started/preparation.md#preparing-the-system-for-running-containers-using-podman)
-chapter for instructions on preparing your system for running containers using
-Podman.
+pour obtenir des instructions sur la préparation de votre système pour
+l'exécution de conteneurs à l'aide de Podman.
 
 ---
 
-### Add the proxy to the zabbix frontend
+### Ajouter le proxy au frontend zabbix
 
 ![Add the proxy](ch03-container-proxy-new.png)
 
