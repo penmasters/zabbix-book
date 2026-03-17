@@ -22,18 +22,18 @@ meilleures pratiques pour les appliquer dans un déploiement robuste et réel.
 
 ## Le rôle d'un groupe d'utilisateurs
 
-Un groupe d'utilisateurs **** dans Zabbix est un ensemble logique de comptes
-d'utilisateurs individuels. Plutôt que de gérer les autorisations de centaines
-d'utilisateurs individuellement, Zabbix exige que les utilisateurs soient
-affectés à un ou plusieurs groupes. Les droits d'accès, tels que la possibilité
-de voir les groupes d'hôtes, de configurer des modèles ou de voir des étiquettes
-de problèmes spécifiques, sont alors accordés au niveau du groupe **** .
+Un **User Group*** dans Zabbix est un ensemble logique de comptes d'utilisateurs
+individuels. Plutôt que de gérer les autorisations de centaines d'utilisateurs
+individuellement, Zabbix exige que les utilisateurs soient affectés à un ou
+plusieurs groupes. Les droits d'accès, tels que la possibilité de voir les
+groupes d'hôtes, de configurer des modèles ou de voir des tags de problèmes
+spécifiques, sont alors accordés au **group level** .
 
 Cette architecture centrée sur le groupe offre plusieurs avantages majeurs :
 
 * **Gestion simplifiée :** Les droits d'accès sont gérés par **rôle** (par
-  exemple, "Ingénieurs réseau", "Administrateurs de base de données") au lieu
-  d'être gérés par utilisateur individuel.
+  exemple, "Network Engineers", "Database Administrators") au lieu d'être gérés
+  par utilisateur individuel.
 * **Consistency:** Ensures that all users within the same role possess a
   consistent, standardized set of permissions.
 * **Segregation of Duties:** Enables clear separation between viewing
