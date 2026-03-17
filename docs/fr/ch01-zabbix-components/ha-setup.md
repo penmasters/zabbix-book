@@ -7,10 +7,11 @@ tags: [expert]
 
 # Configuration HA
 
-In this section, we will set up Zabbix in a High Availability (HA)
-configuration. This native feature, introduced in Zabbix 6, is a crucial
-enhancement that ensures continued monitoring even if a Zabbix server fails.
-With HA, when one Zabbix server goes down, another can take over seamlessly.
+Dans cette section, nous allons configurer Zabbix dans une configuration de
+haute disponibilité (HA). Cette fonctionnalité native, introduite dans Zabbix 6,
+est une amélioration cruciale qui garantit une surveillance continue même si un
+serveur Zabbix tombe en panne. Avec HA, lorsqu'un serveur Zabbix tombe en panne,
+un autre peut prendre le relais de manière transparente.
 
 Pour ce guide, nous utiliserons deux serveurs Zabbix et une base de données,
 mais la configuration permet d'ajouter d'autres serveurs Zabbix si nécessaire.
@@ -19,13 +20,15 @@ mais la configuration permet d'ajouter d'autres serveurs Zabbix si nécessaire.
 
 _1.1 Configuration HA_
 
-It's important to note that Zabbix HA setup is straightforward, providing
-redundancy without complex features like load balancing. Only one node will be
-an active node, all other nodes will be on standby. All standby Zabbix servers
-in the HA cluster will monitor the active node through heartbeats using the
-shared database. It does not require any additional clustering software or even
-firewall ports for the Zabbix server itself. However, for the frontend, we will
-use Keepalived to provide a Virtual IP (VIP) for failover purposes.
+Il est important de noter que la configuration de Zabbix HA est simple,
+fournissant une redondance sans fonctionnalités complexes telles que
+l'équilibrage de charge. Un seul nœud sera actif, tous les autres nœuds seront
+en attente. Tous les serveurs Zabbix en attente dans le cluster HA surveilleront
+le nœud actif par des battements de cœur en utilisant la base de données
+partagée. Il n'est pas nécessaire d'ajouter un logiciel de clustering ou même
+des ports de pare-feu pour le serveur Zabbix lui-même. Cependant, pour le
+frontend, nous utiliserons Keepalived pour fournir une IP virtuelle (VIP) à des
+fins de basculement.
 
 Au même titre que dans notre configuration de base, nous allons documenter les
 détails clés des serveurs dans cette configuration HA. Vous trouverez ci-dessous
