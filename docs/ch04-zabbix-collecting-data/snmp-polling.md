@@ -161,7 +161,7 @@ You can use the OID tree to:
 
 ## Net-SNMP
 
-The Simple Network Management Protocol (SNMP) is a widely used protocol for monitoring
+The *Simple Network Management Protocol* (SNMP) is a widely used protocol for monitoring
 and managing networked devices. It operates primarily over UDP port 161, though in
 certain cases, SNMP agents or proxies may also support TCP port 161 for enhanced
 reliability or integration with specific tools. SNMP allows administrators to query
@@ -176,7 +176,7 @@ two approaches:
   server or a dedicated virtual machine.
 
 In this chapter, we will walk through the installation and configuration of a basic
-SNMP agent on a Rocky or Ubuntu based Zabbix server. However, the same setup can
+SNMP agent on a RedHat, Suse or Ubuntu based Zabbix server. However, the same setup can
 be applied to any compatible Linux system.
 
 Note: If you're using a device already present on your network, ensure:
@@ -205,6 +205,8 @@ exactly do.
 - **snmpwalk:** Walks an entire OID subtree and displays all of its values.
 - **snmpstatus:** Provides a summary of a device's basic status.
 
+---
+
 ### Testing an SNMP Device: Where to Start?
 
 When you're looking to test an SNMP device, it's crucial to understand the available
@@ -221,6 +223,8 @@ commonly used versions: **SNMPv1**, **SNMPv2c**, and **SNMPv3**.
   secure and advanced option. It provides encryption, authentication, and user
   management, which are essential for secure networks.
 
+---
+
 #### Your First Test Attempt: SNMPv2c and the 'public' Community String
 
 To begin your testing, we recommend trying to connect to your device using **SNMPv2c**
@@ -230,12 +234,16 @@ settings, though it's certainly insecure for production environments.
 You can use the `snmpstatus` command for this. Here’s an example of how you might
 do this in your terminal:
 
-```bash
-   snmpstatus -v 2c -c public [IP-address_of_the_device]
-```
+???+ example "Testing SNMPv2c with the 'public' community string"
 
-Replace `[IP-address_of_the_device]` with the actual IP address or hostname of the
-device you wish to test.
+    ```bash
+      snmpstatus -v 2c -c public [IP-address_of_the_device]
+    ```
+
+    Replace `[IP-address_of_the_device]` with the actual IP address or hostname of the
+    device you wish to test.
+
+---
 
 #### What if You Get No Information Back?
 
@@ -253,11 +261,12 @@ your network.
    environment.
 3. **Username, Authentication, and Privacy (for v3)**: If your device uses SNMPv3,
    you'll need more specific information:
-   - **Username**: What username has been created for SNMPv3?
-   - **Authentication Protocol and Password**: Which authentication protocol (e.g.,
-     MD5, SHA) is used, and what is its corresponding password?
-   - **Privacy Protocol and Password**: Which encryption protocol (e.g., DES, AES)
-     is used, and what is its corresponding password?
+
+    - **Username**: What username has been created for SNMPv3?
+    - **Authentication Protocol and Password**: Which authentication protocol (e.g.,
+      MD5, SHA) is used, and what is its corresponding password?
+    - **Privacy Protocol and Password**: Which encryption protocol (e.g., DES, AES)
+      is used, and what is its corresponding password?
 
 **Next, consider potential network issues:**
 
@@ -310,22 +319,26 @@ with SNMPv3 (depending on your configuration):
 
 - **Authentication only (no encryption):**
 
-  ```bash
-     snmpstatus -v 3 -l authNoPriv -u [username] -a [authentication_protocol] -A [authentication_password]
-     [IP-address_of_the_device]
-  ```
+???+ example "Testing SNMPv3 with authentication only"
 
-  (Replace `[authentication_protocol]` with `MD5` or `SHA`)
+    ```bash
+    snmpstatus -v 3 -l authNoPriv -u [username] -a [authentication_protocol] \
+                -A [authentication_password] [IP-address_of_the_device]
+    ```
+    (Replace `[authentication_protocol]` with `MD5` or `SHA`)
 
 - **Authentication and Encryption:**
 
-  ```bash
-     snmpstatus -v 3 -l authPriv -u [username] -a [authentication_protocol] -A [authentication_password]
-     -x [privacy_protocol] -X [privacy_wachtwoord] [IP-address_of_the_device]
-  ```
+???+ example "Testing SNMPv3 with authentication and encryption"
 
-  (Replace `[authentication_protocol]` with `MD5` or `SHA` and `[privacy_protocol]`
-  with `DES` or `AES`)
+    ```bash
+    snmpstatus -v 3 -l authPriv -u [username] -a [authentication_protocol] \
+                -A [authentication_password] -x [privacy_protocol] \
+                -X [privacy_wachtwoord] [IP-address_of_the_device]
+    ```
+
+    (Replace `[authentication_protocol]` with `MD5` or `SHA` and `[privacy_protocol]`
+    with `DES` or `AES`)
 
 ---
 
@@ -337,9 +350,11 @@ various attacks. Always try to connect with v2c or v3 first. Only if you are abs
 certain that the device exclusively supports SNMPv1 and you have no other option,
 you can try using it:
 
-```bash
+???+ example "Trying SNMPv1"
+
+    ```bash
     snmpstatus -v 1 -c [community_string] [IP-address_of_the_device]
-```
+    ```
 
 However, remember that using SNMPv1 in a production environment poses a significant
 security risk.
@@ -351,12 +366,14 @@ security risk.
 Let's take a look at an example output from the `snmpstatus` command. Remember
 this is just an example output it will differ from your result.
 
-```bash
-    snmpstatus -v2c -c public 127.0.0.1
+???+ example "Example output of snmpstatus"
+
+    ```shell-session
+    localhost:~ $ snmpstatus -v2c -c public 127.0.0.1
     [UDP: [127.0.0.1]:161->[0.0.0.0]:33310]=>[Linux localhost.localdomain 5.14.0-570.28.1.el9_6.aarch64
     #1 SMP PREEMPT_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64] Up: 1:24:36.58
     Interfaces: 2, Recv/Trans packets: 355763/355129 | IP: 37414/35988
-```
+    ```
 
 This output provides a concise summary of the device's status, indicating a successful
 SNMP query. Let's break down what each part means:
@@ -417,23 +434,16 @@ Follow the steps below to get the SNMP agent installed.
 
 1. Install Required Packages
 
-!!! info "Update the package list"
-
-    Red Hat
-    ``` bash
-    sudo dnf update
-    ```
-
-    Ubuntu:
-    ``` bash
-    sudo apt update && sudo apt upgrade
-    ```
-
 !!! info "Install Net-SNMP agent and utilities"
 
     Red Hat
     ```bash
     sudo dnf install net-snmp net-snmp-utils
+    ```
+
+    Suse
+    ```bash
+    zypper install net-snmp
     ```
 
     Ubuntu
@@ -444,329 +454,536 @@ Follow the steps below to get the SNMP agent installed.
 2. Configure the SNMP Agent
    First, create a clean configuration file for the SNMP daemon:
 
-```bash
+!!! info "Create a clean SNMP configuration file"
+
+    ```bash
     sudo vi /etc/snmp/snmpd.conf
-```
+    ```
 
 Paste the following example configuration, which is optimized for SNMP-based
 discovery and testing in Zabbix:
 
-```bash
-tee /etc/snmp/snmpd.conf <<EOF
-# --------------------------------------------------------------------------
-# BASIC ACCESS CONTROL
-# --------------------------------------------------------------------------
-# This defines who has access and with which community string.
-# For a LAB ENVIRONMENT, 'public' is acceptable, but EMPHASIZE THAT THIS IS UNSAFE
-# FOR PRODUCTION. In production, use SNMPv3 or restricted IP ranges.
+!!! example "Example SNMP configuration for Zabbix testing"
 
-# Read-only community string 'public' for all IP addresses (WARNING: LAB USE ONLY!)
-rocommunity public
-#
-# IMPORTANT NOTE: The 'public' community string is the default and most well-known community string.
-# Using this in a production environment is EXTREMELY INSECURE and makes your device vulnerable.
-# Anyone who knows your device's IP address can query basic information about your system.
-# USE THIS ONLY AND EXCLUSIVELY IN STRICTLY ISOLATED TEST OR LAB ENVIRONMENTS!
-# For production environments:
-# - Use a unique, complex community string (e.g., rocommunity YourSuperSecretString)
-# - STRONGLY CONSIDER implementing SNMPv3 for superior security (authentication and encryption).
-#
+    ```shell-session
+    localhost:~ # tee /etc/snmp/snmpd.conf <<EOF
+    # --------------------------------------------------------------------------
+    # BASIC ACCESS CONTROL
+    # --------------------------------------------------------------------------
+    # This defines who has access and with which community string.
+    # For a LAB ENVIRONMENT, 'public' is acceptable, but EMPHASIZE THAT THIS IS UNSAFE
+    # FOR PRODUCTION. In production, use SNMPv3 or restricted IP ranges.
 
-# BETTER FOR LAB (or production with restrictions):
-# rocommunity my_secure_community_string 192.168.56.0/24
-# Replace '192.168.56.0/24' with the subnet where your Zabbix Server is located.
+    # Read-only community string 'public' for all IP addresses (WARNING: LAB USE ONLY!)
+    rocommunity public
+    #
+    # IMPORTANT NOTE: The 'public' community string is the default and most well-known community string.
+    # Using this in a production environment is EXTREMELY INSECURE and makes your device vulnerable.
+    # Anyone who knows your device's IP address can query basic information about your system.
+    # USE THIS ONLY AND EXCLUSIVELY IN STRICTLY ISOLATED TEST OR LAB ENVIRONMENTS!
+    # For production environments:
+    # - Use a unique, complex community string (e.g., rocommunity YourSuperSecretString)
+    # - STRONGLY CONSIDER implementing SNMPv3 for superior security (authentication and encryption).
+    #
 
-
-# ============================================
-# SNMPv3 Configuration (Recommended for Production, but here with examples)
-# ============================================
-#
-# This section defines users for SNMPv3, each with a different security level.
-# In a production environment, you would typically ONLY use the 'authPriv' option
-# with strong, unique passwords. This setup is useful for lab and testing purposes.
-
-# --- 1. SNMPv3 User with Authentication and Privacy (authPriv) ---
-# THIS IS THE MOST SECURE AND RECOMMENDED SECURITY LEVEL FOR PRODUCTION.
-# It requires both correct authentication and encryption of the traffic.
-#
-# Syntax: createUser USERNAME AUTH_PROTOCOL "AUTH_PASS" PRIV_PROTOCOL "PRIV_PASS"
-# Example: createUser mysecureuser SHA "StrongAuthP@ss1" AES "SuperPrivP@ss2"
-
-createUser secureuser SHA "AuthP@ssSec#1" AES "PrivP@ssSec#2"
-rouser secureuser authPriv
-
-# --- 2. SNMPv3 User with Authentication Only (authNoPriv) ---
-# This level requires authentication, but the data is NOT encrypted.
-# The content of SNMP packets can be read if traffic is intercepted.
-# NOT RECOMMENDED FOR SENSITIVE DATA OR PRODUCTION ENVIRONMENTS.
-#
-# Syntax: createUser USERNAME AUTH_PROTOCOL "AUTH_PASS"
-# Example: createUser authonlyuser SHA "AuthOnlyP@ss3"
-
-createUser authonlyuser SHA "AuthOnlyP@ss3"
-rouser authonlyuser authNoPriv
-
-# --- 3. SNMPv3 User with [48;32;186;960;2604tNo Authentication and No Privacy (noAuthNoPriv) ---
-# THIS IS THE LEAST SECURE LEVEL AND SHOULD NEVER BE USED IN PRODUCTION!
-# It offers NO SECURITY WHATSOEVER. It's purely for very specific test scenarios
-# where security is not a concern.
-#
-# Syntax: createUser USERNAME
-# Example: createUser insecureuser
-
-createUser insecureuser
-rouser insecureuser noAuthNoPriv
-
-#
-# IMPORTANT SECURITY NOTES FOR ALL SNMPv3 USERS:
-# - Replace the example usernames and passwords with your OWN strong, unique values.
-# - Passwords must be a MINIMUM of 8 characters long.
-# - The passwords for AUTH and PRIV (with authPriv) do not have to be the same.
-# - Restrict access to specific IP addresses (e.g., 'rouser USERNAME authPriv 192.168.1.0/24')
-#   if you want to further tighten access.
-#
+    # BETTER FOR LAB (or production with restrictions):
+    # rocommunity my_secure_community_string 192.168.56.0/24
+    # Replace '192.168.56.0/24' with the subnet where your Zabbix Server is located.
 
 
-# --------------------------------------------------------------------------
-# SYSTEM INFORMATION (OPTIONAL)
-# --------------------------------------------------------------------------
-# This information is generally available via SNMP and useful for identification.
-syslocation  "Rocky Linux Zabbix SNMP Lab Server"
-syscontact   "Your Name <your.email@example.com>"
-sysname      "RockySNMPHost01" # Often overridden by hostname, but can be specific
+    # ============================================
+    # SNMPv3 Configuration (Recommended for Production, but here with examples)
+    # ============================================
+    #
+    # This section defines users for SNMPv3, each with a different security level.
+    # In a production environment, you would typically ONLY use the 'authPriv' option
+    # with strong, unique passwords. This setup is useful for lab and testing purposes.
 
-# --------------------------------------------------------------------------
-# ENABLING CRUCIAL MIB MODULES FOR LLD
-# --------------------------------------------------------------------------
-# 'view' statements determine which parts of the MIB tree are visible.
-# 'systemview' is a standard view. We ensure that the most useful OID trees
-# for Zabbix LLD are included here.
+    # --- 1. SNMPv3 User with Authentication and Privacy (authPriv) ---
+    # THIS IS THE MOST SECURE AND RECOMMENDED SECURITY LEVEL FOR PRODUCTION.
+    # It requires both correct authentication and encryption of the traffic.
+    #
+    # Syntax: createUser USERNAME AUTH_PROTOCOL "AUTH_PASS" PRIV_PROTOCOL "PRIV_PASS"
+    # Example: createUser mysecureuser SHA "StrongAuthP@ss1" AES "SuperPrivP@ss2"
 
-# Standard System MIBs (uptime, description, etc.)
-view systemview included .1.3.6.1.2.1.1    # SNMPv2-MIB::sysDescr, sysUptime, etc.
+    createUser secureuser SHA "AuthP@ssSec#1" AES "PrivP@ssSec#2"
+    rouser secureuser authPriv
 
-# HOST-RESOURCES-MIB: ESSENTIAL FOR LLD OF HARDWARE/OS COMPONENTS
-# This MIB contains information about storage (filesystems), processors,
-# installed software, running processes, etc.
-view systemview included .1.3.6.1.2.1.25
+    # --- 2. SNMPv3 User with Authentication Only (authNoPriv) ---
+    # This level requires authentication, but the data is NOT encrypted.
+    # The content of SNMP packets can be read if traffic is intercepted.
+    # NOT RECOMMENDED FOR SENSITIVE DATA OR PRODUCTION ENVIRONMENTS.
+    #
+    # Syntax: createUser USERNAME AUTH_PROTOCOL "AUTH_PASS"
+    # Example: createUser authonlyuser SHA "AuthOnlyP@ss3"
 
-# IF-MIB: ESSENTIAL FOR LLD OF NETWORK INTERFACES
-# Contains detailed information about network interfaces.
-view systemview included .1.3.6.1.2.1.2
+    createUser authonlyuser SHA "AuthOnlyP@ss3"
+    rouser authonlyuser authNoPriv
 
-# Other useful MIBs (often standard or optional)
-view systemview included .1.3.6.1.2.1.4
-view systemview included .1.3.6.1.2.1.6
-view systemview included .1.3.6.1.2.1.7
+    # --- 3. SNMPv3 User with [48;32;186;960;2604tNo Authentication and No Privacy (noAuthNoPriv) ---
+    # THIS IS THE LEAST SECURE LEVEL AND SHOULD NEVER BE USED IN PRODUCTION!
+    # It offers NO SECURITY WHATSOEVER. It's purely for very specific test scenarios
+    # where security is not a concern.
+    #
+    # Syntax: createUser USERNAME
+    # Example: createUser insecureuser
 
-# --------------------------------------------------------------------------
-# EXTENDING SNMPD WITH EXEC COMMANDS (OPTIONAL FOR CUSTOM LLD)
-# --------------------------------------------------------------------------
-# This allows you to make the output of shell commands or scripts available via SNMP.
-# This is ideal for monitoring things not natively available via SNMP.
-# Example: Monitor the number of logged-in users (not LLD, but demonstrates the principle)
-# exec activeUsers /usr/bin/who | wc -l
+    createUser insecureuser
+    rouser insecureuser noAuthNoPriv
 
-# Example: A script that generates LLD-like output
-# imagine /opt/scripts/docker_lld.sh returns JSON that Zabbix can parse
-# exec dockerContainers /opt/scripts/docker_lld.sh
-# This requires a custom LLD parser in Zabbix. For an introduction, this
-# might be a bit too advanced, but it's good to mention as a possibility.
+    #
+    # IMPORTANT SECURITY NOTES FOR ALL SNMPv3 USERS:
+    # - Replace the example usernames and passwords with your OWN strong, unique values.
+    # - Passwords must be a MINIMUM of 8 characters long.
+    # - The passwords for AUTH and PRIV (with authPriv) do not have to be the same.
+    # - Restrict access to specific IP addresses (e.g., 'rouser USERNAME authPriv 192.168.1.0/24')
+    #   if you want to further tighten access.
+    #
 
-# --------------------------------------------------------------------------
-# SYSLOGGING
-# --------------------------------------------------------------------------
-# For logging snmpd activities (useful for debugging)
-dontLogTCPWrappers no
-EOF
-```
+    # --------------------------------------------------------------------------
+    # SYSTEM INFORMATION (OPTIONAL)
+    # --------------------------------------------------------------------------
+    # This information is generally available via SNMP and useful for identification.
+    syslocation  "Rocky Linux Zabbix SNMP Lab Server"
+    syscontact   "Your Name <your.email@example.com>"
+    sysname      "RockySNMPHost01" # Often overridden by hostname, but can be specific
+
+    # --------------------------------------------------------------------------
+    # ENABLING CRUCIAL MIB MODULES FOR LLD
+    # --------------------------------------------------------------------------
+    # 'view' statements determine which parts of the MIB tree are visible.
+    # 'systemview' is a standard view. We ensure that the most useful OID trees
+    # for Zabbix LLD are included here.
+
+    # Standard System MIBs (uptime, description, etc.)
+    view systemview included .1.3.6.1.2.1.1    # SNMPv2-MIB::sysDescr, sysUptime, etc.
+
+    # HOST-RESOURCES-MIB: ESSENTIAL FOR LLD OF HARDWARE/OS COMPONENTS
+    # This MIB contains information about storage (filesystems), processors,
+    # installed software, running processes, etc.
+    view systemview included .1.3.6.1.2.1.25
+
+    # IF-MIB: ESSENTIAL FOR LLD OF NETWORK INTERFACES
+    # Contains detailed information about network interfaces.
+    view systemview included .1.3.6.1.2.1.2
+
+    # Other useful MIBs (often standard or optional)
+    view systemview included .1.3.6.1.2.1.4
+    view systemview included .1.3.6.1.2.1.6
+    view systemview included .1.3.6.1.2.1.7
+
+    # --------------------------------------------------------------------------
+    # EXTENDING SNMPD WITH EXEC COMMANDS (OPTIONAL FOR CUSTOM LLD)
+    # --------------------------------------------------------------------------
+    # This allows you to make the output of shell commands or scripts available via SNMP.
+    # This is ideal for monitoring things not natively available via SNMP.
+    # Example: Monitor the number of logged-in users (not LLD, but demonstrates the principle)
+    # exec activeUsers /usr/bin/who | wc -l
+
+    # Example: A script that generates LLD-like output
+    # imagine /opt/scripts/docker_lld.sh returns JSON that Zabbix can parse
+    # exec dockerContainers /opt/scripts/docker_lld.sh
+    # This requires a custom LLD parser in Zabbix. For an introduction, this
+    # might be a bit too advanced, but it's good to mention as a possibility.
+
+    # --------------------------------------------------------------------------
+    # SYSLOGGING
+    # --------------------------------------------------------------------------
+    # For logging snmpd activities (useful for debugging)
+    dontLogTCPWrappers no
+    EOF
+    ```
 
 Let's do some practical tests with this setup we just created. Start the SNMP Service
 and Configure the Firewall
 
-```bash
-# Start the SNMP daemon
-sudo systemctl start snmpd
-```
+!!! info "Start the SNMP service and configure firewall rules"
 
-```bash
-# Enable it to start on boot
-sudo systemctl enable snmpd
-```
+    Start and enable snmpd service to start on boot
+    ```bash
+    sudo systemctl enable --now snmpd
+    ```
 
-```bash
-# Check that the service is running
-sudo systemctl status snmpd
-If your system uses firewalld, ensure that SNMP traffic is allowed:
-```
+    Check if the service is correctly started and running
+    ```bash
+    sudo systemctl status snmpd
+    ```
 
-```bash
-# Add SNMP to permanent firewall rules
-sudo firewall-cmd --add-service=snmp --permanent
-```
+    If your system uses a firewall, ensure that SNMP traffic is allowed:
 
-```bash
-# Reload the firewall configuration
-sudo firewall-cmd --reload
-```
+    RedHat / Suse
+    ```bash
+    firewall-cmd --add-service=snmp --permanent
+    firewall-cmd --reload
+    ```
 
-```bash
-# Confirm that SNMP is listed
-sudo firewall-cmd --list-services --permanent
-```
+    Ubuntu
+    ```bash
+    sudo ufw allow snmp
+    sudo ufw reload
+    ```
 
-```bash
 Verifying SNMP Functionality
 From your Zabbix server or any SNMP client system with net-snmp-utils installed:
 
-# Repace <IP_ADDRESS> wit the IP of the client where you installed the SNMP
-# config. If localhost you can use 127.0.0.1.
+???+ example "Testing SNMP functionality with snmpwalk"
 
-# General system info (sysDescr, sysUptime, etc.)
-snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.1
+    Replace `<IP_ADDRESS>` with the IP of the client where you installed the SNMP
+    config. If localhost you can use `127.0.0.1`.
 
-# List interface names (useful for interface LLD)
-snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.2.2.1.2
+    General system info (sysDescr, sysUptime, etc.)
+    ```bash
+    snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.1
+    ```
 
-# List filesystem descriptions
-snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.25.2.3.1.3
+    List interface names (useful for interface LLD)
+    ```bash
+    snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.2.2.1.2
+    ```
 
-# Get CPU load per processor core
-snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.25.3.3.1.2
-```
+    List filesystem descriptions
+    ```bash
+    snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.25.2.3.1.3
+    ```
+
+    Get CPU load per processor core
+    ```bash
+    snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.25.3.3.1.2
+    ```
 
 ???+ note
 
     For SNMPv3 we can do the same. You could adapt the configuration file or just
-    go with what we have prepared already in the snmpd.conf file.
+    go with what we have prepared already in the `snmpd.conf` file.
 
-```bash
-vi /etc/snmp/snmpd.conf
+!!! info "Configure SNMPv3 users"
 
-# Look for the following lines and adapt them as you like.
+    Look for the following lines in  '/etc/snmp/snmpd.conf` and adapt them as you like.
+    ```bash
+    createUser authonlyuser SHA "AuthOnlyP@ss3"
+    rouser authonlyuser authNoPriv
 
-createUser authonlyuser SHA "AuthOnlyP@ss3"
-rouser authonlyuser authNoPriv
+    createUser secureuser SHA "AuthP@ssSec#1" AES "PrivP@ssSec#2"
+    rouser secureuser authPriv
 
-createUser secureuser SHA "AuthP@ssSec#1" AES "PrivP@ssSec#2"
-rouser secureuser authPriv
+    createUser insecureuser
+    rouser insecureuser noAuthNoPriv
+    ```
 
-createUser insecureuser
-rouser insecureuser noAuthNoPriv
-```
-
-After you have adapted your config don't forget to restart the snmpd service
-
-```bash
-systemctl restart snmpd
-```
+    After you have adapted your config don't forget to restart the snmpd service
+    ```bash
+    systemctl restart snmpd
+    ```
 
 You should now be able to test your items with SNMPv3 Let me give you an example
-command for noAuthNoPriv,authNoPriv and the most secure authPriv. This should
+command for `noAuthNoPriv`, `authNoPriv` and the most secure `authPriv`. This should
 work out of the box with what is already configured in our `snmpd.conf` file.
 
-```bash
-snmpwalk -v3 -l noAuthNoPriv -u insecureuser 127.0.0.1 .1.3.6.1.2.1.2.2.1.2
-snmpwalk -v3 -l authNoPriv -u authonlyuser -a SHA -A AuthOnlyP@ss3 127.0.0.1 .1.3.6.1.2.1.2.2.1.2
-snmpwalk -v3 -l authPriv -u secureuser -a SHA -A AuthP@ssSec#1 -x AES -X PrivP@ssSec#2 127.0.0.1 .1.3.6.1.2.1.2.2.1.2
-```
+???+ example "Testing SNMPv3 with different security levels"
 
-???+ note
+    ```bash
+    snmpwalk -v3 -l noAuthNoPriv -u insecureuser 127.0.0.1 .1.3.6.1.2.1.2.2.1.2
+    snmpwalk -v3 -l authNoPriv -u authonlyuser -a SHA -A AuthOnlyP@ss3 127.0.0.1 .1.3.6.1.2.1.2.2.1.2
+    snmpwalk -v3 -l authPriv -u secureuser -a SHA -A AuthP@ssSec#1 -x AES -X PrivP@ssSec#2 127.0.0.1 .1.3.6.1.2.1.2.2.1.2
+    ```
+
+???+ tip "Troubleshooting SNMPv3 Authentication Issues"
 
     If you change the config file and adapt the passwords and for some reason
-    they do not get accepted do not worry just restart the service again it things
-    still don't work you can remove the persistent key file
-    sudo rm /var/lib/net-snmp/snmpd.conf
-    It's quite brutal but in our test environment it will help you out.
+    they do not get accepted, do not worry:
+
+    - Check if your passwords contain special characters that might need to be
+      escaped in the command line. For bash, these include: `$`, `&`, `*`, `(`,
+      `)`, `!`, etc. If your password contains any of these characters, you need
+      to escape them with a backslash (`\`) or enclose the entire password in
+      single quotes (`'`) to prevent the shell from interpreting them.
+    - If there are no special characters used, just try restarting the service.
+    - If things still don't work, you can try removing the persistent key file:
+      ```bash
+      sudo rm /var/lib/net-snmp/snmpd.conf
+      ```
+      It's quite brutal but in our test environment it should help you out.
+
+---
+### Deploying bare minimum MIB files
+
+Gathering proper MIB files might sounds a tedious and time consuming task.
+
+Installing too many MIBs will cause degradation for the
+SNMP trap translation process and slow down the SNMP polling process.
+
+Usually the Linux distribution comes with a set of basic MIB files. For example, on
+Ubuntu, the `snmp-mibs-downloader` package, or on Suse the `snmp-mibs` package
+provides a collection of MIB files that can be used for SNMP monitoring. However,
+these MIBs may not cover all the devices in your network, especially if you have
+equipment from multiple vendors.
+
+Here is an universal method (treat it as one of many possible options) on how 
+to obtain bare minimum MIBs to work with most of devices. This is useful for both
+SNMP polling and trapping.
+
+The project [https://github.com/netdisco/netdisco-mibs](https://github.com/netdisco/netdisco-mibs)
+exist for 20 years and is a collection of MIBs for a lot of vendors. Dare I say: all vendors?
+We will download the collection and install the MIB files in the `/usr/local/share/snmp/mibs` directory.
+After that we will configure SNMP to use only the MIBS we require. 
+
+!!! warning "Performance impact"
+
+    Loading lots of MIBs will cause degradation for the SNMP trap translation 
+    process and slow down the SNMP polling process.
+
+    Also, you might get warnings like:
+    
+    ```text
+    Warning: Module MAU-MIB was in /usr/local/share/snmp/mibs//DOT3-MAU-MIB.txt now is /usr/local/share/snmp/mibs//RFC2668-MIB.txt
+    Warning: Module DISMAN-EVENT-MIB was in /usr/local/share/snmp/mibs//EVENT-MIB.txt now is /usr/local/share/snmp/mibs//DISMAN-EVENT-MIB.txt
+    Warning: Module P-BRIDGE-MIB was in /usr/local/share/snmp/mibs//P-BRIDGE-MIB.txt now is /usr/local/share/snmp/mibs//P-BRIDGE.txt
+    ```
+    This is because several MIB files may have the same module name defined inside
+    them. This may result in incorrect translation of OIDs and unexpected behavior.
+    To avoid this, it's important to only load the MIB files that are necessary 
+    for your specific devices/vendors and use cases.
+
+???+ example "Install MIB files from Netdisco collection"
+
+    Download and unpack the Netdisco MIB collection, then move the relevant MIB 
+    files to the SNMP MIB directory:
+
+    ```bash
+    curl -kL https://github.com/netdisco/netdisco-mibs/archive/refs/heads/master.zip -o /tmp/netdisco-mibs.zip
+    unzip /tmp/netdisco-mibs.zip -d /tmp
+    ```
+
+    Next, move the MIB files from the Netdisco collection to the SNMP MIB directory.
+    The Netdisco collection organizes MIBs in subdirectories based on vendor names,
+    and we will move only those directories that start with a lowercase letter or
+    digit, which typically represent vendor-specific MIBs.
+
+    ```bash 
+    mkdir /usr/local/share/snmp/mibs
+    find /tmp/netdisco-mibs-master -mindepth 1 -maxdepth 1 -type d -name '[a-z0-9]*' -exec mv \{\} /usr/local/share/snmp/mibs/ \;
+    ```
+
+    Finally, we can clean up the temporary files:
+
+    ```bash
+    rm -rf /tmp/netdisco*
+    ```
+
+To enable bare minimum MIBs we need to enable two catalogs "rfc" and "net-snmp".
+
+Overwrite/replace `/etc/snmp/snmp.conf` by with:
+
+!!! info "Configure SNMP to use RFC and Net-SNMP MIBs"
+
+    ```bash
+    mibdirs /usr/local/share/snmp/mibs/rfc:/usr/local/share/snmp/mibs/net-snmp
+    ```
+
+    This will override the OS default MIB search path and set it to include only
+    the RFC and Net-SNMP MIBs, which are commonly used and provide a good starting
+    point for most SNMP monitoring scenarios.
+
+???+ tip "Fun fact"
+    
+    Changes to the `/etc/snmp/snmp.conf` file are applied on the fly.
+    No need to restart anything.
+
+!!! warning "Repeat on each Server/Proxy"
+
+    If you have multiple Zabbix servers and/or proxies that will be processing SNMP traps,
+    you will need to repeat this MIB installation and configuration process on each
+    of those servers to ensure consistent trap translation and processing across
+    your monitoring infrastructure.
 
 ---
 
-## **SNMP Monitoring in Zabbix**
+#### Include another vendor
 
-Now that we have covered how SNMP works, it's time to put that knowledge into
+Let's say we need to work with Cisco equipment. We can double-check if vendor
+is included in Netdisco bundle. Grep for case insensitive name:
+
+???+ example "Check if Cisco MIBs are included in Netdisco collection"
+
+    ```bash
+    ls -1 /usr/local/share/snmp/mibs | grep -i Cisco
+    ```
+
+If the vendor is in list, then include "cisco" directory by adding an additional
+line in `/etc/snmp/snmp.conf`:
+
+???+ example "Include Cisco MIBs in SNMP configuration"
+
+    ```bash
+        mibdirs /usr/local/share/snmp/mibs/rfc:/usr/local/share/snmp/mibs/net-snmp
+        # Cisco MIBs
+        mibdirs +/usr/local/share/snmp/mibs/cisco
+    ```
+
+    Note the `+` sign before the second `mibdirs` directive, which tells SNMP to append
+    the Cisco MIBs to the existing search path rather than replacing it. This allows us
+    to maintain the core RFC and Net-SNMP MIBs while adding vendor-specific MIBs as needed
+    in a maintainable way.
+
+!!! warning "Performance impact"
+
+    Adding multiple vendors is possible but it will slow down the translation speed.
+    Count on an additional 1s for each vendor added, as the SNMP engine needs to
+    load and parse all MIB files in the specified directories to translate OIDs into
+    human-readable names. 
+    To mitigate this, ensure that on each server/proxy you only include the MIBs 
+    that are relevant to the devices you are monitoring on that specific server/proxy,
+    rather than loading a large number of unnecessary MIBs that can bloat the
+    search path and slow down processing.
+
+---
+
+### (optional) Bulletproof, MIB-less solution
+
+Official Zabbix SNMP templates do not require installing MIB files, as they target
+raw OIDs for data polling. If we continue this style for trapping too
+we can create a dependency-free solution by enabling a "numerical" flag inside
+`/etc/snmp/snmptrapd.conf`.
+
+!!! info "Enable numerical traps in snmptrapd.conf"
+
+    Add or modify the following line in `/etc/snmp/snmptrapd.conf` to enable 
+    numerical traps:
+
+    ```text
+    outputOption n
+    ```
+
+Next, restart the snmptrapd service, send test anananany, and check the log:
+
+!!! info "Check log for numerical traps"
+
+    ```bash
+    tail -99 /var/log/zabbix_traps_archive/zabbix_traps.log
+    ```
+
+!!! warning "In the long run"
+
+    Using numerical OIDs in Zabbix SNMP items can significantly increase the 
+    time required to design a template, since the dot (`.`) in numerical OIDs is a
+    special character in regular expressions. This means that the dot must be
+    escaped (e.g., `\.`) in any regex preprocessing steps to ensure proper parsing.
+    Failing to escape the dot can lead to unexpected behavior, even if it appears
+    to work correctly 99.9% of the time. Without escaping, the dot acts as a 
+    wildcard, matching *any* character, which violates the principle of a precise
+    and bulletproof solution. Proper escaping ensures that the OID is interpreted
+    exactly as intended, eliminating ambiguity and potential errors in monitoring.
+
+---
+
+Using numerical traps can be best direction if:
+
+- There is a big passion about bulletproof solutions. Creating a solution with the
+  bare minimum of dependencies - MIBs are never required for Zabbix proxies.
+
+- Template readability is not an issue. You are the only person in the
+  monitoring department. There are no team mates.
+
+- Have a lot of time to design solution
+
+- You are willing to share your masterpiece with the internet.
+  Perhaps share it at GitHub
+
+---
+
+## SNMP Monitoring in Zabbix
+
+Now that we have covered how SNMP itself works, it's time to put that knowledge into
 practice. We'll start up our Zabbix instance and begin monitoring, but first,
 it's crucial to understand the two different methods Zabbix offers for retrieving
 SNMP information from a device.
 
-!!! warning
+!!! warning "EngineID Uniqueness"
 
-    ```
     The RFC3411 Specs specify that an EngineID needs to be unique this is very
     important for monitoring. You will see errors like Bad parse of ASN.1 if you
     have a conflict.
 
-    Within an administrative domain, an snmpEngineID is the unique and
+    Within an administrative domain, an `snmpEngineID` is the unique and
     unambiguous identifier of an SNMP engine.  Since there is a one-to-
     one association between SNMP engines and SNMP entities, it also
     uniquely and unambiguously identifies the SNMP entity within that
     administrative domain.  Note that it is possible for SNMP entities in
     different administrative domains to have the same value for
-    snmpEngineID.  Federation of administrative domains may necessitate
+    `snmpEngineID`. Federation of administrative domains may necessitate
     assignment of new values.
-    ```
+
+Zabbix supports two distinct approaches for SNMP monitoring: *synchronous* (legacy) 
+and *asynchronous* (recommended). Each method has unique characteristics, performance 
+implications, and use cases.
 
 ---
 
-#### **Legacy SNMP Monitoring**
+#### Synchronous SNMP Monitoring
+In *synchronous* mode, Zabbix queries SNMP devices one OID at a time, waiting for
+a response before proceeding to the next check. This method is straightforward 
+but can become inefficient in large environments.
 
-The traditional method for SNMP monitoring is synchronous. It uses a **single OID**
-placed directly into the item's SNMP OID field. Zabbix will wait for a response
-before it moves on to the next check.
+- **OID Handling**:
+  A single textual or numeric OID (e.g., 1.3.6.1.2.1.31.1.1.1.6.3) is specified
+  in the item’s SNMP OID field.
 
-- **OID**: A single textual or numeric OID is used to retrieve a single value synchronously.
-  For example: `1.3.6.1.2.1.31.1.1.1.6.3`.
-- The timeout for these items is governed by the `Timeout` parameter in the **Zabbix
-  server configuration file**. To make this method functional, the `StartPollers`
-  parameter must also be correctly configured.
+- **Configuration**:
+  Timeout and performance are controlled by the 'Timeout' and 'StartPollers'
+  parameters in the Zabbix server configuration file.
 
-When we talk about bulk processing in legacy it can be interesting to have a look
-at the Zabbix documentation about this subject.
-[https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing)
+- **Combined processing**:
+  In legacy synchronous monitoring, Zabbix can combine multiple OIDs into a 
+  single request to optimize performance. However, this still operates within 
+  the synchronous framework, meaning Zabbix will wait for the combined response
+  before moving on to the next check.
+  For more details about combined processing, refer to the [Zabbix documentation: Internal workings of combined processing.](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing)
+
+**Characteristics**:
+
+- Sequential, blocking, and predictable timing.
+- **Use Case**: Small environments or scenarios requiring precise timing.
 
 ---
 
-#### **Asynchronous SNMP Monitoring (Recommended)**
+#### Asynchronous SNMP Monitoring
+*Asynchronous* monitoring leverages native SNMP bulk requests (`GetBulkRequest-PDUs`)
+and parallel processing, significantly improving performance and scalability.
 
-The newer, **recommended** approach is asynchronous and provides much better
-performance. It leverages native SNMP bulk requests (`GetBulkRequest-PDUs`).
+!!! warning "Bulk Requests and Combined Processing"
 
-- **`walk[OID1, OID2, ...]`**: This retrieves a subtree of values. For
-  **example:** `walk[1.3.6.1.2.1.2.2.1.2,1.3.6.1.2.1.2.2.1.3]`.
-- **`get[OID]`**: This retrieves a single value asynchronously. For **example:**
-  `get[1.3.6.1.2.1.31.1.1.1.6.3]`.
+    *Combined processing* is a feature of the legacy synchronous SNMP monitoring method
+    and is not to be confused with the *bulk request* capabilities of asynchronous
+    monitoring. In earlier versions of Zabbix, *combined processing* however was called
+    "bulk processing" which can lead to confusion. The key difference is that combined
+    processing still operates within a synchronous framework, while asynchronous monitoring
+    uses true SNMP bulk requests to retrieve multiple OIDs in parallel without waiting
+    for each response.
 
-With asynchronous monitoring, timeout settings can be configured per item. It's
-best to set a low timeout value to avoid long delays if a device is unreachable,
-as Zabbix will attempt up to 5 retries. A 3-second timeout, for instance, could
-result in a 15-second wait.
+- **OID Handling**:
 
-All `walk[OID]` and `get[OID]` items are executed asynchronously, meaning Zabbix
-does not need to wait for one response before starting other checks. DNS resolution
-is also handled asynchronously. The maximum concurrency for these checks is 1000,
-defined by the `MaxConcurrentChecksPerPoller` parameter. The number of SNMP pollers
-dedicated to this method is set by the `StartSNMPPollers` parameter.
+    - **`walk[OID1, OID2, ...]`**: Retrieves a subtree of values 
+    (e.g., `walk[1.3.6.1.2.1.2.2.1.2,1.3.6.1.2.1.2.2.1.3]`).
+    - **`get[OID]`**: Retrieves a single value asynchronously 
+      (e.g., `get[1.3.6.1.2.1.31.1.1.1.6.3]`).
 
-#### Synchronous versus Asynchronous Polling
+- **Configuration**:
 
-Zabbix can also use two different internal methods for polling:
+    - Timeout settings are configurable per item. A low timeout is recommended to
+      avoid delays. As Zabbix retries up to 5 times, a 3-second timeout could lead
+      to a 15-second wait if a device is unreachable.
+    - Concurrency is managed by the `MaxConcurrentChecksPerPoller` parameter (max 
+      1000 checks) and `StartSNMPPollers`.
+    - DNS resolution is handled asynchronously.
 
-**Synchronous Polling**
+**Characteristics**:
 
-Synchronous polling means the Zabbix server queries one SNMP OID at a time and waits
-for the response before continuing. This is simpler and ensures accurate timing,
-but it can become slow when monitoring hundreds or thousands of items per second.
+- Parallel, non-blocking, and highly efficient.
+- **Use Case**: Large-scale environments with many SNMP hosts.
 
-- Characteristics: Sequential, blocking, predictable timing
-- Use case: Small environments or when timing precision is critical
+---
 
-**Asynchronous Polling**
-
-Asynchronous polling sends multiple SNMP requests in parallel without waiting for
-each response before sending the next. This dramatically increases performance
-and reduces latency in large environments.
-
-- Characteristics: Parallel, non-blocking, more efficient
-- Use case: Large-scale Zabbix installations with many SNMP hosts
+#### Comparison of SNMP Monitoring Methods
 
 | Method | Direction | Timing | Example | Pros | Cons |
 |:----   |:----      |:----   |:----    |:---- |:---- |
@@ -775,7 +992,7 @@ and reduces latency in large environments.
 
 ---
 
-### **Polling Your First OID in Zabbix**
+### Polling Your First OID in Zabbix
 
 Let's begin by polling our first OID in Zabbix. As you may recall from a previous
 `snmpwalk` command, querying `.1.3.6.1.2.1.2.2.1.2` returned two results, identifying
@@ -789,22 +1006,20 @@ locate the correct OID. While a MIB file would provide a clear map of all availa
 OIDs, this isn't always an option. A common method to discover the correct OID is
 to perform a broader `snmpwalk` by removing the last digit from the initial OID.
 
-```bash
-snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.2.2.1
-```
+!!! example "Finding the correct OID with snmpwalk"
 
-This command returns a more extensive list of MIB objects.
-
-```bash
-IF-MIB::ifIndex.1 = INTEGER: 1
-IF-MIB::ifIndex.2 = INTEGER: 2
-IF-MIB::ifDescr.1 = STRING: lo
-IF-MIB::ifDescr.2 = STRING: enp0s1
-...
-IF-MIB::ifInOctets.1 = Counter32: 697830615
-IF-MIB::ifInOctets.2 = Counter32: 49954965
-...
-```
+    This command returns a more extensive list of MIB objects:
+    ```shell-session
+    localhost:~ $ snmpwalk -v2c -c public <IP_ADDRESS> .1.3.6.1.2.1.2.2.1
+    IF-MIB::ifIndex.1 = INTEGER: 1
+    IF-MIB::ifIndex.2 = INTEGER: 2
+    IF-MIB::ifDescr.1 = STRING: lo
+    IF-MIB::ifDescr.2 = STRING: enp0s1
+    ...
+    IF-MIB::ifInOctets.1 = Counter32: 697830615
+    IF-MIB::ifInOctets.2 = Counter32: 49954965
+    ...
+    ```
 
 From this output, we can see that the index for our target network card, `enp0s1`,
 is `2`. This confirms that we can use this index to find the correct data.
@@ -815,15 +1030,14 @@ To convert this human-readable output into a numerical OID that Zabbix can use,
 we can add the `-On` flag to our `snmpwalk` command, which converts the output
 to its numerical form.
 
-```bash
-snmpwalk -v2c -c public <IP_ADDRESS> IF-MIB::ifInOctets.2 -On
-```
+!!! example "Converting OID to numerical form with snmpwalk"
 
-The result is the specific OID for the inbound octets on the `enp0s1` interface:
-
-```bash
-.1.3.6.1.2.1.2.2.1.10.2 = Counter32: 50050587
-```
+    The result of next command will be the specific OID for the inbound octets
+    on the `enp0s1` interface:
+    ```shell-session
+    localhost:~ $ snmpwalk -v2c -c public <IP_ADDRESS> IF-MIB::ifInOctets.2 -On
+    .1.3.6.1.2.1.2.2.1.10.2 = Counter32: 50050587
+    ```
 
 This is the OID you would use to configure an SNMP item in Zabbix to monitor the
 network traffic for this specific interface.
@@ -831,13 +1045,13 @@ network traffic for this specific interface.
 Another useful tool that will help here is `snmptranslate` which does the same
 thing and also the other way back.
 
-!!! info "snmptranslate"
+!!! example "snmptranslate"
 
-    ```
-    snmptranslate -On IF-MIB::ifInOctets.2
+    ```shell-session
+    localhost:~ $ snmptranslate -On IF-MIB::ifInOctets.2
     .1.3.6.1.2.1.2.2.1.10.2
 
-    snmptranslate .1.3.6.1.2.1.2.2.1.10.2
+    localhost:~ $ snmptranslate .1.3.6.1.2.1.2.2.1.10.2
     IF-MIB::ifInOctets.2
     ```
 
@@ -846,16 +1060,18 @@ remember name ... `snmptable`. This tool allows you to see the data more easy
 then a simple a snmp walk. To stay with our network cards have a look at this
 output.
 
-!!! info "snmptable"
+!!! example "snmptable"
 
-    ``` bash
-    snmptable -v 2c -c public 127.0.0.1 IF-MIB::ifTable
+    ```shell-session
+    localhost:~ $ snmptable -v 2c -c public 127.0.0.1 IF-MIB::ifTable
     SNMP table: IF-MIB::ifTable
 
      ifIndex ifDescr    ifType           ifMtu  ifSpeed    ifPhysAddress     ifAdminStatus
        1      lo        softwareLoopback 65536  10000000                     up
        2  enp0s1        ethernetCsmacd    1500        0    76:ae:5:aa:5f:45  up
     ```
+
+---
 
 ### Polling a single SNMP item
 
@@ -864,63 +1080,65 @@ host with the name `SNMP Device` and place it in a group `SNMP Devices`. We also
 need to tell Zabbix where we can find our SNMP device as Zabbix is doing the
 polling (Or if we use a Proxy it will be the proxy.)
 
-So let's add a `SNMP Interface` and give it the IP of the device we would like
+So let's add a **SNMP Interface** and give it the IP of the device we would like
 to monitor. If you have been following our steps on the local machine you can
-use ip 127.0.0.1, our own server.
+use ip `127.0.0.1`, our own server.
 
 ![Host Interface](ch04.29-snmp-host-.png)
 
 _4.29 SNMP Interface_
 
 Once our host is created and saved with the correct interface we have to create
-an item on the host. Click on `items` next to the host `SNMP Device`. On the top
-right click the box `Create item` you will be greeted with another form to fill
+an item on the host. Click on **items** next to the host `SNMP Device`. On the top
+right click the box **Create item** you will be greeted with another form to fill
 in the item information.
 
-- **Name:** In traffic enp0s1 (A short descriptive name)
-- **Type:** SNMP Agent
-- **Key:** snmp.in (free form short descriptive)
-- **Type of information:** Numeric(Unsigned)
+- **Name:** `In traffic enp0s1` (A short descriptive name)
+- **Type:** *SNMP Agent*
+- **Key:** `snmp.in` (free form short descriptive)
+- **Type of information:** *Numeric (Unsigned)*
 - **Host interface:** The SNMP interface we created on our host. If you have
   more then 1 interface just select the one you need.
-- **SNMP OID:** get[oid] to retrieve the information or only the oid but then it
+- **SNMP OID:** `get[<OID>]` to retrieve the information or only the `<OID>` but then it
   will use synchronous polling.
-- **Units:** The data is in bytes so use B.
+- **Units:** The data is in bytes so use `B`.
 
 ![ch04.30-snmp-item.png](ch04.30-snmp-item.png)
 
-_04.30 SNMP Item_
+_4.30 SNMP Item_
 
 Before we safe this item there is one more important step we need to do. Network
 items are usually counters. Meaning the device is just counting the amount of
 traffic that passed the interface. This means the counter will always go up as
 more data passes the interface over time. So we need to calculate a delta.
 
-For this we can use preprocessing steps so let's move to the tab `preprocessing`
+For this we can use preprocessing steps so let's move to the tab **preprocessing**
 first before we save it.
 
-Add a preprocessing step with the name `Change per second`
+Add a *preprocessing step* with the name `Change per second`
 
 ![ch04.31-snmp-item-preprocessing.png](ch04.31-snmp-item-preprocessing.png)
 
 _snmp preprocessing_
 
-We can now safe the item and have a look at our latest data page we should have
+We can now save the item and have a look at our latest data page we should have
 a nice graph with our data over time.
 
-If you decide to use the test button before you safe the item (this is always a
-good idea then don't forget that Zabbix needs 2 item values tot calculate the
-difference. ) So you will have to test the `Get value and test` button twice.
+If you decide to use the test button before you save the item (which is always a
+good idea) then don't forget that Zabbix needs two item values to calculate the
+difference. So you will have to press the **Get value and test** button twice.
 
-Also don't forget to select the `Get value from host` box so Zabbix retrieves it
+Also don't forget to select the **Get value from host** box so Zabbix retrieves it
 from the host.
+
+---
 
 #### How does change per second work ?
 
 Given a counter value sampled at two different times:
 
-- At time \( t_1 \), the counter value is \( C_1 \).
-- At time \( t_2 \), the counter value is \( C_2 \).
+- At time $t_1$, the counter value is $C_1$.
+- At time $t_2$ the counter value is $C_2$.
 
 The change per second (rate) is calculated as:
 
@@ -928,149 +1146,158 @@ $$
 \text{Rate} = \frac{C_2 - C_1}{t_2 - t_1}
 $$
 
-where \( t_2 - t_1 \) is the time elapsed in seconds.
+where $t_2 - t_1$ is the time elapsed in seconds.
 
 ---
 
-**If the counter rolls over** (i.e., \( C_2 < C_1 \)), and the max counter value is \( M \), then adjust as:
+**If the counter rolls over** (i.e., $C_2 < C_1$, and the max counter value
+is $M$, then adjust as:
 
 $$
 \text{Rate} = \frac{(M - C_1) + C_2 + 1}{t_2 - t_1}
 $$
 
+---
+
 ### Polling a list of item
 
-Let's do the same for our snmp walk item. This time we will look for the
+Let's do the same for our snmp-walk item. This time we will look for the
 information from all our interfaces. For this we need to find our correct OID
 first. This can be done with `snmptranslate` which will convert our table name
 to an OID,
 
-```bash
-snmptranslate -On IF-MIB::ifTable
-.1.3.6.1.2.1.2.2
-```
+!!! example "Finding the OID for a table with snmptranslate"
+
+    ```shell-session
+    localhost:~ $ snmptranslate -On IF-MIB::ifTable
+    .1.3.6.1.2.1.2.2
+    ```
 
 This is the OID we can use in our item. Let's clone our previous item and make
 some changes.
 
-- **Name:** ifTable (or another descriptive name)
-- **Key:** snmp.ifTable
+- **Name:** `ifTable` (or another descriptive name)
+- **Key:** `snmp.ifTable`
 - **Type of information:**: Text
-- **SNMP OID:** walk[.1.3.6.1.2.1.2.2]
+- **SNMP OID:** `walk[.1.3.6.1.2.1.2.2]`
 
-The rest can stay as is just remove the preprocessing step we added in earlier
+The rest can stay as is, just remove the *preprocessing step* we added in the earlier
 example as this item will return us a whole list of information.
 
 ![ch04.32-snmp-walk.png](ch04.32-snmp-walk.png)
 
-_04.32 SNMP Walk_
+_4.31 SNMP Walk_
 
-When we press the `Get value and test` button in the test item screen we get a
+When we press the **Get value and test** button in the test item screen we get a
 whole list of data.
 
-```bash
-.1.3.6.1.2.1.2.2.1.1.1 = INTEGER: 1
-.1.3.6.1.2.1.2.2.1.1.2 = INTEGER: 2
-.1.3.6.1.2.1.2.2.1.2.1 = STRING: "lo"
-.1.3.6.1.2.1.2.2.1.2.2 = STRING: "enp0s1"
-.1.3.6.1.2.1.2.2.1.3.1 = INTEGER: 24
-.1.3.6.1.2.1.2.2.1.3.2 = INTEGER: 6
-.1.3.6.1.2.1.2.2.1.4.1 = INTEGER: 65536
-.1.3.6.1.2.1.2.2.1.4.2 = INTEGER: 1500
-.1.3.6.1.2.1.2.2.1.5.1 = Gauge32: 10000000
-.1.3.6.1.2.1.2.2.1.5.2 = Gauge32: 0
-.1.3.6.1.2.1.2.2.1.6.1 = STRING: ""
-.1.3.6.1.2.1.2.2.1.6.2 = STRING: "76:ae:5:aa:5f:45"
-.1.3.6.1.2.1.2.2.1.7.1 = INTEGER: 1
-.1.3.6.1.2.1.2.2.1.7.2 = INTEGER: 1
-.1.3.6.1.2.1.2.2.1.8.1 = INTEGER: 1
-.1.3.6.1.2.1.2.2.1.8.2 = INTEGER: 1
-.1.3.6.1.2.1.2.2.1.9.1 = 0
-.1.3.6.1.2.1.2.2.1.9.2 = 0
-.1.3.6.1.2.1.2.2.1.10.1 = Counter32: 69417222
-.1.3.6.1.2.1.2.2.1.10.2 = Counter32: 59215034
-.1.3.6.1.2.1.2.2.1.11.1 = Counter32: 6460587
-.1.3.6.1.2.1.2.2.1.11.2 = Counter32: 113038
-.1.3.6.1.2.1.2.2.1.12.1 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.12.2 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.13.1 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.13.2 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.14.1 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.14.2 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.15.1 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.15.2 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.16.1 = Counter32: 69417222
-.1.3.6.1.2.1.2.2.1.16.2 = Counter32: 44139841
-.1.3.6.1.2.1.2.2.1.17.1 = Counter32: 6460587
-.1.3.6.1.2.1.2.2.1.17.2 = Counter32: 97398
-.1.3.6.1.2.1.2.2.1.18.1 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.18.2 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.19.1 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.19.2 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.20.1 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.20.2 = Counter32: 0
-.1.3.6.1.2.1.2.2.1.21.1 = Gauge32: 0
-.1.3.6.1.2.1.2.2.1.21.2 = Gauge32: 0
-.1.3.6.1.2.1.2.2.1.22.1 = OID: .0.0
-.1.3.6.1.2.1.2.2.1.22.2 = OID: .0.0
-```
+???+ example "Output of SNMP walk in Zabbix"
 
-So we have the traffic in but we would like to find traffic out as well of
-course. Let's use our walk item to extract the outgoing traffic for this we need
-to create a dependent item.
+    ```bash
+    .1.3.6.1.2.1.2.2.1.1.1 = INTEGER: 1
+    .1.3.6.1.2.1.2.2.1.1.2 = INTEGER: 2
+    .1.3.6.1.2.1.2.2.1.2.1 = STRING: "lo"
+    .1.3.6.1.2.1.2.2.1.2.2 = STRING: "enp0s1"
+    .1.3.6.1.2.1.2.2.1.3.1 = INTEGER: 24
+    .1.3.6.1.2.1.2.2.1.3.2 = INTEGER: 6
+    .1.3.6.1.2.1.2.2.1.4.1 = INTEGER: 65536
+    .1.3.6.1.2.1.2.2.1.4.2 = INTEGER: 1500
+    .1.3.6.1.2.1.2.2.1.5.1 = Gauge32: 10000000
+    .1.3.6.1.2.1.2.2.1.5.2 = Gauge32: 0
+    .1.3.6.1.2.1.2.2.1.6.1 = STRING: ""
+    .1.3.6.1.2.1.2.2.1.6.2 = STRING: "76:ae:5:aa:5f:45"
+    .1.3.6.1.2.1.2.2.1.7.1 = INTEGER: 1
+    .1.3.6.1.2.1.2.2.1.7.2 = INTEGER: 1
+    .1.3.6.1.2.1.2.2.1.8.1 = INTEGER: 1
+    .1.3.6.1.2.1.2.2.1.8.2 = INTEGER: 1
+    .1.3.6.1.2.1.2.2.1.9.1 = 0
+    .1.3.6.1.2.1.2.2.1.9.2 = 0
+    .1.3.6.1.2.1.2.2.1.10.1 = Counter32: 69417222
+    .1.3.6.1.2.1.2.2.1.10.2 = Counter32: 59215034
+    .1.3.6.1.2.1.2.2.1.11.1 = Counter32: 6460587
+    .1.3.6.1.2.1.2.2.1.11.2 = Counter32: 113038
+    .1.3.6.1.2.1.2.2.1.12.1 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.12.2 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.13.1 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.13.2 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.14.1 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.14.2 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.15.1 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.15.2 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.16.1 = Counter32: 69417222
+    .1.3.6.1.2.1.2.2.1.16.2 = Counter32: 44139841
+    .1.3.6.1.2.1.2.2.1.17.1 = Counter32: 6460587
+    .1.3.6.1.2.1.2.2.1.17.2 = Counter32: 97398
+    .1.3.6.1.2.1.2.2.1.18.1 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.18.2 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.19.1 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.19.2 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.20.1 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.20.2 = Counter32: 0
+    .1.3.6.1.2.1.2.2.1.21.1 = Gauge32: 0
+    .1.3.6.1.2.1.2.2.1.21.2 = Gauge32: 0
+    .1.3.6.1.2.1.2.2.1.22.1 = OID: .0.0
+    .1.3.6.1.2.1.2.2.1.22.2 = OID: .0.0
+    ```
 
-Go to `Data collection` - `Hosts` and click on `Items`. You should be able to
+So we have the *traffic in* metrics but we would like to find *traffic out* metrics
+as well of course. Let's use our `walk` item to extract the outgoing traffic. For
+this we need to create a dependent item.
+
+Go to **Data collection** - **Hosts** and click on **Items**. You should be able to
 see our newly created `ifTable` item and 3 dots before it's name.
 
-Click on those 3 dots and select `Create dependent item` from the list.
-Fill in the new item with the following information.
+Click on those 3 dots and select **Create dependent item** from the list.
+Fill in the new item with the following information:
 
-- **Name:** Out traffic enp0s1
-- **Type:** dependent item
-- **Key:** snmp.out
-- **Type of information:** Unsigned
-- **Master item:** Already filled in but should be our item ifTable that we made
+- **Name:** `Out traffic enp0s1`
+- **Type:** *Dependent item*
+- **Key:** `snmp.out`
+- **Type of information:** *Unsigned*
+- **Master item:** Already filled in but should be our item `ifTable` that we made
   before.
-- **Units:** B
+- **Units:** `B`
 
 ![ch04.33-snmp-dependent-item.png](ch04.33-snmp-dependent-item.png)
 
-_04.33 Dependent SNMP Item_
+_4.32 Dependent SNMP Item_
 
 This item as is at the moment is an exact copy of our master item so we need to
-add some preprocessing steps first. Let's go to the tab `preprocessing` and add
+add some *preprocessing steps* first. Let's go to the tab **Preprocessing** and add
 our first step.
 
-Add the step `SNMP walk value` and after it paste the OID we want `.1.3.6.1.2.1.2.2.1.16.1`
-and choose `unchanged`.
+Add the step **SNMP walk value** and paste the OID in the **Parameter** field: 
+`.1.3.6.1.2.1.2.2.1.16.1` and choose **Unchanged**.
 
-!!! info "find our correct OID"
+!!! example "find our correct OID"
 
-    ``` bash
-    snmptranslate IF-MIB::ifOutOctets.1 -On
+    ```shell-session
+    localhost:~ $ snmptranslate IF-MIB::ifOutOctets.1 -On
     .1.3.6.1.2.1.2.2.1.16.1
     ```
 
-Remember from our previous item we need to calculate the `Changes per second`
-so add this as the second preprocessing step.
+Remember from our previous item we need to calculate the **Changes per second**
+so add this as the second *preprocessing step*.
 
 ![ch04.34-snmp-item-preprocessing.png](ch04.34-snmp-item-preprocessing.png)
 
 _04.34 preprocessing
 steps_
 
-Going now to our latest data page will show use the In and Our traffic for our
+Going now to the **Latest data** page, it will show the "In" and "Out" traffic for our
 network card but with data gathered in different ways. Both ways use the
-synchronous pollers but the last way will gather all data at once and then
-pre-process it.
+*synchronous* pollers but the last way will gather all data at once and then
+use preprocessing to extract and calculate the required values for the specific items.
 
 After you have added more items you can remove the option to keep history from
 your master items.
 
+---
+
 ## Conclusion
 
 SNMP polling remains a vital method for monitoring network devices when agents
-aren't an option. With Zabbix's asynchronous polling, checks can run in parallel,
+are not an option. With Zabbix's asynchronous polling, checks can run in parallel,
 dramatically improving performance and lowering the load on both your server and
 the network. SNMPv3 should be your go-to choice, delivering authentication and
 encryption to secure sensitive data. The SNMP walk item type adds another advantage
@@ -1084,12 +1311,17 @@ ready to monitor more devices, in less time, with greater confidence. Now it's
 time to put these capabilities to work and see just how far your monitoring can
 go.
 
+---
+
 ## Questions
 
 - Why is it better use SNMPv3 instead of v2c or v1 ?
 - Do I need to configure pollers for SNMP ? If so which pollers ?
+- Should I install MIB files on my Zabbix server ? What about proxies ?
 - Can I still use the old style to monitor SNMP ? Should I start using get[]
   and walk[] instead ?
+
+---
 
 ## Useful URLs
 

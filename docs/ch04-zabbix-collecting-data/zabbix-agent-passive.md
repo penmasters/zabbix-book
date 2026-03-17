@@ -209,7 +209,7 @@ We will be using the packages on RedHat-, SUSE-based or Ubuntu to install
 `Zabbix agent 2`. To use the packages we will need to prepare our system 
 as outlined in chapter: [_Getting started_](../ch00-getting-started/preparation.md).
 Only adding the Zabbix repository is mandatory here, however following the 
-[_Requirements_](../ch00-getting-started/Requiremens.md) outlined in that chapter
+[_Requirements_](../ch00-getting-started/Requirements.md) outlined in that chapter
 is also recommended to make sure you have all the necessary tools to work with
 Zabbix.
 
