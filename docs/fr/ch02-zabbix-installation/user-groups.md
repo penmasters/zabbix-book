@@ -22,16 +22,18 @@ meilleures pratiques pour les appliquer dans un déploiement robuste et réel.
 
 ## Le rôle d'un groupe d'utilisateurs
 
-A **User Group** in Zabbix is a logical collection of individual user accounts.
-Rather than managing permissions for hundreds of users individually, Zabbix
-requires that users be assigned to one or more groups. Access rights, such as
-the ability to view host groups, configure templates, or see specific problem
-tags are then granted at the **group level**.
+Un groupe d'utilisateurs **** dans Zabbix est un ensemble logique de comptes
+d'utilisateurs individuels. Plutôt que de gérer les autorisations de centaines
+d'utilisateurs individuellement, Zabbix exige que les utilisateurs soient
+affectés à un ou plusieurs groupes. Les droits d'accès, tels que la possibilité
+de voir les groupes d'hôtes, de configurer des modèles ou de voir des étiquettes
+de problèmes spécifiques, sont alors accordés au niveau du groupe **** .
 
-This group centric architecture provides several major benefits:
+Cette architecture centrée sur le groupe offre plusieurs avantages majeurs :
 
-* **Simplified Management:** Access rights are managed by **role** (e.g.,
-  "Network Engineers," "Database Administrators") instead of by individual user.
+* **Gestion simplifiée :** Les droits d'accès sont gérés par **rôle** (par
+  exemple, "Network Engineers", "Database Administrators") au lieu d'être gérés
+  par utilisateur individuel.
 * **Consistency:** Ensures that all users within the same role possess a
   consistent, standardized set of permissions.
 * **Segregation of Duties:** Enables clear separation between viewing
