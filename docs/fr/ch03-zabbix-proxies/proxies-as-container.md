@@ -12,12 +12,11 @@ tags: [expert]
 
 Comme nous l'avons vu dans la section précédente, les proxys Zabbix offrent une
 solution légère et efficace pour la surveillance distribuée. S'appuyant sur
-SQLite comme base de données dorsale, ils sont intrinsèquement flexibles et
-portables, ce qui les rend bien adaptés au déploiement dans des environnements
-conteneurisés. Ce chapitre fournit un guide étape par étape sur le déploiement
-d'un proxy Zabbix dans un conteneur, en soulignant les options de configuration
-et les meilleures pratiques pour une performance et une maintenabilité
-optimales.
+SQLite comme base de données, ils sont flexibles et portables, ce qui les rend
+bien adaptés au déploiement dans des environnements conteneurisés. Ce chapitre
+fournit un guide étape par étape sur le déploiement d'un proxy Zabbix dans un
+conteneur, en soulignant les options de configuration et les meilleures
+pratiques pour une performance et une maintenabilité optimales.
 
 ---
 
