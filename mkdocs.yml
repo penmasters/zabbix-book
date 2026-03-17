@@ -120,7 +120,7 @@ nav:
       - Upgrades: ch14-zabbix-maintenance/upgrades.md
   - "Chapter 15 : Real world examples":
       - ch15-zabbix-real-world-examples/chapter.md
-      - Disk healt on Windows: ch15-zabbix-real-world-examples/disk-health-windows.md
+      - Disk health on Windows: ch15-zabbix-real-world-examples/disk-health-windows.md
 
 theme:
   language: en
@@ -258,7 +258,7 @@ plugins:
           name: Nederlands
           build: true
         - locale: pt_BR
-          name: Brazillian Portugese
+          name: Brazilian Portuguese
           build: true
         #          theme: # override Material options for this locale
         #            language: pt-BR
