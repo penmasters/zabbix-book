@@ -32,8 +32,8 @@ de problèmes spécifiques, sont alors accordés au niveau du groupe **** .
 Cette architecture centrée sur le groupe offre plusieurs avantages majeurs :
 
 * **Gestion simplifiée :** Les droits d'accès sont gérés par **rôle** (par
-  exemple, "Network Engineers", "Database Administrators") au lieu d'être gérés
-  par utilisateur individuel.
+  exemple, "Ingénieurs réseau", "Administrateurs de base de données") au lieu
+  d'être gérés par utilisateur individuel.
 * **Consistency:** Ensures that all users within the same role possess a
   consistent, standardized set of permissions.
 * **Segregation of Duties:** Enables clear separation between viewing
