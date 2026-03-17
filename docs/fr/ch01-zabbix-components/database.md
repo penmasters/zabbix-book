@@ -5,15 +5,16 @@ description: |
 tags: [beginner]
 ---
 
-# Database choices
+# Choix de la base de données
 
-## Choosing a Database Backend for Zabbix
+## Choisir un backend de base de données pour Zabbix
 
-A critical decision when managing Zabbix installations is selecting the database
-backend. Zabbix supports several database options: MySQL/Percona, MariaDB,
-PostgreSQL (including TimescaleDB), and Oracle (up to Zabbix 7.0).
+Une décision critique dans la gestion des installations Zabbix est la sélection
+du backend de la base de données. Zabbix supporte plusieurs options de base de
+données : MySQL/Percona, MariaDB, PostgreSQL (y compris TimescaleDB) et Oracle
+(jusqu'à Zabbix 7.0).
 
-???+ warning "Oracle Database deprecation"
+Avertissement "Dépréciation de la base de données Oracle".
 
     Zabbix 7.0 marks the final release to offer support for Oracle Database.
     Consequently, systems running Zabbix 7.0 or any prior version must undertake
@@ -22,18 +23,21 @@ PostgreSQL (including TimescaleDB), and Oracle (up to Zabbix 7.0).
     mandatory step to ensure continued functionality and compatibility with future
     Zabbix versions.
 
-All supported databases perform similarly under typical Zabbix workloads, and
-Zabbix treats them equally in terms of functionality. As such, the choice
-primarily depends on your or your team’s familiarity with a particular database
-system. One notable exception is TimescaleDB, a PostgreSQL extension optimized
-for time-series data. This makes it especially well-suited for monitoring
-applications like Zabbix, which handle large volumes of timestamped data.
+Toutes les bases de données prises en charge ont des performances similaires
+dans les charges de travail typiques de Zabbix, et Zabbix les traite de la même
+manière en termes de fonctionnalités. En tant que tel, le choix dépend
+principalement de votre familiarité ou de celle de votre équipe avec un système
+de base de données particulier. Une exception notable est TimescaleDB, une
+extension de PostgreSQL optimisée pour les données de séries temporelles. Elle
+est donc particulièrement bien adaptée aux applications de surveillance telles
+que Zabbix, qui traitent d'importants volumes de données horodatées.
 
-In large-scale environments with high-frequency data collection, TimescaleDB can
-deliver significant performance benefits, including improved query speeds and
-built-in compression to reduce storage requirements. However, these advantages
-come with added complexity during installation and a few restrictions on
-historical data retention.
+Dans les environnements à grande échelle avec une collecte de données à haute
+fréquence, TimescaleDB peut offrir des avantages significatifs en termes de
+performances, y compris des vitesses de requêtes améliorées et une compression
+intégrée pour réduire les besoins en stockage. Cependant, ces avantages
+s'accompagnent d'une complexité accrue lors de l'installation et de quelques
+restrictions sur la conservation des données historiques.
 
 ???+ tip "TimescaleDB installation"
 
