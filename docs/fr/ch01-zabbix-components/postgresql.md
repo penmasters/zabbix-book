@@ -355,7 +355,7 @@ The resulting pg_hba file should look like :
     local    all        all                                        peer
     # IPv4 local connections
     host     zabbix         zabbix-srv      <ip from zabbix server/24>     scram-sha-256
-    host     zabbix         zabbix-web      <ip from zabbix server/24>     scram-sha-256
+    host     zabbix         zabbix-web      <ip from zabbix frontend/24>   scram-sha-256
     host     all            all             127.0.0.1/32                   scram-sha-256
     # IPv6 local connections:
     host    zabbix          zabbix-srv      ::1/128                 scram-sha-256

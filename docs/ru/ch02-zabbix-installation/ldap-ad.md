@@ -345,7 +345,7 @@ _2.15 Test user3_
 
 ---
 
-## Conclusion
+## Заключение
 
 Integrating Zabbix with LDAP—or specifically, Active Directory elevates your
 system's authentication capabilities by leveraging existing organizational
@@ -374,7 +374,7 @@ provisioning and synchronization, organizations can reduce administrative load
 while reinforcing consistency across their access control and authentication
 strategy.
 
-## Questions
+## Вопросы
 
 - What are the main benefits of integrating Zabbix authentication with LDAP or
   Active Directory compared to using only internal Zabbix accounts?
@@ -401,6 +401,6 @@ strategy.
   provisioning ensure that Zabbix access is also updated? What would happen if
   JIT was not enabled?
 
-## Useful URLs
+## Полезные URL-адреса
 
 - [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap)
