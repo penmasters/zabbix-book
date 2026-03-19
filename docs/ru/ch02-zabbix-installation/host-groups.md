@@ -136,14 +136,14 @@ This is especially useful for user groups. For example:
     You can even try adding **emojis** to group names for a fun visual touch! 🎉
     For example: `🌍 Europe/🇧🇪 Belgium` or `📦 Containers/Docker`.
 
-## Conclusion
+## Заключение
 
 Host groups are a key organizational tool in Zabbix. With the introduction of
 **template groups**, clearer group separation, and support for **nested
 structures**, modern versions of Zabbix offer great flexibility for tailoring
 your monitoring setup to your organization's structure and workflows.
 
-## Questions
+## Вопросы
 
 - What are host groups used for in Zabbix?
 - Can you assign a host to more than one group?
@@ -152,6 +152,6 @@ your monitoring setup to your organization's structure and workflows.
 - Why are slashes (/) special in host group names?
 - Can a parent group exist only logically (i.e., not created in Zabbix)?
 
-## Useful URLs
+## Полезные URL-адреса
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/hosts/host_groups](https://www.zabbix.com/documentation/current/en/manual/config/hosts/host_groups)
