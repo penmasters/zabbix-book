@@ -177,14 +177,15 @@ zabbix-server на каждом из них:
     22597:20240309:155230.362 HA manager started in active mode
     ```
 
-These log messages confirm that the HA manager process has started and has
-assumed the active role. This means that the Zabbix instance is now the primary
-node in the HA cluster, handling all monitoring operations. If a failover event
-occurs, another standby node will take over based on the configured HA strategy.
+Эти сообщения журнала подтверждают, что процесс HA manager запущен и принял на
+себя активную роль. Это означает, что экземпляр Zabbix теперь является основным
+узлом в кластере HA и выполняет все операции мониторинга. Если произойдет обход
+отказа, другой резервный узел возьмет на себя ответственность в соответствии с
+настроенной стратегией HA.
 
-Running the same command on the second server (and any additional nodes):
+Выполните ту же команду на втором сервере (и на всех дополнительных узлах):
 
-???+ example "HA log messages on standby node"
+???+ example "Сообщения журнала HA на резервном узле"
 
     ```shell-session
     localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
@@ -192,32 +193,32 @@ Running the same command on the second server (and any additional nodes):
     22304:20240309:155331.174 HA manager started in standby mode
     ```
 
-These messages confirm that the HA manager process was invoked and successfully
-launched in standby mode. This suggests that the node is operational but not
-currently acting as the active HA instance, awaiting further state transitions
-based on the configured HA strategy.
+Эти сообщения подтверждают, что процесс HA-менеджера был вызван и успешно
+запущен в режиме ожидания. Это означает, что узел работает, но в настоящее время
+не выступает в качестве активного экземпляра HA, ожидая дальнейших переходов
+состояния в соответствии с настроенной стратегией HA.
 
-At this stage, your Zabbix cluster is successfully configured for High
-Availability (HA). The system logs confirm that the HA manager has been
-initialized and is running in standby mode, indicating that failover mechanisms
-are in place. This setup ensures uninterrupted monitoring, even in the event of
-a server failure, by allowing automatic role transitions based on the HA
-configuration.
+На данном этапе кластер Zabbix успешно настроен на высокую доступность (HA).
+Системные журналы подтверждают, что менеджер HA инициализирован и работает в
+режиме ожидания, что свидетельствует о наличии механизмов обхода отказа. Такая
+настройка обеспечивает непрерывный мониторинг даже в случае отказа сервера,
+позволяя автоматически переключать роли на основе конфигурации HA.
 
 ---
 
-## Installing the frontend
+## Установка фронтенда
 
-Before proceeding with the installation and configuration of the web server, it
-is essential to install some sort of clustering software or use a load-balancer
-in front of the Zabbix frontends to be able to have a shared Virtual IP (VIP).
+Прежде чем приступить к установке и настройке веб-сервера, необходимо установить
+какое-либо кластерное программное обеспечение или использовать балансировщик
+нагрузки перед фронтендами Zabbix, чтобы иметь общий виртуальный IP (VIP).
 
-???+ note There are several options available for clustering software and
-load-balancers, including Pacemaker, Corosync, HAProxy, F5 Big-Ip, Citrix
-NetScaler, and various cloud load balancers. Each of these solutions offers a
-range of features and capabilities beyond just providing a VIP for failover
-purposes. But for the purpose of this guide, we will focus on a minimalistic
-approach to achieve high availability for the Zabbix frontend using Keepalived.
+???+ note Существует несколько вариантов программного обеспечения для
+кластеризации и балансировщиков нагрузки, включая Pacemaker, Corosync, HAProxy,
+F5 Big-Ip, Citrix NetScaler и различные облачные балансировщики нагрузки. Каждое
+из этих решений предлагает целый ряд функций и возможностей, помимо простого
+предоставления VIP для целей обхода отказа. Но в рамках данного руководства мы
+остановимся на минималистичном подходе к достижению высокой доступности
+фронтенда Zabbix с помощью Keepalived.
 
 Keepalived is like a helper that makes sure one computer takes over if another
 one stops working. It gives them a shared magic IP address so users don't notice
@@ -479,12 +480,12 @@ One such command is:
     zabbix_server -R ha_set_failover_delay=10m
     ```
 
-This command adjusts the failover delay, which defines how long Zabbix waits
-before promoting a standby node to active status. The delay can be set within a
-range of **10 seconds** to **15 minutes**.
+Эта команда настраивает задержку обхода отказа, определяющая, как долго Zabbix
+будет ждать, прежде чем перевести резервный узел в активное состояние. Задержка
+может быть установлена в диапазоне от **10 секунд** до **15 минут**.
 
-To remove a node that is either **stopped** or **unreachable**, the following
-runtime command must be used:
+Чтобы удалить узел, являющийся либо **остановленным**, либо **недоступным**,
+необходимо использовать следующую команду времени выполнения:
 
 !!! info ""
 
@@ -492,55 +493,54 @@ runtime command must be used:
     sudo zabbix_server -R ha_remove_node=`zabbix1`
     ```
 
-Executing this command removes the node from the HA cluster. Upon successful
-removal, the output confirms the action:
+Выполнение этой команды удаляет узел из кластера HA. При успешном удалении вывод
+подтверждает действие:
 
-!!! example "Removal of a node"
+!!! example "Удаление узла"
 
     ```shell-session
     localhost:~ # zabbix_server -R ha_remove_node=`zabbix1`
     Removed node "zabbix1" with ID "cm8agwr2b0001h6kzzsv19ng6"
     ```
 
-If the removed node becomes available again, it can be added back automatically
-when it reconnects to the cluster. These runtime commands provide flexibility
-for managing high availability in Zabbix without requiring a full restart of the
-`zabbix_server` process.
+Если удаленный узел снова станет доступен, он может быть добавлен обратно
+автоматически при повторном подключении к кластеру. Эти команды времени
+выполнения обеспечивают гибкость управления высокой доступностью в Zabbix, не
+требуя полного перезапуска процесса `zabbix_server`.
 
 ---
 
-## Conclusion
+## Заключение
 
-In this chapter, we have successfully set up a high-availability (HA) Zabbix
-environment by configuring both the Zabbix server and frontend for redundancy.
-We first established HA for the Zabbix server, ensuring that monitoring services
-remain available even in the event of a failure. Next, we focused on the
-frontend, implementing a Virtual IP (VIP) with Keepalived to provide seamless
-failover and continuous accessibility.
+В этой главе мы успешно создали среду Zabbix с высокой доступностью (HA),
+настроив сервер Zabbix и фронтенд на резервирование. Сначала мы создали HA для
+сервера Zabbix, обеспечив доступность служб мониторинга даже в случае сбоя.
+Затем мы сосредоточились на фронтенде, внедрив виртуальный IP-адрес (VIP) с
+Keepalived для обеспечения бесперебойной работы и непрерывной доступности.
 
-Additionally, we configured the firewall to allow Keepalived traffic and ensured
-that the service starts automatically after a reboot. With this setup, the
-Zabbix frontend can dynamically switch between servers, minimizing downtime and
-improving reliability.
+Кроме того, мы настроили брандмауэр на разрешение трафика Keepalived и
+обеспечили автоматический запуск службы после перезагрузки. Благодаря такой
+настройке фронтенд Zabbix может динамически переключаться между серверами, что
+минимизирует время простоя и повышает надежность.
 
-While database HA is an important consideration, it falls outside the scope of
-this setup. However, this foundation provides a robust starting point for
-building a resilient monitoring infrastructure that can be further enhanced as
-needed.
-
----
-
-## Questions
-
-1. What is Zabbix High Availability (HA), and why is it important?
-2. How does Zabbix determine which node is active in an HA setup?
-3. Can multiple Zabbix nodes be active simultaneously in an HA cluster? Why or
-   why not?
-4. What configuration file(s) are required to enable HA in Zabbix?
+Хотя HA базы данных является важным аспектом, он выходит за рамки данной
+настройки. Однако эта основа обеспечивает надежную отправную точку для создания
+устойчивой инфраструктуры мониторинга, которая может быть усовершенствована по
+мере необходимости.
 
 ---
 
-## Useful URLs
+## Вопросы
+
+1. Что такое высокая доступность (HA) Zabbix и почему она важна?
+2. Как Zabbix определяет какой узел является активным в настройке HA?
+3. Могут ли несколько узлов Zabbix быть активными одновременно в кластере HA?
+   Почему или почему нет?
+4. Какой(-ие) файл(ыы) конфигурации необходим(ыы) для включения HA в Zabbix?
+
+---
+
+## Полезные URL-адреса
 
 - <https://www.redhat.com/sysadmin/advanced-keepalived>
 - <https://keepalived.readthedocs.io/en/latest/introduction.html>
