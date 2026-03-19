@@ -382,7 +382,7 @@ _2.18 Administration menu_
     So when upgrading dashboards it needs to be created by hand. It was on the roadmap
     for 7 but didn't made it so feel free to vote <https://support.zabbix.com/browse/ZBXNEXT-5419>
 
-## Conclusion
+## Заключение
 
 The Zabbix frontend serves as the central command center for monitoring,
 configuration, and system awareness. In this chapter, you explored how to
@@ -403,7 +403,7 @@ maintain your environment more effectively. This foundational knowledge lays the
 groundwork for deeper exploration into host configuration, authentication
 mechanisms, and advanced monitoring workflows in the chapters that follow.
 
-## Questions
+## Вопросы
 
 - Which frontend section (Monitoring, Data Collection, Alerts, Users, or
   Administration) do you think you'll use most often in your daily work, and
@@ -422,7 +422,7 @@ mechanisms, and advanced monitoring workflows in the chapters that follow.
 - If you were onboarding a new team member, which parts of the frontend would
   you show them first, and why?
 
-## Useful URLs
+## Полезные URL-адреса
 
 - <https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards>
 - <https://blog.zabbix.com/handy-tips-6-organize-your-dashboards-and-create-slideshows-with-dashboard-pages/17511/>
