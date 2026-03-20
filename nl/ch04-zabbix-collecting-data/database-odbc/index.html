@@ -1,0 +1,2201 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="nl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Monitor databases with Zabbix ODBC checks. Run SQL queries across MySQL, PostgreSQL
+and more to track performance and availability metrics.
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/nl/ch04-zabbix-collecting-data/database-odbc/" rel="canonical">
+<link href="../ipmi/" rel="prev"/>
+<link href="../database-agent/" rel="next"/>
+<link href="../../../fr/ch04-zabbix-collecting-data/database-odbc/" hreflang="fr" rel="alternate"/>
+<link href="./" hreflang="nl" rel="alternate"/>
+<link href="../../../pt_BR/ch04-zabbix-collecting-data/database-odbc/" hreflang="pt_BR" rel="alternate"/>
+<link href="../../../ru/ch04-zabbix-collecting-data/database-odbc/" hreflang="ru" rel="alternate"/>
+<link href="../../../ch04-zabbix-collecting-data/database-odbc/" hreflang="en" rel="alternate"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>Database Monitoring via ODBC - Zabbix Book</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/extra.css?v=9fcfa51ee4f5913d6e1d5854d8fc161306131a5d" rel="stylesheet"/>
+<link href="../../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="Database Monitoring via ODBC" property="og:title"/>
+<meta content="Monitor databases with Zabbix ODBC checks. Run SQL queries across MySQL, PostgreSQL and more to track performance and availability metrics." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/nl/ch04-zabbix-collecting-data/database-odbc/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Database Monitoring via ODBC" name="twitter:title"/>
+<meta content="Monitor databases with Zabbix ODBC checks. Run SQL queries across MySQL, PostgreSQL and more to track performance and availability metrics." name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#database-monitoring-via-odbc">
+          Ga naar inhoud
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<div class="gmc-announce">
+            Deze pagina is nog niet in het Nederlands vertaald en wordt daarom in het Engels weergegeven.
+            <a href="/gmc/nl/contribute/#translations">Help ons en vertaal deze pagina!</a>
+</div>
+<script>
+        const gGMC_SELECT_VERSION = "Selecteer versie";
+        const gGMC_TRANSLATE_CTA = "Help ons en vertaal deze pagina!";
+        const gGMC_PAGE_LOCALE = "nl";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Database Monitoring via ODBC
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Selecteer taal" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../../fr/ch04-zabbix-collecting-data/database-odbc/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../pt_BR/ch04-zabbix-collecting-data/database-odbc/" hreflang="pt_BR">
+              Brazilian Portuguese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ru/ch04-zabbix-collecting-data/database-odbc/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ch04-zabbix-collecting-data/database-odbc/" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Zoeken" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Zoeken" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Zoeken" class="md-search__options">
+<a aria-label="Delen" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Delen">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Leegmaken" class="md-search__icon md-icon" tabindex="-1" title="Leegmaken" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Zoeken initialiseren
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ga naar repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigatie" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ga naar repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch02-zabbix-installation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch03-zabbix-proxies/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 04 : Collecting data 
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../chapter/">
+<span class="md-ellipsis">
+    
+  
+    Collecting data with your Zabbix environment
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dataflow/">
+<span class="md-ellipsis">
+    
+  
+    Dataflow
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../hosts/">
+<span class="md-ellipsis">
+    
+  
+    Hosts
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../simple-checks/">
+<span class="md-ellipsis">
+    
+  
+    Simple checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../host-interfaces/">
+<span class="md-ellipsis">
+    
+  
+    Host Interfaces
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-passive/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent installation and Passive monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-active/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent Active monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-polling/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Polling
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-trapping/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Trapping
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../http/">
+<span class="md-ellipsis">
+    
+  
+    HTTP Items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../preprocessing/">
+<span class="md-ellipsis">
+    
+  
+    Preprocessing
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dependent/">
+<span class="md-ellipsis">
+    
+  
+    Dependent items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ssh-telnet/">
+<span class="md-ellipsis">
+    
+  
+    SSH / Telnet
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../script/">
+<span class="md-ellipsis">
+    
+  
+    Script item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../jmx/">
+<span class="md-ellipsis">
+    
+  
+    Monitoring Java Applications with JMX
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ipmi/">
+<span class="md-ellipsis">
+    
+  
+    IPMI Monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Database Monitoring via ODBC
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Database Monitoring via ODBC
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Inhoudsopgave" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architecture-overview">
+<span class="md-ellipsis">
+      
+        Architecture Overview
+      
+    </span>
+</a>
+<nav aria-label="Architecture Overview" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#execution-flow">
+<span class="md-ellipsis">
+      
+        Execution Flow
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#odbc-configuration-files">
+<span class="md-ellipsis">
+      
+        ODBC Configuration Files
+      
+    </span>
+</a>
+<nav aria-label="ODBC Configuration Files" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#etcodbcinstini-driver-definitions">
+<span class="md-ellipsis">
+      
+        /etc/odbcinst.ini — Driver Definitions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#etcodbcini-dsn-definitions">
+<span class="md-ellipsis">
+      
+        /etc/odbc.ini — DSN Definitions
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#installing-odbc-components">
+<span class="md-ellipsis">
+      
+        Installing ODBC Components
+      
+    </span>
+</a>
+<nav aria-label="Installing ODBC Components" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rocky-linux-9">
+<span class="md-ellipsis">
+      
+        Rocky Linux 9
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ubuntu-2404">
+<span class="md-ellipsis">
+      
+        Ubuntu 24.04
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#suse">
+<span class="md-ellipsis">
+      
+        SUSE
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#commonly-used-odbc-drivers">
+<span class="md-ellipsis">
+      
+        Commonly Used ODBC Drivers
+      
+    </span>
+</a>
+<nav aria-label="Commonly Used ODBC Drivers" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mysql-mariadb">
+<span class="md-ellipsis">
+      
+        MySQL / MariaDB
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#postgresql">
+<span class="md-ellipsis">
+      
+        PostgreSQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#microsoft-sql-server-mssql">
+<span class="md-ellipsis">
+      
+        Microsoft SQL Server (MSSQL)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#freetds-odbc-driver-tdsodbc-community-option">
+<span class="md-ellipsis">
+      
+        FreeTDS ODBC Driver (tdsodbc) — Community Option
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#odbc-driver-packages-by-operating-system">
+<span class="md-ellipsis">
+      
+        ODBC Driver Packages by Operating System
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#driver-selection-considerations">
+<span class="md-ellipsis">
+      
+        Driver Selection Considerations
+      
+    </span>
+</a>
+<nav aria-label="Driver Selection Considerations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#testing-the-dsn">
+<span class="md-ellipsis">
+      
+        Testing the DSN
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#enabling-odbc-pollers">
+<span class="md-ellipsis">
+      
+        Enabling ODBC Pollers
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#creating-odbc-items-in-zabbix-80">
+<span class="md-ellipsis">
+      
+        Creating ODBC Items in Zabbix 8.0
+      
+    </span>
+</a>
+<nav aria-label="Creating ODBC Items in Zabbix 8.0" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dbodbcselect">
+<span class="md-ellipsis">
+      
+        db.odbc.select[]
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example">
+<span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+</a>
+<nav aria-label="Example" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#when-to-use-dbodbcselect">
+<span class="md-ellipsis">
+      
+        When to Use db.odbc.select
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dbodbcget">
+<span class="md-ellipsis">
+      
+        db.odbc.get[]
+      
+    </span>
+</a>
+<nav aria-label="db.odbc.get[]" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#when-to-use-dbodbcget">
+<span class="md-ellipsis">
+      
+        When to Use db.odbc.get
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-using-dbodbcget">
+<span class="md-ellipsis">
+      
+        Example Using db.odbc.get
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-the-parameters">
+<span class="md-ellipsis">
+      
+        Understanding the Parameters
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../database-agent/">
+<span class="md-ellipsis">
+    
+  
+    Database checks via Zabbix agent 2
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-trapper/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix trapper
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../external-checks/">
+<span class="md-ellipsis">
+    
+  
+    External checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../browser/">
+<span class="md-ellipsis">
+    
+  
+    Browser item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../calculated/">
+<span class="md-ellipsis">
+    
+  
+    Calculated items
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch06-zabbix-templates/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/network-host-discovery/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/graphs/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch13-advanced-security/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Inhoudsopgave" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architecture-overview">
+<span class="md-ellipsis">
+      
+        Architecture Overview
+      
+    </span>
+</a>
+<nav aria-label="Architecture Overview" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#execution-flow">
+<span class="md-ellipsis">
+      
+        Execution Flow
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#odbc-configuration-files">
+<span class="md-ellipsis">
+      
+        ODBC Configuration Files
+      
+    </span>
+</a>
+<nav aria-label="ODBC Configuration Files" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#etcodbcinstini-driver-definitions">
+<span class="md-ellipsis">
+      
+        /etc/odbcinst.ini — Driver Definitions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#etcodbcini-dsn-definitions">
+<span class="md-ellipsis">
+      
+        /etc/odbc.ini — DSN Definitions
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#installing-odbc-components">
+<span class="md-ellipsis">
+      
+        Installing ODBC Components
+      
+    </span>
+</a>
+<nav aria-label="Installing ODBC Components" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rocky-linux-9">
+<span class="md-ellipsis">
+      
+        Rocky Linux 9
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ubuntu-2404">
+<span class="md-ellipsis">
+      
+        Ubuntu 24.04
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#suse">
+<span class="md-ellipsis">
+      
+        SUSE
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#commonly-used-odbc-drivers">
+<span class="md-ellipsis">
+      
+        Commonly Used ODBC Drivers
+      
+    </span>
+</a>
+<nav aria-label="Commonly Used ODBC Drivers" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mysql-mariadb">
+<span class="md-ellipsis">
+      
+        MySQL / MariaDB
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#postgresql">
+<span class="md-ellipsis">
+      
+        PostgreSQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#microsoft-sql-server-mssql">
+<span class="md-ellipsis">
+      
+        Microsoft SQL Server (MSSQL)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#freetds-odbc-driver-tdsodbc-community-option">
+<span class="md-ellipsis">
+      
+        FreeTDS ODBC Driver (tdsodbc) — Community Option
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#odbc-driver-packages-by-operating-system">
+<span class="md-ellipsis">
+      
+        ODBC Driver Packages by Operating System
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#driver-selection-considerations">
+<span class="md-ellipsis">
+      
+        Driver Selection Considerations
+      
+    </span>
+</a>
+<nav aria-label="Driver Selection Considerations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#testing-the-dsn">
+<span class="md-ellipsis">
+      
+        Testing the DSN
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#enabling-odbc-pollers">
+<span class="md-ellipsis">
+      
+        Enabling ODBC Pollers
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#creating-odbc-items-in-zabbix-80">
+<span class="md-ellipsis">
+      
+        Creating ODBC Items in Zabbix 8.0
+      
+    </span>
+</a>
+<nav aria-label="Creating ODBC Items in Zabbix 8.0" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dbodbcselect">
+<span class="md-ellipsis">
+      
+        db.odbc.select[]
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example">
+<span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+</a>
+<nav aria-label="Example" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#when-to-use-dbodbcselect">
+<span class="md-ellipsis">
+      
+        When to Use db.odbc.select
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dbodbcget">
+<span class="md-ellipsis">
+      
+        db.odbc.get[]
+      
+    </span>
+</a>
+<nav aria-label="db.odbc.get[]" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#when-to-use-dbodbcget">
+<span class="md-ellipsis">
+      
+        When to Use db.odbc.get
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-using-dbodbcget">
+<span class="md-ellipsis">
+      
+        Example Using db.odbc.get
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-the-parameters">
+<span class="md-ellipsis">
+      
+        Understanding the Parameters
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigatie" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../../">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../chapter/">
+<span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<nav class="md-tags">
+<span class="md-tag md-tag-icon" data-tag="advanced">
+      Gevorderde
+    </span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch04-zabbix-collecting-data/database-odbc.md" title="Bron van deze pagina bekijken">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="database-monitoring-via-odbc">Database Monitoring via ODBC</h1>
+<p>Monitoring operating systems and applications provides important signals, but the
+most valuable insights often reside inside the database itself. Order queues, replication
+status, session counts, transaction failures, and business KPIs all live at the
+data layer.</p>
+<p>ODBC (Open Database Connectivity) allows Zabbix to query databases directly without
+installing an agent on the database server. In Zabbix 8.0, ODBC remains a powerful
+and flexible mechanism for agentless database monitoring, built on top of the
+<code>unixODBC</code> driver manager.</p>
+<p>Used correctly, ODBC enables deep visibility into both infrastructure and business
+metrics. Used carelessly, it can introduce performance risk and operational instability.
+This chapter explains how to deploy ODBC properly and operate it safely in production
+environments.</p>
+<hr/>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<p>Zabbix does not communicate with databases directly. It relies on the ODBC stack.</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph Zabbix Layer
+        A[Zabbix Server / Proxy]
+        B[ODBC Poller Process]
+    end
+
+    subgraph ODBC Layer
+        C[unixODBC Driver Manager]
+        D[Database-Specific ODBC Driver]
+    end
+
+    subgraph Database Layer
+        E[Target Database]
+    end
+
+    A --&gt;|Executes db.odbc.* item| B
+    B --&gt;|ODBC API Call| C
+    C --&gt;|Loads Driver| D
+    D --&gt;|SQL Execution| E
+</code></pre>
+<h3 id="execution-flow">Execution Flow</h3>
+<ol>
+<li>A Zabbix item of type <strong>Database monitor</strong> executes:
+   * <code>db.odbc.select[]</code> (single scalar value)
+   * <code>db.odbc.get[]</code> (JSON result set)</li>
+<li>An ODBC poller process handles the request.</li>
+<li>unixODBC resolves the configured DSN (Data Source Name).</li>
+<li>The database driver executes the SQL query.</li>
+<li>Results are returned to Zabbix.</li>
+</ol>
+<p>ODBC checks are blocking operations. While a query executes, the poller remains occupied.</p>
+<hr/>
+<h2 id="odbc-configuration-files">ODBC Configuration Files</h2>
+<p>ODBC relies on two configuration layers.</p>
+<h3 id="etcodbcinstini-driver-definitions"><code>/etc/odbcinst.ini</code> — Driver Definitions</h3>
+<p>Defines available ODBC drivers.</p>
+<p>Example:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">[MariaDB]</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="na">Description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MariaDB ODBC Driver</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="na">Driver</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s">/usr/lib64/libmaodbc.so</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="k">[MySQL]</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="na">Description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MySQL ODBC Driver</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="na">Driver</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s">/usr/lib64/libmyodbc5.so</span>
+</span></code></pre></div>
+<p>Verify installed drivers:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>odbcinst<span class="w"> </span>-q<span class="w"> </span>-d
+</span></code></pre></div>
+<p>If the driver is not listed here, the DSN will not function.</p>
+<hr/>
+<h3 id="etcodbcini-dsn-definitions"><code>/etc/odbc.ini</code> — DSN Definitions</h3>
+<p>Defines connection aliases.</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="k">[InventoryDB]</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="na">Description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Production Inventory Database</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="na">Driver</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s">MariaDB</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="na">Server</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s">192.168.1.50</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="na">Port</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s">3306</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="na">Database</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">shop_db</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="na">User</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s">zabbix_mon</span>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="na">Password</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">strong_password</span>
+</span></code></pre></div>
+<p>The <code>Driver</code> name must match the definition in <code>/etc/odbcinst.ini</code>.</p>
+<p>Restrict file permissions:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>/etc/odbc.ini
+</span></code></pre></div>
+<hr/>
+<h2 id="installing-odbc-components">Installing ODBC Components</h2>
+<p>ODBC and correct drivers must be installed on the Zabbix Server or Proxy performing the check.</p>
+<h3 id="rocky-linux-9">Rocky Linux 9</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>unixODBC<span class="w"> </span>unixODBC-devel
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>mariadb-connector-odbc<span class="w"> </span>or<span class="w"> </span>mysql−connector−odbc<span class="w"> </span>postgresql-odbc
+</span></code></pre></div>
+<h3 id="ubuntu-2404">Ubuntu 24.04</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>unixodbc<span class="w"> </span>unixodbc-dev<span class="w"> </span>odbc-mariadb<span class="w"> </span>odbc-postgresql
+</span></code></pre></div>
+<h3 id="suse">SUSE</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>zypper<span class="w"> </span><span class="k">in</span><span class="w"> </span>unixODBC-devel<span class="w"> </span>mariadb-connector-odbc<span class="w"> </span>psqlODBC
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>Verify<span class="w"> </span>drivers:
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>odbcinst<span class="w"> </span>-q<span class="w"> </span>-d
+</span></code></pre></div>
+<hr/>
+<h2 id="commonly-used-odbc-drivers">Commonly Used ODBC Drivers</h2>
+<p>ODBC is only a standard interface. The actual database communication is handled by a database-specific driver. The reliability, performance, authentication support, and TLS capabilities of your monitoring setup depend heavily on this driver.</p>
+<p>In Linux-based Zabbix environments, three drivers are most commonly deployed and operationally proven:</p>
+<ul>
+<li>MySQL / MariaDB</li>
+<li>PostgreSQL</li>
+<li>Microsoft SQL Server</li>
+</ul>
+<p>While ODBC drivers exist for many other databases, these three represent the majority of real-world Zabbix database monitoring deployments.</p>
+<hr/>
+<h3 id="mysql-mariadb">MySQL / MariaDB</h3>
+<p>The most widely used driver in open-source environments.</p>
+<p>Typical package names:</p>
+<ul>
+<li><code>mariadb-connector-odbc</code> (RHEL / Rocky / Alma)</li>
+<li><code>libmaodbc</code> or distribution-provided MariaDB ODBC packages</li>
+</ul>
+<p>This driver supports:</p>
+<ul>
+<li>MySQL</li>
+<li>MariaDB</li>
+<li>Cloud-managed MySQL-compatible services (e.g., Amazon RDS, Azure Database for MySQL)</li>
+</ul>
+<p>MariaDB Connector/ODBC is generally preferred over older MySQL ODBC drivers due to active maintenance and compatibility improvements.</p>
+<hr/>
+<h3 id="postgresql">PostgreSQL</h3>
+<p>PostgreSQL ODBC is stable and widely used in enterprise environments.</p>
+<p>Typical package names:</p>
+<ul>
+<li><code>odbc-postgresql</code> (Debian / Ubuntu)</li>
+<li><code>psqlodbc</code> (RHEL-based systems)</li>
+</ul>
+<p>Common use cases include:</p>
+<ul>
+<li>ERP systems</li>
+<li>Financial systems</li>
+<li>High-availability PostgreSQL clusters</li>
+<li>Managed PostgreSQL cloud services</li>
+</ul>
+<p>When monitoring PostgreSQL, ensure:</p>
+<ul>
+<li>SSL parameters are correctly defined in the DSN if required</li>
+<li>SCRAM authentication is supported by the installed driver version</li>
+<li>Certificate validation is enforced in secure environments</li>
+</ul>
+<hr/>
+<h3 id="microsoft-sql-server-mssql">Microsoft SQL Server (MSSQL)</h3>
+<p>Microsoft provides an official ODBC driver for SQL Server.</p>
+<p>Typical package name:</p>
+<ul>
+<li><code>msodbcsql18</code></li>
+</ul>
+<p>Installation usually requires enabling Microsoft's official repository and accepting the license agreement.</p>
+<p>Example (RHEL/Rocky-based systems):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>msodbcsql18
+</span></code></pre></div>
+<p>This driver is required for:</p>
+<ul>
+<li>On-premise Microsoft SQL Server</li>
+<li>SQL Server on Linux</li>
+<li>Azure SQL Database</li>
+</ul>
+<p>Operational considerations:</p>
+<ul>
+<li>TLS encryption is often mandatory</li>
+<li>Kerberos or Active Directory authentication may require additional configuration</li>
+<li>EULA acceptance is required during installation</li>
+</ul>
+<h3 id="freetds-odbc-driver-tdsodbc-community-option">FreeTDS ODBC Driver (tdsodbc) — Community Option</h3>
+<p>FreeTDS is an open-source implementation of the TDS (Tabular Data Stream) protocol used by SQL Server.</p>
+<p>Typical package names:</p>
+<ul>
+<li>freetds</li>
+<li>freetds-odbc</li>
+<li>tdsodbc</li>
+</ul>
+<p>Advantages:
+* Fully open source
+* Available directly from most Linux distributions
+* No external vendor repository required</p>
+<p>Limitations:
+* May lag behind in TLS or encryption support
+* Authentication features are more limited
+* Azure SQL compatibility can be inconsistent
+* Behavior may vary between versions</p>
+<p>FreeTDS can work reliably for simple monitoring queries, but it requires careful testing before production use.</p>
+<hr/>
+<h2 id="odbc-driver-packages-by-operating-system">ODBC Driver Packages by Operating System</h2>
+<p>The following table summarizes commonly used driver packages per platform.</p>
+<table>
+<thead>
+<tr>
+<th>Database</th>
+<th>Rocky / RHEL / Alma</th>
+<th>Ubuntu / Debian</th>
+<th>Suse</th>
+<th>Vendor Repository Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MySQL / MariaDB</td>
+<td><code>mariadb-connector-odbc</code></td>
+<td><code>mariadb-connector-odbc</code> or distro equivalent</td>
+<td>mariadb-connector-odbc</td>
+<td>No</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td><code>psqlodbc</code></td>
+<td><code>odbc-postgresql</code></td>
+<td>psqlODBC</td>
+<td>No</td>
+</tr>
+<tr>
+<td>MSSQL</td>
+<td><code>msodbcsql18</code></td>
+<td><code>msodbcsql18</code></td>
+<td>msodbcsql18</td>
+<td>Yes (Microsoft repo)</td>
+</tr>
+<tr>
+<td>MSSQL</td>
+<td>freetds  freetds-odbc</td>
+<td>freetds-bin tdsodbc</td>
+<td>libtdsodbc0</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="driver-selection-considerations">Driver Selection Considerations</h2>
+<p>When choosing an ODBC driver:</p>
+<ol>
+<li>Prefer vendor-maintained drivers when available.</li>
+<li>Verify compatibility with your database version.</li>
+<li>Confirm support for:
+   * TLS/SSL
+   * Modern authentication methods
+   * UTF-8 encoding</li>
+<li>Test performance under realistic load before production rollout.</li>
+</ol>
+<p>Not all ODBC drivers behave identically. Differences may exist in:</p>
+<ul>
+<li>Timeout handling</li>
+<li>Connection reuse behavior</li>
+<li>Encoding management</li>
+<li>Error reporting</li>
+<li>Pooling support</li>
+</ul>
+<p>In production environments, the ODBC driver should be treated as a critical infrastructure
+component.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>There are many ODBC drivers available for additional databases such as Oracle,
+Db2, SAP HANA, and others. However, driver quality, maintenance cadence, and
+production stability vary significantly. Before relying on less common drivers
+in a monitoring environment, perform controlled testing and validate behavior
+under load. Monitoring reliability depends as much on the driver as on Zabbix
+itself.</p>
+</details>
+<hr/>
+<h3 id="testing-the-dsn">Testing the DSN</h3>
+<p>Always validate connectivity before configuring Zabbix.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>isql<span class="w"> </span>-v<span class="w"> </span>InventoryDB
+</span></code></pre></div>
+<p>If successful:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>Connected!
+</span></code></pre></div>
+<p>If not, resolve driver registration, authentication, or network issues first. This saves you from the problems in Zabbix.</p>
+<hr/>
+<h2 id="enabling-odbc-pollers">Enabling ODBC Pollers</h2>
+<p>ODBC items require dedicated poller processes.</p>
+<p>In <code>zabbix_server.conf</code> or <code>zabbix_proxy.conf</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>StartODBCPollers=5
+</span></code></pre></div>
+<p>Restart Zabbix after modification.</p>
+<p>If this parameter is missing, ODBC items remain unsupported.</p>
+<hr/>
+<h2 id="creating-odbc-items-in-zabbix-80">Creating ODBC Items in Zabbix 8.0</h2>
+<p>Zabbix provides two database monitor item keys for ODBC-based monitoring:</p>
+<ul>
+<li><code>db.odbc.select[]</code></li>
+<li><code>db.odbc.get[]</code></li>
+</ul>
+<p>Both keys execute SQL queries via ODBC, but they differ significantly in how results are returned and how they should be used.</p>
+<hr/>
+<h3 id="dbodbcselect"><code>db.odbc.select[]</code></h3>
+<p>Syntax:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>db.odbc.select[&lt;unique short description&gt;,&lt;dsn&gt;,&lt;connection string&gt;]
+</span></code></pre></div>
+<p>Behavior:</p>
+<ul>
+<li>Executes the defined SQL query.</li>
+<li>Returns <strong>a single value</strong>.</li>
+<li>
+<p>Specifically, it returns:</p>
+</li>
+<li>
+<p>The first column</p>
+</li>
+<li>Of the first row</li>
+<li>Of the query result set</li>
+</ul>
+<p>This makes it ideal for queries that produce one scalar result.</p>
+<h3 id="example">Example</h3>
+<p>SQL query:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'pending'</span><span class="p">;</span>
+</span></code></pre></div>
+<p>If the result is:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>42
+</span></code></pre></div>
+<p>The item stores:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>42
+</span></code></pre></div>
+<hr/>
+<h4 id="when-to-use-dbodbcselect">When to Use <code>db.odbc.select</code></h4>
+<p>Recommended for:</p>
+<ul>
+<li>Simple health checks</li>
+<li>Aggregate counts</li>
+<li>Boolean-style checks</li>
+<li>Replication lag values</li>
+<li>Single KPI metrics</li>
+</ul>
+<p>It item is particularly suitable when:</p>
+<ul>
+<li>The query is complex</li>
+<li>The result is intentionally singular</li>
+<li>No further JSON processing is required</li>
+</ul>
+<p>Because it returns only one value, it is straightforward and lightweight.</p>
+<hr/>
+<h2 id="dbodbcget"><code>db.odbc.get[]</code></h2>
+<p>Syntax:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>db.odbc.get[&lt;unique short description&gt;,&lt;dsn&gt;,&lt;connection string&gt;]
+</span></code></pre></div>
+<p>Behavior:</p>
+<ul>
+<li>Executes the SQL query.</li>
+<li>Returns the entire result set as a <strong>JSON array</strong>.</li>
+</ul>
+<p>Example result:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="p">[</span>
+</span><span id="__span-17-2"><a href="#__codelineno-17-2" id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="w">  </span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="s2">"pending"</span><span class="p">,</span><span class="nt">"total"</span><span class="p">:</span><span class="s2">"15"</span><span class="p">},</span>
+</span><span id="__span-17-3"><a href="#__codelineno-17-3" id="__codelineno-17-3" name="__codelineno-17-3"></a><span class="w">  </span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="s2">"shipped"</span><span class="p">,</span><span class="nt">"total"</span><span class="p">:</span><span class="s2">"120"</span><span class="p">}</span>
+</span><span id="__span-17-4"><a href="#__codelineno-17-4" id="__codelineno-17-4" name="__codelineno-17-4"></a><span class="p">]</span>
+</span></code></pre></div>
+<p>Unlike <code>select</code>, this key preserves all returned rows and columns.</p>
+<hr/>
+<h4 id="when-to-use-dbodbcget">When to Use <code>db.odbc.get</code></h4>
+<p>Recommended for:</p>
+<ul>
+<li>Collecting multiple metrics in one query</li>
+<li>Feeding dependent items</li>
+<li>Low-Level Discovery</li>
+<li>Master item designs</li>
+<li>Reducing database load through query consolidation</li>
+</ul>
+<p><code>db.odbc.get</code> is the preferred modern approach in Zabbix 8.0 for scalable database monitoring.</p>
+<hr/>
+<h3 id="example-using-dbodbcget">Example Using <code>db.odbc.get</code></h3>
+<p>Type: <code>Database monitor</code>
+Key: <code>db.odbc.get[get_stats,InventoryDB]</code></p>
+<p>SQL Query:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total</span>
+</span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
+</span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Returned JSON:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="p">[</span>
+</span><span id="__span-19-2"><a href="#__codelineno-19-2" id="__codelineno-19-2" name="__codelineno-19-2"></a><span class="w">  </span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15"</span><span class="p">},</span>
+</span><span id="__span-19-3"><a href="#__codelineno-19-3" id="__codelineno-19-3" name="__codelineno-19-3"></a><span class="w">  </span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shipped"</span><span class="p">,</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="s2">"120"</span><span class="p">}</span>
+</span><span id="__span-19-4"><a href="#__codelineno-19-4" id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="p">]</span>
+</span></code></pre></div>
+<p>Preprocessing:</p>
+<ol>
+<li>JSONPath:</li>
+</ol>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>$.[?(@.status == 'pending')].total.first()
+</span></code></pre></div>
+2. Change type → Numeric (unsigned)</p>
+<p>Database drivers often return numbers as strings; type conversion prevents trigger inconsistencies.</p>
+<hr/>
+<h2 id="understanding-the-parameters">Understanding the Parameters</h2>
+<p>Both keys share the same parameter structure:</p>
+<ol>
+<li><strong>Unique short description</strong></li>
+</ol>
+<ul>
+<li>An internal identifier.</li>
+<li>Must be unique per item.</li>
+<li>Does not affect execution logic.</li>
+</ul>
+<ol start="2">
+<li><strong>DSN</strong></li>
+</ol>
+<ul>
+<li>The Data Source Name defined in <code>/etc/odbc.ini</code>.</li>
+<li>Points to the database connection configuration.</li>
+</ul>
+<ol start="3">
+<li><strong>Connection string (optional)</strong></li>
+</ol>
+<ul>
+<li>Allows overriding or extending DSN parameters.</li>
+<li>Can include credentials or additional driver settings.</li>
+<li>Useful when DSN-level credentials are not defined.</li>
+</ul>
+<p>Example with connection string:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>db.odbc.select[check_users,InventoryDB,UID=zabbix_mon;PWD=secret]
+</span></code></pre></div>
+<p>In production environments, credentials should preferably be handled via macros or secure storage rather than hardcoded strings.</p>
+<hr/>
+<h1 id="strategic-comparison">Strategic Comparison</h1>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th><code>db.odbc.select</code></th>
+<th><code>db.odbc.get</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Returns</td>
+<td>Single scalar value</td>
+<td>Full result set (JSON array)</td>
+</tr>
+<tr>
+<td>Suitable for</td>
+<td>One metric per query</td>
+<td>Multiple metrics per query</td>
+</tr>
+<tr>
+<td>JSON preprocessing required</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Ideal for dependent items</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Recommended for modern templates</td>
+<td>Limited use</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="design-guidance">Design Guidance</h2>
+<p>Use <code>db.odbc.select</code> when:</p>
+<ul>
+<li>You need one value.</li>
+<li>Simplicity is preferred.</li>
+<li>No discovery or dependent logic is required.</li>
+</ul>
+<p>Use <code>db.odbc.get</code> when:</p>
+<ul>
+<li>You want scalability.</li>
+<li>You want to reduce database query count.</li>
+<li>You are building reusable templates.</li>
+<li>You are implementing LLD.</li>
+<li>You want to follow modern Zabbix design patterns.</li>
+</ul>
+<p>In most structured deployments, <code>db.odbc.get</code> should be the default choice.</p>
+<hr/>
+<h2 id="low-level-discovery-with-odbc">Low-Level Discovery with ODBC</h2>
+<p>ODBC combined with <code>db.odbc.get</code> enables scalable Low-Level Discovery.</p>
+<p>Example:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">table_name</span><span class="p">,</span><span class="w"> </span><span class="n">table_rows</span>
+</span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span>
+</span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">table_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'shop_db'</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Configuration strategy:</p>
+<ul>
+<li>Master item → <code>db.odbc.get</code></li>
+<li>Dependent discovery rule</li>
+<li>JSONPath extracts <code>{#TABLE}</code></li>
+<li>Item prototypes monitor row count per table</li>
+</ul>
+<p>This approach reduces database load and improves template scalability.</p>
+<h2 id="native-odbc-low-level-discovery-dbodbcdiscovery">Native ODBC Low-Level Discovery (<code>db.odbc.discovery</code>)</h2>
+<p>In addition to <code>db.odbc.select[]</code> and <code>db.odbc.get[]</code>, Zabbix provides a dedicated key for discovery:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>db.odbc.discovery[]
+</span></code></pre></div>
+<p>This key is designed specifically for Low-Level Discovery (LLD) and returns data in the format required by Zabbix discovery rules.</p>
+<p>While <code>db.odbc.get[]</code> can be combined with dependent items to implement scalable discovery patterns, <code>db.odbc.discovery[]</code> offers a simpler and more direct approach for structured environments.</p>
+<hr/>
+<h3 id="how-it-works">How It Works</h3>
+<p>The key format:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a>db.odbc.discovery[unique_name,DSN]
+</span></code></pre></div>
+<p>The SQL query must return columns that correspond to LLD macro names.</p>
+<p>Example:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">"{#TABLE}"</span>
+</span><span id="__span-25-2"><a href="#__codelineno-25-2" id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span>
+</span><span id="__span-25-3"><a href="#__codelineno-25-3" id="__codelineno-25-3" name="__codelineno-25-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">table_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'shop_db'</span><span class="p">;</span>
+</span></code></pre></div>
+<p>This generates discovery data like:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a><span class="p">[</span>
+</span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a><span class="w">  </span><span class="p">{</span><span class="nt">"{#TABLE}"</span><span class="p">:</span><span class="s2">"orders"</span><span class="p">},</span>
+</span><span id="__span-26-3"><a href="#__codelineno-26-3" id="__codelineno-26-3" name="__codelineno-26-3"></a><span class="w">  </span><span class="p">{</span><span class="nt">"{#TABLE}"</span><span class="p">:</span><span class="s2">"customers"</span><span class="p">},</span>
+</span><span id="__span-26-4"><a href="#__codelineno-26-4" id="__codelineno-26-4" name="__codelineno-26-4"></a><span class="w">  </span><span class="p">{</span><span class="nt">"{#TABLE}"</span><span class="p">:</span><span class="s2">"products"</span><span class="p">}</span>
+</span><span id="__span-26-5"><a href="#__codelineno-26-5" id="__codelineno-26-5" name="__codelineno-26-5"></a><span class="p">]</span>
+</span></code></pre></div>
+<p>Each row becomes one discovered entity.</p>
+<hr/>
+<h3 id="when-to-use-dbodbcdiscovery">When to Use <code>db.odbc.discovery</code></h3>
+<p>Use native discovery when:</p>
+<ul>
+<li>The discovery query is lightweight.</li>
+<li>The returned dataset is small.</li>
+<li>You do not need additional processing logic.</li>
+<li>You prefer simplicity over maximum optimization.</li>
+</ul>
+<p>It is particularly suitable for:</p>
+<ul>
+<li>Discovering database tables</li>
+<li>Discovering schemas</li>
+<li>Discovering replication slots</li>
+<li>Discovering logical entities with stable structure</li>
+</ul>
+<hr/>
+<h3 id="when-to-prefer-dbodbcget-dependent-lld">When to Prefer <code>db.odbc.get</code> + Dependent LLD</h3>
+<p>In larger environments, the preferred scalable approach is:</p>
+<ol>
+<li>Master item → <code>db.odbc.get</code></li>
+<li>Dependent discovery rule</li>
+<li>Dependent item prototypes</li>
+</ol>
+<p>This approach reduces database load because:</p>
+<ul>
+<li>The SQL query executes only once.</li>
+<li>Multiple items reuse the same dataset.</li>
+<li>Poller usage is minimized.</li>
+</ul>
+<p>If you use <code>db.odbc.discovery[]</code>, each discovery rule executes its own SQL query.</p>
+<p>In small deployments, this difference is negligible.
+In large-scale systems, it becomes significant.</p>
+<hr/>
+<h2 id="performance-considerations-for-discovery">Performance Considerations for Discovery</h2>
+<p>Discovery rules execute periodically.</p>
+<p>If a discovery query:</p>
+<ul>
+<li>Scans large metadata tables</li>
+<li>Executes heavy joins</li>
+<li>Runs too frequently</li>
+</ul>
+<p>it can introduce unnecessary load.</p>
+<p>Best practices:</p>
+<ul>
+<li>Run discovery at longer intervals (e.g., 1h or 24h)</li>
+<li>Keep discovery queries simple</li>
+<li>Avoid scanning large operational tables</li>
+<li>Prefer metadata sources like <code>information_schema</code></li>
+</ul>
+<p>Discovery should detect structure changes, not operational metrics.</p>
+<hr/>
+<h2 id="common-mistake-with-dbodbcdiscovery">Common Mistake with <code>db.odbc.discovery</code></h2>
+<p>A frequent error is returning columns without properly formatted LLD macros.</p>
+<p>Incorrect:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Correct:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">"{#TABLE}"</span>
+</span><span id="__span-28-2"><a href="#__codelineno-28-2" id="__codelineno-28-2" name="__codelineno-28-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="p">;</span>
+</span></code></pre></div>
+<p>The alias must match the macro format exactly.</p>
+<hr/>
+<h2 id="strategic-guidance">Strategic Guidance</h2>
+<p>For production template design:</p>
+<ul>
+<li>Use <code>db.odbc.discovery[]</code> for structural discovery.</li>
+<li>Use <code>db.odbc.get[]</code> for scalable metric collection.</li>
+<li>Combine both methods when appropriate.</li>
+</ul>
+<p>Discovery defines <em>what</em> exists.
+Metric items define <em>how it behaves</em>.</p>
+<p>Keeping those responsibilities separate improves template clarity and scalability.</p>
+<hr/>
+<h2 id="performance-and-scalability-considerations">Performance and Scalability Considerations</h2>
+<p>ODBC queries execute real SQL. They consume database resources.</p>
+<p>Best practices:</p>
+<ul>
+<li>Use indexed columns</li>
+<li>Avoid full-table scans</li>
+<li>Keep queries lightweight</li>
+<li>Avoid high-frequency polling unless necessary</li>
+<li>Test queries using <code>EXPLAIN</code></li>
+</ul>
+<p>Server-wide timeout:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a>Timeout=5
+</span></code></pre></div>
+<p>Slow queries block pollers and may cascade into monitoring delays.
+Use proxies to isolate database monitoring from the central server.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>Starting from Zabbix 7.0 This parameter will be less important as the
+"Database monitor" item now can have custom Timeout per each SQL query/item
+ranging from 1s to 10m</p>
+</details>
+<hr/>
+<h2 id="connection-pooling">Connection Pooling</h2>
+<p>Enable unixODBC pooling. Beginning with unixODBC 2.0.0, the driver manager supports
+connection pooling. Connection pooling reduces connection overhead by maintaining
+open database connections and reusing them for subsequent requests, rather than
+repeatedly establishing and terminating new connections.</p>
+<p>In <code>/etc/odbcinst.ini</code>:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="k">[ODBC]</span>
+</span><span id="__span-30-2"><a href="#__codelineno-30-2" id="__codelineno-30-2" name="__codelineno-30-2"></a><span class="na">Pooling</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Yes</span>
+</span></code></pre></div>
+<p>Pooling reduces TCP handshake and authentication overhead in high-scale environments.</p>
+<hr/>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Never use database root accounts, always create a dedicated user with limited
+permissions. Best even 1 account per application.</p>
+<p>Create a dedicated read-only user:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">'zabbix_mon'</span><span class="o">@</span><span class="s1">'%'</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'strong_password'</span><span class="p">;</span>
+</span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">shop_db</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'zabbix_mon'</span><span class="o">@</span><span class="s1">'%'</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Recommendations:</p>
+<ul>
+<li>Use Zabbix macros for credentials</li>
+<li>Limit privileges strictly to SELECT</li>
+<li>Protect DSN files</li>
+<li>Consider external secret vault integration</li>
+<li>Restrict network exposure</li>
+</ul>
+<p>Monitoring credentials must never allow modification.</p>
+<hr/>
+<h2 id="character-encoding">Character Encoding</h2>
+<p>Ensure consistent UTF-8 configuration across:</p>
+<ul>
+<li>Database</li>
+<li>Operating system locale</li>
+<li>ODBC driver</li>
+</ul>
+<p>If the database returns data encoded differently (for example, Latin1 or Windows-1252), 
+the ODBC driver must correctly translate it into UTF-8. If that conversion fails or is
+misconfigured, the returned data may be corrupted. So encoding mismatches can result in
+corrupted output or JSON parsing failures.</p>
+<hr/>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Common ODBC errors:</p>
+<p>IM002
+DSN not found — verify <code>/etc/odbcinst.ini</code> and <code>/etc/odbc.ini</code></p>
+<p>HY000
+Authentication or permission error</p>
+<p>08001
+Network connectivity issue</p>
+<p>Increase logging:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a>LogLevel=4
+</span></code></pre></div>
+<p>Check:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a>/var/log/zabbix/zabbix_server.log
+</span></code></pre></div>
+<p>Always validate the DSN with <code>isql</code> before troubleshooting Zabbix itself.</p>
+<hr/>
+<h2 id="choosing-the-right-monitoring-method">Choosing the Right Monitoring Method</h2>
+<p>Zabbix supports multiple database monitoring approaches. This table can help you
+with choosing the best approach.</p>
+<table>
+<thead>
+<tr>
+<th>Criteria</th>
+<th>ODBC</th>
+<th>Agent 2 Plugin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requires agent</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Executes SQL directly</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Best for cloud-managed DB</td>
+<td>Yes</td>
+<td>Sometimes</td>
+</tr>
+<tr>
+<td>Risk of poorly written SQL</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Setup complexity</td>
+<td>Medium</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Business KPI monitoring</td>
+<td>Excellent</td>
+<td>Limited</td>
+</tr>
+<tr>
+<td>Infrastructure metrics</td>
+<td>Good</td>
+<td>Excellent</td>
+</tr>
+</tbody>
+</table>
+<h3 id="strategic-guidance_1">Strategic Guidance</h3>
+<ul>
+<li>Use Agent 2 plugins for core database health metrics.</li>
+<li>Use ODBC for custom SQL and business metrics.</li>
+<li>Use HTTP checks for application-level validation.</li>
+</ul>
+<p>In mature environments, these methods complement each other.</p>
+<hr/>
+<h2 id="production-hardening">Production Hardening</h2>
+<p>ODBC must be deployed with discipline.</p>
+<h3 id="query-discipline">Query Discipline</h3>
+<p>Never deploy:</p>
+<ul>
+<li><code>SELECT *</code></li>
+<li>Full table scans</li>
+<li>Heavy joins without indexing</li>
+<li>Long-running reports</li>
+</ul>
+<p>Monitoring queries must be lighter than production workload.</p>
+<h3 id="poller-capacity-planning">Poller Capacity Planning</h3>
+<p>Size <code>StartODBCPollers</code> appropriately.</p>
+<p>Too low:</p>
+<ul>
+<li>Unsupported items</li>
+</ul>
+<p>Too high:</p>
+<ul>
+<li>Database overload</li>
+</ul>
+<p>Scale gradually and monitor poller utilization.</p>
+<h3 id="isolation">Isolation</h3>
+<p>Offload ODBC checks to a Zabbix Proxy in medium and large environments. This prevents
+database instability from affecting the central monitoring server.</p>
+<h3 id="monitor-the-monitoring">Monitor the Monitoring</h3>
+<p>When you use ODBC checks on Zabbix don't forget to monitor you congiguration in
+Zabbix. It's always a goot idea to have a look at the following metrics:</p>
+<ul>
+<li>ODBC poller busy percentage</li>
+<li>Queue size</li>
+<li>Item unsupported count</li>
+<li>Database execution time trends</li>
+</ul>
+<hr/>
+<h2 id="common-anti-patterns">Common Anti-Patterns</h2>
+<p>Even experienced administrators fall into predictable traps. Avoid the following:</p>
+<h3 id="1-monitoring-with-reporting-queries">1. Monitoring with Reporting Queries</h3>
+<p>Using analytical queries designed for reports as monitoring checks. These queries are too heavy for frequent execution.</p>
+<h3 id="2-high-frequency-polling-of-expensive-metrics">2. High-Frequency Polling of Expensive Metrics</h3>
+<p>Polling every 10 seconds when 5 minutes would suffice.</p>
+<h3 id="3-using-root-or-administrative-accounts">3. Using Root or Administrative Accounts</h3>
+<p>Monitoring accounts should never have modification privileges.</p>
+<h3 id="4-increasing-pollers-instead-of-fixing-queries">4. Increasing Pollers Instead of Fixing Queries</h3>
+<p>Adding pollers to mask slow SQL only increases database pressure.</p>
+<h3 id="5-ignoring-timeouts">5. Ignoring Timeouts</h3>
+<p>Failing to tune timeouts leads to blocked pollers and cascading delays.</p>
+<h3 id="6-embedding-business-logic-in-sql">6. Embedding Business Logic in SQL</h3>
+<p>Monitoring should observe systems, not replicate application logic.</p>
+<h3 id="7-skipping-dsn-testing">7. Skipping DSN Testing</h3>
+<p>Configuring Zabbix without validating the DSN via <code>isql</code>.
+Anti-patterns usually stem from convenience. Production systems require discipline.</p>
+<hr/>
+<h2 id="conclusion">Conclusion</h2>
+<p>ODBC provides one of the most flexible and powerful database monitoring mechanisms
+in Zabbix. It enables agentless visibility into infrastructure metrics and business
+KPIs, supports scalable discovery through JSON processing, and integrates cleanly
+with proxy architectures.</p>
+<p>However, ODBC is not merely a configuration task, it is an operational responsibility.
+The safety and scalability of ODBC monitoring depend entirely on:</p>
+<ul>
+<li>Query design discipline</li>
+<li>Proper poller sizing</li>
+<li>Secure credential handling</li>
+<li>Thoughtful timeout configuration</li>
+<li>Isolation through proxies</li>
+<li>Continuous performance validation</li>
+</ul>
+<p>When used correctly, ODBC becomes a strategic observability tool. When misused,
+it becomes a silent performance risk.</p>
+<p>The difference lies not in the technology, but in the rigor of its implementation.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Why does Zabbix rely on unixODBC instead of communicating directly with databases?</li>
+<li>What is the difference between an ODBC driver manager and a database-specific ODBC driver?</li>
+<li>Why are ODBC checks considered blocking operations?</li>
+<li>What is the functional difference between db.odbc.select[] and db.odbc.get[]?</li>
+<li>Why is consistent UTF-8 configuration important across the database, OS, and Zabbix?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li>https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker</li>
+<li>https://blog.zabbix.com/database-odbc-monitoring-with-zabbix/8076/</li>
+<li>https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks?hl=ODBC%2Cmonitoring</li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Terug naar boven
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Gekopieerd naar klembord", "clipboard.copy": "Kopi\u00ebren naar klembord", "search.result.more.one": "1 extra overeenkomst op deze pagina", "search.result.more.other": "# extra overeenkomsten op deze pagina", "search.result.none": "Geen overeenkomende documenten", "search.result.one": "1 overeenkomende document", "search.result.other": "# overeenkomende documenten", "search.result.placeholder": "Typ om te beginnen met zoeken", "search.result.term.missing": "Ontbreekt", "select.version": "Selecteer versie"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../javascripts/tags-data-attr.js?v=9fcfa51ee4f5913d6e1d5854d8fc161306131a5d"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>
