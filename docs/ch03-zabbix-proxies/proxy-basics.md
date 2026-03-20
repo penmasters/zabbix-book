@@ -285,7 +285,7 @@ options available to use.
 
 :   Generates diagnostic information for a specific section of the proxy’s 
     operation. This is typically used for troubleshooting or performance analysis. 
-    The section parameter can target areas like historycache, preprocessing or locks.
+    The section parameter can target areas like history cache, preprocessing or locks.
     *Example*: `diaginfo=preprocessing` would provide detailed statistics about 
     the preprocessing manager.
 
@@ -305,7 +305,7 @@ When it comes to port for the proxy it depends on our proxy being `active` or `p
   `server` can connect to the proxy.
 
 Do note that for an active _Zabbix Agent_ or _Zabbix Sender_ to communicate with your proxy, 
-wether it is an active or a passive one, this will require port `10051/tcp` to be
+whether it is an active or a passive one, this will require port `10051/tcp` to be
 open on your proxy server:
 
 !!! info "Open firewall for zabbix-trapper"
