@@ -594,8 +594,12 @@ To export, go to **Alerts → Media types**, check the box next to one or more m
  
 ---
  
-## Summary
+## Conclustion
  
 Media types are the foundation of Zabbix's notification system. Without a properly configured media type, no amount of trigger tuning or action configuration will result in a notification reaching a human. The key points to carry forward are: the media type defines the delivery channel and its technical settings; the user media assignment connects a channel to a specific person with their contact address, severity filter, and time window; and an action defines the conditions under which Zabbix decides to send. All three must be in place. A gap in any one of them and notifications will not flow — often silently.
  
 In the next section we look at Actions in detail, where you define the logic that decides when to notify, who to notify, and what to say.
+
+## Questions
+
+## Useful URLs
