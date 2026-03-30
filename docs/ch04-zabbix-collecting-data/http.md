@@ -15,7 +15,7 @@ is actually working, you need to monitor it at that level.
 The HTTP agent item allows Zabbix to act as a native HTTP client. It can send HTTP
 or HTTPS requests, authenticate, include custom headers, send payloads, and process
 responses as structured monitoring data. This makes it possible to monitor REST
-APIs, web services, internal microservices, SaaS integrations, and even the Zabbix
+APIs, web services, internal micro-services, SaaS integrations, and even the Zabbix
 API itself,without external scripts or custom agents.
 
 At a beginner level, the HTTP agent answers the question “does this endpoint respond?”.
@@ -81,7 +81,7 @@ sent verbatim. Zabbix does not validate JSON syntax, escape characters, or infer
 content types. Any formatting errors are passed directly to the remote endpoint.
 
 To ensure the request is interpreted correctly, HTTP headers can be defined explicitly.
-This is where authentication tokens, API keys, content types, and vendorspecific
+This is where authentication tokens, API keys, content types, and vendor-specific
 headers belong. Headers are static per item, which is intentional and has implications
 for advanced use cases discussed later.
 

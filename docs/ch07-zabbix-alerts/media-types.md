@@ -448,6 +448,13 @@ It is also worth adding templates for **Problem update** and **Internal problem*
 while you are here, so all event types produce sensible messages rather than falling
 back to Zabbix's bare-bones defaults.
 
+!!! note
+
+    A list of all macros that you can use here can be found at the following
+    location: [https://www.zabbix.com/documentation/current/en/manual/appendix/
+    macros/supported_by_location](https://www.zabbix.com/documentation/current/
+    en/manual/appendix/macros/supported_by_location)
+
 ### Step 5 — Save and Test
 
 Click **Add** to save. Then click **Test**, enter a real email address in the **Send
@@ -535,70 +542,126 @@ found, invalid token, or bot not in channel.
 
 ### Step 5 — Assign to a User
 
-Go to **Users → Users**, open the relevant user, click the **Media** tab, and click **Add**.
+Go to **Users → Users**, open the relevant user, click the **Media** tab, and
+click **Add**.
 
 - **Type**: `Slack`
-- **Send to**: the channel this user's alerts should go to, for example `#ops-alerts`. To send a direct message to a specific person, use their Slack member ID (found under their profile → *More* → *Copy member ID*), which looks like `U0123ABCD`. Do not use `@username` — the Slack API requires the member ID for direct messages, not the display name.
+- **Send to**: the channel this user's alerts should go to, for example `#ops-alerts`.
+  To send a direct message to a specific person, use their Slack member ID (found
+  under their profile → *More* → *Copy member ID*), which looks like `U0123ABCD`.
+  Do not use `@username` — the Slack API requires the member ID for direct messages,
+  not the display name.
 - **When active**: `1-7,00:00-24:00` (or restrict as appropriate)
-- **Use if severity**: select the severities that should trigger a Slack notification for this user
+- **Use if severity**: select the severities that should trigger a Slack notification
+  for this user
 - **Status**: Enabled
- 
+
 Click **Add** then **Update** to save.
- 
+
 ---
- 
+
 ## Troubleshooting Notification Delivery
- 
-When notifications are not arriving, work through the following checks in order. The first two alone resolve the majority of cases.
- 
-**Check the Action log first.** Go to **Reports → Action log**. This shows every delivery attempt Zabbix has made, its status (Sent, In progress, or Failed), and the full error message when something went wrong. Always start here — the error message usually tells you exactly what is broken.
- 
-**Confirm the action exists and is enabled.** The most common reason notifications never appear in the Action log at all is that no action matches the event. Go to **Alerts → Actions → Trigger actions** and verify that at least one enabled action covers the problem conditions and targets the right user or group.
- 
-**Verify the media type is enabled.** Open the media type and confirm the status is Enabled. A disabled media type produces no entries in the Action log and gives no obvious indication that something is wrong.
- 
-**Verify the user's media assignment is enabled.** Go to the user's profile, Media tab, and check that the assignment status is Enabled.
- 
-**Check severity filters.** If the media assignment is restricted to certain severities and the trigger fires at a severity that is not checked, no notification is sent — silently.
- 
-**Check time period restrictions.** If **When active** is set to business hours and the problem occurs outside that window, no notification is sent.
- 
-**Test the media type directly.** Use the **Test** button on the media type configuration form. This exercises the delivery channel in isolation, independently of actions, triggers, and user assignments — useful for confirming that SMTP settings or webhook tokens are still valid.
- 
-**Check the Zabbix server log.** The server log at `/var/log/zabbix/zabbix_server.log` contains detailed output from alert processing. Temporarily increasing `DebugLevel` to `4` in `zabbix_server.conf` (and reloading the server) produces significantly more detail and is often the fastest way to diagnose a webhook script that fails in production but passes the Test button.
- 
+
+When notifications are not arriving, work through the following checks in order.
+The first two alone resolve the majority of cases.
+
+**Check the Action log first.** Go to **Reports → Action log**. This shows every
+delivery attempt Zabbix has made, its status (Sent, In progress, or Failed), and
+the full error message when something went wrong. Always start here — the error
+message usually tells you exactly what is broken.
+
+**Confirm the action exists and is enabled.** The most common reason notifications
+never appear in the Action log at all is that no action matches the event. Go to
+**Alerts → Actions → Trigger actions** and verify that at least one enabled action
+covers the problem conditions and targets the right user or group.
+
+**Verify the media type is enabled.** Open the media type and confirm the status
+is Enabled. A disabled media type produces no entries in the Action log and gives
+no obvious indication that something is wrong.
+
+**Verify the user's media assignment is enabled.** Go to the user's profile, Media
+tab, and check that the assignment status is Enabled.
+
+**Check severity filters.** If the media assignment is restricted to certain severities
+and the trigger fires at a severity that is not checked, no notification is sent.
+
+**Check time period restrictions.** If **When active** is set to business hours
+and the problem occurs outside that window, no notification is sent.
+
+**Test the media type directly.** Use the **Test** button on the media type configuration
+form. This exercises the delivery channel in isolation, independently of actions,
+triggers, and user assignments — useful for confirming that SMTP settings or
+webhook tokens are still valid.
+
+**Check the Zabbix server log.** The server log at `/var/log/zabbix/zabbix_server.log`
+contains detailed output from alert processing. Temporarily increasing `DebugLevel`
+to `4` in `zabbix_server.conf` (and reloading the server) produces significantly
+more detail and is often the fastest way to diagnose a webhook script that fails
+in production but passes the Test button.
+
 ---
- 
+
 ## Exporting and Importing Media Types
- 
-Media type configurations can be exported to XML and imported on another Zabbix instance, which is useful for promoting configurations between environments or keeping them in version control.
- 
-To export, go to **Alerts → Media types**, check the box next to one or more media types, and select **Export** from the action menu below the list. To import, click the **Import** button in the top-right corner of the same page and select the XML file. If a media type with the same name already exists, Zabbix will ask whether to update it or skip it.
- 
+
+Media type configurations can be exported to XML and imported on another Zabbix
+instance, which is useful for promoting configurations between environments or
+keeping them in version control.
+
+To export, go to **Alerts → Media types**, check the box next to one or more media
+types, and select **Export** from the action menu below the list. To import,
+click the **Import** button in the top-right corner of the same page and select
+the XML file. If a media type with the same name already exists, Zabbix will
+ask whether to update it or skip it.
+
 !!! note
-    Passwords entered directly into media type fields — such as the SMTP password — are not included in the export. You will need to re-enter them after importing. User macro *references* like `{$SLACK_TOKEN}` are exported normally; only the underlying macro values are masked in the UI, and those are managed separately under **Alerts → Macros**.
- 
+    Passwords entered directly into media type fields, such as the SMTP password,
+    are not included in the export. You will need to re-enter them after importing.
+    User macro *references* like `{$SLACK_TOKEN}` are exported normally; only the
+    underlying macro values are masked in the UI, and those are managed separately
+    under **Alerts → Macros**.
+
 ---
- 
+
 ## Best Practices
- 
-**Store credentials in secret user macros.** Rather than typing SMTP passwords or API tokens directly into media type fields, create a Secret user macro under **Alerts → Macros** and reference it as `{$MACRO_NAME}` in the media type configuration. The value is masked in the UI, excluded from exports, and can be rotated in one place without editing every media type that uses it.
- 
-**Always define message templates.** If neither the action nor the media type carries a message template for an event type, Zabbix falls back to a minimal default that omits most useful context. At minimum, define templates for Problem and Problem recovery on every media type you deploy.
- 
-**Test before going live.** Use the **Test** button to verify a new media type before attaching it to production actions. The few seconds this takes is nothing compared to discovering a broken SMTP configuration during an actual incident.
- 
-**Watch for silent failures.** A media type can fail consistently for days without any visible indication unless you are actively monitoring the Action log or have set up an alert on Zabbix internal items. Periodic checks of **Reports → Action log**, filtered by status Failed, are a simple habit that catches problems early.
- 
-**Keep configurations in version control.** Export your media type XML files and commit them alongside your other infrastructure configuration. This makes it straightforward to reproduce your notification setup on a new instance or recover from an accidental change.
- 
----
- 
-## Conclustion
- 
-Media types are the foundation of Zabbix's notification system. Without a properly configured media type, no amount of trigger tuning or action configuration will result in a notification reaching a human. The key points to carry forward are: the media type defines the delivery channel and its technical settings; the user media assignment connects a channel to a specific person with their contact address, severity filter, and time window; and an action defines the conditions under which Zabbix decides to send. All three must be in place. A gap in any one of them and notifications will not flow — often silently.
- 
-In the next section we look at Actions in detail, where you define the logic that decides when to notify, who to notify, and what to say.
+
+**Store credentials in secret user macros.** Rather than typing SMTP passwords
+or API tokens directly into media type fields, create a Secret user macro under
+**Alerts → Macros** and reference it as `{$MACRO_NAME}` in the media type configuration.
+The value is masked in the UI, excluded from exports, and can be rotated in one
+place without editing every media type that uses it.
+
+**Always define message templates.** If neither the action nor the media type
+carries a message template for an event type, Zabbix falls back to a minimal
+default that omits most useful context. At minimum, define templates for Problem
+and Problem recovery on every media type you deploy.
+
+**Test before going live.** Use the **Test** button to verify a new media type
+before attaching it to production actions. The few seconds this takes is nothing
+compared to discovering a broken SMTP configuration during an actual incident.
+
+**Watch for silent failures.** A media type can fail consistently for days without
+any visible indication unless you are actively monitoring the Action log. Periodic
+check **Reports → Action log**, filter by status Failed, this is a simple habit
+that catches problems early.
+
+**Keep configurations in version control.** Export your media type XML files and
+commit them alongside your other infrastructure configuration. This makes it
+straightforward to reproduce your notification setup on a new instance or recover
+from an accidental change.
+
+## Conclusion
+
+Media types are the foundation of Zabbix's notification system. Without a properly
+configured media type, no amount of trigger tuning or action configuration will
+result in a notification reaching a human. The key points to carry forward are:
+the media type defines the delivery channel and its technical settings; the
+`user media` assignment connects a channel to a specific person with their contact
+address, severity filter, and time window; and an action defines the conditions
+under which Zabbix decides to send. All three must be in place. A gap in any one
+of them and notifications will not flow.
+
+In the next section we look at Actions in detail, where you define the logic that
+decides when to notify, who to notify, and what to say.
 
 ## Questions
 
