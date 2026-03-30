@@ -276,7 +276,7 @@ options available to use.
 
 `zabbix_proxy --runtime-control snmp_cache_reload`
 
-:   Forces the proxy to reload its SNMP cache. This is useful if you’ve made 
+:   Forces the proxy to reload its SNMP cache. This is useful if you've made 
     changes to SNMP configurations (e.g., updated community strings, OIDs, or 
     device IPs) and want the proxy to immediately pick up the new settings 
     without restarting the entire service.

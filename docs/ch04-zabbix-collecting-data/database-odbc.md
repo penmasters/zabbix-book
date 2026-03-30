@@ -898,8 +898,8 @@ database instability from affecting the central monitoring server.
 
 ### Monitor the Monitoring
 
-When you use ODBC checks on Zabbix don't forget to monitor you congiguration in
-Zabbix. It's always a goot idea to have a look at the following metrics:
+When you use ODBC checks on Zabbix don't forget to monitor you configuration in
+Zabbix. It's always a good idea to have a look at the following metrics:
 
 * ODBC poller busy percentage
 * Queue size
@@ -964,7 +964,6 @@ When used correctly, ODBC becomes a strategic observability tool. When misused,
 it becomes a silent performance risk.
 
 The difference lies not in the technology, but in the rigor of its implementation.
-
 
 ## Questions
 

@@ -297,7 +297,7 @@ Now you can start the Zabbix web service container using the
 After this, the Zabbix web service container should be up and running and ready
 to accept connections on port 10053 (by default) from the Zabbix server.
 
-This command may take a few minutes as it wil download the required Zabbix Web service
+This command may take a few minutes as it will download the required Zabbix Web service
 container from the docker registry.
 
 To verify that the container started correctly, you can inspect the running containers
