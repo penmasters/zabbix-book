@@ -847,14 +847,14 @@ we can create a dependency-free solution by enabling a "numerical" flag inside
 
 !!! info "Enable numerical traps in snmptrapd.conf"
 
-    Add or modify the following line in `/etc/snmp/snmptrapd.conf` to enable 
+    Add or modify the following line in `/etc/snmp/snmptrapd.conf` to enable
     numerical traps:
 
     ```text
     outputOption n
     ```
 
-Next, restart the snmptrapd service, send test anananany, and check the log:
+Next, restart the snmptrapd service, send test, and check the log:
 
 !!! info "Check log for numerical traps"
 
