@@ -497,3 +497,5 @@ serie
 hardcoding
 hostnames
 sysdescr
+getstatus
+addheader

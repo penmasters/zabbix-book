@@ -17,7 +17,7 @@ the `IP address` or `DNS name` as well as the `Port` that we want our Zabbix ser
 (or proxy) to connect to when collecting our monitoring information. There are
 four types of interfaces.
 
-- **Agent (or ZBX)** 
+- **Agent (or ZBX)**
 - **SNMP**
 - **JMX**
 - **IPMI**
@@ -25,7 +25,7 @@ four types of interfaces.
 These interface types are tied directly to the items types. Meaning that when you
 want to monitoring the Zabbix agent (passive) you will need a ZBX (agent) type
 interface. If you do not have the correct interface, you will not be able to add
-the items for monitoring. 
+the items for monitoring.
 
 - **Agent (or ZBX)** is used by **Zabbix agent** items
 - **SNMP** is used by **SNMP agent** and **SNMP trap** items
@@ -38,10 +38,10 @@ IP or DNS to connect to the remote monitoring target.
 
 ---
 
-### Agent/ZBX and JMX
+## Agent/ZBX and JMX
 
 The Zabbix agent type interface and JMX interface work quite similarly. Both
-interface types allow us to define four things. 
+interface types allow us to define four things.
 
 ![Agent and JMX type interfaces](ch04.9-agent-jmx-interfaces.png){ align=center }
 *4.9 Agent and JMX type interfaces*
@@ -69,7 +69,7 @@ will be dependent on your DNS servers.
 
 ---
 
-### SNMP
+## SNMP
 
 The SNMP interface has the most options of all four interface types. The reason
 for this is because the SNMP type interface allows us to specify the SNMP details
@@ -93,7 +93,7 @@ in those cases it might be needed to turn the checkbox off.
 Additionally when selecting `SNMPv2` or `SNMPv3` we are also presented with the
 `Max repetition count`. When Zabbix uses `GETBULK` requests it will retrieve multiple
 values per OID base in a single call. This option is used to reduce SNMP traffic
-overhead when using the `walk[]` SNMP agent item key. 
+overhead when using the `walk[]` SNMP agent item key.
 
 ![SNMPv3 interface](ch04.11-snmpv3-interface.png){ align=center }
 *4.11 SNMPv3 interface*
@@ -119,23 +119,23 @@ be considered obsolete at this point, providing potential bad actors with access
 to important information or worse write access to devices without authentication.
 `SNMPv3` with authentication and data encryption is as such always recommended.
 It's up to the Zabbix administrator to determine what the monitoring target supports,
-but higher security is better in this case. 
+but higher security is better in this case.
 
 - noAuthNoPriv utilizes the `SNMPv3` protocol without authenticating and encrypting 
-  the data. 
+  the data.
 - AuthNoPriv uses encrypted authentication, but sends monitoring data plain text 
   over the network
-- AuthPriv is the recommended method for high security, as it uses encrypted 
-  authentication and also sends monitoring data encrypted over the network. 
+- AuthPriv is the recommended method for high security, as it uses encrypted
+  authentication and also sends monitoring data encrypted over the network.
 
 When using `SNMPv3` it is also best practice to use a strong authentication protocol.
 MD5 and DES are both no longer recommended due to the possibility to brute force
 the passwords with consumer grade hardware amongst other risks. That's why SHA1
-and AES128 or higher is always recommended. 
+and AES128 or higher is always recommended.
 
 ---
 
-### IPMI
+## IPMI
 
 For `IPMI agent` type items we want to add the `IPMI` type interface. We can use
 it to connect to `BMC's (Baseboard Management Controller)` like `iDRAC` and `iLo`.
@@ -151,17 +151,17 @@ IPMI we do not define credentials on the interface level. Instead these are prov
 ![IPMI host settings](ch04.13-ipmi-settings.png){ align=center }
 *4.13 IPMI host settings*
 
-For a host in Zabbix we can only define one IPMI use for authentication, 
-regardless of the amount of interfaces we add. 
+For a host in Zabbix we can only define one IPMI use for authentication,
+regardless of the amount of interfaces we add.
 
-- **Authentication algorithm** None, MD2, MD5, Straight, OEM, RMCP+. Determines 
+- **Authentication algorithm** None, MD2, MD5, Straight, OEM, RMCP+. Determines
   the encryption strength.
-- **Privilege level** Callback, User, Operator, Admin, OEM. Determines the 
+- **Privilege level** Callback, User, Operator, Admin, OEM. Determines the
   privilege level our user should be allowed to connect with.
 - **Username** The username to authenticate with.
 - **Password** The password to authenticate with.
 
-Once again, for security purposes `MD2` and `MD5` are not recommended. As well 
+Once again, for security purposes `MD2` and `MD5` are not recommended. As well
 as `Straight` which is plain text unencrypted and `OEM` which is vendor specific.
 If possible, try to use `RMCP+`, which in most cases is the most secure.
 
@@ -173,7 +173,8 @@ from your monitoring system comes with additional security risks.
 
 ---
 
-## Interface availability
+### Interface availability
+
 All four interface types, also come with an icon that can turn <span style="color: green;">Green</span>,
 <span style="color: orange;">Orange</span>, <span style="color: red;">Red</span> or
 <span style="color: grey;">Grey</span>. This color determines the interfaces'
@@ -191,7 +192,7 @@ The availability status of each interface is determined by the last data collect
 attempt for items that use this interface:
 
 - <span style="color: green;">Available</span> - The last data collection attempt 
-  was successful. 
+  was successful.
 - <span style="color: red;">Not available</span> - The last data collection attempt
   failed. (timeout, connection refused, authentication failure, etc.) Usually
   the details will also show the error reason for the failure.
@@ -210,24 +211,25 @@ attempt for items that use this interface:
 ---
 
 ### Active checks availability
+
 Zabbix agent checks can be either passive or active. We will discuss the differences
 between these two types of checks in the next chapter, but for now it's important
 to know that both exist and differ in their communication methods with the Zabbix
 server or proxy.
 
-On the details popup of the Zabbix Agent availability icon (ZBX), you will see 
+On the details popup of the Zabbix Agent availability icon (ZBX), you will see
 that there is an additional interface **Active checks** automatically added whenever
 the host has any item of the type '*Zabbix agent (active)*' enabled.
 
-The availability of the Active checks is determined by heartbeats sent by the 
+The availability of the Active checks is determined by heartbeats sent by the
 Zabbix agent to the Zabbix server or proxy. The status remains <span style="color: grey;">Unknown</span> 
-until the first heartbeat is received. Once the first heartbeat is received, 
+until the first heartbeat is received. Once the first heartbeat is received,
 the status will switch to <span style="color: green;">Available</span>.
 
-The frequency of there heartbeats is determined by the `HeartbeatFrequency` 
-parameter in the Zabbix agent configuration file and defaults to 60 seconds. 
+The frequency of there heartbeats is determined by the `HeartbeatFrequency`
+parameter in the Zabbix agent configuration file and defaults to 60 seconds.
 If the Zabbix server or proxy has not received a subsequent heartbeat from the agent for 
-a period of 2 times the `HeartbeatFrequency`, the status will switch to 
+a period of 2 times the `HeartbeatFrequency`, the status will switch to
 <span style="color: red;">Not available</span>.
 
 ???+ warning "Zabbix agents older than 6.2"
@@ -240,11 +242,12 @@ a period of 2 times the `HeartbeatFrequency`, the status will switch to
 ---
 
 ### Overall interface availability
-The status of the interface type availability icon is determined by the status 
-of all interfaces of that specific type and can have the following colors:
+
+The status of the interface type availability icon is determined by the status
+of all interfaces of that specific type and can have the following colours:
 
 - <span style="color: green;">Green</span> - All interfaces of this type are available.
-- <span style="color: orange;">Orange</span> - At least one interface of this type 
+- <span style="color: orange;">Orange</span> - At least one interface of this type
   is unavailable, but at least one other interface of this type is available or unknown.
 - <span style="color: red;">Red</span> - All interfaces of this type are unavailable.
 - <span style="color: grey;">Grey</span> - At least one interface of this type is unknown,
@@ -253,6 +256,7 @@ of all interfaces of that specific type and can have the following colors:
 ---
 
 ## Conclusion
+
 When configuring your host interfaces in Zabbix, we need to match our `Item type`
 to our `Interface type`. When we have the correct `Host interface` configured we
 will be able to add the corresponding `Items` on our  host to collect data. Upon
@@ -264,7 +268,7 @@ do not have an effect on interface availability and the availability icon.
 
 When configuring host interfaces with security settings, keep in mind to use the
 most secure option that your monitoring target supports. This will make sure your
-Zabbix environment is more secure, even if a bad actor would be present on your 
+Zabbix environment is more secure, even if a bad actor would be present on your
 network somehow.
 
 ---
@@ -277,9 +281,9 @@ network somehow.
 - What is the purpose of the "Max repetition count" field in SNMPv2 and SNMPv3
   interfaces?
 - Where are the credentials for IPMI interfaces configured in Zabbix?
-- What do the green, red, orange, and grey colors indicate for interface 
+- What do the green, red, orange, and grey colors indicate for interface
   availability in Zabbix?
-- How is the availability of "Active checks" determined for Zabbix Agent 
+- How is the availability of "Active checks" determined for Zabbix Agent
   interfaces?
 
 ---
