@@ -499,3 +499,7 @@ hostnames
 sysdescr
 getstatus
 addheader
+gb
+qt
+agentless
+rigor

@@ -281,7 +281,7 @@ network somehow.
 - What is the purpose of the "Max repetition count" field in SNMPv2 and SNMPv3
   interfaces?
 - Where are the credentials for IPMI interfaces configured in Zabbix?
-- What do the green, red, orange, and grey colors indicate for interface
+- What do the green, red, orange, and grey colours indicate for interface
   availability in Zabbix?
 - How is the availability of "Active checks" determined for Zabbix Agent
   interfaces?

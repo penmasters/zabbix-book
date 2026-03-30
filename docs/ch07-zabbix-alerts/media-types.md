@@ -486,80 +486,6 @@ in the next section of this chapter.
 
 ---
 
-## Step-by-Step: Configuring a Webhook (Slack Example)
-
-Slack is a practical example to walk through because the Zabbix integration is
-built in, the setup is representative of how most webhook integrations work, and
-you can verify the result in seconds by watching a channel. The same pattern get
-a token or URL from the external service, fill in the parameters in Zabbix, test,
-then assign to users — applies to any of the other pre-built webhooks.
-
-### Step 1 — Create a Slack App and Bot Token
-
-Zabbix's Slack integration authenticates using a Bot token, not an Incoming Webhook
-URL. Go to [https://api.slack.com/apps](https://api.slack.com/apps), click **Create
-New App**, and choose **From scratch**. Name the app (for example, `Zabbix Alerts`)
-and select your workspace.
-
-Once created, go to **OAuth & Permissions** in the left sidebar. Under **Bot Token
-Scopes**, add the `chat:write` scope. Then scroll to the top and click **Install
-to Workspace**, follow the authorisation prompt, and copy the **Bot User OAuth
-Token** that appears — it starts with `xoxb-`.
-
-Finally, invite the bot to the Slack channel where alerts should appear. In Slack,
-open the channel, click its name at the top, go to **Integrations → Add apps**,
-and add the app you just created. The bot must be a member of any channel it posts to.
-
-### Step 2 — Open the Slack Media Type in Zabbix
-
-Go to **Alerts → Media types**. The Slack media type is already present in the
-list — no importing needed. Click on it to open the configuration.
-
-### Step 3 — Configure the Parameters
-
-The script and message templates are already filled in. You only need to supply
-two values under **Parameters**:
-
-- `bot_token` — enter your `xoxb-` token here.
-- `zabbix_url` — the base URL of your Zabbix frontend, for example `https://zabbix.example.internal`.
-  This is used to construct clickable links back to events in the notification message.
-
-Leave the `channel` parameter blank. The channel is intentionally supplied per-user
-through the **Send to** field of each media assignment, which means a single Slack
-media type can route alerts to different channels for different users or teams
-without any duplication of configuration.
-
-### Step 4 — Save and Test
-
-Click **Update** to save.
-
-Click **Test**. In the test dialog, enter the name of a Slack channel in the **Send
-to** field — for example `#zabbix-alerts`. The channel must already exist and
-the bot must be a member. Click **Test** and switch to Slack. The message should
-appear within a few seconds. If it does not, the test dialog displays the error
-returned by the Slack API, which is almost always self-explanatory: channel not
-found, invalid token, or bot not in channel.
-
-### Step 5 — Assign to a User
-
-Go to **Users → Users**, open the relevant user, click the **Media** tab, and
-click **Add**.
-
-- **Type**: `Slack`
-- **Send to**: the channel this user's alerts should go to, for example `#ops-alerts`.
-  To send a direct message to a specific person, use their Slack member ID (found
-  under their profile → *More* → *Copy member ID*), which looks like `U0123ABCD`.
-  Do not use `@username` — the Slack API requires the member ID for direct messages,
-  not the display name.
-- **When active**: `1-7,00:00-24:00` (or restrict as appropriate)
-- **Use if severity**: select the severities that should trigger a Slack notification
-  for this user
-- **Status**: Enabled
-
-Click **Add** then **Update** to save.
-
----
-
 ## Troubleshooting Notification Delivery
 
 When notifications are not arriving, work through the following checks in order.
@@ -665,4 +591,25 @@ decides when to notify, who to notify, and what to say.
 
 ## Questions
 
+- What are the three components that must all be in place for Zabbix to successfully
+  deliver a notification? What happens if any one of them is missing?
+
+- A media type is described as a "reusable configuration template." What does that
+  mean in practice — how does a single media type serve multiple users with different
+  contact addresses?
+
+- What is the difference between the Script and Webhook media types? In what situation
+  would you choose one over the other?
+
+- You need a user to receive SMS alerts only for High and Disaster severities, and
+  only outside of business hours. Which two fields in the user's media assignment
+  control this behaviour?
+
+
 ## Useful URLs
+
+- [https://smstools3.kekekasvi.com/](https://smstools3.kekekasvi.com/)
+- [https://webhook.site/](https://webhook.site/)
+- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/media](https://www.zabbix.com/documentation/current/en/manual/config/notifications/media)
+
+
