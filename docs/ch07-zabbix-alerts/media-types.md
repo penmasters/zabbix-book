@@ -172,65 +172,112 @@ acts as an SMTP client and delivers messages through your mail server.
 
 ## SMS
 
-The SMS media type sends messages through a GSM modem connected to the Zabbix server via a serial port or USB-serial adapter.
+The SMS media type sends messages through a GSM modem connected to the Zabbix server
+via a serial port or USB-serial adapter.
 
 **GSM modem** — the path to the serial device, for example `/dev/ttyUSB0` or `/dev/ttyS0`.
 
-This type has very limited configuration options because the complexity lies in the physical hardware setup. The modem must be powered, the SIM card must have credit or an active plan, and the device path must be accessible by the user running the Zabbix server process. Testing is done by observing whether test notifications actually arrive on a phone.
+This type has very limited configuration options because the complexity lies in
+the physical hardware setup. The modem must be powered, the SIM card must have
+credit or an active plan, and the device path must be accessible by the user running
+the Zabbix server process. Testing is done by observing whether test notifications
+actually arrive on a phone.
 
-SMS is largely superseded by webhook integrations with modern messaging platforms, but remains useful in environments where internet access is restricted or in industrial monitoring scenarios where SMS is a hard requirement.
+SMS is largely superseded by webhook integrations with modern messaging platforms,
+but remains useful in environments where internet access is restricted or in
+industrial monitoring scenarios where SMS is a hard requirement.
 
 ---
 
 ## Script
 
-The Script media type runs a custom script located in the `AlertScriptsPath` directory on the Zabbix server. By default this is `/usr/lib/zabbix/alertscripts/` on most Linux distributions, though this can be changed in the Zabbix server configuration file (`/etc/zabbix/zabbix_server.conf`).
+The Script media type runs a custom script located in the `AlertScriptsPath`
+directory on the Zabbix server. By default this is `/usr/lib/zabbix/alertscripts/`
+on most Linux distributions, though this can be changed in the Zabbix server
+configuration file (`/etc/zabbix/zabbix_server.conf`).
 
-**Script name** — just the filename of the script, without a path. Zabbix will look for it in `AlertScriptsPath`. The script must be executable by the user running the Zabbix server.
+**Script name** — just the filename of the script, without a path. Zabbix will
+look for it in `AlertScriptsPath`. The script must be executable by the user running
+the Zabbix server.
 
-**Script parameters** — a list of arguments passed to the script. Each parameter is specified on a separate line. Parameters support Zabbix macros. A typical setup passes three arguments: `{ALERT.SENDTO}` (the user's contact details from their media assignment), `{ALERT.SUBJECT}`, and `{ALERT.MESSAGE}`.
+**Script parameters** — a list of arguments passed to the script. Each parameter
+is specified on a separate line. Parameters support Zabbix macros. A typical
+setup passes three arguments: `{ALERT.SENDTO}` (the user's contact details from
+their media assignment), `{ALERT.SUBJECT}`, and `{ALERT.MESSAGE}`.
 
-The script receives the parameters as positional arguments: `$1`, `$2`, `$3`, etc. The script's exit code matters: exit 0 means success; any non-zero exit code is treated as a failure, and Zabbix will log the error and retry according to the *Attempts* setting.
+The script receives the parameters as positional arguments: `$1`, `$2`, `$3`, etc.
+The script's exit code matters: exit 0 means success; any non-zero exit code is
+treated as a failure, and Zabbix will log the error and retry according to the
+*Attempts* setting.
+
+Checkout the next topic `Custom Alert Scripts` if you like to find out more on
+how to configure this in Zabbix.
 
 ### Important Security Consideration
 
-Scripts run as the user that owns the Zabbix server process (typically `zabbix`). Make sure scripts do not have world-writable permissions and that the `AlertScriptsPath` directory itself is not writable by untrusted users. Never place scripts outside of `AlertScriptsPath`.
+Scripts run as the user that owns the Zabbix server process (typically
+`zabbix`). Make sure scripts do not have world-writable permissions and that the
+`AlertScriptsPath` directory itself is not writable by untrusted users. Never
+place scripts outside of `AlertScriptsPath`.
 
 ---
 
 ## Webhook
 
-Webhooks are the most powerful and flexible media type in Zabbix 8.0. Instead of running an external script, Zabbix executes a JavaScript function internally. This function has access to a built-in HTTP client object (`CurlHttpRequest`) and can make GET, POST, PUT, or DELETE requests to any HTTP/HTTPS endpoint.
+Webhooks are the most powerful and flexible media type in Zabbix 8.0. Instead of
+running an external script, Zabbix executes a JavaScript function internally.
+This function has access to a built-in HTTP client object (`CurlHttpRequest`)
+and can make GET, POST, PUT, or DELETE requests to any HTTP/HTTPS endpoint.
 
 ### Pre-built Integrations
 
-Zabbix ships with dozens of ready-to-use webhook templates accessible from the *Import* button on the Media types list page. These cover popular services including Slack, Microsoft Teams, Telegram, PagerDuty, Opsgenie, Jira, Jira Service Management, ServiceNow, Zendesk, Pushover, Discord, Mattermost, VictorOps, and more. For most teams, the answer to "how do I send alerts to Slack?" is simply: import the Slack webhook, fill in your Slack token, and you're done.
+Zabbix ships with dozens of ready-to-use webhook templates accessible from the
+*Import* button on the Media types list page. These cover popular services
+including Slack, Microsoft Teams, Telegram, PagerDuty, Opsgenie, Jira, Jira Service
+Management, ServiceNow, Zendesk, Pushover, Discord, Mattermost, VictorOps, and
+more. For most teams, the answer to "how do I send alerts to Slack?" is simply:
+import the Slack webhook, fill in your Slack token, and you're done.
 
 ### Configuration Fields
 
-**Script** — the JavaScript code that runs when Zabbix needs to send a notification. The function receives a `value` object that contains all available macros. It should return a string on success (which Zabbix logs as the result) or throw an error on failure.
+**Script**: the JavaScript code that runs when Zabbix needs to send a notification.
+The function receives a `value` object that contains all available macros. It
+should return a string on success (which Zabbix logs as the result) or throw an
+error on failure.
 
-**Parameters** — key-value pairs that are made available inside the script via the `params` object (or via the macros `{$PARAM_NAME}` in the script). This is how you inject configuration like API tokens, channel names, or webhook URLs without hardcoding them in the script itself. Parameters can include Zabbix macros such as `{ALERT.MESSAGE}` or `{ALERT.SENDTO}`.
+**Parameters**: key-value pairs that are made available inside the script via the
+`params` object (or via the macros `{$PARAM_NAME}` in the script). This is how
+you inject configuration like API tokens, channel names, or webhook URLs without
+hardcoding them in the script itself. Parameters can include Zabbix macros such
+as `{ALERT.MESSAGE}` or `{ALERT.SENDTO}`.
 
-**Timeout** — the maximum time in seconds the script is allowed to run. If the script does not complete within this time, Zabbix kills it and treats it as a failure.
+**Timeout**: the maximum time in seconds the script is allowed to run. If the
+script does not complete within this time, Zabbix kills it and treats it as a failure.
 
-**Process tags** — if enabled, Zabbix passes event tags into the webhook script, which can be useful for routing or enriching the notification.
+**Process tags**: If enabled, Zabbix passes event tags into the webhook script,
+which can be useful for routing or enriching the notification.
 
-**Include event menu entry** — adds a link to the event in the Zabbix frontend as part of the notification, useful when the target system supports clickable URLs.
+**Include event menu entry**: Adds a link to the event in the Zabbix frontend
+as part of the notification, useful when the target system supports clickable
+URLs.
 
-**Message templates** — like all media types, webhooks can have default message templates per event type.
-
-Good call. The best thing to test against is a free, zero-setup HTTP inspection service — **webhook.site** gives you a unique URL instantly and shows every request that hits it in real time. No account needed, no server to run. Perfect for a book example.
-
-Here's a replacement section:
+**Message templates**: like all media types, webhooks can have default message
+templates per event type.
 
 ---
 
 ### Writing a Custom Webhook Script
 
-If no pre-built integration exists for your target service, writing your own webhook script is straightforward. Before you wire it up to a real endpoint, it is worth testing against a public HTTP inspection tool so you can see exactly what Zabbix sends. **webhook.site** is ideal for this: open [https://webhook.site](https://webhook.site) in your browser and you immediately get a unique URL that captures every request made to it, showing headers, body, and status — no account or setup required.
+If no pre-built integration exists for your target service, writing your own
+webhook script is straightforward. Before you wire it up to a real endpoint,
+it is worth testing against a public HTTP inspection tool so you can see exactly
+what Zabbix sends. **webhook.site** is ideal for this: open
+[https://webhook.site](https://webhook.site) in your browser and you immediately
+get a unique URL that captures every request made to it, showing headers, body,
+and status, no account or setup required.
 
-Use that URL during development, then swap it for your real endpoint once everything looks correct.
+Use that URL during development, then swap it for your real endpoint once everything
+looks correct.
 
 Here is a minimal webhook script that posts a JSON notification:
 
