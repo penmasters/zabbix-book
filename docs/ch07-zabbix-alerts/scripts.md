@@ -44,17 +44,17 @@ Webhooks (covered in the previous section) are the preferred modern approach for
 integrating with external HTTP services. So when does a custom script make more
 sense?
 
-- **No HTTP endpoint exists.** If your target system does not expose an API.
+- **No HTTP endpoint exists.**: If your target system does not expose an API.
   For example, a legacy ticketing system you interact with via a command-line
   tool, a script is your only option.
-- **Complex local logic is required.** A script can read local files, query a
+- **Complex local logic is required.**: A script can read local files, query a
   local database, call multiple external tools in sequence, or make decisions
   based on the state of the Zabbix server host itself. JavaScript inside a webhook
   is sandboxed and cannot do any of this.
-- **You need shell-level access.** Writing to a file, rotating logs, calling
+- **You need shell-level access.**: Writing to a file, rotating logs, calling
   `logger` to push entries into syslog, or invoking system commands all require
   a real process running on the server. Exactly what the Script type provides.
-- **Learning and debugging.** A logging script that simply writes every alert to
+- **Learning and debugging.**: A logging script that simply writes every alert to
   a file is invaluable when you are learning how Zabbix constructs notifications
   or when you are troubleshooting why a more complex integration is not receiving
   the data it expects.
@@ -172,7 +172,7 @@ LOG_FILE="/var/log/zabbix/alert_logger.log"
 
 # ── Timestamp ─────────────────────────────────────────────────────────────────
 # $(date ...) runs the date command and substitutes its output inline.
-# +"%Y-%m-%d %H:%M:%S" formats it as: 2025-03-30 14:22:05
+# +"%Y-%m-%d %H:%M:%S" formats it as: 2026-03-30 14:22:05
 TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
 
 # ── Write the log entry ───────────────────────────────────────────────────────
@@ -264,7 +264,7 @@ You should see:
 
 ```bash
 ────────────────────────────────────────────────────
-Timestamp : 2025-03-30 14:22:05
+Timestamp : 2026-03-30 14:22:05
 Send To   : ops-team
 Subject   : Problem: High CPU on web01
 Message   :
@@ -300,7 +300,7 @@ The order matters, these become `$1`, `$2`, and `$3` in the script exactly as
 listed.
 
 Leave **Concurrent sessions** at `1`, **Attempts** at `3`, and **Attempt interval**
-at `5m`.
+at `10s`.
 
 Under **Message templates**, add a template for the **Problem** event type:
 
@@ -396,7 +396,7 @@ the dummy trigger.
 
 ## Log Rotation
 
-The log file will grow indefinitely without rotation. On RHEL/Rocky/AlmaLinux,
+The log file will grow indefinitely without rotation. On most linux distros
 `logrotate` is the standard tool for this. Create a configuration file:
 
 ```bash
@@ -416,12 +416,12 @@ vi /etc/logrotate.d/zabbix-alert-logger
 
 Each directive does the following:
 
-- `daily` — rotate once per day.
-- `rotate 30` — keep 30 days of compressed archives before deleting the oldest.
-- `compress` — gzip old log files to save disk space.
-- `missingok` — do not raise an error if the log file does not exist yet.
-- `notifempty` — skip rotation if the file is empty (no alerts that day).
-- `create 0640 zabbix zabbix` — after rotating, create a fresh empty log file
+- `daily`: rotate once per day.
+- `rotate 30`: keep 30 days of compressed archives before deleting the oldest.
+- `compress`: gzip old log files to save disk space.
+- `missingok`: do not raise an error if the log file does not exist yet.
+- `notifempty`: skip rotation if the file is empty (no alerts that day).
+- `create 0640 zabbix zabbix`: after rotating, create a fresh empty log file
   with the correct ownership so the script can continue writing immediately.
 
 Test the configuration:
@@ -451,15 +451,19 @@ intentionally. If you find yourself needing to call a script elsewhere on the
 filesystem, place a thin wrapper inside `AlertScriptsPath` that calls the other
 script, and ensure the `zabbix` user has permission to execute it.
 
-**Do not make scripts world-writable.** Zabbix will refuse to execute a script
-that has world-write permissions (`chmod o+w`). This is a guard against privilege
-escalation — if any unprivileged user on the system could modify the script, they
-could make the Zabbix server execute arbitrary code.
+!!! warning
 
-**Treat `{ALERT.MESSAGE}` as untrusted input.** If your script passes the message
-body to a shell command, an external API, or a database query, sanitise it first.
-In a simple logging script this is not a concern, but in more complex integrations
-it matters.
+    Do not make scripts world-writable. If any unprivileged user on the system
+    can modify a script in AlertScriptsPath, they could insert arbitrary code
+    that the Zabbix server will execute. The root:zabbix ownership with chmod
+    750 described above prevents this entirely.
+
+!!! tip
+
+    **Treat `{ALERT.MESSAGE}` as untrusted input.** If your script passes the message
+    body to a shell command, an external API, or a database query, sanitise it
+    first. In a simple logging script this is not a concern, but in more complex
+    integrations it matters.
 
 ---
 
@@ -467,30 +471,29 @@ it matters.
 
 Once the basic logger is working, several natural extensions become straightforward:
 
-- **Route by severity.** Parse `$2` (the subject) for keywords like `DISASTER`
+- **Route by severity.**: Parse `$2` (the subject) for keywords like `DISASTER`
   or `HIGH` and write those entries to a separate file or send an additional
   notification.
-- **Push to syslog.** Replace the `cat >> $LOG_FILE` block with
+- **Push to syslog.**: Replace the `cat >> $LOG_FILE` block with
   `logger -t zabbix-alert "$SUBJECT: $MESSAGE"` to send alerts into the system
   journal, where they become visible in `journalctl` and can be forwarded by
   `rsyslog` or `fluentd`.
-- **Call a secondary script.** Once you are confident the data Zabbix passes
+- **Call a secondary script.**: Once you are confident the data Zabbix passes
   looks correct (confirmed by inspecting the log), replace or supplement the
   logging block with a `curl` call to a REST API, passing `$MESSAGE` as the
   request body.
 
-The logger pattern — write first, act second — is a reliable development workflow
+The logger pattern, write first, act second. This is a reliable development workflow
 for any custom script integration.
 
 ---
 
 ## Useful URLs
 
-- https://www.zabbix.com/documentation/current/en/manual/config/notifications/media/script — Official Script media type reference
-- https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location — Full macro reference for message templates
-- https://www.gnu.org/software/bash/manual/bash.html — Bash reference manual
-- https://linux.die.net/man/8/logrotate — logrotate man page
-- https://www.zabbix.com/forum — Zabbix community forum, active source of real-world script examples
+- https://www.zabbix.com/documentation/current/en/manual/config/notifications/media/script
+- https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location
+- https://www.gnu.org/software/bash/manual/bash.html
+- https://linux.die.net/man/8/logrotate
 
 ---
 

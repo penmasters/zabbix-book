@@ -503,3 +503,5 @@ gb
 qt
 agentless
 rigor
+syslog
+gzip
