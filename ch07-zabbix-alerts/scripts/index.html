@@ -1,0 +1,2782 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Automate responses with Zabbix scripts. Execute remote commands or integrations
+directly from triggers, actions, or the web interface.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/ch07-zabbix-alerts/scripts/">
+      
+      
+        <link rel="prev" href="../media-types/">
+      
+      
+        <link rel="next" href="../actions/">
+      
+      
+        
+          <link rel="alternate" href="../../fr/ch07-zabbix-alerts/scripts/" hreflang="fr">
+        
+          <link rel="alternate" href="../../nl/ch07-zabbix-alerts/scripts/" hreflang="nl">
+        
+          <link rel="alternate" href="../../pt_BR/ch07-zabbix-alerts/scripts/" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../ru/ch07-zabbix-alerts/scripts/" hreflang="ru">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Custom Alert Scripts - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css?v=51c41ed071902aab73f7cd98ba40de382e274f31">
+    
+      <link rel="stylesheet" href="../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Custom Alert Scripts">
+    <meta property="og:description" content="Automate responses with Zabbix scripts. Execute remote commands or integrations directly from triggers, actions, or the web interface.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/ch07-zabbix-alerts/scripts/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Custom Alert Scripts">
+    <meta name="twitter:description" content="Automate responses with Zabbix scripts. Execute remote commands or integrations directly from triggers, actions, or the web interface.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#custom-alert-scripts" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Select version";
+        const gGMC_TRANSLATE_CTA = "Support us and translate!";
+        const gGMC_PAGE_LOCALE = "en";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Custom Alert Scripts
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../fr/ch07-zabbix-alerts/scripts/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../nl/ch07-zabbix-alerts/scripts/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../pt_BR/ch07-zabbix-alerts/scripts/" hreflang="pt_BR" class="md-select__link">
+              Brazilian Portuguese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../ru/ch07-zabbix-alerts/scripts/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 07 : Alerting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sending out alerts with Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../media-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Media types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Alert Scripts
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Alert Scripts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-custom-alert-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is a Custom Alert Script?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-use-a-script-instead-of-a-webhook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Use a Script Instead of a Webhook?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-zabbix-passes-data-to-a-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Zabbix Passes Data to a Script
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-alertscriptspath-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The AlertScriptsPath Directory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step-building-an-alert-logger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-Step: Building an Alert Logger
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-Step: Building an Alert Logger">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-the-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Create the Script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-set-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Set Permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-verify-the-log-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Verify the Log Directory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-test-the-script-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Test the Script Manually
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-create-the-media-type-in-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Create the Media Type in Zabbix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-assign-to-a-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Assign to a User
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-verify-an-action-is-in-place" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7 - Verify an Action Is in Place
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-trigger-a-test-alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8 — Trigger a Test Alert
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#log-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log Rotation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Considerations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-the-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending the Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/network-host-discovery/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-custom-alert-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is a Custom Alert Script?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-use-a-script-instead-of-a-webhook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Use a Script Instead of a Webhook?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-zabbix-passes-data-to-a-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Zabbix Passes Data to a Script
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-alertscriptspath-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The AlertScriptsPath Directory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step-building-an-alert-logger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-Step: Building an Alert Logger
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-Step: Building an Alert Logger">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-the-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Create the Script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-set-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Set Permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-verify-the-log-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Verify the Log Directory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-test-the-script-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Test the Script Manually
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-create-the-media-type-in-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Create the Media Type in Zabbix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-assign-to-a-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Assign to a User
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-verify-an-action-is-in-place" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7 - Verify an Action Is in Place
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-trigger-a-test-alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8 — Trigger a Test Alert
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#log-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log Rotation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Considerations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-the-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending the Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 07 : Alerting
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="advanced">
+      Advanced
+    </span>
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="expert">
+      Expert
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch07-zabbix-alerts/scripts.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="custom-alert-scripts">Custom Alert Scripts</h1>
+<p>The previous section covered media types in full, including the <strong>Script</strong> type.
+This chapter goes one level deeper. You will learn exactly how Zabbix hands
+off data to an external script, what constraints apply, and how to write a script
+that does something genuinely useful. By the end you will have a working alert
+logger running on your Zabbix server that you can inspect, extend, and reuse as
+a foundation for your own integrations.</p>
+<hr />
+<h2 id="what-is-a-custom-alert-script">What Is a Custom Alert Script?</h2>
+<p>A custom alert script is any executable file, a shell script, a Python script,
+a compiled binary, anything the operating system can run, that Zabbix calls when
+it needs to deliver a notification through a <strong>Script</strong> media type.</p>
+<p>When a notification is triggered, the Zabbix server:</p>
+<ol>
+<li>Resolves all macros in the configured script parameters.</li>
+<li>Locates the script file inside <code>AlertScriptsPath</code>.</li>
+<li>Executes it as the <code>zabbix</code> system user, passing the resolved parameters as
+   positional arguments.</li>
+<li>Waits for the script to exit.</li>
+<li>Treats exit code <code>0</code> as success and any non-zero exit code as failure.</li>
+<li>Logs the outcome in <strong>Reports → Action log</strong>.</li>
+</ol>
+<p>That is the entire contract between Zabbix and your script. Everything else,
+what language you write it in, what the script does with the data, whether it
+talks to an API, writes a file, or sends an email, is entirely up to you.</p>
+<hr />
+<h2 id="why-use-a-script-instead-of-a-webhook">Why Use a Script Instead of a Webhook?</h2>
+<p>Webhooks (covered in the previous section) are the preferred modern approach for
+integrating with external HTTP services. So when does a custom script make more
+sense?</p>
+<ul>
+<li><strong>No HTTP endpoint exists.</strong>: If your target system does not expose an API.
+  For example, a legacy ticketing system you interact with via a command-line
+  tool, a script is your only option.</li>
+<li><strong>Complex local logic is required.</strong>: A script can read local files, query a
+  local database, call multiple external tools in sequence, or make decisions
+  based on the state of the Zabbix server host itself. JavaScript inside a webhook
+  is sandboxed and cannot do any of this.</li>
+<li><strong>You need shell-level access.</strong>: Writing to a file, rotating logs, calling
+  <code>logger</code> to push entries into syslog, or invoking system commands all require
+  a real process running on the server. Exactly what the Script type provides.</li>
+<li><strong>Learning and debugging.</strong>: A logging script that simply writes every alert to
+  a file is invaluable when you are learning how Zabbix constructs notifications
+  or when you are troubleshooting why a more complex integration is not receiving
+  the data it expects.</li>
+</ul>
+<hr />
+<h2 id="how-zabbix-passes-data-to-a-script">How Zabbix Passes Data to a Script</h2>
+<p>Understanding the exact mechanics saves a lot of confusion. Zabbix passes data
+to your script exclusively through <strong>positional arguments</strong>, the same <code>$1</code>, <code>$2</code>,
+<code>$3</code> you use in any shell script.</p>
+<p>You define which data Zabbix passes, and in which order, using the <strong>Script
+parameters</strong> list in the media type configuration. Each line in that list becomes
+one argument. Zabbix resolves any macros in the parameter value before calling
+the script, so by the time your script runs, <code>$1</code> is already the actual host name,
+not the string <code>{HOST.NAME}</code>.</p>
+<p>Three macros are used almost universally in Script media types:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Macro</th>
+<th style="text-align: left;">What it contains</th>
+<th style="text-align: left;">Argument</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>{ALERT.SENDTO}</code></td>
+<td style="text-align: left;">The value from the user's <strong>Send to</strong> field</td>
+<td style="text-align: left;"><code>$1</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>{ALERT.SUBJECT}</code></td>
+<td style="text-align: left;">The notification subject from the message template</td>
+<td style="text-align: left;"><code>$2</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>{ALERT.MESSAGE}</code></td>
+<td style="text-align: left;">The full notification body from the message template</td>
+<td style="text-align: left;"><code>$3</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>{ALERT.SENDTO}</code> is the contact address the user entered in their media assignment.
+For email that is an email address. For a script it can be anything you choose
+to put there, a username, a file path, a team name, a routing key. Your script
+decides how to use it.</p>
+<hr />
+<h2 id="the-alertscriptspath-directory">The AlertScriptsPath Directory</h2>
+<p>All scripts must live inside the directory defined by <code>AlertScriptsPath</code> in
+<code>/etc/zabbix/zabbix_server.conf</code>. Usually the default value is:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">AlertScriptsPath</span><span class="o">=</span>/usr/lib/zabbix/alertscripts
+</span></code></pre></div>
+<p>You can verify the value on your system with:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>grep<span class="w"> </span>AlertScriptsPath<span class="w"> </span>/etc/zabbix/zabbix_server.conf
+</span></code></pre></div>
+<p>If the line is commented out, the default above applies. Zabbix will refuse to
+execute any script located outside this directory, even if you supply a full path.
+This is a deliberate security boundary.</p>
+<p>The script file must meet two requirements:</p>
+<ol>
+<li>It must be <strong>executable</strong> by the <code>zabbix</code> system user.</li>
+<li>It must be <strong>owned</strong> appropriately, world-writable scripts are rejected as
+   a security measure.</li>
+</ol>
+<p>The correct ownership and permissions for most scripts are:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>chown<span class="w"> </span>root:zabbix<span class="w"> </span>/usr/lib/zabbix/alertscripts/your-script.sh
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>chmod<span class="w"> </span><span class="m">750</span><span class="w"> </span>/usr/lib/zabbix/alertscripts/your-script.sh
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Why root:zabbix and not zabbix:zabbix? The zabbix user needs to execute the
+script, not own it. Ownership by root means only root can modify the file. If
+the zabbix process were ever compromised, an attacker could not alter scripts
+in AlertScriptsPath to execute arbitrary code. This is the same principle that
+applies to system binaries — readable and executable by unprivileged users,
+but modifiable only by root.</p>
+</div>
+<hr />
+<h2 id="step-by-step-building-an-alert-logger">Step-by-Step: Building an Alert Logger</h2>
+<p>This example builds a script that writes every Zabbix alert to a structured log
+file. It is useful in two concrete ways:</p>
+<ul>
+<li>As a <strong>permanent audit trail</strong> of every notification Zabbix attempted to send,
+  independent of the Action log retention period in the database.</li>
+<li>As a <strong>debugging aid</strong> when building more complex integrations, you can see
+  exactly what data Zabbix is sending before you point a script at a real endpoint.</li>
+</ul>
+<h3 id="step-1-create-the-script">Step 1 — Create the Script</h3>
+<p>Create the script file:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>vi<span class="w"> </span>/usr/lib/zabbix/alertscripts/alert_logger.sh
+</span></code></pre></div>
+<p>Paste the following content:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="ch">#!/bin/bash</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># alert_logger.sh</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Writes every Zabbix alert notification to a structured log file.</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># ── Arguments ────────────────────────────────────────────────────────────────</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># Zabbix passes the three parameters we define in the media type as positional</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># arguments. We assign them to named variables immediately so the rest of the</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1"># script is readable.</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nv">SENDTO</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w">       </span><span class="c1"># The value from the user&#39;s &quot;Send to&quot; field</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nv">SUBJECT</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$2</span><span class="s2">&quot;</span><span class="w">      </span><span class="c1"># The notification subject</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nv">MESSAGE</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$3</span><span class="s2">&quot;</span><span class="w">      </span><span class="c1"># The full notification body</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="c1"># ── Configuration ─────────────────────────────────────────────────────────────</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="c1"># The file we write to. The zabbix user must be able to write here.</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="c1"># /var/log/zabbix/ already exists and is owned by the zabbix user on a standard</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="c1"># installation.</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&quot;/var/log/zabbix/alert_logger.log&quot;</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="c1"># ── Timestamp ─────────────────────────────────────────────────────────────────</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="c1"># $(date ...) runs the date command and substitutes its output inline.</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="c1"># +&quot;%Y-%m-%d %H:%M:%S&quot; formats it as: 2026-03-30 14:22:05</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="nv">TIMESTAMP</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+<span class="s2">&quot;%Y-%m-%d %H:%M:%S&quot;</span><span class="k">)</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="c1"># ── Write the log entry ───────────────────────────────────────────────────────</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="c1"># The &gt;&gt; operator appends to the file (a single &gt; would overwrite it each time).</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="c1"># The lines between the two EOF markers are a &quot;here document&quot; — a convenient</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="c1"># way to write a multi-line block of text without lots of echo statements.</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="c1"># Each variable is expanded when the line is written.</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>cat<span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LOG_FILE</span><span class="s2">&quot;</span><span class="w"> </span><span class="s">&lt;&lt; EOF</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="s">────────────────────────────────────────────────────</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="s">Timestamp : $TIMESTAMP</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="s">Send To   : $SENDTO</span>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="s">Subject   : $SUBJECT</span>
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="s">Message   :</span>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a><span class="s">$MESSAGE</span>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a><span class="s">EOF</span>
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a><span class="c1"># ── Exit cleanly ──────────────────────────────────────────────────────────────</span>
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a><span class="c1"># Exit code 0 tells Zabbix the notification was delivered successfully.</span>
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="c1"># Any non-zero exit code causes Zabbix to mark the attempt as failed and retry.</span>
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+</span></code></pre></div>
+<p>Save and close the file.</p>
+<h3 id="step-2-set-permissions">Step 2 — Set Permissions</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>chown<span class="w"> </span>root:zabbix<span class="w"> </span>/usr/lib/zabbix/alertscripts/alert_logger.sh
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>chmod<span class="w"> </span><span class="m">750</span><span class="w"> </span>/usr/lib/zabbix/alertscripts/alert_logger.sh
+</span></code></pre></div>
+<p>Verify:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ls<span class="w"> </span>-l<span class="w"> </span>/usr/lib/zabbix/alertscripts/alert_logger.sh
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>-rwxr-x---<span class="w"> </span><span class="m">1</span><span class="w"> </span>root<span class="w"> </span>zabbix<span class="w"> </span>...<span class="w"> </span>alert_logger.sh
+</span></code></pre></div>
+<h3 id="step-3-verify-the-log-directory">Step 3 — Verify the Log Directory</h3>
+<p>The script writes to <code>/var/log/zabbix/</code>. On a standard Zabbix installation this
+directory already exists and is owned by the <code>zabbix</code> user.</p>
+<p>Confirm:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ls<span class="w"> </span>-ld<span class="w"> </span>/var/log/zabbix/
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>drwxr-xr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>zabbix<span class="w"> </span>zabbix<span class="w"> </span>...<span class="w"> </span>/var/log/zabbix/
+</span></code></pre></div>
+<p>If the directory does not exist, create it:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>/var/log/zabbix/
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>chown<span class="w"> </span>zabbix:zabbix<span class="w"> </span>/var/log/zabbix/
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span>/var/log/zabbix/
+</span></code></pre></div>
+<h3 id="step-4-test-the-script-manually">Step 4 — Test the Script Manually</h3>
+<p>Before touching the Zabbix frontend, test the script directly as the <code>zabbix</code> user.
+This confirms the permissions are correct and the script runs without errors,
+independently of Zabbix itself.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo<span class="w"> </span>-u<span class="w"> </span>zabbix<span class="w"> </span>/usr/lib/zabbix/alertscripts/alert_logger.sh<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="s2">&quot;ops-team&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="s2">&quot;Problem: High CPU on web01&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="s2">&quot;Host web01 has exceeded 90% CPU for 5 minutes.&quot;</span>
+</span></code></pre></div>
+<p>Then check the log:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cat<span class="w"> </span>/var/log/zabbix/alert_logger.log
+</span></code></pre></div>
+<p>You should see:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>────────────────────────────────────────────────────
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>Timestamp<span class="w"> </span>:<span class="w"> </span><span class="m">2026</span>-03-30<span class="w"> </span><span class="m">14</span>:22:05
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>Send<span class="w"> </span>To<span class="w">   </span>:<span class="w"> </span>ops-team
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>Subject<span class="w">   </span>:<span class="w"> </span>Problem:<span class="w"> </span>High<span class="w"> </span>CPU<span class="w"> </span>on<span class="w"> </span>web01
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>Message<span class="w">   </span>:
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>Host<span class="w"> </span>web01<span class="w"> </span>has<span class="w"> </span>exceeded<span class="w"> </span><span class="m">90</span>%<span class="w"> </span>CPU<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="m">5</span><span class="w"> </span>minutes.
+</span></code></pre></div>
+<p>If the file is empty or does not exist, the most likely cause is a permissions
+problem, or things like SeLinux or AppArmor. Run the command above without
+<code>sudo -u zabbix</code> as root first to confirm the script itself works, then re-check
+the ownership of both the script and the
+log directory.</p>
+<h3 id="step-5-create-the-media-type-in-zabbix">Step 5 — Create the Media Type in Zabbix</h3>
+<p>Go to <strong>Alerts → Media types</strong> and click <strong>Create media type</strong>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;"><code>Alert Logger</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;"><code>Script</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Script name</td>
+<td style="text-align: left;"><code>alert_logger.sh</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Description</td>
+<td style="text-align: left;"><code>Writes all alert notifications to /var/log/zabbix/alert_logger.log</code></td>
+</tr>
+</tbody>
+</table>
+<p>Under <strong>Script parameters</strong>, click <strong>Add</strong> three times and enter one value per line:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;"><code>{ALERT.SENDTO}</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;"><code>{ALERT.SUBJECT}</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;"><code>{ALERT.MESSAGE}</code></td>
+</tr>
+</tbody>
+</table>
+<p>The order matters, these become <code>$1</code>, <code>$2</code>, and <code>$3</code> in the script exactly as
+listed.</p>
+<p>Leave <strong>Concurrent sessions</strong> at <code>1</code>, <strong>Attempts</strong> at <code>3</code>, and <strong>Attempt interval</strong>
+at <code>10s</code>.</p>
+<p>Under <strong>Message templates</strong>, add a template for the <strong>Problem</strong> event type:</p>
+<p>Subject:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Problem:<span class="w"> </span><span class="o">{</span>EVENT.NAME<span class="o">}</span>
+</span></code></pre></div>
+<p>Message body:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Host<span class="w">       </span>:<span class="w"> </span><span class="o">{</span>HOST.NAME<span class="o">}</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>Severity<span class="w">   </span>:<span class="w"> </span><span class="o">{</span>EVENT.SEVERITY<span class="o">}</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Problem<span class="w">    </span>:<span class="w"> </span><span class="o">{</span>EVENT.NAME<span class="o">}</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>Started<span class="w">    </span>:<span class="w"> </span><span class="o">{</span>EVENT.DATE<span class="o">}</span><span class="w"> </span><span class="o">{</span>EVENT.TIME<span class="o">}</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>Event<span class="w"> </span>ID<span class="w">   </span>:<span class="w"> </span><span class="o">{</span>EVENT.ID<span class="o">}</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>Operational:<span class="w"> </span><span class="o">{</span>EVENT.OPDATA<span class="o">}</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>URL<span class="w">        </span>:<span class="w"> </span><span class="o">{</span>EVENT.URL<span class="o">}</span>
+</span></code></pre></div>
+<p>Add a second template for <strong>Problem recovery</strong>:</p>
+<p>Subject:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Resolved:<span class="w"> </span><span class="o">{</span>EVENT.NAME<span class="o">}</span>
+</span></code></pre></div>
+<p>Message body:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Host<span class="w">       </span>:<span class="w"> </span><span class="o">{</span>HOST.NAME<span class="o">}</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>Severity<span class="w">   </span>:<span class="w"> </span><span class="o">{</span>EVENT.SEVERITY<span class="o">}</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Problem<span class="w">    </span>:<span class="w"> </span><span class="o">{</span>EVENT.NAME<span class="o">}</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>Resolved<span class="w">   </span>:<span class="w"> </span><span class="o">{</span>EVENT.RECOVERY.DATE<span class="o">}</span><span class="w"> </span><span class="o">{</span>EVENT.RECOVERY.TIME<span class="o">}</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>Duration<span class="w">   </span>:<span class="w"> </span><span class="o">{</span>EVENT.DURATION<span class="o">}</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>Event<span class="w"> </span>ID<span class="w">   </span>:<span class="w"> </span><span class="o">{</span>EVENT.ID<span class="o">}</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>URL<span class="w">        </span>:<span class="w"> </span><span class="o">{</span>EVENT.URL<span class="o">}</span>
+</span></code></pre></div>
+<p>Click <strong>Add</strong> to save the media type.</p>
+<h3 id="step-6-assign-to-a-user">Step 6 — Assign to a User</h3>
+<p>Go to <strong>Users → Users</strong>, open your user, click the <strong>Media</strong> tab, and click <strong>Add</strong>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;"><code>Alert Logger</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Send to</td>
+<td style="text-align: left;"><code>ops-team</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">When active</td>
+<td style="text-align: left;"><code>1-7,00:00-24:00</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Use if severity</td>
+<td style="text-align: left;">all severities checked</td>
+</tr>
+<tr>
+<td style="text-align: left;">Status</td>
+<td style="text-align: left;">Enabled</td>
+</tr>
+</tbody>
+</table>
+<p>The value in <strong>Send to</strong> becomes <code>$1</code> (<code>SENDTO</code>) inside the script. In this example
+the script does not use it for routing, but it is written to the log entry so you
+can see which user or team the alert was destined for — useful when multiple users
+share the same log file.</p>
+<p>Click <strong>Add</strong> then <strong>Update</strong>.</p>
+<h3 id="step-7-verify-an-action-is-in-place">Step 7 - Verify an Action Is in Place</h3>
+<p>The media type and user assignment are ready, but Zabbix will not call the script
+until an Action decides to send a notification. Go to <code>Alerts</code> → <code>Actions</code>
+→ <code>Trigger actions</code> and confirm that at least one enabled action exists that:</p>
+<ul>
+<li>Has the Operation set to Send message</li>
+<li>Targets the user you assigned the Alert Logger media type to (either directly
+  or via a group they belong to)</li>
+<li>Matches the conditions under which your test trigger will fire (severity, host
+  group, etc.)</li>
+</ul>
+<p>If no such action exists, create one. Without it, the trigger in Step 8 will fire
+and appear in the problem list, but the Action log will be empty and the script
+will never be called.</p>
+<h3 id="step-8-trigger-a-test-alert">Step 8 — Trigger a Test Alert</h3>
+<p>The quickest way to produce a real notification is a dummy trigger. Go to
+<strong>Data collection → Hosts</strong>, choose any monitored host, open its <strong>Triggers</strong> tab,
+and click <strong>Create trigger</strong>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;"><code>Test alert logger</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Severity</td>
+<td style="text-align: left;"><code>Warning</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Expression</td>
+<td style="text-align: left;"><code>last(/your-host/system.uptime)&gt;0</code></td>
+</tr>
+</tbody>
+</table>
+<p>Replace <code>your-host</code> with the actual host name. <code>system.uptime</code> returns the number
+of seconds the host has been running. It will always be greater than zero on a
+live host, so the trigger fires immediately and stays in a problem state
+continuously, which is exactly what you want for a one-off test.</p>
+<p>Click <strong>Add</strong> to save. Within a few seconds the trigger should fire. Go to
+<strong>Reports → Action log</strong> and confirm an entry appears with status <strong>Sent</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For this to work you need the standard <code>Zabbix server</code> working with the
+standard templates still applied to your host. If not create a new item with
+the item key system.uptime.</p>
+</div>
+<p>Then check the log file on the Zabbix server:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/zabbix/alert_logger.log
+</span></code></pre></div>
+<p>You should see a new entry for the test alert. Once confirmed, disable or delete
+the dummy trigger.</p>
+<hr />
+<h2 id="log-rotation">Log Rotation</h2>
+<p>The log file will grow indefinitely without rotation. On most linux distros
+<code>logrotate</code> is the standard tool for this. Create a configuration file:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>vi<span class="w"> </span>/etc/logrotate.d/zabbix-alert-logger
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>/var/log/zabbix/alert_logger.log<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">    </span>daily
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span>rotate<span class="w"> </span><span class="m">30</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">    </span>compress
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span>missingok
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">    </span>notifempty
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">    </span>create<span class="w"> </span><span class="m">0640</span><span class="w"> </span>zabbix<span class="w"> </span>zabbix
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="o">}</span>
+</span></code></pre></div>
+<p>Each directive does the following:</p>
+<ul>
+<li><code>daily</code>: rotate once per day.</li>
+<li><code>rotate 30</code>: keep 30 days of compressed archives before deleting the oldest.</li>
+<li><code>compress</code>: gzip old log files to save disk space.</li>
+<li><code>missingok</code>: do not raise an error if the log file does not exist yet.</li>
+<li><code>notifempty</code>: skip rotation if the file is empty (no alerts that day).</li>
+<li><code>create 0640 zabbix zabbix</code>: after rotating, create a fresh empty log file
+  with the correct ownership so the script can continue writing immediately.</li>
+</ul>
+<p>Test the configuration:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>logrotate<span class="w"> </span>-d<span class="w"> </span>/etc/logrotate.d/zabbix-alert-logger
+</span></code></pre></div>
+<p>The <code>-d</code> flag runs a dry run and prints what would happen without actually rotating
+anything. Confirm the output references the correct file, then let the system
+scheduler handle it going forward.</p>
+<hr />
+<h2 id="security-considerations">Security Considerations</h2>
+<p>A few points worth keeping in mind when writing or deploying alert scripts:</p>
+<p><strong>Scripts run as the <code>zabbix</code> user.</strong> This is an unprivileged system account.
+If your script needs to do something that requires elevated privileges — writing
+to a directory owned by root, restarting a service — you will need to grant
+specific <code>sudo</code> permissions for that action only, via <code>/etc/sudoers.d/</code>. Never
+run the Zabbix server as root to work around this.</p>
+<p><strong>Never place scripts outside <code>AlertScriptsPath</code>.</strong> Zabbix enforces this boundary
+intentionally. If you find yourself needing to call a script elsewhere on the
+filesystem, place a thin wrapper inside <code>AlertScriptsPath</code> that calls the other
+script, and ensure the <code>zabbix</code> user has permission to execute it.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not make scripts world-writable. If any unprivileged user on the system
+can modify a script in AlertScriptsPath, they could insert arbitrary code
+that the Zabbix server will execute. The root:zabbix ownership with chmod
+750 described above prevents this entirely.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Treat <code>{ALERT.MESSAGE}</code> as untrusted input.</strong> If your script passes the message
+body to a shell command, an external API, or a database query, sanitise it
+first. In a simple logging script this is not a concern, but in more complex
+integrations it matters.</p>
+</div>
+<hr />
+<h2 id="extending-the-example">Extending the Example</h2>
+<p>Once the basic logger is working, several natural extensions become straightforward:</p>
+<ul>
+<li><strong>Route by severity.</strong>: Parse <code>$2</code> (the subject) for keywords like <code>DISASTER</code>
+  or <code>HIGH</code> and write those entries to a separate file or send an additional
+  notification.</li>
+<li><strong>Push to syslog.</strong>: Replace the <code>cat &gt;&gt; $LOG_FILE</code> block with
+  <code>logger -t zabbix-alert "$SUBJECT: $MESSAGE"</code> to send alerts into the system
+  journal, where they become visible in <code>journalctl</code> and can be forwarded by
+  <code>rsyslog</code> or <code>fluentd</code>.</li>
+<li><strong>Call a secondary script.</strong>: Once you are confident the data Zabbix passes
+  looks correct (confirmed by inspecting the log), replace or supplement the
+  logging block with a <code>curl</code> call to a REST API, passing <code>$MESSAGE</code> as the
+  request body.</li>
+</ul>
+<p>The logger pattern, write first, act second. This is a reliable development workflow
+for any custom script integration.</p>
+<hr />
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li>https://www.zabbix.com/documentation/current/en/manual/config/notifications/media/script</li>
+<li>https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location</li>
+<li>https://www.gnu.org/software/bash/manual/bash.html</li>
+<li>https://linux.die.net/man/8/logrotate</li>
+</ul>
+<hr />
+<h2 id="questions">Questions</h2>
+<ol>
+<li>
+<p>What exit code must a script return to tell Zabbix the notification was
+   delivered successfully? What happens if it returns a different value?</p>
+</li>
+<li>
+<p>Where must alert scripts be placed on the Zabbix server, and why does Zabbix
+   enforce this restriction?</p>
+</li>
+<li>
+<p>In the media type configuration, you define three script parameters:
+   <code>{ALERT.SENDTO}</code>, <code>{ALERT.SUBJECT}</code>, and <code>{ALERT.MESSAGE}</code>. Inside the script,
+   what are the corresponding variable names for each?</p>
+</li>
+<li>
+<p>You run the alert logger script manually as the <code>zabbix</code> user and it works
+   correctly, but no log entries appear when a real Zabbix alert fires. The Action
+   log shows the notification status as <strong>Sent</strong>. What is the most likely
+   explanation?</p>
+</li>
+<li>
+<p>A colleague suggests making the alertscripts directory writable by the <code>zabbix</code>
+   user so the scripts can update themselves. Why is this a bad idea?</p>
+</li>
+<li>
+<p>You want the alert logger to write <strong>Disaster</strong> severity alerts to a separate
+   file so they are never mixed with lower-severity entries. Which argument
+   (<code>$1</code>, <code>$2</code>, or <code>$3</code>) would you inspect in the script to determine severity,
+   and why?</p>
+</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../js/print-site.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/tags-data-attr.js?v=51c41ed071902aab73f7cd98ba40de382e274f31"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>
