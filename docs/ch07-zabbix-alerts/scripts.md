@@ -363,7 +363,23 @@ share the same log file.
 
 Click **Add** then **Update**.
 
-### Step 7 — Trigger a Test Alert
+### Step 7 - Verify an Action Is in Place
+
+The media type and user assignment are ready, but Zabbix will not call the script
+until an Action decides to send a notification. Go to `Alerts` → `Actions`
+→ `Trigger actions` and confirm that at least one enabled action exists that:
+
+- Has the Operation set to Send message
+- Targets the user you assigned the Alert Logger media type to (either directly
+  or via a group they belong to)
+- Matches the conditions under which your test trigger will fire (severity, host
+  group, etc.)
+
+If no such action exists, create one. Without it, the trigger in Step 8 will fire
+and appear in the problem list, but the Action log will be empty and the script
+will never be called.
+
+### Step 8 — Trigger a Test Alert
 
 The quickest way to produce a real notification is a dummy trigger. Go to
 **Configuration → Hosts**, choose any monitored host, open its **Triggers** tab,
@@ -376,12 +392,18 @@ and click **Create trigger**.
 | Expression | `last(/your-host/system.uptime)>0` |
 
 Replace `your-host` with the actual host name. `system.uptime` returns the number
-of seconds the host has been running — it will always be greater than zero on a
+of seconds the host has been running. It will always be greater than zero on a
 live host, so the trigger fires immediately and stays in a problem state
 continuously, which is exactly what you want for a one-off test.
 
 Click **Add** to save. Within a few seconds the trigger should fire. Go to
 **Reports → Action log** and confirm an entry appears with status **Sent**.
+
+!!! note
+
+    For this to work you need the standard `Zabbix server` working with the
+    standard templates still applied to your host. If not create a new item with
+    the item key system.uptime.
 
 Then check the log file on the Zabbix server:
 
