@@ -382,7 +382,7 @@ will never be called.
 ### Step 8 — Trigger a Test Alert
 
 The quickest way to produce a real notification is a dummy trigger. Go to
-**Configuration → Hosts**, choose any monitored host, open its **Triggers** tab,
+**Data collection → Hosts**, choose any monitored host, open its **Triggers** tab,
 and click **Create trigger**.
 
 | Field | Value |
