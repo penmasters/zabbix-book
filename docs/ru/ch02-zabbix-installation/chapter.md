@@ -1,10 +1,10 @@
-# Getting started with the Zabbix installation
+# Начало работы с установкой Zabbix
 
-We begin this chapter with a **deep dive into the Zabbix frontend**, the central
-hub where all monitoring and configuration tasks come together. Alongside the
-basic introduction to navigating the frontend, this chapter also covers **user
-and group setup**, focusing on creating a secure and efficient user management
-system.
+Мы начинаем эту главу с **глубокого погружения во фронтенд Zabbix**, центральный
+узел, где собираются все задачи мониторинга и настройки. Наряду с базовым
+введением в навигацию по фронтенду, в этой главе мы также рассмотрим **настройку
+пользователей и групп**, сосредоточившись на создании безопасной и эффективной
+системы управления пользователями.
 
 We'll walk through setting up **internal authentication** with best practices
 for security, including **dual-factor authentication**. For those needing
