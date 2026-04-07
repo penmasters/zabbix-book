@@ -146,7 +146,7 @@ To enable this feature, ensure the next line exists and is not commented (with a
 The path `/etc/zabbix/zabbix_proxy.d/` should already be created by the
 installed package, but ensure it really exists.
 
-Now we wil create a custom configuration file `general.conf` in this
+Now we will create a custom configuration file `general.conf` in this
 `/etc/zabbix/zabbix_proxy.d/` directory that will hold some general proxy
 settings:
 
