@@ -121,6 +121,7 @@ nav:
   - "Chapter 15 : Real world examples":
       - ch15-zabbix-real-world-examples/chapter.md
       - Disk health on Windows: ch15-zabbix-real-world-examples/disk-health-windows.md
+      - Filter LLD without JSON path: ch15-zabbix-real-world-examples/filter-lld-without-jsonpath.md
 
 theme:
   language: en
