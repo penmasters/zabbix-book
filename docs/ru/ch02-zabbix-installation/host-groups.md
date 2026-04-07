@@ -7,14 +7,14 @@ description: |
 tags: [beginner]
 ---
 
-# Host Groups
+# Группы узлов
 
-In Zabbix, **host groups** serve as a foundational mechanism for organizing
-monitored entities. They allow you to logically categorize hosts for easier
-management, simplified permissions, and streamlined configuration, especially
-useful in larger environments.
+В Zabbix **группы узлов** служат основополагающим механизмом для организации
+контролируемых объектов. Они позволяют логически распределить узлы по категориям
+для более легкого управления, упрощения разрешений и оптимизации конфигурации,
+что особенно полезно в больших средах.
 
-Common examples include:
+Общие примеры включают:
 
 - Grouping all **Linux servers** together.
 - Separating **database servers** (e.g., PostgreSQL, MySQL).
