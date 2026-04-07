@@ -5,18 +5,18 @@ description: |
 tags: [beginner]
 ---
 
-# User Groups
+# Группы пользователей
 
 In any enterprise monitoring platform, establishing **role-based access control
 (RBAC)** is critical for maintaining both security and clarity of operational
 responsibility. For Zabbix, this control is built upon the fundamental concept
 of **User Groups**.
 
-In Zabbix 8.0, user groups serve as the primary mechanism for assigning
-permissions and structuring access to the monitored data and configuration
-entities. This chapter details the function of user groups, guides you through
-their configuration, and outlines best practices for applying them in a robust,
-real world deployment.
+В Zabbix 8.0 группы пользователей служат основным механизмом для назначения
+разрешений и структурирования доступа к контролируемым данным и объектам
+конфигурации. В этой главе подробно описаны функции групп пользователей, даны
+рекомендации по их настройке и описаны лучшие практики их применения в надежном,
+реальном развертывании.
 
 ---
 
