@@ -9,9 +9,10 @@ tags: [advanced]
 
 # HTTP
 
-HTTP authentication is one of external authentication methods provided by Zabbix
-and can be used to additionally secure your Zabbix WebUI with basic
-authentication mechanism at HTTP server level.
+HTTP-аутентификация - это один из внешних методов аутентификации,
+предоставляемых Zabbix, который можно использовать для дополнительной защиты
+веб-интерфейса Zabbix с помощью базового механизма аутентификации на уровне
+HTTP-сервера.
 
 Basic HTTP authentication protects Website (Zabbix WebUI) resources with a
 username and password. When a user attempts to access Zabbix WebUI, the browser
