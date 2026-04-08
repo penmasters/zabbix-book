@@ -9,24 +9,26 @@ tags: [expert]
 
 # LDAP / AD
 
-As any modern system Zabbix can perform users authentication using Lightweight
-Directory Access Protocol (LDAP). In theory LDAP is very well defined open
-protocol that should be vendor independent but its relative complexity plays a
-role in every LDAP server implementation. Zabbix is known to work well with
-Microsoft Active Directory and OpenLDAP server.
+Как и любая современная система, Zabbix может выполнять аутентификацию
+пользователей с помощью Lightweight Directory Access Protocol (LDAP). В теории
+LDAP - это очень хорошо определенный открытый протокол, который не зависит от
+производителя, но его относительная сложность играет роль в каждой реализации
+LDAP-сервера. Известно, что Zabbix хорошо работает с Microsoft Active Directory
+и сервером OpenLDAP.
 
-LDAP authentication can be configured in two modes:
+Аутентификация LDAP может быть настроена в двух режимах:
 
-- Users authentication
-- Users authentication with users provisioning
+- Аутентификация пользователей
+- Аутентификация пользователей с провижинингом пользователей
 
-## Users authentication mode
+## Режим аутентификации пользователей
 
-The process of the authenticating users follows this diagram.
+Процесс аутентификации пользователей происходит по следующей схеме.
 
-![LDAP users authentication](ch02.3-ldap-auth-diagram.png){ align=center }
+![Аутентификация пользователей LDAP](ch02.3-ldap-auth-diagram.png){ align=center
+}
 
-_2.3 LDAP users authentication_
+_2.3 Аутентификация пользователей LDAP_
 
 As shown on the diagram a user that tries to log in must be pre-created in
 Zabbix to be able to log in using LDAP. The database user records do not have
@@ -40,10 +42,11 @@ LDAP server to verify whether:
 no other attributes configured for the user on the LDAP server side are taken
 into account.
 
-So when Zabbix is used by many users and groups, user management becomes not a
-very trivial task as new people join different teams (or leave). This problem is
-addressed by "users provisioning" and we'll cover this topic a bit later. For
-now let's take a look at how to configure LDAP authentication.
+Когда Zabbix используется многими пользователями и группами, управление
+пользователями становится не очень простой задачей, поскольку новые люди
+присоединяются к различным командам (или покидают их). Эта проблема решается с
+помощью "провижининга пользователей", и мы рассмотрим эту тему немного позже. А
+пока давайте рассмотрим, как настроить LDAP-аутентификацию.
 
 ## Configure LDAP
 

@@ -283,7 +283,7 @@ logs of the second trapper process.
 
 `zabbix_proxy --runtime-control snmp_cache_reload`
 
-: Forces the proxy to reload its SNMP cache. This is useful if you’ve made
+: Forces the proxy to reload its SNMP cache. This is useful if you've made
 changes to SNMP configurations (e.g., updated community strings, OIDs, or device
 IPs) and want the proxy to immediately pick up the new settings without
 restarting the entire service.
@@ -292,7 +292,7 @@ restarting the entire service.
 
 : Generates diagnostic information for a specific section of the proxy’s
 operation. This is typically used for troubleshooting or performance analysis.
-The section parameter can target areas like historycache, preprocessing or
+The section parameter can target areas like history cache, preprocessing or
 locks. *Example*: `diaginfo=preprocessing` would provide detailed statistics
 about the preprocessing manager.
 
@@ -313,7 +313,7 @@ When it comes to port for the proxy it depends on our proxy being `active` or
   the `server` can connect to the proxy.
 
 Do note that for an active _Zabbix Agent_ or _Zabbix Sender_ to communicate with
-your proxy, wether it is an active or a passive one, this will require port
+your proxy, whether it is an active or a passive one, this will require port
 `10051/tcp` to be open on your proxy server:
 
 !!! info "Open firewall for zabbix-trapper"

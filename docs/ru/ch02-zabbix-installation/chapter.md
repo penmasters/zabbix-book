@@ -6,17 +6,17 @@
 пользователей и групп**, сосредоточившись на создании безопасной и эффективной
 системы управления пользователями.
 
-We'll walk through setting up **internal authentication** with best practices
-for security, including **dual-factor authentication**. For those needing
-advanced integration, we'll explore options like **SAML, LDAP**, and other
-external authentication methods.
+Мы рассмотрим настройку **внутренней аутентификации** с учетом лучших практик
+безопасности, включая **двухфакторную аутентификацию**. Для тех, кому нужна
+расширенная интеграция, мы рассмотрим такие варианты, как **SAML, LDAP**, и
+другие внешние методы аутентификации.
 
-This chapter strikes a balance between a straightforward overview “this is the
-frontend” and a more in depth look at the **advanced choices** you can make to
-enhance your system's security and manageability. Whether you're just getting
-started or looking to implement robust security measures, there's something here
-for everyone.
+В этой главе соблюден баланс между простым обзором "это фронтенд" и более
+глубоким рассмотрением **расширенных возможностей**, которые вы можете
+использовать для повышения безопасности и управляемости системы. Независимо от
+того, начинаете ли вы или хотите внедрить надежные меры безопасности, здесь
+найдется что-то для каждого.
 
-By the end, you'll be well equipped to navigate the Zabbix frontend with
-confidence and set up a secure, scalable user management system tailored to your
-organization's needs.
+К концу курса вы сможете уверенно работать с фронтендом Zabbix и создать
+безопасную, масштабируемую систему управления пользователями, соответствующую
+потребностям вашей организации.

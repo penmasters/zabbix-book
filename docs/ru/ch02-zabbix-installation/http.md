@@ -9,18 +9,20 @@ tags: [advanced]
 
 # HTTP
 
-HTTP authentication is one of external authentication methods provided by Zabbix
-and can be used to additionally secure your Zabbix WebUI with basic
-authentication mechanism at HTTP server level.
+HTTP-аутентификация - это один из внешних методов аутентификации,
+предоставляемых Zabbix, который можно использовать для дополнительной защиты
+веб-интерфейса Zabbix с помощью базового механизма аутентификации на уровне
+HTTP-сервера.
 
-Basic HTTP authentication protects Website (Zabbix WebUI) resources with a
-username and password. When a user attempts to access Zabbix WebUI, the browser
-pops up a dialog asking for credentials before sending anything over to Zabbix
-WebUI php code.
+Базовая HTTP-аутентификация защищает ресурсы веб-сайта (Zabbix WebUI) с помощью
+имени пользователя и пароля. Когда пользователь пытается получить доступ к
+Zabbix WebUI, браузер выводит диалог с запросом учетных данных, прежде чем
+отправить что-либо php-коду Zabbix WebUI.
 
-An HTTP server has a file with credentials that is used to authenticate users.
+На HTTP-сервере есть файл с учетными данными, который используется для
+аутентификации пользователей.
 
-First let's see how we can configure basic authentication in HTTP server.
+Сначала давайте посмотрим, как настроить базовую аутентификацию в HTTP-сервере.
 
 ???+ warning
 
@@ -28,12 +30,13 @@ First let's see how we can configure basic authentication in HTTP server.
     basic authentication. Please refer to respective HTTP server documentation
     for more details
 
-## Basic authentication
+## Базовая аутентификация
 
-To enable basic authentication, we first need a "password-file" containing all
-usernames and passwords that are allowed to access the frontend.
+Чтобы включить базовую аутентификацию, нам сначала понадобится "файл паролей",
+содержащий все имена пользователей, которым разрешен доступ к фронтенду, и
+пароли.
 
-!!! warning "Important"
+!!! warning "Важно"
 
     Usernames configured for basic authentication in HTTP server
     must exist in Zabbix. But only passwords configured in HTTP server are used

@@ -5,12 +5,13 @@ description: |
 tags: [beginner]
 ---
 
-# User Roles
+# Роли пользователей
 
-The Zabbix *User Role* system, introduced in Zabbix 5.2, defines what a user is
-allowed to do within the Zabbix frontend and via the API. Unlike User Groups
-which control data visibility Ex: (which hosts a user can see and/or manage),
-User Roles control application functionality (what buttons a user can click).
+Система Zabbix *Роли пользователей*, представленная в Zabbix 5.2, определяет,
+что пользователю разрешено делать во фронтенде Zabbix и через API. В отличие от
+групп пользователей, которые контролируют видимость данных Ex: (какие узлы
+пользователь может видеть и/или управлять ими), роли пользователей контролируют
+функциональность приложения (какие кнопки пользователь может нажимать).
 
 ## The role hierarchy
 
