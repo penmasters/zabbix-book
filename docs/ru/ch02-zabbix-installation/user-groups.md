@@ -7,10 +7,10 @@ tags: [beginner]
 
 # Группы пользователей
 
-In any enterprise monitoring platform, establishing **role-based access control
-(RBAC)** is critical for maintaining both security and clarity of operational
-responsibility. For Zabbix, this control is built upon the fundamental concept
-of **User Groups**.
+В любой корпоративной платформе мониторинга создание **управления доступом на
+основе ролей (RBAC)** имеет решающее значение для обеспечения безопасности и
+ясности оперативной ответственности. В Zabbix этот контроль строится на
+фундаментальной концепции **Групп пользователей**.
 
 В Zabbix 8.0 группы пользователей служат основным механизмом для назначения
 разрешений и структурирования доступа к контролируемым данным и объектам
@@ -20,28 +20,31 @@ of **User Groups**.
 
 ---
 
-## The Role of a User Group
+## Роль группы пользователей
 
-A **User Group** in Zabbix is a logical collection of individual user accounts.
-Rather than managing permissions for hundreds of users individually, Zabbix
-requires that users be assigned to one or more groups. Access rights, such as
-the ability to view host groups, configure templates, or see specific problem
-tags are then granted at the **group level**.
+**Группа пользователей** в Zabbix - это логическая совокупность отдельных
+учетных записей пользователей. Вместо того чтобы управлять правами доступа для
+сотен пользователей по отдельности, Zabbix требует, чтобы пользователи были
+назначены в одну или несколько групп. Права доступа, такие как возможность
+просматривать группы узлов, настраивать шаблоны или видеть определенные
+проблемные теги, предоставляются на **уровне группы** .
 
-This group centric architecture provides several major benefits:
+Эта архитектура, ориентированная на группы, обеспечивает несколько основных
+преимуществ:
 
-* **Simplified Management:** Access rights are managed by **role** (e.g.,
-  "Network Engineers," "Database Administrators") instead of by individual user.
-* **Consistency:** Ensures that all users within the same role possess a
-  consistent, standardized set of permissions.
-* **Segregation of Duties:** Enables clear separation between viewing
-  (read-only) and configuration (read-write) access.
+* **Упрощенное управление:** Права доступа управляются по **роли** (например,
+  "Сетевые инженеры", "Администраторы баз данных"), а не по отдельным
+  пользователям.
+* **Последовательность:** обеспечивает чтобы все пользователи в рамках одной
+  роли обладали последовательным, стандартизированным набором разрешений.
+* **Разделение обязанностей:** обеспечивает четкое разделение доступа к
+  просмотру (только чтение) и конфигурации (чтение-запись).
 
-> **Technical Definition:** User groups allow grouping users for both
-> organizational purposes and for assigning permissions to data. Permissions to
-> viewing and configuring data of host groups and template groups are assigned
-> to user groups, not individual users. A user can belong to any number of
-> groups.
+> **Техническое определение:** группы пользователей позволяют группировать
+> пользователей как в организационных целях, так и для назначения прав доступа к
+> данным. Разрешения на просмотр и настройку данных групп узлов и групп шаблонов
+> назначаются группам пользователей, а не отдельным пользователям. Пользователь
+> может принадлежать к любому количеству групп.
 
 ---
 
