@@ -21,7 +21,7 @@ tags: [beginner]
 
 ---
 
-## Overview of the interface
+## Обзор интерфейса
 
 With Zabbix 7 the user interface after logging in is a bit changed. Our menu on
 the left side of the screen has has a small overhaul. Let's dive into it. When
@@ -31,14 +31,14 @@ like this where we have our `main window` in <font color='green'>green</font>
 our `main menu` marked in <font color='red'>red</font> and our `links` marked in
 <font color='gold'>yellow</font>.
 
-![Overview](ch02-frontend-overview.png)
+![Обзор](ch02-frontend-overview.png)
 
-_2.1 Overview_
+_2.1 Обзор_
 
-The main menu can be hidden by collapsing it completely or to reduce it to a set
-of small icons. When we click on the button with the 2 arrows to the left:
+Главное меню можно скрыть, свернув его полностью или сведя к набору маленьких
+иконок. Когда мы нажимаем на кнопку с двумя стрелками слева:
 
-![Collapse](ch02-frontend-collapse.png)
+![Крах](ch02-frontend-collapse.png)
 
 _2.2 Collapse_
 
