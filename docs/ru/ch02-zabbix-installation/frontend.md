@@ -7,7 +7,7 @@ description: |
 tags: [beginner]
 ---
 
-# Frontend explained
+# Объяснение фронтенда
 
 В этой главе мы рассмотрим основы пользовательского интерфейса Zabbix и то, что
 нам нужно знать, прежде чем мы начнем полностью погружаться в наш инструмент
@@ -23,13 +23,15 @@ tags: [beginner]
 
 ## Обзор интерфейса
 
-With Zabbix 7 the user interface after logging in is a bit changed. Our menu on
-the left side of the screen has has a small overhaul. Let's dive into it. When
-we login into our Zabbix setup the first time with our Admin user we see a page
+В Zabbix 7 пользовательский интерфейс после входа в систему немного изменился.
+Наше меню в левой части экрана подверглось небольшой перестройке. Давайте
+погрузимся в него. Когда мы в первый раз входим в систему Zabbix под
+пользователем Admin, мы видим страницу
 
-like this where we have our `main window` in <font color='green'>green</font>
-our `main menu` marked in <font color='red'>red</font> and our `links` marked in
-<font color='gold'>yellow</font>.
+например, вот так: наше `главное окно` отмечено
+<font color='green'>зеленым</font>, наше `главное меню` отмечено
+<font color='red'>красным</font>, а наши `ссылки` отмечены
+<font color='gold'>желтым</font>.
 
 ![Обзор](ch02-frontend-overview.png)
 
@@ -42,38 +44,38 @@ _2.1 Обзор_
 
 _2.2 Collapse_
 
-You will see that the menu collapses to a set of small icons. Pressing ">>" will
-bring the `main menu` back to it's original state.
+Вы увидите, что меню сворачивается до набора маленьких иконок. Нажав ">>", вы
+вернете `главное меню` в исходное состояние.
 
-When you click on the icon that looks like a box with an arrow sticking out,
-next to the "<<" button will hide the `main menu` completely.
+При нажатии на иконку, похожую на квадратик с торчащей стрелкой, рядом с кнопкой
+"<<" `главное меню` будет полностью скрыто.
 
-![Hide](ch02-frontend-hide.png)
+![Скрыть](ch02-frontend-hide.png)
 
-_2.3 Hide_
+_2.3 Скрыть_
 
-To bring back our `main menu` is rather easy, we just look for the button on the
-left with three horizontal lines and click on it. This will show the `main menu`
-but it won't stay. When we click on the box with the arrow now pointing to the
-bottom right it will keep the `main menu` back in it's position.
+Вернуть наше `главное меню` довольно просто: ищем кнопку слева с тремя
+горизонтальными линиями и нажимаем на нее. В результате появится `главное меню`
+, но оно не останется. Если мы нажмем на поле со стрелкой, направленной в правый
+нижний угол, это вернет `главное меню` на прежнее место.
 
-Yet another way to make the screen bigger that is quite useful for monitors in
-`NOK teams` for example is the `kiosk mode` button. This one however is located
-on the left side of your screen and looks like 4 arrows pointing to every corner
-of the screen. Pressing this button will remove all the menus and leave only the
-`main window` to focus on.
+Еще один способ сделать экран больше, который весьма полезен, например, для
+мониторов в `командах NOK` - это кнопка `Режим киоска`. Эта кнопка расположена в
+левой части экрана и выглядит как 4 стрелки, направленные в каждый угол экрана.
+Нажатие этой кнопки убирает все меню и оставляет только `главное окно` , на
+котором можно сосредоточиться.
 
-![Expand](ch02-frontend-expand.png)
+![Развернуть](ch02-frontend-expand.png)
 
-_2.4 Expand_
+_2.4 Развернуть_
 
-When we want to leave the kiosk mode, the button will be changed to 2 arrows
-pointing to the inside of the screen. Pressing this button will revert us back
-to the original state.
+Когда мы захотим выйти из режима киоска, кнопка сменится на 2 стрелки,
+направленные внутрь экрана. Нажатие на эту кнопку вернет нас в исходное
+состояние.
 
-![Expand](ch02-frontend-shrink.png)
+![Развернуть](ch02-frontend-shrink.png)
 
-_2.5 Shrink_
+_2.5 Уменьшение_
 
 ???+ tip
 
@@ -88,16 +90,16 @@ _2.5 Shrink_
     Zabbix also has a global search menu that we can use to find hosts, host groups
     and templates.
 
-If we type in the search box the word `server` you will see that we get an
-overview of all `templates`, `host groups` and `hosts` with the name server in
-it. That's why this is called the `global search` box.
+Если мы введем в поле поиска слово `сервер`, то получим обзор всех `шаблонов` ,
+`групп узлов` и `узлы` с указанным именем сервера. Поэтому это поле называется
+`глобальным поиском`.
 
-![Global search](ch02-global-search.png)
+![Глобальный поиск](ch02-global-search.png)
 
-_2.6 Global search_
+_2.6 Глобальный поиск_
 
-This is our result after we looked for the word `server`. If you have a standard
-Zabbix setup your page should look more or less the same.
+Это наш результат после поиска слова `сервер`. Если у вас стандартная настройка
+Zabbix, то ваша страница должна выглядеть примерно так же.
 
 ![Global search result](ch02-global-search-result.png)
 
