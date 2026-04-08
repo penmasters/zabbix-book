@@ -16,18 +16,19 @@ LDAP - это очень хорошо определенный открытый 
 LDAP-сервера. Известно, что Zabbix хорошо работает с Microsoft Active Directory
 и сервером OpenLDAP.
 
-LDAP authentication can be configured in two modes:
+Аутентификация LDAP может быть настроена в двух режимах:
 
-- Users authentication
+- Аутентификация пользователей
 - Users authentication with users provisioning
 
-## Users authentication mode
+## Режим аутентификации пользователей
 
-The process of the authenticating users follows this diagram.
+Процесс аутентификации пользователей происходит по следующей схеме.
 
-![LDAP users authentication](ch02.3-ldap-auth-diagram.png){ align=center }
+![Аутентификация пользователей LDAP](ch02.3-ldap-auth-diagram.png){ align=center
+}
 
-_2.3 LDAP users authentication_
+_2.3 Аутентификация пользователей LDAP_
 
 As shown on the diagram a user that tries to log in must be pre-created in
 Zabbix to be able to log in using LDAP. The database user records do not have
@@ -41,10 +42,11 @@ LDAP server to verify whether:
 no other attributes configured for the user on the LDAP server side are taken
 into account.
 
-So when Zabbix is used by many users and groups, user management becomes not a
-very trivial task as new people join different teams (or leave). This problem is
-addressed by "users provisioning" and we'll cover this topic a bit later. For
-now let's take a look at how to configure LDAP authentication.
+Когда Zabbix используется многими пользователями и группами, управление
+пользователями становится не очень простой задачей, поскольку новые люди
+присоединяются к различным командам (или покидают их). Эта проблема решается с
+помощью "провижининга пользователей", и мы рассмотрим эту тему немного позже. А
+пока давайте рассмотрим, как настроить LDAP-аутентификацию.
 
 ## Configure LDAP
 
