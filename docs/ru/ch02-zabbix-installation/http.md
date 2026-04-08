@@ -19,7 +19,8 @@ username and password. When a user attempts to access Zabbix WebUI, the browser
 pops up a dialog asking for credentials before sending anything over to Zabbix
 WebUI php code.
 
-An HTTP server has a file with credentials that is used to authenticate users.
+На HTTP-сервере есть файл с учетными данными, который используется для
+аутентификации пользователей.
 
 First let's see how we can configure basic authentication in HTTP server.
 
@@ -29,12 +30,13 @@ First let's see how we can configure basic authentication in HTTP server.
     basic authentication. Please refer to respective HTTP server documentation
     for more details
 
-## Basic authentication
+## Базовая аутентификация
 
-To enable basic authentication, we first need a "password-file" containing all
-usernames and passwords that are allowed to access the frontend.
+Чтобы включить базовую аутентификацию, нам сначала понадобится "файл паролей",
+содержащий все имена пользователей, которым разрешен доступ к фронтенду, и
+пароли.
 
-!!! warning "Important"
+!!! warning "Важно"
 
     Usernames configured for basic authentication in HTTP server
     must exist in Zabbix. But only passwords configured in HTTP server are used

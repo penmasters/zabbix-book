@@ -13,24 +13,24 @@ tags: [advanced]
 необходимо войти в систему. В Zabbix есть несколько возможностей для обеспечения
 большей безопасности паролей пользователей путем настройки политики паролей:
 
-- Requirement for Minimum password length
-- Requirements for password to contain an uppercase and a lowercase Latin
-  letter, a digit, a special character
+- Требование к минимальной длине пароля
+- Требовать чтобы пароль содержал прописную и строчную латинские буквы, цифру и
+  специальный символ
 - Requirement to avoid easy-to-guess passwords
 
-To secure sign in process even more you can configure multi factor
-authentication (MFA). MFA protects Zabbix by using a second source of validation
-before granting access to its WebUI after a user enters his/her password
-correctly. Zabbix offers to types of MFA - Time-based one-time password (TOTP)
-and Duo MFA provider.
+Чтобы еще больше обезопасить процесс входа в систему, вы можете настроить
+многофакторную аутентификацию (MFA). MFA защищает Zabbix, используя второй
+источник проверки перед предоставлением доступа к его WebUI после того, как
+пользователь правильно введет свой пароль. Zabbix предлагает несколько типов MFA
+- одноразовый пароль на основе времени (TOTP) и Duo MFA.
 
 ---
 
-## Time-based one-time password
+## Одноразовый пароль на основе времени
 
-In the menu select `Users` section and then `Authentication`
+В меню выберите раздел `Пользователи`, а затем `Аутентификация`
 
-![MFA Settings initial](ch02.20-mfa_settings_initial.png){ width=90% }
+![Начальные настройки MFA](ch02.20-mfa_settings_initial.png){ width=90% }
 
 _2.20 Initial MFA settings_
 
@@ -41,8 +41,8 @@ check-box, then select `TOTP` in Type drop-down list.
 
 _2.21 New MFA method_
 
-In `Hash function` drop-down list you can choose SHA-1, SHA-256 or SHA-512, the
-higher number is the better security.
+В выпадающем списке `Hash function` вы можете выбрать SHA-1, SHA-256 или
+SHA-512, чем выше номер, тем выше безопасность.
 
 In `Code lentgh` you can select how many digits will be generated for you by
 Authenticator application on your phone.
