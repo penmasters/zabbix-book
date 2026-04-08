@@ -17,6 +17,6 @@
 того, начинаете ли вы или хотите внедрить надежные меры безопасности, здесь
 найдется что-то для каждого.
 
-By the end, you'll be well equipped to navigate the Zabbix frontend with
-confidence and set up a secure, scalable user management system tailored to your
-organization's needs.
+К концу курса вы сможете уверенно работать с фронтендом Zabbix и создать
+безопасную, масштабируемую систему управления пользователями, соответствующую
+потребностям вашей организации.
