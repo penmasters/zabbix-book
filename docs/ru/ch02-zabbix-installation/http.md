@@ -14,15 +14,15 @@ HTTP-аутентификация - это один из внешних мето
 веб-интерфейса Zabbix с помощью базового механизма аутентификации на уровне
 HTTP-сервера.
 
-Basic HTTP authentication protects Website (Zabbix WebUI) resources with a
-username and password. When a user attempts to access Zabbix WebUI, the browser
-pops up a dialog asking for credentials before sending anything over to Zabbix
-WebUI php code.
+Базовая HTTP-аутентификация защищает ресурсы веб-сайта (Zabbix WebUI) с помощью
+имени пользователя и пароля. Когда пользователь пытается получить доступ к
+Zabbix WebUI, браузер выводит диалог с запросом учетных данных, прежде чем
+отправить что-либо php-коду Zabbix WebUI.
 
 На HTTP-сервере есть файл с учетными данными, который используется для
 аутентификации пользователей.
 
-First let's see how we can configure basic authentication in HTTP server.
+Сначала давайте посмотрим, как настроить базовую аутентификацию в HTTP-сервере.
 
 ???+ warning
 
