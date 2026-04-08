@@ -16,19 +16,19 @@ tags: [beginner]
 
 Общие примеры включают:
 
-- Grouping all **Linux servers** together.
+- Группировка всех **Linux-серверов** вместе.
 - Separating **database servers** (e.g., PostgreSQL, MySQL).
-- Organizing hosts by **team**, **location**, or **function**.
+- Организация узлов по **команде**, **месту**, или **функции**.
 
-Host groups are not only for structuring your monitored hosts, they also play an
-important role in assigning templates, setting up user permissions, and
-filtering hosts in dashboards or maps.
+Группы узлов служат не только для структурирования контролируемых узлов, но и
+играют важную роль при назначении шаблонов, настройке прав пользователей и
+фильтрации узлов на панелях мониторинга или картах.
 
-## Accessing Host Groups
+## Доступ к группам узлов
 
-You can manage host groups by navigating to:
+Вы можете управлять группами узлов, перейдя по ссылке:
 
-**Menu → Data collection → Host groups**
+**Меню → Сбор данных → Группы узлов сети**
 
 ![Host Groups Menu Screenshot](ch02-host-grouops.png)
 
