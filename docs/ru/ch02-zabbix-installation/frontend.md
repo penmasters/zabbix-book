@@ -42,7 +42,7 @@ _2.1 Обзор_
 
 ![Крах](ch02-frontend-collapse.png)
 
-_2.2 Collapse_
+_2.2 Свернуть_
 
 Вы увидите, что меню сворачивается до набора маленьких иконок. Нажав ">>", вы
 вернете `главное меню` в исходное состояние.
@@ -75,7 +75,7 @@ _2.4 Развернуть_
 
 ![Развернуть](ch02-frontend-shrink.png)
 
-_2.5 Уменьшение_
+_2.5 Свернуть_
 
 ???+ tip
 
@@ -101,41 +101,41 @@ _2.6 Глобальный поиск_
 Это наш результат после поиска слова `сервер`. Если у вас стандартная настройка
 Zabbix, то ваша страница должна выглядеть примерно так же.
 
-![Global search result](ch02-global-search-result.png)
+![Результаты глобального поиска](ch02-global-search-result.png)
 
-_2.7 Global search result_
-
----
-
-## Main menu
-
-We shall now briefly examine the constituent sections of the primary application
-menu. The `main menu`, situated on the left hand interface, comprises a total of
-nine distinct sections:
-
-| Menu Name       | Details                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------- |
-| Dashboards      | Contains an overview of all the dashboards we have access to.                                     |
-| Monitoring      | Shows us the hosts, problems, latest data, maps, ...                                              |
-| Services        | An overview of all the Services and SLA settings.                                                 |
-| Inventory       | An overview of our collected inventory data.                                                      |
-| Reports         | Shows us the system information, scheduled reports, audit logs, action logs, etc .                |
-| Data collection | Contains all things related to collecting data like hosts, templates, maintenance, discovery, ... |
-| Alert           | The configuration of our media types, scripts and actions                                         |
-| Users           | User configuration like user roles, user groups, authentication, API tokes, ...                   |
-| Administration  | The administration part containing all global settings, housekeeper, proxies, queue, ...          |
+_2.7 Результаты глобального поиска_
 
 ---
 
-## Links menu
+## Главное меню
 
-Immediately subjacent to the primary application menu on the left-hand interface
-resides the `Links` menu. This module furnishes a collection of pertinent
-hyperlinks for user access.
+Теперь мы кратко рассмотрим составные части основного меню приложения. `Главное
+меню`, расположенное в левой части интерфейса, состоит из девяти отдельных
+разделов:
 
-| Menu name     | Details                                                                                                                                                                                                                                                |
+| Название меню     | Подробности                                                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------------------------------ |
+| Панели            | Содержит обзор всех панелей, к которым мы имеем доступ.                                                      |
+| Мониторинг        | Показывает нам узлы, проблемы, последние данные, карты, ...                                                  |
+| Службы            | Обзор всех служб и настроек SLA.                                                                             |
+| Инвентаризация    | Обзор собранных нами данных инвентаризации.                                                                  |
+| Отчеты            | Показывает нам системную информацию, запланированные отчеты, журналы аудита, журналы действий и т.д.         |
+| Сбор данных       | Содержит все вещи, связанные со сбором данных, такие как узлы, шаблоны, обслуживание, обнаружение, ...       |
+| Оповещения        | Конфигурация наших типов медиаданных, скриптов и действий                                                    |
+| Пользователи      | Настройка пользователей, например, роли пользователей, группы пользователей, аутентификация, API-токены, ... |
+| Администрирование | Часть администрирования, содержащая все глобальные настройки, диспетчер, прокси, очередь, ...                |
+
+---
+
+## Меню ссылок
+
+Непосредственно рядом с основным меню приложения в левой части интерфейса
+расположено меню `Ссылок`. Этот модуль содержит коллекцию гиперссылок для
+доступа пользователей.
+
+| Название меню | Подробности                                                                                                                                                                                                                                            |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Support       | This brings us to the technical support page that you can buy from Zabbix. Remember that your local partner is also able to sell these contracts and can help you in your own language. [Your local distributors](https://www.zabbix.com/distributors) |
+| Поддержка     | This brings us to the technical support page that you can buy from Zabbix. Remember that your local partner is also able to sell these contracts and can help you in your own language. [Your local distributors](https://www.zabbix.com/distributors) |
 | Integrations  | The official zabbix [integration page](https://www.zabbix.com/integrations)                                                                                                                                                                            |
 | Help          | The link to the documentation of your [Zabbix version](https://www.zabbix.com/documentation/7.0/)                                                                                                                                                      |
 | User settings | The user profile settings.                                                                                                                                                                                                                             |
@@ -172,7 +172,7 @@ panel, as their interpretation is crucial for system comprehension.
 
 _2.9 System Information_
 
-| Parameter                                         | Value                                                                                                                                                                                                                                       | Details                                                                                                                                                                                                                                                                         |
+| Parameter                                         | Value                                                                                                                                                                                                                                       | Подробности                                                                                                                                                                                                                                                                     |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Zabbix server is running                          | The status of our zabbix server if it is running yes or no and if it is running on our localhost or another IP and on what port the zabbix server is listening. If no trapper is listening the rest of the information can not be displayed | IP and port of the Zabbix server                                                                                                                                                                                                                                                |
 | Zabbix server version                             | This shows us the version of the `Zabbix server` so the version you see at the bottom of your screen is the one from the Zabbix frontend and can be different but should be in the same major version.                                      | Version Number                                                                                                                                                                                                                                                                  |
