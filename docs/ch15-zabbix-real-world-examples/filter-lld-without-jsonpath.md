@@ -2,7 +2,7 @@
 
 When working with Low-Level Discovery (LLD) in Zabbix, a common challenge arises
 when your master item returns a JSON array and you need each discovered item to
-fetch only its own slice of that data. The naive approach is to use a JSONPath
+fetch only its own slice of that data. The common approach is to use a JSONPath
 filter expression directly in the item prototype's preprocessing step:
 
 ```
@@ -18,7 +18,7 @@ per discovered object.
 
 ## The Two Approaches
 
-### Approach A — JSONPath filter (the pattern to avoid)
+### Approach A — JSONPath filter (The more complex option)
 
 In this approach a single trap item `db.raw` does everything: it feeds the discovery
 rule and also serves as the master item for all item prototypes. The preprocessing
@@ -33,8 +33,7 @@ $[?(@.db == '{#DB}')].price.first()
 - The filter expression is verbose and hard to read at a glance.
 - The `.first()` function is required because the filter operator always returns
   an array, even when only one match exists.
-- If the JSON value contains special characters the filter can break in unexpected
-  ways.
+- Special characters make the expression more fragile and easier to get wrong.
 - Debugging failed preprocessing is harder because the resolved expression changes
   per discovered item.
 - A single key has to serve two structurally different purposes (list of objects
@@ -101,7 +100,7 @@ flowchart TD
     E --> D["Item prototype
     key: db.[#123;#ID#125;]
     preprocessing: $[0]['#123;#ID#125;']"]
-    C -. "#123;#ID#125; is de brug" .-> D
+    C -. "#123;#ID#125; is the bridge" .-> D
 ```
 **The bridge between the two payloads is `{#ID}`**. Its value in `db.raw`
 (e.g. `db1`) must exactly match a top-level key in `db.raw2`. The
@@ -286,6 +285,12 @@ zabbix_export:
 | Readability | Verbose | Clear and direct |
 | Debugging | Expression changes per item | Expression is always the same |
 
+!!! note
+
+    Approach A is still fine for quick prototypes, small payloads, or one-off lab
+    use; Approach B is preferable when you want stable preprocessing and clearer
+    debugging
+    
 ---
 
 ## Why Two Trap Items?
@@ -300,8 +305,12 @@ different payloads:
   per database. Its structure (keyed by `{#ID}`) stays stable regardless of how
   many fields you add.
 
-This separation also makes it easier to feed the two items from different collection
-sources or at different intervals in more advanced setups.
+!!! note
+  
+    This separation also makes it easier to feed the two items from different
+    collection sources or at different intervals in more advanced setups. Two
+    trap items buy cleaner payload design, but they also mean you must think
+    about send order and lifecycle more carefully.
 
 ---
 
