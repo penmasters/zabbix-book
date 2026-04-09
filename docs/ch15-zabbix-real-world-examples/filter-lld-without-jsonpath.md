@@ -282,14 +282,16 @@ zabbix_export:
 | `.first()` needed | Yes | No |
 | Item key | `db.[{#DB}]` | `db.[{#ID}]` |
 | Payload design | Single flat array | Two complementary structures |
-| Readability | Verbose | Clear and direct |
-| Debugging | Expression changes per item | Expression is always the same |
+| Readability | Verbose | More robust and easier to maintain in production |
+| Debugging | Debugging happens inside a JSONPath expression (opaque, annoying) | Debugging is just “look at the raw item + extracted value” |
+
 
 !!! note
 
     Approach A is still fine for quick prototypes, small payloads, or one-off lab
     use; Approach B is preferable when you want stable preprocessing and clearer
-    debugging
+    debugging. The tradeoff is slightly more setup (two items and data flow coordination),
+    but this is usually outweighed by better clarity and maintainability.
     
 ---
 
