@@ -7,17 +7,28 @@ tags: [expert]
 
 # Actions
 
-Actions are the automated response engine of Zabbix. Whenever something happens in your monitoring environment — a trigger fires, a new host is discovered, an active agent registers itself, an item goes unsupported, or a service changes status — Zabbix can respond automatically. Actions define both *when* to respond (conditions) and *what to do* (operations).
+Actions are the automated response engine of Zabbix. Whenever something happens
+in your monitoring environment, a trigger fires, a new host is discovered, an active
+agent registers itself, an item goes unsupported, or a service changes status,
+Zabbix can respond automatically. Actions define both *when* to respond
+*(conditions)* and *what* to do *(operations)*.
 
-Understanding actions deeply is one of the things that separates a Zabbix power user from someone who just installed the product. The configuration surface is large, the interaction between escalations and recovery is subtle, and a number of behaviours only become clear once you know where to look.
+Understanding actions deeply is one of the things that separates a Zabbix power
+user from someone who just installed the product. The configuration surface is
+large, the interaction between escalations and recovery is subtle, and a number
+of behaviours only become clear once you know where to look.
 
 This chapter covers all five event sources that can drive an action in Zabbix 8:
 
-- **Trigger actions** — the most common type, responding to problem events raised by triggers
-- **Discovery actions** — responding to hosts and services found by network discovery rules
-- **Autoregistration actions** — responding to active Zabbix agents that register themselves
-- **Internal actions** — responding to Zabbix's own internal state changes (unsupported items, unknown triggers)
-- **Service actions** — responding to changes in the status of business services
+- **Trigger actions**: the most common type, responding to problem events raised
+  by triggers
+- **Discovery actions**: responding to hosts and services found by network discovery
+  rules
+- **Autoregistration actions**: responding to active Zabbix agents that register
+  themselves
+- **Internal actions**: responding to Zabbix's own internal state changes (unsupported
+  items, unknown triggers)
+- **Service actions**: responding to changes in the status of business services
 
 ---
 
@@ -25,48 +36,77 @@ This chapter covers all five event sources that can drive an action in Zabbix 8:
 
 Every action, regardless of its event source, shares the same three-part structure:
 
-1. **Name and enabled/disabled toggle** — actions can be switched off without deleting them, which is useful during maintenance windows or when testing a new alerting design
-2. **Conditions** — a set of filters that determine whether the action should fire for a given event
-3. **Operations** — what to actually do: send a message, execute a command, or manipulate a host
+1. **Name and enabled/disabled toggle**: actions can be switched off without deleting
+   them, which is useful during maintenance windows or when testing a new alerting
+   design
+2. **Conditions**: a set of filters that determine whether the action should fire
+   for a given event
+3. **Operations**: what to actually do: send a message, execute a command, or
+   manipulate a host
 
-Trigger actions additionally have **Recovery operations** (what to do when the problem resolves) and **Update operations** (what to do when someone acknowledges or comments on the problem). Internal actions also support recovery operations.
+Trigger actions additionally have **Recovery operations** (what to do when the
+problem resolves) and **Update operations** (what to do when someone acknowledges
+or comments on the problem). Internal actions also support recovery operations.
 
-You can reach all action types from **Alerts → Actions** in the left-hand menu. Each event source has its own tab: Trigger actions, Service actions, Autoregistration actions, Internal actions, and Discovery actions.
+You can reach all action types from **Alerts → Actions** in the left-hand menu.
+Each event source has its own tab: `Trigger actions`, `Service actions`,
+`Autoregistration actions`, `Internal actions`, and `Discovery actions`.
 
 ---
 
 ## Conditions
 
-Conditions are the gatekeeping layer. An action's conditions are evaluated against each event, and only if the conditions pass does the operation execute. If you define no conditions at all, the action fires for every event of that source type — which is occasionally intentional but usually unwise in a large environment.
+Conditions are the gatekeeping layer. An action's conditions are evaluated against
+each event, and only if the conditions pass does the operation execute. If you
+define no conditions at all, the action fires for every event of that source type,
+which is occasionally intentional but usually unwise in a large environment.
 
 ### Type of Calculation
 
-When you add more than one condition, Zabbix needs to know how to combine them. The **Type of calculation** field gives you four options:
+When you add more than one condition, Zabbix needs to know how to combine them.
+The **Type of calculation** field gives you four options:
 
 | Option | Meaning |
 |---|---|
-| `AND / OR` | Conditions of the same type are combined with OR; conditions of different types are combined with AND |
+| `AND / OR` | Conditions of the same type are combined with OR; conditions of |
+|          | different types are combined with AND |
 | `AND` | All conditions must be true |
 | `OR` | Any single condition being true is enough |
-| `Custom expression` | You write a logical formula using condition labels (A, B, C…) |
+| `Custom expression` | You write a logical formula using condition labels |
+|                   | (A, B, C…) |
 
-The `AND / OR` default is often misunderstood. Concretely: if you add two **Host group** conditions — `Host group = Linux servers` and `Host group = Database servers` — Zabbix evaluates them as *"host is in Linux servers OR Database servers"*. If you then also add a **Trigger severity** condition of `>= High`, the full expression becomes *"(host is in Linux servers OR Database servers) AND severity >= High"*. This is logical and efficient for most alerting designs.
+The `AND / OR` default is often misunderstood. Concretely: if you add two **Host
+group** conditions, `Host group = Linux servers` and `Host group = Database servers`;
+then Zabbix evaluates them as *"host is in Linux servers OR Database servers"*.
+If you then also add a **Trigger severity** condition of `>= High`, the full
+expression becomes *"(host is in Linux servers OR Database servers) AND severity
+>= High"*. This is logical and efficient for most alerting designs.
 
-The `Custom expression` mode gives you full control. Conditions are labelled A, B, C, D and so on as you add them, and you write the formula yourself. For example: `(A or B) and C and not D`. Use this when the default AND/OR logic does not produce the correct result.
+The `Custom expression` mode gives you full control. Conditions are labelled A,
+B, C, D and so on as you add them, and you write the formula yourself. For example:
+`(A or B) and C and not D`. Use this when the default AND/OR logic does not produce
+the correct result.
 
-> **Note:** Condition labels are assigned in the order conditions were added. If you delete a condition, the labels do not renumber — the formula must reference the correct remaining labels.
+!!! > [!NOTE]
+
+    Condition labels are assigned in the order conditions were added. If you
+    delete a condition, the labels do not renumber — the formula must reference
+    the correct remaining labels.
 
 ### Condition Operators
 
-Depending on the condition type, the available operators vary. String-type conditions (trigger name, host name, tag value, host metadata) support:
+Depending on the condition type, the available operators vary. String based conditions
+(trigger name, host name, tag value, host metadata) support:
 
 - `=` and `<>` (equals / does not equal)
 - `contains` and `does not contain` (substring match, **case-insensitive**)
 - `matches` and `does not match` (regular expression)
 
-Numeric conditions (severity, discovery uptime/downtime) support: `=`, `<>`, `>`, `>=`, `<`, `<=`.
+Numeric conditions (severity, discovery uptime/downtime) support: `=`, `<>`, `>`,
+`>=`, `<`, `<=`.
 
-The `matches` operator uses POSIX extended regular expressions, the same engine used elsewhere in Zabbix.
+The `matches` operator uses POSIX extended regular expressions, the same engine
+used elsewhere in Zabbix.
 
 ---
 
