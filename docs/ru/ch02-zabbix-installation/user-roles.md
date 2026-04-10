@@ -33,13 +33,13 @@ tags: [beginner]
 | Раздел меню              | Пользователь | Admin | Super Admin |
 | ------------------------ | :----------: | :---: | :---------: |
 | **Monitoring**           |              |       |             |
-| Dashboards               |      ✅       |   ✅   |      ✅      |
+| Панели                   |      ✅       |   ✅   |      ✅      |
 | Problems                 |      ✅       |   ✅   |      ✅      |
 | Hosts                    |      ✅       |   ✅   |      ✅      |
 | Latest data              |      ✅       |   ✅   |      ✅      |
 | Maps                     |      ✅       |   ✅   |      ✅      |
 | Discovery                |              |   ✅   |      ✅      |
-| Services                 |      ✅       |   ✅   |      ✅      |
+| Службы                   |      ✅       |   ✅   |      ✅      |
 | SLA                      |              |   ✅   |      ✅      |
 | SLA report               |      ✅       |   ✅   |      ✅      |
 | **Inventory**            |              |       |             |
@@ -54,7 +54,7 @@ tags: [beginner]
 | Action log               |              |   ✅   |      ✅      |
 | Notifications            |              |   ✅   |      ✅      |
 | **Configuration**        |              |       |             |
-| Data collection          |              |   ✅   |      ✅      |
+| Сбор данных              |              |   ✅   |      ✅      |
 | Template groups          |              |   ✅   |      ✅      |
 | Host groups              |              |   ✅   |      ✅      |
 | Templates                |              |   ✅   |      ✅      |
@@ -71,7 +71,7 @@ tags: [beginner]
 | **Administration**       |              |       |             |
 | Media types              |              |       |      ✅      |
 | Scripts                  |              |       |      ✅      |
-| Users                    |              |       |      ✅      |
+| Пользователи             |              |       |      ✅      |
 | User groups              |              |       |      ✅      |
 | User roles               |              |       |      ✅      |
 | API tokens               |              |       |      ✅      |
