@@ -13,74 +13,76 @@ tags: [beginner]
 пользователь может видеть и/или управлять ими), роли пользователей контролируют
 функциональность приложения (какие кнопки пользователь может нажимать).
 
-## The role hierarchy
+## Иерархия ролей
 
-Every User Role, whether default or custom, is fundamentally based on one of the
-classic User Types (Super Admin, Admin or User). This User Type serves as the
-maximum allowed privilege for the role.
+Каждая роль пользователя, будь то стандартная или пользовательская, основывается
+на одном из классических типов пользователей (Супер-администратор, администратор
+или пользователь). Этот тип пользователя служит максимально допустимой
+привилегией для роли.
 
-## Default Menu Access by User Type
+## Доступ к меню по умолчанию в зависимости от типа пользователя
 
-`User Roles` can be created in the menu under the `Users` → `User roles` menu.
-Or they can be set per user in the menu `Users` → `Users` → "some user" →
-`Permissions`.
+`Роли пользователей` могут быть созданы в меню `Пользователи` → `Роли
+пользователей`. Или они могут быть установлены для каждого пользователя в меню
+`Пользователи` → `Пользователи` → "выбрать пользователя" → `Права доступа`.
 
-This table illustrates the default access rights granted to users based on their
-initial **User Type** before any **Custom User Role** adjustments are made.
+В этой таблице показаны права доступа, предоставляемые пользователям по
+умолчанию на основе их первоначального **типа пользователя** до внесения
+каких-либо **пользовательских ролей**.
 
-| Menu Section             | User | Admin | Super Admin |
-| ------------------------ | :--: | :---: | :---------: |
-| **Monitoring**           |      |       |             |
-| Dashboards               |  ✅   |   ✅   |      ✅      |
-| Problems                 |  ✅   |   ✅   |      ✅      |
-| Hosts                    |  ✅   |   ✅   |      ✅      |
-| Latest data              |  ✅   |   ✅   |      ✅      |
-| Maps                     |  ✅   |   ✅   |      ✅      |
-| Discovery                |      |   ✅   |      ✅      |
-| Services                 |  ✅   |   ✅   |      ✅      |
-| SLA                      |      |   ✅   |      ✅      |
-| SLA report               |  ✅   |   ✅   |      ✅      |
-| **Inventory**            |      |       |             |
-| Overview                 |  ✅   |   ✅   |      ✅      |
-| Hosts                    |  ✅   |   ✅   |      ✅      |
-| **Reports**              |      |       |             |
-| System information       |      |   ✅   |      ✅      |
-| Scheduled reports        |      |   ✅   |      ✅      |
-| Availability report      |  ✅   |   ✅   |      ✅      |
-| Top 100 triggers         |  ✅   |   ✅   |      ✅      |
-| Audit log                |      |   ✅   |      ✅      |
-| Action log               |      |   ✅   |      ✅      |
-| Notifications            |      |   ✅   |      ✅      |
-| **Configuration**        |      |       |             |
-| Data collection          |      |   ✅   |      ✅      |
-| Template groups          |      |   ✅   |      ✅      |
-| Host groups              |      |   ✅   |      ✅      |
-| Templates                |      |   ✅   |      ✅      |
-| Hosts                    |      |   ✅   |      ✅      |
-| Maintenance              |      |   ✅   |      ✅      |
-| Event correlation        |      |   ✅   |      ✅      |
-| Discovery                |      |   ✅   |      ✅      |
-| **Alerts (Actions)**     |      |       |             |
-| Trigger actions          |      |   ✅   |      ✅      |
-| Service actions          |      |   ✅   |      ✅      |
-| Discovery actions        |      |   ✅   |      ✅      |
-| Autoregistration actions |      |   ✅   |      ✅      |
-| Internal actions         |      |   ✅   |      ✅      |
-| **Administration**       |      |       |             |
-| Media types              |      |       |      ✅      |
-| Scripts                  |      |       |      ✅      |
-| Users                    |      |       |      ✅      |
-| User groups              |      |       |      ✅      |
-| User roles               |      |       |      ✅      |
-| API tokens               |      |       |      ✅      |
-| Authentication           |      |       |      ✅      |
-| General                  |      |       |      ✅      |
-| Audit log                |      |       |      ✅      |
-| Housekeeping             |      |       |      ✅      |
-| Proxy groups             |      |       |      ✅      |
-| Proxies                  |      |       |      ✅      |
-| Macros                   |      |       |      ✅      |
-| Queue                    |      |       |      ✅      |
+| Раздел меню              | Пользователь | Admin | Super Admin |
+| ------------------------ | :----------: | :---: | :---------: |
+| **Monitoring**           |              |       |             |
+| Dashboards               |      ✅       |   ✅   |      ✅      |
+| Problems                 |      ✅       |   ✅   |      ✅      |
+| Hosts                    |      ✅       |   ✅   |      ✅      |
+| Latest data              |      ✅       |   ✅   |      ✅      |
+| Maps                     |      ✅       |   ✅   |      ✅      |
+| Discovery                |              |   ✅   |      ✅      |
+| Services                 |      ✅       |   ✅   |      ✅      |
+| SLA                      |              |   ✅   |      ✅      |
+| SLA report               |      ✅       |   ✅   |      ✅      |
+| **Inventory**            |              |       |             |
+| Overview                 |      ✅       |   ✅   |      ✅      |
+| Hosts                    |      ✅       |   ✅   |      ✅      |
+| **Reports**              |              |       |             |
+| System information       |              |   ✅   |      ✅      |
+| Scheduled reports        |              |   ✅   |      ✅      |
+| Availability report      |      ✅       |   ✅   |      ✅      |
+| Top 100 triggers         |      ✅       |   ✅   |      ✅      |
+| Audit log                |              |   ✅   |      ✅      |
+| Action log               |              |   ✅   |      ✅      |
+| Notifications            |              |   ✅   |      ✅      |
+| **Configuration**        |              |       |             |
+| Data collection          |              |   ✅   |      ✅      |
+| Template groups          |              |   ✅   |      ✅      |
+| Host groups              |              |   ✅   |      ✅      |
+| Templates                |              |   ✅   |      ✅      |
+| Hosts                    |              |   ✅   |      ✅      |
+| Maintenance              |              |   ✅   |      ✅      |
+| Event correlation        |              |   ✅   |      ✅      |
+| Discovery                |              |   ✅   |      ✅      |
+| **Alerts (Actions)**     |              |       |             |
+| Trigger actions          |              |   ✅   |      ✅      |
+| Service actions          |              |   ✅   |      ✅      |
+| Discovery actions        |              |   ✅   |      ✅      |
+| Autoregistration actions |              |   ✅   |      ✅      |
+| Internal actions         |              |   ✅   |      ✅      |
+| **Administration**       |              |       |             |
+| Media types              |              |       |      ✅      |
+| Scripts                  |              |       |      ✅      |
+| Users                    |              |       |      ✅      |
+| User groups              |              |       |      ✅      |
+| User roles               |              |       |      ✅      |
+| API tokens               |              |       |      ✅      |
+| Authentication           |              |       |      ✅      |
+| General                  |              |       |      ✅      |
+| Audit log                |              |       |      ✅      |
+| Housekeeping             |              |       |      ✅      |
+| Proxy groups             |              |       |      ✅      |
+| Proxies                  |              |       |      ✅      |
+| Macros                   |              |       |      ✅      |
+| Queue                    |              |       |      ✅      |
 
 ## Customizing Role Permissions
 
