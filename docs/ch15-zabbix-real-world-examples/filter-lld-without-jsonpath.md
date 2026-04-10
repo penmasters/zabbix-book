@@ -192,7 +192,7 @@ zabbix_export:
           item_prototypes:
             - name: '{#DB} - {#FILENAME}'
               type: DEPENDENT
-              key: 'db.[{#DB}]'
+              key: 'db[{#DB}]'
               value_type: TEXT
               preprocessing:
                 - type: JSONPATH
@@ -244,7 +244,7 @@ zabbix_export:
           item_prototypes:
             - name: '{#DB} - {#FILENAME}'
               type: DEPENDENT
-              key: 'db.[{#ID}]'
+              key: 'db[{#ID}]'
               value_type: TEXT
               preprocessing:
                 - type: JSONPATH
@@ -280,7 +280,7 @@ zabbix_export:
 | Preprocessing expression | `$[?(@.db == '{#DB}')].price.first()` | `$[0]["{#ID}"]` |
 | Filter operator needed | Yes | No |
 | `.first()` needed | Yes | No |
-| Item key | `db.[{#DB}]` | `db.[{#ID}]` |
+| Item key        | `db[{#DB}]` | `db[{#ID}]` |
 | Payload design | Single flat array | Two complementary structures |
 | Readability | Verbose | More robust and easier to maintain in production |
 | Debugging | Debugging happens inside a JSONPath expression (opaque, annoying) | Debugging is just “look at the raw item + extracted value” |
