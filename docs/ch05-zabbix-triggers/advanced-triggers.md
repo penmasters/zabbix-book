@@ -116,7 +116,7 @@ data for last 3 minutes:
     there yet. However, it serves the purpose of demonstrating the importance
     of trigger dependency.
 
-Let's apply it to "thezabixbook.com" host - and it has a typo (note double "b"
+Let's apply it to "thezabbixbook.com" host - and it has a typo (note double "b"
 is missing in the "zabbix"). What happens, is that data can't be retrieved, host
 can't be pinged:
 
