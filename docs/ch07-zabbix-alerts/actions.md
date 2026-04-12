@@ -487,7 +487,7 @@ internal event types:
 !!! note
 
     Internal actions support **Recovery operations** but **do not support Update
-    operations** (acknowledgments). They also do not support **Run global script**,
+    operations** (acknowledgements). They also do not support **Run global script**,
     Only **Send message** is available.
 
 This last point is easy to miss in the documentation. You cannot run an automated
@@ -591,19 +591,35 @@ all enabled actions of the matching type. The escalator is responsible for sched
 and executing each step. The **alerter** process handles the actual delivery of
 notifications.
 
-**Escalation state is stored in the database.** This means escalations survive a Zabbix server restart. If the server restarts while an escalation is in progress (say, between step 1 and step 2), the escalation will resume correctly after restart.
+**Escalation state is stored in the database.** This means escalations survive a
+`Zabbix server` restart. If the server restarts while an escalation is in
+progress (say, between step 1 and step 2), the escalation will resume correctly
+after restart.
 
-**Disabled actions are skipped entirely.** A disabled action does not accumulate pending operations. If you disable an action during a live problem and re-enable it later, no retroactive operations are fired.
+**Disabled actions are skipped entirely.** A disabled action does not accumulate
+pending operations. If you disable an action during a live problem and re-enable
+it later, no retroactive operations are fired.
 
-**Time period conditions are evaluated at the moment each step fires.** If you have a time period condition (`1-5,09:00-17:00`) and escalation step 2 fires on a Saturday night, that step will be skipped because the condition fails at that moment. This is the expected behaviour for business-hours alerting, but it can be surprising when a problem persists across a weekend — multiple escalation steps may silently skip until Monday morning.
+**Time period conditions are evaluated at the moment each step fires.** If you
+have a time period condition (`1-5,09:00-17:00`) and escalation step 2 fires on
+a Saturday night, that step will be skipped because the condition fails at that
+moment. This is the expected behaviour for business-hours alerting, but it can
+be surprising when a problem persists across a weekend. Multiple escalation steps
+may silently skip until Monday morning.
 
-> **Note:** There is one specific re-evaluation nuance for the **Maintenance** condition: if the problem was suppressed when step 1 fired and "Pause operations for suppressed problems" is enabled, the escalation was paused. When suppression ends, Zabbix resumes the escalation from the step that was waiting — it does not restart from step 1.
+!!! note
+
+    There is one specific re-evaluation nuance for the **Maintenance** condition:
+    if the problem was suppressed when step 1 fired and "Pause operations for suppressed
+    problems" is enabled, the escalation was paused. When suppression ends, Zabbix
+    resumes the escalation from the step that was waiting. It does not restart from step 1.
 
 ---
 
 ## Using Macros in Actions
 
-Both the subject and body of Send message operations support a wide range of macros. Some of the most frequently used:
+Both the subject and body of Send message operations support a wide range of
+macros. Some of the most frequently used:
 
 | Macro | Resolves to |
 |---|---|
@@ -624,39 +640,70 @@ Both the subject and body of Send message operations support a wide range of mac
 | `{ALERT.SENDTO}` | The recipient's Send To value from their media type configuration |
 | `{ALERT.SUBJECT}` | The notification subject (only usable in the body) |
 
-`{ESC.HISTORY}` is a particularly useful macro to include in escalation notifications. It gives the recipient context about what already happened — for example, "Step 1 sent to oncall_engineer at 14:32:00. No response. Step 2 sending to team_lead now."
+`{ESC.HISTORY}` is a particularly useful macro to include in escalation notifications.
+It gives the recipient context about what already happened. For example, "Step 1,
+sent to oncall_engineer at 14:32:00. No response. Step 2 sending to team_lead now."
 
-`{EVENT.TAGSJSON}` is worth remembering if you use Zabbix actions to drive a webhook. Parsing `{EVENT.TAGS}` as a string in your receiving system is fragile; using the JSON variant is much cleaner.
+`{EVENT.TAGSJSON}` and `{EVENT.RECOVERY.TAGSJSON}` are worth remembering if you
+use Zabbix actions to drive a webhook. Parsing `{EVENT.TAGS}` as a string
+in your receiving system is fragile; using the JSON variant is much cleaner.
 
 ---
 
 ## Common Mistakes and How to Avoid Them
 
-**Sending to a user with no configured media.** If a user has no active media type (or their media type is disabled), the notification silently disappears. Zabbix logs a warning in the server log, but no error is surfaced in the UI. Always verify user media configuration before relying on actions for critical alerts.
+- **Sending to a user with no configured media.**: If a user has no active media
+type (or their media type is disabled), the notification silently disappears. Zabbix
+logs a warning in the server log, but no error is surfaced in the UI. Always verify
+user media configuration before relying on actions for critical alerts.
 
-**Using AND/OR without understanding the grouping.** The default AND/OR logic groups same-type conditions with OR and different-type conditions with AND. This is correct most of the time, but if you add two Host conditions expecting both to be required, they will actually be OR'd together. Switch to `AND` or `Custom expression` if you need different behaviour.
+- **Using AND/OR without understanding the grouping**: The default AND/OR logic
+groups same type conditions with OR and different-type conditions with AND. This
+is correct most of the time, but if you add two Host conditions expecting both to
+be required, they will actually be OR'd together. Switch to `AND` or `Custom expression`
+if you need different behaviour.
 
-**Forgetting that discovery conditions `Discovered` vs `Up` are different.** Using `Up` in a discovery action that provisions hosts will attempt to re-provision the host on every successful discovery scan. Use `Discovered` for one-time provisioning.
+- **Forgetting that discovery conditions `Discovered` vs `Up` are different.**: Using
+`Up` in a discovery action that provisions hosts will attempt to re-provision the
+host on every successful discovery scan. Use `Discovered` for one-time provisioning.
 
-**Over-relying on trigger actions for host management.** Trigger actions cannot add or remove hosts from host groups. If you need dynamic group membership based on trigger state, you need a combination of discovery/autoregistration actions and host metadata — not trigger actions.
+- **Over relying on trigger actions for host management.**: Trigger actions cannot
+add or remove hosts from host groups. If you need dynamic group membership based
+on trigger state, you need a combination of discovery/autoregistration actions
+and host metadata, not trigger actions.
 
-**Not configuring internal actions.** Silent item failures are one of the most common sources of monitoring blind spots. A simple internal action that sends email when any item in any group becomes "not supported" takes five minutes to configure and can save hours of debugging.
+- **Not configuring internal actions.**: Silent item failures are one of the most
+common sources of monitoring blind spots. A simple internal action that sends
+email when any item in any group becomes "not supported" takes five minutes to
+configure and can save hours of debugging.
 
-**Setting step duration too short.** Very short escalation step durations (below 60 seconds) can cause the escalator to fall behind under heavy load. Zabbix does not guarantee sub-minute escalation precision. For anything below one minute, consider whether the escalation design is appropriate.
+- **Setting step duration too short.**: Very short escalation step durations
+(below 60 seconds) can cause the escalator to fall behind under heavy load. Zabbix
+does not guarantee sub-minute escalation precision. For anything below one minute,
+consider whether the escalation design is appropriate.
 
 ---
 
 ## Conclusion
 
-Actions are the automation layer that connects Zabbix's data collection engine to your response workflows. Each of the five event sources — triggers, discovery, autoregistration, internal, service — has its own set of conditions and operations, with trigger actions offering the most depth through escalations, recovery operations, and update operations.
+Actions are the automation layer that connects Zabbix's data collection engine
+to your response workflows. Each of the five event sources: **triggers, discovery,
+autoregistration, internal, service**. Has its own set of conditions and operations,
+with trigger actions offering the most depth through escalations, recovery operations,
+and update operations.
 
 A few principles to keep in mind as you build your action configuration:
 
-- Use **trigger tags** to build flexible, template-driven routing rules rather than maintaining long lists of specific triggers or hosts
-- Use **host metadata** in autoregistration to automatically classify and configure newly registered agents
-- Use `AND/OR` conditions consciously and switch to `Custom expression` when the default grouping does not match your intent
-- Always configure at least one **internal action** to catch silent data collection failures
-- Include `{ESC.HISTORY}` in escalation messages so recipients know what already happened before the notification reached them
+- Use **trigger tags** to build flexible, template driven routing rules rather
+than maintaining long lists of specific triggers or hosts
+- Use **host metadata** in autoregistration to automatically classify and configure
+newly registered agents
+- Use `AND/OR` conditions consciously and switch to `Custom expression` when the
+default grouping does not match your intent
+- Always configure at least one **internal action** to catch silent data collection
+failures
+- Include `{ESC.HISTORY}` in escalation messages so recipients know what already
+happened before the notification reached them
 
 ## Questions
 
