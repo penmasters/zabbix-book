@@ -977,7 +977,14 @@ sent to oncall_engineer at 14:32:00. No response. Step 2 sending to team_lead no
 use Zabbix actions to drive a webhook. Parsing `{EVENT.TAGS}` as a string
 in your receiving system is fragile; using the JSON variant is much cleaner.
 
-As an example you could create a text based template based on this example:
+This template is intended as a realistic example, not a universal drop-in solution.
+
+Some macros depend on:
+- the presence of specific items (CPU, memory, uptime)
+- the trigger definition (single vs multiple items)
+- the environment (proxy usage, host configuration)
+
+Adapt the template to your own environment rather than copying it blindly.
 
 ``` text
 ==============================
@@ -1031,7 +1038,7 @@ Latest data : {$ZABBIX.URL}/zabbix.php?action=latest.view&hostids[]={HOST.ID}&sh
 
 
 ------------------------------
-Generated: {{TIME}.fmttime(%Y-%m-%d %H:%M:%S)}
+Generated: {EVENT.DATE} {EVENT.TIME}
 ------------------------------
 ```
 ---
