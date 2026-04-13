@@ -135,6 +135,10 @@ B, C, D and so on as you add them, and you write the formula yourself. For examp
 `(A or B) and C and not D`. Use this when the default AND/OR logic does not produce
 the correct result.
 
+![ch07_type_of_calculation.png](ch07_type_of_calculation.png)
+
+_CH07 type of calculation_
+
 !!! note
 
     Condition labels are assigned in the order conditions were added. If you
@@ -253,6 +257,10 @@ When a problem event fires:
 4. After another hour, if still unresolved: step 4 fires (because steps
    3–0 means "step 3 to infinity"), `management` gets notified again.
 5. This continues indefinitely until the problem resolves.
+
+![ch07_pause_operations.png](ch07_pause_operations.png)
+
+_ch07 pause operations_
 
 !!! warning
 
@@ -969,6 +977,63 @@ sent to oncall_engineer at 14:32:00. No response. Step 2 sending to team_lead no
 use Zabbix actions to drive a webhook. Parsing `{EVENT.TAGS}` as a string
 in your receiving system is fragile; using the JSON variant is much cleaner.
 
+As an example you could create a text based template based on this example:
+
+``` text
+==============================
+⚠️  ZABBIX ALERT
+==============================
+
+HOST
+-----
+Name        : {HOST.NAME}
+IP          : {HOST.CONN}
+Proxy       : {PROXY.NAME}
+Uptime      : {?last(//system.uptime)}
+
+Performance
+- CPU Usage : {?last(//system.cpu.util)} %
+- Memory    : {?last(//vm.memory.utilization)} %
+
+Description
+{HOST.DESCRIPTION}
+
+
+EVENT
+-----
+Name        : {EVENT.NAME}
+Status      : {EVENT.STATUS}
+Started at  : {EVENT.DATE} {EVENT.TIME}
+Duration    : {EVENT.DURATION}
+Age         : {EVENT.AGE}
+Value       : {ITEM.VALUE}
+
+Acknowledgement
+- Status    : {EVENT.ACK.STATUS}
+- History   : {EVENT.ACK.HISTORY}
+
+
+TRIGGER
+-------
+Severity    : {TRIGGER.SEVERITY}
+Status      : {TRIGGER.STATUS}
+Description : {TRIGGER.DESCRIPTION}
+URL         : {TRIGGER.URL}
+
+
+LINKS
+-----
+Event       : {$ZABBIX.URL}/tr_events.php?triggerid={TRIGGER.ID}&eventid={EVENT.ID}
+Acknowledge : {$ZABBIX.URL}/zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[]={EVENT.ID}
+Host        : {$ZABBIX.URL}/hostinventories.php?hostid={HOST.ID}
+Graph       : {$ZABBIX.URL}/history.php?action=showgraph&itemids[]={ITEM.ID1}
+Latest data : {$ZABBIX.URL}/zabbix.php?action=latest.view&hostids[]={HOST.ID}&show_details=0
+
+
+------------------------------
+Generated: {{TIME}.fmttime(%Y-%m-%d %H:%M:%S)}
+------------------------------
+```
 ---
 
 ## Common Mistakes and How to Avoid Them
