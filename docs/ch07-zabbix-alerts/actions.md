@@ -55,48 +55,48 @@ Each event source has its own tab: `Trigger actions`, `Service actions`,
 ---
 
 ## Event Lifecycle: Problem, Update, and Recovery
- 
+
 Before diving into configuration, it is worth understanding how Zabbix structures
 events internally. Every action operation is tied to a specific event type, and
 confusing them is one of the most common reasons people can't figure out why a
-notification isn't arriving — or *is* arriving when it shouldn't.
- 
+notification isn't arriving, or *is* arriving when it shouldn't.
+
 ### The Three Event Types
- 
-**Problem event**: Generated when a trigger transitions from `OK` to `PROBLEM`.
+
+- **Problem event**: Generated when a trigger transitions from `OK` to `PROBLEM`.
 This is what kicks off the escalation chain. Every problem event gets a unique
 event ID. All operations, including escalation steps, are executed in the context
 of this single event.
- 
-**Update event**: Generated whenever a problem is modified without resolving.
+
+- **Update event**: Generated whenever a problem is modified without resolving.
 This includes acknowledgements, manual severity changes, comments, and
 suppression/unsuppression. Update events are linked to the original problem
 event by its event ID. Update operations in an action respond to these.
- 
-**Recovery event**: Generated when a trigger returns from `PROBLEM` to `OK`.
+
+- **Recovery event**: Generated when a trigger returns from `PROBLEM` to `OK`.
 This is also linked to the original problem event ID. Recovery operations fire
 once, at this moment — they do not escalate.
- 
+
 ### What This Means in Practice
- 
+
 A single trigger problem generates at most one problem event, potentially many
 update events, and at most one recovery event. Operations in the problem section
 of an action run against the problem event. Operations in the recovery section
 run against the recovery event. Operations in the update section run against
 update events.
- 
+
 This has an important consequence that surprises many users: **if the same trigger
 fires again after recovering, a brand-new problem event is created with a new
 event ID, and the escalation starts over from step 1.** There is no memory of
 the previous escalation. Each problem lifecycle is independent.
- 
+
 Conversely, if a problem never recovers (the trigger stays in `PROBLEM` state),
 the escalation continues indefinitely through its steps — but there is still only
 one problem event. The escalation is just advancing through the configured steps
 against that single event.
- 
+
 !!! note
- 
+
     Operations within an escalation run once per step. You cannot make step 1
     fire twice against the same problem event. If you need repeated notifications
     at a fixed interval, configure multiple steps (or use `steps 3–0` to repeat
@@ -142,20 +142,20 @@ the correct result.
     the correct remaining labels.
 
 ### Condition Evaluation Order and Grouping
- 
+
 Understanding evaluation order matters when building complex conditions. Zabbix
 evaluates conditions in the order they appear in the list. With `AND / OR`
 calculation, the grouping logic is:
- 
+
 - All conditions **of the same type** (e.g. all Host group conditions) are
   evaluated first and combined with `OR`
 - The resulting groups are then combined with `AND` across different types
- 
+
 This means two conditions of the same type will **never** both be required
 simultaneously under `AND / OR` mode. If you add `Host group = A` and
 `Host group = B`, Zabbix reads this as "host is in A *or* in B" — not "host
 is in both A and B simultaneously" (which would never match anyway).
- 
+
 If you genuinely need "Host is in group A **and** also in group B", switch to
 `AND` mode or use `Custom expression`. Though for host group membership,
 the more practical approach is usually a tag-based condition instead.
@@ -384,7 +384,7 @@ an update operation. This allows you to do things like: "when someone acknowledg
 the problem, send a notification to the oncall channel confirming the acknowledgment."
 
 Update operations are especially valuable for workflow integration. Common use cases:
- 
+
 - **Ticketing sync**: when a problem is acknowledged in Zabbix, trigger a webhook
   that updates the corresponding ticket in Jira, ServiceNow, or a similar tool
 - **Slack acknowledgement broadcast**: send a message to a team channel when
@@ -395,80 +395,113 @@ Update operations are especially valuable for workflow integration. Common use c
 
 Update operations also support **Send message** and **Run global script**.
 
+### Event lifecycle example
+
+The following diagram shows how a single event flows through Zabbix:
+
+```mermaid
+flowchart TD
+    A[Trigger OK] -->|State change| B[Trigger PROBLEM]
+    B --> C[Problem Event Created]
+
+    C --> D[Action Evaluation]
+    D -->|Match| E[Attach Operations to Event ID]
+
+    E --> F[Escalator Process]
+    F --> G[Execute Escalation Steps]
+
+    G --> H{Trigger back to OK?}
+    
+    H -->|Yes| I[Recovery Event Created]
+    I --> J[Execute Recovery Operations]
+
+    C --> K[Event Updates]
+    K -->|Ack / Severity Change / Comment| L[Update Operations Executed]
+```
+
+A single problem lifecycle can therefore contain:
+- one **problem event**
+- zero or more **update events**
+- zero or one **recovery event**
+
+If the same trigger fires again after recovery, a completely new problem event
+is created and the escalation starts again from step 1.
+
+
 ---
 
 ## Maintenance and Suppression
- 
+
 Maintenance and suppression are related but distinct concepts, and both affect
 how actions behave.
- 
+
 ### Maintenance Mode
- 
+
 A **maintenance period** is a scheduled or on-demand window configured under
 **Monitoring → Maintenance**. Maintenance applies to hosts or host groups.
- 
+
 There are two types of maintenance:
- 
+
 | Type | Effect on events |
 |---|---|
 | With data collection | Zabbix continues to collect data and evaluate triggers. Problem events *are* generated. They are suppressed but exist. |
 | Without data collection | Zabbix stops collecting data. Triggers are not evaluated. No problem events are generated at all. |
- 
+
 This distinction is critical: if you want recovery notifications to fire after
 maintenance ends, you need "with data collection" mode. In "without data collection"
 mode, problems that started before maintenance began will have no recovery event
 until the trigger is re-evaluated after maintenance ends — which may take an entire
 check cycle.
- 
+
 ### Suppression and the Action Checkbox
- 
+
 When a problem event exists for a host inside a "with data collection" maintenance
 window, the problem is **suppressed**. The event is there, but Zabbix marks it
 as suppressed.
- 
+
 The **Pause operations for suppressed problems** checkbox on each trigger action
 controls what happens:
- 
+
 - **Checked (default)**: the escalation pauses while the problem is suppressed.
   When the maintenance window ends and suppression is lifted, the escalation
   resumes from the step it was waiting on — it does not restart from step 1.
 - **Unchecked**: notifications fire regardless of suppression. Useful for
   infrastructure-level alerting where you always want visibility.
- 
+
 !!! note
- 
+
     When suppression ends and the escalation resumes, Zabbix checks whether the
     problem still exists at that moment. If it has already resolved (the trigger
     returned to OK during the maintenance window), the recovery event will have
     already been generated and the escalation will simply stop — no catch-up
     notifications fire.
- 
+
 ### Manual Suppression
- 
+
 Problems can also be manually suppressed outside a maintenance window via
 **Monitoring → Problems** by selecting a problem and using the suppress action.
 The same **Pause operations for suppressed problems** logic applies. Manually
 suppressed problems pause the escalation; unsuppressing them resumes it.
- 
+
 ---
- 
+
 ## Multiple Actions and Execution Order
- 
+
 One aspect of Zabbix actions that surprises engineers coming from other tools:
 **there is no priority ordering and no stop-processing mechanism**.
- 
+
 When a trigger fires, the escalator evaluates *all* enabled trigger actions. Every
 action whose conditions match will fire. There is no way to say "if action A matched,
 skip action B". If three actions all match the same problem event, all three execute
 fully and independently.
- 
+
 **Execution order** among matching actions is based on action ID (the internal
 database ID, which roughly corresponds to creation order). This order is not
 configurable and is rarely important, but it matters if you are debugging race
 conditions in scripts or webhook calls.
- 
+
 **Practical implications for design:**
- 
+
 - Design your conditions carefully. If you have a "catch-all" action with no
   conditions alongside a specific action, both will fire for any event the specific
   action matches.
@@ -477,71 +510,71 @@ conditions in scripts or webhook calls.
 - Overlapping actions will generate multiple notifications to the same user
   if that user appears in multiple actions. This is a common source of alert
   fatigue.
- 
+
 !!! tip
- 
-    A clean design principle: **one action per routing destination, not one action
-    per team**. Route by severity, then by tag within each action, rather than
-    maintaining separate actions per team with overlapping conditions.
- 
+
+    A clean design principle: **A useful design principle is to avoid
+    overlapping team-specific actions when the same routing can be expressed more
+    cleanly through tags and escalation logic.**
+
 ---
- 
+
 ## Design Patterns: Global Actions vs Segmented Actions
- 
+
 A recurring architectural question in Zabbix is: **one global action or many
 specific ones?**
- 
+
 ### Single Global Action
- 
+
 One action with broad or no conditions routes all notifications through a single
 place. Operations use tag-based routing (e.g., via user group membership or
 media type selection) to reach the right people.
- 
+
 **Advantages:** easy to audit, easy to disable entirely, no overlap risk.
- 
+
 **Disadvantages:** complex condition expressions when many routing rules exist;
 difficult to maintain as the environment grows.
- 
+
 ### Segmented Actions
- 
+
 Multiple narrower actions, each responsible for a specific team, severity band,
 or environment.
- 
+
 **Advantages:** each action is readable on its own; teams can be given
 responsibility for their own action.
- 
+
 **Disadvantages:** overlap risk if conditions are not carefully exclusive;
 disabling one action may not stop all notifications for a given event.
- 
+
 ### Recommended Approach
- 
+
 In practice, a **hybrid** works best for most organisations:
- 
+
 - One global action for broad alerting (all severity >= Warning → email to NOC)
 - Supplemental actions for specific escalation paths (severity >= High, tag
   `component: database` → PagerDuty to DBA on-call)
 - Separate actions for recovery and update notifications if they have different
   routing from the problem notifications
- 
+
 Use **trigger tags** aggressively to drive routing in conditions rather than
 maintaining lists of specific hosts or triggers. Tags survive infrastructure
 changes (hosts renamed, moved to different groups); hard-coded host conditions do not.
- 
+
 ---
- 
+
 ## Performance Impact at Scale
- 
+
 Actions are processed by two Zabbix server processes: the **escalator** and the
 **alerter**.
- 
-- The **escalator** (`StartEscalers` in `zabbix_server.conf`) evaluates action
+
+- The **escalator** (`StartEscalators` in `zabbix_server.conf`) evaluates action
   conditions, schedules steps, and writes escalation state to the database. It
   runs periodically and processes all pending escalation steps in each cycle.
 - The **alerter** (`StartAlerters`) takes the notifications queued by the escalator
   and actually delivers them via media types.
- 
+
 At scale, several configuration choices affect performance:
- 
+
 **Number of enabled actions:** every problem event triggers a condition evaluation
 pass across all enabled actions. A Zabbix server with 50 enabled trigger actions
 does 50 condition evaluations per problem event. This is rarely a bottleneck, but
@@ -635,21 +668,17 @@ for more than 24 hours.
 
 **Action 1: Auto-add discovered hosts**
 
-``` bash
 - Conditions: `Discovery check = ICMP ping` AND `Discovery status = Discovered` AND `Service type = Zabbix agent`
 - Operations:
    1. Add host
    2. Add to host group: `Discovered hosts`
    3. Link to template: `Linux by Zabbix agent`
    4. Enable host
-```
 
 **Action 2: Remove long-lost hosts**
 
-``` bash
 - Conditions: `Discovery object = Host` AND `Discovery status = Lost` AND `Downtime > 86400` (24 hours)
 - Operations: Remove host
-```
 
 !!! tip
 
@@ -944,58 +973,58 @@ in your receiving system is fragile; using the JSON variant is much cleaner.
 
 ## Common Mistakes and How to Avoid Them
 
-**Sending to a user with no configured media.** If a user has no active media
+- **Sending to a user with no configured media.** If a user has no active media
 type (or their media type is disabled), the notification silently disappears. Zabbix
 logs a warning in the server log, but no error is surfaced in the UI. Always verify
 user media configuration before relying on actions for critical alerts.
- 
-**Using AND/OR without understanding the grouping.** The default AND/OR logic
+
+- **Using AND/OR without understanding the grouping.** The default AND/OR logic
 groups same-type conditions with OR and different-type conditions with AND. This
 is correct most of the time, but if you add two Host conditions expecting both to
 be required, they will actually be OR'd together. Switch to `AND` or `Custom expression`
 if you need different behaviour.
- 
-**Forgetting that `Discovered` vs `Up` are different.** Using `Up` in a discovery
+
+- **Forgetting that `Discovered` vs `Up` are different.** Using `Up` in a discovery
 action that provisions hosts will attempt to re-provision the host on every successful
 discovery scan. Use `Discovered` for one-time provisioning.
- 
-**Expecting a recovery notification when none was configured.** If your action
+
+- **Expecting a recovery notification when none was configured.** If your action
 has problem operations but no recovery operations, no "resolved" message will
 ever be sent. Recovery operations must be explicitly added. They do not inherit
 from the problem operations section.
- 
-**Recovery notifications going to the wrong people.** Recovery operations only
+
+- **Recovery notifications going to the wrong people.** Recovery operations only
 notify whoever you explicitly list in the recovery section, unless you enable
 **Notify all involved**. If your escalation reached step 3 (management) but your
 recovery operation only lists the step-1 engineer, management never hears the problem
 was resolved. Use **Notify all involved** as the default, not the exception.
- 
-**Duplicate recovery notifications.** If you list a user explicitly in recovery
+
+- **Duplicate recovery notifications.** If you list a user explicitly in recovery
 operations *and* enable **Notify all involved**, that user receives two recovery
 messages. Pick one approach.
- 
-**Action triggering again after recovery.** This is not a bug. If the same trigger
+
+- **Action triggering again after recovery.** This is not a bug. If the same trigger
 fires again after recovering, a new problem event is created and the action fires
 from step 1. This is by design. If you are seeing too many re-alerts from a flapping
 trigger, address the underlying trigger expression or add a hysteresis condition
 rather than trying to suppress the action.
- 
-**Condition mismatch leading to silent non-delivery.** If an action's conditions
+
+- **Condition mismatch leading to silent non-delivery.** If an action's conditions
 don't match, no error is shown anywhere — the event is simply not matched. When
 debugging a missing notification, start by temporarily removing all conditions
 from the action to confirm operations work, then re-add conditions one by one.
- 
-**Setting step duration too short.** Very short escalation step durations
+
+- **Setting step duration too short.** Very short escalation step durations
 (below 60 seconds) can cause the escalator to fall behind under heavy load. Zabbix
 does not guarantee sub-minute escalation precision. For anything below one minute,
 consider whether the escalation design is appropriate.
- 
-**Relying on trigger actions for host management.** Trigger actions cannot
+
+- **Relying on trigger actions for host management.** Trigger actions cannot
 add or remove hosts from host groups. If you need dynamic group membership based
 on trigger state, you need a combination of discovery/autoregistration actions
 and host metadata, not trigger actions.
- 
-**Not configuring internal actions.** Silent item failures are one of the most
+
+- **Not configuring internal actions.** Silent item failures are one of the most
 common sources of monitoring blind spots. A simple internal action that sends
 email when any item in any group becomes "not supported" takes five minutes to
 configure and can save hours of debugging.
@@ -1005,8 +1034,8 @@ configure and can save hours of debugging.
 ## Conclusion
 
 Actions are the automation layer that connects Zabbix's data collection engine
-to your response workflows. Each of the five event sources: **triggers, discovery,
-autoregistration, internal, service**. Has its own set of conditions and operations,
+to your response workflows. Each of the five event sources - **triggers, discovery,
+autoregistration, internal, service** - has its own set of conditions and operations,
 with trigger actions offering the most depth through escalations, recovery operations,
 and update operations.
 
@@ -1036,4 +1065,18 @@ A few principles to keep in mind as you build your action configuration:
 
 ## Questions
 
+- What is the difference between a problem event, an update event, and a recovery event?
+- How does `AND / OR` calculation group conditions of the same type?
+- What happens to escalation steps when a problem is suppressed during maintenance?
+- Why can multiple trigger actions send duplicate notifications for the same problem?
+- When should you use `Discovered` rather than `Up` in a discovery action?
+- Why are internal actions important in production environments?
+
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/action](https://www.zabbix.com/documentation/current/en/manual/config/notifications/action)
+- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/action/escalations](https://www.zabbix.com/documentation/current/en/manual/config/notifications/action/escalations)
+- [https://www.zabbix.com/documentation/current/en/manual/maintenance](https://www.zabbix.com/documentation/current/en/manual/maintenance)
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/alerts/scripts](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/alerts/scripts)
+- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/action/update_operations](https://www.zabbix.com/documentation/current/en/manual/config/notifications/action/update_operations)
+-[https://www.zabbix.com/documentation/current/en/manual/it_services](https://www.zabbix.com/documentation/current/en/manual/it_services)
