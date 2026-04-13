@@ -7,111 +7,6 @@ tags: [advanced]
 
 # Custom Low Level Discovery
 
-Zabbix's Low-Level Discovery (LLD) plays a crucial role in dynamically detecting
-and managing monitored entities. While Zabbix provides built-in discovery rules,
-real-world environments often demand more flexibility and customization.
-
-In this chapter, we will explore custom LLD techniques, allowing you to create powerful,
-tailored discovery mechanisms that go beyond standard templates. You'll learn how
-to use scripts and custom rules to automatically detect and monitor services,
-network interfaces, and other dynamic components within your infrastructure.
-
-Whether you're monitoring cloud environments, network devices, or application-specific
-metrics, mastering custom LLD will help you reduce manual work, improve accuracy,
-and scale your monitoring effortlessly. Let’s dive in!
-
-
-???+ note 
-    For this chapter we start with a working system with a proper configured agent
-    in passive mode. If you have no clue how to do this go back to chapter 01.
-
-Zabbix **Low-Level Discovery** (LLD) provides a dynamic mechanism for automatically
-creating monitoring elements based on discovered entities within your infrastructure.
-
-**Core Functionality :**
-
-LLD enables Zabbix to detect changes in your environment and create corresponding
-items, triggers, and graphs without manual intervention. This automation is particularly
-valuable when monitoring elements with fluctuating quantities or identifiers.
-
-**Discovery Targets:**
-The discovery process can identify and monitor various system components including:
-
-- File systems
-- CPUs
-- CPU cores
-- Network interfaces
-- SNMP OIDs
-- JMX objects
-- Windows services
-- Systemd services
-- Host interfaces
-- Anything based on custom scripts
-
-Through LLD, administrators can implement scalable monitoring solutions that automatically
-adapt to infrastructure changes without requiring constant template modifications.
-
-## Implementing Low-Level Discovery in Zabbix
-
-### The Challenge of Manual Configuration
-
-We could manually create each item but this would be a very time-consuming task
-and impossible to manage in large environments. To enable automatic discovery of
-our items or entities, we need discovery rules.
-
-### Discovery Rules
-
-These rules send the necessary data to Zabbix for our discovery process. There 
-is no limit to the various methods we can employ, the only requirement is that
-the end result must be formatted in JSON. This output information is crucial as
-it forms the foundation for creating our items.
-
-### Prototypes and Automation
-
-Once our discovery rule is in place, we can instruct Zabbix to automatically generate
-items, triggers, graphs, and even host prototypes. These function as blueprints
-directing Zabbix how to create those entities.
-
-### LLD Macros
-
-To enhance flexibility, Zabbix implements LLD macros. These macros always begin
-with a # character before their name (e.g., {#FSNAME}). Acting as placeholders for
-the values of discovered entities, Zabbix replaces these macros with the actual
-discovered names of the items during the implementation process.
-
-### The Zabbix Low-Level Discovery Workflow
-
-The workflow that Zabbix follows during Low-Level Discovery consists of four
-distinct phases:
-
-**Discovery Phase**
-* Zabbix executes the discovery item according to the defined discovery rule
-* The item returns a JSON list of discovered entities
-
-**Processing Phase**
-* Zabbix parses the JSON data and extracts the necessary information
-
-**Creation Phase**
-* For each discovered entity, Zabbix creates items, triggers, and graphs based on
-  the prototypes
-* During this process, LLD macros are replaced with the actual discovered values
-
-**Monitoring Phase**
-* Zabbix monitors the created items using standard monitoring procedures
-
-### Advantages of LLD Implementation
-
-The benefits of implementing Low-Level Discovery are substantial:
-
-* **Automation** - Creation of items, triggers, graphs, and hosts becomes fully
-  automated
-* **Scalability** - Enables monitoring of large numbers of hosts or items without
-  manual intervention
-* **Adaptability** - Zabbix can dynamically adjust to environmental changes by 
-  creating or removing entities as needed
-
-## Learning LLD custom script
-
 We begin our series with LLD based on custom scripts because, while it represents
 one of the more complex topics, mastering this concept provides a solid foundation.
 Once you understand this implementation approach, the other LLD topics will be
@@ -151,7 +46,7 @@ This mapping enables dynamic creation of monitoring objects tailored to each spe
 file system configuration.
 
 
-### Creating a custom script.
+## Creating a custom script.
 
 In this example, we will develop a custom script to monitor user login activity on
 our systems. This script will track the number of users currently logged into each
@@ -494,7 +389,6 @@ one of the other users. As you will see both triggers will fire off but with
 different severity levels.
 
 ![lld different severity](lld-users-override.png)
-
 
 # Conclusion
 
