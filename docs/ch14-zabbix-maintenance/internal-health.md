@@ -5,30 +5,35 @@ description: |
 tags: [advanced]
 ---
 
-# Zabbix internal health check
+# Understanding Zabbix Internal Processes and Health Monitoring
 
-## **1. Introduction**
+## Introduction
 
 While Zabbix is known for monitoring infrastructure, it can also monitor itself.
-Through *internal checks*, Zabbix continuously measures its own operational state
-from poller load and queue length to cache usage and data throughput.
+Through *internal checks*, Zabbix continuously measures its own operational state,
+from poller load and queue length to cache usage and data throughput. Monitoring
+these internal metrics allows administrators to detect overload conditions, database
+bottlenecks, and sizing issues early, ensuring the monitoring system remains reliable
+and performant.
 
-Monitoring these internal metrics allows administrators to detect overload
-conditions, database bottlenecks, and sizing issues early, ensuring the monitoring
-system remains reliable and performant.
+Zabbix is not a single process. It is a collection of specialized worker processes,
+each responsible for a specific stage of the monitoring pipeline. At scale, performance
+is rarely limited by a single factor — it depends on how well these processes keep
+up with the flow of incoming data. When one part of the pipeline becomes overloaded,
+visible symptoms emerge: queue growth, delayed metrics, or slow alerting.
 
 ---
 
-## **2. The Zabbix Internal Host**
+## The Zabbix Internal Host
 
 Each Zabbix installation automatically creates a **virtual internal host**:
 
-* **Zabbix server** – represents the server process itself
-* **Zabbix proxy** – represents each proxy instance
+- **Zabbix server** — represents the server process itself
+- **Zabbix proxy** — represents each proxy instance
 
-These hosts are not linked to any physical device or network interface.
-They exist entirely within the Zabbix backend and collect self monitoring data
-through *internal items* with keys beginning with `zabbix[...]`.
+These hosts are not linked to any physical device or network interface. They exist
+entirely within the Zabbix backend and collect self-monitoring data through *internal
+items* with keys beginning with `zabbix[...]`.
 
 Examples:
 
@@ -39,100 +44,209 @@ zabbix[wcache,values,free]
 zabbix[items]
 ```
 
-These items require no agent or SNMP interface, they are gathered internally
-by Zabbix.
+These items require no agent or SNMP interface — they are gathered internally by
+Zabbix itself.
 
 ---
 
-## **3. Categories of Internal Metrics**
+## The Processing Pipeline
 
-### **3.1 Process Performance**
+At a high level, Zabbix operates as a sequential pipeline:
 
-Zabbix Server is a multi-process application. It relies on a dedicated set of
-specialized processes such as the pollers for active data collection, trappers
-for passive incoming data, and alerters for sending notifications to perform its
-core duties efficiently and concurrently.
+``` text
+Data collection → Preprocessing → Storage → Trigger evaluation → Alerting
+```
 
-Each type of internal process reports its load via internal checks, indicating
-the percentage of time it spends working versus waiting. Consistently high
-utilization (approaching 100%) is a critical performance indicator, suggesting
-that the configured number of processes (Start<Process>) is insufficient to handle
-the current monitoring load.
-
-If a process like the poller remains overloaded, it directly causes item collection
-delays, pushing new check requests into the queue. If the alerter is overloaded,
-users won't receive timely notifications about problems. Monitoring these metrics
-is thus the primary way to ensure data collection and alerting remain timely.
-
-
-| Example Key                             | Description                |
-| --------------------------------------- | -------------------------- |
-| `zabbix[process,poller,avg,busy]`       | Average poller utilization |
-| `zabbix[process,trapper,avg,busy]`      | Trapper process load       |
-| `zabbix[process,alerter,avg,busy]`      | Notification sender load   |
-| `zabbix[process,preprocessor,avg,busy]` | Preprocessing queue usage  |
+Each stage is handled by a different group of specialized processes. Understanding
+how these processes relate to each other is the key to diagnosing performance problems.
+Monitoring their utilization allows you to quickly identify where bottlenecks occur.
 
 !!! tip
-    If process utilization exceeds 75–80% for a sustained period, increase the
-    corresponding Start<Process> parameter (e.g., StartPollers, StartAlerters)
-    in zabbix_server.conf. A common bottleneck is the Housekeeper process, which
-    cleans up historical data; if it is consistently busy, database performance
-    will suffer significantly.
+
+    Each stage in this pipeline introduces its own scaling limits. When troubleshooting,
+    the goal is not to optimize everything at once, but to identify which stage
+    is currently the bottleneck.
+---
+
+## Internal Processes
+
+### Pollers — Data Collection
+
+Pollers are responsible for actively collecting data from monitored targets, including
+agent checks, SNMP polling, and simple checks. They form the entry point of the
+pipeline.
+
+When pollers are overloaded:
+
+- Item checks are delayed
+- The queue starts growing
+- Collected data becomes stale
+
+Relevant metric: `zabbix[process,poller,avg,busy]`
+
+!!! tip
+
+    Sustained poller utilization above 75–80% usually indicates that more pollers are
+    required (`StartPollers`), or that item design needs to be optimized.
 
 ---
 
-### **3.2 Queue Metrics**
+### Preprocessing — The Hidden Bottleneck
 
-The Zabbix internal queue is the most immediate indicator of the health of the
-entire monitoring pipeline. Every item check, regardless of how it's collected,
-first enters this queue before being processed, pre-processed, and eventually
-written to the database.
+Preprocessing is one of the most critical and often underestimated parts of the
+Zabbix pipeline. Whenever an item uses JSONPath, XPath, regular expressions, value
+mapping, or dependent items, its data is handled by preprocessing workers before
+being written to the database.
 
-Monitoring the queue helps to determine whether Zabbix is keeping pace with
-the influx of data. If the server is functioning correctly, the total queue
-length `zabbix[queue,5m]` should remain low and stable.
+In modern Zabbix environments — especially with HTTP checks, API monitoring, LLD,
+or bulk SNMP/JSON collection — preprocessing becomes a central component of the
+system. It is easy to overlook because the bottleneck is invisible until the queue
+starts growing or trigger evaluation begins to lag.
 
-Zabbix categorizes queued items by their delay, providing buckets for items
-waiting for more than 1 minute, 5 minutes, 10 minutes (as seen
-in the internal metric `zabbix[queue,<from>,<to>]` and the `Queue overview` page).
-The presence of items in these high delay queues is an immediate sign of trouble,
-as it means the monitoring system is collecting stale data.
+When preprocessing is overloaded:
 
-| Example Key             | Description                                |
-| ----------------------- | ------------------------------------------ |
-| `zabbix[queue,0,1s]`  | The count of items waiting for processing for less than |
-|      |1 second. This represents the normal, immediate flow of the system. |
-| `zabbix[queue,10m]` | The count of items delayed by at least 10 minutes |
-| |(the default to is infinity). This is the primary indicator of a severe backlog or performance bottleneck. |
+- Dependent items fall behind their master items
+- Data appears delayed or out of order
+- Trigger evaluation is postponed
+- Queue growth may occur even if pollers are not overloaded
 
-If the queue grows consistently, it signals that Zabbix is falling behind. The
-root cause is usually one of three things: either the data collection processes
-(pollers, etc.) are undersized, the database cannot accept data quickly enough
-(database write bottleneck), or the network connection between Zabbix and the
-database is saturated. A rapidly growing queue should trigger an immediate
-investigation.
+Relevant metric: `zabbix[process,preprocessor,avg,busy]`
+
+!!! tip
+
+    If preprocessing load is high, increasing `StartPreprocessors` is often required.
+    However, reducing unnecessary preprocessing steps or simplifying expressions
+    can have a larger impact than simply adding more workers.
+
+!!! tip
+
+    Delayed proxy synchronization introduces latency into the entire monitoring
+    pipeline, even if collection on the proxy itself is functioning correctly.
 
 ---
 
-### **3.3 Cache and Database Performance**
+### Trappers — Incoming Data
 
-Zabbix relies on multiple in memory caches to operate efficiently. The primary
-goal of these caches is to minimize the load on the backend database by storing
-frequently accessed data, such as host inventory, item configurations, and recent
-history values. If Zabbix processes need data that isn't in memory, they must
-perform expensive, synchronous database queries, severely impacting the overall
-throughput.
+Trappers process incoming data pushed to Zabbix, such as active agent data, `zabbix_sender`
+values, and proxy-forwarded data.
 
-The most critical cache is the Configuration Cache. This cache holds the entire
-monitoring setup (hosts, items, triggers, etc.). Its size is governed by the
-primary CacheSize parameter in the zabbix_server.conf file. Crucially, Zabbix
-does not expose a direct internal item to monitor the free space or utilization
-of the Configuration Cache. Its health is inferred from general server performance
-issues and related log file warnings.
+When overloaded:
 
-Other essential caches, such as the History Cache and the Trend Cache, do report
-their status. These provide direct visibility into memory pressure caused by data
-volume processing.
+- Incoming data is delayed
+- Push-based monitoring becomes unreliable
+- Proxy synchronization may lag
+
+Relevant metric: `zabbix[process,trapper,avg,busy]`
+
+---
+
+### Alerters — Notifications
+
+Alerters execute media types and send notifications. They are the final stage of
+the pipeline after a trigger fires.
+
+When overloaded:
+
+- Alerts are delayed
+- Escalations fail or are dropped
+- Notifications may never be delivered
+
+Relevant metric: `zabbix[process,alerter,avg,busy]`
+
+!!! note
+
+    Alerting delays are often mistaken for configuration problems, while the
+    root cause is actually alerter saturation.
+
+---
+
+### Housekeeper — Data Cleanup
+
+The housekeeper is responsible for removing outdated data from the database, including
+item history and trends, events and problems, user sessions, and data from deleted
+objects.
+
+When overloaded:
+
+- Database size grows uncontrollably
+- Queries become slower
+- Overall system performance degrades
+
+Relevant metric: `zabbix[process,housekeeper,avg,busy]`
+
+**How housekeeping works internally:** The housekeeper does not immediately delete
+data when objects are removed. Instead, Zabbix creates cleanup tasks internally
+and processes them in cycles. Deletion tasks are stored in the `housekeeper` table,
+each referencing an object type (item, trigger, service, etc.). The housekeeper
+removes related data in batches across multiple tables, limited per cycle by
+configuration parameters.
+
+This design prevents large blocking database operations, but introduces a delay
+between object deletion and actual data cleanup. In large environments, deleting
+many hosts or items can create a backlog of housekeeping tasks that may take multiple
+cycles to complete.
+
+> **Warning:** Setting housekeeping limits too low, or running large cleanup operations
+without tuning, can lead to prolonged database growth and degraded performance.
+
+---
+
+### Other Important Processes
+
+While the processes above are the most commonly observed bottlenecks, Zabbix includes
+several other internal workers that play important roles:
+
+- **History syncers**: Write collected values to the database
+- **Trend syncers**: Aggregate historical data into trends
+- **Escalators**: Mmanage multi-step alert escalations
+- **Configuration syncers**: Distribute configuration changes across the system
+- **Availability managers**: Track host and service availability
+
+These processes are usually less visible during normal operation but can become
+critical in large or complex environments.
+
+---
+
+## Queue Metrics
+
+The internal queue is the most immediate indicator of the health of the entire monitoring
+pipeline. Every item check, regardless of how it is collected, enters this queue
+before being processed, pre-processed, and written to the database.
+
+If the server is functioning correctly, the total queue length should remain low
+and stable. Zabbix categorizes queued items by their delay, providing buckets for
+items waiting more than 1 minute, 5 minutes, or 10 minutes (visible in the *Queue
+overview* page). Items in these high-delay buckets are a direct sign of trouble:
+the monitoring system is collecting stale data.
+
+| Example Key           | Description                                                                 |
+| --------------------- | --------------------------------------------------------------------------- |
+| `zabbix[queue,0,1s]`  | Items waiting less than 1 second — the normal, immediate flow of the system |
+| `zabbix[queue,10m]`   | Items delayed by at least 10 minutes — the primary indicator of a severe backlog |
+
+If the queue grows consistently, Zabbix is falling behind. The root cause is usually
+one of three things: data collection processes are undersized, the database cannot
+accept data quickly enough, or the network between Zabbix and the database is
+saturated. A rapidly growing queue should trigger an immediate investigation.
+
+---
+
+## Cache and Database Performance
+
+Zabbix relies on multiple in-memory caches to operate efficiently. Their primary
+goal is to minimize load on the backend database by storing frequently accessed
+data; such as host inventory, item configurations, and recent history values.
+If processes need data that is not in memory, they must perform expensive,
+synchronous database queries, which severely impacts throughput.
+
+The most critical cache is the **Configuration Cache**, which holds the entire
+monitoring setup (hosts, items, triggers, etc.). Zabbix does not expose a
+direct internal item for its utilization — its health is inferred from general
+performance issues and log file warnings. Its size is controlled by the `CacheSize`
+parameter in `zabbix_server.conf`.
+
+Other caches, such as the **History Cache** and **Trend Cache**, do report their
+status directly:
 
 | Example Key                  | Description                                    |
 | ---------------------------- | ---------------------------------------------- |
@@ -141,197 +255,164 @@ volume processing.
 | `zabbix[rcache,buffer,free]` | Free read-cache buffer                         |
 | `zabbix[values_processed]`   | Values processed per second                    |
 
-If the free space in the History Cache (wcache,values,free) approaches zero, or
-if the queue starts growing, the Zabbix server is under memory pressure. The
-critical step is to increase the relevant CacheSize parameters. Specifically,
-issues with the Configuration Cache are resolved by increasing the main `CacheSize`
-parameter, while data processing bottlenecks are resolved by increasing parameters
-like HistoryCacheSize and TrendCacheSize.
+If free space in the History Cache (`wcache,values,free`) approaches zero while the
+queue is growing, the server is under memory pressure. Increase the relevant cache
+size parameters: `CacheSize` for Configuration Cache issues, and `HistoryCacheSize`
+or `TrendCacheSize` for data processing bottlenecks.
 
 ---
 
-### **3.4 General Statistics**
+## General Statistics
 
-Zabbix's internal host also provides overall system information, including:
+Zabbix's internal host also provides overall system information:
 
-* Total number of hosts, items, and triggers
-* Number of unsupported items
-* Average values processed per second
-* Event processing rate
+- Total number of hosts, items, and triggers
+- Number of unsupported items
+- Average values processed per second (NVPS)
+- Event processing rate
 
-These metrics are invaluable for capacity planning and performance validation.
-
----
-
-## **4. Viewing Internal Metrics**
-
-To effectively diagnose performance issues, administrators need direct access to
-the collected internal data. Zabbix provides several primary ways to inspect these
-internal checks, each serving a slightly different purpose:
-
-- Monitoring → Latest data → Host: Zabbix server
-    - This is the quickest way to view the live, current values of every internal
-      item associated with the Zabbix server. It's ideal for immediate troubleshooting,
-      checking recent busy percentages, or confirming the current size of the item
-      queue. You can apply filters here to focus on specific item groups (like
-      "Queue" or "Cache") without navigating configuration screens.
-
-- Configuration → Hosts → Zabbix server → Items
-    - This view allows you to inspect the item configuration itself. You can verify
-      the exact syntax of the internal key (e.g., zabbix[queue,10m]), check the
-      collection interval, and see the full history of the item over long time periods,
-      which is essential for diagnosing recurring or historical issues.
-
-- Or through the official Zabbix health templates (explained below)
-    - While the two methods above provide raw data, the builtin templates offer
-      the data pre organized into graphs and dashboards. This is the standard,
-      visual method for monitoring health, as it allows for immediate, high level
-      visualization of performance trends (e.g., "Poller utilization over the last
-      24 hours") and triggers pre configured alerts. This is generally the method
-      used for proactive monitoring.
+These metrics are invaluable for capacity planning and performance validation
+over time.
 
 ---
 
-## **5. Built-in Health Templates**
+## Viewing Internal Metrics
 
-The Template App Zabbix Server is the cornerstone of Zabbix self monitoring. It
-is a pre-configured solution specifically designed to monitor the operational health
-of the Zabbix server process itself. It automatically links to the internal "Zabbix
-server" host upon installation, providing immediate visibility into the platform's
-performance without any manual item creation.
+Zabbix provides several ways to inspect internal checks, each serving a
+different purpose:
 
-This template is comprehensive and provides actionable insights by collecting
-metrics across several critical areas:
+- **Monitoring → Latest data → Host: Zabbix server**: Is the quickest way to view
+live current values of every internal item. It is ideal for immediate troubleshooting,
+checking recent busy percentages or confirming the current queue size. Filters
+can be applied to focus on specific groups (like "Queue" or "Cache").
 
-- **Process Utilization:** Tracks the busy percentage of critical multi process
-  components like pollers, trappers, alerters, and history writers. High
-  utilization here is the first sign of resource bottlenecks.
-- **Queue Health:** Monitors the delay windows (using item keys like
-  zabbix[queue,1m]) to instantly identify whether Zabbix is falling behind in
-  data processing.
+- **Configuration → Hosts → Zabbix server → Items**: Allows you to inspect the
+item configuration itself. You can verify the exact syntax of an internal key
+(e.g., `zabbix[queue,10m]`), check the collection interval, and view the full
+history over long time periods — essential for diagnosing recurring or historical
+issues.
 
-- **Cache Usage:** Provides metrics on free space for essential in-memory stores
-  like the History and Trend caches, helping to identify memory pressure .
-
-- **Data Throughput:** Includes checks related to the rate of processed values
-  (NVPS), which is essential for capacity planning and performance validation.
-
-Crucially, the template provides ready to use graphs, powerful triggers, and dashboard
-widgets to visualize Zabbix's performance over time. If the template is not automatically
-linked or needs to be restored, it can typically be imported from GIT:
-
-`https://github.com/zabbix/zabbix/tree/master/templates/
-
-The ultimate goal of this template is to ensure that the monitoring system never
-fails silently.
-
-### **5.1 Template Zabbix server health**
-
-This template monitors all internal server metrics, including:
-
-* Process utilization (pollers, trappers, alerters, etc.)
-* Queue length
-* Cache usage
-* Values processed per second
-
-It provides ready to use graphs, triggers, and dashboards to visualize Zabbix's
-performance.
-It is automatically linked to the *Zabbix server* host after installation.
-If missing, it can be imported from:
-
-```
-https://github.com/zabbix/zabbix/tree/master/templates/app/zabbix_server
-```
+- **Official Zabbix health templates**: (explained below) Offers the most complete
+experience: data pre-organized into graphs, dashboards, and pre-configured alerts.
+This is the standard method for proactive monitoring.
 
 ---
 
-### **5.2 Template App Zabbix Proxy**
+## Built-in Health Templates
 
-This template monitors the internal state of a **Zabbix proxy**.
-It includes metrics for:
+### Template Zabbix Server Health
 
-* Proxy pollers and data senders
-* Proxy queue and cache utilization
-* Items and hosts processed by the proxy
+This template is the cornerstone of Zabbix self-monitoring. It is pre-configured
+to monitor the operational health of the Zabbix server process and automatically
+links to the internal *Zabbix server* host upon installation, providing immediate
+visibility without any manual item creation.
+
+It collects metrics across several critical areas:
+
+- **Process utilization**: Tracks busy percentage for pollers, trappers, alerters,
+history writers, and other components
+- **Queue health**: Monitors delay windows to instantly identify whether Zabbix
+is falling behind
+- **Cache usage**: Provides free-space metrics for in-memory stores like the
+History and Trend caches
+- **Data throughput**: Tracks the rate of processed values (NVPS) for capacity
+planning
+
+The template provides ready-to-use graphs, triggers, and dashboard widgets to
+visualize performance over time. If missing, it can be imported from:
+
+[https://github.com/zabbix/zabbix/tree/master/templates/app/zabbix_server](https://github.com/zabbix/zabbix/tree/master/templates/app/zabbix_server)
+
+---
+
+### Template App Zabbix Proxy
+
+This template monitors the internal state of a **Zabbix proxy**, including:
+
+- Proxy pollers and data senders
+- Proxy queue and cache utilization
+- Items and hosts processed by the proxy
 
 !!! note
-    Since Zabbix **7.0**, proxies are automatically monitored for *availability*
-    (online/offline) out of the box.  However, these basic checks do **not**
-    include internal performance statistics. To collect proxy internal metrics,
-    you still need to:
-    1. Install a **Zabbix agent** on each proxy host.
-    2. Configure that agent to be **monitored by the proxy itself** (not by the server).
 
-Only then can the *Template App Zabbix Proxy* correctly collect proxy performance
-data.
+    Since Zabbix 7.0, proxies are automatically monitored for *availability* (online
+    /offline) out of the box. However, these basic checks do **not** include internal
+    performance statistics. To collect proxy internal metrics, you still need to:
+      > 1. Install a **Zabbix agent** on each proxy host.
+      > 2. Configure that agent to be **monitored by the proxy itself** (not by the server).
+    
+    Only then can the *Template App Zabbix Proxy* correctly collect proxy performance data.
 
 ---
 
-### **5.3 Template Remote Zabbix server/proxy health**
+### Template Remote Zabbix Server/Proxy Health
 
 The **Remote Zabbix server health** and **Remote Zabbix proxy health** templates
-allow internal metrics to be collected by *another* Zabbix instance or a third
-party system.
-
-These templates are not related to active agents.
-Instead, they expose internal statistics via the Zabbix protocol, enabling **remote
-supervision** in distributed or multi-tenant environments.
+allow internal metrics to be collected by *another* Zabbix instance or a third-party
+system. These templates expose internal statistics via the Zabbix protocol, enabling
+remote supervision in distributed or multi-tenant environments.
 
 Typical use cases:
 
-* A service provider monitoring client Zabbix instances remotely
-* A centralized monitoring system aggregating health data from multiple independent
-  Zabbix installations
-* Integration with an umbrella monitoring solution where Zabbix is not the main
-  system
+- A service provider monitoring client Zabbix instances remotely
+- A centralized monitoring system aggregating health data from multiple independent
+Zabbix installations
+- Integration with an umbrella monitoring solution where Zabbix is not the primary
+system
 
 ---
 
-## **6. Dashboards and Visualization**
+## Dashboards and Visualization
 
-Starting from Zabbix 6.0, the **Zabbix Server Health** dashboard provides a
-preconfigured visual overview of:
-
-* Poller busy %
-* Queue size
-* Cache usage
-* Values processed per second
-* Event processing rate
-
-You can clone or extend this dashboard to track both server and proxy performance
-side by side.
+Starting from Zabbix 6.0, the **Zabbix Server Health** dashboard provides a preconfigured
+visual overview of poller busy percentage, queue size, cache usage, values processed
+per second, and event processing rate. You can clone or extend this dashboard to
+track both server and proxy performance side by side.
 
 ---
 
-## **7. Tuning Based on Internal Metrics**
+## Tuning Based on Internal Metrics
 
-| Problem           | Indicator                         | Recommended Action                                 |
-| ----------------- | --------------------------------- | -------------------------------------------------- |
-| Pollers >80% busy | `zabbix[process,poller,avg,busy]` | Increase `StartPollers`                            |
-| Long queue        | `zabbix[queue,10m]`               | Add more pollers, tune DB                          |
-| Cache nearly full | `zabbix[wcache,values,free]`      | Increase cache parameters                          |
-| Unsupported items | `zabbix[items_unsupported]`      | Fix item keys or credentials                       |
-| Proxy delay       | Proxy internal metrics           | Tune `ProxyOfflineBuffer` or increase sender count |
+| Problem              | Indicator                              | Recommended Action                                  |
+| -------------------- | -------------------------------------- | --------------------------------------------------- |
+| Pollers >80% busy    | `zabbix[process,poller,avg,busy]`      | Increase `StartPollers`                             |
+| Preprocessing high   | `zabbix[process,preprocessor,avg,busy]`| Increase `StartPreprocessors`, simplify expressions |
+| Long queue           | `zabbix[queue,10m]`                    | Add more pollers, tune database                     |
+| Cache nearly full    | `zabbix[wcache,values,free]`           | Increase `HistoryCacheSize` or `TrendCacheSize`     |
+| Unsupported items    | `zabbix[items_unsupported]`            | Fix item keys or credentials                        |
+| Proxy delay          | Proxy internal metrics                 | Tune `ProxyOfflineBuffer` or increase sender count  |
+| Database growth      | Housekeeper busy                       | Tune housekeeping limits, investigate DB performance|
+
+**The big picture**: Zabbix performance issues are rarely caused by a single component.
+They emerge when one or more processes cannot keep up with the monitoring load.
+
+| Symptom                | Likely Cause              | What to Check                          |
+|-----------------------|---------------------------|----------------------------------------|
+| Queue growing         | Pollers or DB bottleneck  | poller busy %, DB performance          |
+| Data delayed          | Preprocessing overloaded  | preprocessor busy %, dependent items   |
+| Alerts delayed        | Alerters overloaded       | alerter busy %                         |
+| Gaps in graphs        | Proxy delay               | proxy queue / delay                    |
+| DB growing fast       | Housekeeper / retention   | housekeeper busy %, retention settings |
 
 ---
 
-## **8. Alerting on Internal Health**
+## Alerting on Internal Health
 
-Triggers can automatically warn about performance degradation.
+Triggers can automatically warn about performance degradation before it becomes
+critical. Example:
 
-**Example:**
-
-``` bash
-Problem: avg(/Zabbix server/zabbix[process,poller,avg,busy],10m)>{$ZABBIX.SERVER.UTIL.MAX:"poller"}
-Recovery: avg(/Zabbix server/zabbix[process,poller,avg,busy],10m)<{$ZABBIX.SERVER.UTIL.MIN:"poller"}
+```text
+Problem:   avg(/Zabbix server/zabbix[process,poller,avg,busy],10m) > {$ZABBIX.SERVER.UTIL.MAX:"poller"}
+Recovery:  avg(/Zabbix server/zabbix[process,poller,avg,busy],10m) < {$ZABBIX.SERVER.UTIL.MIN:"poller"}
 
 Where:
-- {$ZABBIX.SERVER.UTIL.MIN} = 65
-- {$ZABBIX.SERVER.UTIL.MAX} = 75
+  {$ZABBIX.SERVER.UTIL.MAX} = 75
+  {$ZABBIX.SERVER.UTIL.MIN} = 65
 ```
 
-This will raise an event if the pollers are overloaded.
-Similar triggers can be created for queues, caches, or proxy synchronization delays.
+Similar triggers can be created for queues, caches, preprocessing workers, or proxy
+synchronization delays. The ultimate goal is to ensure the monitoring system never
+fails silently.
 
 ---
 
@@ -339,32 +420,38 @@ Similar triggers can be created for queues, caches, or proxy synchronization del
 
 Zabbix's internal health checks provide full insight into how the monitoring platform
 itself performs. Combined with the built-in health templates and dashboards, these
-metrics help administrators:
-
-* Detect overload and capacity issues
-* Verify proxy performance
-* Tune process and cache parameters
-* Integrate Zabbix self-monitoring into broader enterprise systems
+metrics help administrators detect overload and capacity issues, verify proxy
+performance, tune process and cache parameters, and integrate Zabbix self-monitoring
+into broader enterprise systems.
 
 By keeping the Zabbix server and proxies healthy, you ensure the reliability of
 every other monitored component.
 
 ---
 
-## Questions
+## Review Questions
 
-1. What is the purpose of the “Zabbix server” internal host?
-2. Why does Zabbix 7.0+ no longer require a special setup to detect proxy availability?
-3. Why must a Zabbix proxy’s agent be monitored by the proxy itself?
-4. What are the key differences between “Template App Zabbix Proxy” and “Template App Zabbix Remote”?
-5. Which internal metric indicates poller utilization?
-6. What can cause the item queue to grow over time?
-7. How can triggers help you detect Zabbix server performance problems automatically?
-8. In what scenario would you use the “Remote Zabbix Server Health” template?
+1. What is the purpose of the "Zabbix server" internal host, and why does it require
+no agent or SNMP interface?
+2. Why does Zabbix 7.0+ still require a special setup to collect proxy *performance*
+statistics, even though proxy availability is monitored out of the box?
+3. Why must a Zabbix proxy's agent be monitored by the proxy itself rather than
+by the server?
+4. What are the key differences between the *Template App Zabbix Proxy* and the
+*Remote Zabbix Server/Proxy Health* templates?
+5. Which internal metric indicates poller utilization, and at what threshold
+should you act?
+6. What are the three most common root causes of a growing item queue?
+7. Why is preprocessing often called a "hidden bottleneck," and what symptoms
+does it cause when overloaded?
+8. In what scenario would you use the *Remote Zabbix Server Health* template?
+9. Why does the Configuration Cache have no direct utilization metric, and how
+do you infer its health?
+10. How can triggers help you detect Zabbix server performance problems automatically?
 
 ---
 
-## Useful URLs
+## Useful Resources
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/internal](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/internal)
-
+- [Zabbix Internal Items Documentation](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/internal)
+- [Zabbix Server Health Template (GitHub)](https://github.com/zabbix/zabbix/tree/master/templates/app/zabbix_server)
