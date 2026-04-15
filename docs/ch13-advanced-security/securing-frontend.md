@@ -305,6 +305,7 @@ systemctl restart php-fpm.service
 systemctl restart nginx
 
 firewall-cmd --add-service=https --permanent
+firewall-cmd --add-service=http --permanent
 firewall-cmd --reload
 ```
 
@@ -344,6 +345,7 @@ certbot --nginx -d yourdomain.com -d www.yourdomain.com
 ``` bash
 # add firewall config
 firewall-cmd --permanent --add-service=https
+firewall-cmd --permanent --add-service=http
 firewall-cmd --reload
 ```
 
@@ -396,6 +398,7 @@ Next step is to alter your NGINX config and open the firewall on port 443
 ``` bash
 # Configure the firewall
 firewall-cmd --add-service=https --permanent
+firewall-cmd --add-service=htts --permanent
 firewall-cmd --reload
 ```
 
@@ -484,6 +487,7 @@ Configure the firewall:
 
 ```bash
 firewall-cmd --permanent --add-service=https
+firewall-cmd --permanent --add-service=http
 firewall-cmd --reload
 ```
 
@@ -595,6 +599,7 @@ Open the firewall:
 
 ```bash
 firewall-cmd --add-service=https --permanent
+firewall-cmd --add-service=http --permanent
 firewall-cmd --reload
 ```
 
