@@ -7,11 +7,6 @@ tags: [advanced]
 
 # Database Monitoring via ODBC
 
-*Reaching past the operating system layer to observe what actually matters:
-the data.*
-
----
-
 Most monitoring conversations start at the wrong layer. CPU load, memory pressure,
 disk I/O — these are the signals that infrastructure teams reach for first, and
 rightly so. But consider what they miss. A perfectly healthy database host can
@@ -35,6 +30,9 @@ This chapter covers the complete ODBC stack — architecture, driver selection,
 configuration, item design, discovery patterns, and the operational disciplines
 that separate sustainable monitoring from the kind that generates incident tickets
 at 3 AM.
+
+*Reaching past the operating system layer to observe what actually matters:
+the data.*
 
 ---
 
@@ -67,12 +65,13 @@ gaps, and timeout handling differences are the most common sources of mysterious
 ODBC failures in production. The driver, not unixODBC, is what ultimately speaks
 to your database.
 
-???+ note
+!!! note
+
     ODBC checks are blocking operations. An ODBC poller process remains fully occupied
-for the duration of the query — it cannot service other items. A slow query does
-not just delay its own item; it reduces the effective throughput of the entire
-ODBC poller pool. This is why query performance discipline and correct poller sizing
-are inseparable concerns.
+    for the duration of the query, it cannot service other items. A slow query does
+    not just delay its own item; it reduces the effective throughput of the entire
+    ODBC poller pool. This is why query performance discipline and correct poller sizing
+    are inseparable concerns.
 
 This blocking nature has a direct consequence for how you should think about ODBC
 at scale. Each concurrent database monitor item in flight consumes one poller slot.
@@ -191,8 +190,8 @@ than silently cut off at a driver or OS boundary.
 ### Built-in Templates
 
 Zabbix ships with ready-made ODBC templates for the most common database platforms.
-These are a reasonable starting point — they implement the master item pattern
-correctly and include sensible default triggers — but treat them as a baseline
+These are a reasonable starting point, they implement the master item pattern
+correctly and include sensible default triggers, but treat them as a baseline
 to adapt rather than a finished solution. Production environments invariably have
 database configurations, naming conventions, and business metrics that require
 customisation beyond what a generic template can provide.
@@ -502,56 +501,103 @@ a noticeable workload on the monitored database — a workload that may compound
 under high-frequency polling, grow worse during periods of database stress, and
 produce cascading effects across both the monitoring and production stack.
 
-The disciplines below are not optional refinements for mature deployments. They are the baseline for any production ODBC configuration.
+The disciplines below are not optional refinements for mature deployments. They
+are the baseline for any production ODBC configuration.
 
 ### Query Design
 
-Every monitoring query must be lighter than the production workload it observes. This is a firm principle, not a guideline. Queries that use indexed columns, return aggregate results, and touch only the rows they need are acceptable. Queries that scan large tables, perform unindexed joins, or replicate the logic of reporting tools are not.
+Every monitoring query must be lighter than the production workload it observes.
+This is a firm principle, not a guideline. Queries that use indexed columns,
+return aggregate results, and touch only the rows they need are acceptable. Queries
+that scan large tables, perform unindexed joins, or replicate the logic of reporting
+tools are not.
 
-Before deploying any monitoring query, run `EXPLAIN` or `EXPLAIN ANALYZE` against it and inspect the execution plan. A full table scan on a table with millions of rows, executed every 30 seconds, is not monitoring — it is a scheduled load injection. If the query plan is not acceptable in production context, redesign the query or choose a different monitoring approach.
+Before deploying any monitoring query, run `EXPLAIN` or `EXPLAIN ANALYZE` against
+it and inspect the execution plan. A full table scan on a table with millions
+of rows, executed every 30 seconds, is not monitoring, it is a scheduled load
+injection. If the query plan is not acceptable in production context, redesign
+the query or choose a different monitoring approach.
 
-The temptation to embed business logic in monitoring SQL is common and should be resisted. Monitoring observes systems; it does not replicate application behaviour. A query that reproduces the calculation your order processing service performs to determine fulfilment priority is fragile, hard to maintain, and likely to become incorrect the moment the application logic changes.
+The temptation to embed business logic in monitoring SQL is common and should
+be resisted. Monitoring observes systems; it does not replicate application
+behaviour. A query that reproduces the calculation your order processing service
+performs to determine fulfilment priority is fragile, hard to maintain, and likely
+to become incorrect the moment the application logic changes.
 
 ### Poller Sizing
 
-The `StartODBCPollers` parameter in `zabbix_server.conf` or `zabbix_proxy.conf` controls the number of concurrent ODBC poller processes.
+The `StartODBCPollers` parameter in `zabbix_server.conf` or `zabbix_proxy.conf`
+controls the number of concurrent ODBC poller processes.
 
 ```
 StartODBCPollers=5
 ```
 
-Too few pollers and items queue, then go unsupported. Too many and you risk overwhelming the database with concurrent connections, particularly if the monitored database enforces connection limits. The correct approach is to start conservatively — 3 to 5 pollers for small deployments — and monitor the ODBC poller busy percentage in Zabbix's own internal metrics. Scale up only when utilisation consistently exceeds 70 to 80 percent. Never increase pollers as a substitute for fixing slow queries; doing so shifts the queuing problem to the database layer, where it becomes invisible in Zabbix metrics.
+Too few pollers and items queue, then go unsupported. Too many and you risk
+overwhelming the database with concurrent connections, particularly if the monitored
+database enforces connection limits. The correct approach is to start conservatively,
+3 to 5 pollers for small deployments and monitor the ODBC poller busy percentage
+in Zabbix's own internal metrics. Scale up only when utilisation consistently exceeds
+60 to 80 percent. Never increase pollers as a substitute for fixing slow queries;
+doing so shifts the queuing problem to the database layer, where it becomes invisible
+in Zabbix metrics.
 
 ### Timeouts
 
-Unhandled query timeouts are the most reliable path to a fully saturated poller pool. A query that hangs indefinitely ties up a poller slot until the database eventually errors or the connection is forcibly closed. In a pool of five pollers, three hanging queries means 60 percent of your ODBC capacity is unavailable.
+Unhandled query timeouts are the most reliable path to a fully saturated poller
+pool. A query that hangs indefinitely ties up a poller slot until the database
+eventually errors or the connection is forcibly closed. In a pool of five pollers,
+three hanging queries means 60 percent of your ODBC capacity is unavailable.
 
-Zabbix 7.0 introduced per-item timeout configuration for database monitor items, accepting values from 1 second to 10 minutes. Use this to set timeouts appropriate to each query's expected duration. A simple aggregate query should have a 5-second timeout. A more complex cross-table query might justify 30 seconds. Nothing in a monitoring context should run for minutes.
+Zabbix 7.0 introduced per-item timeout configuration for database monitor items,
+accepting values from 1 second to 10 minutes. Use this to set timeouts appropriate
+to each query's expected duration. A simple aggregate query should have a 5 second
+timeout. A more complex cross-table query might justify 30 seconds. Nothing in a
+monitoring context should run for minutes.
 
 ### Isolation via Proxy
 
-In any environment with more than a handful of ODBC items, database monitoring should run through a Zabbix Proxy rather than directly from the server. This provides two critical properties: isolation and locality.
+In any environment with more than a handful of ODBC items, database monitoring
+should run through a Zabbix Proxy rather than directly from the server. This
+provides two critical properties: isolation and locality.
 
-Isolation means that a misbehaving ODBC configuration — slow queries, driver crashes, database connectivity loss — affects only the proxy, not the central Zabbix server. The server continues operating normally; the proxy's ODBC items simply go unsupported until the issue is resolved. Without isolation, the same failure degrades the entire server's poller pool.
+Isolation means that a misbehaving ODBC configuration, slow queries, driver crashes,
+database connectivity loss, affects only the proxy, not the central Zabbix server.
+The server continues operating normally; the proxy's ODBC items simply go unsupported
+until the issue is resolved. Without isolation, the same failure degrades the entire
+server's poller pool.
 
-Locality means the proxy runs on a host with direct network access to the monitored databases, with ODBC drivers installed for that specific database environment, and without routing monitoring traffic through wide-area network paths.
+Locality means the proxy runs on a host with direct network access to the monitored
+databases, with ODBC drivers installed for that specific database environment,
+and without routing monitoring traffic through wide-area network paths.
 
 ### Credentials and Security
 
-The monitoring database account must be read-only. Not "mostly read-only with a few exceptions" — strictly SELECT only, on the specific databases and schemas it needs to monitor, with no ability to modify data or schema. Create a dedicated account per monitored application:
+The monitoring database account must be read-only. Not "mostly read-only with a
+few exceptions" — strictly SELECT only, on the specific databases and schemas it
+needs to monitor, with no ability to modify data or schema. Create a dedicated
+account per monitored application:
 
 ```sql
 CREATE USER 'zabbix_mon'@'%' IDENTIFIED BY 'strong_password';
 GRANT SELECT ON shop_db.* TO 'zabbix_mon'@'%';
 ```
 
-Store credentials in Zabbix macros rather than hardcoded in DSN files where possible. For environments with a secrets management platform, Zabbix's vault integration allows credentials to be fetched at runtime rather than stored in configuration files at all.
+Store credentials in Zabbix macros rather than hardcoded in DSN files where possible.
+For environments with a secrets management platform, Zabbix's vault integration
+allows credentials to be fetched at runtime rather than stored in configuration
+files at all.
 
-Connection strings embedded directly in item keys are visible in the Zabbix frontend to any user with access to the host configuration. This is acceptable in development but not in production. Use DSN-level credentials or macros.
+Connection strings embedded directly in item keys are visible in the Zabbix frontend
+to any user with access to the host configuration. This is acceptable in development
+but not in production. Use DSN-level credentials or macros.
 
 ### Connection Pooling
 
-unixODBC supports connection pooling from version 2.0.0 onwards. Enabling it reduces the overhead of repeated connection establishment — the TCP handshake, TLS negotiation, and authentication round-trip that precedes every query in a non-pooled configuration. In high-frequency monitoring environments, this overhead accumulates.
+unixODBC supports connection pooling from version 2.0.0 onwards. Enabling it reduces
+the overhead of repeated connection establishment — the TCP handshake, TLS negotiation,
+and authentication round-trip that precedes every query in a non-pooled configuration.
+In high-frequency monitoring environments, this overhead accumulates.
 
 ```ini
 # In /etc/odbcinst.ini
@@ -559,37 +605,88 @@ unixODBC supports connection pooling from version 2.0.0 onwards. Enabling it red
 Pooling = Yes
 ```
 
-Pooling is particularly valuable in environments where database connection setup is expensive — SSL mutual authentication, Kerberos, or databases with slow authentication backends. Verify that your specific driver supports pooling correctly before enabling it in production, as driver-level pooling bugs can produce stale connection state or query result corruption.
+Pooling is particularly valuable in environments where database connection setup
+is expensive, SSL mutual authentication, Kerberos, or databases with slow
+authentication backends. Verify that your specific driver supports pooling
+correctly before enabling it in production, as driver-level pooling bugs can
+produce stale connection state or query result corruption.
 
 ### Character Encoding
 
-ODBC monitoring is surprisingly sensitive to encoding inconsistencies. The database, the operating system locale, and the ODBC driver must all agree on UTF-8. When they do not, two failure modes emerge: visually corrupted string data in item values, and JSON parse failures in `db.odbc.get` results.
+ODBC monitoring is surprisingly sensitive to encoding inconsistencies. The database,
+the operating system locale, and the ODBC driver must all agree on UTF-8. When
+they do not, two failure modes emerge: visually corrupted string data in item
+values, and JSON parse failures in `db.odbc.get` results.
 
-The second mode is more operationally dangerous because it produces item errors rather than incorrect data. A `db.odbc.get` item that returns garbled encoding in a string column will silently break every dependent item and discovery rule that depends on it. Verify encoding consistency during initial deployment, before any dependent item logic is built on top of the master item.
+The second mode is more operationally dangerous because it produces item errors
+rather than incorrect data. A `db.odbc.get` item that returns garbled encoding
+in a string column will silently break every dependent item and discovery rule
+that depends on it. Verify encoding consistency during initial deployment, before
+any dependent item logic is built on top of the master item.
 
 ---
 
 ## Anti-Patterns and How They Manifest
 
-ODBC anti-patterns tend to be invisible until they are not. The symptoms often appear distant from the root cause — an unrelated monitoring item goes unsupported, database response times spike during a specific window, Zabbix queue depth grows. Knowing the common failure patterns in advance makes them faster to diagnose.
+ODBC anti-patterns tend to be invisible until they are not. The symptoms often
+appear distant from the root cause, an unrelated monitoring item goes unsupported,
+database response times spike during a specific window, Zabbix queue depth grows.
+Knowing the common failure patterns in advance makes them faster to diagnose.
 
-**Monitoring queries written as reports.** A query written for a business report is designed to be complete and correct, not fast. It likely scans multiple large tables, performs several joins, aggregates millions of rows, and computes derived fields. Running it once a month in a reporting tool is fine. Running it every 60 seconds as a Zabbix check against a production database is not. The symptom is a gradual increase in database CPU and I/O during monitoring windows, often dismissed as coincidental load until someone traces it.
+- **Monitoring queries written as reports.**: A query written for a business report
+is designed to be complete and correct, not fast. It likely scans multiple large
+tables, performs several joins, aggregates millions of rows, and computes derived
+fields. Running it once a month in a reporting tool is fine. Running it every 60
+seconds as a Zabbix check against a production database is not. The symptom is a
+gradual increase in database CPU and I/O during monitoring windows, often dismissed
+as coincidental load until someone traces it.
 
-**High-frequency polling of expensive metrics.** Not all metrics need to be collected at the same frequency. Replication lag — where a drift of even a few seconds may be significant — warrants a short polling interval. The number of tables in a schema — which changes only when a deployment runs — does not. Applying a 30-second polling interval uniformly across all ODBC items wastes both poller capacity and database resources. Assign intervals based on the operational sensitivity of each metric.
+- **High-frequency polling of expensive metrics.**: Not all metrics need to be
+collected at the same frequency. Replication lag, where a drift of even a few
+seconds may be significant, warrants a short polling interval. The number of tables
+in a schema, which changes only when a deployment runs, does not. Applying a 30
+second polling interval uniformly across all ODBC items wastes both poller
+capacity and database resources. Assign intervals based on the operational sensitivity
+of each metric.
 
-**Using privileged accounts.** Monitoring with a DBA or application account that has write privileges introduces unnecessary risk. A credential leak, an injection vulnerability in a poorly constructed monitoring query, or a simple configuration mistake could result in data modification. The monitoring account must be read-only. There are no legitimate exceptions to this in production.
+- **Using privileged accounts.**: Monitoring with a DBA or application account
+that has write privileges introduces unnecessary risk. A credential leak, an
+injection vulnerability in a poorly constructed monitoring query, or a simple
+configuration mistake could result in data modification. The monitoring account
+must be read-only. There are no legitimate exceptions to this in production.
 
-**Scaling pollers to mask slow queries.** When ODBC items go unsupported due to poller saturation, the instinct is to increase `StartODBCPollers`. If the saturation is caused by a growing item count or a genuine burst in monitoring demand, more pollers is the right answer. If it is caused by slow queries, more pollers shifts the problem: instead of queued items in Zabbix, you get queued connections at the database layer, which may then cause application connection pool exhaustion. Fix the query first. Scale pollers second.
+- **Scaling pollers to mask slow queries.**: When ODBC items go unsupported due
+to poller saturation, the instinct is to increase `StartODBCPollers`. If the saturation
+is caused by a growing item count or a genuine burst in monitoring demand, more
+pollers is the right answer. If it is caused by slow queries, more pollers shifts
+the problem: instead of queued items in Zabbix, you get queued connections at the
+database layer, which may then cause application connection pool exhaustion. Fix
+the query first. Scale pollers second.
 
-**Ignoring driver-specific known issues.** Each driver family carries its own list of quirks that are not discoverable through normal testing. The MySQL/MariaDB connector mismatch (ZBX-7665), the FreeTDS `SET NOCOUNT ON` requirement (ZBX-19917), Oracle Instant Client crashes on Linux (ZBX-18402, ZBX-20803), and MSSQL XML truncation on UNIX systems are all production-grade failure modes that are entirely invisible during basic connectivity testing. Reviewing the known issues for your specific driver before deployment is not optional reading — it is the step that prevents a category of failures that no amount of query tuning or poller sizing will fix.
+- **Ignoring driver-specific known issues.**: Each driver family carries its own
+list of quirks that are not discoverable through normal testing. The MySQL/MariaDB
+connector mismatch (ZBX-7665), the FreeTDS `SET NOCOUNT ON` requirement (ZBX-19917),
+Oracle Instant Client crashes on Linux (ZBX-18402, ZBX-20803), and MSSQL XML
+truncation on UNIX systems are all production-grade failure modes that are entirely
+invisible during basic connectivity testing. Reviewing the known issues for your
+specific driver before deployment is not optional reading — it is the step that
+prevents a category of failures that no amount of query tuning or poller sizing
+will fix.
 
-**Skipping DSN validation.** Configuring a Zabbix item against an untested DSN and then using Zabbix's error output to debug ODBC connectivity is slower and less informative than using `isql` directly. Zabbix normalises ODBC errors through its own logging layer; `isql` surfaces the raw driver error. Always validate the full stack with `isql` before creating Zabbix items.
+- **Skipping DSN validation.**: Configuring a Zabbix item against an untested DSN
+and then using Zabbix's error output to debug ODBC connectivity is slower and
+less informative than using `isql` directly. Zabbix normalises ODBC errors
+through its own logging layer; `isql` surfaces the raw driver error. Always
+validate the full stack with `isql` before creating Zabbix items.
 
 ---
 
 ## Choosing the Right Database Monitoring Approach
 
-ODBC is not the only way to monitor databases in Zabbix, and it is not always the right one. The choice between ODBC, agent-based monitoring, and application-layer HTTP checks depends on what you are measuring, where the database lives, and what operational overhead you are prepared to maintain.
+ODBC is not the only way to monitor databases in Zabbix, and it is not always the
+right one. The choice between ODBC, agent-based monitoring, and application-layer
+HTTP checks depends on what you are measuring, where the database lives, and what
+**operational overhead you are prepared to maintain.**
 
 | Criterion | ODBC | Zabbix Agent 2 Plugin |
 |---|---|---|
@@ -601,35 +698,68 @@ ODBC is not the only way to monitor databases in Zabbix, and it is not always th
 | Risk of slow queries | High (by design) | Low |
 | Setup and maintenance cost | Medium to high | Low |
 
-The strategic division in mature environments is clear: Agent 2 plugins handle core database health and OS-level metrics where an agent can be installed; ODBC handles everything that requires direct SQL execution — custom business metrics, application-level state, replication details, and anything residing in tables rather than system views. Neither replaces the other. Together, they provide the full observability stack.
+The strategic division in mature environments is clear: Agent 2 plugins handle
+core database health and OS-level metrics where an agent can be installed; ODBC
+handles everything that requires direct SQL execution, custom business metrics,
+application-level state, replication details, and anything residing in tables
+rather than system views. Neither replaces the other. Together, they provide
+the full observability stack.
 
 ---
 
 ## Summary
 
-ODBC occupies a unique position in the Zabbix monitoring toolkit: it is the only mechanism that gives you direct access to the data layer, the place where the most operationally significant state actually lives. Order queues, replication lag, session counts, failed transaction rates, business KPIs — none of these are visible without SQL.
+ODBC occupies a unique position in the Zabbix monitoring toolkit: it is the only
+mechanism that gives you direct access to the data layer, the place where the most
+operationally significant state actually lives. Order queues, replication lag,
+session counts, failed transaction rates, business KPIs, ... none of these are
+visible without SQL.
 
-The technical complexity of ODBC is moderate. Installing drivers, configuring DSNs, and writing `db.odbc.select` items is straightforward work. The harder discipline is operational: choosing queries that are genuinely lightweight, sizing the poller pool appropriately, isolating database monitoring through proxies, validating the full stack before configuring items, and resisting the temptation to embed business logic or reporting queries in monitoring checks.
+The technical complexity of ODBC is moderate. Installing drivers, configuring DSNs,
+and writing `db.odbc.select` items is straightforward work. The harder discipline
+is operational: choosing queries that are genuinely lightweight, sizing the poller
+pool appropriately, isolating database monitoring through proxies, validating
+the full stack before configuring items, and resisting the temptation to embed
+business logic or reporting queries in monitoring checks.
 
-The `db.odbc.get` master item pattern — one query feeding multiple dependent items and discovery rules — is the foundation of any scalable ODBC deployment. Build around it from the start, and ODBC becomes one of the most powerful sources of observability in your Zabbix environment. Treat it as an afterthought, and it becomes one of the most reliable sources of production incidents.
+The `db.odbc.get` master item pattern — one query feeding multiple dependent items
+and discovery rules — is the foundation of any scalable ODBC deployment. Build
+around it from the start, and ODBC becomes one of the most powerful sources of
+observability in your Zabbix environment. Treat it as an afterthought, and it
+becomes one of the most reliable sources of production incidents.
 
-The difference is not in the technology. The difference is in the discipline of the person who configures it.
+The difference is not in the technology. The difference is in the discipline
+of the person who configures it.
 
 ---
 
 ## Questions
 
-- Why does Zabbix rely on unixODBC instead of communicating directly with databases, and what are the operational implications of that indirection?
-- A `db.odbc.get` master item runs a query that returns 12 columns across 8 rows. How many dependent items can theoretically be fed from it, and what preprocessing steps would you apply to extract a numeric value from one of those columns?
-- You have 5 ODBC pollers and notice that ODBC poller busy percentage is consistently at 95%. Before increasing `StartODBCPollers`, what investigation steps should you take first?
-- An ODBC item returns `[08001] Network connectivity issue`. Walk through the diagnostic sequence you would follow, starting from the most foundational layer.
-- You are designing a template to monitor a PostgreSQL database that has a variable number of schemas, each with a variable number of tables. Describe the discovery architecture you would use and explain why.
-- Why is it dangerous to use the same monitoring approach — polling interval, query complexity, and account privileges — across both development and production environments?
-- Your Zabbix server is compiled against the MariaDB connector. A colleague installs the MySQL ODBC driver and configures several database monitor items. What specific failure modes should you anticipate, and how would you resolve the configuration correctly?
-- A FreeTDS-based MSSQL monitor item returns "SQL query returned empty result" despite the query executing correctly in a SQL client. What is the cause and what is the fix?
+- Why does Zabbix rely on unixODBC instead of communicating directly with databases,
+and what are the operational implications of that indirection?
+- A `db.odbc.get` master item runs a query that returns 12 columns across 8 rows.
+How many dependent items can theoretically be fed from it, and what preprocessing
+steps would you apply to extract a numeric value from one of those columns?
+- You have 5 ODBC pollers and notice that ODBC poller busy percentage is consistently
+at 95%. Before increasing `StartODBCPollers`, what investigation steps should you
+take first?
+- An ODBC item returns `[08001] Network connectivity issue`. Walk through the
+diagnostic sequence you would follow, starting from the most foundational layer.
+- You are designing a template to monitor a PostgreSQL database that has a variable
+number of schemas, each with a variable number of tables. Describe the discovery
+architecture you would use and explain why.
+- Why is it dangerous to use the same monitoring approach, polling interval, query
+complexity, and account privileges, across both development and production environments?
+- Your Zabbix server is compiled against the MariaDB connector. A colleague installs
+the MySQL ODBC driver and configures several database monitor items. What specific
+failure modes should you anticipate, and how would you resolve the configuration
+correctly?
+- A FreeTDS-based MSSQL monitor item returns "SQL query returned empty result"
+despite the query executing correctly in a SQL client. What is the cause and what
+is the fix?
 
 ## Useful URLs
 
-- https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks
-- https://blog.zabbix.com/database-odbc-monitoring-with-zabbix/8076/
-- https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker
+- [https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks](https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks)
+- [https://blog.zabbix.com/database-odbc-monitoring-with-zabbix/8076/](https://blog.zabbix.com/database-odbc-monitoring-with-zabbix/8076/)
+- [https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker](https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker)
