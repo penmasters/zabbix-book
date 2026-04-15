@@ -7,98 +7,173 @@ tags: [advanced]
 
 # Database Monitoring via ODBC
 
-Monitoring operating systems and applications provides important signals, but the
-most valuable insights often reside inside the database itself. Order queues, replication
-status, session counts, transaction failures, and business KPIs all live at the
-data layer.
-
-ODBC (Open Database Connectivity) allows Zabbix to query databases directly without
-installing an agent on the database server. In Zabbix 8.0, ODBC remains a powerful
-and flexible mechanism for agentless database monitoring, built on top of the
-`unixODBC` driver manager.
-
-Used correctly, ODBC enables deep visibility into both infrastructure and business
-metrics. Used carelessly, it can introduce performance risk and operational instability.
-This chapter explains how to deploy ODBC properly and operate it safely in production
-environments.
+*Reaching past the operating system layer to observe what actually matters: the data.*
 
 ---
 
-## Architecture Overview
+Most monitoring conversations start at the wrong layer. CPU load, memory pressure, disk I/O — these are the signals that infrastructure teams reach for first, and rightly so. But consider what they miss. A perfectly healthy database host can be processing a catastrophic workload: a runaway query holding row-level locks across thousands of transactions, a replication slot that has grown to consume 40 GB of WAL because a consumer went silent, an order queue where the pending count has been climbing for six hours while the fulfilment process silently stalled.
 
-Zabbix does not communicate with databases directly. It relies on the ODBC stack.
+None of those failures are visible to an agent watching the OS. They live inside the database, and to see them, you have to speak the database's own language: SQL.
+
+ODBC — Open Database Connectivity — is the mechanism Zabbix uses to do exactly that. It enables agentless SQL execution against any database that exposes a compliant driver, from on-premise MySQL clusters to managed cloud PostgreSQL services to SQL Server environments deep inside enterprise Windows estates. Used with discipline, it provides a tier of observability that no other Zabbix check type can match. Used carelessly, it becomes one of the fastest ways to destabilise a production database.
+
+This chapter covers the complete ODBC stack — architecture, driver selection, configuration, item design, discovery patterns, and the operational disciplines that separate sustainable monitoring from the kind that generates incident tickets at 3 AM.
+
+---
+
+## The ODBC Execution Stack
+
+Before configuring a single item, it is worth understanding precisely what happens when Zabbix executes a database monitor check. The path from Zabbix item to query result is not direct — it passes through two intermediary layers, and each of those layers has its own configuration surface, failure modes, and performance characteristics.
 
 ``` mermaid
 flowchart TD
-    subgraph Zabbix Layer
-        A[Zabbix Server / Proxy]
-        B[ODBC Poller Process]
-    end
-
-    subgraph ODBC Layer
-        C[unixODBC Driver Manager]
-        D[Database-Specific ODBC Driver]
-    end
-
-    subgraph Database Layer
-        E[Target Database]
-    end
-
-    A -->|Executes db.odbc.* item| B
-    B -->|ODBC API Call| C
-    C -->|Loads Driver| D
-    D -->|SQL Execution| E
+    A[Zabbix Server / Proxy] -->|"item type: Database monitor"| B
+    B["ODBC Poller Process\n(blocking — poller unavailable while query runs)"] -->|"ODBC API call"| C
+    C["unixODBC Driver Manager\n(/etc/odbcinst.ini, /etc/odbc.ini)"] -->|"resolves DSN → loads driver"| D
+    D["Database-Specific ODBC Driver\n(.so shared library)"] -->|"native wire protocol"| E
+    E[Target Database]
 ```
 
-### Execution Flow
+The first layer is unixODBC, the driver manager. It is responsible for maintaining the registry of installed drivers and translating the symbolic DSN name in your Zabbix item into a concrete connection. It reads two configuration files: `/etc/odbcinst.ini` for driver definitions and `/etc/odbc.ini` for named connection aliases. Without both files populated correctly, nothing downstream can function.
 
-1. A Zabbix item of type **Database monitor** executes:
-   * `db.odbc.select[]` (single scalar value)
-   * `db.odbc.get[]` (JSON result set)
-2. An ODBC poller process handles the request.
-3. unixODBC resolves the configured DSN (Data Source Name).
-4. The database driver executes the SQL query.
-5. Results are returned to Zabbix.
+The second layer is the database-specific ODBC driver — a shared library that understands the wire protocol of the target database. This driver is loaded dynamically by unixODBC at query time. Its quality matters enormously: driver bugs, TLS implementation gaps, and timeout handling differences are the most common sources of mysterious ODBC failures in production. The driver, not unixODBC, is what ultimately speaks to your database.
 
-ODBC checks are blocking operations. While a query executes, the poller remains occupied.
+???+ note
+    ODBC checks are blocking operations. An ODBC poller process remains fully occupied for the duration of the query — it cannot service other items. A slow query does not just delay its own item; it reduces the effective throughput of the entire ODBC poller pool. This is why query performance discipline and correct poller sizing are inseparable concerns.
+
+This blocking nature has a direct consequence for how you should think about ODBC at scale. Each concurrent database monitor item in flight consumes one poller slot. If you have five pollers and six queries executing simultaneously — even briefly — one item queues. If queries are slow, that queue grows. If queries are pathological, the entire ODBC poller pool saturates and items go unsupported. Architecture first; configuration second.
 
 ---
 
-## ODBC Configuration Files
+## Driver Selection and Installation
 
-ODBC relies on two configuration layers.
+ODBC defines a standard interface. The substance behind that interface — the actual quality, reliability, TLS support, and authentication capability of your monitoring setup — is entirely determined by the driver you install. Driver selection is not a minor configuration detail; it is a foundational architectural decision.
 
-### `/etc/odbcinst.ini` — Driver Definitions
+Three driver families cover the majority of production Zabbix ODBC deployments.
 
-Defines available ODBC drivers.
+### MySQL and MariaDB
 
-Example:
+MariaDB Connector/ODBC is the recommended driver for both MySQL and MariaDB workloads, and extends cleanly to cloud-managed MySQL-compatible services including Amazon RDS and Azure Database for MySQL. It is actively maintained, widely packaged, and behaves consistently across distributions.
 
-``` ini
+Older MySQL ODBC packages (`libmyodbc5` and earlier) are still encountered in legacy environments but should be migrated away from where possible. Version drift between old MySQL ODBC drivers and modern MySQL 8.x servers can produce authentication failures, particularly with the `caching_sha2_password` default authentication plugin introduced in MySQL 8.0.
+
+There is one non-obvious constraint that catches many administrators off-guard: the ODBC driver you install must be compatible with the connector library that Zabbix itself was compiled against. Mixing MySQL and MariaDB across these two layers triggers an upstream bug that causes crashes or silent query failures (ZBX-7665). The rule is straightforward in principle but easy to violate in practice:
+
+| Zabbix compiled against | Use this ODBC driver |
+|---|---|
+| PostgreSQL, SQLite, or Oracle connector | MariaDB **or** MySQL ODBC driver |
+| MariaDB connector | MariaDB ODBC driver only |
+| MySQL connector | MySQL ODBC driver only |
+
+When in doubt, check how your Zabbix binary was compiled — `zabbix_server -V` will show the linked libraries — and match the ODBC driver to the connector on that same side of the MySQL/MariaDB divide. Using the same connector as the driver is also best avoided where possible due to the same upstream issue. This is one of the few ODBC configuration requirements with no safe workaround other than compliance.
+
+### PostgreSQL
+
+The `psqlodbc` driver is stable, mature, and widely deployed in enterprise PostgreSQL environments. It supports SSL connections and SCRAM-SHA-256 authentication, which is the default in PostgreSQL 14 and later.
+
+When monitoring PostgreSQL with SCRAM authentication, verify that your installed `psqlodbc` version explicitly supports it — older builds do not. Attempting a SCRAM handshake with an incompatible driver produces an authentication error that is easy to misdiagnose as a permissions problem.
+
+### Microsoft SQL Server
+
+Microsoft's official `msodbcsql18` driver is the correct choice for SQL Server monitoring. It supports TLS encryption (often mandatory in enterprise SQL Server configurations), Kerberos and Active Directory authentication, and Azure SQL Database. Installation requires Microsoft's official repository and EULA acceptance.
+
+FreeTDS (`tdsodbc`) is a fully open-source TDS protocol implementation available without any external repository. It works reliably for simple monitoring queries against on-premise SQL Server instances. However, its TLS implementation lags behind the official driver, Azure SQL compatibility is inconsistent, and authentication options are limited. Use it in constrained environments where Microsoft's repository is unavailable, but test thoroughly before production deployment.
+
+FreeTDS also has a query-level requirement that is not documented prominently and produces a confusing error when missing. Every SQL query executed through the FreeTDS driver must be prefixed with `SET NOCOUNT ON`:
+
+```sql
+SET NOCOUNT ON
+SELECT COUNT(*) FROM orders WHERE status = 'pending'
+```
+
+Without this prefix, the driver returns an empty result set and the Zabbix item goes unsupported with the error "SQL query returned empty result" — even when the query itself is syntactically correct and would return data through any other client. This is a known driver behaviour (ZBX-19917), not a Zabbix bug. Once the prefix is in place, FreeTDS behaves predictably for straightforward monitoring queries.
+
+One additional SQL Server limitation worth knowing regardless of driver choice: XML data queried from Microsoft SQL Server may be truncated in various ways on Linux and UNIX systems. If your monitoring queries return XML columns — common in some SQL Server system views — verify that the full value is being returned rather than silently cut off at a driver or OS boundary.
+
+???+ note
+    ODBC drivers exist for Oracle, IBM Db2, SAP HANA, and many others. Driver quality, maintenance cadence, and compatibility with modern authentication standards vary significantly outside the three families above. Oracle deserves special mention: multiple versions of Oracle Instant Client for Linux have been observed to cause Zabbix server crashes when used for ODBC monitoring (ZBX-18402, ZBX-20803). If you are monitoring Oracle via ODBC, test driver versions carefully in a non-production environment before any production deployment, and treat an upgrade to a new Instant Client version as a change that requires re-validation. Before deploying any less common driver in production, treat it as an unknown quantity: test under realistic load, validate timeout behaviour, and confirm UTF-8 encoding handling. Your monitoring reliability is only as good as the driver underneath it.
+
+### Built-in Templates
+
+Zabbix ships with ready-made ODBC templates for the most common database platforms. These are a reasonable starting point — they implement the master item pattern correctly and include sensible default triggers — but treat them as a baseline to adapt rather than a finished solution. Production environments invariably have database configurations, naming conventions, and business metrics that require customisation beyond what a generic template can provide.
+
+The available templates are: **MariaDB by ODBC**, **MySQL by ODBC**, **MSSQL by ODBC**, **Oracle by ODBC**, **Percona by ODBC**, and **PostgreSQL by ODBC**. Each includes a README accessible from the template detail view in the Zabbix frontend, listing the full set of macros, items, and triggers.
+
+### Driver Packages by Platform
+
+| Database | RHEL / Rocky / Alma | Ubuntu / Debian | SUSE | Vendor Repo? |
+|---|---|---|---|---|
+| MySQL / MariaDB | `mariadb-connector-odbc` | `mariadb-connector-odbc` | `mariadb-connector-odbc` | No |
+| PostgreSQL | `psqlodbc` | `odbc-postgresql` | `psqlODBC` | No |
+| SQL Server | `msodbcsql18` | `msodbcsql18` | `msodbcsql18` | Yes |
+| SQL Server (OSS) | `freetds`, `freetds-odbc` | `freetds-bin`, `tdsodbc` | `libtdsodbc0` | No |
+
+### Installation
+
+ODBC components must be installed on the Zabbix Server or Proxy that will perform the checks — not on the monitored database host. The package set is the same regardless of which database you intend to monitor: the unixODBC driver manager first, then the database-specific driver on top.
+
+**Rocky Linux 9 / RHEL / Alma**
+
+```bash
+sudo dnf install unixODBC unixODBC-devel
+sudo dnf install mariadb-connector-odbc    # for MySQL or MariaDB targets
+sudo dnf install postgresql-odbc           # for PostgreSQL targets
+```
+
+**Ubuntu 24.04 / Debian**
+
+```bash
+sudo apt update
+sudo apt install unixodbc unixodbc-dev
+sudo apt install odbc-mariadb              # for MySQL or MariaDB targets
+sudo apt install odbc-postgresql           # for PostgreSQL targets
+```
+
+**SUSE**
+
+```bash
+sudo zypper install unixODBC-devel
+sudo zypper install mariadb-connector-odbc # for MySQL or MariaDB targets
+sudo zypper install psqlODBC               # for PostgreSQL targets
+```
+
+After installation, confirm that the driver manager can see the installed drivers:
+
+```bash
+odbcinst -q -d
+```
+
+If a driver you just installed does not appear in the output, the package did not register it correctly in `/etc/odbcinst.ini` and you will need to add the entry manually before any DSN referencing that driver will function.
+
+### Configuration Files
+
+Two files define the ODBC configuration on the Zabbix server or proxy host. They must both be correct for any check to function.
+
+**`/etc/odbcinst.ini` — Driver Registry**
+
+Registers installed drivers under symbolic names. The `Driver` path must point to an installed `.so` file on the local filesystem.
+
+```ini
 [MariaDB]
 Description = MariaDB ODBC Driver
 Driver      = /usr/lib64/libmaodbc.so
 
-[MySQL]
-Description = MySQL ODBC Driver
-Driver      = /usr/lib64/libmyodbc5.so
+[PostgreSQL]
+Description = PostgreSQL ODBC Driver
+Driver      = /usr/lib64/psqlodbc.so
 ```
 
-Verify installed drivers:
+Verify the registry reflects installed drivers:
 
-``` bash
+```bash
 odbcinst -q -d
 ```
 
-If the driver is not listed here, the DSN will not function.
+**`/etc/odbc.ini` — Connection Aliases (DSNs)**
 
----
+Defines named connections that Zabbix items reference by their section header. Each entry maps a symbolic name to driver, host, port, and database configuration.
 
-### `/etc/odbc.ini` — DSN Definitions
-
-Defines connection aliases.
-
-``` ini
+```ini
 [InventoryDB]
 Description = Production Inventory Database
 Driver      = MariaDB
@@ -109,872 +184,264 @@ User        = zabbix_mon
 Password    = strong_password
 ```
 
-The `Driver` name must match the definition in `/etc/odbcinst.ini`.
+The DSN file contains database credentials. Restrict its permissions immediately after creation — a world-readable `odbc.ini` on a multi-user host is a straightforward credential exposure:
 
-Restrict file permissions:
-
-``` bash
+```bash
 chmod 600 /etc/odbc.ini
 ```
 
----
+### Validating the Stack Before Touching Zabbix
 
-## Installing ODBC Components
-
-ODBC and correct drivers must be installed on the Zabbix Server or Proxy performing the check.
-
-### Rocky Linux 9
-
-``` bash
-sudo dnf install unixODBC unixODBC-devel
-sudo dnf install mariadb-connector-odbc or mysql−connector−odbc postgresql-odbc
-```
-
-### Ubuntu 24.04
-
-```bash
-sudo apt update
-sudo apt install unixodbc unixodbc-dev odbc-mariadb odbc-postgresql
-```
-###  SUSE
-
-``` bash
-zypper in unixODBC-devel mariadb-connector-odbc psqlODBC
-Verify drivers:
-```
-
-```bash
-odbcinst -q -d
-```
-
----
-
-## Commonly Used ODBC Drivers
-
-ODBC is only a standard interface. The actual database communication is handled by a database-specific driver. The reliability, performance, authentication support, and TLS capabilities of your monitoring setup depend heavily on this driver.
-
-In Linux-based Zabbix environments, three drivers are most commonly deployed and operationally proven:
-
-* MySQL / MariaDB
-* PostgreSQL
-* Microsoft SQL Server
-
-While ODBC drivers exist for many other databases, these three represent the majority of real-world Zabbix database monitoring deployments.
-
----
-
-### MySQL / MariaDB
-
-The most widely used driver in open-source environments.
-
-Typical package names:
-
-* `mariadb-connector-odbc` (RHEL / Rocky / Alma)
-* `libmaodbc` or distribution-provided MariaDB ODBC packages
-
-This driver supports:
-
-* MySQL
-* MariaDB
-* Cloud-managed MySQL-compatible services (e.g., Amazon RDS, Azure Database for MySQL)
-
-MariaDB Connector/ODBC is generally preferred over older MySQL ODBC drivers due to active maintenance and compatibility improvements.
-
----
-
-### PostgreSQL
-
-PostgreSQL ODBC is stable and widely used in enterprise environments.
-
-Typical package names:
-
-* `odbc-postgresql` (Debian / Ubuntu)
-* `psqlodbc` (RHEL-based systems)
-
-Common use cases include:
-
-* ERP systems
-* Financial systems
-* High-availability PostgreSQL clusters
-* Managed PostgreSQL cloud services
-
-When monitoring PostgreSQL, ensure:
-
-* SSL parameters are correctly defined in the DSN if required
-* SCRAM authentication is supported by the installed driver version
-* Certificate validation is enforced in secure environments
-
----
-
-### Microsoft SQL Server (MSSQL)
-
-Microsoft provides an official ODBC driver for SQL Server.
-
-Typical package name:
-
-* `msodbcsql18`
-
-Installation usually requires enabling Microsoft's official repository and accepting the license agreement.
-
-Example (RHEL/Rocky-based systems):
-
-```bash
-sudo dnf install msodbcsql18
-```
-
-This driver is required for:
-
-* On-premise Microsoft SQL Server
-* SQL Server on Linux
-* Azure SQL Database
-
-Operational considerations:
-
-* TLS encryption is often mandatory
-* Kerberos or Active Directory authentication may require additional configuration
-* EULA acceptance is required during installation
-
-
-### FreeTDS ODBC Driver (tdsodbc) — Community Option
-
-FreeTDS is an open-source implementation of the TDS (Tabular Data Stream) protocol used by SQL Server.
-
-Typical package names:
-
-* freetds
-* freetds-odbc
-* tdsodbc
-
-Advantages:
-* Fully open source
-* Available directly from most Linux distributions
-* No external vendor repository required
-
-Limitations:
-* May lag behind in TLS or encryption support
-* Authentication features are more limited
-* Azure SQL compatibility can be inconsistent
-* Behavior may vary between versions
-
-FreeTDS can work reliably for simple monitoring queries, but it requires careful testing before production use.
-
----
-
-## ODBC Driver Packages by Operating System
-
-The following table summarizes commonly used driver packages per platform.
-
-| Database        | Rocky / RHEL / Alma      | Ubuntu / Debian                               |  Suse                  | Vendor Repository Required |
-| --------------- | ------------------------ | --------------------------------------------- | ---------------------- | -------------------        |
-| MySQL / MariaDB | `mariadb-connector-odbc` | `mariadb-connector-odbc` or distro equivalent | mariadb-connector-odbc | No                         |
-| PostgreSQL      | `psqlodbc`               | `odbc-postgresql`                             | psqlODBC               | No                         |
-| MSSQL           | `msodbcsql18`            | `msodbcsql18`                                 | msodbcsql18            | Yes (Microsoft repo)       |
-| MSSQL           | freetds  freetds-odbc    | freetds-bin tdsodbc                           | libtdsodbc0            |                            |
-
-
----
-
-## Driver Selection Considerations
-
-When choosing an ODBC driver:
-
-1. Prefer vendor-maintained drivers when available.
-2. Verify compatibility with your database version.
-3. Confirm support for:
-   * TLS/SSL
-   * Modern authentication methods
-   * UTF-8 encoding
-4. Test performance under realistic load before production rollout.
-
-Not all ODBC drivers behave identically. Differences may exist in:
-
-* Timeout handling
-* Connection reuse behavior
-* Encoding management
-* Error reporting
-* Pooling support
-
-In production environments, the ODBC driver should be treated as a critical infrastructure
-component.
-
-???+ note
-
-    There are many ODBC drivers available for additional databases such as Oracle,
-    Db2, SAP HANA, and others. However, driver quality, maintenance cadence, and
-    production stability vary significantly. Before relying on less common drivers
-    in a monitoring environment, perform controlled testing and validate behavior
-    under load. Monitoring reliability depends as much on the driver as on Zabbix
-    itself.
-
----
-
-### Testing the DSN
-
-Always validate connectivity before configuring Zabbix.
+Every ODBC troubleshooting session that begins inside Zabbix should have started here instead. Test the DSN directly with `isql` before configuring any items:
 
 ```bash
 isql -v InventoryDB
 ```
 
-If successful:
-
-```
-Connected!
-```
-
-If not, resolve driver registration, authentication, or network issues first. This saves you from the problems in Zabbix.
+A successful connection returns a `Connected!` prompt. If it fails, the problem is in the ODBC stack — driver registration, credentials, network access, TLS configuration — and it will fail identically inside Zabbix. Resolve it at this layer first. The combination of `isql` verification and a correctly sized poller pool eliminates the vast majority of ODBC support issues before they ever reach a Zabbix item.
 
 ---
 
-## Enabling ODBC Pollers
+## Item Design: Two Keys, Different Philosophies
 
-ODBC items require dedicated poller processes.
+Zabbix exposes two item keys for ODBC-based database monitoring. They are not interchangeable variations of the same idea — they represent different philosophies about how monitoring data should be collected.
 
-In `zabbix_server.conf` or `zabbix_proxy.conf`:
+### `db.odbc.select` — The Scalar Path
 
-```
-StartODBCPollers=5
-```
-
-Restart Zabbix after modification.
-
-If this parameter is missing, ODBC items remain unsupported.
-
----
-
-## Creating ODBC Items in Zabbix 8.0
-
-Zabbix provides two database monitor item keys for ODBC-based monitoring:
-
-* `db.odbc.select[]`
-* `db.odbc.get[]`
-
-Both keys execute SQL queries via ODBC, but they differ significantly in how results are returned and how they should be used.
-
----
-
-### `db.odbc.select[]`
-
-Syntax:
-
-```text
-db.odbc.select[<unique short description>,<dsn>,<connection string>]
-```
-
-Behavior:
-
-* Executes the defined SQL query.
-* Returns **a single value**.
-* Specifically, it returns:
-
-  * The first column
-  * Of the first row
-  * Of the query result set
-
-This makes it ideal for queries that produce one scalar result.
-
-### Example
-
-SQL query:
-
-```sql
-SELECT COUNT(*) FROM orders WHERE status = 'pending';
-```
-
-If the result is:
+`db.odbc.select` executes a SQL query and returns exactly one value: the first column of the first row of the result set. Nothing else is preserved.
 
 ```
-42
+db.odbc.select[<description>,<dsn>,<connection string>]
 ```
 
-The item stores:
+This simplicity is its strength. There is no JSON preprocessing, no dependent item chain, no extraction logic to maintain. Write a query that produces a single number, point it at a DSN, and the value flows directly into item history.
+
+`db.odbc.select` belongs in your design when the question you are asking has exactly one answer: how many pending orders exist right now? What is the replication lag in seconds? How many active sessions are connected to this instance? For these use cases, adding the machinery of `db.odbc.get` would be engineering overhead with no benefit.
+
+One important operational note: even though you may write a query that intentionally returns one row, multi-row queries will still only surface the first column of the first row to Zabbix. Write your SQL to be explicit about what you want, not reliant on this truncation behaviour.
+
+### `db.odbc.get` — The Scalable Path
+
+`db.odbc.get` executes a SQL query and returns the entire result set as a JSON array.
 
 ```
-42
+db.odbc.get[<description>,<dsn>,<connection string>]
 ```
 
----
-
-#### When to Use `db.odbc.select`
-
-Recommended for:
-
-* Simple health checks
-* Aggregate counts
-* Boolean-style checks
-* Replication lag values
-* Single KPI metrics
-
-It item is particularly suitable when:
-
-* The query is complex
-* The result is intentionally singular
-* No further JSON processing is required
-
-Because it returns only one value, it is straightforward and lightweight.
-
----
-
-## `db.odbc.get[]`
-
-Syntax:
-
-```text
-db.odbc.get[<unique short description>,<dsn>,<connection string>]
-```
-
-Behavior:
-
-* Executes the SQL query.
-* Returns the entire result set as a **JSON array**.
-
-Example result:
+A query returning multiple rows and columns produces something like:
 
 ```json
 [
-  {"status":"pending","total":"15"},
-  {"status":"shipped","total":"120"}
+  {"status": "pending",   "total": "15", "oldest_age_minutes": "47"},
+  {"status": "processing","total": "8",  "oldest_age_minutes": "12"},
+  {"status": "failed",    "total": "3",  "oldest_age_minutes": "183"}
 ]
 ```
 
-Unlike `select`, this key preserves all returned rows and columns.
+This single query execution — hitting the database once — can feed an unlimited number of dependent items through JSONPath preprocessing. As the replication of database queries as item counts grows, the database load does not.
 
----
+The canonical design pattern is the **master item**: one `db.odbc.get` item collects the full result set on a defined interval; dependent items each extract one metric using JSONPath and may apply additional preprocessing steps like type conversion. Ten metrics, one query. A hundred metrics, one query. This is not a marginal optimisation — in environments monitoring dozens of databases, it is the difference between sustainable load and an ODBC poller pool in permanent saturation.
 
-#### When to Use `db.odbc.get`
+???+ note
+    Database drivers commonly return numeric columns as strings in ODBC result sets. Always include a **Change Type** preprocessing step converting to Numeric (unsigned) or Numeric (float) on dependent items that will feed triggers or graphs. Type inconsistency is the most common cause of trigger misfires on freshly built database monitor templates.
 
-Recommended for:
+#### A Worked Example
 
-* Collecting multiple metrics in one query
-* Feeding dependent items
-* Low-Level Discovery
-* Master item designs
-* Reducing database load through query consolidation
-
-`db.odbc.get` is the preferred modern approach in Zabbix 8.0 for scalable database monitoring.
-
----
-
-### Example Using `db.odbc.get`
-
-Type: `Database monitor`
-Key: `db.odbc.get[get_stats,InventoryDB]`
-
-
-SQL Query:
+Consider a production order management database. Rather than running separate queries for pending count, processing count, average queue age, and oldest item age, a single query captures the relevant state in one round-trip:
 
 ```sql
-SELECT status, COUNT(*) AS total
+SELECT
+    status,
+    COUNT(*) AS total,
+    AVG(TIMESTAMPDIFF(MINUTE, created_at, NOW())) AS avg_age_minutes,
+    MAX(TIMESTAMPDIFF(MINUTE, created_at, NOW())) AS oldest_age_minutes
 FROM orders
+WHERE status IN ('pending', 'processing', 'failed')
 GROUP BY status;
 ```
 
-Returned JSON:
+The master item runs this query every 60 seconds. From it, dependent items extract pending count, processing count, failed count, and average and maximum queue age per status — all without touching the database again. A trigger fires when the oldest failed item exceeds a threshold. Another fires when the pending count exceeds a threshold relative to its moving average. Zero additional database load beyond the single master query.
 
-```json
-[
-  {"status": "pending", "total": "15"},
-  {"status": "shipped", "total": "120"}
-]
-```
+### Choosing Between the Two
 
-Preprocessing:
+| Criterion | `db.odbc.select` | `db.odbc.get` |
+|---|---|---|
+| Number of metrics per query | One | Unlimited |
+| JSON preprocessing required | No | Yes |
+| Suitable for dependent items | No | Primary use case |
+| Suitable for LLD | No | Yes |
+| Database call per metric | One | Fractional (shared) |
+| Template complexity | Low | Medium |
+| Recommended for new templates | Narrow use cases | Default choice |
 
-1. JSONPath:
-
-   ```
-   $.[?(@.status == 'pending')].total.first()
-   ```
-2. Change type → Numeric (unsigned)
-
-Database drivers often return numbers as strings; type conversion prevents trigger inconsistencies.
-
----
-
-## Understanding the Parameters
-
-Both keys share the same parameter structure:
-
-1. **Unique short description**
-
-   * An internal identifier.
-   * Must be unique per item.
-   * Does not affect execution logic.
-
-2. **DSN**
-
-   * The Data Source Name defined in `/etc/odbc.ini`.
-   * Points to the database connection configuration.
-
-3. **Connection string (optional)**
-
-   * Allows overriding or extending DSN parameters.
-   * Can include credentials or additional driver settings.
-   * Useful when DSN-level credentials are not defined.
-
-Example with connection string:
-
-```text
-db.odbc.select[check_users,InventoryDB,UID=zabbix_mon;PWD=secret]
-```
-
-In production environments, credentials should preferably be handled via macros or secure storage rather than hardcoded strings.
-
----
-
-# Strategic Comparison
-
-| Feature                          | `db.odbc.select`     | `db.odbc.get`                |
-| -------------------------------- | -------------------- | ---------------------------- |
-| Returns                          | Single scalar value  | Full result set (JSON array) |
-| Suitable for                     | One metric per query | Multiple metrics per query   |
-| JSON preprocessing required      | No                   | Yes                          |
-| Ideal for dependent items        | No                   | Yes                          |
-| Recommended for modern templates | Limited use          | Yes                          |
-
----
-
-## Design Guidance
-
-Use `db.odbc.select` when:
-
-* You need one value.
-* Simplicity is preferred.
-* No discovery or dependent logic is required.
-
-Use `db.odbc.get` when:
-
-* You want scalability.
-* You want to reduce database query count.
-* You are building reusable templates.
-* You are implementing LLD.
-* You want to follow modern Zabbix design patterns.
-
-In most structured deployments, `db.odbc.get` should be the default choice.
+In practice: use `db.odbc.select` when the metric genuinely stands alone, the query is trivially simple, and the item will never need to feed discovery or dependent logic. In every other case, design around `db.odbc.get` with a master item pattern from the start. Retrofitting a scalar template into a scalable one after the fact is substantially more work than getting the architecture right at the outset.
 
 ---
 
 ## Low-Level Discovery with ODBC
 
-ODBC combined with `db.odbc.get` enables scalable Low-Level Discovery.
+One of the most powerful ODBC patterns available in Zabbix is using it to drive Low-Level Discovery — automatically generating monitoring items for database objects whose existence cannot be known at template design time. Tables, schemas, replication slots, partitions, named queues: anything the database can enumerate, Zabbix can discover and monitor.
 
-Example:
+### Native Discovery: `db.odbc.discovery`
+
+The `db.odbc.discovery` key is purpose-built for LLD. It executes a SQL query and formats the results as a discovery array. The query must alias column names to match LLD macro format exactly:
 
 ```sql
-SELECT table_name, table_rows
+SELECT
+    table_name AS "{#TABLE}",
+    table_rows AS "{#APPROX_ROWS}"
 FROM information_schema.tables
-WHERE table_schema = 'shop_db';
+WHERE table_schema = 'shop_db'
+  AND table_type   = 'BASE TABLE';
 ```
 
-Configuration strategy:
+This produces one discovered entity per table, with macros available for use in item prototype keys and names. The common mistake is omitting the quoted LLD macro format on the alias — the curly brace and hash syntax must be present and quoted, or Zabbix will not recognise the column as a macro.
 
-* Master item → `db.odbc.get`
-* Dependent discovery rule
-* JSONPath extracts `{#TABLE}`
-* Item prototypes monitor row count per table
+### Scalable Discovery via `db.odbc.get`
 
-This approach reduces database load and improves template scalability.
+For larger environments, the master item pattern extends naturally to discovery. A single `db.odbc.get` item collects the full dataset; a dependent discovery rule extracts the LLD array using JSONPath; item prototypes are defined as further dependent items on the master. One query execution per interval drives the entire discovery and metric collection pipeline.
 
+The performance contrast becomes significant at scale. Native `db.odbc.discovery` executes its own query for each discovery rule. If you have five discovery rules covering different aspects of a database — tables, indexes, replication slots, partitions, connection pools — that is five separate query executions per discovery interval. The master item pattern reduces that to one, with all five discovery rules fed from the same result set.
 
-## Native ODBC Low-Level Discovery (`db.odbc.discovery`)
-
-In addition to `db.odbc.select[]` and `db.odbc.get[]`, Zabbix provides a dedicated key for discovery:
-
-```
-db.odbc.discovery[]
-```
-
-This key is designed specifically for Low-Level Discovery (LLD) and returns data in the format required by Zabbix discovery rules.
-
-While `db.odbc.get[]` can be combined with dependent items to implement scalable discovery patterns, `db.odbc.discovery[]` offers a simpler and more direct approach for structured environments.
-
----
-
-### How It Works
-
-The key format:
-
-```
-db.odbc.discovery[unique_name,DSN]
-```
-
-The SQL query must return columns that correspond to LLD macro names.
-
-Example:
-
-```sql
-SELECT table_name AS "{#TABLE}"
-FROM information_schema.tables
-WHERE table_schema = 'shop_db';
-```
-
-This generates discovery data like:
-
-```json
-[
-  {"{#TABLE}":"orders"},
-  {"{#TABLE}":"customers"},
-  {"{#TABLE}":"products"}
-]
-```
-
-Each row becomes one discovered entity.
-
----
-
-### When to Use `db.odbc.discovery`
-
-Use native discovery when:
-
-* The discovery query is lightweight.
-* The returned dataset is small.
-* You do not need additional processing logic.
-* You prefer simplicity over maximum optimization.
-
-It is particularly suitable for:
-
-* Discovering database tables
-* Discovering schemas
-* Discovering replication slots
-* Discovering logical entities with stable structure
-
----
-
-### When to Prefer `db.odbc.get` + Dependent LLD
-
-In larger environments, the preferred scalable approach is:
-
-1. Master item → `db.odbc.get`
-2. Dependent discovery rule
-3. Dependent item prototypes
-
-This approach reduces database load because:
-
-* The SQL query executes only once.
-* Multiple items reuse the same dataset.
-* Poller usage is minimized.
-
-If you use `db.odbc.discovery[]`, each discovery rule executes its own SQL query.
-
-In small deployments, this difference is negligible.
-In large-scale systems, it becomes significant.
-
----
-
-## Performance Considerations for Discovery
-
-Discovery rules execute periodically.
-
-If a discovery query:
-
-* Scans large metadata tables
-* Executes heavy joins
-* Runs too frequently
-
-it can introduce unnecessary load.
-
-Best practices:
-
-* Run discovery at longer intervals (e.g., 1h or 24h)
-* Keep discovery queries simple
-* Avoid scanning large operational tables
-* Prefer metadata sources like `information_schema`
-
-Discovery should detect structure changes, not operational metrics.
-
----
-
-## Common Mistake with `db.odbc.discovery`
-
-A frequent error is returning columns without properly formatted LLD macros.
-
-Incorrect:
-
-```sql
-SELECT table_name FROM information_schema.tables;
-```
-
-Correct:
-
-```sql
-SELECT table_name AS "{#TABLE}"
-FROM information_schema.tables;
-```
-
-The alias must match the macro format exactly.
-
----
-
-## Strategic Guidance
-
-For production template design:
-
-* Use `db.odbc.discovery[]` for structural discovery.
-* Use `db.odbc.get[]` for scalable metric collection.
-* Combine both methods when appropriate.
-
-Discovery defines *what* exists.
-Metric items define *how it behaves*.
-
-Keeping those responsibilities separate improves template clarity and scalability.
-
----
-
-## Performance and Scalability Considerations
-
-ODBC queries execute real SQL. They consume database resources.
-
-Best practices:
-
-* Use indexed columns
-* Avoid full-table scans
-* Keep queries lightweight
-* Avoid high-frequency polling unless necessary
-* Test queries using `EXPLAIN`
-
-Server-wide timeout:
-
-```
-Timeout=5
-```
-
-Slow queries block pollers and may cascade into monitoring delays.
-Use proxies to isolate database monitoring from the central server.
+The architectural decision between the two approaches follows a simple heuristic: if the discovery dataset is small and the discovery interval is measured in hours, native `db.odbc.discovery` is perfectly adequate and easier to implement. If the environment is large, the discovery interval is more frequent, or you need to correlate data from the same query across multiple discovery rules, use the master item pattern.
 
 ???+ note
-
-    Starting from Zabbix 7.0 This parameter will be less important as the
-    "Database monitor" item now can have custom Timeout per each SQL query/item
-    ranging from 1s to 10m
-
+    Discovery should detect structure — what objects exist — not operational state. Keep discovery queries lightweight and prefer metadata sources like `information_schema` over scanning operational tables. Run discovery at intervals appropriate to how often the underlying structure actually changes: hourly or daily is typical. Minute-level discovery intervals for database object discovery are almost always unnecessary.
 
 ---
 
-##  Connection Pooling
+## Operational Discipline
 
-Enable unixODBC pooling. Beginning with unixODBC 2.0.0, the driver manager supports
-connection pooling. Connection pooling reduces connection overhead by maintaining
-open database connections and reusing them for subsequent requests, rather than
-repeatedly establishing and terminating new connections.
+ODBC monitoring is unusual among Zabbix check types in that its failure modes are asymmetric. A misconfigured agent check fails silently or generates a support event in Zabbix. A misconfigured or carelessly written ODBC check can generate a noticeable workload on the monitored database — a workload that may compound under high-frequency polling, grow worse during periods of database stress, and produce cascading effects across both the monitoring and production stack.
 
-In `/etc/odbcinst.ini`:
+The disciplines below are not optional refinements for mature deployments. They are the baseline for any production ODBC configuration.
 
-```ini
-[ODBC]
-Pooling = Yes
+### Query Design
+
+Every monitoring query must be lighter than the production workload it observes. This is a firm principle, not a guideline. Queries that use indexed columns, return aggregate results, and touch only the rows they need are acceptable. Queries that scan large tables, perform unindexed joins, or replicate the logic of reporting tools are not.
+
+Before deploying any monitoring query, run `EXPLAIN` or `EXPLAIN ANALYZE` against it and inspect the execution plan. A full table scan on a table with millions of rows, executed every 30 seconds, is not monitoring — it is a scheduled load injection. If the query plan is not acceptable in production context, redesign the query or choose a different monitoring approach.
+
+The temptation to embed business logic in monitoring SQL is common and should be resisted. Monitoring observes systems; it does not replicate application behaviour. A query that reproduces the calculation your order processing service performs to determine fulfilment priority is fragile, hard to maintain, and likely to become incorrect the moment the application logic changes.
+
+### Poller Sizing
+
+The `StartODBCPollers` parameter in `zabbix_server.conf` or `zabbix_proxy.conf` controls the number of concurrent ODBC poller processes.
+
+```
+StartODBCPollers=5
 ```
 
-Pooling reduces TCP handshake and authentication overhead in high-scale environments.
+Too few pollers and items queue, then go unsupported. Too many and you risk overwhelming the database with concurrent connections, particularly if the monitored database enforces connection limits. The correct approach is to start conservatively — 3 to 5 pollers for small deployments — and monitor the ODBC poller busy percentage in Zabbix's own internal metrics. Scale up only when utilisation consistently exceeds 70 to 80 percent. Never increase pollers as a substitute for fixing slow queries; doing so shifts the queuing problem to the database layer, where it becomes invisible in Zabbix metrics.
 
----
+### Timeouts
 
-##  Security Considerations
+Unhandled query timeouts are the most reliable path to a fully saturated poller pool. A query that hangs indefinitely ties up a poller slot until the database eventually errors or the connection is forcibly closed. In a pool of five pollers, three hanging queries means 60 percent of your ODBC capacity is unavailable.
 
-Never use database root accounts, always create a dedicated user with limited
-permissions. Best even 1 account per application.
+Zabbix 7.0 introduced per-item timeout configuration for database monitor items, accepting values from 1 second to 10 minutes. Use this to set timeouts appropriate to each query's expected duration. A simple aggregate query should have a 5-second timeout. A more complex cross-table query might justify 30 seconds. Nothing in a monitoring context should run for minutes.
 
-Create a dedicated read-only user:
+### Isolation via Proxy
+
+In any environment with more than a handful of ODBC items, database monitoring should run through a Zabbix Proxy rather than directly from the server. This provides two critical properties: isolation and locality.
+
+Isolation means that a misbehaving ODBC configuration — slow queries, driver crashes, database connectivity loss — affects only the proxy, not the central Zabbix server. The server continues operating normally; the proxy's ODBC items simply go unsupported until the issue is resolved. Without isolation, the same failure degrades the entire server's poller pool.
+
+Locality means the proxy runs on a host with direct network access to the monitored databases, with ODBC drivers installed for that specific database environment, and without routing monitoring traffic through wide-area network paths.
+
+### Credentials and Security
+
+The monitoring database account must be read-only. Not "mostly read-only with a few exceptions" — strictly SELECT only, on the specific databases and schemas it needs to monitor, with no ability to modify data or schema. Create a dedicated account per monitored application:
 
 ```sql
 CREATE USER 'zabbix_mon'@'%' IDENTIFIED BY 'strong_password';
 GRANT SELECT ON shop_db.* TO 'zabbix_mon'@'%';
 ```
 
-Recommendations:
+Store credentials in Zabbix macros rather than hardcoded in DSN files where possible. For environments with a secrets management platform, Zabbix's vault integration allows credentials to be fetched at runtime rather than stored in configuration files at all.
 
-* Use Zabbix macros for credentials
-* Limit privileges strictly to SELECT
-* Protect DSN files
-* Consider external secret vault integration
-* Restrict network exposure
+Connection strings embedded directly in item keys are visible in the Zabbix frontend to any user with access to the host configuration. This is acceptable in development but not in production. Use DSN-level credentials or macros.
 
-Monitoring credentials must never allow modification.
+### Connection Pooling
 
----
+unixODBC supports connection pooling from version 2.0.0 onwards. Enabling it reduces the overhead of repeated connection establishment — the TCP handshake, TLS negotiation, and authentication round-trip that precedes every query in a non-pooled configuration. In high-frequency monitoring environments, this overhead accumulates.
 
-##  Character Encoding
-
-Ensure consistent UTF-8 configuration across:
-
-* Database
-* Operating system locale
-* ODBC driver
-
-
-If the database returns data encoded differently (for example, Latin1 or Windows-1252), 
-the ODBC driver must correctly translate it into UTF-8. If that conversion fails or is
-misconfigured, the returned data may be corrupted. So encoding mismatches can result in
-corrupted output or JSON parsing failures.
-
----
-
-## Troubleshooting
-
-Common ODBC errors:
-
-IM002
-DSN not found — verify `/etc/odbcinst.ini` and `/etc/odbc.ini`
-
-HY000
-Authentication or permission error
-
-08001
-Network connectivity issue
-
-Increase logging:
-
-```
-LogLevel=4
+```ini
+# In /etc/odbcinst.ini
+[ODBC]
+Pooling = Yes
 ```
 
-Check:
+Pooling is particularly valuable in environments where database connection setup is expensive — SSL mutual authentication, Kerberos, or databases with slow authentication backends. Verify that your specific driver supports pooling correctly before enabling it in production, as driver-level pooling bugs can produce stale connection state or query result corruption.
 
-```
-/var/log/zabbix/zabbix_server.log
-```
+### Character Encoding
 
-Always validate the DSN with `isql` before troubleshooting Zabbix itself.
+ODBC monitoring is surprisingly sensitive to encoding inconsistencies. The database, the operating system locale, and the ODBC driver must all agree on UTF-8. When they do not, two failure modes emerge: visually corrupted string data in item values, and JSON parse failures in `db.odbc.get` results.
 
----
-
-##  Choosing the Right Monitoring Method
-
-Zabbix supports multiple database monitoring approaches. This table can help you
-with choosing the best approach.
-
-| Criteria                   | ODBC      | Agent 2 Plugin |
-| -------------------------- | --------- | -------------- |
-| Requires agent             | No        | Yes            |
-| Executes SQL directly      | Yes       | Yes            |
-| Best for cloud-managed DB  | Yes       | Sometimes      |
-| Risk of poorly written SQL | High      | Low            |
-| Setup complexity           | Medium    | Low            |
-| Business KPI monitoring    | Excellent | Limited        |
-| Infrastructure metrics     | Good      | Excellent      |
-
-### Strategic Guidance
-
-* Use Agent 2 plugins for core database health metrics.
-* Use ODBC for custom SQL and business metrics.
-* Use HTTP checks for application-level validation.
-
-In mature environments, these methods complement each other.
+The second mode is more operationally dangerous because it produces item errors rather than incorrect data. A `db.odbc.get` item that returns garbled encoding in a string column will silently break every dependent item and discovery rule that depends on it. Verify encoding consistency during initial deployment, before any dependent item logic is built on top of the master item.
 
 ---
 
-##  Production Hardening
+## Anti-Patterns and How They Manifest
 
-ODBC must be deployed with discipline.
+ODBC anti-patterns tend to be invisible until they are not. The symptoms often appear distant from the root cause — an unrelated monitoring item goes unsupported, database response times spike during a specific window, Zabbix queue depth grows. Knowing the common failure patterns in advance makes them faster to diagnose.
 
-### Query Discipline
+**Monitoring queries written as reports.** A query written for a business report is designed to be complete and correct, not fast. It likely scans multiple large tables, performs several joins, aggregates millions of rows, and computes derived fields. Running it once a month in a reporting tool is fine. Running it every 60 seconds as a Zabbix check against a production database is not. The symptom is a gradual increase in database CPU and I/O during monitoring windows, often dismissed as coincidental load until someone traces it.
 
-Never deploy:
+**High-frequency polling of expensive metrics.** Not all metrics need to be collected at the same frequency. Replication lag — where a drift of even a few seconds may be significant — warrants a short polling interval. The number of tables in a schema — which changes only when a deployment runs — does not. Applying a 30-second polling interval uniformly across all ODBC items wastes both poller capacity and database resources. Assign intervals based on the operational sensitivity of each metric.
 
-* `SELECT *`
-* Full table scans
-* Heavy joins without indexing
-* Long-running reports
+**Using privileged accounts.** Monitoring with a DBA or application account that has write privileges introduces unnecessary risk. A credential leak, an injection vulnerability in a poorly constructed monitoring query, or a simple configuration mistake could result in data modification. The monitoring account must be read-only. There are no legitimate exceptions to this in production.
 
-Monitoring queries must be lighter than production workload.
+**Scaling pollers to mask slow queries.** When ODBC items go unsupported due to poller saturation, the instinct is to increase `StartODBCPollers`. If the saturation is caused by a growing item count or a genuine burst in monitoring demand, more pollers is the right answer. If it is caused by slow queries, more pollers shifts the problem: instead of queued items in Zabbix, you get queued connections at the database layer, which may then cause application connection pool exhaustion. Fix the query first. Scale pollers second.
 
-### Poller Capacity Planning
+**Ignoring driver-specific known issues.** Each driver family carries its own list of quirks that are not discoverable through normal testing. The MySQL/MariaDB connector mismatch (ZBX-7665), the FreeTDS `SET NOCOUNT ON` requirement (ZBX-19917), Oracle Instant Client crashes on Linux (ZBX-18402, ZBX-20803), and MSSQL XML truncation on UNIX systems are all production-grade failure modes that are entirely invisible during basic connectivity testing. Reviewing the known issues for your specific driver before deployment is not optional reading — it is the step that prevents a category of failures that no amount of query tuning or poller sizing will fix.
 
-Size `StartODBCPollers` appropriately.
-
-Too low:
-
-* Unsupported items
-
-Too high:
-
-* Database overload
-
-Scale gradually and monitor poller utilization.
-
-### Isolation
-
-Offload ODBC checks to a Zabbix Proxy in medium and large environments. This prevents
-database instability from affecting the central monitoring server.
-
-### Monitor the Monitoring
-
-When you use ODBC checks on Zabbix don't forget to monitor you configuration in
-Zabbix. It's always a good idea to have a look at the following metrics:
-
-* ODBC poller busy percentage
-* Queue size
-* Item unsupported count
-* Database execution time trends
+**Skipping DSN validation.** Configuring a Zabbix item against an untested DSN and then using Zabbix's error output to debug ODBC connectivity is slower and less informative than using `isql` directly. Zabbix normalises ODBC errors through its own logging layer; `isql` surfaces the raw driver error. Always validate the full stack with `isql` before creating Zabbix items.
 
 ---
 
-## Common Anti-Patterns
+## Choosing the Right Database Monitoring Approach
 
-Even experienced administrators fall into predictable traps. Avoid the following:
+ODBC is not the only way to monitor databases in Zabbix, and it is not always the right one. The choice between ODBC, agent-based monitoring, and application-layer HTTP checks depends on what you are measuring, where the database lives, and what operational overhead you are prepared to maintain.
 
-### 1. Monitoring with Reporting Queries
+| Criterion | ODBC | Zabbix Agent 2 Plugin |
+|---|---|---|
+| Agent required on DB host | No | Yes |
+| Custom SQL queries | Yes — full flexibility | Limited or none |
+| Cloud-managed databases | Yes | Often not possible |
+| Infrastructure health metrics | Good | Excellent |
+| Business KPI monitoring | Excellent | Not designed for it |
+| Risk of slow queries | High (by design) | Low |
+| Setup and maintenance cost | Medium to high | Low |
 
-Using analytical queries designed for reports as monitoring checks. These queries are too heavy for frequent execution.
-
-### 2. High-Frequency Polling of Expensive Metrics
-
-Polling every 10 seconds when 5 minutes would suffice.
-
-### 3. Using Root or Administrative Accounts
-
-Monitoring accounts should never have modification privileges.
-
-### 4. Increasing Pollers Instead of Fixing Queries
-
-Adding pollers to mask slow SQL only increases database pressure.
-
-### 5. Ignoring Timeouts
-
-Failing to tune timeouts leads to blocked pollers and cascading delays.
-
-### 6. Embedding Business Logic in SQL
-
-Monitoring should observe systems, not replicate application logic.
-
-### 7. Skipping DSN Testing
-
-Configuring Zabbix without validating the DSN via `isql`.
-Anti-patterns usually stem from convenience. Production systems require discipline.
+The strategic division in mature environments is clear: Agent 2 plugins handle core database health and OS-level metrics where an agent can be installed; ODBC handles everything that requires direct SQL execution — custom business metrics, application-level state, replication details, and anything residing in tables rather than system views. Neither replaces the other. Together, they provide the full observability stack.
 
 ---
 
-## Conclusion
+## Summary
 
-ODBC provides one of the most flexible and powerful database monitoring mechanisms
-in Zabbix. It enables agentless visibility into infrastructure metrics and business
-KPIs, supports scalable discovery through JSON processing, and integrates cleanly
-with proxy architectures.
+ODBC occupies a unique position in the Zabbix monitoring toolkit: it is the only mechanism that gives you direct access to the data layer, the place where the most operationally significant state actually lives. Order queues, replication lag, session counts, failed transaction rates, business KPIs — none of these are visible without SQL.
 
-However, ODBC is not merely a configuration task, it is an operational responsibility.
-The safety and scalability of ODBC monitoring depend entirely on:
+The technical complexity of ODBC is moderate. Installing drivers, configuring DSNs, and writing `db.odbc.select` items is straightforward work. The harder discipline is operational: choosing queries that are genuinely lightweight, sizing the poller pool appropriately, isolating database monitoring through proxies, validating the full stack before configuring items, and resisting the temptation to embed business logic or reporting queries in monitoring checks.
 
-* Query design discipline
-* Proper poller sizing
-* Secure credential handling
-* Thoughtful timeout configuration
-* Isolation through proxies
-* Continuous performance validation
+The `db.odbc.get` master item pattern — one query feeding multiple dependent items and discovery rules — is the foundation of any scalable ODBC deployment. Build around it from the start, and ODBC becomes one of the most powerful sources of observability in your Zabbix environment. Treat it as an afterthought, and it becomes one of the most reliable sources of production incidents.
 
-When used correctly, ODBC becomes a strategic observability tool. When misused,
-it becomes a silent performance risk.
+The difference is not in the technology. The difference is in the discipline of the person who configures it.
 
-The difference lies not in the technology, but in the rigor of its implementation.
+---
 
 ## Questions
 
-- Why does Zabbix rely on unixODBC instead of communicating directly with databases?
-- What is the difference between an ODBC driver manager and a database-specific ODBC driver?
-- Why are ODBC checks considered blocking operations?
-- What is the functional difference between db.odbc.select[] and db.odbc.get[]?
-- Why is consistent UTF-8 configuration important across the database, OS, and Zabbix?
-  
+- Why does Zabbix rely on unixODBC instead of communicating directly with databases, and what are the operational implications of that indirection?
+- A `db.odbc.get` master item runs a query that returns 12 columns across 8 rows. How many dependent items can theoretically be fed from it, and what preprocessing steps would you apply to extract a numeric value from one of those columns?
+- You have 5 ODBC pollers and notice that ODBC poller busy percentage is consistently at 95%. Before increasing `StartODBCPollers`, what investigation steps should you take first?
+- An ODBC item returns `[08001] Network connectivity issue`. Walk through the diagnostic sequence you would follow, starting from the most foundational layer.
+- You are designing a template to monitor a PostgreSQL database that has a variable number of schemas, each with a variable number of tables. Describe the discovery architecture you would use and explain why.
+- Why is it dangerous to use the same monitoring approach — polling interval, query complexity, and account privileges — across both development and production environments?
+- Your Zabbix server is compiled against the MariaDB connector. A colleague installs the MySQL ODBC driver and configures several database monitor items. What specific failure modes should you anticipate, and how would you resolve the configuration correctly?
+- A FreeTDS-based MSSQL monitor item returns "SQL query returned empty result" despite the query executing correctly in a SQL client. What is the cause and what is the fix?
+
 ## Useful URLs
 
-- https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker
+- https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks
 - https://blog.zabbix.com/database-odbc-monitoring-with-zabbix/8076/
-- https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks?hl=ODBC%2Cmonitoring
+- https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker
