@@ -9,7 +9,11 @@ tags: [advanced]
 
 ## Introduction
 
-While Zabbix is known for monitoring infrastructure, it can also monitor itself. Through *internal checks*, Zabbix continuously measures its own operational state — from poller load and queue length to cache usage and data throughput. Monitoring these internal metrics allows administrators to detect overload conditions, database bottlenecks, and sizing issues early, ensuring the monitoring system remains reliable and performant.
+While Zabbix is known for monitoring infrastructure, it can also monitor itself. Through
+*internal checks*, Zabbix continuously measures its own operational state, from poller
+load and queue length to cache usage and data throughput. Monitoring these internal
+metrics allows administrators to detect overload conditions, database bottlenecks,
+and sizing issues early, ensuring the monitoring system remains reliable and performant.
 
 Zabbix is not a single process. It is a collection of specialized worker processes, each responsible for a specific stage of the monitoring pipeline. At scale, performance is rarely limited by a single factor — it depends on how well these processes keep up with the flow of incoming data. When one part of the pipeline becomes overloaded, visible symptoms emerge: queue growth, delayed metrics, or slow alerting.
 
@@ -47,6 +51,11 @@ Data collection → Preprocessing → Storage → Trigger evaluation → Alertin
 
 Each stage is handled by a different group of specialized processes. Understanding how these processes relate to each other is the key to diagnosing performance problems. Monitoring their utilization allows you to quickly identify where bottlenecks occur.
 
+!!! tip
+
+    Each stage in this pipeline introduces its own scaling limits. When troubleshooting,
+    the goal is not to optimize everything at once, but to identify which stage is currently
+    the bottleneck.
 ---
 
 ## Internal Processes
