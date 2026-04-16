@@ -96,11 +96,11 @@ het toevoegen van de PostgreSQL repository aan je systeem.
 
 Set up the PostgreSQL repository with the following commands:
 
-Check
+Kijk op
 [https://www.postgresql.org/download/linux/](https://www.postgresql.org/download/linux/)
-for more information.
+voor meer informatie.
 
-!!! info "Add PostgreSQL repo"
+info "PostgreSQL repo toevoegen".
 
     Red Hat
     ```bash
