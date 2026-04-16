@@ -295,9 +295,6 @@ will enable SSL and HTTP2.
     ToDo
     ```
 
-#### Adapt your Apache Zabbix config
-
-
 #### Restart all services and allow https traffic
 
 ``` bash
@@ -319,7 +316,6 @@ When we go to our url ```http://<IP or DNS>/``` we get redirected to our ```http
     - For HTTP/2 to work you need at least nginx 1.9.5 or later
 
 ## Securing the Frontend with Let's Encrypt on Nginx
-
 
 Creating a certificate with Let's Encrypt is quite easy the only thing you need
 is a domain. With a valid dns record set. Once this is in place you can with a
@@ -359,7 +355,8 @@ you had not renamed your file with the domain name you have alter the config
 file yourself.
 You can take a look for an example to the next topic.
 
-### Setup Let;s encrypt without local a DNS server
+### Setup Let's encrypt without local a DNS server
+
 In case you like to test this at home it's a bit more complex if you don't have a
 DNS server at home but still possible with DNS-01 if you have bought a domain and
 are able to configure the TXT records for this domain. In this case we can use
@@ -443,185 +440,3 @@ certificate.
     You should probably add a bit more security to your webserver this is only
     the bare minimum to make ssl working, A good place to start is probably
     https://cipherlist.eu/
-
-## Securing the Frontend with Let's Encrypt on Apache
-
-Creating a certificate with Let’s Encrypt is straightforward. The only requirement is a domain name with a valid DNS record pointing to your server. Once that is in place, you can enable SSL on your Zabbix frontend with just a few commands.
-
----
-
-### Setup Let's Encrypt with a DNS Server
-
-If you have a properly configured DNS setup, obtaining a certificate is simple.
-
-```bash
-# Install required packages
-dnf install epel-release
-dnf install certbot python3-certbot-apache
-```
-
-Make sure your Apache VirtualHost configuration includes your domain name.
-
-```bash
-# Rename or create your config file
-mv /etc/httpd/conf.d/zabbix.conf /etc/httpd/conf.d/<yourdomain.com>.conf
-```
-
-Edit the file and ensure it contains your domain:
-
-```apache
-<VirtualHost *:80>
-    ServerName yourdomain.com
-    ServerAlias www.yourdomain.com
-    DocumentRoot /usr/share/zabbix
-</VirtualHost>
-```
-
-Now request the certificate:
-
-```bash
-certbot --apache -d yourdomain.com -d www.yourdomain.com
-```
-
-Configure the firewall:
-
-```bash
-firewall-cmd --permanent --add-service=https
-firewall-cmd --permanent --add-service=http
-firewall-cmd --reload
-```
-
-Certbot will automatically update your Apache configuration and enable HTTPS.
-
----
-
-### Setup Let's Encrypt without a Local DNS Server
-
-If you don’t run your own DNS server (for example in a home lab), you can still obtain a certificate using the **DNS-01 challenge**. This requires adding TXT records to your domain.
-
-```bash
-# Install required packages
-dnf install epel-release
-dnf install certbot python3-certbot-apache
-dnf install -y tar gzip openssl cronie
-dnf install -y bind-utils  # provides dig
-```
-
-Install the ACME script:
-
-```bash
-curl https://get.acme.sh | sh
-exec bash
-acme.sh --version
-```
-
-Enable cron for automatic renewals:
-
-```bash
-systemctl enable --now crond
-```
-
-Issue the certificate:
-
-```bash
-acme.sh --set-default-ca --server letsencrypt
-acme.sh --issue -d <mydomain.com> -d '*.<mydomain.com>' --dns --yes-I-know-dns-manual-mode-enough-go-ahead-please
-```
-
-Add the TXT records provided by the script and verify:
-
-```bash
-dig +short TXT _acme-challenge.<mydomain.com> @8.8.8.8
-```
-
-Renew and install the certificate:
-
-```bash
-acme.sh --renew -d <mydomain.com> --ecc --dns --yes-I-know-dns-manual-mode-enough-go-ahead-please
-
-mkdir -p /etc/ssl/<mydomain>
-
-acme.sh --install-cert -d <mydomain.com> --ecc \
---key-file /etc/ssl/<mydomain>/site.key \
---fullchain-file /etc/ssl/<mydomain>/site.fullchain.pem \
---reloadcmd "systemctl reload httpd"
-```
-
----
-
-### Configure Apache for SSL
-
-Edit your Apache configuration:
-
-```bash
-vi /etc/httpd/conf.d/zabbix.conf
-```
-
-Add or modify your HTTPS VirtualHost:
-
-```apache
-<VirtualHost *:443>
-    ServerName zabbix.mydomain.com
-
-    DocumentRoot /usr/share/zabbix
-
-    SSLEngine on
-    SSLCertificateFile /etc/ssl/mydomain/site.fullchain.pem
-    SSLCertificateKeyFile /etc/ssl/mydomain/site.key
-
-    SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1
-    SSLCipherSuite HIGH:!aNULL:!MD5
-</VirtualHost>
-```
-
----
-
-### Redirect HTTP to HTTPS
-
-Create a redirect from port 80 to 443:
-
-```bash
-vi /etc/httpd/conf.d/redirect.conf
-```
-
-```apache
-<VirtualHost *:80>
-    ServerName zabbix.mydomain.com
-    Redirect permanent / https://zabbix.mydomain.com/
-</VirtualHost>
-```
-
----
-
-### Final Steps
-
-Open the firewall:
-
-```bash
-firewall-cmd --add-service=https --permanent
-firewall-cmd --add-service=http --permanent
-firewall-cmd --reload
-```
-
-Restart Apache:
-
-```bash
-systemctl restart httpd
-```
-
-You can now browse to:
-
-```
-https://zabbix.mydomain.com
-```
-
-and your frontend should be secured with a valid SSL certificate.
-
----
-
-!!! note
-
-    This setup provides the minimum required configuration for SSL. For a more
-    secure setup, consider hardening your TLS configuration. A good starting point
-    is: https://cipherlist.eu/
-
