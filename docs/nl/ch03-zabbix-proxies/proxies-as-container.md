@@ -8,7 +8,7 @@ description: |
 tags: [expert]
 ---
 
-# Running Proxies as containers
+# Proxies draaien als containers
 
 As discussed in the previous section, Zabbix proxies offer a lightweight and
 efficient solution for distributed monitoring. Leveraging SQLite as their
