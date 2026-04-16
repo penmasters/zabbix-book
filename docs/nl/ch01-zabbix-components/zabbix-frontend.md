@@ -95,7 +95,7 @@ standaard geen toestemming krijgen van SystemD om te schrijven naar de
 `/etc/zabbix/web` directory die nodig is voor de Zabbix frontend setup. Om dit
 in te schakelen moeten we een drop-in bestand maken om dit toe te staan:
 
-!!! info "SystemD: Allow PHP-FPM to write to /etc/zabbix/web"
+!!! info "SystemD: PHP-FPM toestaan te schrijven naar /etc/zabbix/web"
 
     ```bash
     systemctl edit php-fpm

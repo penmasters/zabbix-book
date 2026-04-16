@@ -84,8 +84,8 @@ worden onderhouden door de distributieleverancier.
 
 2. **Officiële MariaDB/PostgreSQL repositories**
 
-: These repositories provide packages directly from MariaDB/PostgreSQL and offer
-access to the latest stable releases.
+: Deze repositories bieden pakketten rechtstreeks van MariaDB/PostgreSQL en
+bieden toegang tot de nieuwste stabiele releases.
 
     **Advantages:**
 

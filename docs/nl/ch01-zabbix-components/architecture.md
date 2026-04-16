@@ -67,7 +67,7 @@ Zabbix database host.
 
 We behandelen de volgende onderwerpen:
 
-- Install our Database based on MariaDB.
+- Installeer onze database gebaseerd op MariaDB.
 - Install our Database based on PostgreSQL.
 - Installing the Zabbix server.
 - Install the frontend.
