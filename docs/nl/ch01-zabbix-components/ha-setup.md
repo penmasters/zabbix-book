@@ -50,7 +50,7 @@ en een plaats om hun respectievelijke IP-adressen toe te voegen:
 
 ---
 
-## Installing the Database
+## De database installeren
 
 Refer to the [_Zabbix components: Database_](database.md) chapter for detailed
 instructions on setting up the database. That chapter provides step-by-step
