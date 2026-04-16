@@ -110,11 +110,11 @@ Vervang `<database-host>`, `<database-naam>`, `<database-schema>`,
 waarden voor jouw setup. Dit zorgt ervoor dat de Zabbix server kan communiceren
 met je database.
 
-Ensure that there is no `#` (comment symbol) in front of the configuration
-parameters, as Zabbix will treat lines beginning with `#` as comments, ignoring
-them during execution. Additionally, double-check for duplicate configuration
-lines; if there are multiple lines with the same parameter, Zabbix will use the
-value from the last occurrence.
+Zorg ervoor dat er geen `#` (commentaarsymbool) voor de configuratieparameters
+staat, omdat Zabbix regels die beginnen met `#` als commentaar zal behandelen en
+negeren tijdens de uitvoering. Controleer bovendien dubbel op dubbele
+configuratieregels; als er meerdere regels zijn met dezelfde parameter, gebruikt
+Zabbix de waarde van de laatste keer.
 
 For our setup, the configuration will look like this:
 
