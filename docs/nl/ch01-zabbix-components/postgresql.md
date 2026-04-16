@@ -100,7 +100,7 @@ Kijk op
 [https://www.postgresql.org/download/linux/](https://www.postgresql.org/download/linux/)
 voor meer informatie.
 
-info "PostgreSQL repo toevoegen".
+!!! info "PostgreSQL repo toevoegen".
 
     Red Hat
     ```bash
