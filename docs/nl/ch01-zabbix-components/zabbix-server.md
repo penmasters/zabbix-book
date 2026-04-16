@@ -114,7 +114,7 @@ Zorg ervoor dat er geen `#` (commentaarsymbool) voor de configuratieparameters
 staat, omdat Zabbix regels die beginnen met `#` als commentaar zal behandelen en
 negeren tijdens de uitvoering. Controleer bovendien dubbel op dubbele
 configuratieregels; als er meerdere regels zijn met dezelfde parameter, gebruikt
-Zabbix de waarde van de laatste keer.
+Zabbix de waarde van de laatste regel.
 
 For our setup, the configuration will look like this:
 
