@@ -7,7 +7,7 @@ description: |
 tags: [advanced]
 ---
 
-# Active and Passive proxies
+# Actieve en passieve proxy's
 
 Whether you want to install an Active proxy or a Passive one, much of the
 installation and configuration steps are the same.
