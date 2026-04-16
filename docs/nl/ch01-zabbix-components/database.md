@@ -108,9 +108,9 @@ bieden toegang tot de nieuwste stabiele releases.
     Check the [Zabbix documentation](https://www.zabbix.com/documentation/current/en/manual/installation/requirements#required-software)
     for the latest supported versions.
 
-Before installing the database software, ensure that the server meets the
-configuration requirements and is prepared as outlined in the previous chapter:
-[_Getting started_](../ch00-getting-started/Requirements.md).
+Voordat je de databasesoftware installeert, moet je ervoor zorgen dat de server
+voldoet aan de configuratievereisten en is voorbereid zoals beschreven in het
+vorige hoofdstuk: [_Aan de slag_](../ch00-getting-started/Requirements.md).
 
 ---
 
