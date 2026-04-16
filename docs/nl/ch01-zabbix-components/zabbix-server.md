@@ -116,9 +116,9 @@ negeren tijdens de uitvoering. Controleer bovendien dubbel op dubbele
 configuratieregels; als er meerdere regels zijn met dezelfde parameter, gebruikt
 Zabbix de waarde van de laatste regel.
 
-For our setup, the configuration will look like this:
+Voor onze opstelling ziet de configuratie er als volgt uit:
 
-!!! example "Example database.conf"
+Voorbeeld "Voorbeeld database.conf".
 
     MariaDB/MySQL:
     ```ini
