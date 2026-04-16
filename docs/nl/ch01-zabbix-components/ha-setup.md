@@ -60,7 +60,7 @@ configuring the database for this setup.
 
 ---
 
-## Het Zabbix-cluster installeren
+## De Zabbix-cluster installeren
 
 Setting up a Zabbix cluster involves configuring multiple Zabbix servers to work
 together, providing high availability. While the process is similar to setting
