@@ -118,7 +118,7 @@ Zabbix de waarde van de laatste regel.
 
 Voor onze opstelling ziet de configuratie er als volgt uit:
 
-Voorbeeld "Voorbeeld database.conf".
+!!! example "Voorbeeld database.conf".
 
     MariaDB/MySQL:
     ```ini
