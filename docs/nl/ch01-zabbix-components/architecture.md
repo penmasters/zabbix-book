@@ -69,6 +69,6 @@ We behandelen de volgende onderwerpen:
 
 - Installeer onze database gebaseerd op MariaDB.
 - Install our Database based on PostgreSQL.
-- Installing the Zabbix server.
+- De Zabbix-server installeren.
 - Install the frontend.
 
