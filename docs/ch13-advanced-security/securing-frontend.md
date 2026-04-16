@@ -295,9 +295,6 @@ will enable SSL and HTTP2.
     ToDo
     ```
 
-#### Adapt your Apache Zabbix config
-
-
 #### Restart all services and allow https traffic
 
 ``` bash
@@ -305,6 +302,7 @@ systemctl restart php-fpm.service
 systemctl restart nginx
 
 firewall-cmd --add-service=https --permanent
+firewall-cmd --add-service=http --permanent
 firewall-cmd --reload
 ```
 
@@ -318,7 +316,6 @@ When we go to our url ```http://<IP or DNS>/``` we get redirected to our ```http
     - For HTTP/2 to work you need at least nginx 1.9.5 or later
 
 ## Securing the Frontend with Let's Encrypt on Nginx
-
 
 Creating a certificate with Let's Encrypt is quite easy the only thing you need
 is a domain. With a valid dns record set. Once this is in place you can with a
@@ -344,6 +341,7 @@ certbot --nginx -d yourdomain.com -d www.yourdomain.com
 ``` bash
 # add firewall config
 firewall-cmd --permanent --add-service=https
+firewall-cmd --permanent --add-service=http
 firewall-cmd --reload
 ```
 
@@ -357,7 +355,8 @@ you had not renamed your file with the domain name you have alter the config
 file yourself.
 You can take a look for an example to the next topic.
 
-### Setup Let;s encrypt without local a DNS server
+### Setup Let's encrypt without local a DNS server
+
 In case you like to test this at home it's a bit more complex if you don't have a
 DNS server at home but still possible with DNS-01 if you have bought a domain and
 are able to configure the TXT records for this domain. In this case we can use
@@ -396,6 +395,7 @@ Next step is to alter your NGINX config and open the firewall on port 443
 ``` bash
 # Configure the firewall
 firewall-cmd --add-service=https --permanent
+firewall-cmd --add-service=htts --permanent
 firewall-cmd --reload
 ```
 
@@ -435,11 +435,8 @@ systemctl restart nginx
 You can now browse to the url zabbix.mydomain.com and you should have a working
 certificate.
 
-???+ Note
+!!! note
+
     You should probably add a bit more security to your webserver this is only
     the bare minimum to make ssl working, A good place to start is probably
     https://cipherlist.eu/
-
-## Securing the Frontend with Let's Encrypt on Nginx
-
-
