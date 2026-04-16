@@ -93,9 +93,9 @@ installatie van MariaDB met behulp van je pakketbeheerder.
 The latest config can be found here:
 [https://mariadb.org/download/?t=repo-config](https://mariadb.org/download/?t=repo-config)
 
-Here's an example configuration for MariaDB 11.4 repositories:
+Hier is een voorbeeldconfiguratie voor MariaDB 11.4 repositories:
 
-!!! example "Mariadb repository configuration"
+!!! voorbeeld "Mariadb archiefconfiguratie".
 
     Red Hat
     ```ini
