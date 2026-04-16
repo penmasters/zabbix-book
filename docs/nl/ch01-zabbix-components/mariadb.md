@@ -95,7 +95,7 @@ The latest config can be found here:
 
 Hier is een voorbeeldconfiguratie voor MariaDB 11.4 repositories:
 
-!!! voorbeeld "Mariadb archiefconfiguratie".
+!!! example "Mariadb archiefconfiguratie".
 
     Red Hat
     ```ini
