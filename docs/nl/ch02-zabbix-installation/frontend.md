@@ -29,9 +29,9 @@ menu aan de linkerkant van het scherm heeft een kleine opknapbeurt gekregen.
 Laten we er eens in duiken. Als we de eerste keer inloggen in onze Zabbix setup
 met onze Admin-gebruiker zien we een pagina
 
-like this where we have our `main window` in <font color='green'>green</font>
-our `main menu` marked in <font color='red'>red</font> and our `links` marked in
-<font color='gold'>yellow</font>.
+zoals dit waar we ons `hoofdvenster` in <font color='green'>groen</font> ons
+`hoofdmenu` gemarkeerd in <font color='red'>rood</font> en onze `links`
+gemarkeerd in <font color='gold'>geel</font> hebben.
 
 ![Overview](ch02-frontend-overview.png)
 
