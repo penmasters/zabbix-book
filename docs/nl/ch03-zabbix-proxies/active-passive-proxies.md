@@ -14,12 +14,12 @@ installation and configuration steps are the same.
 
 ---
 
-## Zabbix GUI configuration
+## Zabbix GUI configuratie
 
-There are 2 things we need to do when we like to setup a Zabbix proxy and one of
-those steps is adding the proxy in the frontend of Zabbix. So from the menu
-let's select `Administration` => `Proxies` and click in the upper right corner
-on `Create proxy`.
+Er zijn 2 dingen die we moeten doen als we een Zabbix proxy willen instellen en
+een van die stappen is het toevoegen van de proxy in de frontend van Zabbix. Dus
+laten we in het menu `Administration` => `Proxies` selecteren en in de
+rechterbovenhoek op `Create proxy` klikken.
 
 ![Create proxy](ch03-add-active-proxy.png)
 
