@@ -6,16 +6,17 @@ description: |
     helping you architect a resilient and efficient Zabbix infrastructure.
 ---
 
-# Proxies and the Zabbix web service
+# Proxy's en de Zabbix webservice
 
-This chapter covers two components that are installed separately from the Zabbix
-server and extend what a Zabbix installation can do. They have little in common
-technically, but both are frequently absent from basic setups and both have a
-meaningful impact on how a monitoring environment scales and operates. The first
-is the Zabbix proxy, a distributed data collection node. The second is the
-Zabbix web service, a component required for scheduled PDF report generation.
+Dit hoofdstuk behandelt twee componenten die los van de Zabbix server worden
+geïnstalleerd en die uitbreiden wat een Zabbix installatie kan doen. Ze hebben
+technisch weinig gemeen, maar beide ontbreken vaak in basisopstellingen en beide
+hebben een significante impact op hoe een monitoring omgeving schaalt en werkt.
+De eerste is de Zabbix proxy, een gedistribueerd knooppunt voor het verzamelen
+van gegevens. De tweede is de Zabbix webservice, een component die nodig is voor
+het gepland genereren van PDF rapporten.
 
-## The Zabbix proxy
+## De Zabbix proxy
 
 A Zabbix proxy is a process that collects monitoring data on behalf of the
 Zabbix server. From the perspective of the monitored hosts, a proxy behaves
@@ -26,11 +27,12 @@ the collected data locally in its own database and forwards it to the Zabbix
 server at regular intervals, rather than writing directly to the server's
 database.
 
-This buffering behaviour is the architectural property that makes proxies
-useful. The Zabbix server only needs to maintain a single connection per proxy,
-regardless of how many hosts that proxy monitors. The server does not need to
-reach monitored hosts directly, and the proxy can continue collecting and
-storing data even if the connection to the server is temporarily unavailable.
+Dit buffergedrag is de architecturale eigenschap die proxy's nuttig maakt. De
+Zabbix server hoeft maar één verbinding per proxy te onderhouden, ongeacht
+hoeveel hosts die proxy controleert. De server hoeft de gemonitorde hosts niet
+rechtstreeks te bereiken en de proxy kan doorgaan met het verzamelen en opslaan
+van gegevens, zelfs als de verbinding met de server tijdelijk niet beschikbaar
+is.
 
 ### When to use a proxy
 
