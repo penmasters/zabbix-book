@@ -16,13 +16,13 @@ proxies_ and _Passive proxies_.
 
 ---
 
-## What is a Zabbix Proxy
+## Wat is een Zabbix Proxy
 
-A Zabbix proxy is actually a kind of lightweight Zabbix server process that
-collects monitoring data from devices on behalf of the real Zabbix server. It's
-designed to offload the server by handling data collection tasks, which is
-particularly useful in distributed environments or when monitoring remote
-locations with limited connectivity.
+Een Zabbix proxy is eigenlijk een soort lichtgewicht Zabbix serverproces dat
+monitoringgegevens van apparaten verzamelt namens de echte Zabbix server. Het is
+ontworpen om de server te ontlasten door gegevensverzamelingstaken af te
+handelen, wat vooral handig is in gedistribueerde omgevingen of bij het
+monitoren van afgelegen locaties met beperkte connectiviteit.
 
 The proxy gathers the requested performance and availability data from monitored
 devices, applications, and services, then forwards this information to the
