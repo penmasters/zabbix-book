@@ -143,8 +143,8 @@ Voor onze opstelling ziet de configuratie er als volgt uit:
 
 In this example:
 
-- DBHost refers to the host where your database is running (use localhost if
-  it's on the same machine).
+- DBHost verwijst naar de host waar je database draait (gebruik localhost als
+  het op dezelfde machine is).
 - DBName is the name of the Zabbix database.
 - DBSchema is the schema name used in PostgreSQL (only needed for PostgreSQL).
 - DBUser is the database user.
