@@ -20,16 +20,16 @@ maintainability.
 
 ---
 
-## Setting up containers
+## Containers instellen
 
 For this setup, you will need a virtual machine (VM) with Podman installed to
 deploy the Zabbix proxy container. This container will then be configured to
 communicate with your Zabbix server.
 
-Refer to the [_Preparing the system for
+Raadpleeg het hoofdstuk [_Het systeem voorbereiden voor
 Zabbix_](../ch00-getting-started/preparation.md#preparing-the-system-for-running-containers-using-podman)
-chapter for instructions on preparing your system for running containers using
-Podman.
+voor instructies over het voorbereiden van je systeem voor het draaien van
+containers met Podman.
 
 ---
 
