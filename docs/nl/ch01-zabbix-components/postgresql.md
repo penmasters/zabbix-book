@@ -173,9 +173,9 @@ voor meer informatie.
 
 ### Installing the PostgreSQL Server and Client
 
-With the PostgreSQL repositories configured, you are now ready to install the
-PostgreSQL server and client packages. This will provide the necessary
-components to run and manage your database.
+Met de PostgreSQL repositories geconfigureerd, ben je nu klaar om de PostgreSQL
+server en client pakketten te installeren. Dit levert de benodigde componenten
+om je database te draaien en te beheren.
 
 !!! info "Install PostgreSQL from official repositories"
 
