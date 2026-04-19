@@ -248,7 +248,130 @@ $SSO['IDP_CERT']                = 'conf/certs/idp.crt';
 
 ---
 
-## MS Cloud
+## Microsoft Entra ID (Azure AD)
+Integrating Microsoft Entra ID as a SAML Identity Provider for Zabbix follows the same core principles as other IdPs, but with Microsoft’s own structure and terminology layered on top. To get it to work, we will have to do some clicking around in the Microsoft Azure UI.
+
+
+### Configure Entra ID
+
+First, navigate to the the Microsoft Entra admin center. You can type the name in the search bar and it should come right up.
+
+![Microsoft Entra ID](ch02.x-ms-entra-id-app.png){ align=left }
+
+*2.x Microsoft Entra ID*
+
+Here you should be able to find an `add` button and then navigate to `Enterprise application`. This is where we are going to create the SAML integration by clicking on `Create your own application`.
+
+Choose a simple descriptive name here. My recommendation is to go with something like `Zabbix SAML`. You will have to use the option `Integrate any other application you don’t find in the gallery`.
+
+![Microsoft Entra ID - Create app](ch02.x-ms-entra-id-create-app.png){ align=left }
+
+*2.x Microsoft Entra ID - Create app*
+
+After creating the application, open it and go to `Manage` | `Single sign-on`, where you can enable `SAML`. This should present you with the form to configure all the details needed. 
+
+We can now set the `Basic SAML Configuration`
+Configure the following:
+- Identifier (Entity ID)
+https://your_zabbix_server/zabbix
+- Reply URL (ACS URL)
+https://your_zabbix_server/zabbix/index_sso.php?acs
+
+![Microsoft Entra ID - Basic configuration](ch02.x-ms-entra-id-basic.png){ align=left }
+
+*2.x Microsoft Entra ID - Basic configuration*
+
+Next, at `Attributes & Claims` we need to specify some claims. Click `Add new claim` and add at least the following:
+- `user_email` with `Source attribute` set to `user.mail`
+- `user_name` with `Source attribute` set to `user.givenname`
+- `user_lastname` with `Source attribute` set to `user.surname`
+
+![Microsoft Entra ID - Claim](ch02.x-ms-entra-id-claim.png){ align=left }
+
+*2.x Microsoft Entra ID - Claim*
+
+We also need to add click on `Add a group claim` to make sure our users groups can be sent to Zabbix. Add the following.
+
+![Microsoft Entra ID - Group claims](ch02.x-ms-entra-id-group-claims.png){ align=left }
+
+*2.x Microsoft Entra ID - Group claims*
+
+Now, let's download the `Certificate (Base64)` under `SAML Certificates` and save it as `idp.crt`. Then we upload this to the Zabbix server(s).
+
+```bash
+scp idp.crt user@zabbix_server_ip:/usr/share/zabbix/ui/conf/certs/
+```
+
+The login to the Zabbix server and set the permissions.
+
+```bash
+chmod 644 entra.cer
+```
+
+While on the Zabbix server, edit the Zabbix web server configuration at `../zabbix.conf.php`, usually found in the directory below.
+
+```bash
+/etc/zabbix/web/zabbix.conf.php
+```
+
+At the part about SAML configuration, make sure to add these two settings.
+
+```php
+$SSO['IDP_CERT']                = 'conf/certs/entra.cer';
+$SSO['SETTINGS']                = ['use_proxy_headers' => true];
+```
+
+In the last steps, we can now start the configuration of Zabbix SAML.
+
+### Zabbix SAML configuration
+
+In the Entra ID Application configuration window you should now find the URLs we need to configure Zabbix.
+
+![Microsoft Entra ID - SAML URLs](ch02.x-ms-entra-id-saml-urls.png){ align=left }
+
+*2.x Microsoft Entra ID - SAML URLs*
+
+Copy the `Login URL` as the `SSO service URL` and `SLO service URL`. The `Microsoft Entra Identifier` can go into the `IdP entity ID` field.
+
+Fill in the `Username attribute` as `user_email` and the `SP entity ID` as the name of your application, in this case `Zabbix SAML`.
+
+![Microsoft Entra ID - Zabbix basic SAML configuration](ch02.x-ms-entra-id-zabbix-basic-config.png){ align=left }
+
+*2.x Microsoft Entra ID - Zabbix basic SAML configuration*
+
+If you press `Update` now, I would recommend you to test these settings first.
+
+???+ note
+
+    Keep in mind, for SAML to work at this point, your users will have to be manually created in Zabbix under `Users` | `Users` . You will need to make sure their username matches the `Username attribute` which in our example is the user their email address.
+
+If you'd like to continue the work however and make SAML truly worthwhile, we can `Enable JIT provisioning`. To configure the setting click on `Configure JIT provisioning`. We will the fill out the `Group name attribute` as `groups`, the `User name attribute` as `user_name` and the `User last name attribute` as `user_lastname`. 
+
+To map the permissions in Azure to permissions in Zabbix, we need to set up the group mappings. At `User group mapping` click on the small `Add` button. Fill out your `SAML group pattern` with the name of your group in Azure. The select the `User groups` and `User roles` to assign permissions in Zabbix, like below.
+
+![Microsoft Entra ID - Zabbix SAML group configuration](ch02.x-ms-entra-id-zabbix-group-config.png){ align=left }
+
+*2.x Microsoft Entra ID - Zabbix SAML group configuration*
+
+The end result should look something like the image below, but in your environment you will probably add more groups. It is also possible to map certain media types to the user, for example by mapping the `user_email` attribute to an email media type.
+
+![Microsoft Entra ID - Zabbix SAML JIT configuration](ch02.x-ms-entra-id-zabbix-jit-config.png){ align=left }
+
+*2.x Microsoft Entra ID - Zabbix SAML JIT configuration*
+
+
+???+ note
+
+    With SAML and JIT provisioning enabled, Zabbix will automatically create users on their first successful login. This means you do not need to pre-create users manually.
+
+    If you want more control over user lifecycle management beyond first login, that’s where SCIM comes in. SCIM allows your Identity Provider (like Entra ID) to continuously synchronize users with Zabbix.
+
+    The key difference:
+
+    - **JIT provisioning**: creates users and checks permissions only when the user logs in
+    - **SCIM provisioning**: keeps users continuously in sync (create, update and disable, even if they never log in)
+
+    SCIM is useful in environments where you want strict control and up-to-date user states without relying on user logins. However, it is not required as JIT already covers the majority of use cases with far less setup complexity.
 
 ---
 
