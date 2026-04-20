@@ -396,7 +396,7 @@ efficiently.
 
 ---
 
-## Questions
+## Perguntas
 
 - What are the main advantages of using Podman over Docker for running
   containers on Red Hat-based systems?
@@ -411,7 +411,7 @@ efficiently.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3](https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3)
 - [https://podman.io/](https://podman.io/)

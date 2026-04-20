@@ -429,7 +429,7 @@ monitoring challenges.
 
 ---
 
-## Questions
+## Perguntas
 
 - What is the fundamental difference between an active proxy and a passive proxy
   in terms of who initiates the connection?
@@ -438,7 +438,7 @@ monitoring challenges.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy](https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy)
 

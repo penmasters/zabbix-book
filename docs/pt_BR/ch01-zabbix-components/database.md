@@ -128,7 +128,7 @@ move on to the installation of your preferred database backend.
 
 ---
 
-## Questions
+## Perguntas
 
 1. Should I choose MySQL or PostgreSQL as the database back-end? Why?
 2. Should I use the packages provided by the OS vendor, or should I install
@@ -136,7 +136,7 @@ move on to the installation of your preferred database backend.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://mariadb.org](https://mariadb.org)
 - [https://mariadb.com](https://mariadb.com)
