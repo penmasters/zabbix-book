@@ -75,7 +75,7 @@ _15.5 plugin config_
 Inside the Zabbix Agent 2 installation folder, run: zabbix_agent2.exe -t smart.disk.get
 If successful, it will return the disk information that will be sent to Zabbix.
 
-![ch15_06_communication.jpg](ch15_06_communication.jpg)
+![ch15_06_communication.png](ch15_06_communication.png)
 _15.6 communication check_
 
 ## Configure it in the Zabbix Web Interface
@@ -86,7 +86,7 @@ In Zabbix do the following steps:
 - Go to Templates
 - Add the following template:
 
-![ch15_07_host-add.jpg](ch15_07_host-add.jpg)
+![ch15_07_host-add.png](ch15_07_host-add.png)
 _15.7 Host add_
 
 Wait 1–5 minutes for Zabbix to automatically detect the disk sensors and metrics.
@@ -107,7 +107,7 @@ After collecting all the data, Zabbix will display all relevant disk health data
 
 Let's have a look at our latest data page. Monitoring -> Latest data.
 
-![ch15_08_latestdata.jpg](ch15_08_latestdata.jpg)
+![ch15_08_latestdata.png](ch15_08_latestdata.png)
 
 _15.8 latest data_
 

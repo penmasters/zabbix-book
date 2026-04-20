@@ -85,7 +85,7 @@ _2.5 Reduzir_
     url: `/zabbix.php?action=dashboard.view&kiosk=1` - activate kiosk mode or
     `/zabbix.php?action=dashboard.view&kiosk=0` - activate normal mode.
 
-???+ note
+Nota
 
     There are many other page parameters we can use. A full list can be found at
     [https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters](https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters)

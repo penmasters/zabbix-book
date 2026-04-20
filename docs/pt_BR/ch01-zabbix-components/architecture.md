@@ -7,22 +7,22 @@ description: |
 tags: [beginner]
 ---
 
-# Zabbix architecture
+# Arquitetura do Zabbix
 
-In this chapter, we will walk through the process of installing the Zabbix
-server. There are many different ways to setup a Zabbix server. We will cover
-the most common setups with MariaDB and PostgreSQL on RHEL- and SLES-based
-distro's and Ubuntu.
+Neste capítulo, examinaremos o processo de instalação do servidor Zabbix. Há
+muitas maneiras diferentes de configurar um servidor Zabbix. Abordaremos as
+configurações mais comuns com MariaDB e PostgreSQL em distribuições baseadas em
+RHEL e SLES e no Ubuntu.
 
-Before beginning the installation, it is important to understand the
-architecture of Zabbix. The Zabbix server is structured in a modular fashion,
-composed of three main components, which we will discuss in detail.
+Antes de iniciar a instalação, é importante entender a arquitetura do Zabbix. O
+Zabbix Server é estruturado de forma modular, composto por três componentes
+principais, que discutiremos em detalhes.
 
-- The Zabbix server
-- The Zabbix web server
-- The Zabbix database
+- O Zabbix Server
+- O servidor web Zabbix (Frontend)
+- O banco de dados do Zabbix
 
-!!! abstract "Creation of DB users"
+!!! resumo "Criação de usuários do banco de dados"
 
     In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
     zabbix-web user will be used for the frontend to connect to our zabbix database.
@@ -31,31 +31,31 @@ composed of three main components, which we will discuss in detail.
     needed.
 
 
-![overview](ch01-basic-installation-zabbixserver.png){ align=left }
+![visualização](ch01-basic-installation-zabbixserver.png){ align=left }
 
-_1.1 Zabbix basic split installation_
+_1.1 Instalação da divisão básica do Zabbix_
 
-All of these components can either be installed on a single server or
-distributed across three separate servers. The core of the system is the Zabbix
-server, often referred to as the "brain." This component is responsible for
-processing trigger calculations and sending alerts. The database serves as the
-storage for the Zabbix server's configuration and all the data it collects. The
-web server provides the user interface (front-end) for interacting with the
-system. It is important to note that the Zabbix API is part of the front-end
-component, not the Zabbix server itself.
+Todos esses componentes podem ser instalados em um único servidor ou
+distribuídos em três servidores separados. O núcleo do sistema é o Zabbix
+Server, geralmente chamado de "cérebro". Esse componente é responsável pelo
+processamento de cálculos de acionamento e pelo envio de alertas. O banco de
+dados serve como armazenamento da configuração do servidor Zabbix e de todos os
+dados que ele coleta. O servidor Web fornece a interface do usuário (front-end)
+para interagir com o sistema. É importante observar que a API do Zabbix faz
+parte do componente front-end, e não do próprio servidor Zabbix.
 
-These components must function together seamlessly, as illustrated in the
-diagram above. The Zabbix server must read configurations and store monitoring
-data in the database, while the front-end needs access to read and write
-configuration data. Furthermore, the front-end must be able to check the status
-of the Zabbix server and retrieve additional necessary information to ensure
-smooth operation.
+Esses componentes devem funcionar juntos de forma integrada, conforme ilustrado
+no diagrama acima. O Zabbix Server deve ler as configurações e armazenar os
+dados de monitoramento no banco de dados, enquanto o front-end precisa ter
+acesso para ler e gravar os dados de configuração. Além disso, o front-end deve
+ser capaz de verificar o status do Zabbix Server e recuperar informações
+adicionais necessárias para garantir uma operação tranquila.
 
-For our setup, we will be using two virtual machines (VMs): one VM will host
-both the Zabbix server and the Zabbix web front-end, while the second VM will
-host the Zabbix database.
+Para nossa configuração, usaremos duas máquinas virtuais (VMs): uma VM hospedará
+o Zabbix Server e o Frontend, enquanto a segunda VM hospedará o banco de dados
+do Zabbix.
 
-???+ note
+Nota
 
     It is perfectly possible to install all components on one single VM or every component
     on a separate VM.
@@ -65,10 +65,10 @@ host the Zabbix database.
     so for this reason we have chosen in this example to split the database 
     from the rest of the setup.
 
-We will cover the following topics:
+Abordaremos os seguintes tópicos:
 
-- Install our Database based on MariaDB.
-- Install our Database based on PostgreSQL.
-- Installing the Zabbix server.
-- Install the frontend.
+- Instale nosso banco de dados baseado no MariaDB.
+- Instale nosso banco de dados baseado no PostgreSQL.
+- Instalando o Zabbix Server.
+- Instale o front-end.
 
