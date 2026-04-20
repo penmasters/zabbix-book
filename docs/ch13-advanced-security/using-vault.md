@@ -242,56 +242,83 @@ Note the `token` value.
 ---
 
 ## 5. Configuring the Zabbix Server for Vault
-
-The Zabbix server daemon reads Vault configuration from `zabbix_server.conf`.
-
-### 5.1 Edit `zabbix_server.conf`
-
+ 
+The Zabbix server daemon reads Vault configuration from `zabbix_server.conf`. Before editing, it is important to understand what each parameter actually controls — they serve distinct purposes.
+ 
+### 5.1 Understanding VaultDBPath and VaultPrefix
+ 
+These two parameters are often confused but do very different things:
+ 
+**`VaultDBPath`** — used exclusively for retrieving the **Zabbix database credentials** (the `DBUser` and `DBPassword` connection parameters). It cannot be used if `DBUser` or `DBPassword` are already set in the config file. Zabbix looks for exactly two hardcoded keys at this path: `username` and `password`.
+ 
+**`VaultPrefix`** — defines the URL prefix used to construct all Vault API requests, both for `VaultDBPath` and for macro secret resolution. If not set, Zabbix uses a default that automatically appends `/data/` after the mountpoint, which is the KV v2 API path structure. For KV v1, you must set this explicitly.
+ 
+| Parameter | Purpose | Keys used |
+|-----------|---------|-----------|
+| `VaultDBPath` | Zabbix database credentials only | `username`, `password` (hardcoded) |
+| `VaultPrefix` | URL prefix for all Vault API calls | n/a — affects path construction |
+ 
+**Macro secrets** (the `vault:<path>:<key>` values on hosts and templates) are a separate mechanism and are **not** controlled by `VaultDBPath`. The `<path>` and `<key>` in a macro value are resolved using `VaultPrefix` as the base.
+ 
+### 5.2 Edit `zabbix_server.conf`
+ 
 Open `/etc/zabbix/zabbix_server.conf` and add or update the following parameters:
-
+ 
 ```ini
 ### HashiCorp Vault configuration ###
-
+ 
 # Vault server URL (must include scheme and port)
 VaultURL=https://vault.example.com:8200
-
-# KV path prefix — must match the path used when storing secrets
-# Example: for secret/zabbix/*, set this to "secret"
-VaultDBPath=secret
-
-# Authentication: Token-based
-# Uncomment ONE of the following authentication methods.
-
+ 
+# VaultPrefix — sets the full path prefix for all Vault API requests.
+#
+# For KV v1 (recommended for Zabbix):
+VaultPrefix=/v1/secret/zabbix/
+#
+# For KV v2 (note the 'data' segment required by the v2 API):
+# VaultPrefix=/v1/secret/data/zabbix/
+#
+# If VaultPrefix is not set, Zabbix defaults to KV v2 behaviour and
+# automatically appends 'data' after the mountpoint.
+ 
+# VaultDBPath — only set this if you want Vault to supply the Zabbix
+# database credentials (DBUser / DBPassword). Leave commented out if
+# DBUser and DBPassword are set directly in this file.
+# The path is relative to VaultPrefix. Zabbix reads the keys
+# 'username' and 'password' from this path.
+#
+# Example — with VaultPrefix=/v1/secret/zabbix/ this resolves to:
+#   /v1/secret/zabbix/database
+# VaultDBPath=database
+ 
+# Authentication — uncomment ONE method.
+ 
 # Option 1 — Static token
 VaultToken=<your-vault-token>
-
+ 
 # Option 2 — AppRole (recommended for production)
 # VaultRoleID=<role_id>
 # VaultSecretID=<secret_id>
 ```
-
-!!! note
-
-    The `VaultDBPath` value corresponds to the mount path of the KV secrets engine, **not** the full secret path. The macro path you define later is appended to this value.
-
-### 5.2 TLS Certificate Verification
-
+ 
+### 5.3 TLS Certificate Verification
+ 
 If Vault uses a certificate signed by an internal CA, configure the Zabbix server to trust it:
-
+ 
 ```ini
 # Path to the CA certificate (PEM format) that signed Vault's TLS certificate
 VaultTLSCAFile=/etc/zabbix/ssl/vault-ca.pem
 ```
-
+ 
 If Vault uses a publicly trusted certificate, this parameter is not required.
-
-### 5.3 Restart the Zabbix Server
-
+ 
+### 5.4 Restart the Zabbix Server
+ 
 ```bash
 sudo systemctl restart zabbix-server
 sudo journalctl -u zabbix-server -f   # verify no Vault connection errors
 ```
-
+ 
 ---
 
 ## 6. Configuring the Zabbix Frontend for Vault
