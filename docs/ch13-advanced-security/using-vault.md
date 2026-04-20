@@ -1,7 +1,5 @@
 # Secrets Management in Zabbix with HashiCorp Vault
 
----
-
 ## 1. Why Use a Secrets Manager?
 
 In most monitoring environments, credentials are inevitably spread across many places: SNMP community strings, SSH private keys, database passwords, API tokens, and WMI credentials all need to reach the monitoring system somehow. Without a dedicated secrets manager, these credentials are typically stored in one or more of the following ways:
@@ -134,170 +132,185 @@ vault login <initial-root-token>
 
 ### 4.1 Enable the KV Secrets Engine
 
-Zabbix requires the **KV version 2** (`kv-v2`) secrets engine. Enable it on the `secret/` mount point:
+Enable the KV v2 secrets engine on the `zabbix/` mount point:
 
 ```bash
-vault secrets enable -path=secret/ kv-v2
+vault secrets enable -path=zabbix kv-v2
 ```
 
-> **Note:** The mount point `secret/` is conventional but can be changed. If you use a different path, update `VaultPrefix` in `zabbix_server.conf` and `$DB['VAULT_PREFIX']` in `zabbix.conf.php` accordingly. With KV v2, all secret API calls include `/data/` in the path — this is handled automatically by Zabbix when `VaultPrefix` is set correctly.
+> **Note:** If you previously enabled a KV v1 engine on this path, disable it first. This permanently deletes all secrets stored under that mount:
+> ```bash
+> vault secrets disable zabbix/
+> vault secrets enable -path=zabbix kv-v2
+> ```
 
 ### 4.2 Store Zabbix Secrets
 
-Create secrets using `vault kv put`. With KV v2, each write creates a new version — the CLI handles this transparently:
+Create separate secrets for the Zabbix frontend and the Zabbix server database connections:
 
 ```bash
-# SNMP community string
-vault kv put secret/zabbix/snmp community="public_prod_string"
+# Credentials for the Zabbix frontend database connection
+vault kv put zabbix/frontend username=<db_user> password=<db_password>
 
-# SSH credentials for a Linux host
-vault kv put secret/zabbix/linux-ssh username="zabbix_monitor" password="S3cur3P@ss!"
-
-# Database monitoring credentials
-vault kv put secret/zabbix/mysql username="zbx_mon" password="DbP@ssw0rd"
-
-# Windows WMI credentials
-vault kv put secret/zabbix/windows username="DOMAIN\\zbx_wmi" password="W1nP@ss!"
+# Credentials for the Zabbix server database connection
+vault kv put zabbix/server username=<db_user> password=<db_password>
 ```
 
-> **Note:** KV v2 stores secrets internally under `secret/data/zabbix/<name>`. The `vault kv put` command handles this automatically — you do not need to include `/data/` in the CLI command, but you do need it in `VaultPrefix`.
-### 4.3 Create a Policy for Zabbix
+Verify the secrets were stored correctly:
 
-Create a Vault policy that grants read-only access to the Zabbix secrets path:
+```bash
+vault kv get zabbix/frontend
+vault kv get zabbix/server
+```
+
+### 4.3 Create Vault Policies
+
+Each component gets its own policy with access limited to only the path it needs.
+
+First create the directory for policy files:
+
+```bash
+sudo mkdir -p /etc/vault.d
+```
+
+**Frontend policy** — create `/etc/vault.d/zabbix-frontend-policy.hcl`:
 
 ```hcl
-# /etc/vault.d/policies/zabbix-read.hcl
-
-# KV v2 requires access to both the data and metadata paths
-path "secret/data/zabbix/*" {
-  capabilities = ["read"]
-}
-
-path "secret/metadata/zabbix/*" {
-  capabilities = ["list"]
+path "zabbix/data/frontend" {
+  capabilities = ["read", "list"]
 }
 ```
 
-Apply the policy:
+**Server policy** — create `/etc/vault.d/zabbix-server-policy.hcl`:
 
-```bash
-vault policy write zabbix-read /etc/vault.d/policies/zabbix-read.hcl
+```hcl
+path "zabbix/data/server" {
+  capabilities = ["read", "list"]
+}
 ```
 
-### 4.4 Create an AppRole for Zabbix
-
-AppRole is a Vault authentication method that avoids long-lived root tokens. However, **Zabbix does not support AppRole natively** — `zabbix_server.conf` only accepts a `VaultToken` for authentication. AppRole credentials cannot be passed directly to Zabbix.
-
-You can still benefit from AppRole by using it to obtain a scoped Vault token, which is then placed in `VaultToken`. This avoids issuing a root token and keeps permissions limited to the `zabbix-read` policy.
+Write both policies to Vault:
 
 ```bash
-# Enable AppRole auth method
-vault auth enable approle
-
-# Create the Zabbix role
-vault write auth/approle/role/zabbix \
-    token_policies="zabbix-read" \
-    token_ttl=1h \
-    token_max_ttl=4h \
-    secret_id_ttl=0   # 0 = never expires; set a value in production
-
-# Retrieve the Role ID
-vault read auth/approle/role/zabbix/role-id
-
-# Generate a Secret ID
-vault write -f auth/approle/role/zabbix/secret-id
-
-# Log in with AppRole to obtain a Vault token
-vault write auth/approle/login \
-    role_id="<role_id>" \
-    secret_id="<secret_id>"
+vault policy write zabbix-frontend /etc/vault.d/zabbix-frontend-policy.hcl
+vault policy write zabbix-server /etc/vault.d/zabbix-server-policy.hcl
 ```
 
-The `token` value returned by the login command is what you use in `VaultToken` in `zabbix_server.conf`. Note that this token will expire based on `token_ttl` — you will need to renew it or re-login periodically and update the config, followed by a `zabbix_server -R secrets_reload`.
-### 4.5 Create Tokens for Zabbix
+### 4.4 Create a Token Role with Renewal Period
 
-The Zabbix server and the Zabbix frontend each need their own Vault token. Using separate tokens limits the blast radius if one is compromised and makes it easier to rotate them independently.
+Create a token role that allows tokens to be renewed for up to 30 days (720 hours). This role covers both the frontend and server policies:
 
 ```bash
-# Token for the Zabbix server daemon
-vault token create \
-    -policy=zabbix-read \
-    -ttl=0 \
-    -display-name="zabbix-server"
+vault write auth/token/roles/zabbix \
+    allowed_policies="zabbix-frontend,zabbix-server" \
+    period="720h"
+```
 
+### 4.5 Create Tokens for Frontend and Server
+
+Create a separate token for each component using the role created in section 4.4:
+
+```bash
 # Token for the Zabbix frontend
-vault token create \
-    -policy=zabbix-read \
-    -ttl=0 \
-    -display-name="zabbix-frontend"
+vault token create -policy=zabbix-frontend -role=zabbix
+
+# Token for the Zabbix server
+vault token create -policy=zabbix-server -role=zabbix
 ```
 
-Note both `token` values — you will use the server token in `zabbix_server.conf` and the frontend token in `zabbix.conf.php`.
+Note the `token` value from each output — you will use them in the configuration files in sections 5 and 6.
 
-> Setting `-ttl=0` creates a non-expiring token. In production, consider setting a TTL and implementing a token renewal process.
+Verify each token can access its respective secret:
+
+```bash
+# Test the frontend token
+VAULT_TOKEN=<frontend-token> vault kv get zabbix/frontend
+
+# Test the server token
+VAULT_TOKEN=<server-token> vault kv get zabbix/server
+```
+
+### 4.6 Open the Firewall
+
+Allow the Zabbix server and frontend host to reach Vault on port 8200:
+
+```bash
+firewall-cmd --permanent --zone=internal --add-port=8200/tcp
+firewall-cmd --reload
+```
+
+### 4.7 Allow SELinux Network Connections
+
+If SELinux is enforcing, allow the web server to make outbound network connections so the frontend can reach Vault:
+
+```bash
+setsebool -P httpd_can_network_connect on
+```
+
+### 4.8 Verify Connectivity with curl
+
+Before configuring Zabbix, confirm that the Vault API is reachable and the tokens work as expected:
+
+```bash
+# Verify frontend token
+curl -H "X-Vault-Token: <frontend-token>" \
+     https://vault.example.com:8200/v1/zabbix/data/frontend
+
+# Verify server token
+curl -H "X-Vault-Token: <server-token>" \
+     https://vault.example.com:8200/v1/zabbix/data/server
+```
+
+A successful response returns a JSON object containing the `username` and `password` fields under `data.data`.
 
 ---
 
 ## 5. Configuring the Zabbix Server for Vault
 
-The Zabbix server daemon reads Vault configuration from `zabbix_server.conf`. Before editing, it is important to understand what each parameter actually controls — they serve distinct purposes.
-
 ### 5.1 Understanding VaultDBPath and VaultPrefix
 
-These two parameters are often confused but do very different things:
+Two parameters in `zabbix_server.conf` control how the server interacts with Vault:
 
-**`VaultDBPath`** — used exclusively for retrieving the **Zabbix database credentials** (the `DBUser` and `DBPassword` connection parameters). It cannot be used if `DBUser` or `DBPassword` are already set in the config file. Zabbix looks for exactly two hardcoded keys at this path: `username` and `password`.
+**`VaultDBPath`** — used exclusively for retrieving the **Zabbix database credentials** (`DBUser` and `DBPassword`). Zabbix reads exactly two hardcoded keys from this path: `username` and `password`. It cannot be used together with `DBUser` or `DBPassword` in the same config file.
 
-**`VaultPrefix`** — defines the URL prefix used to construct all Vault API requests, both for `VaultDBPath` and for macro secret resolution. Since we use KV v2, the prefix must include `/data/` in the path. If `VaultPrefix` is not set, Zabbix automatically appends `/data/` after the mountpoint — which is correct for KV v2 on the default `secret/` mount point.
+**`VaultPrefix`** — the URL prefix used for all Vault API requests. With KV v2 and the `zabbix/` mount point the correct prefix is `/v1/zabbix/data/`. If left unset, Zabbix appends `/data/` automatically after the mount point — but setting it explicitly avoids ambiguity.
 
 | Parameter | Purpose | Keys used |
 |-----------|---------|-----------|
 | `VaultDBPath` | Zabbix database credentials only | `username`, `password` (hardcoded) |
 | `VaultPrefix` | URL prefix for all Vault API calls | n/a — affects path construction |
 
-**Macro secrets** (the `vault:<path>:<key>` values on hosts and templates) are a separate mechanism and are **not** controlled by `VaultDBPath`. The `<path>` and `<key>` in a macro value are resolved using `VaultPrefix` as the base.
-
 ### 5.2 Edit `zabbix_server.conf`
 
-Open `/etc/zabbix/zabbix_server.conf` and add or update the following parameters:
+Open `/etc/zabbix/zabbix_server.conf`. Remove the existing `DBUser` and `DBPassword` parameters and add the Vault configuration:
 
 ```ini
+# Remove these lines:
+# DBUser=<db_user>
+# DBPassword=<db_password>
+
 ### HashiCorp Vault configuration ###
 
-# Vault server URL (must include scheme and port)
+# Vault server URL
 VaultURL=https://vault.example.com:8200
 
-# VaultPrefix — sets the full path prefix for all Vault API requests.
-# KV v2 requires '/data/' in the path. The example below uses the
-# default 'secret/' mount point enabled in section 4.1.
-VaultPrefix=/v1/secret/data/zabbix/
-#
-# If VaultPrefix is not set, Zabbix appends 'data' automatically for
-# the default mount point — but setting it explicitly is recommended
-# to avoid ambiguity.
+# Path to the secret containing the Zabbix database credentials.
+# Zabbix reads the 'username' and 'password' keys from this path.
+# With VaultPrefix=/v1/zabbix/data/ this resolves to:
+#   /v1/zabbix/data/server
+VaultDBPath=zabbix/server
 
-# VaultDBPath — only set this if you want Vault to supply the Zabbix
-# database credentials (DBUser / DBPassword). Leave commented out if
-# DBUser and DBPassword are set directly in this file.
-# The path is relative to VaultPrefix. Zabbix reads the keys
-# 'username' and 'password' from this path.
-#
-# Example — with VaultPrefix=/v1/secret/data/zabbix/ this resolves to:
-#   /v1/secret/data/zabbix/database
-# VaultDBPath=database
-
-# Authentication
-# Zabbix only supports token-based authentication via VaultToken.
-# Use the Zabbix server token created in section 4.5.
+# Vault token for the Zabbix server — created in section 4.5
 VaultToken=<zabbix-server token from section 4.5>
 ```
+
+> **Note:** `VaultDBPath` here is set to `zabbix/server`. Combined with the default prefix behaviour this resolves to `/v1/zabbix/data/server` — the path where the server credentials were stored in section 4.2.
 
 ### 5.3 TLS Certificate Verification
 
 If Vault uses a certificate signed by an internal CA, configure the Zabbix server to trust it:
 
 ```ini
-# Path to the CA certificate (PEM format) that signed Vault's TLS certificate
 VaultTLSCAFile=/etc/zabbix/ssl/vault-ca.pem
 ```
 
@@ -305,56 +318,52 @@ If Vault uses a publicly trusted certificate, this parameter is not required.
 
 ### 5.4 Restart the Zabbix Server
 
-At this point `VaultDBPath` is left commented out, meaning the Zabbix database connection still uses `DBUser` and `DBPassword` set directly in `zabbix_server.conf`. A standard restart is sufficient:
-
 ```bash
 sudo systemctl restart zabbix-server
+sudo journalctl -u zabbix-server -f
 ```
 
-Vault connectivity will be verified end to end in section 9 once macros are configured.
+Check the log for a successful start. If the Vault token or path is incorrect, the server will log an error and fail to start.
 
 ---
 
 ## 6. Configuring the Zabbix Frontend for Vault
 
-The Zabbix frontend also needs Vault access so that administrators can resolve and view macro values from the UI.
-
 ### 6.1 Edit `zabbix.conf.php`
 
-Open `/etc/zabbix/web/zabbix.conf.php` and add the Vault configuration:
+Open `/etc/zabbix/web/zabbix.conf.php`. Remove the existing `$DB['USER']` and `$DB['PASSWORD']` parameters and add the Vault configuration:
 
 ```php
-// HashiCorp Vault
-$DB['VAULT_URL'] = 'https://vault.example.com:8200';
+// Remove these lines:
+// $DB['USER'] = '<db_user>';
+// $DB['PASSWORD'] = '<db_password>';
 
-// VaultPrefix for KV v2 — must include /data/ in the path
-$DB['VAULT_PREFIX'] = '/v1/secret/data/zabbix/';
-
-// VAULT_DB_PATH — only set if you want Vault to supply the Zabbix
-// database credentials. Leave commented out if DBUser/DBPassword
-// are set directly in zabbix.conf.php.
-// $DB['VAULT_DB_PATH'] = 'database';
-
-// Authentication — use the Zabbix frontend token from section 4.5
+// Vault configuration
+$DB['VAULT']       = 'HashiCorp';
+$DB['VAULT_URL']   = 'https://vault.example.com:8200';
+$DB['VAULT_DB_PATH'] = 'zabbix/frontend';
 $DB['VAULT_TOKEN'] = '<zabbix-frontend token from section 4.5>';
 
 // TLS — only required if using a custom CA
 // $DB['VAULT_CACERT'] = '/etc/zabbix/ssl/vault-ca.pem';
 ```
 
-> **Security note:** The `zabbix.conf.php` file contains credentials. Ensure it is owned by the web server user and has permissions set to `640` at most:
-> ```bash
-> sudo chown apache:apache /etc/zabbix/web/zabbix.conf.php
-> sudo chmod 640 /etc/zabbix/web/zabbix.conf.php
-> ```
+> **Note:** `$DB['VAULT_DB_PATH']` is set to `zabbix/frontend`. Zabbix resolves this to `/v1/zabbix/data/frontend` and reads the `username` and `password` keys stored in section 4.2.
 
-### 6.2 Restart the Web Server
+### 6.2 Secure the Configuration File
+
+The `zabbix.conf.php` file now contains a Vault token. Ensure it is only readable by the web server process:
 
 ```bash
-sudo systemctl restart httpd   # or nginx + php-fpm
+sudo chown apache:apache /etc/zabbix/web/zabbix.conf.php
+sudo chmod 640 /etc/zabbix/web/zabbix.conf.php
 ```
 
----
+### 6.3 Restart the Web Server
+
+```bash
+sudo systemctl restart httpd
+```
 
 ## 7. Using Vault Secrets as Macros in Zabbix
 
