@@ -96,7 +96,7 @@ These nested group names are **just names** Zabbix does not require that parent
 folders (e.g., `Europe`) physically exist as separate groups unless you
 explicitly create them.
 
-???+ warning
+???+ aviso
 
     - You cannot escape the `/` character.
     - Group names **cannot** contain leading/trailing slashes or multiple consecutive
@@ -136,7 +136,7 @@ This is especially useful for user groups. For example:
     You can even try adding **emojis** to group names for a fun visual touch! 🎉
     For example: `🌍 Europe/🇧🇪 Belgium` or `📦 Containers/Docker`.
 
-## Conclusion
+## Conclusão
 
 Host groups are a key organizational tool in Zabbix. With the introduction of
 **template groups**, clearer group separation, and support for **nested
