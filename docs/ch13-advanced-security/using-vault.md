@@ -79,7 +79,16 @@ api_addr     = "https://vault.example.com:8200"
 cluster_addr = "https://vault.example.com:8201"
 ```
 
-> **Note:** For a development or lab environment, replace the TLS listener block with `tls_disable = 1` and use `http://` addresses. Never disable TLS in production.
+!!! note
+
+    For a development or lab environment, set `tls_disable = 1` inside the `listener "tcp"` block and use `http://` addresses. Never disable TLS in production.
+
+```hcl
+listener "tcp" {
+  address     = "0.0.0.0:8200"
+  tls_disable = 1
+}
+```
 
 ### 3.3 Create the Data Directory and Set Permissions
 
@@ -131,7 +140,9 @@ Zabbix requires the **KV version 1** secrets engine. Enable it on a path of your
 vault secrets enable -path=secret kv
 ```
 
-> **Important:** Use KV v1, not KV v2. Zabbix does not support the v2 API metadata wrapper.
+!!! important
+
+    Use KV v1, not KV v2. Zabbix does not support the v2 API metadata wrapper.
 
 ### 4.2 Store Zabbix Secrets
 
@@ -190,7 +201,9 @@ vault read auth/approle/role/zabbix/role-id
 vault write -f auth/approle/role/zabbix/secret-id
 ```
 
-Note the `role_id` and `secret_id` values — you will need both to configure Zabbix.
+!!! note
+
+    the `role_id` and `secret_id` values — you will need both to configure Zabbix.
 
 ### 4.5 Alternatively: Create a Static Token
 
@@ -236,7 +249,9 @@ VaultToken=<your-vault-token>
 # VaultSecretID=<secret_id>
 ```
 
-> The `VaultDBPath` value corresponds to the mount path of the KV secrets engine, **not** the full secret path. The macro path you define later is appended to this value.
+!!! note
+
+    The `VaultDBPath` value corresponds to the mount path of the KV secrets engine, **not** the full secret path. The macro path you define later is appended to this value.
 
 ### 5.2 TLS Certificate Verification
 
