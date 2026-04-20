@@ -74,7 +74,7 @@ a scoped token which is then passed to Zabbix.
 This section covers a minimal production-ready Vault installation on Red Hat
 Enterprise Linux 8/9/10 (or compatible distributions such as AlmaLinux, Rocky Linux).
 
-### 3.1 Add the HashiCorp Repository
+### Add the HashiCorp Repository
 
 ```bash
 sudo dnf install -y dnf-plugins-core
@@ -418,7 +418,8 @@ Two parameters in `zabbix_server.conf` control how the server interacts with Vau
 
 ### Edit `zabbix_server.conf`
 
-Open `/etc/zabbix/zabbix_server.conf`. Remove the existing `DBUser` and `DBPassword` parameters and add the Vault configuration:
+Open `/etc/zabbix/zabbix_server.conf`. Remove the existing `DBUser` and `DBPassword`
+parameters and add the Vault configuration:
 
 ```ini
 # Remove these lines:
@@ -514,9 +515,13 @@ sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
 
 ## Using Vault Secrets as Macros in Zabbix
 
-Once both the server and frontend are configured, you can reference Vault secrets in Zabbix macros. In our current setup, Vault holds the database credentials for the frontend (`zabbix/frontend`) and the server (`zabbix/server`). These are used automatically by Zabbix at startup and are not referenced as macros.
+Once both the server and frontend are configured, you can reference Vault secrets
+in Zabbix macros. In our current setup, Vault holds the database credentials for
+the frontend (`zabbix/frontend`) and the server (`zabbix/server`). These are used
+automatically by Zabbix at startup and are not referenced as macros.
 
-To use Vault for additional secrets — such as SNMP community strings, SSH passwords, or API tokens — you need to:
+To use Vault for additional secrets — such as SNMP community strings, SSH passwords,
+or API tokens — you need to:
 
 1. Store the secret in Vault under the `zabbix/` mount point.
 2. Create a policy granting the Zabbix server token read access to that path.
@@ -524,7 +529,8 @@ To use Vault for additional secrets — such as SNMP community strings, SSH pass
 
 ### Macro Syntax
 
-When the macro type is set to **Vault secret**, the value field uses the following format:
+When the macro type is set to **Vault secret**, the value field uses the following
+format:
 
 ```
 <path>:<key>
@@ -535,15 +541,22 @@ When the macro type is set to **Vault secret**, the value field uses the followi
 | `<path>` | Full path to the secret including the mount point, e.g., `zabbix/snmp`. |
 | `<key>` | The field name within the secret, e.g., `community`. |
 
-> **Note:** The `vault:` prefix is **not** used when the macro type is set to *Vault secret* — Zabbix already knows to look in Vault based on the type.
+!!! info
+
+    The `vault:` prefix is **not** used when the macro type is set to *Vault secret*,
+    Zabbix already knows to look in Vault based on the type.
 
 ### Example: SNMP Community String
 
-This example walks through the full process of adding a monitoring secret to Vault and using it as a Zabbix macro. Because the server policy already covers `zabbix/data/monitoring/*`, no policy changes are needed — just add the secret and create the macro.
+This example walks through the full process of adding a monitoring secret to Vault
+and using it as a Zabbix macro. Because the server policy already covers
+`zabbix/data/monitoring/*`, no policy changes are needed, just add the secret and
+create the macro.
 
 **Step 1 — Store the secret in Vault:**
 
-Writing secrets requires the root token. Switch to root, write the secret, then switch back:
+Writing secrets requires the root token. Switch to root, write the secret, then
+switch back:
 
 ```bash
 # Switch to root token to write the secret
@@ -560,7 +573,10 @@ vault login <zabbix-server-token>
 vault kv get zabbix/monitoring/snmp
 ```
 
-> **Note:** The Zabbix server reads monitoring secrets — not the frontend. The frontend token only has access to `zabbix/frontend`.
+!!! note
+
+    The Zabbix server reads monitoring secrets, not the frontend. The frontend
+    token only has access to `zabbix/frontend`.
 
 **Step 2 — Create the macro in Zabbix:**
 
@@ -579,19 +595,25 @@ Navigate to **Administration → Macros** and create:
 zabbix_server -R secrets_reload
 ```
 
-Check the log to confirm the secret was retrieved successfully. Any new secret added under `zabbix/monitoring/` follows the same process — no policy updates required.
+Check the log to confirm the secret was retrieved successfully. Any new secret
+added under `zabbix/monitoring/` follows the same process, no policy updates required.
+
 ### How Resolution Works
 
 When the Zabbix server needs to use a macro value of type *Vault secret*:
 
 1. It reads the macro value, e.g. `zabbix/monitoring/snmp:community`.
 2. It splits the value on `:` — the left part is the path, the right part is the key.
-3. It constructs the Vault API URL: `{VaultURL}/v1/{path}/data` → `https://vault.example.com:8200/v1/zabbix/data/monitoring/snmp`.
+3. It constructs the Vault API URL: `{VaultURL}/v1/{path}/data` → `https://vault_url:8200/v1/zabbix/data/monitoring/snmp`.
 4. It authenticates using the configured `VaultToken`.
 5. It retrieves the JSON response and extracts the value of `community` using the `zabbix-server` token.
 6. The resolved plaintext value is used in the check — it is **never stored** in the Zabbix database.
 
-> **Important:** The macro value stored in the Zabbix database is always the `<path>:<key>` reference string, not the actual secret. Database exports, backups, and UI views never expose the real credential.
+!!! info
+
+    The macro value stored in the Zabbix database is always the `<path>:<key>`
+    reference string, not the actual secret. Database exports, backups, and UI
+    views never expose the real credential.
 
 ---
 
@@ -615,7 +637,9 @@ $DB['VAULT_CACERT'] = '/etc/zabbix/ssl/vault-ca.pem';
 
 ### 8.2 Client Certificate Authentication (mTLS)
 
-Zabbix does not currently support client certificates for Vault authentication natively. Use **AppRole** authentication as the recommended alternative for strong mutual authentication.
+Zabbix does not currently support client certificates for Vault authentication
+natively. Use **AppRole** authentication as the recommended alternative for strong
+mutual authentication.
 
 ### Verifying TLS Connectivity
 
@@ -642,17 +666,22 @@ A successful response looks like:
 
 ##  Verifying the Integration
 
-Once Vault and Zabbix are configured, use the steps below to confirm that the integration is working end to end — from Vault connectivity through to macro resolution in an actual check.
+Once Vault and Zabbix are configured, use the steps below to confirm that the
+integration is working end to end, from Vault connectivity through to macro resolution
+in an actual check.
 
 ### Reload Secrets from Vault
 
-The Zabbix server caches secret values after startup. When you add or update a secret in Vault, you can force the server to reload all secrets without a full restart using the runtime control option:
+The Zabbix server caches secret values after startup. When you add or update a
+secret in Vault, you can force the server to reload all secrets without a full
+restart using the runtime control option:
 
 ```bash
 zabbix_server -R secrets_reload
 ```
 
-This sends a signal to the running Zabbix server process instructing it to re-fetch all macros that reference Vault. Use this command whenever you:
+This sends a signal to the running Zabbix server process instructing it to re-fetch
+all macros that reference Vault. Use this command whenever you:
 
 - Add a new *Vault secret* macro to a host, template, or globally.
 - Update a secret value in Vault.
@@ -660,7 +689,8 @@ This sends a signal to the running Zabbix server process instructing it to re-fe
 
 ### Verify Connectivity in the Server Log
 
-Immediately after running `secrets_reload`, tail the Zabbix server log and look for confirmation or errors:
+Immediately after running `secrets_reload`, tail the Zabbix server log and look
+for confirmation or errors:
 
 ```bash
 tail -f /var/log/zabbix/zabbix_server.log | grep -i vault
@@ -675,18 +705,23 @@ zabbix_server [12345]: DEBUG: successfully retrieved secret: zabbix/monitoring/s
 zabbix_server [12345]: DEBUG: vault secrets reload completed
 ```
 
-If you see `failed to retrieve secret` or `403 Forbidden`, refer to the Troubleshooting section.
+If you see `failed to retrieve secret` or `403 Forbidden`, refer to the Troubleshooting
+section.
 
 ### Verify Macro Resolution in the Frontend
 
-The Zabbix frontend independently fetches secrets from Vault for display purposes. To verify it is working:
+The Zabbix frontend independently fetches secrets from Vault for display purposes.
+To verify it is working:
 
-1. Navigate to **Administration → Macros** (for a global macro) or open a host and go to the **Macros** tab.
+1. Navigate to **Administration → Macros** (for a global macro) or open a host
+   and go to the **Macros** tab.
 2. Find a macro of type *Vault secret*, for example `{$SNMP_COMMUNITY}`.
 3. Click the **eye icon** next to the macro value.
-4. If the frontend can reach Vault and the token/AppRole is valid, the resolved plaintext value is shown momentarily.
+4. If the frontend can reach Vault and the token/AppRole is valid, the resolved
+   plaintext value is shown momentarily.
 
-If the eye icon shows an error or the value does not resolve, check the web server error log:
+If the eye icon shows an error or the value does not resolve, check the web server
+error log:
 
 ```bash
 # Apache
@@ -698,15 +733,18 @@ sudo tail -f /var/log/nginx/error.log | grep -i vault
 
 ### Verify a Secret Reaches an Actual Check
 
-The most definitive test is confirming a Vault-backed macro is used successfully in a real monitoring item.
+The most definitive test is confirming a Vault-backed macro is used successfully
+in a real monitoring item.
 
 **Example: test SNMP connectivity using the Vault-backed community string**
 
 1. Create a simple SNMP item on a host (e.g., `sysDescr` OID `1.3.6.1.2.1.1.1.0`).
 2. Set the **SNMP community** field to `{$SNMP_COMMUNITY}`, which resolves from `zabbix/snmp:community`.
 3. Navigate to **Monitoring → Latest data** and filter for the host.
-4. If the item returns a value, the secret was successfully retrieved from Vault and used in the check.
-5. If the item shows an authentication error specifically, the macro likely did not resolve — trigger a `secrets_reload` and recheck the log.
+4. If the item returns a value, the secret was successfully retrieved from Vault
+   and used in the check.
+5. If the item shows an authentication error specifically, the macro likely did
+   not resolve — trigger a `secrets_reload` and recheck the log.
 
 **Example: verify using the Get Value button**
 
@@ -718,7 +756,8 @@ For quicker feedback without waiting for the poller:
 
 ### Confirm No Plaintext in the Zabbix Database
 
-To confirm that Vault-backed macro values are stored as references and not as plaintext secrets, query the database directly:
+To confirm that Vault-backed macro values are stored as references and not as
+plaintext secrets, query the database directly:
 
 ```sql
 -- Check global macros
@@ -736,7 +775,8 @@ zabbix=# SELECT * from globalmacro;
              3 | {$SNMP_COMMUNITY1} | test                  | test plain                       |    0
 ```
 
-All rows should show the `<path>:<key>` reference string, never the resolved secret value. This confirms that the plaintext credential never touches the Zabbix database.
+All rows should show the `<path>:<key>` reference string, never the resolved
+secret value. This confirms that the plaintext credential never touches the Zabbix database.
 
 ---
 
@@ -758,7 +798,7 @@ Common errors and resolutions:
 | `403 Forbidden` | Token/AppRole lacks permission | Review and reapply the Vault policy |
 | `connection refused` | Vault is sealed or not running | Unseal Vault: `vault operator unseal` |
 | `invalid path` | `VaultDBPath` or secret path is incorrect | Verify with `vault kv list zabbix/` |
-| `macro not resolved` | Wrong path, key name, or macro type not set to *Vault secret* | Check macro value syntax: `<path>:<key>` and verify macro type |
+| `macro not resolved` | Wrong path, key name, or macro type not set to *Vaultsecret* | Check macro value syntax: `<path>:<key>` and verify macro type |
 
 ### Verify a Secret is Accessible
 
@@ -786,3 +826,8 @@ vault audit enable file file_path=/var/log/vault/audit.log
 sudo tail -f /var/log/vault/audit.log | jq '.request.path'
 ```
 
+## Conclusion
+
+## Questions
+
+## Useful URLs
