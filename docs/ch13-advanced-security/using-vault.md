@@ -254,11 +254,11 @@ Before configuring Zabbix, confirm that the Vault API is reachable and the token
 ```bash
 # Verify frontend token
 curl -H "X-Vault-Token: <frontend-token>" \
-     https://vault.example.com:8200/v1/zabbix/data/frontend
+     https://vault-url:8200/v1/zabbix/data/frontend
 
 # Verify server token
 curl -H "X-Vault-Token: <server-token>" \
-     https://vault.example.com:8200/v1/zabbix/data/server
+     https://vault-url:8200/v1/zabbix/data/server
 ```
 
 A successful response returns a JSON object containing the `username` and `password` fields under `data.data`.
