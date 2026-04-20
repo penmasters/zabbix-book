@@ -160,7 +160,7 @@ Zabbix requires the **KV version 1** secrets engine. Enable it on a path of your
 vault secrets enable -path=secret kv
 ```
 
-!!! important
+!!! info
 
     Use KV v1, not KV v2. Zabbix does not support the v2 API metadata wrapper.
 
@@ -187,6 +187,7 @@ vault kv put secret/zabbix/windows username="DOMAIN\\zbx_wmi" password="W1nP@ss!
 Create a Vault policy that grants read-only access to the Zabbix secrets path:
 
 ```hcl
+mkdir /etc/vault.d/policies
 # /etc/vault.d/policies/zabbix-read.hcl
 path "secret/zabbix/*" {
   capabilities = ["read", "list"]
