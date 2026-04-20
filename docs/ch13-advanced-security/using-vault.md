@@ -128,6 +128,26 @@ vault operator unseal   # repeat 3 times with different unseal keys
 vault login <initial-root-token>
 ```
 
+Example output:
+
+```bash
+# vault login <root token>
+
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                  Value
+---                  -----
+token                <root token>
+token_accessor       EuHT6HFt9QLZ6v8skiqSGyEa
+token_duration       ∞
+token_renewable      false
+token_policies       ["root"]
+identity_policies    []
+policies             ["root"]
+```
+
 ---
 
 ## 4. Configuring Vault for Zabbix
