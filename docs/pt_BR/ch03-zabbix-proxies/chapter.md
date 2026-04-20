@@ -6,116 +6,122 @@ description: |
     helping you architect a resilient and efficient Zabbix infrastructure.
 ---
 
-# Proxies and the Zabbix web service
+# Proxies e o serviço da Web do Zabbix
 
-This chapter covers two components that are installed separately from the Zabbix
-server and extend what a Zabbix installation can do. They have little in common
-technically, but both are frequently absent from basic setups and both have a
-meaningful impact on how a monitoring environment scales and operates. The first
-is the Zabbix proxy, a distributed data collection node. The second is the
-Zabbix web service, a component required for scheduled PDF report generation.
+Este capítulo aborda dois componentes que são instalados separadamente do
+servidor Zabbix e ampliam o que uma instalação do Zabbix pode fazer.
+Tecnicamente, eles têm pouco em comum, mas ambos estão frequentemente ausentes
+das configurações básicas e ambos têm um impacto significativo na forma como um
+ambiente de monitoramento é dimensionado e opera. O primeiro é o Zabbix proxy,
+um nó de coleta de dados distribuído. O segundo é o serviço Web do Zabbix, um
+componente necessário para a geração programada de relatórios em PDF.
 
-## The Zabbix proxy
+## O proxy Zabbix
 
-A Zabbix proxy is a process that collects monitoring data on behalf of the
-Zabbix server. From the perspective of the monitored hosts, a proxy behaves
-identically to the server: it accepts passive agent connections, initiates
-active checks, runs SNMP queries, executes external checks, and processes IPMI.
-The difference is in what happens to the data after collection. A proxy buffers
-the collected data locally in its own database and forwards it to the Zabbix
-server at regular intervals, rather than writing directly to the server's
-database.
+Um proxy Zabbix é um processo que coleta dados de monitoramento em nome do
+servidor Zabbix. Do ponto de vista dos hosts monitorados, um proxy se comporta
+de forma idêntica ao servidor: ele aceita conexões de agentes passivos, inicia
+verificações ativas, executa consultas SNMP, executa verificações externas e
+processa o IPMI. A diferença está no que acontece com os dados após a coleta. Um
+proxy armazena os dados coletados localmente em seu próprio banco de dados e os
+encaminha para o servidor Zabbix em intervalos regulares, em vez de gravar
+diretamente no banco de dados do servidor.
 
-This buffering behaviour is the architectural property that makes proxies
-useful. The Zabbix server only needs to maintain a single connection per proxy,
-regardless of how many hosts that proxy monitors. The server does not need to
-reach monitored hosts directly, and the proxy can continue collecting and
-storing data even if the connection to the server is temporarily unavailable.
+Esse comportamento de buffer é a propriedade arquitetônica que torna os proxies
+úteis. O servidor Zabbix só precisa manter uma única conexão por proxy,
+independentemente do número de hosts monitorados por esse proxy. O servidor não
+precisa acessar diretamente os hosts monitorados, e o proxy pode continuar
+coletando e armazenando dados mesmo que a conexão com o servidor esteja
+temporariamente indisponível.
 
-### When to use a proxy
+### Quando usar um proxy
 
-Proxies are the correct solution in three recurring situations.
+Os proxies são a solução correta em três situações recorrentes.
 
-The first is remote locations. When monitored hosts are in a branch office, a
-data centre in another region, or a cloud environment with restricted network
-access, opening firewall rules from the Zabbix server to every individual host
-is impractical. A proxy placed in that location needs only a single outbound or
-inbound connection to the server, and handles all local data collection
-internally.
+A primeira é a localização remota. Quando os hosts monitorados estão em uma
+filial, em um data center em outra região ou em um ambiente de nuvem com acesso
+restrito à rede, não é prático abrir regras de firewall do servidor Zabbix para
+cada host individual. Um proxy colocado nesse local precisa apenas de uma única
+conexão de entrada ou saída com o servidor e lida internamente com toda a coleta
+de dados locais.
 
-The second is network segmentation. In environments where monitored systems are
-in isolated network segments — a production OT network, a PCI-scoped
-environment, a DMZ — a proxy can be placed inside the segment with access to the
-monitored hosts while the Zabbix server remains outside. The proxy bridges the
-collection boundary without requiring the server to have direct access to
-sensitive network zones.
+A segunda é a segmentação da rede. Em ambientes em que os sistemas monitorados
+estão em segmentos de rede isolados - uma rede de produção de OT, um ambiente
+com escopo de PCI, uma DMZ - um proxy pode ser colocado dentro do segmento com
+acesso aos hosts monitorados, enquanto o servidor Zabbix permanece do lado de
+fora. O proxy faz a ponte entre os limites da coleta sem exigir que o servidor
+tenha acesso direto às zonas sensíveis da rede.
 
-The third is load distribution. A single Zabbix server has limits on how many
-items it can collect per second before performance degrades. Distributing
-collection across multiple proxies offloads the polling work from the server and
-allows the installation to scale horizontally. The server focuses on processing,
-storing, and presenting data while the proxies handle the collection.
+A terceira é a distribuição de carga. Um único servidor Zabbix tem limites de
+quantos itens ele pode coletar por segundo antes que o desempenho diminua. A
+distribuição da coleta em vários proxies descarrega o trabalho de sondagem do
+servidor e permite que a instalação seja dimensionada horizontalmente. O
+servidor se concentra no processamento, no armazenamento e na apresentação dos
+dados, enquanto os proxies cuidam da coleta.
 
-### Active and passive proxies
+### Proxies ativos e passivos
 
-Zabbix proxies operate in one of two modes, which describe the direction of the
-connection between the proxy and the server.
+Os proxies do Zabbix operam em um dos dois modos, que descrevem a direção da
+conexão entre o proxy e o servidor.
 
-In active mode the proxy initiates the connection to the Zabbix server. The
-proxy contacts the server to retrieve its configuration and to submit collected
-data. This mode is preferred in most deployments because it requires only
-outbound connectivity from the proxy, which is easier to permit through
-firewalls than inbound connections to the server.
+No modo ativo, o proxy inicia a conexão com o servidor Zabbix. O proxy entra em
+contato com o servidor para recuperar sua configuração e enviar os dados
+coletados. Esse modo é o preferido na maioria das implantações porque requer
+apenas conectividade de saída do proxy, o que é mais fácil de permitir através
+de firewalls do que conexões de entrada com o servidor.
 
-In passive mode the server initiates the connection to the proxy. The server
-contacts the proxy to request configuration synchronisation and data submission.
-This mode is less common and requires the Zabbix server to be able to reach the
-proxy directly.
+No modo passivo, o servidor inicia a conexão com o proxy. O servidor entra em
+contato com o proxy para solicitar a sincronização da configuração e o envio de
+dados. Esse modo é menos comum e requer que o servidor Zabbix consiga acessar o
+proxy diretamente.
 
-### Data buffering and resilience
+### Armazenamento de dados em buffer e resiliência
 
-Because a proxy stores collected data in its own local database before
-forwarding it to the server, monitoring continues uninterrupted during
-connectivity disruptions. When the connection to the server is restored, the
-proxy forwards all buffered data in sequence. The length of time data can be
-buffered is limited by the proxy's local database capacity and the
-`ProxyLocalBuffer` and `ProxyOfflineBuffer` configuration parameters, which
-control how long the proxy retains data locally.
+Como um proxy armazena os dados coletados em seu próprio banco de dados local
+antes de encaminhá-los ao servidor, o monitoramento continua ininterrupto
+durante as interrupções de conectividade. Quando a conexão com o servidor é
+restabelecida, o proxy encaminha todos os dados armazenados em buffer em
+sequência. O período de tempo em que os dados podem ser armazenados em buffer é
+limitado pela capacidade do banco de dados local do proxy e pelos parâmetros de
+configuração `ProxyLocalBuffer` e `ProxyOfflineBuffer`, que controlam por quanto
+tempo o proxy retém os dados localmente.
 
-This resilience property is particularly relevant for remote locations with
-unreliable WAN links. A proxy at a remote site will continue collecting data
-during an outage and deliver it to the server once connectivity is restored,
-preserving the monitoring record without gaps.
+Essa propriedade de resiliência é particularmente relevante para locais remotos
+com links de WAN não confiáveis. Um proxy em um local remoto continuará
+coletando dados durante uma interrupção e os entregará ao servidor assim que a
+conectividade for restaurada, preservando o registro de monitoramento sem
+lacunas.
 
-### Proxy groups
+### Grupos de proxy
 
-Zabbix 7.0 introduced proxy groups, which change how proxies are managed in
-environments that require high availability or automatic load balancing at the
-proxy layer.
+O Zabbix 7.0 introduziu os grupos de proxy, que alteram a forma como os proxies
+são gerenciados em ambientes que exigem alta disponibilidade ou balanceamento
+automático de carga na camada de proxy.
 
-Before proxy groups, a host was assigned to a specific proxy. If that proxy
-became unavailable, the hosts it monitored stopped being collected until the
-proxy recovered or hosts were manually reassigned. Scaling collection meant
-manually distributing hosts across proxies and rebalancing that distribution as
-the environment grew.
+Antes dos grupos de proxy, um host era atribuído a um proxy específico. Se esse
+proxy ficasse indisponível, os hosts que ele monitorava deixavam de ser
+coletados até que o proxy se recuperasse ou os hosts fossem reatribuídos
+manualmente. O dimensionamento da coleta significava distribuir manualmente os
+hosts entre os proxies e reequilibrar essa distribuição à medida que o ambiente
+crescia.
 
-With proxy groups, hosts are assigned to a group rather than to an individual
-proxy. The Zabbix server monitors the state of all proxies in the group and
-distributes monitored hosts across the available proxies automatically. If a
-proxy in the group becomes unavailable, the server redistributes its hosts to
-the remaining proxies in the group. When the proxy recovers, the server
-rebalances the distribution again. No manual intervention is required.
+Com os grupos de proxy, os hosts são atribuídos a um grupo em vez de a um proxy
+individual. O servidor Zabbix monitora o estado de todos os proxies do grupo e
+distribui automaticamente os hosts monitorados entre os proxies disponíveis. Se
+um proxy do grupo ficar indisponível, o servidor redistribui seus hosts para os
+proxies restantes do grupo. Quando o proxy se recupera, o servidor reequilibra a
+distribuição novamente. Não é necessária nenhuma intervenção manual.
 
-A proxy group requires a minimum number of online proxies to be considered
-operational, which is configurable per group. If the number of available proxies
-in a group falls below this threshold, the group is considered degraded and the
-server generates a problem event. This threshold gives you explicit control over
-the acceptable level of redundancy within a group.
+Um grupo de proxy requer um número mínimo de proxies on-line para ser
+considerado operacional, o que é configurável por grupo. Se o número de proxies
+disponíveis em um grupo ficar abaixo desse limite, o grupo será considerado
+degradado e o servidor gerará um evento de problema. Esse limite lhe dá controle
+explícito sobre o nível aceitável de redundância em um grupo.
 
-Proxy groups are the recommended approach for any deployment where proxy
-availability is a concern or where the monitored host population is large enough
-to warrant distributing collection across multiple proxies with automatic
-rebalancing.
+Os grupos de proxy são a abordagem recomendada para qualquer implementação em
+que a disponibilidade do proxy seja uma preocupação ou em que a população de
+hosts monitorados seja grande o suficiente para justificar a distribuição da
+coleta em vários proxies com reequilíbrio automático.
 
 ```mermaid
 flowchart LR
@@ -138,106 +144,112 @@ flowchart LR
     S --> DB[(Database)]
 ```
 
-### Deploying proxies as Podman containers with Quadlet
+### Implementação de proxies como contêineres Podman com o Quadlet
 
-A proxy is a natural fit for container deployment. It is a single process with a
-well-defined configuration file, it exposes one port, it has no web interface,
-and its only external dependency is the database it uses for local buffering.
-Podman is the container runtime used in this chapter because it runs containers
-without a daemon and does not require root privileges, which makes it a
-practical choice for proxy deployments on standard RHEL-based systems.
+Um proxy é uma opção natural para a implementação de contêineres. É um processo
+único com um arquivo de configuração bem definido, expõe uma porta, não tem
+interface com a Web e sua única dependência externa é o banco de dados que usa
+para o buffer local. O Podman é o tempo de execução de contêiner usado neste
+capítulo porque executa contêineres sem um daemon e não exige privilégios de
+raiz, o que o torna uma opção prática para implementações de proxy em sistemas
+padrão baseados em RHEL.
 
-This chapter uses Quadlet to manage the proxy container. Quadlet is a Podman
-feature, available from Podman 4.4 onwards, that generates systemd unit files
-from a declarative container definition. Rather than writing a systemd service
-file manually or relying on `podman generate systemd`, you write a small
-`.container` file that describes the image, volumes, environment variables, and
-network configuration, and Quadlet translates that into a systemd unit at
-runtime. The proxy container then behaves as a native systemd service: it starts
-automatically on boot, respects dependency ordering, restarts on failure
-according to the policy you define, and is managed with the standard `systemctl`
-commands that any Linux administrator already knows.
+Este capítulo usa o Quadlet para gerenciar o contêiner do proxy. O Quadlet é um
+recurso do Podman, disponível a partir do Podman 4.4, que gera arquivos de
+unidade do systemd a partir de uma definição declarativa de contêiner. Em vez de
+escrever um arquivo de serviço do systemd manualmente ou confiar no `podman
+generate systemd`, você escreve um pequeno arquivo `.container` que descreve a
+imagem, os volumes, as variáveis de ambiente e a configuração de rede, e o
+Quadlet traduz isso em uma unidade do systemd em tempo de execução. O contêiner
+proxy se comporta como um serviço nativo do systemd: ele é iniciado
+automaticamente na inicialização, respeita a ordem de dependência, é reiniciado
+em caso de falha de acordo com a política que você define e é gerenciado com os
+comandos padrão `systemctl` que qualquer administrador do Linux já conhece.
 
-The practical benefit over a bare `podman run` command is that there is no
-separate step to generate and install a service file, no risk of the generated
-file drifting out of sync with the actual container configuration, and no
-dependency on a running Podman daemon. The `.container` file is the single
-source of truth for both the container and its service behaviour.
+A vantagem prática em relação a um comando `podman run` é que não há nenhuma
+etapa separada para gerar e instalar um arquivo de serviço, nenhum risco de o
+arquivo gerado ficar fora de sincronia com a configuração real do contêiner e
+nenhuma dependência de um daemon Podman em execução. O arquivo `.container` é a
+única fonte de verdade para o comportamento do contêiner e de seu serviço.
 
-The primary operational consideration when running a proxy in a container is
-data persistence. The proxy's local buffer database must survive container
-restarts, which means the database directory needs to be mounted from the host
-or managed through a named volume. If the database is lost on a restart, any
-data that was buffered but not yet forwarded to the server is lost with it. This
-chapter covers how to configure the volume mount in the Quadlet `.container`
-file correctly so that buffered data is preserved across container lifecycle
-events.
+A principal consideração operacional ao executar um proxy em um contêiner é a
+persistência dos dados. O banco de dados do buffer local do proxy deve
+sobreviver às reinicializações do contêiner, o que significa que o diretório do
+banco de dados precisa ser montado a partir do host ou gerenciado por meio de um
+volume nomeado. Se o banco de dados for perdido em uma reinicialização, todos os
+dados que foram armazenados em buffer, mas ainda não encaminhados ao servidor,
+serão perdidos com ele. Este capítulo aborda como configurar corretamente a
+montagem do volume no arquivo .container` do Quadlet ` para que os dados
+armazenados em buffer sejam preservados nos eventos do ciclo de vida do
+contêiner.
 
-Running proxies as Quadlet-managed containers also simplifies deployment
-consistency across multiple sites. The same container image and `.container`
-file can be deployed at a remote location with minimal environment-specific
-changes, reducing the operational overhead of maintaining proxy installations
-across many sites.
+A execução de proxies como contêineres gerenciados por Quadlet também simplifica
+a consistência da implementação em vários sites. A mesma imagem de contêiner e o
+mesmo arquivo `.container` podem ser implementados em um local remoto com
+alterações mínimas específicas do ambiente, reduzindo a sobrecarga operacional
+de manter instalações de proxy em vários locais.
 
-## The Zabbix web service
+## O servidor web Zabbix (Frontend)
 
-The Zabbix web service is a separate process that the Zabbix server uses to
-generate scheduled reports in PDF format. It is not involved in data collection,
-trigger evaluation, or alerting. Its sole function is to render the Zabbix
-frontend as it would appear in a browser and capture the result as a PDF, which
-can then be delivered by email on a defined schedule.
+O serviço web do Zabbix é um processo separado que o servidor Zabbix usa para
+gerar relatórios programados em formato PDF. Ele não está envolvido na coleta de
+dados, na avaliação de acionadores ou na emissão de alertas. Sua única função é
+renderizar o front-end do Zabbix como ele apareceria em um navegador e capturar
+o resultado como um PDF, que pode ser entregue por e-mail em uma programação
+definida.
 
-The web service uses a headless Chromium instance to render the frontend. This
-means the host running the web service must have Chromium or Google Chrome
-installed, and the web service must be able to reach the Zabbix frontend over
-HTTP or HTTPS. The Zabbix server communicates with the web service over a
-dedicated port, which defaults to 10053.
+O serviço da Web usa uma instância do Chromium sem cabeça para renderizar o
+frontend. Isso significa que o host que executa o serviço Web deve ter o
+Chromium ou o Google Chrome instalado, e o serviço Web deve ser capaz de acessar
+o front-end do Zabbix por HTTP ou HTTPS. O servidor Zabbix se comunica com o
+serviço Web por meio de uma porta dedicada, cujo padrão é 10053.
 
-### When scheduled reports are useful
+### Quando os relatórios programados são úteis
 
-Scheduled reports are used when stakeholders need a regular summary of
-monitoring data without logging into Zabbix directly. Common use cases are
-weekly availability summaries delivered to management, daily dashboard snapshots
-sent to operations teams at the start of a shift, and periodic compliance
-reports that need to be archived or distributed by email.
+Os relatórios programados são usados quando as partes interessadas precisam de
+um resumo regular dos dados de monitoramento sem fazer login diretamente no
+Zabbix. Os casos de uso comuns são resumos semanais de disponibilidade entregues
+à gerência, instantâneos diários do painel enviados às equipes de operações no
+início de um turno e relatórios periódicos de conformidade que precisam ser
+arquivados ou distribuídos por e-mail.
 
-The content of a scheduled report is determined by the dashboard selected when
-the report is configured. Any dashboard visible in the Zabbix frontend can be
-rendered as a scheduled report, including dashboards with graphs, top hosts
-widgets, problem lists, and SLA reports.
+O conteúdo de um relatório agendado é determinado pelo dashboard selecionado
+quando o relatório é configurado. Qualquer painel visível no front-end do Zabbix
+pode ser renderizado como um relatório agendado, incluindo painéis com gráficos,
+widgets de hosts principais, listas de problemas e relatórios de SLA.
 
-### Relationship to the Zabbix server
+### Relacionamento com o servidor Zabbix
 
-The web service does not need to run on the same host as the Zabbix server, but
-it must be reachable from the server and must itself be able to reach the Zabbix
-frontend. In practice, many installations run the web service on the same host
-as the frontend for simplicity, but separating it is a valid option in
-environments where the frontend runs on dedicated web servers.
+O serviço Web não precisa ser executado no mesmo host que o servidor Zabbix, mas
+deve ser acessível a partir do servidor e deve ser capaz de acessar o front-end
+do Zabbix. Na prática, muitas instalações executam o serviço Web no mesmo host
+que o front-end para simplificar, mas separá-lo é uma opção válida em ambientes
+em que o front-end é executado em servidores Web dedicados.
 
-The web service is only required if you intend to use scheduled reports. If your
-installation does not need PDF report delivery, the web service does not need to
-be installed.
+O serviço da Web só é necessário se você pretende usar relatórios programados.
+Se sua instalação não precisar de entrega de relatórios em PDF, o serviço da Web
+não precisará ser instalado.
 
-## What this chapter covers
+## O que este capítulo aborda
 
-This chapter starts with a practical proxy setup: installing the proxy package,
-configuring the connection to the Zabbix server, and adding the proxy to the
+Este capítulo começa com uma configuração prática de proxy: instalação do pacote
+de proxy, configuração da conexão com o servidor Zabbix e adição do proxy ao
 frontend.
 
-From there the chapter covers the internal mechanics of proxy operation, how to
-choose between active and passive mode, and how to configure and use proxy
-groups for automatic host distribution and high availability at the proxy layer.
+A partir daí, o capítulo aborda a mecânica interna da operação do proxy, como
+escolher entre os modos ativo e passivo e como configurar e usar grupos de proxy
+para distribuição automática de hosts e alta disponibilidade na camada de proxy.
 
-It then covers deploying that same proxy as a Podman container managed by
-Quadlet, including how to write the `.container` definition file and configure
-volume mounts for data persistence.
+Em seguida, ele aborda a implantação do mesmo proxy como um contêiner Podman
+gerenciado pelo Quadlet, incluindo como escrever o arquivo de definição
+`.container` e configurar montagens de volume para persistência de dados.
 
-The final part of the chapter covers the Zabbix web service: what it requires to
-run, how to install and configure it, how to connect it to the Zabbix server,
-and how to create and schedule a report against an existing dashboard.
+A parte final do capítulo aborda o serviço da Web do Zabbix: o que é necessário
+para executá-lo, como instalá-lo e configurá-lo, como conectá-lo ao servidor
+Zabbix e como criar e agendar um relatório em um painel existente.
 
-By the end of this chapter you will understand where proxies fit in a Zabbix
-architecture, when to deploy them as packages versus Quadlet-managed containers,
-how proxy groups change the operational model for distributed deployments, and
-how the web service enables scheduled PDF reporting without any additional
-third-party tooling.
+Ao final deste capítulo, você entenderá onde os proxies se encaixam em uma
+arquitetura Zabbix, quando implantá-los como pacotes em vez de contêineres
+gerenciados por Quadlet, como os grupos de proxy alteram o modelo operacional
+para implantações distribuídas e como o serviço da Web permite a geração de
+relatórios programados em PDF sem nenhuma ferramenta adicional de terceiros.
