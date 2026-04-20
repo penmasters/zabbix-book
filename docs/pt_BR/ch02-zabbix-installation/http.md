@@ -134,7 +134,7 @@ Find `<Directory "/usr/share/zabbix">` block in Apache HTTPD configuration file
 that defines your Zabbix WebUI (in my case it is `/etc/zabbix/apache.conf`) and
 add these lines:
 
-???+ note
+Nota
 
     By default configuration has `Require all granted`, remove this line.
 
