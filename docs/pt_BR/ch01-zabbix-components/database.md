@@ -112,7 +112,7 @@ configuration requirements and is prepared as outlined in the previous chapter:
 
 ---
 
-## Conclusion
+## Conclusão
 
 We have discussed the various database backends supported by Zabbix. We've also
 examined the advantages and disadvantages of using vendor-provided packages
