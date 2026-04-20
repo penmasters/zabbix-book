@@ -367,7 +367,7 @@ sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
 ### 6.3 Restart the Web Server
 
 ```bash
-sudo systemctl restart httpd
+sudo systemctl restart nginx
 ```
 
 ## 7. Using Vault Secrets as Macros in Zabbix
