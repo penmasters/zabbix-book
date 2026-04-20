@@ -373,7 +373,7 @@ This activates a systemd timer that periodically invokes
 - **When you prefer a hands-off update strategy**, and image stability is
   trusted.
 
-???+ warning
+???+ aviso
 
     This setup is not recommended for production environments without a proper rollback
     plan. Floating tags like `:latest` or `:trunk-centos` can introduce breaking
@@ -382,7 +382,7 @@ This activates a systemd timer that periodically invokes
 
 ---
 
-## Conclusion
+## Conclusão
 
 In this chapter, we deployed a Zabbix active proxy using Podman and SystemD
 Quadlets. We configured SELinux, enabled user lingering, and created both
