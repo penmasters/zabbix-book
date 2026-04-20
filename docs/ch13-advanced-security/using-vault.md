@@ -42,7 +42,7 @@ HashiCorp Vault is an open-source (with a BSL licence from 1.14+) secrets manage
 - **Authentication methods** (AppRole, Token, LDAP, Kubernetes, AWS IAM, etc.).
 - A RESTful API and CLI for interaction.
 
-Zabbix uses Vault's **KV v1** secrets engine via the HTTP API, authenticating with either a **Vault token** or **AppRole** credentials.
+Zabbix uses Vault's **KV v1** secrets engine via the HTTP API, authenticating with a **Vault token**. AppRole is not supported natively as a Zabbix config parameter, but can be used to obtain a scoped token which is then passed to Zabbix.
 
 ---
 
@@ -79,16 +79,14 @@ api_addr     = "https://vault.example.com:8200"
 cluster_addr = "https://vault.example.com:8201"
 ```
 
-!!! note
-
-    For a development or lab environment, set `tls_disable = 1` inside the `listener "tcp"` block and use `http://` addresses. Never disable TLS in production.
-
-```hcl
-listener "tcp" {
-  address     = "0.0.0.0:8200"
-  tls_disable = 1
-}
-```
+> **Note:** For a development or lab environment, set `tls_disable = 1` inside the `listener "tcp"` block and use `http://` addresses. Never disable TLS in production.
+>
+> ```hcl
+> listener "tcp" {
+>   address     = "0.0.0.0:8200"
+>   tls_disable = 1
+> }
+> ```
 
 ### 3.3 Create the Data Directory and Set Permissions
 
@@ -128,26 +126,6 @@ vault operator unseal   # repeat 3 times with different unseal keys
 vault login <initial-root-token>
 ```
 
-Example output:
-
-```bash
-# vault login <root token>
-
-Success! You are now authenticated. The token information displayed below
-is already stored in the token helper. You do NOT need to run "vault login"
-again. Future Vault requests will automatically use this token.
-
-Key                  Value
----                  -----
-token                <root token>
-token_accessor       EuHT6HFt9QLZ6v8skiqSGyEa
-token_duration       ∞
-token_renewable      false
-token_policies       ["root"]
-identity_policies    []
-policies             ["root"]
-```
-
 ---
 
 ## 4. Configuring Vault for Zabbix
@@ -160,9 +138,7 @@ Zabbix requires the **KV version 1** secrets engine. Enable it on a path of your
 vault secrets enable -path=secret kv
 ```
 
-!!! info
-
-    Use KV v1, not KV v2. Zabbix does not support the v2 API metadata wrapper.
+> **Important:** Use KV v1, not KV v2. Zabbix does not support the v2 API metadata wrapper.
 
 ### 4.2 Store Zabbix Secrets
 
@@ -187,7 +163,6 @@ vault kv put secret/zabbix/windows username="DOMAIN\\zbx_wmi" password="W1nP@ss!
 Create a Vault policy that grants read-only access to the Zabbix secrets path:
 
 ```hcl
-mkdir /etc/vault.d/policies
 # /etc/vault.d/policies/zabbix-read.hcl
 path "secret/zabbix/*" {
   capabilities = ["read", "list"]
@@ -200,9 +175,11 @@ Apply the policy:
 vault policy write zabbix-read /etc/vault.d/policies/zabbix-read.hcl
 ```
 
-### 4.4 Create an AppRole for Zabbix (Recommended)
+### 4.4 Create an AppRole for Zabbix
 
-AppRole authentication is recommended for production because it avoids long-lived root tokens.
+AppRole is a Vault authentication method that avoids long-lived root tokens. However, **Zabbix does not support AppRole natively** — `zabbix_server.conf` only accepts a `VaultToken` for authentication. AppRole credentials cannot be passed directly to Zabbix.
+
+You can still benefit from AppRole by using it to obtain a scoped Vault token, which is then placed in `VaultToken`. This avoids issuing a root token and keeps permissions limited to the `zabbix-read` policy.
 
 ```bash
 # Enable AppRole auth method
@@ -215,17 +192,19 @@ vault write auth/approle/role/zabbix \
     token_max_ttl=4h \
     secret_id_ttl=0   # 0 = never expires; set a value in production
 
-# Retrieve the Role ID (not secret — can be stored openly)
+# Retrieve the Role ID
 vault read auth/approle/role/zabbix/role-id
 
-# Generate a Secret ID (treat like a password)
+# Generate a Secret ID
 vault write -f auth/approle/role/zabbix/secret-id
+
+# Log in with AppRole to obtain a Vault token
+vault write auth/approle/login \
+    role_id="<role_id>" \
+    secret_id="<secret_id>"
 ```
 
-!!! note
-
-    the `role_id` and `secret_id` values — you will need both to configure Zabbix.
-
+The `token` value returned by the login command is what you use in `VaultToken` in `zabbix_server.conf`. Note that this token will expire based on `token_ttl` — you will need to renew it or re-login periodically and update the config, followed by a `zabbix_server -R secrets_reload`.
 ### 4.5 Alternatively: Create a Static Token
 
 For simpler setups, generate a token scoped to the Zabbix policy:
@@ -242,34 +221,34 @@ Note the `token` value.
 ---
 
 ## 5. Configuring the Zabbix Server for Vault
- 
+
 The Zabbix server daemon reads Vault configuration from `zabbix_server.conf`. Before editing, it is important to understand what each parameter actually controls — they serve distinct purposes.
- 
+
 ### 5.1 Understanding VaultDBPath and VaultPrefix
- 
+
 These two parameters are often confused but do very different things:
- 
+
 **`VaultDBPath`** — used exclusively for retrieving the **Zabbix database credentials** (the `DBUser` and `DBPassword` connection parameters). It cannot be used if `DBUser` or `DBPassword` are already set in the config file. Zabbix looks for exactly two hardcoded keys at this path: `username` and `password`.
- 
+
 **`VaultPrefix`** — defines the URL prefix used to construct all Vault API requests, both for `VaultDBPath` and for macro secret resolution. If not set, Zabbix uses a default that automatically appends `/data/` after the mountpoint, which is the KV v2 API path structure. For KV v1, you must set this explicitly.
- 
+
 | Parameter | Purpose | Keys used |
 |-----------|---------|-----------|
 | `VaultDBPath` | Zabbix database credentials only | `username`, `password` (hardcoded) |
 | `VaultPrefix` | URL prefix for all Vault API calls | n/a — affects path construction |
- 
+
 **Macro secrets** (the `vault:<path>:<key>` values on hosts and templates) are a separate mechanism and are **not** controlled by `VaultDBPath`. The `<path>` and `<key>` in a macro value are resolved using `VaultPrefix` as the base.
- 
+
 ### 5.2 Edit `zabbix_server.conf`
- 
+
 Open `/etc/zabbix/zabbix_server.conf` and add or update the following parameters:
- 
+
 ```ini
 ### HashiCorp Vault configuration ###
- 
+
 # Vault server URL (must include scheme and port)
 VaultURL=https://vault.example.com:8200
- 
+
 # VaultPrefix — sets the full path prefix for all Vault API requests.
 #
 # For KV v1 (recommended for Zabbix):
@@ -280,7 +259,7 @@ VaultPrefix=/v1/secret/zabbix/
 #
 # If VaultPrefix is not set, Zabbix defaults to KV v2 behaviour and
 # automatically appends 'data' after the mountpoint.
- 
+
 # VaultDBPath — only set this if you want Vault to supply the Zabbix
 # database credentials (DBUser / DBPassword). Leave commented out if
 # DBUser and DBPassword are set directly in this file.
@@ -290,35 +269,31 @@ VaultPrefix=/v1/secret/zabbix/
 # Example — with VaultPrefix=/v1/secret/zabbix/ this resolves to:
 #   /v1/secret/zabbix/database
 # VaultDBPath=database
- 
-# Authentication — uncomment ONE method.
- 
-# Option 1 — Static token
-VaultToken=<your-vault-token>
- 
-# Option 2 — AppRole (recommended for production)
-# VaultRoleID=<role_id>
-# VaultSecretID=<secret_id>
+
+# Authentication
+# Zabbix only supports token-based authentication via VaultToken.
+# Use the token value retrieved in section 4.5 (vault token create).
+VaultToken=<token from section 4.5>
 ```
- 
+
 ### 5.3 TLS Certificate Verification
- 
+
 If Vault uses a certificate signed by an internal CA, configure the Zabbix server to trust it:
- 
+
 ```ini
 # Path to the CA certificate (PEM format) that signed Vault's TLS certificate
 VaultTLSCAFile=/etc/zabbix/ssl/vault-ca.pem
 ```
- 
+
 If Vault uses a publicly trusted certificate, this parameter is not required.
- 
+
 ### 5.4 Restart the Zabbix Server
- 
+
 ```bash
 sudo systemctl restart zabbix-server
 sudo journalctl -u zabbix-server -f   # verify no Vault connection errors
 ```
- 
+
 ---
 
 ## 6. Configuring the Zabbix Frontend for Vault
