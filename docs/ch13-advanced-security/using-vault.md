@@ -165,26 +165,65 @@ vault kv get zabbix/server
 
 ### 4.3 Create Vault Policies
 
-Each component gets its own policy with access limited to only the path it needs.
+Rather than granting access per individual secret path, organise secrets by function under a `monitoring/` prefix. This way the Zabbix server policy covers all monitoring credentials in one rule — no policy changes needed when adding new secrets.
 
-First create the directory for policy files:
+Recommended secret structure:
+
+| Path | Purpose | Read by |
+|------|---------|---------|
+| `zabbix/server` | Zabbix server DB credentials | zabbix-server |
+| `zabbix/frontend` | Zabbix frontend DB credentials | zabbix-frontend |
+| `zabbix/monitoring/snmp` | SNMP community strings | zabbix-server |
+| `zabbix/monitoring/ssh` | SSH credentials | zabbix-server |
+| `zabbix/monitoring/windows` | WMI credentials | zabbix-server |
+
+First create the policies directory:
 
 ```bash
-sudo mkdir -p /etc/vault.d
+sudo mkdir -p /etc/vault.d/policies
 ```
 
-**Frontend policy** — create `/etc/vault.d/zabbix-frontend-policy.hcl`:
+**Server policy** — create `/etc/vault.d/policies/zabbix-server-policy.hcl`:
 
 ```hcl
-path "zabbix/data/frontend" {
+# Zabbix server database credentials
+path "zabbix/data/server" {
+  capabilities = ["read", "list"]
+}
+
+# All monitoring secrets — covers any secret added under zabbix/monitoring/
+path "zabbix/data/monitoring/*" {
+  capabilities = ["read", "list"]
+}
+
+# Allow listing the mount point so secrets are visible in the Vault UI
+path "zabbix/metadata/" {
+  capabilities = ["list"]
+}
+
+path "zabbix/metadata/server" {
+  capabilities = ["read", "list"]
+}
+
+path "zabbix/metadata/monitoring/*" {
   capabilities = ["read", "list"]
 }
 ```
 
-**Server policy** — create `/etc/vault.d/zabbix-server-policy.hcl`:
+**Frontend policy** — create `/etc/vault.d/policies/zabbix-frontend-policy.hcl`:
 
 ```hcl
-path "zabbix/data/server" {
+# Zabbix frontend database credentials only
+path "zabbix/data/frontend" {
+  capabilities = ["read", "list"]
+}
+
+# Allow listing the mount point so the secret is visible in the Vault UI
+path "zabbix/metadata/" {
+  capabilities = ["list"]
+}
+
+path "zabbix/metadata/frontend" {
   capabilities = ["read", "list"]
 }
 ```
@@ -192,10 +231,28 @@ path "zabbix/data/server" {
 Write both policies to Vault:
 
 ```bash
-vault policy write zabbix-frontend /etc/vault.d/zabbix-frontend-policy.hcl
-vault policy write zabbix-server /etc/vault.d/zabbix-server-policy.hcl
+vault policy write zabbix-server /etc/vault.d/policies/zabbix-server-policy.hcl
+vault policy write zabbix-frontend /etc/vault.d/policies/zabbix-frontend-policy.hcl
 ```
 
+> **Note: Vault and Zabbix Proxies**
+>
+> In a distributed Zabbix setup with proxies, each proxy runs its own `zabbix_proxy.conf` which supports the same Vault parameters as the server (`VaultURL`, `VaultToken`, `VaultDBPath`). You have two options:
+>
+> **Option 1 — Single centralised Vault instance**
+> All proxies connect to the same Vault server. Each proxy gets its own scoped token and policy, limiting access to only the secrets relevant to the hosts it monitors. Organise secrets per proxy under the `monitoring/` prefix:
+>
+> | Path | Purpose | Read by |
+> |------|---------|---------|
+> | `zabbix/monitoring/proxy-brussels/*` | Secrets for Brussels proxy | token-proxy-brussels |
+> | `zabbix/monitoring/proxy-amsterdam/*` | Secrets for Amsterdam proxy | token-proxy-amsterdam |
+>
+> This is the simplest setup to manage — one Vault to maintain, with access controlled per proxy through policies.
+>
+> **Option 2 — Vault instance per proxy**
+> Each proxy site runs its own Vault instance. The proxy connects to its local Vault, which only contains secrets for the hosts that proxy monitors. This approach improves resilience (a Vault outage only affects one proxy) and keeps sensitive credentials fully local to each site — useful when proxies are deployed in remote locations or different security zones.
+>
+> In both options, a compromised proxy token only exposes the secrets for that proxy's hosts — not the entire monitoring infrastructure. The choice between the two depends on your network topology, resilience requirements, and how many proxies you operate.
 ### 4.4 Create a Token Role with Renewal Period
 
 Create a token role that allows tokens to be renewed for up to 30 days (720 hours). This role covers both the frontend and server policies:
@@ -365,101 +422,84 @@ sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
 
 ## 7. Using Vault Secrets as Macros in Zabbix
 
-Once both the server and frontend are configured, you can reference Vault secrets in Zabbix macros using a special URI syntax.
+Once both the server and frontend are configured, you can reference Vault secrets in Zabbix macros. In our current setup, Vault holds the database credentials for the frontend (`zabbix/frontend`) and the server (`zabbix/server`). These are used automatically by Zabbix at startup and are not referenced as macros.
+
+To use Vault for additional secrets — such as SNMP community strings, SSH passwords, or API tokens — you need to:
+
+1. Store the secret in Vault under the `zabbix/` mount point.
+2. Create a policy granting the Zabbix server token read access to that path.
+3. Create a macro of type *Vault secret* in Zabbix referencing that path.
 
 ### 7.1 Macro Syntax
 
-Zabbix resolves a macro value from Vault when its value follows this pattern:
+When the macro type is set to **Vault secret**, the value field uses the following format:
 
 ```
-vault:<path>:<key>
+<path>:<key>
 ```
 
 | Component | Description |
 |-----------|-------------|
-| `vault:` | Prefix that tells Zabbix to fetch the value from Vault. |
-| `<path>` | Path relative to `VaultDBPath`. E.g., `zabbix/snmp` maps to `secret/zabbix/snmp`. |
-| `<key>` | The field name within the secret. |
+| `<path>` | Full path to the secret including the mount point, e.g., `zabbix/snmp`. |
+| `<key>` | The field name within the secret, e.g., `community`. |
 
-### 7.2 Example: Global Macro for SNMP Community
+> **Note:** The `vault:` prefix is **not** used when the macro type is set to *Vault secret* — Zabbix already knows to look in Vault based on the type.
 
-**Secret stored in Vault:**
+### 7.2 Example: SNMP Community String
+
+This example walks through the full process of adding a monitoring secret to Vault and using it as a Zabbix macro. Because the server policy already covers `zabbix/data/monitoring/*`, no policy changes are needed — just add the secret and create the macro.
+
+**Step 1 — Store the secret in Vault:**
+
+Writing secrets requires the root token. Switch to root, write the secret, then switch back:
+
 ```bash
-vault kv put secret/zabbix/snmp community="public_prod_string"
+# Switch to root token to write the secret
+vault login <root-token>
+vault kv put zabbix/monitoring/snmp community="public_prod_string"
+
+# Verify the secret was written
+vault kv get zabbix/monitoring/snmp
+
+# Switch back to the zabbix-server token
+vault login <zabbix-server-token>
+
+# Verify the server token can read it
+vault kv get zabbix/monitoring/snmp
 ```
 
-**Macro configuration in Zabbix UI:**
+> **Note:** The Zabbix server reads monitoring secrets — not the frontend. The frontend token only has access to `zabbix/frontend`.
+
+**Step 2 — Create the macro in Zabbix:**
 
 Navigate to **Administration → Macros** and create:
 
 | Field | Value |
 |-------|-------|
 | Macro | `{$SNMP_COMMUNITY}` |
-| Value | `vault:zabbix/snmp:community` |
-| Type | `Secret text` |
+| Value | `zabbix/monitoring/snmp:community` |
+| Type | `Vault secret` |
 | Description | SNMP community string from Vault |
 
-Zabbix will resolve `vault:zabbix/snmp:community` by calling:
-```
-GET https://vault.example.com:8200/v1/secret/zabbix/snmp
-```
-and returning the value of the `community` key.
-
-### 7.3 Example: Host-Level Macro for SSH Credentials
-
-For SSH checks on Linux hosts, store the password in Vault and reference it as a host macro.
-
-**Secret stored in Vault:**
-```bash
-vault kv put secret/zabbix/linux-ssh username="zabbix_monitor" password="S3cur3P@ss!"
-```
-
-**Host macro configuration:**
-
-Navigate to the host → **Macros** tab and add:
-
-| Macro | Value | Type |
-|-------|-------|------|
-| `{$SSH_USERNAME}` | `vault:zabbix/linux-ssh:username` | Secret text |
-| `{$SSH_PASSWORD}` | `vault:zabbix/linux-ssh:password` | Secret text |
-
-These macros can then be used in SSH agent items or scripts.
-
-### 7.4 Example: Template-Level Macro for Database Monitoring
-
-Store MySQL credentials per environment:
+**Step 3 — Reload secrets:**
 
 ```bash
-vault kv put secret/zabbix/mysql-prod username="zbx_mon" password="ProdDbPass!"
-vault kv put secret/zabbix/mysql-dev  username="zbx_mon" password="DevDbPass!"
+zabbix_server -R secrets_reload
 ```
 
-At the template level, define:
+Check the log to confirm the secret was retrieved successfully. Any new secret added under `zabbix/monitoring/` follows the same process — no policy updates required.
+### 7.3 How Resolution Works
 
-| Macro | Default Value | Description |
-|-------|--------------|-------------|
-| `{$MYSQL_USER}` | `vault:zabbix/mysql-prod:username` | MySQL monitoring user |
-| `{$MYSQL_PASS}` | `vault:zabbix/mysql-prod:password` | MySQL monitoring password |
+When the Zabbix server needs to use a macro value of type *Vault secret*:
 
-Override the macro at the **host** level for development hosts:
+1. It reads the macro value, e.g. `zabbix/monitoring/snmp:community`.
+2. It splits the value on `:` — the left part is the path, the right part is the key.
+3. It constructs the Vault API URL: `{VaultURL}/v1/{path}/data` → `https://vault.example.com:8200/v1/zabbix/data/monitoring/snmp`.
+4. It authenticates using the configured `VaultToken`.
+5. It retrieves the JSON response and extracts the value of `community` using the `zabbix-server` token.
+6. The resolved plaintext value is used in the check — it is **never stored** in the Zabbix database.
 
-| Macro | Value |
-|-------|-------|
-| `{$MYSQL_PASS}` | `vault:zabbix/mysql-dev:password` |
-
-This follows Zabbix's standard macro precedence: host-level overrides template-level.
-
-### 7.5 How Resolution Works
-
-When the Zabbix server needs to use a macro value:
-
-1. It detects the `vault:` prefix in the macro value.
-2. It constructs the Vault API URL: `{VaultURL}/v1/{VaultDBPath}/{path}`.
-3. It authenticates using the configured token or AppRole credentials.
-4. It retrieves the JSON response and extracts the value at the specified `{key}`.
-5. The resolved plaintext value is used in the check — it is **never stored** in the Zabbix database.
-
-> **Important:** The macro value stored in the Zabbix database is always the `vault:<path>:<key>` reference string, not the actual secret. This means database exports, backups, and UI views never expose the real credential.
+> **Important:** The macro value stored in the Zabbix database is always the `<path>:<key>` reference string, not the actual secret. Database exports, backups, and UI views never expose the real credential.
 
 ---
 
@@ -522,7 +562,7 @@ zabbix_server -R secrets_reload
 
 This sends a signal to the running Zabbix server process instructing it to re-fetch all macros that reference Vault. Use this command whenever you:
 
-- Add a new `vault:` macro to a host, template, or globally.
+- Add a new *Vault secret* macro to a host, template, or globally.
 - Update a secret value in Vault.
 - Rotate a Vault token or AppRole secret ID in `zabbix_server.conf`.
 
@@ -550,7 +590,7 @@ If you see `failed to retrieve secret` or `403 Forbidden`, refer to the Troubles
 The Zabbix frontend independently fetches secrets from Vault for display purposes. To verify it is working:
 
 1. Navigate to **Administration → Macros** (for a global macro) or open a host and go to the **Macros** tab.
-2. Find a macro with a `vault:` value, for example `{$SNMP_COMMUNITY}`.
+2. Find a macro of type *Vault secret*, for example `{$SNMP_COMMUNITY}`.
 3. Click the **eye icon** next to the macro value.
 4. If the frontend can reach Vault and the token/AppRole is valid, the resolved plaintext value is shown momentarily.
 
@@ -571,7 +611,7 @@ The most definitive test is confirming a Vault-backed macro is used successfully
 **Example: test SNMP connectivity using the Vault-backed community string**
 
 1. Create a simple SNMP item on a host (e.g., `sysDescr` OID `1.3.6.1.2.1.1.1.0`).
-2. Set the **SNMP community** field to `{$SNMP_COMMUNITY}`, which resolves from `vault:zabbix/snmp:community`.
+2. Set the **SNMP community** field to `{$SNMP_COMMUNITY}`, which resolves from `zabbix/snmp:community`.
 3. Navigate to **Monitoring → Latest data** and filter for the host.
 4. If the item returns a value, the secret was successfully retrieved from Vault and used in the check.
 5. If the item shows an authentication error specifically, the macro likely did not resolve — trigger a `secrets_reload` and recheck the log.
@@ -590,13 +630,13 @@ To confirm that Vault-backed macro values are stored as references and not as pl
 
 ```sql
 -- Check global macros
-SELECT macro, value FROM globalmacro WHERE value LIKE 'vault:%';
+SELECT macro, value FROM globalmacro WHERE type=2;
 
 -- Check host macros
-SELECT macro, value FROM hostmacro WHERE value LIKE 'vault:%';
+SELECT macro, value FROM hostmacro WHERE type=2;
 ```
 
-All rows should show the `vault:<path>:<key>` reference string, never the resolved secret value. This confirms that the plaintext credential never touches the Zabbix database.
+All rows should show the `<path>:<key>` reference string, never the resolved secret value. This confirms that the plaintext credential never touches the Zabbix database.
 
 ---
 
@@ -618,7 +658,7 @@ Common errors and resolutions:
 | `403 Forbidden` | Token/AppRole lacks permission | Review and reapply the Vault policy |
 | `connection refused` | Vault is sealed or not running | Unseal Vault: `vault operator unseal` |
 | `invalid path` | `VaultDBPath` or secret path is incorrect | Verify with `vault kv list secret/zabbix/` |
-| `macro not resolved` | `vault:` prefix missing or wrong key name | Check macro value syntax: `vault:<path>:<key>` |
+| `macro not resolved` | Wrong path, key name, or macro type not set to *Vault secret* | Check macro value syntax: `<path>:<key>` and verify macro type |
 
 ### Verify a Secret is Accessible
 
@@ -646,3 +686,7 @@ vault audit enable file file_path=/var/log/vault/audit.log
 # Tail the audit log
 sudo tail -f /var/log/vault/audit.log | jq '.request.path'
 ```
+
+---
+
+*This chapter covers Zabbix 7.4 with HashiCorp Vault using the KV v1 secrets engine. For the most current parameter names and defaults, always refer to the [official Zabbix documentation](https://www.zabbix.com/documentation/7.4/en/manual/config/secrets/hashicorp).*
