@@ -170,10 +170,10 @@ Each component gets its own policy with access limited to only the path it needs
 First create the directory for policy files:
 
 ```bash
-sudo mkdir -p /etc/vault.d
+sudo mkdir -p /etc/vault.d/policies
 ```
 
-**Frontend policy** — create `/etc/vault.d/zabbix-frontend-policy.hcl`:
+**Frontend policy** — create `/etc/vault.d/policies/zabbix-frontend-policy.hcl`:
 
 ```hcl
 path "zabbix/data/frontend" {
@@ -181,7 +181,7 @@ path "zabbix/data/frontend" {
 }
 ```
 
-**Server policy** — create `/etc/vault.d/zabbix-server-policy.hcl`:
+**Server policy** — create `/etc/vault.d/policies/zabbix-server-policy.hcl`:
 
 ```hcl
 path "zabbix/data/server" {
@@ -192,8 +192,8 @@ path "zabbix/data/server" {
 Write both policies to Vault:
 
 ```bash
-vault policy write zabbix-frontend /etc/vault.d/zabbix-frontend-policy.hcl
-vault policy write zabbix-server /etc/vault.d/zabbix-server-policy.hcl
+vault policy write zabbix-frontend /etc/vault.d/policies/zabbix-frontend-policy.hcl
+vault policy write zabbix-server /etc/vault.d/policies/zabbix-server-policy.hcl
 ```
 
 ### 4.4 Create a Token Role with Renewal Period
