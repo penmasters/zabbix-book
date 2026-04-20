@@ -16,15 +16,14 @@ Alternatively to MariaDB/MySQL, you can choose to use PostgreSQL as the database
 backend for Zabbix. Similar to MariaDB, PostgreSQL can be installed using either
 the OS vendor-provided packages or the official PostgreSQL repositories.
 
-If you already have installed MariaDB in the previous section, you can skip this
-section.
+Se você já instalou o MariaDB na seção anterior, pode pular esta seção.
 
-As of writing PostgreSQL 13-18 are supported by Zabbix. Check the Zabbix
-documentation for an up-to-date list of supported versions for your Zabbix
-version. Usually it's a good idea to go with the latest version that is
-supported by Zabbix.
+Até o momento, o PostgreSQL 13-18 é suportado pelo Zabbix. Verifique a
+documentação do Zabbix para obter uma lista atualizada das versões suportadas
+para sua versão do Zabbix. Normalmente, é uma boa ideia usar a versão mais
+recente que é suportada pelo Zabbix.
 
-???+ tip "TimescaleDB extension"
+Dica "Extensão do TimescaleDB"
 
     Zabbix also supports the extension TimescaleDB but due to its advanced nature, 
     we won't cover it in this chapter. Refer to [_Partitioning PostgreSQL with TimescaleDB_](../ch13-advanced-security/partitioning-postgresql-database.md)
@@ -38,12 +37,12 @@ supported by Zabbix.
 
 ---
 
-## Installing PostgreSQL Server and Client from OS Vendor-Provided Packages
+## Instalação do servidor e cliente PostgreSQL a partir de pacotes fornecidos pelo fornecedor do sistema operacional
 
-To install the distribution default PostgreSQL server, execute the following
-commands:
+Para instalar o servidor PostgreSQL padrão da distribuição, execute os seguintes
+comandos:
 
-!!! info "Install the Postgres server"
+!!! info "Instalar o servidor Postgres"
 
     Red Hat
     ``` bash
@@ -60,10 +59,11 @@ commands:
     sudo apt install postgresql postgresql-client postgresql-contrib
     ```
 
-This command will download and install both the server and client packages,
-enabling you to set up, configure, and interact with your PostgreSQL database.
+Esse comando fará o download e instalará os pacotes do servidor e do cliente,
+permitindo que você defina, configure e interaja com o banco de dados
+PostgreSQL.
 
-!!! warning "Database initialization required on Red Hat"
+!!! aviso "A inicialização do banco de dados é necessária no Red Hat"
 
     Due to policies for Red Hat family distributions, the PostgreSQL service
     does not initialize an empty database required for PostgreSQL to function.
@@ -77,28 +77,28 @@ enabling you to set up, configure, and interact with your PostgreSQL database.
     On SUSE and Ubuntu the OS provided SystemD service will automatically initialize
     an empty database on first startup.
 
-Once the installation is complete, you can proceed to the [_Starting the
-PostgreSQL Database_](#starting-the-postgresql-database) section.
+Quando a instalação estiver concluída, prossiga para a seção [_Starting the
+PostgreSQL Database_](#starting-the-postgresql-database).
 
 ---
 
-## Installing PostgreSQL from Official PostgreSQL Repositories
+## Instalando o PostgreSQL a partir dos repositórios oficiais do PostgreSQL
 
-If you prefer to install PostgreSQL from the official PostgreSQL repositories
-instead of the OS vendor-provided packages, the first step is to add the
-PostgreSQL repository to your system.
+Se você preferir instalar o PostgreSQL a partir dos repositórios oficiais do
+PostgreSQL em vez dos pacotes fornecidos pelo fornecedor do sistema operacional,
+a primeira etapa é adicionar o repositório do PostgreSQL ao seu sistema.
 
 ---
 
-### Adding the PostgreSQL Repository
+### Adição do repositório PostgreSQL
 
-Set up the PostgreSQL repository with the following commands:
+Configure o repositório PostgreSQL com os seguintes comandos:
 
-Check
+Consulte
 [https://www.postgresql.org/download/linux/](https://www.postgresql.org/download/linux/)
-for more information.
+para obter mais informações.
 
-!!! info "Add PostgreSQL repo"
+!!! info "Adicionar repositório PostgreSQL"
 
     Red Hat
     ```bash
@@ -193,8 +193,9 @@ components to run and manage your database.
     sudo apt install postgresql-17 postgresql-client-17
     ```
 
-This command will download and install both the server and client packages,
-enabling you to set up, configure, and interact with your PostgreSQL database.
+Esse comando fará o download e instalará os pacotes do servidor e do cliente,
+permitindo que você defina, configure e interaja com o banco de dados
+PostgreSQL.
 
 Next, before we can start the PostgreSQL server we need to initialize a new
 empty database:
@@ -872,7 +873,7 @@ configuration.
 
 ---
 
-## Questions
+## Perguntas
 
 1. What version of PostgreSQL should I install for compatibility and stability?
 2. What port does my DB use ?
@@ -880,7 +881,7 @@ configuration.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://yum.postgresql.org](ttps://yum.postgresql.org)
 - [https://zypp.postgresql.org/howtozypp/](https://zypp.postgresql.org/howtozypp/)
