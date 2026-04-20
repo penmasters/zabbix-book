@@ -345,7 +345,7 @@ _2.15 Test user3_
 
 ---
 
-## Conclusion
+## Conclusão
 
 Integrating Zabbix with LDAP—or specifically, Active Directory elevates your
 system's authentication capabilities by leveraging existing organizational
