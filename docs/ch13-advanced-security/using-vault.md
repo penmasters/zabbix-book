@@ -636,6 +636,14 @@ SELECT macro, value FROM globalmacro WHERE type=2;
 SELECT macro, value FROM hostmacro WHERE type=2;
 ```
 
+```sql
+zabbix=# SELECT * from globalmacro;
+ globalmacroid |       macro        |         value         |           description            | type
+---------------+--------------------+-----------------------+----------------------------------+------
+             2 | {$SNMP_COMMUNITY}  | zabbix/snmp:community | SNMP community string from Vault |    2
+             3 | {$SNMP_COMMUNITY1} | test                  | test plain                       |    0
+```
+
 All rows should show the `<path>:<key>` reference string, never the resolved secret value. This confirms that the plaintext credential never touches the Zabbix database.
 
 ---
