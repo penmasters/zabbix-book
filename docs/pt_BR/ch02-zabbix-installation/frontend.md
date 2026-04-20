@@ -85,7 +85,7 @@ _2.5 Reduzir_
     url: `/zabbix.php?action=dashboard.view&kiosk=1` - activate kiosk mode or
     `/zabbix.php?action=dashboard.view&kiosk=0` - activate normal mode.
 
-Nota
+???+ Nota
 
     There are many other page parameters we can use. A full list can be found at
     [https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters](https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters)
@@ -392,7 +392,7 @@ _2.18 Menu de administração_
     module created by one of the Zabbix developers `UI Twix` will solve this problem
     for you.
 
-???+ warning
+???+ aviso
 
     At time of writing there is no Dashboard import/export functionality in zabbix.
     So when upgrading dashboards it needs to be created by hand. It was on the roadmap

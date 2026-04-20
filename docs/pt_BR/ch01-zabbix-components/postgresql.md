@@ -239,7 +239,7 @@ checking the version of PostgreSQL using the following command:
     psql -V
     ```
 
-The expected output should resemble this:
+A saída esperada deve ser similar a esta:
 
 ???+ example "PostgreSQL version example"
 
@@ -440,7 +440,7 @@ settings:
 
 ---
 
-## Creating the Zabbix database instance
+## Criação da instância do banco de dados Zabbix
 
 With the necessary packages installed, you are now ready to create the Zabbix
 database and users for both the server and frontend.
@@ -612,16 +612,16 @@ If you are ready you can exit the database and return to your linux shell.
     zabbix=> \q
     ```
 
-At this point, your Zabbix database is ready, but before it can actually be used
-by Zabbix, we still need to populate the database with the necessary tables and
-initial data, but that will be covered in the next section when we install the
-Zabbix server.
+Neste ponto, seu banco de dados do Zabbix está pronto, mas antes que ele possa
+realmente ser usado pelo Zabbix, ainda precisamos preencher o banco de dados com
+as tabelas necessárias e os dados iniciais, mas isso será abordado na próxima
+seção, quando instalarmos o servidor Zabbix.
 
 If you intent to install Zabbix server on a different machine than the one
 hosting the database you will need to open the host firewall to allow incoming
 connections to the database server. By default, PostgreSQL listens on port 5432.
 
-!!! info "Add firewall rules"
+!!! info "Adicionar regras de firewall"
 
     Red Hat / SUSE
     ``` bash
@@ -635,17 +635,17 @@ connections to the database server. By default, PostgreSQL listens on port 5432.
     ```
 ---
 
-## Populate the Zabbix database
+## Preencher o banco de dados do Zabbix
 
 During the installation of the database software earlier, we created the
 necessary users, database and schema for Zabbix, however, Zabbix expects certain
 tables, schemas, images, and other elements to be present in the database. To
 set up the database correctly, we need to populate it with the required schema.
 
-First we need to install the Zabbix SQL scripts that contain the required import
-scripts for the database.
+Primeiro, precisamos instalar os scripts SQL do Zabbix que contêm os scripts de
+importação necessários para o banco de dados.
 
-!!! info "Install SQL scripts"
+!!! info "Instalar scripts SQL"
 
     Red Hat
     ``` bash
@@ -713,7 +713,7 @@ Upload the DB schema to the database using the following commands:
     zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
     ```
 
-???+ warning
+???+ aviso
 
     Depending on your hardware or VM performance, this process can take anywhere
     from a few seconds to several minutes. Please be patient and avoid cancelling
@@ -859,7 +859,7 @@ This concludes our installation of the PostgreSQL database.
 
 ---
 
-## Conclusion
+## Conclusão
 
 With the installation and configuration of PostgreSQL as the database backend
 for Zabbix complete, you now have a powerful and efficient database system ready
@@ -868,16 +868,16 @@ both vendor-provided packages and official repositories, securing the database,
 creating the necessary Zabbix database and users, and populating the database
 with the required schema and initial data.
 
-Your Zabbix environment is now ready for the next stages of setup and
-configuration.
+Seu ambiente Zabbix agora está pronto para os próximos estágios de instalação e
+configuração.
 
 ---
 
 ## Perguntas
 
 1. What version of PostgreSQL should I install for compatibility and stability?
-2. What port does my DB use ?
-3. Which database users did I create and why?
+2. Qual é a porta usada pelo meu banco de dados?
+3. Quais usuários do banco de dados eu criei e por quê?
 
 ---
 

@@ -545,7 +545,7 @@ for additional guidance and best practices.
 
 ---
 
-## Conclusion
+## Conclusão
 
 With the installation and configuration of the Zabbix frontend now complete, you
 have successfully set up the user interface for your Zabbix monitoring system.

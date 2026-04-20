@@ -45,7 +45,7 @@ simplificar, anote os detalhes do servidor:
 
     Always check if a binary uses a dash or an underscore when troubleshooting.
 
-???+ warning
+???+ aviso
 
     Starting from Zabbix 7.2, only MySQL (including its forks) and PostgreSQL are
     supported as back-end databases. Earlier versions of Zabbix also included support
