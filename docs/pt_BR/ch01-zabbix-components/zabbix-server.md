@@ -193,7 +193,7 @@ With the Zabbix server configuration updated to connect to your database, you
 can now start and enable the Zabbix server service. Run the following command to
 enable the Zabbix server and ensure it starts automatically on boot:
 
-???+ note
+Nota
 
     Before restarting the Zabbix server after modifying its configuration, it is
     considered best practice to validate the configuration to prevent potential
@@ -201,7 +201,7 @@ enable the Zabbix server and ensure it starts automatically on boot:
     beforehand, avoiding downtime caused by an invalid configuration. This can
     be accomplished using the following command: `zabbix-server -T`
 
-!!! info "Enable and start zabbix-server service"
+!!! info "ativar e iniciar o serviço zabbix-server"
 
     Red Hat, SUSE and Ubuntu
     ``` bash
@@ -348,14 +348,14 @@ Let's proceed to the next chapter to set up the Zabbix frontend.
 
 ---
 
-## Questions
+## Perguntas
 
 1. What version of Zabbix should I install for compatibility and stability?
 2. What Zabbix logs should I check for troubleshooting common issues?
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)

@@ -374,7 +374,7 @@ provisioning and synchronization, organizations can reduce administrative load
 while reinforcing consistency across their access control and authentication
 strategy.
 
-## Questions
+## Perguntas
 
 - What are the main benefits of integrating Zabbix authentication with LDAP or
   Active Directory compared to using only internal Zabbix accounts?
@@ -401,6 +401,6 @@ strategy.
   provisioning ensure that Zabbix access is also updated? What would happen if
   JIT was not enabled?
 
-## Useful URLs
+## URLs úteis
 
 - [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap)
