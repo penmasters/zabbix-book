@@ -1,7 +1,5 @@
 # Secrets Management in Zabbix with HashiCorp Vault
 
----
-
 ## 1. Why Use a Secrets Manager?
 
 In most monitoring environments, credentials are inevitably spread across many places: SNMP community strings, SSH private keys, database passwords, API tokens, and WMI credentials all need to reach the monitoring system somehow. Without a dedicated secrets manager, these credentials are typically stored in one or more of the following ways:
@@ -300,16 +298,15 @@ VaultURL=https://vault.example.com:8200
 
 # Path to the secret containing the Zabbix database credentials.
 # Zabbix reads the 'username' and 'password' keys from this path.
-# The mount point 'zabbix/' is handled by Vault internally, so only
-# the path relative to the mount point is needed here.
+# The full path including the mount point is required.
 # This resolves to: /v1/zabbix/data/server
-VaultDBPath=server
+VaultDBPath=zabbix/server
 
 # Vault token for the Zabbix server — created in section 4.5
 VaultToken=<zabbix-server token from section 4.5>
 ```
 
-> **Note:** `VaultDBPath` is set to `server`, which resolves to `/v1/zabbix/data/server` — the path where the server credentials were stored in section 4.2.
+> **Note:** `VaultDBPath` requires the full path including the mount point: `zabbix/server`. This resolves to `/v1/zabbix/data/server` — the path where the server credentials were stored in section 4.2.
 
 ### 5.3 TLS Certificate Verification
 
@@ -353,7 +350,7 @@ $DB['VAULT_TOKEN'] = '<zabbix-frontend token from section 4.5>';
 // $DB['VAULT_CACERT'] = '/etc/zabbix/ssl/vault-ca.pem';
 ```
 
-> **Note:** Unlike `VaultDBPath` in `zabbix_server.conf` which uses only the relative path, `$DB['VAULT_DB_PATH']` requires the full path including the mount point: `zabbix/frontend`. This resolves to `/v1/zabbix/data/frontend`.
+> **Note:** Both `$DB['VAULT_DB_PATH']` and `VaultDBPath` in `zabbix_server.conf` require the full path including the mount point. `zabbix/frontend` resolves to `/v1/zabbix/data/frontend`.
 
 ### 6.2 Secure the Configuration File
 
@@ -361,14 +358,10 @@ The `zabbix.conf.php` file now contains a Vault token. Ensure it is only readabl
 
 ```bash
 sudo chown apache:apache /etc/zabbix/web/zabbix.conf.php
-sudo chmod 640 /etc/zabbix/web/zabbix.conf.php
+sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
 ```
 
-### 6.3 Restart the Web Server
-
-```bash
-sudo systemctl restart httpd
-```
+> PHP reads `zabbix.conf.php` at runtime on each request — no web server restart is needed after editing it.
 
 ## 7. Using Vault Secrets as Macros in Zabbix
 
@@ -653,7 +646,3 @@ vault audit enable file file_path=/var/log/vault/audit.log
 # Tail the audit log
 sudo tail -f /var/log/vault/audit.log | jq '.request.path'
 ```
-
----
-
-*This chapter covers Zabbix 7.4 with HashiCorp Vault using the KV v1 secrets engine. For the most current parameter names and defaults, always refer to the [official Zabbix documentation](https://www.zabbix.com/documentation/7.4/en/manual/config/secrets/hashicorp).*
