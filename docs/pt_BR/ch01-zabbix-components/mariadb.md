@@ -510,7 +510,7 @@ we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
     Please be patient and avoid cancelling the operation; just wait for the linux 
     prompt to reappear.
 
-???+ note
+Nota
 
     Zabbix seems to like to change the locations of the script to populate the
     DB every version or even in between versions. If you encounter an error take a
@@ -552,7 +552,7 @@ configuration.
 
 ---
 
-## Questions
+## Perguntas
 
 1. What version of MariaDB should I install for compatibility and stability?
 2. What port does my DB use ?
@@ -560,7 +560,7 @@ configuration.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://mariadb.org/download/](https://mariadb.org/download/)
 - [https://mariadb.com/docs/server/server-usage/stored-routines/binary-logging-of-stored-routines](https://mariadb.com/docs/server/server-usage/stored-routines/binary-logging-of-stored-routines)
