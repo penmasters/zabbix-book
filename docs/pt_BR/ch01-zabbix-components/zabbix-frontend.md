@@ -11,7 +11,7 @@ description: |
 tags: [beginner]
 ---
 
-# Installing the frontend
+# Instalando o front-end
 
 Before configuring the Zabbix frontend, ensure the system meets the requirements
 and is prepared as outlined in the previous chapter: [_Getting
@@ -303,7 +303,7 @@ This should help you in locating the errors you made.
 Upon accessing the appropriate URL, a page resembling the one illustrated below
 should appear:
 
-![overview](ch01-basic-installation-setup.png){ align=left }
+![visualização](ch01-basic-installation-setup.png){ align=left }
 
 _1.4 Zabbix welcome_
 
@@ -563,11 +563,11 @@ level.
 
 ---
 
-## Questions
+## Perguntas
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)
