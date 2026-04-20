@@ -292,7 +292,7 @@ stopped. This makes sure that data is preserved in case the Zabbix server is
 unreachable for a longer period or when there are bursts of many incoming items
 and hereby balances speed and reliability.
 
-???+ warning
+???+ aviso
 
     In Proxies that where installed before `7.0` the data was first written to
     disk in the database and then sent to the `Zabbix server`. For these installations
@@ -391,7 +391,7 @@ IP/hostname of this proxy instead of the _Zabbix server_.
 
 ---
 
-## Conclusion
+## Conclusão
 
 This chapter has demonstrated the indispensable role of Zabbix proxies in
 building robust, scalable, and distributed monitoring infrastructures. We've
