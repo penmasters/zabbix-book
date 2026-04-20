@@ -324,6 +324,7 @@ If Vault uses a publicly trusted certificate, this parameter is not required.
 ```bash
 sudo systemctl restart zabbix-server
 sudo journalctl -u zabbix-server -f
+sudo tail -f /var/log/zabbix/zabbix_server.log
 ```
  
 Check the log for a successful start. If the Vault token or path is incorrect, the server will log an error and fail to start.
