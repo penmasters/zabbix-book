@@ -361,7 +361,7 @@ The `zabbix.conf.php` file now contains a Vault token. Ensure it is only readabl
 
 ```bash
 sudo chown apache:apache /etc/zabbix/web/zabbix.conf.php
-sudo chmod 640 /etc/zabbix/web/zabbix.conf.php
+sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
 ```
 
 ### 6.3 Restart the Web Server
