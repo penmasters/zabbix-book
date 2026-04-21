@@ -22,7 +22,7 @@ An HTTP server has a file with credentials that is used to authenticate users.
 
 First let's see how we can configure basic authentication in HTTP server.
 
-???+ warning
+???+ aviso
 
     The examples below provide just minimum set of options to configure
     basic authentication. Please refer to respective HTTP server documentation
@@ -134,7 +134,7 @@ Find `<Directory "/usr/share/zabbix">` block in Apache HTTPD configuration file
 that defines your Zabbix WebUI (in my case it is `/etc/zabbix/apache.conf`) and
 add these lines:
 
-Nota
+???+ Nota
 
     By default configuration has `Require all granted`, remove this line.
 

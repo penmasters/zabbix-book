@@ -313,7 +313,7 @@ user, or deactivate just click on it and experiment.
 
 _2.56 New user registered in DUO_
 
-## Conclusion
+## Conclusão
 
 Implementing Multi-Factor Authentication (MFA) in Zabbix is a powerful way to
 significantly advance your system’s security beyond the standard password
