@@ -31,7 +31,7 @@ principais, que discutiremos em detalhes.
     needed.
 
 
-![visualização](ch01-basic-installation-zabbixserver.png){ align=left }
+![overview](ch01-basic-installation-zabbixserver.png){ align=left }
 
 _1.1 Instalação da divisão básica do Zabbix_
 

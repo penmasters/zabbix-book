@@ -21,7 +21,7 @@ LDAP-authenticatie kan in twee modi worden geconfigureerd:
 - Gebruikers authenticatie
 - Users authentication with users provisioning
 
-## Users authentication mode
+## Verificatiemodus voor gebruikers
 
 The process of the authenticating users follows this diagram.
 
