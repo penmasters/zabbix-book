@@ -5,15 +5,16 @@ description: |
 tags: [beginner]
 ---
 
-# Database choices
+# Opções de banco de dados
 
-## Choosing a Database Backend for Zabbix
+## Escolhendo um back-end de banco de dados para o Zabbix
 
-A critical decision when managing Zabbix installations is selecting the database
-backend. Zabbix supports several database options: MySQL/Percona, MariaDB,
-PostgreSQL (including TimescaleDB), and Oracle (up to Zabbix 7.0).
+Uma decisão crítica ao gerenciar as instalações do Zabbix é selecionar o backend
+do banco de dados. O Zabbix suporta várias opções de banco de dados:
+MySQL/Percona, MariaDB, PostgreSQL (incluindo TimescaleDB) e Oracle (até o
+Zabbix 7.0).
 
-???+ warning "Oracle Database deprecation"
+Aviso "Oracle Database deprecation" (depreciação do banco de dados Oracle)
 
     Zabbix 7.0 marks the final release to offer support for Oracle Database.
     Consequently, systems running Zabbix 7.0 or any prior version must undertake
@@ -22,20 +23,23 @@ PostgreSQL (including TimescaleDB), and Oracle (up to Zabbix 7.0).
     mandatory step to ensure continued functionality and compatibility with future
     Zabbix versions.
 
-All supported databases perform similarly under typical Zabbix workloads, and
-Zabbix treats them equally in terms of functionality. As such, the choice
-primarily depends on your or your team’s familiarity with a particular database
-system. One notable exception is TimescaleDB, a PostgreSQL extension optimized
-for time-series data. This makes it especially well-suited for monitoring
-applications like Zabbix, which handle large volumes of timestamped data.
+Todos os bancos de dados suportados têm desempenho semelhante em cargas de
+trabalho típicas do Zabbix, e o Zabbix os trata da mesma forma em termos de
+funcionalidade. Dessa forma, a escolha depende principalmente da sua
+familiaridade ou da familiaridade da sua equipe com um sistema de banco de dados
+específico. Uma exceção notável é o TimescaleDB, uma extensão do PostgreSQL
+otimizada para dados de séries temporais. Isso o torna especialmente adequado
+para aplicativos de monitoramento como o Zabbix, que lidam com grandes volumes
+de dados com registro de data e hora.
 
-In large-scale environments with high-frequency data collection, TimescaleDB can
-deliver significant performance benefits, including improved query speeds and
-built-in compression to reduce storage requirements. However, these advantages
-come with added complexity during installation and a few restrictions on
-historical data retention.
+Em ambientes de grande escala com coleta de dados de alta frequência, o
+TimescaleDB pode oferecer benefícios significativos de desempenho, incluindo
+velocidades de consulta aprimoradas e compactação integrada para reduzir os
+requisitos de armazenamento. No entanto, essas vantagens são acompanhadas de
+maior complexidade durante a instalação e de algumas restrições à retenção de
+dados históricos.
 
-???+ tip "TimescaleDB installation"
+???+ dica "Instalação do TimescaleDB"
 
     Given its advanced nature, TimescaleDB is not essential for most Zabbix users.
     As such, its installation is beyond the scope of this chapter. If you plan to
@@ -44,20 +48,21 @@ historical data retention.
 
 ---
 
-## Choosing the Source for Database Installation
+## Escolhendo a origem para a instalação do banco de dados
 
-In this chapter we will focus on installing MariaDB and PostgreSQL, as they are
-the most commonly used databases with Zabbix. For MySQL or Percona
-installations, except for the package installation commands, the steps are very
-similar to MariaDB.
+Neste capítulo, vamos nos concentrar na instalação do MariaDB e do PostgreSQL,
+pois eles são os bancos de dados mais comumente usados com o Zabbix. Para
+instalações do MySQL ou do Percona, com exceção dos comandos de instalação de
+pacotes, as etapas são muito semelhantes às do MariaDB.
 
-When installing MariaDB or PostgreSQL you must determine the source from which
-you will want to install the database server. Two primary options are available:
+Ao instalar o MariaDB ou o PostgreSQL, você deve determinar a origem a partir da
+qual deseja instalar o servidor de banco de dados. Há duas opções principais
+disponíveis:
 
-1. **Vendor-Provided Packages**
+1. **Pacotes fornecidos pelo fornecedor**
 
-: These are included in the software repositories of most Linux distributions
-and are maintained by the distribution vendor.
+: Estão incluídos nos repositórios de software da maioria das distribuições
+Linux e são mantidos pelo fornecedor da distribuição.
 
     **Advantages:**
 
@@ -80,10 +85,10 @@ and are maintained by the distribution vendor.
       - **Vendor modifications:** Default configurations, log directories, and data
         paths may be altered to align with distribution-specific standards.
 
-2. **Official MariaDB/PostgreSQL Repositories**
+2. **Repositórios oficiais do MariaDB/PostgreSQL**
 
-: These repositories provide packages directly from MariaDB/PostgreSQL and offer
-access to the latest stable releases.
+: Esses repositórios fornecem pacotes diretamente do MariaDB/PostgreSQL e
+oferecem acesso às versões estáveis mais recentes.
 
     **Advantages:**
 
@@ -112,7 +117,7 @@ configuration requirements and is prepared as outlined in the previous chapter:
 
 ---
 
-## Conclusion
+## Conclusão
 
 We have discussed the various database backends supported by Zabbix. We've also
 examined the advantages and disadvantages of using vendor-provided packages

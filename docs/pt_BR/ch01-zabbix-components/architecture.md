@@ -31,7 +31,7 @@ principais, que discutiremos em detalhes.
     needed.
 
 
-![visualização](ch01-basic-installation-zabbixserver.png){ align=left }
+![overview](ch01-basic-installation-zabbixserver.png){ align=left }
 
 _1.1 Instalação da divisão básica do Zabbix_
 
@@ -55,7 +55,7 @@ Para nossa configuração, usaremos duas máquinas virtuais (VMs): uma VM hosped
 o Zabbix Server e o Frontend, enquanto a segunda VM hospedará o banco de dados
 do Zabbix.
 
-Nota
+???+ Nota
 
     It is perfectly possible to install all components on one single VM or every component
     on a separate VM.

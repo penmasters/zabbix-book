@@ -76,7 +76,7 @@ initial **User Type** before any **Custom User Role** adjustments are made.
 | General                  |      |       |      ✅      |
 | Audit log                |      |       |      ✅      |
 | Housekeeping             |      |       |      ✅      |
-| Proxy groups             |      |       |      ✅      |
+| Grupos de proxy          |      |       |      ✅      |
 | Proxies                  |      |       |      ✅      |
 | Macros                   |      |       |      ✅      |
 | Queue                    |      |       |      ✅      |
@@ -286,7 +286,7 @@ if their **User Group** has no permissions to any **Host Groups**, they will see
 an empty host list. This layered approach ensures both security and a tailored
 user experience.
 
-## Conclusion
+## Conclusão
 
 Zabbix's **User Roles** and **User Groups** together form the foundation of a
 secure and flexible access control model. User Roles define **what a person can
@@ -300,7 +300,7 @@ template maintainers or automation accounts. This separation of function and
 visibility not only strengthens security but also creates a cleaner, more
 focused user experience for every role within the monitoring ecosystem.
 
-## Questions
+## Perguntas
 
 - What is the key difference between a **User Role** and a **User Group** in
   Zabbix?
@@ -311,6 +311,6 @@ focused user experience for every role within the monitoring ecosystem.
 - How can role-based API permissions help reduce risk in automation or DevOps
   workflows?
 
-## Useful URLs
+## URLs úteis
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions#user-types](https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions#user-types)

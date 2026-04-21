@@ -193,7 +193,7 @@ With the Zabbix server configuration updated to connect to your database, you
 can now start and enable the Zabbix server service. Run the following command to
 enable the Zabbix server and ensure it starts automatically on boot:
 
-Nota
+???+ Nota
 
     Before restarting the Zabbix server after modifying its configuration, it is
     considered best practice to validate the configuration to prevent potential
@@ -331,7 +331,7 @@ This concludes our chapter on installing and configuring the Zabbix server.
 
 ---
 
-## Conclusion
+## Conclusão
 
 With the successful installation and configuration of the Zabbix server, you
 have now established the core component of your monitoring system. We've covered

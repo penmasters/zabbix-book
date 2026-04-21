@@ -1,63 +1,65 @@
-# Welcome
+# Bem-vindo
 
-This book is born from a simple desire: **to give back**. After years of working
-with Zabbix, and authoring previous many other publications about the platform,
-Patrik and Nathan felt a strong pull to share their knowledge in a way that was
-accessible to everyone. That's how the initial idea of a free, online Zabbix
-resource was conceived – **a community-driven project dedicated to empowering
-users**.
+Este livro nasceu de um desejo simples: **para retribuir**. Depois de anos de
+trabalho com o Zabbix e da autoria de muitas outras publicações anteriores sobre
+a plataforma, Patrik e Nathan sentiram um forte impulso para compartilhar seu
+conhecimento de uma forma que fosse acessível a todos. Foi assim que a ideia
+inicial de um recurso Zabbix on-line e gratuito foi concebida - **um projeto
+voltado para a comunidade e dedicado a capacitar os usuários**.
 
-As the online resource grew, so did the vision. We recognized the potential to
-create something even more impactful. This led to the formation of a foundation,
-dedicated to ensuring the long-term sustainability and growth of this community
-effort. This book, a tangible culmination of that vision, represents the next
-step. All profits generated from its sales will be reinvested back into the
-community, enabling us to further expand and enhance the resources and support
-we offer. This is more than just a book; it's a testament to the power of shared
-knowledge and a commitment to fostering a thriving Zabbix community."
+À medida que o recurso on-line crescia, a visão também crescia. Reconhecemos o
+potencial de criar algo ainda mais impactante. Isso levou à formação de uma
+fundação, dedicada a garantir a sustentabilidade e o crescimento de longo prazo
+desse esforço comunitário. Este livro, uma culminação tangível dessa visão,
+representa a próxima etapa. Todos os lucros gerados por suas vendas serão
+reinvestidos na comunidade, o que nos permitirá expandir e aprimorar ainda mais
+os recursos e o suporte que oferecemos. Este é mais do que apenas um livro; é
+uma prova do poder do conhecimento compartilhado e do compromisso de promover
+uma comunidade Zabbix próspera."
 
-## License
+## Licença
 
-Please note: The english version is the primary source document. Translations
-are provided for convenience, but this version is considered the most accurate.
+Observação: a versão em inglês é o documento de origem principal. As traduções
+são fornecidas por conveniência, mas esta versão é considerada a mais precisa.
 
 
-Please before you start take a look at our most updated license :
-[License](https://github.com/penmasters/zabbix-book/blob/main/readme.md) on
+Antes de começar, dê uma olhada na nossa licença mais atualizada:
+[License](https://github.com/penmasters/zabbix-book/blob/main/readme.md) no
 Github.
 
-*The Zabbix Book* is a freely accessible resource designed to help users
-understand and master Zabbix. Contributions are highly encouraged to improve and
-expand its content. However, the book is distributed under the **Creative
-Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)** license,
-meaning it is free for non-commercial use only.
+*O Livro do Zabbix* é um recurso de acesso livre projetado para ajudar os
+usuários a entender e dominar o Zabbix. As contribuições são altamente
+incentivadas para melhorar e expandir seu conteúdo. No entanto, o livro é
+distribuído sob a licença **Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)**, o que significa
+que é gratuito apenas para uso não comercial.
 
-Contributors should be aware that:
+Os colaboradores devem estar cientes de que:
 
-- By contributing to this work, you irrevocably assign and transfer all rights,
-  title, and interest in your contributions to **The Monitoring Penmasters
-  Foundation**, including any associated intellectual property rights, to the
-  fullest extent permitted by law.
-- **The Monitoring Penmasters Foundation** reserves the right to use, reproduce,
-  modify, distribute, and commercially exploit any contributed material in any
-  form, including but not limited to the publication of physical and digital
-  books.
-- All contributors must sign a **Deed of Transfer of Intellectual Property
-  Rights** before making any contributions, ensuring the proper transfer of
-  rights and handling of the content by **The Monitoring Penmasters
-  Foundation**. Any contributions without a signed **Deed of Transfer of
-  Intellectual Property Rights** cannot be accepted.
-- All profits generated will be used by The Monitoring Penmasters Foundation to
-  cover operational expenses and to sponsor other open-source projects, as
-  determined by the foundation.
+- Ao contribuir para este trabalho, você atribui e transfere irrevogavelmente
+  todos os direitos, títulos e interesses em suas contribuições para **The
+  Monitoring Penmasters Foundation**, incluindo quaisquer direitos de
+  propriedade intelectual associados, na extensão máxima permitida por lei.
+- **A Monitoring Penmasters Foundation** reserva-se o direito de usar,
+  reproduzir, modificar, distribuir e explorar comercialmente qualquer material
+  contribuído de qualquer forma, incluindo, entre outros, a publicação de livros
+  físicos e digitais.
+- Todos os colaboradores devem assinar um **Termo de Transferência de Direitos
+  de Propriedade Intelectual** antes de fazer qualquer contribuição, garantindo
+  a transferência adequada de direitos e o manuseio do conteúdo pela **The
+  Monitoring Penmasters Foundation**. Não serão aceitas contribuições sem o
+  **Deed of Transfer of Intellectual Property Rights** assinado.
+- Todos os lucros gerados serão usados pela The Monitoring Penmasters Foundation
+  para cobrir despesas operacionais e patrocinar outros projetos de código
+  aberto, conforme determinado pela fundação.
 
-Your contributions are invaluable and will help make *The Zabbix Book* an even
-greater resource for the entire community!
+Suas contribuições são inestimáveis e ajudarão a tornar o *The Zabbix Book* um
+recurso ainda melhor para toda a comunidade!
 
-Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
+Escudo: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
-[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-License][cc-by-nc-sa].
+[Licença Internacional Creative Commons Atribuição-NãoComercial-CompartilhaIgual
+4.0][cc-by-nc-sa].
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
 
