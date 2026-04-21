@@ -362,7 +362,7 @@ This table outlines the combined, **effective rights** for the user
 | **`HG_Critical_Databases`** | Read-only                          | Deny                                | **Deny**                 | Access is **Blocked** (host is hidden). |
 
 
-## Conclusion
+## Conclusão
 
 Because test_junior belongs to a group that explicitly denies access to the
 Critical Databases, the host is hidden entirely, proving that Deny Always Wins
@@ -370,7 +370,7 @@ regardless of other permissions. So we can conclude that user groups form the
 essential foundation of access control in Zabbix 8.0. They define *what* each
 user can see and configure (via host/template permissions).
 
-## Questions
+## Perguntas
 
 - If a user only has Read-only permissions assigned to a Template Group, will
   they be able to see those templates listed under Data collection → Templates?
@@ -385,7 +385,7 @@ user can see and configure (via host/template permissions).
   Alice's effective permissions for the hosts in HG_Webservers? Can she view or
   modify them, and why?
 
-## Useful URLs
+## URLs úteis
 
 - <https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/usergroup>
 - <https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions>
