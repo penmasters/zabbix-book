@@ -648,7 +648,7 @@ VaultTLSCAFile=/etc/zabbix/ssl/vault-ca.pem
 $DB['VAULT_CACERT'] = '/etc/zabbix/ssl/vault-ca.pem';
 ```
 
-### 8.2 Client Certificate Authentication (mTLS)
+### Client Certificate Authentication (mTLS)
 
 Zabbix does not currently support client certificates for Vault authentication
 natively. Use **AppRole** authentication as the recommended alternative for strong
