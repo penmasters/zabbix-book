@@ -825,9 +825,78 @@ vault audit enable file file_path=/var/log/vault/audit.log
 # Tail the audit log
 sudo tail -f /var/log/vault/audit.log | jq '.request.path'
 ```
+## Vault GUI
+
+All configuration and verification tasks described in this chapter can also be
+performed through the Vault web interface, available at `https://<vault-server>:8200`.
+
+After logging in with your token you can:
+
+- Browse secrets under the `zabbix/` mount point, provided your token has the
+  appropriate metadata list permissions.
+- Create, update, and view secret versions.
+- View and manage policies under **Policies**.
+- View token details and check expiry under **Access → Tokens**.
+- Enable and review the audit log under **Access → Audit**.
+
+The GUI is particularly useful for day-to-day secret management such as rotating
+credentials, log in with the root token, navigate to the secret, and update the
+value. Then trigger a reload on the Zabbix server:
+
+```bash
+zabbix_server -R secrets_reload
+```
+![ch13_vault_login.png](ch13_vault_login.png)
+
+_ch13 vault login_
+
+---
 
 ## Conclusion
 
+Integrating HashiCorp Vault with Zabbix removes plaintext credentials from the
+Zabbix database entirely. Secrets are stored in a centralised, encrypted secrets
+store with fine-grained access control, full audit logging, and token-based authentication.
+The Zabbix server and frontend each use their own scoped token, limiting the blast
+radius of a potential compromise.
+
+The `zabbix/monitoring/*` path structure means new monitoring secrets can be
+added at any time without policy changes, keeping operational overhead low. In
+distributed setups with proxies, the same pattern applies, each proxy gets its
+own scoped token, with the choice between a single centralised Vault or a local
+Vault per site depending on network topology and resilience requirements.
+
+The setup described in this chapter covers the core integration. As your environment
+grows, consider implementing token renewal automation and a dedicated admin policy
+for day-to-day secret management to avoid using the root token for routine tasks.
+
+---
+
 ## Questions
 
+- What is the main security advantage of using HashiCorp Vault over storing
+  credentials directly in Zabbix macros of type *Secret text*?
+- The Vault HTTP API always uses `/v1/` in its URL paths. What does this `/v1/`
+  refer to, and how does it relate to the KV engine version?
+- In our setup, two separate Vault tokens are created, one for the Zabbix
+  server and one for the Zabbix frontend. Why is it important to use separate
+  tokens instead of one shared token?
+- After updating a Vault policy, an existing token still gets a `403 Forbidden`
+  error. What is the cause and how do you resolve it?
+- You have a Zabbix environment with 1 server and 3 proxies. Each proxy monitors
+  hosts in a different location. Describe how you would organise Vault secrets
+  and policies to follow the principle of least privilege.
+
+---
+
 ## Useful URLs
+
+- [Zabbix 7.4 — HashiCorp Vault integration](https://www.zabbix.com/documentation/7.4/en/manual/config/secrets/hashicorp)
+- [Zabbix 7.4 — Secrets management overview](https://www.zabbix.com/documentation/7.4/en/manual/config/secrets)
+- [HashiCorp Vault documentation](https://developer.hashicorp.com/vault/docs)
+- [Vault KV v2 secrets engine](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2)
+- [Vault token authentication](https://developer.hashicorp.com/vault/docs/auth/token)
+- [Vault AppRole authentication](https://developer.hashicorp.com/vault/docs/auth/approle)
+- [Vault policies](https://developer.hashicorp.com/vault/docs/concepts/policies)
+- [HashiCorp Vault RHEL installation](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install)
+
