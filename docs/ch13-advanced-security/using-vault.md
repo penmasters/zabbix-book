@@ -327,10 +327,17 @@ vault write auth/token/roles/zabbix \
 
 ### Create Tokens for Frontend and Server
 
-> **Token renewal — Zabbix 7.0.5 and later**
-> Since Zabbix 7.0.5, the Zabbix server and proxy can automatically renew **renewable service tokens** and **periodic service tokens**. This means you no longer need a cron job or manual renewal process for long-running deployments. Periodic tokens are a strong fit here — Vault can renew them indefinitely unless an explicit `explicit_max_ttl` is imposed. The token role created in section 4.4 uses `period="720h"` which produces periodic tokens that Zabbix will renew automatically.
+!!! note
+
+    Since Zabbix 7.0.5, the Zabbix server and proxy can automatically renew **renewable service
+    tokens** and **periodic service tokens**. This means you no longer need a cron job or manual
+    renewal process for long-running deployments. Periodic tokens are a strong fit here, Vault can
+    renew them indefinitely unless an explicit `explicit_max_ttl` is imposed. The token role
+    created in previous section `period="720h"` which produces periodic tokens that Zabbix will
+    renew automatically.
  
-Create a separate token for each component using the role created in section 4.4. The `-type=service` flag explicitly creates a renewable service token:
+Create a separate token for each component using the role created in previous section The
+`-type=service` flag explicitly creates a renewable service token:
 
 ```bash
 # Token for the Zabbix frontend
@@ -348,10 +355,12 @@ vault token create \
     -display-name="zabbix-server"
 ```
 
-The output includes a `token_renewable true` field confirming the token can be renewed. Note the `token` value from each output — you will use them in the configuration files in sections 5 and 6.
+The output includes a `token_renewable true` field confirming the token can be renewed.
 
-Note the `token` value from each output, you will use them in some files in
-the following configuration sections.
+!!! note
+
+    Note the `token` value from each output, you will use them in the following configuration
+    files.
 
 Verify each token can access its respective secret:
 
