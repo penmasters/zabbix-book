@@ -7,83 +7,85 @@ description: |
 tags: [advanced]
 ---
 
-# Active and Passive proxies
+# Proxies ativos e passivos
 
-Whether you want to install an Active proxy or a Passive one, much of the
-installation and configuration steps are the same.
-
----
-
-## Zabbix GUI configuration
-
-There are 2 things we need to do when we like to setup a Zabbix proxy and one of
-those steps is adding the proxy in the frontend of Zabbix. So from the menu
-let's select `Administration` => `Proxies` and click in the upper right corner
-on `Create proxy`.
-
-![Create proxy](ch03-add-active-proxy.png)
-
-_3.3 Create proxy_
-
-Once pressed, a new modal form will pop-up where we need to fill in some
-information.
+Independentemente de você querer instalar um proxy ativo ou passivo, grande
+parte das etapas de instalação e configuração são as mesmas.
 
 ---
 
-### Active proxy
+## Configuração da GUI do Zabbix
 
-For active proxies we only need to enter the _Proxy name_ field. Here we will
-enter `ProxyA` to remind us this will be an active proxy. Don't worry about the
-other fields we will cover them later. In the _Description_ field you could
-enter some text to make it even more clear that this is an active proxy.
+Há duas coisas que precisamos fazer quando queremos configurar um proxy Zabbix e
+uma dessas etapas é adicionar o proxy no frontend do Zabbix. Então, no menu,
+vamos selecionar `Administration` => `Proxies` e clicar no canto superior
+direito em `Create proxy`.
 
-???+ note
+![Criar proxy](ch03-add-active-proxy.png)
+
+_3.3 Criar proxy_
+
+Uma vez pressionado, um novo formulário modal será exibido, no qual precisaremos
+preencher algumas informações.
+
+---
+
+### Proxy ativo
+
+Para proxies ativos, só precisamos digitar o campo _Proxy name_. Aqui,
+digitaremos `ProxyA` para nos lembrar de que esse será um proxy ativo. Não se
+preocupe com os outros campos, pois eles serão abordados posteriormente. No
+campo _Description_, você pode inserir algum texto para deixar ainda mais claro
+que este é um proxy ativo.
+
+???+ nota
 
     For Zabbix active proxies, you only need to specify the hostname during configuration.
     This hostname acts as the unique identifier that the Zabbix server uses to distinguish
     between different active proxies and manage their data correctly.
 
-![Active proxy](ch03-new-active-proxy.png)
+![Proxy ativo](ch03-new-active-proxy.png)
 
-_3.4 New proxy_
-
----
-
-### Passive proxy
-
-For the passive proxy we will enter `ProxyP` as _Proxy name_ but now we also
-need to specify the _Interface_ field. Here we add the IP of the host where our
-proxy runs on. You also notice that we use the same port `10051` as the _Zabbix
-server_ to communicate with our proxy.
-
-![Passive proxy](ch03-new-passive-proxy.png)
-
-_3.5 New passive proxy_
+_3.4 Novo proxy_
 
 ---
 
-## Installing the proxy
+### Proxy passivo
 
-Next up, we need to get the Zabbix proxy software onto a system that will
-function as Zabbix Proxy. Set up a new system or VM and make sure it meets the
-requirements as outlined in the [_Getting Started:
-Requirements_](../ch00-getting-started/Requirements.md) chapter.
+Para o proxy passivo, digitaremos `ProxyP` como _Nome do proxy_, mas agora
+também precisamos especificar o campo _Interface_. Aqui adicionamos o IP do host
+em que nosso proxy é executado. Você também notou que usamos a mesma porta
+`10051` que o servidor Zabbix __ para nos comunicarmos com o nosso proxy.
 
-As the Zabbix proxy is actually a small _Zabbix server_, we also need to make
-sure the system is prepared for Zabbix as outlined in [_Preparing the server for
+![Proxy passivo](ch03-new-passive-proxy.png)
+
+_3.5 Novo proxy passivo_
+
+---
+
+## Instalando o proxy
+
+Em seguida, precisamos colocar o software proxy Zabbix em um sistema que
+funcionará como Zabbix Proxy. Configure um novo sistema ou VM e certifique-se de
+que ele atenda aos requisitos descritos no capítulo [_Vamos começar:
+Requerimentos_](../ch00-getting-started/Requirements.md).
+
+Como o proxy do Zabbix é, na verdade, um pequeno _servidor Zabbix_, também
+precisamos nos certificar de que o sistema esteja preparado para o Zabbix,
+conforme descrito em [_Preparando o servidor para o
 Zabbix_](../ch00-getting-started/preparation.md).
 
-Now that your system is ready and knows where to find the Zabbix software
-packages, we can actually install the Zabbix Proxy software. It's pretty simple,
-but there's one thing we need to decide upfront. Zabbix proxies need a place to
-store their information, and they can use one of three options: MySQL/MariaDB,
-PostgreSQL, or SQLite3.
+Agora que seu sistema está pronto e sabe onde encontrar os pacotes de software
+Zabbix, podemos realmente instalar o software Zabbix Proxy. É bastante simples,
+mas há uma coisa que precisamos decidir antecipadamente. Os proxies do Zabbix
+precisam de um local para armazenar suas informações e podem usar uma destas
+três opções: MySQL/MariaDB, PostgreSQL ou SQLite3.
 
-We will only cover SQlite as MySQL and PostgreSQL are basically already covered
-in the [_Zabbix components and installation:
-Database_](../ch01-zabbix-components/database.md) chapter.
+Abordaremos apenas o SQlite, pois o MySQL e o PostgreSQL já foram abordados no
+capítulo [_Zabbix componentes e instalação:
+Database_](../ch01-zabbix-components/database.md).
 
-???+ note
+???+ nota
 
     The only thing that is a bit different when you setup a MySQL or
     PostgreSQL database for use with a Zabbix Proxy instead of a Zabbix Server 
@@ -92,7 +94,7 @@ Database_](../ch01-zabbix-components/database.md) chapter.
     - For MySQL/MariaDB they are located in `/usr/share/zabbix/sql-scripts/mysql/proxy.sql`.
     - For PostgreSQL they can be found in `/usr/share/zabbix/sql-scripts/postgresql/proxy.sql`.
 
-!!! info "Install zabbix-proxy-sqlite3"
+!!! info "Instalar zabbix-proxy-sqlite3"
 
     Red Hat
     ```
@@ -109,33 +111,33 @@ Database_](../ch01-zabbix-components/database.md) chapter.
     sudo apt install zabbix-proxy-sqlite3
     ```
 
-???+ tip
+???+ dica
 
     If you want to use MySQL or PostgreSQL then you can use the package `zabbix-proxy-mysql`
     or `zabbix-proxy-pgsql` depending on your needs.
 
 ---
 
-## Configuring the proxy
+## Configuração do proxy
 
-Now that we have installed the required packages we still have to do a few
-configuration changes.
+Agora que instalamos os pacotes necessários, ainda precisamos fazer algumas
+alterações na configuração.
 
-Just like with the Zabbix server (or agent for that matter), the configuration
-file offers an option to include additional configuration files for custom
-parameters. In general, and especially in a production environment, it's often
-best to avoid altering the original configuration file directly. Instead you can
-create and include separate configuration files for any additional or modified
-parameters.
+Assim como no servidor Zabbix (ou no agente, nesse caso), o arquivo de
+configuração oferece uma opção para incluir arquivos de configuração adicionais
+para parâmetros personalizados. Em geral, e especialmente em um ambiente de
+produção, é melhor evitar alterar diretamente o arquivo de configuração
+original. Em vez disso, você pode criar e incluir arquivos de configuração
+separados para quaisquer parâmetros adicionais ou modificados.
 
-On SUSE 16 and later, this feature is already enabled and configured by default
-in `/usr/etc/zabbix/zabbix_proxy.conf`.
+No SUSE 16 e posterior, esse recurso já está ativado e configurado por padrão em
+`/usr/etc/zabbix/zabbix_proxy.conf`.
 
-On other distributions, you may need to enable it manually in
+Em outras distribuições, talvez seja necessário ativá-lo manualmente em
 `/etc/zabbix/zabbix_proxy.conf`.
 
-To enable this feature, ensure the next line exists and is not commented (with a
-`#` in front of it):
+Para ativar esse recurso, certifique-se de que a próxima linha exista e não
+esteja comentada (com um `#` na frente dela):
 
 !!! info ""
 
@@ -143,47 +145,46 @@ To enable this feature, ensure the next line exists and is not commented (with a
     Include=/etc/zabbix/zabbix_proxy.d/*.conf
     ```
 
-The path `/etc/zabbix/zabbix_proxy.d/` should already be created by the
-installed package, but ensure it really exists.
+O caminho `/etc/zabbix/zabbix_proxy.d/` já deve ter sido criado pelo pacote
+instalado, mas verifique se ele realmente existe.
 
-Now we will create a custom configuration file `general.conf` in this
-`/etc/zabbix/zabbix_proxy.d/` directory that will hold some general proxy
-settings:
+Agora, criaremos um arquivo de configuração personalizado `general.conf` neste
+diretório `/etc/zabbix/zabbix_proxy.d/` que conterá algumas configurações gerais
+de proxy:
 
-- The first option we will have to set is `ProxyMode`:
-    - Set this to `0` for an _Active_ proxy.
-    - Set this to `1` for a _Passive_ proxy.
+- A primeira opção que teremos de definir é `ProxyMode`:
+    - Defina isso como `0` para um proxy _Ativo_.
+    - Defina isso como `1` para um proxy _Passivo_.
 
-- The other option that is important is the option `Server` which defaults to
-  `127.0.0.1`, so we need to replace this with the IP or DNS name of our _Zabbix
-  Server_.
+- A outra opção importante é a `Server`, cujo padrão é `127.0.0.1`, portanto,
+  precisamos substituí-la pelo IP ou nome DNS do nosso _Zabbix Server_.
 
-???+ note
+???+ nota
 
     You can fill in multiple servers here in case you have more than one _Zabbix Server_
     connecting to your proxy. Also the port can be added here in case your server
     listens on another port then the standard port `10051`. Just be careful to not
     add the IP and DNS name for the same server as this can return double values.
 
-- Another important option is `Hostname`, especially on an _Active_ proxy.
-  Remember in our frontend we gave our _Active_ proxy the name `ProxyA`, so now
-  we have to fill in the exact same name here for hostname. Just like a _Zabbix
-  agent_ in _active_ mode _Zabbix server_ will use the name as a unique
-  identifier.\
-  For a _passive_ proxy this option matters less, but for clarity it is best to
-  keep it the same: `ProxyP` in our case.
+- Outra opção importante é `Hostname`, especialmente em um proxy _Active_.
+  Lembre-se de que, em nosso frontend, demos ao nosso proxy _Active_ o nome
+  `ProxyA`, portanto, agora temos que preencher exatamente o mesmo nome aqui
+  para o hostname. Assim como um agente _Zabbix_ no modo _active_ _ Zabbix
+  server_ usará o nome como um identificador exclusivo.\
+  Para um proxy _passivo_, essa opção é menos importante, mas, para maior
+  clareza, é melhor mantê-la igual: `ProxyP` no nosso caso.
 
-- On an _Active proxy_ you may also consider setting `ProxyConfigFrequency` and
-  `DataSenderFrequency` to fine-tune communication with the _Zabbix server_, but
-  generally speaking, the defaults should suffice.
+- Em um_Proxy ativo_ , você também pode considerar a configuração de
+  `ProxyConfigFrequency` e `DataSenderFrequency` para ajustar a comunicação com
+  o _Servidor Zabbix_ , mas, de modo geral, os padrões devem ser suficientes.
 
-- Other options to consider are `ProxyOfflineBuffer` and `ProxyLocalBuffer` to
-  make sure the proxy can keep up with Zabbix server outages and the amount of
-  monitored data it ingests.
+- Outras opções a serem consideradas são `ProxyOfflineBuffer` e
+  `ProxyLocalBuffer` para garantir que o proxy possa acompanhar as interrupções
+  do servidor Zabbix e a quantidade de dados monitorados que ele ingere.
 
-The `general.conf` file should now look at least something like this:
+O arquivo `general.conf` agora deve ter pelo menos a seguinte aparência:
 
-???+ example "/etc/zabbix/zabbix_proxy.d/general.conf"
+???+ exemplo "/etc/zabbix/zabbix_proxy.d/general.conf"
 
     ``` ini
     ProxyMode=0
@@ -191,35 +192,37 @@ The `general.conf` file should now look at least something like this:
     Hostname=ProxyA
     ```
 
-To configure the database settings, create a dedicated configuration file at
-`/etc/zabbix/zabbix_proxy.d/database.conf`. This file will contain the database
-connection parameters.
+Para definir as configurações do banco de dados, crie um arquivo de configuração
+dedicado em `/etc/zabbix/zabbix_proxy.d/database.conf`. Esse arquivo conterá os
+parâmetros de conexão do banco de dados.
 
-For SQLite3 implementations, only the `DBName` parameter requires configuration,
-specifying the path to the database file. The Zabbix Proxy will automatically
-create and utilize this database file upon its initial startup.
+Para implementações do SQLite3, apenas o parâmetro `DBName` requer configuração,
+especificando o caminho para o arquivo de banco de dados. O Zabbix Proxy criará
+e utilizará automaticamente esse arquivo de banco de dados em sua inicialização.
 
-???+ example "/etc/zabbix/zabbix_proxy.d/database.conf"
+???+ exemplo "/etc/zabbix/zabbix_proxy.d/database.conf"
 
     ```ini
     DBName=/var/lib/zabbix/zabbix_proxy.db
     ```
 
-You can choose any location for the database file, however you must make sure
-the directory exists and is writable by the Zabbix proxy process.
+Você pode escolher qualquer local para o arquivo de banco de dados, mas deve se
+certificar de que o diretório existe e pode ser gravado pelo processo do Zabbix
+proxy.
 
-In our example, we chose the default _home_-dir of the `zabbix`-user as
-configured by the Zabbix packages. You can check the home dir of the user on
-your host using the `getent passwd` command:
+Em nosso exemplo, escolhemos o _home_-dir padrão do `zabbix`-user conforme
+configurado pelos pacotes do Zabbix. Você pode verificar o diretório inicial do
+usuário em seu host usando o comando `getent passwd`:
 
-???+ example "Check default homedir of user zabbix"
+Exemplo "Verifique o homedir padrão do usuário zabbix"
 
     ```shell-session
     localhost:~>getent passwd zabbix
     zabbix:x:476:476:Zabbix Monitoring System:/var/lib/zabbix:/sbin/nologin
     ```
 
-Check if the directory exists with correct permissions and SELinux context:
+Verifique se o diretório existe com as permissões corretas e o contexto do
+SELinux:
 
 ???+ example "Check existence of zabbix home-directory"
 
@@ -244,7 +247,7 @@ SELinux label `zabbix_var_lib_t`, then you will need to correct this:
     restorecon -Rv /var/lib/zabbix
     ```
 
-???+ tip
+???+ dica
 
     See [_Advanced security: SELinux_](../ch13-advanced-security/selinux-zabbix.md)
     chapter for more details about SELinux and Zabbix.
@@ -254,7 +257,7 @@ SELinux label `zabbix_var_lib_t`, then you will need to correct this:
     If you chose to use MariaDB/MySQL or PostgreSQL, please refer to [_Installing the Zabbix server_](../ch01-zabbix-components/zabbix-server.md) for the required database
     settings you will need to set in the `/etc/zabbix/zabbix_proxy.d/database.conf`-file.
 
-???+ tip
+???+ dica
 
     A list of all configuration options can be found in the Zabbix documentation.
     [https://www.zabbix.com/documentation/current/en/manual/appendix/config/zabbix_proxy](https://www.zabbix.com/documentation/current/en/manual/appendix/config/zabbix_proxy)

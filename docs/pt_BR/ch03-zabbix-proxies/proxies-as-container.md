@@ -8,62 +8,62 @@ description: |
 tags: [expert]
 ---
 
-# Running Proxies as containers
+# Execução de proxies como contêineres
 
-As discussed in the previous section, Zabbix proxies offer a lightweight and
-efficient solution for distributed monitoring. Leveraging SQLite as their
-backend database, they are inherently flexible and portable, making them
-well-suited for deployment in containerized environments. This chapter provides
-a step-by-step guide on deploying a Zabbix proxy within a container, outlining
-configuration options and best practices for optimal performance and
-maintainability.
+Conforme discutido na seção anterior, os proxies Zabbix oferecem uma solução
+leve e eficiente para o monitoramento distribuído. Aproveitando o SQLite como
+banco de dados backend, eles são inerentemente flexíveis e portáteis, o que os
+torna adequados para implantação em ambientes de contêineres. Este capítulo
+fornece um guia passo a passo sobre a implementação de um proxy Zabbix em um
+contêiner, descrevendo as opções de configuração e as práticas recomendadas para
+otimizar o desempenho e a manutenção.
 
 ---
 
-## Setting up containers
+## Configuração de contêineres
 
-For this setup, you will need a virtual machine (VM) with Podman installed to
-deploy the Zabbix proxy container. This container will then be configured to
-communicate with your Zabbix server.
+Para essa configuração, você precisará de uma máquina virtual (VM) com o Podman
+instalado para implantar o contêiner de proxy do Zabbix. Esse contêiner será
+então configurado para se comunicar com o servidor Zabbix.
 
-Refer to the [_Preparing the system for
+Consulte o capítulo [_Preparando o sistema para o
 Zabbix_](../ch00-getting-started/preparation.md#preparing-the-system-for-running-containers-using-podman)
-chapter for instructions on preparing your system for running containers using
-Podman.
+para obter instruções sobre como preparar o sistema para executar contêineres
+usando o Podman.
 
 ---
 
-### Add the proxy to the zabbix frontend
+### Adicionar o proxy ao front-end do zabbix
 
-![Add the proxy](ch03-container-proxy-new.png)
+![Adicionar o proxy](ch03-container-proxy-new.png)
 
-_3.9 Add proxy to frontend_
+_3.9 Adicionar proxy ao frontend_
 
-To keep the configuration straightforward, we will deploy an active Zabbix
-proxy. In this case, only two parameters need to be configured: the proxy's
-hostname (as defined in the Zabbix frontend) and the proxy’s IP address for
-communication with the Zabbix server.
+Para manter a configuração simples, implantaremos um proxy Zabbix ativo. Nesse
+caso, apenas dois parâmetros precisam ser configurados: o nome do host do proxy
+(conforme definido no front-end do Zabbix) e o endereço IP do proxy para
+comunicação com o servidor Zabbix.
 
 ---
 
-### Prepare the Proxy config
+### Preparar a configuração do proxy
 
-The next step is to create a `.container` unit file for our Quadlet setup. This
-file should be placed in the directory `~/.config/containers/systemd/`. For
-example, we will create a file named `zabbix-proxy-sqlite.container`, which will
-define the configuration for running the Zabbix proxy container under SystemD
-using Podman.
+A próxima etapa é criar um arquivo de unidade `.container` para a nossa
+configuração do Quadlet. Esse arquivo deve ser colocado no diretório
+`~/.config/containers/systemd/`. Por exemplo, criaremos um arquivo chamado
+`zabbix-proxy-sqlite.container`, que definirá a configuração para executar o
+contêiner do proxy Zabbix no SystemD usando o Podman.
 
-Ensure you are logged in as user `podman`.
+Verifique se você está conectado como usuário `podman`.
 
-!!! info "Switch to user podman"
+!!! info "Mudar para o usuário podman"
 
     ```bash
     sudo -u podman -i
     ```
 
 
-???+ example "Creation of a .container systemd unit file"
+Exemplo "Criação de um arquivo de unidade do systemd .container"
 
     ```bash
     vi ~/.config/containers/systemd/zabbix-proxy-sqlite.container
@@ -87,40 +87,41 @@ Ensure you are logged in as user `podman`.
     WantedBy=default.target
     ```
 
-The container image for the Zabbix proxy using SQLite can be sourced from Docker
-Hub. Specifically, we will use the image tagged 7.0-centos-latest, which is
-maintained by the official Zabbix project. This image can be found at:
+A imagem do contêiner para o proxy do Zabbix usando o SQLite pode ser obtida no
+Docker Hub. Especificamente, usaremos a imagem com a tag 7.0-centos-latest, que
+é mantida pelo projeto oficial do Zabbix. Essa imagem pode ser encontrada em:
 
 [https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3/tags?name=centos](https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3/tags?name=centos)
 
-A complete list of available image tags, including different versions and
-operating system bases, is available on the image’s main page:
+Uma lista completa das tags de imagem disponíveis, incluindo diferentes versões
+e bases de sistemas operacionais, está disponível na página principal da imagem:
 
 [https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3](https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3)
 
-For our purposes, the 7.0-centos-latest tag provides a CentOS-based container
-image that is well-suited for LTS environments, and it includes all necessary
-components to run the Zabbix proxy with SQLite.
+Para nossos propósitos, a tag 7.0-centos-latest fornece uma imagem de contêiner
+baseada no CentOS que é adequada para ambientes LTS e inclui todos os
+componentes necessários para executar o proxy Zabbix com SQLite.
 
-In addition to the `.container` unit file, we also need to create an environment
-file that defines the configuration variables for the container. This file must
-reside in the same directory as the `.container` file:
-`~/.config/containers/systemd/` and should be named `ZabbixProxy.env`, as
-referenced in our `.container` configuration.
+Além do arquivo de unidade `.container`, também precisamos criar um arquivo de
+ambiente que defina as variáveis de configuração do contêiner. Esse arquivo deve
+residir no mesmo diretório que o arquivo `.container`:
+`~/.config/containers/systemd/` e deve ser nomeado `ZabbixProxy.env`, conforme
+referenciado em nossa configuração `.container`.
 
-This environment file allows us to override default container settings by
-specifying environment variables used during container runtime. The list of
-supported variables and their functions is clearly documented on the container's
-Docker Hub page:
+Esse arquivo de ambiente nos permite substituir as configurações padrão do
+contêiner especificando as variáveis de ambiente usadas durante o tempo de
+execução do contêiner. A lista de variáveis suportadas e suas funções estão
+claramente documentadas na página do Docker Hub do contêiner:
 
 [https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3](https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3)
 
-These variables allow you to configure key parameters such as the proxy mode,
-server address, hostname, database settings, and logging options, providing a
-flexible and declarative way to tailor the proxy’s behavior to your environment.
+Essas variáveis permitem configurar parâmetros importantes, como o modo de
+proxy, o endereço do servidor, o nome do host, as configurações do banco de
+dados e as opções de registro, fornecendo uma maneira flexível e declarativa de
+adaptar o comportamento do proxy ao seu ambiente.
 
-Let's create the file `~/.config/containers/systemd/ZabbixProxy.env` and add the
-following content.
+Vamos criar o arquivo `~/.config/containers/systemd/ZabbixProxy.env` e adicionar
+o seguinte conteúdo.
 
 !!! info "~/.config/containers/systemd/ZabbixProxy.env"
 
@@ -135,45 +136,45 @@ following content.
     ZBX_PROXYMODE=0
     ```
 
-With our configuration now complete, the final step is to reload the systemd
-user daemon so it recognizes the new Quadlet unit. This can be done using the
-following command:
+Com a nossa configuração concluída, a etapa final é recarregar o daemon do
+usuário systemd para que ele reconheça a nova unidade Quadlet. Isso pode ser
+feito usando o seguinte comando:
 
-!!! info "Reload SystemD user daemon"
+!!! info "Recarregar o daemon do usuário SystemD"
 
     ``` bash
     systemctl --user daemon-reload
     ```
 
-If everything is set up correctly, systemd will automatically generate a service
-unit for the container based on the `.container` file. You can verify that the
-unit has been registered by checking the output of `systemctl --user
+Se tudo estiver configurado corretamente, o systemd gerará automaticamente uma
+unidade de serviço para o contêiner com base no arquivo `.container`. Você pode
+verificar se a unidade foi registrada verificando a saída de `systemctl --user
 list-unit-files`:
 
-???+ example "Verify if the new unit is registered correctly"
+???+ exemplo "Verifique se a nova unidade está registrada corretamente"
 
     ```shell-session
     podman@localhost:~> systemctl --user list-unit-files | grep zabbix
     zabbix-proxy-sqlite.service             generated -
     ```
 
-You can now start the container using the `systemctl --user start` command. To
-start the container, use the following command (replacing the service name if
-you used a different one):
+Agora, você pode iniciar o contêiner usando o comando `systemctl --user start`.
+Para iniciar o contêiner, use o seguinte comando (substituindo o nome do serviço
+se tiver usado um diferente):
 
-???+ example "Start Zabbix Proxy container"
+???+ exemplo "Iniciar o contêiner do Zabbix Proxy"
 
     ```bash
     systemctl --user start zabbix-proxy-sqlite.service
     ```
 
-This command may take a few minutes as it will download the required Zabbix
-Proxy container from the docker registry.
+Esse comando pode levar alguns minutos, pois ele fará o download do contêiner do
+Zabbix Proxy necessário a partir do registro do docker.
 
-To verify that the container started correctly, you can inspect the running
-containers with:
+Para verificar se o contêiner foi iniciado corretamente, você pode inspecionar
+os contêineres em execução com:
 
-???+ example "Inspect running containers"
+???+ exemplo "Inspecionar contêineres em execução"
 
     ```shell-session
     podman@localhost:~> podman ps
@@ -181,10 +182,10 @@ containers with:
     b5716f8f379d  docker.io/zabbix/zabbix-proxy-sqlite3:7.0-centos-latest /usr/sbin/zabbix_...  2 hours ago   Up 2 hours   0.0.0.0:10051->10051/tcp  ZabbixProxySqlite-Quadlet
     ```
 
-Take note of the `CONTAINER ID`—in this example, it is `b5716f8f379d`. You can
-then retrieve the container's logs using:
+Anote o ID do contêiner `` - neste exemplo, é `b5716f8f379d`. Em seguida, é
+possível recuperar os logs do contêiner usando:
 
-???+ info "Retrieve container logs"
+???+ Informação "Recuperar registros de contêineres"
 
     ```bash
     podman logs b5716f8f379d
@@ -196,41 +197,43 @@ then retrieve the container's logs using:
     journalctl --user -u zabbix-proxy-sqlite.service
     ```
 
-This command will return the startup and runtime logs for the container, which
-are helpful for troubleshooting and verifying that the Zabbix proxy has started
-correctly.
+Esse comando retornará os registros de inicialização e de tempo de execução do
+contêiner, que são úteis para solucionar problemas e verificar se o proxy do
+Zabbix foi iniciado corretamente.
 
 ---
 
-## Upgrading our containers
+## Atualizando nossos contêineres
 
-At some point, you may be asking yourself: How do I upgrade my Zabbix
-containers? Fortunately, container upgrades are a straightforward process that
-can be handled either manually or through automation, depending on your
-deployment strategy.
+Em algum momento, você pode estar se perguntando: Como faço para atualizar meus
+contêineres do Zabbix? Felizmente, as atualizações de contêineres são um
+processo simples que pode ser realizado manualmente ou por meio de automação,
+dependendo da sua estratégia de implantação.
 
-Throughout this book, we've been using the image tag `7.0-centos-latest`, which
-always pulls the most up-to-date CentOS-based Zabbix 7.0 image available at the
-time. This approach ensures you are running the latest fixes and improvements
-without specifying an exact version.
+Ao longo deste livro, usamos a tag de imagem `7.0-centos-latest`, que sempre
+extrai a imagem mais atualizada do Zabbix 7.0 baseada no CentOS disponível no
+momento. Essa abordagem garante que você esteja executando as últimas correções
+e melhorias sem especificar uma versão exata.
 
-Alternatively, you can opt for version specific tags such as `centos-7.0.13`,
-which allow you to maintain strict control over the version deployed. This can
-be helpful in environments where consistency and reproducibility are critical.
+Como alternativa, você pode optar por tags específicas de versão, como
+`centos-7.0.13`, que permitem manter um controle rigoroso sobre a versão
+implantada. Isso pode ser útil em ambientes em que a consistência e a
+reprodutibilidade são essenciais.
 
-In the following sections, we will explore both approaches: using the `latest`
-tag for automated updates and specifying fixed versions for controlled
-environments.
+Nas seções a seguir, exploraremos as duas abordagens: usar a tag `latest` para
+atualizações automatizadas e especificar versões fixas para ambientes
+controlados.
 
 ---
 
-### Upgrading manually
+### Atualização manual
 
-If you're running your Zabbix container using a **floating tag** such as
-`:latest` or `:trunk-centos`, upgrading is a simple and efficient process. These
-tags always point to the most recent image available in the repository.
+Se você estiver executando seu contêiner Zabbix usando uma **tag flutuante** ,
+como `:latest` ou `:trunk-centos`, a atualização é um processo simples e
+eficiente. Essas tags sempre apontam para a imagem mais recente disponível no
+repositório.
 
-???+ info "To upgrade:"
+???+ info "Para atualizar:"
 
     ```bash
     # Pull the latest image using Podman.
@@ -239,27 +242,28 @@ tags always point to the most recent image available in the repository.
     systemctl --user restart zabbix-proxy-sqlite.service
     ```
 
-Thanks to our Quadlet integration, systemd will handle the rest automatically:
-The currently running container will be stopped. A new container instance will
-be started using the freshly pulled image. All configuration options defined in
-the associated `.container` file will be reapplied. This approach allows for
-quick updates with minimal effort, while still preserving consistent
-configuration management through systemd.
+Graças à nossa integração com o Quadlet, o systemd cuidará do resto
+automaticamente: O contêiner em execução no momento será interrompido. Uma nova
+instância de contêiner será iniciada usando a imagem recém-obtida. Todas as
+opções de configuração definidas no arquivo `.container` associado serão
+reaplicadas. Essa abordagem permite atualizações rápidas com o mínimo de esforço
+e, ao mesmo tempo, preserva o gerenciamento consistente da configuração por meio
+do systemd.
 
 ---
 
-### Upgrading When Using a Fixed Image Tag
+### Atualização ao usar uma tag de imagem fixa
 
-If your container is configured to use a **fixed image tag** (e.g.,
-`7.0.13-centos`) rather than a floating tag like `:latest` or `:trunk`, the
-upgrade process involves one additional step: **manually updating the tag in
-your `.container` file**.
+Se o seu contêiner estiver configurado para usar uma tag de imagem fixa ****
+(por exemplo, `7.0.13-centos`) em vez de uma tag flutuante como `:latest` ou
+`:trunk`, o processo de atualização envolve uma etapa adicional: **atualizar
+manualmente a tag no arquivo `.container`**.
 
-For example, if you're running a user-level Quadlet container and your
-configuration file is located at
+Por exemplo, se você estiver executando um contêiner Quadlet em nível de usuário
+e seu arquivo de configuração estiver localizado em
 `~/.config/containers/systemd/zabbix-proxy-sqlite.container`:
 
-???+ example "Manually updating the tag"
+???+ exemplo "Atualizando manualmente a tag"
 
     You'll need to edit this file 
     ```bash
@@ -291,20 +295,21 @@ configuration file is located at
 
 ---
 
-### Upgrading automatically
+### Atualizando automaticamente
 
-When using floating tags like `:latest` or `:trunk-centos` for your Zabbix
-container images, Podman Quadlet supports automated upgrades by combining them
-with the `AutoUpdate=registry` directive in your `.container` file.
+Ao usar tags flutuantes como `:latest` ou `:trunk-centos` para suas imagens de
+contêiner do Zabbix, o Podman Quadlet suporta atualizações automatizadas
+combinando-as com a diretiva `AutoUpdate=registry` no seu arquivo `.container`.
 
-This setup ensures your container is automatically refreshed whenever a new
-image is available in the remote registry without requiring manual intervention.
+Essa configuração garante que o seu contêiner seja atualizado automaticamente
+sempre que uma nova imagem estiver disponível no registro remoto, sem a
+necessidade de intervenção manual.
 
 ---
 
-#### Example Configuration
+#### Exemplo de configuração
 
-???+ example ".container file"
+???+ exemplo ".arquivo de contêiner"
 
     ```ini
     [Container]
@@ -318,60 +323,61 @@ image is available in the remote registry without requiring manual intervention.
 
 ---
 
-#### How the Auto-Update Process Works
+#### Como funciona o processo de atualização automática
 
-Once configured, the following steps are handled automatically:
+Uma vez configurado, as etapas a seguir são tratadas automaticamente:
 
-1. **Image Check** The systemd service `podman-auto-update` is triggered by a
-   timer (usually daily). It compares the current image digest with the remote
-   image's digest for the same tag.
+1. **Verificação de imagem** O serviço systemd `podman-auto-update` é acionado
+   por um cronômetro (geralmente diário). Ele compara o resumo da imagem atual
+   com o resumo da imagem remota para a mesma tag.
 
-2. **Image Update** If a new version is detected:
+2. **Atualização de imagem** Se uma nova versão for detectada:
 
-   - The updated image is pulled from the registry.
-   - The currently running container is stopped and removed.
-   - A new container is created from the updated image.
+   - A imagem atualizada é extraída do registro.
+   - O contêiner em execução no momento é interrompido e removido.
+   - Um novo contêiner é criado a partir da imagem atualizada.
 
-3. **Configuration Reuse** The new container is launched using the exact same
-   configuration defined in your `.container` file, including environment
-   variables, volume mounts, ports, and networking.
+3. **Reutilização de configuração** O novo contêiner é iniciado usando
+   exatamente a mesma configuração definida no arquivo `.container`, incluindo
+   variáveis de ambiente, montagens de volume, portas e rede.
 
-This approach provides a clean, repeatable way to keep your Zabbix proxy (or
-other components) current without direct user intervention.
+Essa abordagem fornece uma maneira limpa e repetível de manter o proxy do Zabbix
+(ou outros componentes) atualizado sem a intervenção direta do usuário.
 
 ---
 
-#### Enabling the Auto-Update Timer
+#### Ativação do cronômetro de atualização automática
 
-To ensure that updates are applied regularly, you must enable the Podman
-auto-update timer.
+Para garantir que as atualizações sejam aplicadas regularmente, você deve ativar
+o temporizador de atualização automática do Podman.
 
-!!! info "For System-Wide Services"
+!!! info "Para serviços em todo o sistema"
 
     ```bash
     sudo systemctl enable --now podman-auto-update.timer
     ```
 
-!!! info "For User-Level Services"
+!!! info "Para serviços de nível de usuário"
 
     ```bash
     systemctl --user enable --now podman-auto-update.timer
     ```
 
-This activates a systemd timer that periodically invokes
+Isso ativa um cronômetro do systemd que invoca periodicamente
 `podman-auto-update.service`.
 
 ---
 
-### When to Use This Approach
+### Quando usar essa abordagem
 
-`AutoUpdate=registry` is particularly useful in the following scenarios:
+`AutoUpdate=registry` é particularmente útil nos seguintes cenários:
 
-- **Development or staging environments**, where running the latest version is
-  beneficial.
-- **Non-critical Zabbix components**, such as test proxies or lab deployments.
-- **When you prefer a hands-off update strategy**, and image stability is
-  trusted.
+- **Ambientes de desenvolvimento ou preparação**, nos quais a execução da versão
+  mais recente é benéfica.
+- **Componentes não críticos do Zabbix**, como proxies de teste ou implantações
+  de laboratório.
+- **Quando você prefere uma estratégia de atualização sem intervenção**, e a
+  estabilidade da imagem é confiável.
 
 ???+ aviso
 
@@ -384,30 +390,30 @@ This activates a systemd timer that periodically invokes
 
 ## Conclusão
 
-In this chapter, we deployed a Zabbix active proxy using Podman and SystemD
-Quadlets. We configured SELinux, enabled user lingering, and created both
-`.container` and `.env` files to define proxy behavior. Using Podman in rootless
-mode ensures improved security and system integration. SystemD management makes
-the container easy to control and monitor. This setup offers a lightweight,
-flexible, and secure approach to deploying Zabbix proxies. It is ideal for
-modern environments, especially when using containers or virtualisation. With
-the proxy running, you're ready to extend Zabbix monitoring to remote locations
-efficiently.
+Neste capítulo, implantamos um proxy ativo Zabbix usando Podman e SystemD
+Quadlets. Configuramos o SELinux, ativamos a permanência do usuário e criamos os
+arquivos `.container` e `.env` para definir o comportamento do proxy. O uso do
+Podman no modo sem raiz garante maior segurança e integração do sistema. O
+gerenciamento do SystemD torna o contêiner fácil de controlar e monitorar. Essa
+configuração oferece uma abordagem leve, flexível e segura para a implantação de
+proxies Zabbix. É ideal para ambientes modernos, especialmente quando se usa
+contêineres ou virtualização. Com o proxy em execução, você está pronto para
+estender o monitoramento do Zabbix a locais remotos com eficiência.
 
 ---
 
 ## Perguntas
 
-- What are the main advantages of using Podman over Docker for running
-  containers on Red Hat-based systems?
-- Why is the `loginctl enable-linger` command important when using SystemD with
-  rootless Podman containers?
-- What is the purpose of the `.env` file in the context of a Quadlet-managed
-  container?
-- How do SELinux policies affect Podman container execution, and how can you
-  configure them correctly?
-- How can you verify that your Zabbix proxy container started successfully?
-- What is the difference between an active and passive Zabbix proxy?
+- Quais são as principais vantagens de usar o Podman em vez do Docker para
+  executar contêineres em sistemas baseados no Red Hat?
+- Por que o comando `loginctl enable-linger` é importante ao usar o SystemD com
+  contêineres Podman sem raiz?
+- Qual é a finalidade do arquivo `.env` no contexto de um contêiner gerenciado
+  pelo Quadlet?
+- Como as políticas do SELinux afetam a execução do contêiner do Podman e como
+  você pode configurá-las corretamente?
+- Como verificar se o contêiner do proxy Zabbix foi iniciado com sucesso?
+- Qual é a diferença entre um proxy Zabbix ativo e passivo?
 
 ---
 

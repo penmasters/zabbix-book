@@ -152,7 +152,7 @@ configure a proxy.
 
 ---
 
-### Active proxy
+### Proxy ativo
 
 In _active_ mode, the proxy takes full control of its operational settings. This
 includes managing when it checks for new configuration updates and when it sends
@@ -198,7 +198,7 @@ _3.1 Active proxy communication_
 
 ---
 
-### Passive proxy
+### Proxy passivo
 
 In contrast to an _active proxy_, a proxy in _passive_ mode will have its
 operational settings controlled by the _Zabbix server_.

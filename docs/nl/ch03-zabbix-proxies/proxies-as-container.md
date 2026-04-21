@@ -33,7 +33,7 @@ containers met Podman.
 
 ---
 
-### Add the proxy to the zabbix frontend
+### De proxy toevoegen aan het zabbix frontend
 
 ![Add the proxy](ch03-container-proxy-new.png)
 
