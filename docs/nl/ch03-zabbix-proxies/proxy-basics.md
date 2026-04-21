@@ -30,7 +30,7 @@ Zabbix server for processing and storage. This architecture helps reduce network
 traffic, simplifies network firewall configurations and improves the overall
 efficiency of your monitoring system.
 
-So in short a Zabbix proxy can be used to:
+Dus in het kort kan een Zabbix proxy gebruikt worden om:
 
 - Monitor remote locations
 - Monitor devices on separate network segments
