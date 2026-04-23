@@ -16,19 +16,19 @@ beveiligen door het wachtwoordbeleid te configureren:
 - Vereiste voor minimale wachtwoordlengte
 - Vereisten voor wachtwoord om een hoofdletter en een kleine Latijnse letter,
   een cijfer, een speciaal teken te bevatten
-- Requirement to avoid easy-to-guess passwords
+- Vereiste om gemakkelijk te raden wachtwoorden te vermijden
 
-To secure sign in process even more you can configure multi factor
-authentication (MFA). MFA protects Zabbix by using a second source of validation
-before granting access to its WebUI after a user enters his/her password
-correctly. Zabbix offers to types of MFA - Time-based one-time password (TOTP)
-and Duo MFA provider.
+Om het aanmeldproces nog beter te beveiligen kun je MFA (multi factor
+authentication) configureren. MFA beschermt Zabbix door een tweede validatiebron
+te gebruiken voordat toegang wordt verleend tot de WebUI nadat een gebruiker
+zijn/haar wachtwoord correct heeft ingevoerd. Zabbix biedt twee soorten MFA -
+Time-based one-time password (TOTP) en Duo MFA provider.
 
 ---
 
-## Time-based one-time password
+## Tijdgebaseerd eenmalig wachtwoord
 
-In the menu select `Users` section and then `Authentication`
+Selecteer in het menu `Gebruikers` sectie en dan `Authenticatie`
 
 ![MFA Settings initial](ch02.20-mfa_settings_initial.png){ width=90% }
 
