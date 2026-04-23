@@ -19,7 +19,7 @@ Elke gebruikersrol, standaard of aangepast, is gebaseerd op een van de klassieke
 gebruikerstypes (Super Admin, Admin of User). Dit Gebruikerstype dient als de
 maximaal toegestane rechten voor de rol.
 
-## Standaard menutoegang per gebruikerstype
+## Standaard menu toegang per gebruikerstype
 
 `Gebruikersrollen` kunnen worden aangemaakt in het menu onder het menu
 `Gebruikers` → `Gebruikersrollen`. Of ze kunnen per gebruiker worden ingesteld
