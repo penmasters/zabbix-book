@@ -10,9 +10,9 @@ tags: [beginner]
 
 # Proxy grondbeginselen
 
-In this chapter we will explain what a proxy is, why you may need or consider
-it, what the basic requirements are and what the difference is between _Active
-proxies_ and _Passive proxies_.
+In dit hoofdstuk leggen we uit wat een proxy is, waarom je het nodig hebt of
+overweegt, wat de basisvereisten zijn en wat het verschil is tussen _Actieve
+proxy's_ en _Passieve proxy's_.
 
 ---
 
@@ -24,16 +24,17 @@ ontworpen om de server te ontlasten door gegevensverzamelingstaken af te
 handelen, wat vooral handig is in gedistribueerde omgevingen of bij het
 monitoren van afgelegen locaties met beperkte connectiviteit.
 
-The proxy gathers the requested performance and availability data from monitored
-devices, applications, and services, then forwards this information to the
-Zabbix server for processing and storage. This architecture helps reduce network
-traffic, simplifies network firewall configurations and improves the overall
-efficiency of your monitoring system.
+De proxy verzamelt de gevraagde prestatie- en beschikbaarheidsgegevens van
+gemonitorde apparaten, applicaties en diensten en stuurt deze informatie
+vervolgens door naar de Zabbix server voor verwerking en opslag. Deze
+architectuur helpt het netwerkverkeer te verminderen, vereenvoudigt
+netwerkfirewall configuraties en verbetert de algehele efficiëntie van je
+monitoringsysteem.
 
 Dus in het kort kan een Zabbix proxy gebruikt worden om:
 
-- Monitor remote locations
-- Monitor devices on separate network segments
+- Externe locaties bewaken
+- Apparaten op afzonderlijke netwerksegmenten bewaken
 - Monitor locations that have unreliable connections
 - Offload the Zabbix server when monitoring thousands of devices
 - Simplify the maintenance and management
