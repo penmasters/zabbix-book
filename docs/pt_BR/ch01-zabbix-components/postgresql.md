@@ -10,11 +10,12 @@ description: |
 tags: [beginner]
 ---
 
-# Installing a PostgreSQL database
+# Instalação de um banco de dados PostgreSQL
 
-Alternatively to MariaDB/MySQL, you can choose to use PostgreSQL as the database
-backend for Zabbix. Similar to MariaDB, PostgreSQL can be installed using either
-the OS vendor-provided packages or the official PostgreSQL repositories.
+Como alternativa ao MariaDB/MySQL, você pode optar por usar o PostgreSQL como
+backend de banco de dados para o Zabbix. Assim como o MariaDB, o PostgreSQL pode
+ser instalado usando os pacotes fornecidos pelo fornecedor do sistema
+operacional ou os repositórios oficiais do PostgreSQL.
 
 Se você já instalou o MariaDB na seção anterior, pode pular esta seção.
 
@@ -169,13 +170,13 @@ para obter mais informações.
 
 ---
 
-### Installing the PostgreSQL Server and Client
+### Instalando o servidor e o cliente PostgreSQL
 
-With the PostgreSQL repositories configured, you are now ready to install the
-PostgreSQL server and client packages. This will provide the necessary
-components to run and manage your database.
+Com os repositórios do PostgreSQL configurados, agora você está pronto para
+instalar o servidor PostgreSQL e os pacotes do cliente. Isso fornecerá os
+componentes necessários para executar e gerenciar seu banco de dados.
 
-!!! info "Install PostgreSQL from official repositories"
+!!! info "Instale o PostgreSQL a partir dos repositórios oficiais"
 
     Red Hat
     ```bash
@@ -197,27 +198,27 @@ Esse comando fará o download e instalará os pacotes do servidor e do cliente,
 permitindo que você defina, configure e interaja com o banco de dados
 PostgreSQL.
 
-Next, before we can start the PostgreSQL server we need to initialize a new
-empty database:
+Em seguida, antes de iniciarmos o servidor PostgreSQL, precisamos inicializar um
+novo banco de dados vazio:
 
-!!! info "Initialize empty PostgreSQL database"
+!!! info "Inicializar banco de dados PostgreSQL vazio"
 
     ```
     sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
     ```
 
-Once the installation is complete, you can proceed to the [Starting the
-PostgreSQL Database](#starting-the-postgresql-database) section.
+Quando a instalação estiver concluída, prossiga para a seção [Iniciando o banco
+de dados PostgreSQL](#starting-the-postgresql-database).
 
 ---
 
-## Starting the PostgreSQL Database
+## Iniciando o banco de dados PostgreSQL
 
-Now that PostgreSQL is installed, we need to enable the service to start
-automatically upon boot as well as start it immediately. Use the following
-command to accomplish this:
+Agora que o PostgreSQL está instalado, precisamos habilitar o serviço para
+iniciar automaticamente na inicialização, bem como iniciá-lo imediatamente. Use
+o seguinte comando para fazer isso:
 
-!!! info "Enable and start PostgreSQL service"
+!!! info "Habilitar e iniciar o serviço PostgreSQL"
 
     for OS-provided packages
     ```bash
@@ -229,11 +230,11 @@ command to accomplish this:
     sudo systemctl enable postgresql-17 --now
     ```
 
-This command will both enable and start the PostgreSQL service. With the service
-now up and running, you can verify that the installation was successful by
-checking the version of PostgreSQL using the following command:
+Esse comando habilitará e iniciará o serviço do PostgreSQL. Com o serviço
+instalado e em execução, você pode verificar se a instalação foi bem-sucedida
+verificando a versão do PostgreSQL usando o seguinte comando:
 
-!!! info "Check PostgreSQL version"
+!!! info "Verificar versão do PostgreSQL"
 
     ```bash
     psql -V
@@ -241,17 +242,17 @@ checking the version of PostgreSQL using the following command:
 
 A saída esperada deve ser similar a esta:
 
-???+ example "PostgreSQL version example"
+???+ exemplo "Exemplo de versão do PostgreSQL"
 
     ```shell-session
     localhost:~ $ psql -V
     psql (PostgreSQL) 17.7
     ```
 
-To ensure that the PostgreSQL service is running properly, you can check its
-status with the following command:
+Para garantir que o serviço PostgreSQL esteja sendo executado corretamente, você
+pode verificar seu status com o seguinte comando:
 
-!!! info "Get PostgreSQL status"
+!!! info "Obter status do PostgreSQL"
 
     for OS-provided packages
     ```bash
@@ -263,10 +264,10 @@ status with the following command:
     sudo systemctl status postgresql-17
     ```
 
-You should see an output similar to this, indicating that the PostgreSQL service
-is active and running:
+Você deverá ver um resultado semelhante a este, indicando que o serviço
+PostgreSQL está ativo e em execução:
 
-???+ example "PostgreSQL service status example"
+???+ exemplo "Exemplo de status do serviço PostgreSQL"
 
     ```shell-session
     localhost:~ $ sudo systemctl status postgresql-17
@@ -294,18 +295,19 @@ is active and running:
     Dec 29 17:24:07 localhost.localdomain systemd[1]: Started PostgreSQL 17 database server.
     ```
 
-This confirms that your PostgreSQL server is up and running, ready for further
-configuration.
+Isso confirma que seu servidor PostgreSQL está funcionando e pronto para outras
+configurações.
 
 ---
 
-## Securing the PostgreSQL database
+## Protegendo o banco de dados PostgreSQL
 
-PostgreSQL handles access permissions differently from MySQL and MariaDB.
-PostgreSQL relies on a file called `pg_hba.conf` to manage who can access the
-database, from where, and what encryption method is allowed for authentication.
+O PostgreSQL lida com as permissões de acesso de forma diferente do MySQL e do
+MariaDB. O PostgreSQL se baseia em um arquivo chamado `pg_hba.conf` para
+gerenciar quem pode acessar o banco de dados, de onde e qual método de
+criptografia é permitido para autenticação.
 
-???+ note "About pg_hba.conf"
+???+ nota "Sobre o pg_hba.conf"
 
     Client authentication in PostgreSQL is configured through the `pg_hba.conf`
     file, where "HBA" stands for Host-Based Authentication. This file specifies
@@ -313,9 +315,9 @@ database, from where, and what encryption method is allowed for authentication.
     For further details, you can refer to the official PostgreSQL documentation."
     [https://www.postgresql.org/docs/current/auth-pg-hba-conf.html](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
 
-Add the following lines, the order here is important.
+Adicione as seguintes linhas, a ordem aqui é importante.
 
-!!! info "Edit the pg_hba file"
+!!! info "Editar o arquivo pg_hba"
 
     Red Hat / SUSE
     ``` bash
@@ -335,7 +337,7 @@ Add the following lines, the order here is important.
     sudo vi /etc/postgresql/17/main/pg_hba.conf
     ```
 
-!!! warning "Location of pg_hba file"
+!!! aviso "Localização do arquivo pg_hba"
 
     If you don't find the `pg_hba.conf` and `postgres.conf` files in the above 
     mentioned location you can ask PostgreSQL itself for the location using
@@ -345,9 +347,9 @@ Add the following lines, the order here is important.
     sudo -u postgres psql -t -c 'show hba_file';
     ```
 
-The resulting pg_hba file should look like :
+O arquivo pg_hba resultante deve ser semelhante a :
 
-!!! example "Pg_hba example"
+!!! exemplo "Exemplo de Pg_hba"
 
     ```
     # "local" is for Unix domain socket connections only
@@ -363,20 +365,21 @@ The resulting pg_hba file should look like :
     host    all             all             ::1/128                 ident
     ```
 
-!!! warning "Ensure to keep the order of the entries"
+!!! aviso "Certifique-se de manter a ordem das entradas"
 
     The order of the entries in the `pg_hba.conf` file is crucial, as PostgreSQL
     processes these rules sequentially. Ensure that the specific rules for the
     `zabbix-srv` and `zabbix-web` users are placed before any broader rules like
     the default `all` user rules that could potentially override them.
 
-After we changed the `pg_hba.conf` file don't forget to restart postgres
-otherwise the settings will not be applied. But before we restart, let us also
-edit the file `postgresql.conf` and allow our database to listen on our network
-interface for incoming connections from the Zabbix server. PostgreSQL will by
-default only allow connections from a unix socket.
+Depois de alterarmos o arquivo `pg_hba.conf`, não se esqueça de reiniciar o
+Postgres, caso contrário as configurações não serão aplicadas. Mas antes de
+reiniciarmos, vamos também editar o arquivo `postgresql.conf` e permitir que
+nosso banco de dados escute em nossa interface de rede as conexões de entrada do
+servidor Zabbix. Por padrão, o PostgreSQL só permite conexões de um soquete
+unix.
 
-!!! info "Edit postgresql.conf file"
+!!! info "Editar arquivo postgresql.conf"
 
     Red Hat / SUSE
     ```bash
@@ -396,7 +399,7 @@ default only allow connections from a unix socket.
     sudo vi /etc/postgresql/17/main/postgresql.conf
     ```
 
-Locate the following line:
+Localize a seguinte linha:
 
 !!! info ""
 
@@ -404,7 +407,7 @@ Locate the following line:
     #listen_addresses = 'localhost'
     ```
 
-and replace it with:
+e substituí-la por:
 
 !!! info ""
 
@@ -412,16 +415,16 @@ and replace it with:
     listen_addresses = '*'
     ```
 
-???+ note
+???+ nota
 
     This will enable PostgreSQL to accept connections from any network interface,
     not just the local machine. In production it's probably a good idea to limit
     who can connect to the DB.
 
-After making this change, restart the PostgreSQL service to apply the new
-settings:
+Depois de fazer essa alteração, reinicie o serviço PostgreSQL para aplicar as
+novas configurações:
 
-!!! info "Restart the DB server"
+!!! info "restart the DB server" (reinicie o servidor de banco de dados)
 
     for OS-provided packages
     ``` bash
@@ -433,7 +436,7 @@ settings:
     sudo systemctl restart postgresql-17
     ```
 
-???+ tip
+???+ dica
 
     If the service fails to restart, review the `pg_hba.conf` file for any syntax errors,
     as incorrect entries here may prevent PostgreSQL from starting.
@@ -530,7 +533,7 @@ applications need to interact with the same database server concurrently. Each
 user or application can have its own schema, preventing accidental interference
 with each other's data.
 
-???+ note
+???+ nota
 
     PostgreSQL comes with a default schema, typically called `public`, but in
     general, it's a best practice to create custom schemas to better organize and separate
@@ -561,7 +564,7 @@ default for the current session:
     zabbix=> SET search_path TO "zabbix_server";
     ```
 
-???+ tip
+???+ dica
 
     If you prefer not to set the search path manually each time you log in as the
     `zabbix-srv` user, you can configure PostgreSQL to automatically use the desired
@@ -677,7 +680,7 @@ by running the following command:
     sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
     ```
 
-???+ note
+???+ nota
 
     Zabbix seems to like to change the locations of the script to populate the
     DB every version or even in between versions. If you encounter an error take a
@@ -772,7 +775,7 @@ Verify if the rights are correct on the schema :
                    |                   | "zabbix-web"=U/"zabbix-srv"            |
     ```
 
-???+ note
+???+ nota
 
     If you encounter the following error during the SQL import:
     `vbnet psql:/usr/share/zabbix/sql-scripts/postgresql/server.sql:7: ERROR: no

@@ -100,7 +100,7 @@ bieden toegang tot de nieuwste stabiele releases.
     - **Manual version management:** Users must proactively monitor and upgrade 
       to new major versions to ensure continued security and bug fix coverage.
 
-???+ warning "Database version compatibility"
+Waarschuwing "Compatibiliteit databaseversie".
 
     Whether you plan to use the OS vendor-provided packages or the official 
     database-vendor packages, ensure that the database version is supported
