@@ -94,7 +94,7 @@ het toevoegen van de PostgreSQL repository aan je systeem.
 
 ### De PostgreSQL repository toevoegen
 
-Set up the PostgreSQL repository with the following commands:
+Stel de PostgreSQL repository in met de volgende commando's:
 
 Kijk op
 [https://www.postgresql.org/download/linux/](https://www.postgresql.org/download/linux/)
