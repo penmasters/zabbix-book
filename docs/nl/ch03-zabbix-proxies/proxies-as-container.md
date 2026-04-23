@@ -10,21 +10,21 @@ tags: [expert]
 
 # Proxies draaien als containers
 
-As discussed in the previous section, Zabbix proxies offer a lightweight and
-efficient solution for distributed monitoring. Leveraging SQLite as their
-backend database, they are inherently flexible and portable, making them
-well-suited for deployment in containerized environments. This chapter provides
-a step-by-step guide on deploying a Zabbix proxy within a container, outlining
-configuration options and best practices for optimal performance and
-maintainability.
+Zoals besproken in de vorige sectie, bieden Zabbix proxies een lichtgewicht en
+efficiënte oplossing voor gedistribueerde monitoring. Door gebruik te maken van
+SQLite als hun backend database, zijn ze van nature flexibel en draagbaar,
+waardoor ze zeer geschikt zijn voor implementatie in container omgevingen. Dit
+hoofdstuk biedt een stap-voor-stap handleiding voor het implementeren van een
+Zabbix proxy in een container, met configuratie-opties en best practices voor
+optimale prestaties en onderhoudbaarheid.
 
 ---
 
 ## Containers instellen
 
-For this setup, you will need a virtual machine (VM) with Podman installed to
-deploy the Zabbix proxy container. This container will then be configured to
-communicate with your Zabbix server.
+Voor deze setup heb je een virtuele machine (VM) nodig met Podman geïnstalleerd
+om de Zabbix proxy container te implementeren. Deze container wordt dan
+geconfigureerd om te communiceren met je Zabbix server.
 
 Raadpleeg het hoofdstuk [_Het systeem voorbereiden voor
 Zabbix_](../ch00-getting-started/preparation.md#preparing-the-system-for-running-containers-using-podman)
@@ -35,7 +35,7 @@ containers met Podman.
 
 ### De proxy toevoegen aan het zabbix frontend
 
-![Add the proxy](ch03-container-proxy-new.png)
+[Voeg de proxy toe](ch03-container-proxy-new.png)
 
 _3.9 Add proxy to frontend_
 
