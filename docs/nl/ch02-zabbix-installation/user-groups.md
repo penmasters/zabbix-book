@@ -30,10 +30,11 @@ of meer groepen. Toegangsrechten, zoals de mogelijkheid om hostgroepen te
 bekijken, sjablonen te configureren of specifieke probleemtags te zien, worden
 dan toegekend op het **groepsniveau**.
 
-This group centric architecture provides several major benefits:
+Deze groepsgerichte architectuur biedt verschillende grote voordelen:
 
-* **Simplified Management:** Access rights are managed by **role** (e.g.,
-  "Network Engineers," "Database Administrators") instead of by individual user.
+* **Vereenvoudigd beheer:** Toegangsrechten worden beheerd door **role** (bijv.
+  "Network Engineers", "Database Administrators") in plaats van door individuele
+  gebruikers.
 * **Consistency:** Ensures that all users within the same role possess a
   consistent, standardized set of permissions.
 * **Segregation of Duties:** Enables clear separation between viewing
