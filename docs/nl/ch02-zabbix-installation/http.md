@@ -31,10 +31,11 @@ server.
     basic authentication. Please refer to respective HTTP server documentation
     for more details
 
-## Basic authentication
+## Basisverificatie
 
-To enable basic authentication, we first need a "password-file" containing all
-usernames and passwords that are allowed to access the frontend.
+Om basisauthenticatie in te schakelen, hebben we eerst een "wachtwoordbestand"
+nodig dat alle gebruikersnamen en wachtwoorden bevat die toegang mogen krijgen
+tot het frontend.
 
 !!! warning "Important"
 
