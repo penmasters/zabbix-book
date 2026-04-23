@@ -9,8 +9,8 @@ tags: [advanced]
 
 # Actieve en passieve proxy's
 
-Whether you want to install an Active proxy or a Passive one, much of the
-installation and configuration steps are the same.
+Of je nu een actieve proxy of een passieve proxy wilt installeren, veel van de
+installatie- en configuratiestappen zijn hetzelfde.
 
 ---
 
@@ -21,12 +21,12 @@ een van die stappen is het toevoegen van de proxy in de frontend van Zabbix. Dus
 laten we in het menu `Administration` => `Proxies` selecteren en in de
 rechterbovenhoek op `Create proxy` klikken.
 
-![Create proxy](ch03-add-active-proxy.png)
+[Maak proxy](ch03-add-active-proxy.png)
 
 _3.3 Proxy maken_
 
-Once pressed, a new modal form will pop-up where we need to fill in some
-information.
+Eenmaal ingedrukt, verschijnt er een nieuw modaal formulier waar we wat
+informatie moeten invullen.
 
 ---
 
