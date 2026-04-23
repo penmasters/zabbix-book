@@ -21,7 +21,7 @@ een van die stappen is het toevoegen van de proxy in de frontend van Zabbix. Dus
 laten we in het menu `Administration` => `Proxies` selecteren en in de
 rechterbovenhoek op `Create proxy` klikken.
 
-[Maak proxy](ch03-add-active-proxy.png)
+![Maak proxy](ch03-add-active-proxy.png)
 
 _3.3 Proxy maken_
 
