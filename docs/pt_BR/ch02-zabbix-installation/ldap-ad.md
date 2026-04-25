@@ -15,43 +15,45 @@ protocol that should be vendor independent but its relative complexity plays a
 role in every LDAP server implementation. Zabbix is known to work well with
 Microsoft Active Directory and OpenLDAP server.
 
-LDAP authentication can be configured in two modes:
+A autenticação LDAP pode ser configurada em dois modos:
 
-- Users authentication
-- Users authentication with users provisioning
+- Autenticação de usuários
+- Autenticação de usuários com provisionamento de usuários
 
-## Users authentication mode
+## Modo de autenticação de usuários
 
-The process of the authenticating users follows this diagram.
+O processo de autenticação de usuários segue este diagrama.
 
-![LDAP users authentication](ch02.3-ldap-auth-diagram.png){ align=center }
+![Autenticação de usuários LDAP](ch02.3-ldap-auth-diagram.png){ align=center }
 
-_2.3 LDAP users authentication_
+_2.3 Autenticação de usuários LDAP_
 
-As shown on the diagram a user that tries to log in must be pre-created in
-Zabbix to be able to log in using LDAP. The database user records do not have
-any fields "saying" that the user will be authenticated via LDAP, it's just
-users' passwords stored in the database are ignored, instead, Zabbix goes to a
-LDAP server to verify whether:
+Conforme mostrado no diagrama, um usuário que tenta fazer login deve ser
+pré-criado no Zabbix para poder fazer login usando o LDAP. Os registros de
+usuário do banco de dados não têm nenhum campo "dizendo" que o usuário será
+autenticado via LDAP, apenas as senhas dos usuários armazenadas no banco de
+dados são ignoradas; em vez disso, o Zabbix vai até um servidor LDAP para
+verificar se o usuário está autenticado:
 
-- user with a given username exists
-- user provided the correct password
+- existe um usuário com um determinado nome de usuário
+- o usuário forneceu a senha correta
 
-no other attributes configured for the user on the LDAP server side are taken
-into account.
+nenhum outro atributo configurado para o usuário no lado do servidor LDAP é
+levado em consideração.
 
-So when Zabbix is used by many users and groups, user management becomes not a
-very trivial task as new people join different teams (or leave). This problem is
-addressed by "users provisioning" and we'll cover this topic a bit later. For
-now let's take a look at how to configure LDAP authentication.
+Portanto, quando o Zabbix é usado por muitos usuários e grupos, o gerenciamento
+de usuários se torna uma tarefa não muito trivial à medida que novas pessoas
+entram em equipes diferentes (ou saem). Esse problema é resolvido pelo
+"provisionamento de usuários" e abordaremos esse tópico um pouco mais tarde. Por
+enquanto, vamos dar uma olhada em como configurar a autenticação LDAP.
 
-## Configure LDAP
+## Configurar LDAP
 
-In this section, we will be using a custom demo LDAP server with pre-loaded
-data. You can set this demo environment up to check out the Zabbix LDAP
-authentication possibilities. Or you can skip the setup of the demo environment
-if you just want to connect your Zabbix instance to your existing LDAP or AD
-server.
+Nesta seção, usaremos um servidor LDAP de demonstração personalizado com dados
+pré-carregados. Você pode configurar esse ambiente de demonstração para
+verificar as possibilidades de autenticação LDAP do Zabbix. Ou você pode pular a
+configuração do ambiente de demonstração se quiser apenas conectar sua instância
+do Zabbix ao seu servidor LDAP ou AD existente.
 
 ### Set up local demo LDAP server
 
