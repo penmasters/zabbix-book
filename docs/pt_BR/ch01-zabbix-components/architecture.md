@@ -19,7 +19,7 @@ Zabbix Server é estruturado de forma modular, composto por três componentes
 principais, que discutiremos em detalhes.
 
 - O Zabbix Server
-- O servidor web Zabbix (Frontend)
+- O servidor web Zabbix
 - O banco de dados do Zabbix
 
 !!! resumo "Criação de usuários do banco de dados"
@@ -55,7 +55,7 @@ Para nossa configuração, usaremos duas máquinas virtuais (VMs): uma VM hosped
 o Zabbix Server e o Frontend, enquanto a segunda VM hospedará o banco de dados
 do Zabbix.
 
-???+ Nota
+???+ nota
 
     It is perfectly possible to install all components on one single VM or every component
     on a separate VM.
