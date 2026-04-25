@@ -7,94 +7,95 @@ description: |
 tags: [beginner]
 ---
 
-# Host Groups
+# Grupos de hospedagem
 
-In Zabbix, **host groups** serve as a foundational mechanism for organizing
-monitored entities. They allow you to logically categorize hosts for easier
-management, simplified permissions, and streamlined configuration, especially
-useful in larger environments.
+No Zabbix, os **grupos de hosts** servem como um mecanismo fundamental para
+organizar as entidades monitoradas. Eles permitem que você categorize
+logicamente os hosts para facilitar o gerenciamento, simplificar as permissões e
+agilizar a configuração, o que é especialmente útil em ambientes maiores.
 
-Common examples include:
+Exemplos comuns incluem:
 
-- Grouping all **Linux servers** together.
-- Separating **database servers** (e.g., PostgreSQL, MySQL).
-- Organizing hosts by **team**, **location**, or **function**.
+- Agrupamento de todos os servidores **Linux**.
+- Separação de **servidores de banco de dados** (por exemplo, PostgreSQL,
+  MySQL).
+- Organização de hosts por **equipe**, **local**, ou **função**.
 
-Host groups are not only for structuring your monitored hosts, they also play an
-important role in assigning templates, setting up user permissions, and
-filtering hosts in dashboards or maps.
+Os grupos de hosts não servem apenas para estruturar os hosts monitorados, eles
+também desempenham um papel importante na atribuição de modelos, na configuração
+de permissões de usuário e na filtragem de hosts em painéis ou mapas.
 
-## Accessing Host Groups
+## Acesso a grupos de hosts
 
-You can manage host groups by navigating to:
+Você pode gerenciar grupos de hosts navegando até:
 
-**Menu → Data collection → Host groups**
+**Menu → Coleta de dados → Grupos de hosts**
 
-![Host Groups Menu Screenshot](ch02-host-grouops.png)
+![Captura de tela do menu Grupos de hosts](ch02-host-grouops.png)
 
-_2.19 Host Groups menu_
+_2.19 Menu Grupos de hosts_
 
-In this menu under `Data collection`, you'll notice two distinct sections:
+Nesse menu, em `Coleta de dados`, você verá duas seções distintas:
 
-- **Host groups**: Groups that contain hosts.
-- **Template groups**: A newer addition, specifically created for organizing
-  templates.
+- **Grupos de hosts**: Grupos que contêm hosts.
+- **Grupos de modelos**: Uma adição mais recente, criada especificamente para
+  organizar modelos.
 
-???+ info "Migrating from an older Zabbix version"
+???+ info "Migrando de uma versão anterior do Zabbix"
 
     In previous versions, templates and hosts were often placed in the same groups.
     This led to confusion, particularly for new users, as templates don't technically
     belong to host groups in Zabbix. As of recent versions (starting from Zabbix
     6.x), template groups are separated out for better clarity.
 
-## Understanding the Host Groups Overview
+## Entendendo a visão geral dos grupos de hosts
 
-When you open the **Host groups** menu, you'll see a list of predefined groups.
-Each group entry includes:
+Ao abrir o menu **Host groups**, você verá uma lista de grupos predefinidos.
+Cada entrada de grupo inclui:
 
-- **Group name** (e.g., `Linux servers`)
-- **Number of hosts** in the group (displayed as a number in front)
-- **Host names** currently assigned to that group
+- **Nome do grupo** (por exemplo, `Servidores Linux`)
+- **Número de hosts** no grupo (exibido como um número na frente)
+- **Nomes de host** atualmente atribuídos a esse grupo
 
-Clicking on a host name will take you directly to the host's configuration
-screen, providing a convenient way to manage settings without navigating through
-multiple menus.
+Ao clicar no nome de um host, você será levado diretamente à tela de
+configuração do host, o que proporciona uma maneira conveniente de gerenciar as
+configurações sem precisar navegar por vários menus.
 
-## Creating a Host Group
+## Criação de um grupo de hosts
 
-There are two main ways to create host groups:
+Há duas maneiras principais de criar grupos de hosts:
 
-### 1. During Host Creation
+### 1. Durante a criação do host
 
-When adding a new host:
+Ao adicionar um novo host:
 
-1. Go to **Data collection → Hosts**.
-2. Click **Create host** (top right).
-3. In the **Host groups** field, select an existing group or type a new name to
-   create one on the fly.
+1. Acesse **Coleta de dados → Hosts**.
+2. Clique em **Create host** (canto superior direito).
+3. No campo **Host groups**, selecione um grupo existente ou digite um novo nome
+   para criar um na hora.
 
-### 2. From the Host Groups Page
+### 2. Na página Grupos de hosts
 
-1. Navigate to **Data collection → Host groups**.
-2. Click **Create host group** in the top right.
-3. Enter a **Group name** and click **Add**.
+1. Navegue até **Data collection → Host groups**.
+2. Clique em **Create host group** no canto superior direito.
+3. Digite um **nome de grupo** e clique em **Add**.
 
-![Create new host group](ch02-new-host-group.png)
+![Criar novo grupo de hosts](ch02-new-host-group.png)
 
-_2.20 Create new host groups_
+_2.20 Criar novos grupos de hosts_
 
-## Nested Host Groups
+## Grupos de hosts aninhados
 
-Zabbix supports **nested host groups** using forward slashes (`/`) in group
-names. This allows you to represent hierarchies such as:
+O Zabbix suporta **grupos de hosts aninhados** usando barras (`/`) nos nomes dos
+grupos. Isso permite que você represente hierarquias como:
 
-- `Europe/Belgium`
-- `Europe/France`
-- `Datacenters/US/Chicago`
+- `Europa/Bélgica`
+- `Europa/França`
+- `Centros de dados/EUA/Chicago`
 
-These nested group names are **just names** Zabbix does not require that parent
-folders (e.g., `Europe`) physically exist as separate groups unless you
-explicitly create them.
+Esses nomes de grupos aninhados são **apenas nomes** O Zabbix não exige que as
+pastas pai (por exemplo, `Europa`) existam fisicamente como grupos separados, a
+menos que você os crie explicitamente.
 
 ???+ aviso
 
