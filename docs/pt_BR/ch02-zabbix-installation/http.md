@@ -18,9 +18,11 @@ username and password. When a user attempts to access Zabbix WebUI, the browser
 pops up a dialog asking for credentials before sending anything over to Zabbix
 WebUI php code.
 
-An HTTP server has a file with credentials that is used to authenticate users.
+Um servidor HTTP tem um arquivo com credenciais que é usado para autenticar
+usuários.
 
-First let's see how we can configure basic authentication in HTTP server.
+Primeiro, vamos ver como podemos configurar a autenticação básica no servidor
+HTTP.
 
 ???+ aviso
 
@@ -28,21 +30,22 @@ First let's see how we can configure basic authentication in HTTP server.
     basic authentication. Please refer to respective HTTP server documentation
     for more details
 
-## Basic authentication
+## Autenticação básica
 
-To enable basic authentication, we first need a "password-file" containing all
-usernames and passwords that are allowed to access the frontend.
+Para ativar a autenticação básica, primeiro precisamos de um "arquivo de senha"
+que contenha todos os nomes de usuário e senhas que têm permissão para acessar o
+frontend.
 
-!!! warning "Important"
+!!! aviso "Importante"
 
     Usernames configured for basic authentication in HTTP server
     must exist in Zabbix. But only passwords configured in HTTP server are used
     for users authentication.
 
-To create this file we need the command `htpasswd`. Execute following commands
-to ensure we have this utility:
+Para criar esse arquivo, precisamos do comando `htpasswd`. Execute os comandos a
+seguir para garantir que temos esse utilitário:
 
-!!! info "Install htpasswd utility"
+!!! info "Instalar o utilitário htpasswd"
 
     Red Hat
     ```bash
@@ -59,9 +62,9 @@ to ensure we have this utility:
     sudo apt install apache2-utils
     ``` 
 
-Next we will create the required file and the `Admin` user in it:
+Em seguida, criaremos o arquivo necessário e o usuário `Administrador` nele:
 
-!!! info
+!!! informações
 
     NGINX
     ```bash
@@ -78,14 +81,14 @@ Next we will create the required file and the `Admin` user in it:
     sudo htpasswd -c /etc/apache2/.htpasswd Admin
     ```
 
-This command will request you to input the desired password for the `Admin` user
-and will then create the specified password-file with the username and encrypted
-password in it.
+Esse comando solicitará que você insira a senha desejada para o usuário
+`Administrador` e, em seguida, criará o arquivo de senha especificado com o nome
+de usuário e a senha criptografada.
 
-For any additional user we can use the same command but without the `-c` option
-as the file is now already created:
+Para qualquer usuário adicional, podemos usar o mesmo comando, mas sem a opção
+`-c`, pois o arquivo já está criado:
 
-???+ example "Add additional users"
+???+ exemplo "Adicionar usuários adicionais"
 
     ```shell-session
     localhost:~> sudo htpasswd /etc/nginx/httpauth user1
@@ -116,7 +119,7 @@ Find `location / {` block in Nginx configuration file that defines your Zabbix
 WebUI (if you followed the installation steps as described in earlier chapters,
 this should be in `/etc/nginx/conf.d/zabbix.conf`) and add these two lines:
 
-!!! info
+!!! informações
 
     ```
         location / {
@@ -134,7 +137,7 @@ Find `<Directory "/usr/share/zabbix">` block in Apache HTTPD configuration file
 that defines your Zabbix WebUI (in my case it is `/etc/zabbix/apache.conf`) and
 add these lines:
 
-???+ Nota
+???+ nota
 
     By default configuration has `Require all granted`, remove this line.
 
