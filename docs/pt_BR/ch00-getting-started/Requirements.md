@@ -543,7 +543,7 @@ locais estejam em uso:
 
 Exemplo de saída esperada com servidores locais:
 
-!!! example "Example output"
+!!! example "Exemplo de saída"
 
     ```shell-session
     chronyc> sources
