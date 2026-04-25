@@ -1,22 +1,22 @@
-# Getting started with the Zabbix installation
+# Primeiros passos com a instalação do Zabbix
 
-We begin this chapter with a **deep dive into the Zabbix frontend**, the central
-hub where all monitoring and configuration tasks come together. Alongside the
-basic introduction to navigating the frontend, this chapter also covers **user
-and group setup**, focusing on creating a secure and efficient user management
-system.
+Começamos este capítulo com um **mergulho profundo no frontend do Zabbix**, o
+hub central onde todas as tarefas de monitoramento e configuração se reúnem.
+Além da introdução básica à navegação no frontend, este capítulo também aborda a
+**configuração de usuários e grupos** , com foco na criação de um sistema de
+gerenciamento de usuários seguro e eficiente.
 
-We'll walk through setting up **internal authentication** with best practices
-for security, including **dual-factor authentication**. For those needing
-advanced integration, we'll explore options like **SAML, LDAP**, and other
-external authentication methods.
+Vamos configurar a autenticação interna **** com as práticas recomendadas de
+segurança, incluindo a autenticação de fator duplo **** . Para aqueles que
+precisam de integração avançada, exploraremos opções como **SAML, LDAP** e
+outros métodos de autenticação externa.
 
-This chapter strikes a balance between a straightforward overview “this is the
-frontend” and a more in depth look at the **advanced choices** you can make to
-enhance your system's security and manageability. Whether you're just getting
-started or looking to implement robust security measures, there's something here
-for everyone.
+Este capítulo apresenta um equilíbrio entre uma visão geral direta "este é o
+frontend" e uma análise mais aprofundada das **escolhas avançadas** que você
+pode fazer para aumentar a segurança e a capacidade de gerenciamento do seu
+sistema. Se estiver apenas começando ou se quiser implementar medidas de
+segurança robustas, há algo aqui para todos.
 
-By the end, you'll be well equipped to navigate the Zabbix frontend with
-confidence and set up a secure, scalable user management system tailored to your
-organization's needs.
+Ao final, você estará bem equipado para navegar com confiança no front-end do
+Zabbix e configurar um sistema de gerenciamento de usuários seguro e
+dimensionável, adaptado às necessidades da sua organização.

@@ -518,7 +518,7 @@ upload de tudo em nosso banco de dados `zabbix`.
     Please be patient and avoid cancelling the operation; just wait for the linux 
     prompt to reappear.
 
-???+ Nota
+???+ nota
 
     Zabbix seems to like to change the locations of the script to populate the
     DB every version or even in between versions. If you encounter an error take a
