@@ -20,43 +20,48 @@ real world deployment.
 
 ---
 
-## The Role of a User Group
+## A função de um grupo de usuários
 
-A **User Group** in Zabbix is a logical collection of individual user accounts.
-Rather than managing permissions for hundreds of users individually, Zabbix
-requires that users be assigned to one or more groups. Access rights, such as
-the ability to view host groups, configure templates, or see specific problem
-tags are then granted at the **group level**.
+Um **grupo de usuários** no Zabbix é uma coleção lógica de contas de usuários
+individuais. Em vez de gerenciar as permissões de centenas de usuários
+individualmente, o Zabbix exige que os usuários sejam atribuídos a um ou mais
+grupos. Os direitos de acesso, como a capacidade de visualizar grupos de hosts,
+configurar modelos ou ver tags de problemas específicos, são concedidos no
+**nível do grupo** .
 
-This group centric architecture provides several major benefits:
+Essa arquitetura centrada em grupos oferece vários benefícios importantes:
 
-* **Simplified Management:** Access rights are managed by **role** (e.g.,
-  "Network Engineers," "Database Administrators") instead of by individual user.
-* **Consistency:** Ensures that all users within the same role possess a
-  consistent, standardized set of permissions.
-* **Segregation of Duties:** Enables clear separation between viewing
-  (read-only) and configuration (read-write) access.
+* **Gerenciamento simplificado:** Os direitos de acesso são gerenciados pela
+  **função** (por exemplo, "Engenheiros de rede", "Administradores de banco de
+  dados") em vez de por usuário individual.
+* **Consistência:** Garante que todos os usuários com a mesma função possuam um
+  conjunto consistente e padronizado de permissões.
+* **Segregação de funções:** Permite a separação clara entre o acesso de
+  visualização (somente leitura) e de configuração (leitura e gravação).
 
-> **Technical Definition:** User groups allow grouping users for both
-> organizational purposes and for assigning permissions to data. Permissions to
-> viewing and configuring data of host groups and template groups are assigned
-> to user groups, not individual users. A user can belong to any number of
-> groups.
+> **Definição técnica:** Os grupos de usuários permitem o agrupamento de
+> usuários para fins organizacionais e para a atribuição de permissões aos
+> dados. As permissões de visualização e configuração de dados de grupos de
+> hosts e grupos de modelos são atribuídas a grupos de usuários, não a usuários
+> individuais. Um usuário pode pertencer a qualquer número de grupos.
 
 ---
 
-## Configuring a User Group
+## Configuração de um grupo de usuários
 
-In Zabbix, user groups are defined and maintained solely via the web frontend.
-The procedure has remained largely unchanged between version 8.0 and previous
-generations, ensuring a familiar configuration experience for administrators.
+No Zabbix, os grupos de usuários são definidos e mantidos exclusivamente por
+meio do front-end da Web. O procedimento permaneceu praticamente inalterado
+entre a versão 8.0 e as gerações anteriores, garantindo uma experiência de
+configuração familiar para os administradores.
 
-### Group Creation and General Attributes
+### Criação de grupos e atributos gerais
 
-1. Navigate to **Administration** → **User groups**.
-2. Click **Create user group** (or select an existing group to modify).
-3. The configuration form is divided into four critical tabs: **User group**,
-   **Template permissions**, **Host permissions**, and **Problem tag filter**.
+1. Navegue até **Administration** → **User groups**.
+2. Clique em **Create user group** (ou selecione um grupo existente para
+   modificar).
+3. O formulário de configuração é dividido em quatro guias essenciais: **Grupo
+   de usuários**, **Permissões de modelo**, **Permissões de host**, e **Filtro
+   de tag de problema**.
 
 ![ch02.20_user-groups_menu.png](ch02.20_user-groups_menu.png)
 
