@@ -1,0 +1,2441 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Enhance alerting with advanced Zabbix triggers. Use functions, dependencies,
+and multiple conditions for precise, intelligent problem detection.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/pt_BR/ch05-zabbix-triggers/advanced-triggers/">
+      
+      
+        <link rel="prev" href="../triggers/">
+      
+      
+        <link rel="next" href="../../ch06-zabbix-templates/chapter/">
+      
+      
+        
+          <link rel="alternate" href="../../../fr/ch05-zabbix-triggers/advanced-triggers/" hreflang="fr">
+        
+          <link rel="alternate" href="../../../nl/ch05-zabbix-triggers/advanced-triggers/" hreflang="nl">
+        
+          <link rel="alternate" href="./" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../../ru/ch05-zabbix-triggers/advanced-triggers/" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch05-zabbix-triggers/advanced-triggers/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Advanced triggers - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=e425441b8ba9ca970e8a0f91c697e554a2bb4e96">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Advanced triggers">
+    <meta property="og:description" content="Enhance alerting with advanced Zabbix triggers. Use functions, dependencies, and multiple conditions for precise, intelligent problem detection.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/pt_BR/ch05-zabbix-triggers/advanced-triggers/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Advanced triggers">
+    <meta name="twitter:description" content="Enhance alerting with advanced Zabbix triggers. Use functions, dependencies, and multiple conditions for precise, intelligent problem detection.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#advanced-triggers" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Esta página ainda não foi traduzida para o português. Portanto, está sendo exibida em inglês.
+            <a href="/gmc/pt_BR/contribute/#translations">Ajude-nos a traduzir!</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Advanced triggers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch05-zabbix-triggers/advanced-triggers/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch05-zabbix-triggers/advanced-triggers/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt_BR" class="md-select__link">
+              Brazilian Portuguese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch05-zabbix-triggers/advanced-triggers/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch05-zabbix-triggers/advanced-triggers/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartilhar" aria-label="Compartilhar" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 05 : Triggers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setting up triggers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../triggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Triggers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced triggers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced triggers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recovery-expression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recovery expression
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trigger-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trigger dependency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context-macros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context macros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macros-in-trigger-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macros in trigger names
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-problem-event-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple PROBLEM event generation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#know-your-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Know your data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time component
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reducing-flapping-even-more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reducing flapping even more
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-it-stuck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is it stuck?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-it-growing-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is it growing fast?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recovery-expression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recovery expression
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trigger-dependency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trigger dependency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context-macros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context macros
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macros-in-trigger-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macros in trigger names
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-problem-event-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple PROBLEM event generation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#know-your-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Know your data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time component
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reducing-flapping-even-more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reducing flapping even more
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-it-stuck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is it stuck?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-it-growing-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is it growing fast?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navegação" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 05 : Triggers
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="expert">
+      Expert
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch05-zabbix-triggers/advanced-triggers.md" title="Exibir fonte desta página" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="advanced-triggers">Advanced triggers</h1>
+<p>You have just learned in the previous chapter what is a trigger in Zabbix and
+how to create one. Now we will go deeper and learn, how to create triggers with
+some more complexity in mind.</p>
+<p>So trigger, in its most simple definition or use cases, is a threshold. It is
+as simple as some metric hitting a limit and our trigger catches it. Take as an
+example disk space - it grows constantly until reaches some predefined value -
+say 80% - and we simply evaluate it for each collected value.</p>
+<p>However, real world in many cases is more complex than ever growing disk space.
+Something might be growing and getting cleaned, something might be important
+only on certain time frames and something might need to join multiple different
+items into one evaluation. Thus we need to adapt our monitoring approaches and
+templates to this complexity of real world. Fortunately, Zabbix has it all
+covered with wide variety of trigger functions and features around trigger
+logic.</p>
+<p>But first things first. There are few fundamental concepts behind advanced
+triggers which must be understood in order to master them. Let's quickly run
+through them.</p>
+<h2 id="recovery-expression">Recovery expression</h2>
+<p>As mentioned, in most trivial understanding, trigger is just a threshold. But
+even in such cases, you might want to apply some different threshold for the
+recovery of specific event - to reduce flapping. Flapping is a constant state
+switching between "PROBLEM" and "OK" in cases you balance on the edge of the
+defined threshold.</p>
+<p>For the sake of clarity, say that we have value constantly growing but not
+ever-growing in terms of deltas between two consecutive values. It might go down
+a little bit and then grow again. Something like this:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="ch">#!/bin/bash</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># time in seconds for current hour</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nv">seconds</span><span class="o">=</span><span class="k">$(($(</span>date<span class="w"> </span>+%s<span class="k">)</span><span class="o">%</span><span class="m">3600</span><span class="k">))</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="o">((</span><span class="w"> </span>seconds<span class="w"> </span>&lt;<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">seconds</span><span class="o">=</span><span class="m">2</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nv">random</span><span class="o">=</span><span class="k">$((</span><span class="nv">RANDOM</span><span class="o">%</span><span class="k">$((</span><span class="nv">seconds</span><span class="o">/</span><span class="m">2</span><span class="k">))</span><span class="o">-</span><span class="k">$((</span><span class="nv">seconds</span><span class="o">/</span><span class="m">4</span><span class="k">))))</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="nb">echo</span><span class="w"> </span><span class="k">$((</span><span class="nv">seconds</span><span class="o">+</span><span class="nv">random</span><span class="k">))</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+</span></code></pre></div>
+<p>This script will produce us ever-growing value until the end of each hour, but
+it will not be growing in linear way.</p>
+<p>So in case you have a trigger set to some specific threshold you will face the
+following situation: trigger switches between "PROBLEM" and "OK" each time this
+specific threshold is hit.</p>
+<p>Now imagine an alert on each of those events! You would receive tens of
+notifications which would basically talk about one and the same problem. So in
+order to avoid it, you can keep the original trigger expression, just add
+recovery expression along. This recovery expression would have smaller value
+if compared to original problem expression and that is how you would avoid
+flapping in such situations. It would only fall into "OK" state when the
+problem is really fixed (beginning of each hour in our example):</p>
+<p><img alt="Advanced triggers - recovery expression" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-recovery-expression.png" /></p>
+<p>Difference just with this small idea is huge - less monitoring noise, less
+alerts:</p>
+<p><img alt="Advanced triggers - recovery expression" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-recovery-expression-vs-simple-threshold.png" /></p>
+<h2 id="trigger-dependency">Trigger dependency</h2>
+<p>Trigger dependency is a simple yet powerful concept to keep your set of active
+events clean. Imagine same or similar problem but with different thresholds,
+for example 80% and 90% of used disk space. You would not like to have two
+triggers in "PROBLEM" state once you suddenly reached 95% of used disk space.
+So in this case, trigger with lower threshold can depend on the one with higher
+threshold and produce only single event, because in this particular case it is
+useless to state that you reached 80%.</p>
+<p>You can think of more use cases where trigger dependency might be useful. It can
+be applied not only to evaluate same metric with several different thresholds,
+but also to implement some other hierarchy-based type of checks. For example,
+you can choose to not display HTTP based checks if ICMP ping fails (check OSI
+model).</p>
+<p>For example, say we have set of HTTP based triggers, which would show something
+wasn't retrieved successfully - either there was no HTTP 200 in response headers
+or no response received at all during last 5 minutes. Why this second part you
+may ask, why not just evaluating returned status code? Well - timeout, expired
+certificate, DNS not resolving target - are all as bad as getting non 200 HTTP
+response status code, when you expect one. If you have a trigger which is
+simply evaluating such item's values, you would miss this "other" type of
+failures, because they don't mean any code - there is simply no code returned
+(check OSI model once again). Since no code is returned, our item will not
+store anything.</p>
+<p>Similar goes to ICMP ping trigger - it checks if ping failed or there was no
+data for last 3 minutes:</p>
+<p><img alt="Advanced triggers - no dependencies" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-no-dependencies.png" /></p>
+<details class="info" open="open">
+<summary>Info</summary>
+<p>Disclaimer: these triggers are not perfect since <code>nodata()</code> might fire for
+short time immediately after the template is applied due to no data being
+there yet. However, it serves the purpose of demonstrating the importance
+of trigger dependency.</p>
+</details>
+<p>Let's apply it to "thezabbixbook.com" host - and it has a typo (note double "b"
+is missing in the "zabbix"). What happens, is that data can't be retrieved, host
+can't be pinged:</p>
+<p><img alt="Advanced triggers - no dependencies result" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-no-dependencies-result.png" /></p>
+<p>Result is obvious and expected - you have all the triggers displayed. However,
+what if there were much more triggers to be displayed, and even worse, each of
+them having some alerting on top? You would most likely wish to receive just
+one notification instead of many in this very case.</p>
+<p>So here comes the "trigger dependency". We will configure all HTTP based
+triggers to depend on ICMP ping one. It is done in trigger configuration, tab
+"Dependencies":</p>
+<p><img alt="Advanced triggers - dependency configuration" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-dependency-config.png" /></p>
+<p>Keep in mind that you are not limited to just one dependency - you can add more.
+Once added, all the triggers for which you configure dependencies, will display
+them under their names:</p>
+<p><img alt="Advanced triggers - with dependencies" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-dependencies.png" /></p>
+<p>And we can see that from now on, only one event is generated and displayed:</p>
+<p><img alt="Advanced triggers - no dependencies result" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-dependencies-result.png" /></p>
+<details class="tip" open="open">
+<summary>Tip</summary>
+<p>You can see that our HTTP based triggers are configured for 5 minutes of
+failures or "silence" and ICMP ping one uses 3-minute windows. This is done
+on purpose - if same window was used, HTTP triggers could fire first, before
+the ICMP ping trigger appears - depending on which item values are
+collected first. So we use shorter evaluation interval on "more important"
+trigger in order to avoid even this short appearance of the ones that
+depend on it.</p>
+</details>
+<h2 id="context-macros">Context macros</h2>
+<p>Context macros can help you set different thresholds for different checks
+of same nature. This is extremely useful in the world of LLD - you can have
+one macro for some "default" threshold and override it, if needed, by providing
+some context to it. For example, different file systems can have different
+thresholds.</p>
+<p>Here we have different thresholds for different discovered entities. Default is
+95 and we have two exceptions:</p>
+<p><img alt="Advanced triggers - no dependencies result" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-context-macros.png" /></p>
+<p>So the trigger prototype will look like:</p>
+<p><img alt="Advanced triggers - no dependencies result" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-context-macros-trigger-config.png" /></p>
+<p>And real events will then be like this (note the different thresholds for "a"
+and "h"):</p>
+<p><img alt="Advanced triggers - no dependencies result" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-context-macros-trigger-result.png" /></p>
+<p>While constructing advanced triggers, you will find this concept being nicely
+incorporated into the big picture of trigger efficiency.</p>
+<h2 id="macros-in-trigger-names">Macros in trigger names</h2>
+<p>In most simple case, trigger / event names are static text. However, it is very
+useful to understand, that certain macros are supported in trigger names as
+well (see "Useful URLs" section, "Macros supported by location"). To add even
+more, not only macros themselves, but also macro functions are supported. So,
+for example, you can extract certain parts of collected item value and put it
+directly into event name. This makes your monitoring setup dynamic, flexible
+and professional. Also, this works very well in combination with "Multiple
+PROBLEM event generation", so let's look into it in more details below.</p>
+<h2 id="multiple-problem-event-generation">Multiple PROBLEM event generation</h2>
+<p>This one is kind of trivial - you can choose to generate either single PROBLEM
+event or many of them if the same trigger condition is being met multiple
+times. This is useful if the same item collects many different things. Then you
+might use "Multiple" to create event on each and every unique case caught by
+such item. For example, imagine catching all the lines from web server log,
+where HTTP 404 status code was returned. You can catch those as multiple
+events, and, as we just learned, display some more details (e.g. path in this
+case) directly in trigger / event name:</p>
+<p><img alt="Advanced triggers - multiple events - config" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-multiple-regsub-config.png" /></p>
+<p>This item / trigger combination will catch and display all of the 404 lines,
+with exact path of URL that was "Not found":</p>
+<p><img alt="Advanced triggers - multiple events - result" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-multiple-regsub-result.png" /></p>
+<p>In this case, real access log lines were the following:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>192.168.1.253 - - [04/Mar/2026:22:58:59 +0000] &quot;GET /test HTTP/1.1&quot; 404 491 &quot;-&quot; &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36&quot;
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>192.168.1.253 - - [04/Mar/2026:22:59:03 +0000] &quot;GET /hello/world HTTP/1.1&quot; 404 491 &quot;-&quot; &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36&quot;
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>192.168.1.253 - - [04/Mar/2026:22:59:05 +0000] &quot;GET /zabbix/book HTTP/1.1&quot; 404 491 &quot;-&quot; &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36&quot;
+</span></code></pre></div>
+<p>See the beauty here? Displaying only the part that matters for us. And nothing
+else but simple regexp and native Zabbix features does it!</p>
+<details class="warning" open="open">
+<summary>Warning</summary>
+<p>Be careful when using "Multiple" and <code>nodata()</code> function in the same
+trigger. This will lead into new problem event each time trigger is
+evaluated.</p>
+</details>
+<p>Following the previous warning, here is an example of such setup:</p>
+<p><img alt="Advanced triggers - multiple events - no data" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-multiple-events-no-data.png" /></p>
+<h2 id="know-your-data">Know your data</h2>
+<p>Last thing worth to be mentioned here is the most simple one, however, it might
+be the most important one!</p>
+<p>There is no silver bullet when we talk about complex data evaluations. Thus
+first you need to know very well, what are you collecting and what to expect
+from the data that you collect. With such understanding, you can apply correct
+triggers on top of your data with much more ease. So if uncertain about what
+exactly is it to be collected, it is good idea not to rush with the triggers at
+the same moment you create items. Simply leave data collection part working for
+a while and construct triggers once you gather some knowledge about potential
+correct trigger expressions.</p>
+<h2 id="examples">Examples</h2>
+<p>Now that we have some prerequisites covered, let's proceed with several
+examples of the triggers that might be considered as "advanced".</p>
+<p>Again, these are just few examples and there are much more trigger functions
+to be used, we can't cover each and every of them. Also, specific function
+(or combination of them) to be used highly depends on the nature of data that is
+collected.</p>
+<h2 id="time-component">Time component</h2>
+<p>One of the most simple examples that can make simple triggers more advanced is
+adding time component to it. Zabbix has multiple different functions for this.
+For example, you have trigger which is important only on day time, so you
+can easily do this:</p>
+<p><img alt="Advanced triggers - time component" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-time-component.png" /></p>
+<p>In similar way, you can "split" the trigger into several different ones, for
+example have different thresholds or severity level for the same metric over
+the day and night or for working days and weekends. Adding time component is
+also useful to reduce noise caused by some known heavy activities, which would
+otherwise cause triggers to appear - say some nightly backup process.</p>
+<h2 id="reducing-flapping-even-more">Reducing flapping even more</h2>
+<p>While explaining recovery expressions, we were still operating in simple
+thresholds. However, no one limits you to use only them.</p>
+<p>For example, say that under normal conditions our metric is typically "0", but
+might sometimes have short few minutes long spikes. Under real "incident", value
+rises and stays there for longer than "few minutes", however it might as well
+fall back to "0" for a minute and go back to higher values.</p>
+<p>Given all those conditions, simple "threshold" type of a trigger (based on
+evaluating just "last" value) is not enough, even if used with another
+threshold for recovery.</p>
+<p>That is where we can go with some more complexity in mind. We can evaluate not
+a single value, but several values in a row with functions <code>min()</code>, <code>max()</code>,
+<code>sum()</code> or <code>avg()</code>.</p>
+<p>For example, we will treat any big spike lasting for 3 minutes in a row as an
+incident, as well as treating incident is over only if it drops and stays low
+for 10 minutes in a row:</p>
+<p><img alt="Advanced triggers - more functions" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-more-functions.png" /></p>
+<p>Macros in this trigger configuration are set accordingly:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>{$INCIDENT_START_WINDOW} =&gt; 3m
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>{$INCIDENT_START_THRESHOLD} =&gt; 100
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>{$INCIDENT_END_THRESHOLD} =&gt; 5
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>{$INCIDENT_END_WINDOW} =&gt; 10m
+</span></code></pre></div>
+<p>So now let's illustrate how it would look like during real incident:</p>
+<p><img alt="Advanced triggers - more functions - result" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-more-functions-result.png" /></p>
+<p>See that it works exactly as we wanted:</p>
+<ul>
+<li>we have only one event produced here</li>
+<li>short drops during the "incident" don't resolve the issue</li>
+<li>"incident" is only resolved if there is 10 minutes of "silence"</li>
+<li>short spikes, even above threshold, don't cause "incident"</li>
+</ul>
+<h2 id="is-it-stuck">Is it stuck?</h2>
+<p>In this example we have an item which stays at "0" most of the time and once
+in a while shows some big number, which gradually goes down back to "0". This
+collected number being greater than 0 is not a problem on its own, problem is
+when it goes down and never reaches zero - it kind of gets stuck. Imagine some
+queue to be processed and such item showing records in this queue.</p>
+<p>So what we want to catch here is this "stuck" situation. Fortunately, there
+is a trigger function exactly for this purpose - <code>changecount()</code>. This function
+evaluates number of changes during defined period. Given that constant "0" would
+not mean anything wrong, we must combine it with simple threshold and that is
+how we can catch the defined issue in fast and reliable way.</p>
+<p><img alt="Advanced triggers - detecting stuck" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-stuck-config.png" /></p>
+<p>And now we can see it in action - first case is regular processing, second one
+is stuck - exactly what we intended to catch! After "fixing" it - trigger goes
+away:</p>
+<p><img alt="Advanced triggers - detecting stuck - result" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-stuck-result.png" /></p>
+<h2 id="is-it-growing-fast">Is it growing fast?</h2>
+<p>Back to the disk space. We already know how to evaluate disk space in smarter
+way than simple threshold (flapping reduction with different recovery
+expression). But we can implement even smarter ideas. For instance, what if we
+would like to know the fact, that not only used disk space reached some
+threshold, but it did it fast? This could be useful, because such trigger
+would most likely indicate more urgent issue than used disk space growing at
+regular pace.</p>
+<p>First you need delta - be it separate item or trigger level evaluation.
+Separate item brings more clarity - you can put it into graphs and get a visual
+picture of what has happened.</p>
+<p>Then comes the trigger logic itself. Here in this example you see a threshold
+of 60% and growing tempo (sum of delta values) per 10 minutes is set to 1%.
+Recovery expression expects used disk space value to either drop below 55% or
+growing tempo to be less than 1% during 30-minute window.</p>
+<p>Full trigger configuration is this:</p>
+<p><img alt="Advanced triggers - growing fast" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-growing-fast-config.png" /></p>
+<p>Macros in this trigger configuration are set accordingly:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{$DISK_FULL_PCT_DELTA_WARN} =&gt; 60
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>{$DISK_FULL_PCT_DELTA_THRESHOLD} =&gt; 1
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>{$DISK_FULL_PCT_DELTA_WINDOW} =&gt; 10m
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>{$DISK_FULL_PCT_DELTA_THRESHOLD} =&gt; 1
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>{$DISK_FULL_PCT_DELTA_RECOVERY_WINDOW} =&gt; 30m
+</span></code></pre></div>
+<p>From trigger expression it is clear, that we use context macros here. So these
+thresholds can be adjusted per each filesystem.</p>
+<p>And we can see how nicely it works. If disk used space grows slowly - trigger
+is silent. If disk grows fast, but threshold not yet reached - trigger is
+silent. And only once it grows fast and 60% is reached - we know about it:</p>
+<p><img alt="Advanced triggers - growing fast - result" src="../../../ch05-zabbix-triggers/advanced-triggers/ch05.xx-advanced-triggers-growing-fast-result.png" /></p>
+<p>Note that delta value here is displayed on right Y axis and overall used disk
+space is on the left.</p>
+<p>We discussed disk space here, but this approach can obviously be applied
+anywhere else. It can also be applied in the opposite manner - if something
+drops too fast.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>You can't construct perfect triggers without perfectly knowing the data that you
+collect in the first place. By understanding what you collect, you have a wide
+variety of trigger functions provided by Zabbix to evaluate this data. Don't
+think of triggers as being simple thresholds, unless it is really something that
+you truly need. By exploring possible trigger functions and being creative, you
+will be able to create advanced trigger logic, which will help to reduce noise
+on monitoring events and improve monitoring quality.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Is there a way to specify different condition to close the problem, than the
+one under which it started?</li>
+<li>Are triggers capable to evaluate only the latest collected item value?</li>
+<li>Can we apply more that one trigger function in same trigger?</li>
+<li>Can one trigger evaluate multiple different items?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/triggers">https://www.zabbix.com/documentation/current/en/manual/config/triggers</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location">https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=e425441b8ba9ca970e8a0f91c697e554a2bb4e96"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>

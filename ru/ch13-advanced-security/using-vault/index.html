@@ -1,0 +1,3991 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A free, community driven online resource to master Zabbix: built to give back, sustain the community, and help you become truly empowered with monitoring.">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/ru/ch13-advanced-security/using-vault/">
+      
+      
+        <link rel="prev" href="../agent-security/">
+      
+      
+        <link rel="next" href="../partitioning-database/">
+      
+      
+        
+          <link rel="alternate" href="../../../fr/ch13-advanced-security/using-vault/" hreflang="fr">
+        
+          <link rel="alternate" href="../../../nl/ch13-advanced-security/using-vault/" hreflang="nl">
+        
+          <link rel="alternate" href="../../../pt_BR/ch13-advanced-security/using-vault/" hreflang="pt_BR">
+        
+          <link rel="alternate" href="./" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch13-advanced-security/using-vault/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Storing secrets - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=e425441b8ba9ca970e8a0f91c697e554a2bb4e96">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Storing secrets">
+    <meta property="og:description" content="A free, community driven online resource to master Zabbix: built to give back, sustain the community, and help you become truly empowered with monitoring.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/ru/ch13-advanced-security/using-vault/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Storing secrets">
+    <meta name="twitter:description" content="A free, community driven online resource to master Zabbix: built to give back, sustain the community, and help you become truly empowered with monitoring.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#secrets-management-in-zabbix-with-hashicorp-vault" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Эта страница еще не переведена на ЯЗЫК, поэтому она отображается на английском языке.
+            <a href="/gmc/ru/contribute/#translations">Поддержите нас и переведите!</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Выберите версию";
+        const gGMC_TRANSLATE_CTA = "Поддержите нас и переведите!";
+        const gGMC_PAGE_LOCALE = "ru";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Storing secrets
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch13-advanced-security/using-vault/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch13-advanced-security/using-vault/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt_BR/ch13-advanced-security/using-vault/" hreflang="pt_BR" class="md-select__link">
+              Brazilian Portuguese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch13-advanced-security/using-vault/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/graphs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_18">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 13 : Advanced set up and security
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced set-up and security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../selinux-zabbix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SELinux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../securing-frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Securing the frontend
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Securing the Zabbix agent with encryption
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storing secrets
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storing secrets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-use-a-secrets-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Use a Secrets Manager?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Use a Secrets Manager?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enter-secrets-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enter Secrets Managers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hashicorp-vault-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HashiCorp Vault Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-and-configuring-vault-on-rhel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installing and Configuring Vault on RHEL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing and Configuring Vault on RHEL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-the-hashicorp-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add the HashiCorp Repository
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-data-directory-and-set-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create the Data Directory and Set Permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-and-start-the-vault-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enable and Start the Vault Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initialise-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialise Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unseal-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unseal Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authenticate-as-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authenticate as Root
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-vault-for-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring Vault for Zabbix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring Vault for Zabbix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enable-the-kv-secrets-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enable the KV Secrets Engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#store-zabbix-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Store Zabbix Secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-vault-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create Vault Policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-token-role-with-renewal-period" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create a Token Role with Renewal Period
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-tokens-for-frontend-and-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create Tokens for Frontend and Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-the-firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open the Firewall
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow-selinux-network-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allow SELinux Network Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-connectivity-with-curl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Connectivity with curl
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-the-zabbix-server-for-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring the Zabbix Server for Vault
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring the Zabbix Server for Vault">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-vaultdbpath-and-vaultprefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding VaultDBPath and VaultPrefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit-zabbix_serverconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit zabbix_server.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-certificate-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Certificate Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restart-the-zabbix-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restart the Zabbix Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-the-zabbix-frontend-for-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring the Zabbix Frontend for Vault
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring the Zabbix Frontend for Vault">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edit-zabbixconfphp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit zabbix.conf.php
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secure-the-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secure the Configuration File
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-vault-secrets-as-macros-in-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Vault Secrets as Macros in Zabbix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using Vault Secrets as Macros in Zabbix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macro-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-snmp-community-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: SNMP Community String
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-resolution-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Resolution Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tls-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TLS Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-a-custom-ca-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using a Custom CA Certificate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-certificate-authentication-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client Certificate Authentication (mTLS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying-tls-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying TLS Connectivity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-the-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying the Integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verifying the Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reload-secrets-from-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reload Secrets from Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-connectivity-in-the-server-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Connectivity in the Server Log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-macro-resolution-in-the-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Macro Resolution in the Frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-a-secret-reaches-an-actual-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify a Secret Reaches an Actual Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confirm-no-plaintext-in-the-zabbix-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confirm No Plaintext in the Zabbix Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zabbix-server-cannot-connect-to-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zabbix Server Cannot Connect to Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-a-secret-is-accessible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify a Secret is Accessible
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-vault-audit-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check Vault Audit Log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vault-gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vault GUI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partitioning-database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Partitioning MariaDB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../partitioning-postgresql-database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Partitioning PostgreSQL with TimescaleDB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-use-a-secrets-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Use a Secrets Manager?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Use a Secrets Manager?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enter-secrets-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enter Secrets Managers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hashicorp-vault-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HashiCorp Vault Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-and-configuring-vault-on-rhel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installing and Configuring Vault on RHEL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing and Configuring Vault on RHEL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-the-hashicorp-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add the HashiCorp Repository
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-data-directory-and-set-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create the Data Directory and Set Permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-and-start-the-vault-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enable and Start the Vault Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initialise-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialise Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unseal-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unseal Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authenticate-as-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authenticate as Root
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-vault-for-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring Vault for Zabbix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring Vault for Zabbix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enable-the-kv-secrets-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enable the KV Secrets Engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#store-zabbix-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Store Zabbix Secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-vault-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create Vault Policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-token-role-with-renewal-period" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create a Token Role with Renewal Period
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-tokens-for-frontend-and-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create Tokens for Frontend and Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-the-firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open the Firewall
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow-selinux-network-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allow SELinux Network Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-connectivity-with-curl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Connectivity with curl
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-the-zabbix-server-for-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring the Zabbix Server for Vault
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring the Zabbix Server for Vault">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-vaultdbpath-and-vaultprefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding VaultDBPath and VaultPrefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit-zabbix_serverconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit zabbix_server.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-certificate-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Certificate Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restart-the-zabbix-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restart the Zabbix Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-the-zabbix-frontend-for-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuring the Zabbix Frontend for Vault
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring the Zabbix Frontend for Vault">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edit-zabbixconfphp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit zabbix.conf.php
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secure-the-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secure the Configuration File
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-vault-secrets-as-macros-in-zabbix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Vault Secrets as Macros in Zabbix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using Vault Secrets as Macros in Zabbix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macro-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-snmp-community-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: SNMP Community String
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-resolution-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Resolution Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tls-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TLS Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-a-custom-ca-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using a Custom CA Certificate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-certificate-authentication-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client Certificate Authentication (mTLS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying-tls-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying TLS Connectivity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-the-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying the Integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verifying the Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reload-secrets-from-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reload Secrets from Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-connectivity-in-the-server-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Connectivity in the Server Log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-macro-resolution-in-the-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Macro Resolution in the Frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-a-secret-reaches-an-actual-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify a Secret Reaches an Actual Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confirm-no-plaintext-in-the-zabbix-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confirm No Plaintext in the Zabbix Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zabbix-server-cannot-connect-to-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zabbix Server Cannot Connect to Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-a-secret-is-accessible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify a Secret is Accessible
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-vault-audit-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check Vault Audit Log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vault-gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vault GUI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Навигация" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 13 : Advanced set up and security
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch13-advanced-security/using-vault.md" title="Посмотреть исходный код страницы" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="secrets-management-in-zabbix-with-hashicorp-vault">Secrets Management in Zabbix with HashiCorp Vault</h1>
+<h2 id="why-use-a-secrets-manager">Why Use a Secrets Manager?</h2>
+<p>In most monitoring environments, credentials are inevitably spread across many places:
+SNMP community strings, SSH private keys, database passwords, API tokens, and WMI
+credentials all need to reach the monitoring system somehow. Without a dedicated
+secrets manager, these credentials are typically stored in one or more of the
+following ways:</p>
+<ul>
+<li><strong>Plaintext in configuration files</strong> — readable by anyone with file system access,
+  often forgotten in backups or version control.</li>
+<li><strong>Hardcoded in templates or host macros</strong> — while Zabbix's built-in <em>Secret
+  text</em> macro type masks the value in the UI and omits it from template exports,
+  the value is still stored in the Zabbix database in plaintext. Anyone with direct
+  database access can read every credential without any additional barrier.</li>
+<li><strong>Plaintext storage in the Zabbix database</strong> — all macro values, including those
+  marked as <em>Secret text</em>, are stored unencrypted in the <code>globalmacro</code> and <code>hostmacro</code>
+  tables. A compromised database exposes every credential in full.</li>
+<li><strong>Shared over email or chat</strong> — no audit trail, no expiry, no revocation.</li>
+</ul>
+<p>This approach creates significant operational and security risks:</p>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Credential sprawl</strong></td>
+<td>The same password exists in dozens of config files across multiple servers.</td>
+</tr>
+<tr>
+<td><strong>No rotation workflow</strong></td>
+<td>Changing a credential requires hunting down every place it is used.</td>
+</tr>
+<tr>
+<td><strong>No audit trail</strong></td>
+<td>There is no log of who accessed a secret and when.</td>
+</tr>
+<tr>
+<td><strong>Breach blast radius</strong></td>
+<td>A compromised monitoring server exposes all monitored system credentials.</td>
+</tr>
+<tr>
+<td><strong>Compliance failures</strong></td>
+<td>Regulations like ISO 27001, SOC 2, PCI-DSS, and NIS2 require controlled access to credentials.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="enter-secrets-managers">Enter Secrets Managers</h3>
+<p>Solutions like <strong>HashiCorp Vault</strong> and <strong>CyberArk Conjur</strong> solve these problems
+by providing a centralised, encrypted secrets store with:</p>
+<ul>
+<li><strong>Dynamic secrets</strong>: credentials generated on demand with short TTLs, automatically
+  revoked after use.</li>
+<li><strong>Fine-grained access policies</strong>: each application or service receives only the
+  secrets it needs.</li>
+<li><strong>Full audit logging</strong>: every secret access is recorded with timestamp, identity,
+  and path.</li>
+<li><strong>Token and lease management</strong>: Vault auth tokens have configurable TTLs and
+  are automatically expired, reducing the window of exposure if a token is compromised.
+  Dynamic secrets (where supported) are generated on demand and automatically
+  revoked after use.</li>
+<li><strong>Encryption at rest and in transit</strong>: secrets never touch disk in plaintext.</li>
+</ul>
+<p>Zabbix 6.4 and later supports native integration with HashiCorp Vault, allowing
+macros to reference secrets stored in Vault rather than holding the secret value
+directly. This keeps plaintext credentials out of the Zabbix database entirely.</p>
+<hr />
+<h2 id="hashicorp-vault-overview">HashiCorp Vault Overview</h2>
+<p>HashiCorp Vault is an open-source (with a BSL licence from 1.13.13+) secrets management
+tool. It provides:</p>
+<ul>
+<li>A <strong>KV (Key/Value) secrets engine</strong>: for storing static secrets.</li>
+<li>An <strong>audit backend</strong>: for logging all secret access.</li>
+<li><strong>Authentication methods</strong>: (AppRole, Token, LDAP, Kubernetes, AWS IAM, etc.).</li>
+<li>A RESTful API and CLI for interaction.</li>
+</ul>
+<p>Zabbix uses Vault's KV v2 secrets engine via the HTTP API, authenticating with a
+Vault token. Zabbix only supports token-based authentication — there is no native
+support for AppRole as a config parameter. AppRole can however be used to obtain
+a scoped token which is then passed to Zabbix.</p>
+<hr />
+<h2 id="installing-and-configuring-vault-on-rhel">Installing and Configuring Vault on RHEL</h2>
+<p>This section covers a minimal production-ready Vault installation on Red Hat
+Enterprise Linux 8/9/10 (or compatible distributions such as AlmaLinux, Rocky Linux).</p>
+<h3 id="add-the-hashicorp-repository">Add the HashiCorp Repository</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>dnf-plugins-core
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>config-manager<span class="w"> </span>--add-repo<span class="w"> </span>https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>vault
+</span></code></pre></div>
+<h3 id="configure-vault">Configure Vault</h3>
+<p>Create or edit <code>/etc/vault.d/vault.hcl</code>. The example below uses a file-based storage
+backend and enables TLS:</p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="na">ui</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="err">storage</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="na">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/opt/vault/data&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="err">listener</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="na">address</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.0.0.0:8200&quot;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="na">tls_cert_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/etc/vault.d/tls/vault.crt&quot;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="na">tls_key_file</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/etc/vault.d/tls/vault.key&quot;</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">}</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="na">api_addr</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://vault.example.com:8200&quot;</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="na">cluster_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://vault.example.com:8201&quot;</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For a development or lab environment, set <code>tls_disable = 1</code> inside the <code>listener
+"tcp"</code> block and use <code>http://</code> addresses. Never disable TLS in production.</p>
+</div>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="err">listener</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="na">address</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.0.0.0:8200&quot;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="na">tls_disable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="create-the-data-directory-and-set-permissions">Create the Data Directory and Set Permissions</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/opt/vault/data
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span>vault:vault<span class="w"> </span>/opt/vault
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">750</span><span class="w"> </span>/opt/vault/data
+</span></code></pre></div>
+<h3 id="enable-and-start-the-vault-service">Enable and Start the Vault Service</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>vault
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>vault
+</span></code></pre></div>
+<h3 id="initialise-vault">Initialise Vault</h3>
+<p>Vault must be initialised once. This generates unseal keys and an initial root
+token.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">VAULT_ADDR</span><span class="o">=</span><span class="s1">&#39;https://vault.example.com:8200&#39;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>vault<span class="w"> </span>operator<span class="w"> </span>init<span class="w"> </span>-key-shares<span class="o">=</span><span class="m">5</span><span class="w"> </span>-key-threshold<span class="o">=</span><span class="m">3</span>
+</span></code></pre></div>
+<p>Save the <strong>5 unseal keys</strong> and the <strong>initial root token</strong> securely. You need at
+least 3 keys to unseal Vault after every restart.</p>
+<h3 id="unseal-vault">Unseal Vault</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>vault<span class="w"> </span>operator<span class="w"> </span>unseal<span class="w">   </span><span class="c1"># repeat 3 times with different unseal keys</span>
+</span></code></pre></div>
+<h3 id="authenticate-as-root">Authenticate as Root</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>vault<span class="w"> </span>login<span class="w"> </span>&lt;initial-root-token&gt;
+</span></code></pre></div>
+<hr />
+<h2 id="configuring-vault-for-zabbix">Configuring Vault for Zabbix</h2>
+<h3 id="enable-the-kv-secrets-engine">Enable the KV Secrets Engine</h3>
+<p>Enable the KV v2 secrets engine on the <code>zabbix/</code> mount point:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>vault<span class="w"> </span>secrets<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>-path<span class="o">=</span>zabbix<span class="w"> </span>kv-v2
+</span></code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> If you previously enabled a KV v1 engine on this path, disable it first.
+This permanently deletes all secrets stored under that mount:</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>vault<span class="w"> </span>secrets<span class="w"> </span>disable<span class="w"> </span>zabbix/
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>vault<span class="w"> </span>secrets<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>-path<span class="o">=</span>zabbix<span class="w"> </span>kv-v2
+</span></code></pre></div>
+<h3 id="store-zabbix-secrets">Store Zabbix Secrets</h3>
+<p>Create separate secrets for the Zabbix frontend and the Zabbix server database
+connections:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Credentials for the Zabbix frontend database connection</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>vault<span class="w"> </span>kv<span class="w"> </span>put<span class="w"> </span>zabbix/frontend<span class="w"> </span><span class="nv">username</span><span class="o">=</span>&lt;db_user&gt;<span class="w"> </span><span class="nv">password</span><span class="o">=</span>&lt;db_password&gt;
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Credentials for the Zabbix server database connection</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>vault<span class="w"> </span>kv<span class="w"> </span>put<span class="w"> </span>zabbix/server<span class="w"> </span><span class="nv">username</span><span class="o">=</span>&lt;db_user&gt;<span class="w"> </span><span class="nv">password</span><span class="o">=</span>&lt;db_password&gt;
+</span></code></pre></div>
+<p>Verify the secrets were stored correctly:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>vault<span class="w"> </span>kv<span class="w"> </span>get<span class="w"> </span>zabbix/frontend
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>vault<span class="w"> </span>kv<span class="w"> </span>get<span class="w"> </span>zabbix/server
+</span></code></pre></div>
+<h3 id="create-vault-policies">Create Vault Policies</h3>
+<p>Rather than granting access per individual secret path, organise secrets by function
+under a <code>monitoring/</code> prefix. This way the Zabbix server policy covers all monitoring
+credentials in one rule. No policy changes needed when adding new secrets.</p>
+<p>Recommended secret structure:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Purpose</th>
+<th>Read by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zabbix/server</code></td>
+<td>Zabbix server DB credentials</td>
+<td>zabbix-server</td>
+</tr>
+<tr>
+<td><code>zabbix/frontend</code></td>
+<td>Zabbix frontend DB credentials</td>
+<td>zabbix-frontend</td>
+</tr>
+<tr>
+<td><code>zabbix/monitoring/snmp</code></td>
+<td>SNMP community strings</td>
+<td>zabbix-server</td>
+</tr>
+<tr>
+<td><code>zabbix/monitoring/ssh</code></td>
+<td>SSH credentials</td>
+<td>zabbix-server</td>
+</tr>
+<tr>
+<td><code>zabbix/monitoring/windows</code></td>
+<td>WMI credentials</td>
+<td>zabbix-server</td>
+</tr>
+</tbody>
+</table>
+<p>First create the policies directory:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/vault.d/policies
+</span></code></pre></div>
+<p><strong>Server policy</strong> — create <code>/etc/vault.d/policies/zabbix-server-policy.hcl</code>:</p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Zabbix server database credentials</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="err">path</span><span class="w"> </span><span class="s2">&quot;zabbix/data/server&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="na">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;read&quot;, &quot;list&quot;</span><span class="p">]</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="p">}</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="c1"># All monitoring secrets — covers any secret added under zabbix/monitoring/</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="err">path</span><span class="w"> </span><span class="s2">&quot;zabbix/data/monitoring/*&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">  </span><span class="na">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;read&quot;, &quot;list&quot;</span><span class="p">]</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="p">}</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="c1"># Allow listing the mount point so secrets are visible in the Vault UI</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="err">path</span><span class="w"> </span><span class="s2">&quot;zabbix/metadata/&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="w">  </span><span class="na">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">]</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="p">}</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="err">path</span><span class="w"> </span><span class="s2">&quot;zabbix/metadata/server&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="w">  </span><span class="na">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;read&quot;, &quot;list&quot;</span><span class="p">]</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="p">}</span>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="err">path</span><span class="w"> </span><span class="s2">&quot;zabbix/metadata/monitoring/*&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="w">  </span><span class="na">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;read&quot;, &quot;list&quot;</span><span class="p">]</span>
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Frontend policy</strong> — create <code>/etc/vault.d/policies/zabbix-frontend-policy.hcl</code>:</p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Zabbix frontend database credentials only</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="err">path</span><span class="w"> </span><span class="s2">&quot;zabbix/data/frontend&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span><span class="na">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;read&quot;, &quot;list&quot;</span><span class="p">]</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="p">}</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="c1"># Allow listing the mount point so the secret is visible in the Vault UI</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="err">path</span><span class="w"> </span><span class="s2">&quot;zabbix/metadata/&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">  </span><span class="na">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">]</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="p">}</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="err">path</span><span class="w"> </span><span class="s2">&quot;zabbix/metadata/frontend&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">  </span><span class="na">capabilities</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;read&quot;, &quot;list&quot;</span><span class="p">]</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Write both policies to Vault:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>vault<span class="w"> </span>policy<span class="w"> </span>write<span class="w"> </span>zabbix-server<span class="w"> </span>/etc/vault.d/policies/zabbix-server-policy.hcl
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>vault<span class="w"> </span>policy<span class="w"> </span>write<span class="w"> </span>zabbix-frontend<span class="w"> </span>/etc/vault.d/policies/zabbix-frontend-policy.hcl
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Vault and Zabbix Proxies</p>
+<p>In a distributed Zabbix setup with proxies, each proxy runs its own
+<code>zabbix_proxy.conf</code> which supports the same Vault parameters as the server
+(<code>VaultURL</code>, <code>VaultToken</code>, <code>VaultDBPath</code>). You have two options:</p>
+</div>
+<blockquote>
+<p><strong>Option 1 — Single centralised Vault instance</strong></p>
+<p>All proxies connect to the same Vault server. Each proxy gets its own scoped token
+and policy, limiting access to only the secrets relevant to the hosts it monitors.
+Organise secrets per proxy under the <code>monitoring/</code> prefix:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Purpose</th>
+<th>Read by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zabbix/monitoring/proxy-brussels/*</code></td>
+<td>Secrets for Brussels proxy</td>
+<td>token-proxy-brussels</td>
+</tr>
+<tr>
+<td><code>zabbix/monitoring/proxy-amsterdam/*</code></td>
+<td>Secrets for Amsterdam proxy</td>
+<td>token-proxy-amsterdam</td>
+</tr>
+</tbody>
+</table>
+<p>This is the simplest setup to manage — one Vault to maintain, with access controlled
+per proxy through policies.</p>
+<p><strong>Option 2 — Vault instance per proxy</strong>
+Each proxy site runs its own Vault instance. The proxy connects to its local
+Vault, which only contains secrets for the hosts that proxy monitors. This approach
+improves resilience (a Vault outage only affects one proxy) and keeps sensitive
+credentials fully local to each site — useful when proxies are deployed in remote
+locations or different security zones.</p>
+<p>In both options, a compromised proxy token only exposes the secrets for that
+proxy's hosts, not the entire monitoring infrastructure. The choice between the
+two depends on your network topology, resilience requirements, and how many
+proxies you operate.</p>
+</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since Zabbix 7.4 it is possible to choose how to resolve secret vault macros
+under Administration =&gt; General =&gt; Others we have the option <code>Resolve secret vault macros by</code>.</p>
+<ul>
+<li>Zabbix server - secrets are retrieved by Zabbix server and forwarded to proxies when needed (default);</li>
+<li>Zabbix server and proxy - secrets are retrieved by both Zabbix server and proxies, allowing them to resolve macros independently.</li>
+</ul>
+</div>
+<p><img alt="using-vault/ch13_vault_resolve_secret.png" src="../../../ch13-advanced-security/using-vault/ch13_vault_resolve_secret.png" /></p>
+<p><em>ch13 Resolve secret vault macro by</em></p>
+<h3 id="create-a-token-role-with-renewal-period">Create a Token Role with Renewal Period</h3>
+<p>Create a token role that allows tokens to be renewed for up to 30 days (720 hours).
+This role covers both the frontend and server policies:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>vault<span class="w"> </span>write<span class="w"> </span>auth/token/roles/zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">    </span><span class="nv">allowed_policies</span><span class="o">=</span><span class="s2">&quot;zabbix-frontend,zabbix-server&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="nv">period</span><span class="o">=</span><span class="s2">&quot;720h&quot;</span>
+</span></code></pre></div>
+<h3 id="create-tokens-for-frontend-and-server">Create Tokens for Frontend and Server</h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since Zabbix 7.0.5, the Zabbix server and proxy can automatically renew <strong>renewable service
+tokens</strong> and <strong>periodic service tokens</strong>. This means you no longer need a cron job or manual
+renewal process for long-running deployments. Periodic tokens are a strong fit here, Vault can
+renew them indefinitely unless an explicit <code>explicit_max_ttl</code> is imposed. The token role
+created in previous section <code>period="720h"</code> which produces periodic tokens that Zabbix will
+renew automatically.</p>
+</div>
+<p>Create a separate token for each component using the role created in previous section The
+<code>-type=service</code> flag explicitly creates a renewable service token:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Token for the Zabbix frontend</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>vault<span class="w"> </span>token<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span>-policy<span class="o">=</span>zabbix-frontend<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span>-role<span class="o">=</span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span>-type<span class="o">=</span>service<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">    </span>-display-name<span class="o">=</span><span class="s2">&quot;zabbix-frontend&quot;</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="c1"># Token for the Zabbix server</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>vault<span class="w"> </span>token<span class="w"> </span>create<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">    </span>-policy<span class="o">=</span>zabbix-server<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">    </span>-role<span class="o">=</span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">    </span>-type<span class="o">=</span>service<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">    </span>-display-name<span class="o">=</span><span class="s2">&quot;zabbix-server&quot;</span>
+</span></code></pre></div>
+<p>The output includes a <code>token_renewable true</code> field confirming the token can be renewed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note the <code>token</code> value from each output, you will use them in the following configuration
+files.</p>
+</div>
+<p>Verify each token can access its respective secret:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Test the frontend token</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nv">VAULT_TOKEN</span><span class="o">=</span>&lt;frontend-token&gt;<span class="w"> </span>vault<span class="w"> </span>kv<span class="w"> </span>get<span class="w"> </span>zabbix/frontend
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1"># Test the server token</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="nv">VAULT_TOKEN</span><span class="o">=</span>&lt;server-token&gt;<span class="w"> </span>vault<span class="w"> </span>kv<span class="w"> </span>get<span class="w"> </span>zabbix/server
+</span></code></pre></div>
+<h3 id="open-the-firewall">Open the Firewall</h3>
+<p>Allow the Zabbix server and frontend host to reach Vault on port 8200:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>firewall-cmd<span class="w"> </span>--permanent<span class="w"> </span>--zone<span class="o">=</span>internal<span class="w"> </span>--add-port<span class="o">=</span><span class="m">8200</span>/tcp
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>firewall-cmd<span class="w"> </span>--reload
+</span></code></pre></div>
+<h3 id="allow-selinux-network-connections">Allow SELinux Network Connections</h3>
+<p>If SELinux is enforcing, allow the web server to make outbound network connections
+so the frontend can reach Vault:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>setsebool<span class="w"> </span>-P<span class="w"> </span>httpd_can_network_connect<span class="w"> </span>on
+</span></code></pre></div>
+<h3 id="verify-connectivity-with-curl">Verify Connectivity with curl</h3>
+<p>Before configuring Zabbix, confirm that the Vault API is reachable and the tokens
+work as expected:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Verify frontend token</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;X-Vault-Token: &lt;frontend-token&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">     </span>https://vault.example.com:8200/v1/zabbix/data/frontend
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="c1"># Verify server token</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;X-Vault-Token: &lt;server-token&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">     </span>https://vault.example.com:8200/v1/zabbix/data/server
+</span></code></pre></div>
+<p>A successful response returns a JSON object containing the <code>username</code> and <code>password</code>
+fields under <code>data.data</code>.</p>
+<hr />
+<h2 id="configuring-the-zabbix-server-for-vault">Configuring the Zabbix Server for Vault</h2>
+<h3 id="understanding-vaultdbpath-and-vaultprefix">Understanding VaultDBPath and VaultPrefix</h3>
+<p>Two parameters in <code>zabbix_server.conf</code> control how the server interacts with Vault:</p>
+<blockquote>
+<p><strong><code>VaultDBPath</code></strong>: Used exclusively for retrieving the <strong>Zabbix database credentials</strong>
+(<code>DBUser</code> and <code>DBPassword</code>). Zabbix reads exactly two hardcoded keys from this
+path: <code>username</code> and <code>password</code>. It cannot be used together with <code>DBUser</code> or
+<code>DBPassword</code> in the same config file.</p>
+<p><strong><code>VaultPrefix</code></strong>: The URL prefix used for all Vault API requests. With KV v2 and
+the <code>zabbix/</code> mount point the correct prefix is <code>/v1/zabbix/data/</code>. If left unset,
+Zabbix appends <code>/data/</code> automatically after the mount point, but setting it
+explicitly avoids ambiguity.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Purpose</th>
+<th>Keys used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VaultDBPath</code></td>
+<td>Zabbix database credentials only</td>
+<td><code>username</code>, <code>password</code> (hardcoded)</td>
+</tr>
+<tr>
+<td><code>VaultPrefix</code></td>
+<td>URL prefix for all Vault API calls</td>
+<td>n/a — affects path construction</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>on <code>/v1/</code> in paths:<strong> The <code>/v1/</code> prefix in Vault API URLs refers to the </strong>Vault
+HTTP API version**, not the KV engine version. It is always <code>/v1/</code> regardless
+of whether you use KV v1 or KV v2. So <code>/v1/zabbix/data/server</code> is correct even
+though we enabled KV v2 in section 4.1.</p>
+</div>
+<h3 id="edit-zabbix_serverconf">Edit <code>zabbix_server.conf</code></h3>
+<p>Open <code>/etc/zabbix/zabbix_server.conf</code>. Remove the existing <code>DBUser</code> and <code>DBPassword</code>
+parameters and add the Vault configuration:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Remove these lines:</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="c1"># DBUser=&lt;db_user&gt;</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="c1"># DBPassword=&lt;db_password&gt;</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="c1">### HashiCorp Vault configuration ###</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># Vault server URL</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="na">VaultURL</span><span class="o">=</span><span class="s">https://vault.example.com:8200</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="c1"># Path to the secret containing the Zabbix database credentials.</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="c1"># Zabbix reads the &#39;username&#39; and &#39;password&#39; keys from this path.</span>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="c1"># The full path including the mount point is required.</span>
+</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="c1"># This resolves to: /v1/zabbix/data/server</span>
+</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="na">VaultDBPath</span><span class="o">=</span><span class="s">zabbix/server</span>
+</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a>
+</span><span id="__span-22-16"><a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="c1"># Vault token for the Zabbix server — created in section 4.5</span>
+</span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="na">VaultToken</span><span class="o">=</span><span class="s">&lt;zabbix-server token from section 4.5&gt;</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>VaultDBPath</code> requires the full path including the mount point: <code>zabbix/server</code>.
+This resolves to <code>/v1/zabbix/data/server</code> — the path where the server credentials
+were stored in section 4.2.</p>
+</div>
+<h3 id="tls-certificate-verification">TLS Certificate Verification</h3>
+<p>If Vault uses a certificate signed by an internal CA, configure the Zabbix server
+to trust it:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="na">VaultTLSCAFile</span><span class="o">=</span><span class="s">/etc/zabbix/ssl/vault-ca.pem</span>
+</span></code></pre></div>
+<p>If Vault uses a publicly trusted certificate, this parameter is not required.</p>
+<h3 id="restart-the-zabbix-server">Restart the Zabbix Server</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>zabbix-server
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>-u<span class="w"> </span>zabbix-server<span class="w"> </span>-f
+</span></code></pre></div>
+<p>Check the log for a successful start. If the Vault token or path is incorrect,
+the server will log an error and fail to start.</p>
+<hr />
+<h2 id="configuring-the-zabbix-frontend-for-vault">Configuring the Zabbix Frontend for Vault</h2>
+<h3 id="edit-zabbixconfphp">Edit <code>zabbix.conf.php</code></h3>
+<p>Open <code>/etc/zabbix/web/zabbix.conf.php</code>. Remove the existing <code>$DB['USER']</code> and
+<code>$DB['PASSWORD']</code> parameters and add the Vault configuration:</p>
+<div class="language-php highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="x">// Remove these lines:</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="x">// $DB[&#39;USER&#39;] = &#39;&lt;db_user&gt;&#39;;</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="x">// $DB[&#39;PASSWORD&#39;] = &#39;&lt;db_password&gt;&#39;;</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="x">// Vault configuration</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="x">$DB[&#39;VAULT&#39;]       = &#39;HashiCorp&#39;;</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="x">$DB[&#39;VAULT_URL&#39;]   = &#39;https://vault.example.com:8200&#39;;</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="x">$DB[&#39;VAULT_DB_PATH&#39;] = &#39;zabbix/frontend&#39;;</span>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="x">$DB[&#39;VAULT_TOKEN&#39;] = &#39;&lt;zabbix-frontend token from section 4.5&gt;&#39;;</span>
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>
+</span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="x">// TLS — only required if using a custom CA</span>
+</span><span id="__span-25-12"><a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a><span class="x">// $DB[&#39;VAULT_CACERT&#39;] = &#39;/etc/zabbix/ssl/vault-ca.pem&#39;;</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Both <code>$DB['VAULT_DB_PATH']</code> and <code>VaultDBPath</code> in <code>zabbix_server.conf</code>
+require the full path including the mount point. <code>zabbix/frontend</code> resolves
+to <code>/v1/zabbix/data/frontend</code>.</p>
+</div>
+<h3 id="secure-the-configuration-file">Secure the Configuration File</h3>
+<p>The <code>zabbix.conf.php</code> file now contains a Vault token. Ensure it is only readable
+by the web server process:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>sudo<span class="w"> </span>chown<span class="w"> </span>apache:apache<span class="w"> </span>/etc/zabbix/web/zabbix.conf.php
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>/etc/zabbix/web/zabbix.conf.php
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>PHP reads <code>zabbix.conf.php</code> at runtime on each request — no web server restart
+is needed after editing it.</p>
+</div>
+<h2 id="using-vault-secrets-as-macros-in-zabbix">Using Vault Secrets as Macros in Zabbix</h2>
+<p>Once both the server and frontend are configured, you can reference Vault secrets
+in Zabbix macros. In our current setup, Vault holds the database credentials for
+the frontend (<code>zabbix/frontend</code>) and the server (<code>zabbix/server</code>). These are used
+automatically by Zabbix at startup and are not referenced as macros.</p>
+<p>To use Vault for additional secrets — such as SNMP community strings, SSH passwords,
+or API tokens — you need to:</p>
+<ol>
+<li>Store the secret in Vault under the <code>zabbix/</code> mount point.</li>
+<li>Create a policy granting the Zabbix server token read access to that path.</li>
+<li>Create a macro of type <em>Vault secret</em> in Zabbix referencing that path.</li>
+</ol>
+<h3 id="macro-syntax">Macro Syntax</h3>
+<p>When the macro type is set to <strong>Vault secret</strong>, the value field uses the following
+format:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>&lt;path&gt;:&lt;key&gt;
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;path&gt;</code></td>
+<td>Full path to the secret including the mount point, e.g., <code>zabbix/snmp</code>.</td>
+</tr>
+<tr>
+<td><code>&lt;key&gt;</code></td>
+<td>The field name within the secret, e.g., <code>community</code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>The <code>vault:</code> prefix is <strong>not</strong> used when the macro type is set to <em>Vault secret</em>,
+Zabbix already knows to look in Vault based on the type.</p>
+</div>
+<h3 id="example-snmp-community-string">Example: SNMP Community String</h3>
+<p>This example walks through the full process of adding a monitoring secret to Vault
+and using it as a Zabbix macro. Because the server policy already covers
+<code>zabbix/data/monitoring/*</code>, no policy changes are needed, just add the secret and
+create the macro.</p>
+<p><strong>Step 1 — Store the secret in Vault:</strong></p>
+<p>Writing secrets requires the root token. Switch to root, write the secret, then
+switch back:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># Switch to root token to write the secret</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>vault<span class="w"> </span>login<span class="w"> </span>&lt;root-token&gt;
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>vault<span class="w"> </span>kv<span class="w"> </span>put<span class="w"> </span>zabbix/monitoring/snmp<span class="w"> </span><span class="nv">community</span><span class="o">=</span><span class="s2">&quot;public_prod_string&quot;</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="c1"># Verify the secret was written</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>vault<span class="w"> </span>kv<span class="w"> </span>get<span class="w"> </span>zabbix/monitoring/snmp
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>
+</span><span id="__span-28-8"><a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="c1"># Switch back to the zabbix-server token</span>
+</span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>vault<span class="w"> </span>login<span class="w"> </span>&lt;zabbix-server-token&gt;
+</span><span id="__span-28-10"><a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a>
+</span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="c1"># Verify the server token can read it</span>
+</span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>vault<span class="w"> </span>kv<span class="w"> </span>get<span class="w"> </span>zabbix/monitoring/snmp
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Zabbix server reads monitoring secrets, not the frontend. The frontend
+token only has access to <code>zabbix/frontend</code>.</p>
+</div>
+<p><strong>Step 2 — Create the macro in Zabbix:</strong></p>
+<p>Navigate to <strong>Administration → Macros</strong> and create:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Macro</td>
+<td><code>{$SNMP_COMMUNITY}</code></td>
+</tr>
+<tr>
+<td>Value</td>
+<td><code>zabbix/monitoring/snmp:community</code></td>
+</tr>
+<tr>
+<td>Type</td>
+<td><code>Vault secret</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>SNMP community string from Vault</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 3 — Reload secrets:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>zabbix_server<span class="w"> </span>-R<span class="w"> </span>secrets_reload
+</span></code></pre></div>
+<p>Check the log to confirm the secret was retrieved successfully. Any new secret
+added under <code>zabbix/monitoring/</code> follows the same process, no policy updates required.</p>
+<h3 id="how-resolution-works">How Resolution Works</h3>
+<p>When the Zabbix server needs to use a macro value of type <em>Vault secret</em>:</p>
+<ol>
+<li>It reads the macro value, e.g. <code>zabbix/monitoring/snmp:community</code>.</li>
+<li>It splits the value on <code>:</code> — the left part is the path, the right part is the key.</li>
+<li>It constructs the Vault API URL: <code>{VaultURL}/v1/{path}/data</code> → <code>https://vault_url:8200/v1/zabbix/data/monitoring/snmp</code>.</li>
+<li>It authenticates using the configured <code>VaultToken</code>.</li>
+<li>It retrieves the JSON response and extracts the value of <code>community</code> using the <code>zabbix-server</code> token.</li>
+<li>The resolved plaintext value is used in the check — it is <strong>never stored</strong> in the Zabbix database.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>The macro value stored in the Zabbix database is always the <code>&lt;path&gt;:&lt;key&gt;</code>
+reference string, not the actual secret. Database exports, backups, and UI
+views never expose the real credential.</p>
+</div>
+<hr />
+<h2 id="tls-configuration">TLS Configuration</h2>
+<p>For production use, all communication between Zabbix and Vault must be TLS-encrypted.</p>
+<h3 id="using-a-custom-ca-certificate">Using a Custom CA Certificate</h3>
+<p>If your Vault instance uses a certificate signed by an internal Certificate Authority:</p>
+<p><strong>Zabbix Server (<code>zabbix_server.conf</code>):</strong>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="na">VaultTLSCAFile</span><span class="o">=</span><span class="s">/etc/zabbix/ssl/vault-ca.pem</span>
+</span></code></pre></div></p>
+<p><strong>Zabbix Frontend (<code>zabbix.conf.php</code>):</strong>
+<div class="language-php highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="x">$DB[&#39;VAULT_CACERT&#39;] = &#39;/etc/zabbix/ssl/vault-ca.pem&#39;;</span>
+</span></code></pre></div></p>
+<h3 id="client-certificate-authentication-mtls">Client Certificate Authentication (mTLS)</h3>
+<p>Zabbix does not currently support client certificates for Vault authentication
+natively. Use <strong>AppRole</strong> authentication as the recommended alternative for strong
+mutual authentication.</p>
+<h3 id="verifying-tls-connectivity">Verifying TLS Connectivity</h3>
+<p>Test Vault connectivity from the Zabbix server host before restarting the service:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>curl<span class="w"> </span>--cacert<span class="w"> </span>/etc/zabbix/ssl/vault-ca.pem<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;X-Vault-Token: &lt;your-token&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">     </span>https://vault.example.com:8200/v1/zabbix/data/monitoring/snmp
+</span></code></pre></div>
+<p>A successful response looks like:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="p">{</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123...&quot;</span><span class="p">,</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">    </span><span class="nt">&quot;community&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;public_prod_string&quot;</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h2 id="verifying-the-integration">Verifying the Integration</h2>
+<p>Once Vault and Zabbix are configured, use the steps below to confirm that the
+integration is working end to end, from Vault connectivity through to macro resolution
+in an actual check.</p>
+<h3 id="reload-secrets-from-vault">Reload Secrets from Vault</h3>
+<p>The Zabbix server caches secret values after startup. When you add or update a
+secret in Vault, you can force the server to reload all secrets without a full
+restart using the runtime control option:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>zabbix_server<span class="w"> </span>-R<span class="w"> </span>secrets_reload
+</span></code></pre></div>
+<p>This sends a signal to the running Zabbix server process instructing it to re-fetch
+all macros that reference Vault. Use this command whenever you:</p>
+<ul>
+<li>Add a new <em>Vault secret</em> macro to a host, template, or globally.</li>
+<li>Update a secret value in Vault.</li>
+<li>Rotate a Vault token or AppRole secret ID in <code>zabbix_server.conf</code>.</li>
+</ul>
+<h3 id="verify-connectivity-in-the-server-log">Verify Connectivity in the Server Log</h3>
+<p>Immediately after running <code>secrets_reload</code>, tail the Zabbix server log and look
+for confirmation or errors:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/zabbix/zabbix_server.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>vault
+</span></code></pre></div>
+<p>A successful reload produces output similar to:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>zabbix_server [12345]: DEBUG: vault secrets reload started
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>zabbix_server [12345]: DEBUG: successfully retrieved secret: zabbix/monitoring/snmp
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>zabbix_server [12345]: DEBUG: successfully retrieved secret: zabbix/monitoring/ssh
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>zabbix_server [12345]: DEBUG: vault secrets reload completed
+</span></code></pre></div>
+<p>If you see <code>failed to retrieve secret</code> or <code>403 Forbidden</code>, refer to the Troubleshooting
+section.</p>
+<h3 id="verify-macro-resolution-in-the-frontend">Verify Macro Resolution in the Frontend</h3>
+<p>The Zabbix frontend independently fetches secrets from Vault for display purposes.
+To verify it is working:</p>
+<ol>
+<li>Navigate to <strong>Administration → Macros</strong> (for a global macro) or open a host
+   and go to the <strong>Macros</strong> tab.</li>
+<li>Find a macro of type <em>Vault secret</em>, for example <code>{$SNMP_COMMUNITY}</code>.</li>
+<li>Click the <strong>eye icon</strong> next to the macro value.</li>
+<li>If the frontend can reach Vault and the token/AppRole is valid, the resolved
+   plaintext value is shown momentarily.</li>
+</ol>
+<p>If the eye icon shows an error or the value does not resolve, check the web server
+error log:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="c1"># Apache</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>sudo<span class="w"> </span>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/httpd/error_log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>vault
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="c1"># Nginx</span>
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>sudo<span class="w"> </span>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/nginx/error.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>vault
+</span></code></pre></div>
+<h3 id="verify-a-secret-reaches-an-actual-check">Verify a Secret Reaches an Actual Check</h3>
+<p>The most definitive test is confirming a Vault-backed macro is used successfully
+in a real monitoring item.</p>
+<p><strong>Example: test SNMP connectivity using the Vault-backed community string</strong></p>
+<ol>
+<li>Create a simple SNMP item on a host (e.g., <code>sysDescr</code> OID <code>1.3.6.1.2.1.1.1.0</code>).</li>
+<li>Set the <strong>SNMP community</strong> field to <code>{$SNMP_COMMUNITY}</code>, which resolves from <code>zabbix/snmp:community</code>.</li>
+<li>Navigate to <strong>Monitoring → Latest data</strong> and filter for the host.</li>
+<li>If the item returns a value, the secret was successfully retrieved from Vault
+   and used in the check.</li>
+<li>If the item shows an authentication error specifically, the macro likely did
+   not resolve — trigger a <code>secrets_reload</code> and recheck the log.</li>
+</ol>
+<p><strong>Example: verify using the Get Value button</strong></p>
+<p>For quicker feedback without waiting for the poller:</p>
+<ol>
+<li>Open the item configuration.</li>
+<li>Click <strong>Test</strong> → <strong>Get value</strong>.</li>
+<li>Check whether the item returns data or an authentication error.</li>
+</ol>
+<h3 id="confirm-no-plaintext-in-the-zabbix-database">Confirm No Plaintext in the Zabbix Database</h3>
+<p>To confirm that Vault-backed macro values are stored as references and not as
+plaintext secrets, query the database directly:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="c1">-- Check global macros</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">macro</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">globalmacro</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">type</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="c1">-- Check host macros</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">macro</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">hostmacro</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">type</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="n">zabbix</span><span class="o">=#</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">globalmacro</span><span class="p">;</span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w"> </span><span class="n">globalmacroid</span><span class="w"> </span><span class="o">|</span><span class="w">       </span><span class="n">macro</span><span class="w">        </span><span class="o">|</span><span class="w">         </span><span class="n">value</span><span class="w">         </span><span class="o">|</span><span class="w">           </span><span class="n">description</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="k">type</span>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="c1">---------------+--------------------+-----------------------+----------------------------------+------</span>
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">             </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">{$</span><span class="n">SNMP_COMMUNITY</span><span class="err">}</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">zabbix</span><span class="o">/</span><span class="n">snmp</span><span class="p">:</span><span class="n">community</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">SNMP</span><span class="w"> </span><span class="n">community</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">Vault</span><span class="w"> </span><span class="o">|</span><span class="w">    </span><span class="mi">2</span>
+</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="w">             </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="err">{$</span><span class="n">SNMP_COMMUNITY1</span><span class="err">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">test</span><span class="w">                  </span><span class="o">|</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="n">plain</span><span class="w">                       </span><span class="o">|</span><span class="w">    </span><span class="mi">0</span>
+</span></code></pre></div>
+<p>All rows should show the <code>&lt;path&gt;:&lt;key&gt;</code> reference string, never the resolved
+secret value. This confirms that the plaintext credential never touches the Zabbix database.</p>
+<hr />
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="zabbix-server-cannot-connect-to-vault">Zabbix Server Cannot Connect to Vault</h3>
+<p>Check the Zabbix server log for errors:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>grep<span class="w"> </span>-i<span class="w"> </span>vault<span class="w"> </span>/var/log/zabbix/zabbix_server.log
+</span></code></pre></div>
+<p>Common errors and resolutions:</p>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Cause</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SSL certificate problem</code></td>
+<td>Vault uses a self-signed or internal CA cert</td>
+<td>Set <code>VaultTLSCAFile</code> to the CA certificate path</td>
+</tr>
+<tr>
+<td><code>403 Forbidden</code></td>
+<td>Token/AppRole lacks permission</td>
+<td>Review and reapply the Vault policy</td>
+</tr>
+<tr>
+<td><code>connection refused</code></td>
+<td>Vault is sealed or not running</td>
+<td>Unseal Vault: <code>vault operator unseal</code></td>
+</tr>
+<tr>
+<td><code>invalid path</code></td>
+<td><code>VaultDBPath</code> or secret path is incorrect</td>
+<td>Verify with <code>vault kv list zabbix/</code></td>
+</tr>
+<tr>
+<td><code>macro not resolved</code></td>
+<td>Wrong path, key name, or macro type not set to <em>Vaultsecret</em></td>
+<td>Check macro value syntax: <code>&lt;path&gt;:&lt;key&gt;</code> and verify macro type</td>
+</tr>
+</tbody>
+</table>
+<h3 id="verify-a-secret-is-accessible">Verify a Secret is Accessible</h3>
+<p>From the Zabbix server host, test with the same credentials Zabbix uses:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="c1"># Switch to root token to verify secrets exist</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>vault<span class="w"> </span>login<span class="w"> </span>&lt;root-token&gt;
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>vault<span class="w"> </span>kv<span class="w"> </span>get<span class="w"> </span>zabbix/monitoring/snmp
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="c1"># Switch to zabbix-server token to verify policy access</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>vault<span class="w"> </span>login<span class="w"> </span>&lt;zabbix-server-token&gt;
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>vault<span class="w"> </span>kv<span class="w"> </span>get<span class="w"> </span>zabbix/monitoring/snmp
+</span></code></pre></div>
+<h3 id="check-vault-audit-log">Check Vault Audit Log</h3>
+<p>If Vault's audit backend is enabled, you can trace exactly what Zabbix is requesting:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="c1"># Enable file audit log (if not already enabled)</span>
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>vault<span class="w"> </span>audit<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>file<span class="w"> </span><span class="nv">file_path</span><span class="o">=</span>/var/log/vault/audit.log
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>
+</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="c1"># Tail the audit log</span>
+</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>sudo<span class="w"> </span>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/vault/audit.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.request.path&#39;</span>
+</span></code></pre></div>
+<h2 id="vault-gui">Vault GUI</h2>
+<p>All configuration and verification tasks described in this chapter can also be
+performed through the Vault web interface, available at <code>https://&lt;vault-server&gt;:8200</code>.</p>
+<p>After logging in with your token you can:</p>
+<ul>
+<li>Browse secrets under the <code>zabbix/</code> mount point, provided your token has the
+  appropriate metadata list permissions.</li>
+<li>Create, update, and view secret versions.</li>
+<li>View and manage policies under <strong>Policies</strong>.</li>
+<li>View token details and check expiry under <strong>Access → Tokens</strong>.</li>
+<li>Enable and review the audit log under <strong>Access → Audit</strong>.</li>
+</ul>
+<p>The GUI is particularly useful for day-to-day secret management such as rotating
+credentials, log in with the root token, navigate to the secret, and update the
+value. Then trigger a reload on the Zabbix server:</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>zabbix_server<span class="w"> </span>-R<span class="w"> </span>secrets_reload
+</span></code></pre></div>
+<img alt="using-vault/ch13_vault_login.png" src="../../../ch13-advanced-security/using-vault/ch13_vault_login.png" /></p>
+<p><em>ch13 vault login</em></p>
+<hr />
+<h2 id="conclusion">Conclusion</h2>
+<p>Integrating HashiCorp Vault with Zabbix removes plaintext credentials from the
+Zabbix database entirely. Secrets are stored in a centralised, encrypted secrets
+store with fine-grained access control, full audit logging, and token-based authentication.
+The Zabbix server and frontend each use their own scoped token, limiting the blast
+radius of a potential compromise.</p>
+<p>The <code>zabbix/monitoring/*</code> path structure means new monitoring secrets can be
+added at any time without policy changes, keeping operational overhead low. In
+distributed setups with proxies, the same pattern applies, each proxy gets its
+own scoped token, with the choice between a single centralised Vault or a local
+Vault per site depending on network topology and resilience requirements.</p>
+<p>The setup described in this chapter covers the core integration. As your environment
+grows, consider implementing token renewal automation and a dedicated admin policy
+for day-to-day secret management to avoid using the root token for routine tasks.</p>
+<hr />
+<h2 id="questions">Questions</h2>
+<ul>
+<li>What is the main security advantage of using HashiCorp Vault over storing
+  credentials directly in Zabbix macros of type <em>Secret text</em>?</li>
+<li>The Vault HTTP API always uses <code>/v1/</code> in its URL paths. What does this <code>/v1/</code>
+  refer to, and how does it relate to the KV engine version?</li>
+<li>In our setup, two separate Vault tokens are created, one for the Zabbix
+  server and one for the Zabbix frontend. Why is it important to use separate
+  tokens instead of one shared token?</li>
+<li>After updating a Vault policy, an existing token still gets a <code>403 Forbidden</code>
+  error. What is the cause and how do you resolve it?</li>
+<li>You have a Zabbix environment with 1 server and 3 proxies. Each proxy monitors
+  hosts in a different location. Describe how you would organise Vault secrets
+  and policies to follow the principle of least privilege.</li>
+</ul>
+<hr />
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/latest/en/manual/config/secrets/hashicorp">Zabbix 8.0 — HashiCorp Vault integration</a></li>
+<li><a href="https://www.zabbix.com/documentation/latest/en/manual/config/secrets">Zabbix 8.0 — Secrets management overview</a></li>
+<li><a href="https://developer.hashicorp.com/vault/docs">HashiCorp Vault documentation</a></li>
+<li><a href="https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2">Vault KV v2 secrets engine</a></li>
+<li><a href="https://developer.hashicorp.com/vault/docs/auth/token">Vault token authentication</a></li>
+<li><a href="https://developer.hashicorp.com/vault/docs/auth/approle">Vault AppRole authentication</a></li>
+<li><a href="https://developer.hashicorp.com/vault/docs/concepts/policies">Vault policies</a></li>
+<li><a href="https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install">HashiCorp Vault RHEL installation</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=e425441b8ba9ca970e8a0f91c697e554a2bb4e96"></script>
+      
+    
+    
+        
+            
+            
+        
+		
+		
+    
+
+  </body>
+</html>
