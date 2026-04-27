@@ -404,7 +404,8 @@ Lastly, it is also recommended to create a backup of your webserver configuratio
     ```bash
     cp -R /etc/httpd/ /opt/zabbix-backup/
     cp -R /var/www/ /opt/zabbix-backup/
-    cp /etc/httpd/conf.d/zabbix.conf  /opt/zabbix-backup/    ```
+    cp /etc/httpd/conf.d/zabbix.conf  /opt/zabbix-backup/
+    ```
 
     Ubuntu Apache2
     ```bash
