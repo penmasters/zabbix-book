@@ -35,7 +35,7 @@ Vamos embarcar nessa jornada detalhada pelo Zabbix e nos equipar com o
 conhecimento necessário para iniciar e otimizar uma solução de monitoramento
 avançada.
 
-???+ Nota
+???+ nota
 
     "Starting with version 7.0, Zabbix transitioned its licensing from GPLv2 to AGPLv3.
     This is a significant shift for users and contributors to keep in mind. The adoption

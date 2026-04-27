@@ -19,14 +19,15 @@ Elke gebruikersrol, standaard of aangepast, is gebaseerd op een van de klassieke
 gebruikerstypes (Super Admin, Admin of User). Dit Gebruikerstype dient als de
 maximaal toegestane rechten voor de rol.
 
-## Default Menu Access by User Type
+## Standaard menu toegang per gebruikerstype
 
-`User Roles` can be created in the menu under the `Users` → `User roles` menu.
-Or they can be set per user in the menu `Users` → `Users` → "some user" →
-`Permissions`.
+`Gebruikersrollen` kunnen worden aangemaakt in het menu onder het menu
+`Gebruikers` → `Gebruikersrollen`. Of ze kunnen per gebruiker worden ingesteld
+in het menu `Gebruikers` → `Gebruikers` → "sommige gebruiker" → `Machtigingen`.
 
-This table illustrates the default access rights granted to users based on their
-initial **User Type** before any **Custom User Role** adjustments are made.
+Deze tabel toont de standaard toegangsrechten die aan gebruikers worden
+toegekend op basis van hun initiële **Gebruikerstype** voordat **Aangepaste
+gebruikersrol** aanpassingen worden gemaakt.
 
 | Menu Section             | User | Admin | Super Admin |
 | ------------------------ | :--: | :---: | :---------: |

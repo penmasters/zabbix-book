@@ -18,14 +18,14 @@ het gepland genereren van PDF rapporten.
 
 ## De Zabbix proxy
 
-A Zabbix proxy is a process that collects monitoring data on behalf of the
-Zabbix server. From the perspective of the monitored hosts, a proxy behaves
-identically to the server: it accepts passive agent connections, initiates
-active checks, runs SNMP queries, executes external checks, and processes IPMI.
-The difference is in what happens to the data after collection. A proxy buffers
-the collected data locally in its own database and forwards it to the Zabbix
-server at regular intervals, rather than writing directly to the server's
-database.
+Een Zabbix proxy is een proces dat bewakingsgegevens verzamelt namens de Zabbix
+server. Vanuit het perspectief van de bewaakte hosts gedraagt een proxy zich
+identiek aan de server: het accepteert passieve agent verbindingen, initieert
+actieve controles, voert SNMP queries uit, voert externe controles uit en
+verwerkt IPMI. Het verschil zit in wat er met de gegevens gebeurt na het
+verzamelen. Een proxy buffert de verzamelde gegevens lokaal in zijn eigen
+database en stuurt ze met regelmatige tussenpozen door naar de Zabbix server, in
+plaats van ze rechtstreeks naar de database van de server te schrijven.
 
 Dit buffergedrag is de architecturale eigenschap die proxy's nuttig maakt. De
 Zabbix server hoeft maar één verbinding per proxy te onderhouden, ongeacht

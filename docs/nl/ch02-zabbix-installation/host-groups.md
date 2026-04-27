@@ -18,7 +18,7 @@ Bekende voorbeelden zijn:
 
 - Groeperen van alle **Linux servers** samen.
 - Scheiden van **databaseservers** (bijv. PostgreSQL, MySQL).
-- Organizing hosts by **team**, **location**, or **function**.
+- Hosts organiseren per **team**, **locatie**, of **functie**.
 
 Host groups are not only for structuring your monitored hosts, they also play an
 important role in assigning templates, setting up user permissions, and

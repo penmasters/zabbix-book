@@ -90,7 +90,7 @@ Dit opent een teksteditor waar je de details van de repository-configuratie kunt
 invoeren. Zodra de opslagplaats is geconfigureerd, kun je doorgaan met de
 installatie van MariaDB met behulp van je pakketbeheerder.
 
-The latest config can be found here:
+De nieuwste configuratie kan hier worden gevonden:
 [https://mariadb.org/download/?t=repo-config](https://mariadb.org/download/?t=repo-config)
 
 Hier is een voorbeeldconfiguratie voor MariaDB 11.4 repositories:

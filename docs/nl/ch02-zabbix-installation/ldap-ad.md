@@ -19,11 +19,11 @@ Microsoft Active Directory en OpenLDAP-server.
 LDAP-authenticatie kan in twee modi worden geconfigureerd:
 
 - Gebruikers authenticatie
-- Users authentication with users provisioning
+- Gebruikersauthenticatie met gebruikersvoorziening
 
 ## Verificatiemodus voor gebruikers
 
-The process of the authenticating users follows this diagram.
+Het authenticatieproces van gebruikers verloopt volgens dit diagram.
 
 ![LDAP users authentication](ch02.3-ldap-auth-diagram.png){ align=center }
 

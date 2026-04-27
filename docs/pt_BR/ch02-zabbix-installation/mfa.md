@@ -13,45 +13,45 @@ We all know that before you can start configuring Zabbix via WebUI you have to
 sign in. Zabbix has several options to provide better security for user
 passwords by configuring password policy:
 
-- Requirement for Minimum password length
-- Requirements for password to contain an uppercase and a lowercase Latin
-  letter, a digit, a special character
-- Requirement to avoid easy-to-guess passwords
+- Requisito para o tamanho mínimo da senha
+- Requisitos para que a senha contenha uma letra latina maiúscula e uma
+  minúscula, um dígito e um caractere especial
+- Requisito para evitar senhas fáceis de adivinhar
 
-To secure sign in process even more you can configure multi factor
-authentication (MFA). MFA protects Zabbix by using a second source of validation
-before granting access to its WebUI after a user enters his/her password
-correctly. Zabbix offers to types of MFA - Time-based one-time password (TOTP)
-and Duo MFA provider.
+Para proteger ainda mais o processo de login, você pode configurar a
+autenticação multifator (MFA). A MFA protege o Zabbix usando uma segunda fonte
+de validação antes de conceder acesso à sua WebUI depois que um usuário digita
+sua senha corretamente. O Zabbix oferece dois tipos de MFA - Time-based one-time
+password (TOTP) e Duo MFA provider.
 
 ---
 
-## Time-based one-time password
+## Senha de uso único baseada em tempo
 
-In the menu select `Users` section and then `Authentication`
+No menu, selecione `Users` section e, em seguida, `Authentication`
 
 ![MFA Settings initial](ch02.20-mfa_settings_initial.png){ width=90% }
 
-_2.20 Initial MFA settings_
+_2.20 Configurações iniciais do MFA_
 
-Now in `MFA settings` tab select the `Enable multi-factor authentication`
-check-box, then select `TOTP` in Type drop-down list.
+Agora, na guia `MFA settings`, marque a caixa de seleção `Enable multi-factor
+authentication` e, em seguida, selecione `TOTP` na lista suspensa Type.
 
 ![MFA Settings TOTP](ch02.21-mfa_settings_TOTP_new.png){ width=90% }
 
-_2.21 New MFA method_
+_2.21 Novo método MFA_
 
-In `Hash function` drop-down list you can choose SHA-1, SHA-256 or SHA-512, the
-higher number is the better security.
+Na lista suspensa `Hash function`, você pode escolher SHA-1, SHA-256 ou SHA-512;
+quanto maior o número, maior a segurança.
 
-In `Code lentgh` you can select how many digits will be generated for you by
-Authenticator application on your phone.
+Em `Code lentgh`, você pode selecionar quantos dígitos serão gerados para você
+pelo aplicativo Authenticator no seu telefone.
 
-Click `Add` and then `Update`. Now you have TOTP MFA configured and it is the
-default method of MFA.
+Clique em `Add` e depois em `Update`. Agora você tem o TOTP MFA configurado e
+ele é o método padrão de MFA.
 
-![MFA Settings TOTP configured](ch02.22-mfa_settings_TOTP_configured.png){
-width=90% }
+![Configurações de MFA TOTP
+configuradas](ch02.22-mfa_settings_TOTP_configured.png){ width=90% }
 
 _2.22 New MFA method added_
 

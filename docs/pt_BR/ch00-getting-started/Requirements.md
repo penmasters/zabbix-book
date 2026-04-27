@@ -35,7 +35,7 @@ simplificar, anote os detalhes do servidor:
 | Servidor de banco de dados |             |
 | Servidor Web               |             |
 
-???+ tip
+???+ dica
 
     Zabbix package names often use dashes (`-`) in their names, such as `zabbix-get`
     or `zabbix-sender`, but the binaries themselves may use underscores (`_`),
@@ -56,48 +56,52 @@ simplificar, anote os detalhes do servidor:
 
 ## Configuração básica do sistema operacional
 
-Operating systems, so many choices, each with its own advantages and loyal user
-base. While Zabbix can be installed on a wide range of platforms, documenting
-the process for every available OS would be impractical. To keep this book
-focused and efficient, we have chosen to cover only the most widely used
-options: Ubuntu, Red Hat and Suse based distributions.
+Sistemas operacionais, tantas opções, cada uma com suas próprias vantagens e
+base de usuários fiéis. Embora o Zabbix possa ser instalado em uma ampla gama de
+plataformas, documentar o processo para cada sistema operacional disponível
+seria impraticável. Para manter este livro focado e eficiente, optamos por
+abordar apenas as opções mais usadas: As distribuições baseadas no Ubuntu e no
+Red Hat.
 
-Since not everyone has access to a Red Hat Enterprise Linux (RHEL) or a SUSE
-Linux Enterprise Server (SLES) subscription even though a developer account
-provides limited access we have opted for Rocky Linux respectively openSUSE Leap
-as a readily available alternative. For this book, we will be using Rocky Linux
-9.x, openSUSE Leap 16 and Ubuntu LTS 24.04.x.
+Como nem todo mundo tem acesso a uma assinatura do Red Hat Enterprise Linux
+(RHEL) ou do SUSE Linux Enterprise Server (SLES), mesmo que uma conta de
+desenvolvedor forneça acesso limitado, optamos pelo Rocky Linux ou pelo openSUSE
+Leap como uma alternativa prontamente disponível. Para este livro, usaremos o
+Rocky Linux 9.x, o openSUSE Leap 16 e o Ubuntu LTS 24.04.x.
 
 - <https://rockylinux.org/>
 - <https://opensuse.org/>
 - <https://ubuntu.com/>
 
-???+ note
+???+ nota
 
     OS installation steps are outside the scope of this book, but a default or even a
     minimal installation of your preferred OS should be sufficient. Please refrain from
     installing graphical user interfaces (GUIs) or desktop environments, as they are
     unnecessary for server setups and consume valuable resources.
 
-Once you have your preferred OS installed, there are a few essential
-configurations to perform before proceeding with the Zabbix installation.
-Perform the following steps on **all** the servers that will host Zabbix
-components (i.e., Zabbix server, database server, and web server).
+Depois de instalar o sistema operacional de sua preferência, há algumas
+configurações essenciais a serem realizadas antes de prosseguir com a instalação
+do Zabbix. Execute as etapas a seguir em **todos** os servidores que hospedarão
+os componentes do Zabbix (ou seja, servidor Zabbix, servidor de banco de dados e
+servidor da Web).
 
 ---
 
-### Update the System
+### Atualizar o sistema
 
-Before installing the Zabbix components, or any new software, it's a best
-practice to ensure your operating system is up-to-date with the latest patches
-and security fixes. This will help maintain system stability and compatibility
-with the software you're about to install. Even if your OS installation is
-recent, it's still advisable to run an update to ensure you have the latest
-packages.
+Antes de instalar os componentes do Zabbix ou qualquer novo software, é uma
+prática recomendada garantir que seu sistema operacional esteja atualizado com
+os patches e as correções de segurança mais recentes. Isso ajudará a manter a
+estabilidade e a compatibilidade do sistema com o software que você está prestes
+a instalar. Mesmo que a instalação do sistema operacional seja recente, ainda é
+recomendável executar uma atualização para garantir que você tenha os pacotes
+mais recentes.
 
-To update your system, run the following command based on your OS:
+Para atualizar seu sistema, execute o seguinte comando de acordo com seu sistema
+operacional:
 
-!!! info "Update your system"
+!!! info "Atualize seu sistema"
 
     Red Hat
     ```bash
@@ -115,7 +119,7 @@ To update your system, run the following command based on your OS:
     sudo apt update
     sudo apt upgrade
     ```
-???+ note "What is apt, dnf or zypper"
+???+ nota "O que é apt, dnf ou zypper"?
 
     - DNF (Dandified YUM) is a package manager used in recent Red Hat-based systems (invoked as `dnf`).
     - ZYpp (Zen / YaST Packages Patches Patterns Products) is the package manager 
@@ -127,7 +131,7 @@ To update your system, run the following command based on your OS:
 
     Do note that package names may also vary from distribution to distribution.
 
-???+ tip
+???+ dica
 
     Regularly updating your system is crucial for security and performance.
     Consider setting up automatic updates or scheduling regular maintenance windows
@@ -137,20 +141,22 @@ To update your system, run the following command based on your OS:
 
 ### Sudo
 
-By default the Zabbix processes like the Zabbix server and agent run under their
-own unprivileged user accounts (e.g., `zabbix`). However, there are scenarios
-where elevated privileges are required, such as executing custom scripts or
-commands that need root access. Also throughout this book, we will perform
-certain administrative tasks that require `sudo` on the system.
+Por padrão, os processos do Zabbix, como o servidor e o agente Zabbix, são
+executados em suas próprias contas de usuário sem privilégios (por exemplo,
+`zabbix`). No entanto, há cenários em que são necessários privilégios elevados,
+como a execução de scripts personalizados ou comandos que precisam de acesso
+root. Além disso, ao longo deste livro, executaremos determinadas tarefas
+administrativas que exigem `sudo` no sistema.
 
-Usually, `sudo` is already present on most systems, but when you performed a
-minimal installation of your OS, it might be missing. Therefore we need to
-ensure it's installed.
+Normalmente, o `sudo` já está presente na maioria dos sistemas, mas quando você
+executou uma instalação mínima do seu sistema operacional, ele pode estar
+ausente. Portanto, precisamos garantir que ele esteja instalado.
 
-This will also allow the Zabbix user to execute specific configured commands
-with elevated privileges without needing to switch to the root user entirely.
+Isso também permitirá que o usuário do Zabbix execute comandos específicos
+configurados com privilégios elevados sem a necessidade de mudar totalmente para
+o usuário root.
 
-!!! info "What is sudo"
+!!! info "O que é sudo"
 
     `sudo` (short for "superuser do") is a command-line utility that allows
     permitted users to execute commands with the security privileges of another
@@ -158,9 +164,10 @@ with elevated privileges without needing to switch to the root user entirely.
     operating systems to perform administrative tasks without needing to log in
     as the root user.
 
-To install `sudo`, run the following command based on your OS:
+Para instalar o `sudo`, execute o seguinte comando de acordo com seu sistema
+operacional:
 
-!!! info "Install sudo"
+!!! info "Instalar sudo"
 
     Red Hat
     ```bash
@@ -177,18 +184,18 @@ To install `sudo`, run the following command based on your OS:
     On Ubuntu, `sudo` is normally installed by default. Root access is managed
     through `sudo` for the initial user created during installation.
 
-If `sudo` is already installed, these commands will inform you that the latest
-version is already present and no further action is needed. If not, the package
-manager will proceed to install it.
+Se o `sudo` já estiver instalado, esses comandos informarão que a versão mais
+recente já está presente e que nenhuma ação adicional é necessária. Caso
+contrário, o gerenciador de pacotes continuará a instalá-la.
 
 ---
 
 ### Firewall
 
-Next, we need to ensure that the firewall is installed and configured. A
-firewall is a crucial security component that helps protect your server from
-unauthorized access and potential threats by controlling incoming and outgoing
-network traffic based on predetermined security rules.
+Em seguida, precisamos garantir que o firewall esteja instalado e configurado. O
+firewall é um componente de segurança essencial que ajuda a proteger o servidor
+contra acesso não autorizado e possíveis ameaças, controlando o tráfego de
+entrada e saída da rede com base em regras de segurança predeterminadas.
 
 Para instalar e ativar o firewall, execute o seguinte comando:
 
@@ -210,7 +217,7 @@ Para instalar e ativar o firewall, execute o seguinte comando:
     sudo apt install ufw
     sudo ufw enable
     ```
-???+ note "What is firewalld / ufw"
+???+ nota "O que é firewalld / ufw"
 
     Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
     changes to take effect immediately without needing to restart the service.
@@ -218,15 +225,16 @@ Para instalar e ativar o firewall, execute o seguinte comando:
     refer to your OS documentation for the appropriate firewall configuration steps.
     Ubuntu makes use of UFW which is merely a frontend for iptables.
 
-During the Zabbix installation in the next chapters, we will need to open
-specific ports in the firewall to allow communication between Zabbix components.
+Durante a instalação do Zabbix nos próximos capítulos, precisaremos abrir portas
+específicas no firewall para permitir a comunicação entre os componentes do
+Zabbix.
 
-Alternatively to just opening ports, as we will do in the next chapters, you can
-also choose to define dedicated firewall zones for specific use cases. This
-approach enhances security by isolating services and restricting access based on
-trust levels. For example...
+Em vez de apenas abrir portas, como faremos nos próximos capítulos, você também
+pode optar por definir zonas de firewall dedicadas para casos de uso
+específicos. Essa abordagem aumenta a segurança ao isolar serviços e restringir
+o acesso com base em níveis de confiança. Por exemplo...
 
-!!! example "Create a firewalld zone for database access"
+!!! exemplo "Criar uma zona firewalld para acesso ao banco de dados"
 
     ```bash
     firewall-cmd --new-zone=db_zone --permanent
@@ -234,47 +242,49 @@ trust levels. For example...
 
 Você pode confirmar a criação da zona executando o seguinte comando:
 
-!!! example "Verify the zone creation"
+!!! exemplo "Verificar a criação da zona"
 
     ```shell-session
     localhost:~ # firewall-cmd --get-zones
     block dmz drop external home internal nm-shared db_zone public trusted work
     ```
 
-Using zones in firewalld to configure firewall rules provides several advantages
-in terms of security, flexibility, and ease of management. Here’s why zones are
-beneficial:
+O uso de zonas no firewalld para configurar regras de firewall oferece várias
+vantagens em termos de segurança, flexibilidade e facilidade de gerenciamento.
+Veja a seguir por que as zonas são vantajosas:
 
 - **Controle de acesso granular :**
 
-: Firewalld zones allow different levels of trust for different network
-interfaces and IP ranges. You can define which systems are allowed to connect to
-PostgreSQL based on their trust level.
+As zonas firewalld permitem diferentes níveis de confiança para diferentes
+interfaces de rede e intervalos de IP. Você pode definir quais sistemas têm
+permissão para se conectar ao PostgreSQL com base em seu nível de confiança.
 
 - **Gerenciamento simplificado de regras:**
 
-: Instead of manually defining complex iptables rules, zones provide an
-organized way to group and manage firewall rules based on usage scenarios.
+Em vez de definir manualmente regras complexas do iptables, as zonas oferecem
+uma maneira organizada de agrupar e gerenciar regras de firewall com base em
+cenários de uso.
 
 - **Segurança aprimorada:**
 
-: By restricting application access to a specific zone, you prevent unauthorized
-connections from other interfaces or networks.
+: Ao restringir o acesso de aplicativos a uma zona específica, você evita
+conexões não autorizadas de outras interfaces ou redes.
 
 - **Configuração dinâmica:**
 
-: Firewalld supports runtime and permanent rule configurations, allowing changes
-without disrupting existing connections.
+O firewalld suporta configurações de regras permanentes e em tempo de execução,
+permitindo alterações sem interromper as conexões existentes.
 
 - **Suporte a várias interfaces:**
 
-: If the server has multiple network interfaces, zones allow different security
-policies for each interface.
+: Se o servidor tiver várias interfaces de rede, as zonas permitirão políticas
+de segurança diferentes para cada interface.
 
-Bringing everything together to add a zone for, in this example, PostgreSQL it
-would look like this:
+Juntando tudo para adicionar uma zona para, neste exemplo, o PostgreSQL, ficaria
+assim:
 
-!!! example "Firewalld with zone config for PostgreSQL database access"
+!!! exemplo "Firewalld com configuração de zona para acesso ao banco de dados
+PostgreSQL"
 
     ```bash
     firewall-cmd --new-zone=db_zone --permanent
@@ -286,8 +296,8 @@ would look like this:
 Onde o ` IP de origem` é o único endereço permitido para estabelecer uma conexão
 com o banco de dados.
 
-If you wish to use zones when using firewalld, ensure to adapt the instructions
-in the following chapters accordingly.
+Se você quiser usar zonas ao usar o firewalld, adapte as instruções dos
+capítulos a seguir de acordo.
 
 ---
 
@@ -341,7 +351,7 @@ Depois que o Chrony estiver instalado, a próxima etapa é garantir que o fuso
 horário correto esteja definido. Você pode ver a configuração do horário atual
 usando o comando `timedatectl`:
 
-!!! example "Check the time config"
+!!! exemplo "Verifique a configuração da hora"
 
     ```shell-session
     localhost:~ # timedatectl
@@ -404,7 +414,7 @@ comando `timedatectl`:
               RTC in local TZ: no
     ```
 
-???+ note
+???+ nota
 
     Some administrators prefer installing all servers in the UTC time zone to
     ensure that server logs across global deployments are synchronized.
@@ -533,7 +543,7 @@ locais estejam em uso:
 
 Exemplo de saída esperada com servidores locais:
 
-!!! example "Example output"
+!!! example "Exemplo de saída"
 
     ```shell-session
     chronyc> sources

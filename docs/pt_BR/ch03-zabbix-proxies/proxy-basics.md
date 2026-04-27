@@ -314,7 +314,7 @@ Do note that for an active _Zabbix Agent_ or _Zabbix Sender_ to communicate with
 your proxy, whether it is an active or a passive one, this will require port
 `10051/tcp` to be open on your proxy server:
 
-!!! info "Open firewall for zabbix-trapper"
+!!! info "Abra o firewall para o zabbix-trapper"
 
     Red Hat / SUSE
     ``` bash
