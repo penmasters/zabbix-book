@@ -598,10 +598,13 @@ per minute, the alerter queue can grow faster than it is drained. You can increa
 `StartAlerters` in `zabbix_server.conf` to add more parallel alerter processes.
 Check queue depth under **Administration → Queue** in the frontend.
 
-**Database write pressure:** every escalation step generates database writes
-(updating escalation state, writing alert records). On busy servers, escalation
-table contention can be a source of latency. Partitioning the `escalations` and
-`alerts` tables is a common tuning step in large deployments.
+**Database write pressure:** Every escalation step generates database writes (updating
+escalation state, writing alert records). On busy servers with many concurrent
+escalations, this can contribute to overall database load. However, the primary
+tuning targets in large deployments are the history* and trends* tables, which
+benefit from time-based partitioning. The escalations table is an operational
+state table unsuitable for partitioning; in alert storm scenarios, manual cleanup
+of the alerts table is the common remediation.
 
 !!! tip
 
