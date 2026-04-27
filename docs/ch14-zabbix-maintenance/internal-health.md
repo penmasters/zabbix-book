@@ -325,7 +325,7 @@ visualize performance over time. If missing, it can be imported from:
 
 ---
 
-### Template App Zabbix Proxy
+### Zabbix proxy health
 
 This template monitors the internal state of a **Zabbix proxy**, including:
 
@@ -341,7 +341,7 @@ This template monitors the internal state of a **Zabbix proxy**, including:
       > 1. Install a **Zabbix agent** on each proxy host.
       > 2. Configure that agent to be **monitored by the proxy itself** (not by the server).
     
-    Only then can the *Template App Zabbix Proxy* correctly collect proxy performance data.
+    Only then can the *Zabbix proxy health* correctly collect proxy performance data.
 
 ---
 
@@ -437,7 +437,7 @@ no agent or SNMP interface?
 statistics, even though proxy availability is monitored out of the box?
 3. Why must a Zabbix proxy's agent be monitored by the proxy itself rather than
 by the server?
-4. What are the key differences between the *Template App Zabbix Proxy* and the
+4. What are the key differences between the *Zabbix proxy health* and the
 *Remote Zabbix Server/Proxy Health* templates?
 5. Which internal metric indicates poller utilization, and at what threshold
 should you act?
