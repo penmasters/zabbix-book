@@ -5,12 +5,13 @@ description: |
 tags: [beginner]
 ---
 
-# User Roles
+# Funções de usuário
 
-The Zabbix *User Role* system, introduced in Zabbix 5.2, defines what a user is
-allowed to do within the Zabbix frontend and via the API. Unlike User Groups
-which control data visibility Ex: (which hosts a user can see and/or manage),
-User Roles control application functionality (what buttons a user can click).
+O sistema Zabbix *User Role*, introduzido no Zabbix 5.2, define o que um usuário
+tem permissão para fazer no frontend do Zabbix e através da API. Ao contrário
+dos Grupos de Usuários, que controlam a visibilidade dos dados (por exemplo,
+quais hosts um usuário pode ver e/ou gerenciar), as Funções de Usuário controlam
+a funcionalidade do aplicativo (quais botões um usuário pode clicar).
 
 ## A hierarquia de funções
 
@@ -29,59 +30,59 @@ Esta tabela ilustra os direitos de acesso padrão concedidos aos usuários com
 base no seu **tipo de usuário** inicial antes de serem feitos quaisquer ajustes
 na **função de usuário personalizada** .
 
-| Seção de menu            | Usuário | Administrador | Super Administrador |
-| ------------------------ | :-----: | :-----------: | :-----------------: |
-| **Monitoramento**        |         |               |                     |
-| Painéis de controle      |    ✅    |       ✅       |          ✅          |
-| Problemas                |    ✅    |       ✅       |          ✅          |
-| Hospedeiros              |    ✅    |       ✅       |          ✅          |
-| Latest data              |    ✅    |       ✅       |          ✅          |
-| Maps                     |    ✅    |       ✅       |          ✅          |
-| Discovery                |         |       ✅       |          ✅          |
-| Services                 |    ✅    |       ✅       |          ✅          |
-| SLA                      |         |       ✅       |          ✅          |
-| SLA report               |    ✅    |       ✅       |          ✅          |
-| **Inventory**            |         |               |                     |
-| Overview                 |    ✅    |       ✅       |          ✅          |
-| Hospedeiros              |    ✅    |       ✅       |          ✅          |
-| **Reports**              |         |               |                     |
-| System information       |         |       ✅       |          ✅          |
-| Scheduled reports        |         |       ✅       |          ✅          |
-| Availability report      |    ✅    |       ✅       |          ✅          |
-| Top 100 triggers         |    ✅    |       ✅       |          ✅          |
-| Audit log                |         |       ✅       |          ✅          |
-| Action log               |         |       ✅       |          ✅          |
-| Notifications            |         |       ✅       |          ✅          |
-| **Configuration**        |         |               |                     |
-| Data collection          |         |       ✅       |          ✅          |
-| Template groups          |         |       ✅       |          ✅          |
-| Host groups              |         |       ✅       |          ✅          |
-| Templates                |         |       ✅       |          ✅          |
-| Hospedeiros              |         |       ✅       |          ✅          |
-| Maintenance              |         |       ✅       |          ✅          |
-| Event correlation        |         |       ✅       |          ✅          |
-| Discovery                |         |       ✅       |          ✅          |
-| **Alerts (Actions)**     |         |               |                     |
-| Trigger actions          |         |       ✅       |          ✅          |
-| Service actions          |         |       ✅       |          ✅          |
-| Discovery actions        |         |       ✅       |          ✅          |
-| Autoregistration actions |         |       ✅       |          ✅          |
-| Internal actions         |         |       ✅       |          ✅          |
-| **Administration**       |         |               |                     |
-| Media types              |         |               |          ✅          |
-| Scripts                  |         |               |          ✅          |
-| Users                    |         |               |          ✅          |
-| User groups              |         |               |          ✅          |
-| User roles               |         |               |          ✅          |
-| API tokens               |         |               |          ✅          |
-| Authentication           |         |               |          ✅          |
-| General                  |         |               |          ✅          |
-| Audit log                |         |               |          ✅          |
-| Housekeeping             |         |               |          ✅          |
-| Grupos de proxy          |         |               |          ✅          |
-| Proxies                  |         |               |          ✅          |
-| Macros                   |         |               |          ✅          |
-| Queue                    |         |               |          ✅          |
+| Seção de menu                 | Usuário | Administrador | Super Administrador |
+| ----------------------------- | :-----: | :-----------: | :-----------------: |
+| **Monitoramento**             |         |               |                     |
+| Painéis de controle           |    ✅    |       ✅       |          ✅          |
+| Problemas                     |    ✅    |       ✅       |          ✅          |
+| Hospedeiros                   |    ✅    |       ✅       |          ✅          |
+| Dados mais recentes           |    ✅    |       ✅       |          ✅          |
+| Mapas                         |    ✅    |       ✅       |          ✅          |
+| Descoberta                    |         |       ✅       |          ✅          |
+| Serviços                      |    ✅    |       ✅       |          ✅          |
+| SLA                           |         |       ✅       |          ✅          |
+| Relatório SLA                 |    ✅    |       ✅       |          ✅          |
+| **Inventário**                |         |               |                     |
+| Visão geral                   |    ✅    |       ✅       |          ✅          |
+| Hospedeiros                   |    ✅    |       ✅       |          ✅          |
+| **Relatórios**                |         |               |                     |
+| Informações do sistema        |         |       ✅       |          ✅          |
+| Relatórios programados        |         |       ✅       |          ✅          |
+| Relatório de disponibilidade  |    ✅    |       ✅       |          ✅          |
+| Os 100 principais acionadores |    ✅    |       ✅       |          ✅          |
+| Registro de auditoria         |         |       ✅       |          ✅          |
+| Registro de ações             |         |       ✅       |          ✅          |
+| Notificações                  |         |       ✅       |          ✅          |
+| **Configuração**              |         |               |                     |
+| Coleta de dados               |         |       ✅       |          ✅          |
+| Grupos de modelos             |         |       ✅       |          ✅          |
+| Grupos de acolhimento         |         |       ✅       |          ✅          |
+| Modelos                       |         |       ✅       |          ✅          |
+| Hospedeiros                   |         |       ✅       |          ✅          |
+| Manutenção                    |         |       ✅       |          ✅          |
+| Correlação de eventos         |         |       ✅       |          ✅          |
+| Descoberta                    |         |       ✅       |          ✅          |
+| **Alertas (ações)**           |         |               |                     |
+| Ações de acionamento          |         |       ✅       |          ✅          |
+| Ações de serviço              |         |       ✅       |          ✅          |
+| Ações de descoberta           |         |       ✅       |          ✅          |
+| Ações de registro automático  |         |       ✅       |          ✅          |
+| Ações internas                |         |       ✅       |          ✅          |
+| **Administração**             |         |               |                     |
+| Tipos de mídia                |         |               |          ✅          |
+| Scripts                       |         |               |          ✅          |
+| Usuários                      |         |               |          ✅          |
+| Grupos de usuários            |         |               |          ✅          |
+| Funções de usuário            |         |               |          ✅          |
+| tokens de API                 |         |               |          ✅          |
+| Autenticação                  |         |               |          ✅          |
+| Geral                         |         |               |          ✅          |
+| Registro de auditoria         |         |               |          ✅          |
+| Serviço de limpeza            |         |               |          ✅          |
+| Grupos de proxy               |         |               |          ✅          |
+| Proxies                       |         |               |          ✅          |
+| Macros                        |         |               |          ✅          |
+| Queue                         |         |               |          ✅          |
 
 ## Customizing Role Permissions
 
