@@ -9,11 +9,12 @@ tags: [expert]
 
 # LDAP / AD
 
-As any modern system Zabbix can perform users authentication using Lightweight
-Directory Access Protocol (LDAP). In theory LDAP is very well defined open
-protocol that should be vendor independent but its relative complexity plays a
-role in every LDAP server implementation. Zabbix is known to work well with
-Microsoft Active Directory and OpenLDAP server.
+Como qualquer sistema moderno, o Zabbix pode realizar a autenticação de usuários
+usando o Lightweight Directory Access Protocol (LDAP). Em teoria, o LDAP é um
+protocolo aberto muito bem definido que deve ser independente do fornecedor, mas
+sua complexidade relativa desempenha um papel importante em cada implementação
+de servidor LDAP. O Zabbix é conhecido por trabalhar bem com o Microsoft Active
+Directory e o servidor OpenLDAP.
 
 A autenticação LDAP pode ser configurada em dois modos:
 
