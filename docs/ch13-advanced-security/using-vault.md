@@ -8,16 +8,16 @@ credentials all need to reach the monitoring system somehow. Without a dedicated
 secrets manager, these credentials are typically stored in one or more of the
 following ways:
 
-- **Plaintext in configuration files** — readable by anyone with file system access,
+- **Plaintext in configuration files**: readable by anyone with file system access,
   often forgotten in backups or version control.
-- **Hardcoded in templates or host macros** — while Zabbix's built-in *Secret
+- **Hardcoded in templates or host macros** : while Zabbix's built-in *Secret
   text* macro type masks the value in the UI and omits it from template exports,
   the value is still stored in the Zabbix database in plaintext. Anyone with direct
   database access can read every credential without any additional barrier.
-- **Plaintext storage in the Zabbix database** — all macro values, including those
+- **Plaintext storage in the Zabbix database**: all macro values, including those
   marked as *Secret text*, are stored unencrypted in the `globalmacro` and `hostmacro`
   tables. A compromised database exposes every credential in full.
-- **Shared over email or chat** — no audit trail, no expiry, no revocation.
+- **Shared over email or chat**: no audit trail, no expiry, no revocation.
 
 This approach creates significant operational and security risks:
 
