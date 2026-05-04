@@ -436,7 +436,7 @@ Two parameters in `zabbix_server.conf` control how the server interacts with Vau
     on `/v1/` in paths:** The `/v1/` prefix in Vault API URLs refers to the **Vault
     HTTP API version**, not the KV engine version. It is always `/v1/` regardless
     of whether you use KV v1 or KV v2. So `/v1/zabbix/data/server` is correct even
-    though we enabled KV v2 in section 4.1.
+    though we enabled KV v2.
 
 ### Edit `zabbix_server.conf`
 
@@ -459,15 +459,15 @@ VaultURL=https://vault.example.com:8200
 # This resolves to: /v1/zabbix/data/server
 VaultDBPath=zabbix/server
 
-# Vault token for the Zabbix server — created in section 4.5
-VaultToken=<zabbix-server token from section 4.5>
+# Vault token for the Zabbix server
+VaultToken=<zabbix-server token>
 ```
 
 !!! note
 
     `VaultDBPath` requires the full path including the mount point: `zabbix/server`.
-    This resolves to `/v1/zabbix/data/server` — the path where the server credentials
-    were stored in section 4.2.
+    This resolves to `/v1/zabbix/data/server` the path where the server credentials
+    were stored.
 
 ### TLS Certificate Verification
 
@@ -508,7 +508,7 @@ Open `/etc/zabbix/web/zabbix.conf.php`. Remove the existing `$DB['USER']` and
 $DB['VAULT']       = 'HashiCorp';
 $DB['VAULT_URL']   = 'https://vault.example.com:8200';
 $DB['VAULT_DB_PATH'] = 'zabbix/frontend';
-$DB['VAULT_TOKEN'] = '<zabbix-frontend token from section 4.5>';
+$DB['VAULT_TOKEN'] = '<zabbix-frontend token>';
 
 // TLS — only required if using a custom CA
 // $DB['VAULT_CACERT'] = '/etc/zabbix/ssl/vault-ca.pem';
