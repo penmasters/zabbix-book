@@ -334,7 +334,8 @@ vault write auth/token/roles/zabbix \
     renewal process for long-running deployments. Periodic tokens are a strong fit here, Vault can
     renew them indefinitely unless an explicit `explicit_max_ttl` is imposed. The token role
     created in previous section `period="720h"` which produces periodic tokens that Zabbix will
-    renew automatically.
+    renew automatically. However, these tokens are not truly non-expiring, but can be renewed
+    indefinitely as long as Zabbix is running and the token has no max TTL limit.
  
 Create a separate token for each component using the role created in previous section The
 `-type=service` flag explicitly creates a renewable service token:
