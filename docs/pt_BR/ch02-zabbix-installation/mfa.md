@@ -7,11 +7,11 @@ descripton: |
 tags: [advanced]
 ---
 
-# Multi factor authentication
+# Autenticação multifatorial
 
-We all know that before you can start configuring Zabbix via WebUI you have to
-sign in. Zabbix has several options to provide better security for user
-passwords by configuring password policy:
+Todos nós sabemos que, antes de começar a configurar o Zabbix via WebUI, é
+necessário fazer o login. O Zabbix tem várias opções para fornecer melhor
+segurança para as senhas dos usuários, configurando a política de senha:
 
 - Requisito para o tamanho mínimo da senha
 - Requisitos para que a senha contenha uma letra latina maiúscula e uma
