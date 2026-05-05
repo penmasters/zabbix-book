@@ -967,7 +967,7 @@ macros. Some of the most frequently used:
 | `{EVENT.TAGS}` | All tags on the event in `tag: value, tag: value` format |
 | `{EVENT.TAGSJSON}` | Same, but as a JSON array — useful for webhook payloads |
 | `{TRIGGER.URL}` | The URL field of the trigger (great for linking to a runbook) |
-| `{ZABBIX.URL}` | The base URL of the Zabbix frontend (configured in the frontend URL setting in Zabbix server settings) |
+| `{$ZABBIX.URL}` | The base URL of the Zabbix frontend (configured in the frontend URL setting in Zabbix server settings) |
 | `{ESC.HISTORY}` | The escalation history: a log of which step fired when and to whom |
 | `{ALERT.SENDTO}` | The recipient's Send To value from their media type configuration |
 | `{ALERT.SUBJECT}` | The notification subject (only usable in the body) |
