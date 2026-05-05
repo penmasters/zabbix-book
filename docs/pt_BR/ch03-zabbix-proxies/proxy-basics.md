@@ -42,29 +42,30 @@ So in short a Zabbix proxy can be used to:
 
 ## Proxy requirements
 
-If you'd like to set up a few proxies for testing or in your production
-environment, you'll need some Linux hosts for installation. While proxies are
-also available as containers (so you don't necessarily need full VMs), we'll use
-a VM in this demonstration to show the installation process. Don't worry, we'll
-cover container deployments as well.
+Se quiser configurar alguns proxies para testes ou em seu ambiente de produção,
+você precisará de alguns hosts Linux para a instalação. Embora os proxies também
+estejam disponíveis como contêineres (portanto, você não precisa necessariamente
+de VMs completas), usaremos uma VM nesta demonstração para mostrar o processo de
+instalação. Não se preocupe, também abordaremos as implementações de
+contêineres.
 
-Although proxies are generally lightweight, since Zabbix 4.2 they can perform
-item value preprocessing which can be CPU-intensive. Therefore, the number of
-CPUs and memory you'll need depends on:
+Embora os proxies sejam geralmente leves, desde o Zabbix 4.2 eles podem executar
+o pré-processamento do valor do item, o que pode exigir muito da CPU. Portanto,
+o número de CPUs e de memória de que você precisará depende de:
 
-- How many machines you'll be monitoring
+- Quantas máquinas você estará monitorando
 - How many preprocessing rules you'll implement on your hosts
 
 ---
 
-### Proxy configuration updates
+### Atualizações da configuração do proxy
 
-For a proxy to know what devices it has to monitor, it will receive
-configuration updates from the _Zabbix server_. They include:
+Para que um proxy saiba quais dispositivos deve monitorar, ele receberá
+atualizações de configuração do servidor _servidor Zabbix_. Elas incluem:
 
-- New or modified monitoring items, triggers, or templates assigned to the
-  proxy.
-- Changes to host configurations or data collection rules.
+- Itens de monitoramento, acionadores ou modelos novos ou modificados atribuídos
+  ao proxy.
+- Alterações nas configurações do host ou nas regras de coleta de dados.
 
 Before Zabbix 7.0, a full configuration synchronization was performed by proxies
 every 3600 seconds (1 hour) by default. With the introduction of Zabbix 7.0,
