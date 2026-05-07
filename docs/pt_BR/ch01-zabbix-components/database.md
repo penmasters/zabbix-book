@@ -103,7 +103,7 @@ oferecem acesso às versões estáveis mais recentes.
     - **Manual version management:** Users must proactively monitor and upgrade 
       to new major versions to ensure continued security and bug fix coverage.
 
-???+ warning "Database version compatibility"
+???+ aviso "Compatibilidade da versão do banco de dados"
 
     Whether you plan to use the OS vendor-provided packages or the official 
     database-vendor packages, ensure that the database version is supported
@@ -111,25 +111,28 @@ oferecem acesso às versões estáveis mais recentes.
     Check the [Zabbix documentation](https://www.zabbix.com/documentation/current/en/manual/installation/requirements#required-software)
     for the latest supported versions.
 
-Before installing the database software, ensure that the server meets the
-configuration requirements and is prepared as outlined in the previous chapter:
-[_Getting started_](../ch00-getting-started/Requirements.md).
+Antes de instalar o software do banco de dados, certifique-se de que o servidor
+atenda aos requisitos de configuração e esteja preparado conforme descrito no
+capítulo anterior: [_Getting started_](../ch00-getting-started/Requirements.md).
 
 ---
 
 ## Conclusão
 
-We have discussed the various database backends supported by Zabbix. We've also
-examined the advantages and disadvantages of using vendor-provided packages
-versus official repositories for installing MariaDB and PostgreSQL.
+Discutimos os vários backends de banco de dados suportados pelo Zabbix. Também
+examinamos as vantagens e desvantagens de usar pacotes fornecidos pelo
+fornecedor em comparação com os repositórios oficiais para instalar o MariaDB e
+o PostgreSQL.
 
-Armed with this knowledge, you are now ready to proceed with the installation of
-your chosen database backend. In the following chapters, we will guide you
-through the installation process for MariaDB or PostgreSQL, ensuring that your
-Zabbix instance is equipped with a robust and efficient database system.
+Munido desse conhecimento, agora você está pronto para prosseguir com a
+instalação do backend do banco de dados escolhido. Nos próximos capítulos, nós o
+orientaremos no processo de instalação do MariaDB ou do PostgreSQL, garantindo
+que sua instância do Zabbix esteja equipada com um sistema de banco de dados
+robusto e eficiente.
 
-Now that you have a clear understanding of the database options available, let's
-move on to the installation of your preferred database backend.
+Agora que você tem uma compreensão clara das opções de banco de dados
+disponíveis, vamos passar à instalação do backend de banco de dados de sua
+preferência.
 
 ---
 
