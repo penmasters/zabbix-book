@@ -56,13 +56,14 @@ verificar as possibilidades de autenticação LDAP do Zabbix. Ou você pode pula
 configuração do ambiente de demonstração se quiser apenas conectar sua instância
 do Zabbix ao seu servidor LDAP ou AD existente.
 
-### Set up local demo LDAP server
+### Configurar o servidor LDAP de demonstração local
 
-We believe that it is better to learn this topic by example so we'll be using
-our own LDAP server that you can spin up in a container for demo purposes. First
-we will need to ensure that we have a container engine installed.
+Acreditamos que é melhor aprender esse tópico por meio de exemplos, portanto,
+usaremos nosso próprio servidor LDAP, que pode ser ativado em um contêiner para
+fins de demonstração. Primeiro, precisamos garantir que temos um mecanismo de
+contêiner instalado.
 
-!!! info "Install Podman container engine"
+!!! info "Instalar o mecanismo de contêiner do Podman"
 
 Red Hat
   ```bash
