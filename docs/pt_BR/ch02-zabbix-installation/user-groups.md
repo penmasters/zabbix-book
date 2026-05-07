@@ -65,14 +65,14 @@ configuração familiar para os administradores.
 
 ![ch02.20_user-groups_menu.png](ch02.20_user-groups_menu.png)
 
-_2.20 user group menu_
+_2.20 menu do grupo de usuários_
 
-#### The `User group` Tab
+#### O `grupo de usuários` Guia
 
-This initial tab defines the group's general properties and its membership:
+Essa guia inicial define as propriedades gerais do grupo e sua associação:
 
-* **Group name:** A unique, descriptive identifier (e.g., `NOC-RO`,
-  `System-Admins-RW`).
+* **Nome do grupo:** Um identificador exclusivo e descritivo (por exemplo,
+  `NOC-RO`, `System-Admins-RW`).
 * **Users:** Add existing users to this group. A user can be a member of
   multiple groups.
 * **Frontend access:** Controls the authentication method for group members.
