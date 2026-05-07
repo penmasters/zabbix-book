@@ -53,44 +53,46 @@ ele é o método padrão de MFA.
 ![Configurações de MFA TOTP
 configuradas](ch02.22-mfa_settings_TOTP_configured.png){ width=90% }
 
-_2.22 New MFA method added_
+_2.22 Novo método MFA adicionado_
 
-Now you need to tell Zabbix for which User group (or groups) to use MFA. Let's
-create a User group that would require MFA.
+Agora você precisa informar ao Zabbix para qual grupo de usuários (ou grupos)
+usar a MFA. Vamos criar um grupo de usuários que exigiria a MFA.
 
-In the menu select `Users` section and then `User groups`, then click `Create
-user group` button
+No menu, selecione a seção `Users` e, em seguida, `User groups`, depois clique
+no botão `Create user group`
 
-![MFA list of user groups](ch02.23-mfa_create_user_groups.png){ width=90% }
+![Lista MFA de grupos de usuários](ch02.23-mfa_create_user_groups.png){
+width=90% }
 
-_2.23 Create user group_
+_2.23 Criar grupo de usuários_
 
-In `Group name` put "test". Note that `Multi-factor authentication` field is
-"Default", as currently we have only one MFA method configured it does not
-matter whether we select "Default" or "TOTP1" that we created above. You also
-can disable MFA for all users belonging to this User group. Click `Add` button
-to create "test" User group.
+Em `Group name`, coloque "test". Observe que o campo `Multi-factor
+authentication` é "Default" (Padrão), pois como atualmente temos apenas um
+método MFA configurado, não importa se selecionamos "Default" (Padrão) ou
+"TOTP1" que criamos acima. Você também pode desativar a MFA para todos os
+usuários pertencentes a esse grupo de usuários. Clique no botão `Add` para criar
+o grupo de usuários "test".
 
-![MFA new user group](ch02.24-mfa_new_user_group.png){ width=90% }
+![MFA novo grupo de usuários](ch02.24-mfa_new_user_group.png){ width=90% }
 
-_2.24 New user group configuration_
+_2.24 Nova configuração de grupo de usuários_
 
-???+ Note
+???+ Nota
 
     MFA method is defined on per User group basis, i.e. MFA method configured for
     a User group will be applied to all users belonging to this group.
 
-Let's add a user to this user group. In the menu select `Users` section and then
-`Users`, then click `Create user` button
+Vamos adicionar um usuário a esse grupo de usuários. No menu, selecione a seção
+`Users` e, em seguida, `Users`, depois clique no botão `Create user`
 
-![MFA create user](ch02.25-mfa_create_user.png){ width=90% }
+![MFA criar usuário](ch02.25-mfa_create_user.png){ width=90% }
 
-_2.25 Create user_
+_2.25 Criar usuário_
 
-Fill in `Username`, `Password` and `Password (once again)` fields. Make sure you
-select `test` user group in `Groups` field.
+Preencha os campos `Nome de usuário`, `Senha` e `Senha (mais uma vez)`.
+Certifique-se de selecionar o grupo de usuários `test` no campo `Groups`.
 
-![MFA new user](ch02.26-mfa_new_user.png){ width=90% }
+![MFA novo usuário](ch02.26-mfa_new_user.png){ width=90% }
 
 _2.26 New user configuration_
 
