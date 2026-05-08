@@ -16,31 +16,31 @@ proxies_ and _Passive proxies_.
 
 ---
 
-## What is a Zabbix Proxy
+## O que é um Zabbix Proxy
 
-A Zabbix proxy is actually a kind of lightweight Zabbix server process that
-collects monitoring data from devices on behalf of the real Zabbix server. It's
-designed to offload the server by handling data collection tasks, which is
-particularly useful in distributed environments or when monitoring remote
-locations with limited connectivity.
+Um proxy Zabbix é, na verdade, um tipo de processo leve do servidor Zabbix que
+coleta dados de monitoramento de dispositivos em nome do servidor Zabbix real.
+Ele foi projetado para descarregar o servidor ao lidar com tarefas de coleta de
+dados, o que é particularmente útil em ambientes distribuídos ou ao monitorar
+locais remotos com conectividade limitada.
 
-The proxy gathers the requested performance and availability data from monitored
-devices, applications, and services, then forwards this information to the
-Zabbix server for processing and storage. This architecture helps reduce network
-traffic, simplifies network firewall configurations and improves the overall
-efficiency of your monitoring system.
+O proxy reúne os dados de desempenho e disponibilidade solicitados dos
+dispositivos, aplicativos e serviços monitorados e, em seguida, encaminha essas
+informações para o servidor Zabbix para processamento e armazenamento. Essa
+arquitetura ajuda a reduzir o tráfego de rede, simplifica as configurações de
+firewall de rede e melhora a eficiência geral do seu sistema de monitoramento.
 
-So in short a Zabbix proxy can be used to:
+Em resumo, um proxy Zabbix pode ser usado para:
 
-- Monitor remote locations
-- Monitor devices on separate network segments
-- Monitor locations that have unreliable connections
-- Offload the Zabbix server when monitoring thousands of devices
-- Simplify the maintenance and management
+- Monitore locais remotos
+- Monitore dispositivos em segmentos de rede separados
+- Monitore os locais que têm conexões não confiáveis
+- Descarregue o servidor Zabbix ao monitorar milhares de dispositivos
+- Simplifique a manutenção e o gerenciamento
 
 ---
 
-## Proxy requirements
+## Requisitos de proxy
 
 Se quiser configurar alguns proxies para testes ou em seu ambiente de produção,
 você precisará de alguns hosts Linux para a instalação. Embora os proxies também
@@ -54,7 +54,7 @@ o pré-processamento do valor do item, o que pode exigir muito da CPU. Portanto,
 o número de CPUs e de memória de que você precisará depende de:
 
 - Quantas máquinas você estará monitorando
-- How many preprocessing rules you'll implement on your hosts
+- Quantas regras de pré-processamento você implementará em seus hosts
 
 ---
 
@@ -67,21 +67,22 @@ atualizações de configuração do servidor _servidor Zabbix_. Elas incluem:
   ao proxy.
 - Alterações nas configurações do host ou nas regras de coleta de dados.
 
-Before Zabbix 7.0, a full configuration synchronization was performed by proxies
-every 3600 seconds (1 hour) by default. With the introduction of Zabbix 7.0,
-this behavior changed significantly. Now, configuration synchronization occurs
-much more frequently, every 10 seconds by default, but it's an incremental
-update. This means that instead of transferring the entire configuration, only
-the modified entities are synchronized, greatly improving efficiency and
-reducing network overhead.
+Antes do Zabbix 7.0, uma sincronização completa da configuração era realizada
+pelos proxies a cada 3600 segundos (1 hora) por padrão. Com a introdução do
+Zabbix 7.0, esse comportamento mudou significativamente. Agora, a sincronização
+da configuração ocorre com muito mais frequência, a cada 10 segundos por padrão,
+mas é uma atualização incremental. Isso significa que, em vez de transferir toda
+a configuração, apenas as entidades modificadas são sincronizadas, o que aumenta
+muito a eficiência e reduz a sobrecarga da rede.
 
-Upon initial proxy startup, a full configuration synchronization is still
-performed. Subsequently, both the server and the proxy maintain a revision of
-the configuration. When a change is made on the server, only the differences,
-based on these revision numbers, are applied to the proxy's configuration,
-rather than a complete replacement of the entire configuration as in older
-versions. This incremental approach allows for near real-time propagation of
-configuration changes while minimizing resource consumption.
+Na inicialização do proxy, ainda é realizada uma sincronização completa da
+configuração. Posteriormente, tanto o servidor quanto o proxy mantêm uma revisão
+da configuração. Quando uma alteração é feita no servidor, somente as
+diferenças, com base nesses números de revisão, são aplicadas à configuração do
+proxy, em vez de uma substituição completa de toda a configuração, como nas
+versões anteriores. Essa abordagem incremental permite a propagação quase em
+tempo real das alterações de configuração e, ao mesmo tempo, minimiza o consumo
+de recursos.
 
 ???+ note Configuration settings vs configuration updates
 
