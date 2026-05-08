@@ -73,8 +73,8 @@ Essa guia inicial define as propriedades gerais do grupo e sua associação:
 
 * **Nome do grupo:** Um identificador exclusivo e descritivo (por exemplo,
   `NOC-RO`, `System-Admins-RW`).
-* **Users:** Add existing users to this group. A user can be a member of
-  multiple groups.
+* **Usuários:** Adicione usuários existentes a esse grupo. Um usuário pode ser
+  membro de vários grupos.
 * **Frontend access:** Controls the authentication method for group members.
   Options include `System default`, `Internal`, `LDAP`, or `Disabled` (useful
   for API-only accounts or for temporarily locking frontend access for a role).
