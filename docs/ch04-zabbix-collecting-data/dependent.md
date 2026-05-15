@@ -38,19 +38,25 @@ There are three main concepts involved when talking about "Dependent items":
 - dependent item
 - preprocessing
 
-Master item is just a regular Zabbix item. It can be any type of data collection
+**Master item** is just a regular Zabbix item. It can be any type of data collection
 behind it - say it can be "Zabbix agent", "Zabbix trapper", "HTTP agent" item
 or anything else.
 
-Once new value is collected for the master item, all of its dependent items
+**Dependent item** is an item which relies on master item for its value. It does not
+have its own data collection method, it just gets its value from the master item. The
+power of dependent item is in its **preprocessing**. It is the preprocessing which
+extracts the needed part of data from master item and transforms it into a separate
+metric making the dependent item a separate monitoring entity. 
+
+Once a new value is collected for the master item, all of its dependent items
 are also updated. It has to be specified in dependent item's configuration,
 which item is the master item for it. One master item can have unlimited number
 of dependent items.
 
 ???+ info
 
-    Since dependent item gets updated on master item's value update, it does not
-    have its own update interval
+    Since dependent items get updated on master item's value update, they do not
+    have their own update interval.
 
 To be able to extract just the needed part of data from the master item, you
 will for sure want to apply some preprocessing. Preprocessing loves structured
@@ -60,6 +66,16 @@ data easier. When dealing with preprocessing, apply the most suitable method
 for particular data source format (e.g. use JSONPath for json) and understand
 your limits (e.g. regex is Perl flavor and JavaScript is Duktape underneath).
 
+???+ tip "Transform master item data into structured format"
+
+    If your master item data is not structured, you can always apply some
+    preprocessing on the master item to transform it into a structured format. 
+    With the ability to use Javascript in preprocessing, you can do pretty much
+    any type of transformation you want right in Zabbix itself, without a need to
+    involve any external scripts.
+
+---
+
 ## Hello World
 
 Let's go through an example, the most basic one, so that you would better
@@ -68,31 +84,33 @@ understand how the dependent items get updated.
 First of all, we will have a simple bash script, which will create three lines
 of structured data.
 
-```bash
-#!/bin/bash
+???+ example "Hello World script"
 
-master_result=/tmp/master.txt
+    ```bash
+    #!/bin/bash
 
-for x in {a..c}; do
-  echo "${x}: $((RANDOM%100))" >>${master_result}.tmp
-done
+    master_result=/tmp/master.txt
 
-mv -f ${master_result}.tmp ${master_result}
+    for x in {a..c}; do
+      echo "${x}: $((RANDOM%100))" >>${master_result}.tmp
+    done
 
-exit 0
-```
+    mv -f ${master_result}.tmp ${master_result}
 
-This script is added to cron and is being run once a minute. It is kind of
-obvious what this script does - it outputs random number and has a prefix of
-one of the three letters: "a", "b" or "c":
+    exit 0
+    ```
 
-```bash
-binary@linux:~$ cat /tmp/master.txt
-a: 54
-b: 98
-c: 21
-binary@linux:~$
-```
+    This script is added to cron and is being run once a minute. It is kind of
+    obvious what this script does - it outputs a random number and has a prefix of
+    one of the three letters: "a", "b" or "c":
+
+    ```bash
+    binary@linux:~$ cat /tmp/master.txt
+    a: 54
+    b: 98
+    c: 21
+    binary@linux:~$
+    ```
 
 Now this data file becomes our "master item". It will be collected by Zabbix
 native item `vfs.file.contents`, like:
@@ -103,8 +121,8 @@ native item `vfs.file.contents`, like:
 
     Master item on its own has a little purpose of being stored, especially when
     it is huge. Its only purpose could be debugging, thus once operating 
-    normally, it should not be stored and that will not affect dependent items
-    in any way
+    normally, it should not be stored by setting **History** to **Do not store**
+    in the master item's definition and that will not affect dependent items in any way
 
 And then we can set our dependent items:
 
@@ -124,6 +142,8 @@ can use depending on our needs - draw some graphs, have some triggers on top, et
 
 ![Dependent items - first dependent items results](ch04.xx-dependent-items-hello-world-result.png)
 
+---
+
 ## Dependent items from json
 
 Previous example had a "Regular expression" as the preprocessing step. In real
@@ -134,48 +154,54 @@ exactly for this purpose - `JSONPath`.
 
 So first let's modify our example script to produce json:
 
-```bash
-#!/bin/bash
+???+ example "Hello World script - json"
 
-json="{"
+    ```bash
+    #!/bin/bash
 
-for x in {a..c}; do
-  json+="\"${x}\":\"$((RANDOM%100))\","
-done
+    json="{"
 
-json="${json%,}"
-json+="}"
+    for x in {a..c}; do
+      json+="\"${x}\":\"$((RANDOM%100))\","
+    done
 
-echo "${json}" >/tmp/master.json
+    json="${json%,}"
+    json+="}"
 
-exit 0
-```
+    echo "${json}" >/tmp/master.json
+
+    exit 0
+    ```
+
+    will produce something like:
+
+    ```bash
+    binary@linux:~$ cat /tmp/master.json | jq '.'
+    {
+      "a": "94",
+      "b": "41",
+      "c": "78"
+    }
+    binary@linux:~$
+    ```
 
 Now we can have similar approach of one single master item and bunch of
 dependent items nearby. Just this time, we would have `JSONPath` as
 preprocessing step for dependent items.
 
-```bash
-binary@linux:~$ cat /tmp/master.json | jq '.'
-{
-  "a": "94",
-  "b": "41",
-  "c": "78"
-}
-binary@linux:~$
-```
-
 ![Dependent items - first dependent item - json](ch04.xx-dependent-items-hello-world-dependent-preprocessing-json.png)
 
 Easy and smooth!
+
+---
 
 ## Dependent items and LLD
 
 Now imagine our example script produces not `{a..c}` but a full alphabet,
 `{a..z}`. We could clone dependent items one by one, but that would also
 include editing the preprocessing step regexp each time as well. If you are
-familiar with LLD, you most likely see where this goes. We will apply LLD here
-and combine it with dependent items!
+familiar with Low-Level Discovery (LLD), you most likely see where this goes. 
+We will apply LLD here and combine it with dependent items!
 
 For LLD, we will use `log_discovery.sh`, which makes it possible to perform LLD
 from log files (thus, also, from any other text files). Source for this script
@@ -205,6 +231,8 @@ This is truly beautiful once you understand it.
 
 ![Dependent items - LLD result](ch04.xx-dependent-items-hello-world-lld-result.png)
 
+---
+
 ## Conclusion
 
 Dependent items concept is a great way to become more efficient in data
@@ -215,12 +243,16 @@ separate monitoring entities - think no more. Dependent items are here for you.
 Same is applicable to all the other cases when you want to collect data once
 but have multiple separate metrics out of it.
 
+---
+
 ## Questions
 
 - Does master item have to be some special type of item or it can be collected
 in any regular way?
 - Are you limited in number of dependent items from one master item?
 - What is the main benefit of using dependent items?
+
+---
 
 ## Useful URLs
 
