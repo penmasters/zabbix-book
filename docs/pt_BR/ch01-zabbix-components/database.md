@@ -138,9 +138,9 @@ preferência.
 
 ## Perguntas
 
-1. Should I choose MySQL or PostgreSQL as the database back-end? Why?
-2. Should I use the packages provided by the OS vendor, or should I install
-   database-vendor official packages? Why?
+1. Devo escolher MySQL ou PostgreSQL como back-end de banco de dados? Por quê?
+2. Devo usar os pacotes fornecidos pelo fornecedor do sistema operacional ou
+   devo instalar os pacotes oficiais do fornecedor do banco de dados? Por quê?
 
 ---
 
