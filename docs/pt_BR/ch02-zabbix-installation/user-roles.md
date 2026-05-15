@@ -82,13 +82,14 @@ na **função de usuário personalizada** .
 | Grupos de proxy               |         |               |          ✅          |
 | Proxies                       |         |               |          ✅          |
 | Macros                        |         |               |          ✅          |
-| Queue                         |         |               |          ✅          |
+| Fila                          |         |               |          ✅          |
 
-## Customizing Role Permissions
+## Personalização de permissões de função
 
-When defining a custom role (based on `Admin` or `User`), the Zabbix
-administrator can selectively **revoke** or **grant** specific rights within the
-scope of the base User Type. Customization is split into three main areas:
+Ao definir uma função personalizada (com base em `Admin` ou `User`), o
+administrador do Zabbix pode seletivamente **revogar** ou **conceder** direitos
+específicos dentro do escopo do tipo de usuário base. A personalização é
+dividida em três áreas principais:
 
 ### UI Elements (Frontend Menu Access Permissions)
 
