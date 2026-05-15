@@ -34,7 +34,7 @@ rechtstreeks te bereiken en de proxy kan doorgaan met het verzamelen en opslaan
 van gegevens, zelfs als de verbinding met de server tijdelijk niet beschikbaar
 is.
 
-### When to use a proxy
+### Wanneer een proxy gebruiken
 
 Proxies are the correct solution in three recurring situations.
 
