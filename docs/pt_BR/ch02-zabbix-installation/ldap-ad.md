@@ -80,7 +80,7 @@ Ubuntu
   sudo apt install podman
   ```
 
-???+ note "What is Podman"
+???+ nota "O que é Podman"?
 
 Podman is a container engine designed as a drop-in replacement for Docker, but
 with a daemonless architecture. This means it runs containers directly under the
@@ -91,24 +91,25 @@ are priorities.
 
 ???+ tip
 
-If you want to use Docker instead of Podman, you can just replace any
-occurrences of `podman` in following instructions by `docker`.
+Se você quiser usar o Docker em vez do Podman, basta substituir todas as
+ocorrências de `podman` nas instruções a seguir por `docker`.
 
-Now we can start containers. Start an OpenLDAP server in a container:
+Agora podemos iniciar os contêineres. Inicie um servidor OpenLDAP em um
+contêiner:
 
-!!! info "Start an OpenLDAP server in a container with pre-loaded data"
+!!! info "Inicie um servidor OpenLDAP em um contêiner com dados pré-carregados"
 
   ```bash
   podman run -p 3389:389 -p 6636:636 --name openldap-server --detach bgmot42/openldap-server:0.1.1
   ```
 
-For simplicity, all users (including `ldap_search`) in this test LDAP server
-have the word `password` as their passwords.
+Para simplificar, todos os usuários (incluindo `ldap_search`) nesse servidor
+LDAP de teste têm a palavra `e a senha` como suas senhas.
 
-Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
-`user3` is a member of `zabbix-users` LDAP group.
+Os usuários `user1` e `user2` são membros do grupo LDAP `zabbix-admins`. Usuário
+`user3` é membro do grupo LDAP `zabbix-users`.
 
-???+ tip Tip: use phpLdapAdmin as an LDAP GUI
+???+ dica Dica: use o phpLdapAdmin como uma GUI LDAP
 
     To visually see LDAP server data (and add your own configuration like users
     and groups) you can start this standard container:
@@ -128,34 +129,36 @@ Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
 
     _2.4 LDAP server data_
 
-### Configure Zabbix LDAP authentication
+### Configurar a autenticação LDAP do Zabbix
 
-Let's configure LDAP server settings in Zabbix. In Zabbix menu select `Users |
-Authentication | LDAP settings`, then check the check-box `Enable LDAP
-authentication` and click `Add` under `Servers` (change IP address of your LDAP
-server and port number according to your set up):
+Vamos definir as configurações do servidor LDAP no Zabbix. No menu do Zabbix,
+selecione `Users | Authentication | LDAP settings` e, em seguida, marque a caixa
+de seleção `Enable LDAP authentication` e clique em `Add` em `Servers` (altere o
+endereço IP do servidor LDAP e o número da porta de acordo com a sua
+configuração):
 
-![LDAP server settings in Zabbix](ch02.5-ldap-server-settings-in-zabbix.png){
-align=center }
+![Configurações do servidor LDAP no
+Zabbix](ch02.5-ldap-server-settings-in-zabbix.png){ align=center }
 
-_2.5 LDAP server settings in Zabbix_
+_2.5 Configurações do servidor LDAP no Zabbix_
 
-Following diagram can help you understand how to configure LDAP server in Zabbix
-based on your LDAP server data structure:
+O diagrama a seguir pode ajudá-lo a entender como configurar o servidor LDAP no
+Zabbix com base na estrutura de dados do seu servidor LDAP:
 
-![LDAP server to Zabbix](ch02.6-ldap-server-to-zabbix.png){ align=center }
+![Servidor LDAP para Zabbix](ch02.6-ldap-server-to-zabbix.png){ align=center }
 
-_2.6 LDAP server to Zabbix_
+_2.6 Servidor LDAP para Zabbix_
 
-“Special” _Distinguished Name_ (DN) _cn=ldap_search,dc=example,dc=org_ is used
-for searching, i.e. Zabbix uses this DN to connect to LDAP server and of course
-when you connect to LDAP server you need to be authenticated – this is why you
-need to provide _Bind password_. This DN should have access to a sub-tree in
-LDAP data hierarchy where all your users are configured. In our case all the
-users configured “under” _ou=Users,dc=example,dc=org_, this DN is called base DN
-and used by Zabbix as so to say “starting point” to start searching.
+"Especial" _Distinguished Name_ (DN) _cn=ldap_search,dc=example,dc=org_ é usado
+para pesquisa, ou seja, o Zabbix usa esse DN para se conectar ao servidor LDAP
+e, é claro, quando você se conecta ao servidor LDAP, precisa ser autenticado - é
+por isso que você precisa fornecer _Bind password_. Esse DN deve ter acesso a
+uma subárvore na hierarquia de dados LDAP onde todos os seus usuários estão
+configurados. No nosso caso, todos os usuários configurados "sob"
+_ou=Users,dc=example,dc=org_, esse DN é chamado de DN de base e usado pelo
+Zabbix como, por assim dizer, "ponto de partida" para iniciar a pesquisa.
 
-???+ warning "Anonymous LDAP binding"
+Aviso "Ligação LDAP anônima"
 
     Technically it is possible to bind to the LDAP server anonymously, without
     providing a password but this is a huge breach in security as the whole
@@ -164,90 +167,101 @@ and used by Zabbix as so to say “starting point” to start searching.
     over TCP. The LDAP server we deployed previously in Docker container does
     not provide this functionality.
 
-Click `Test` button and enter `user1` and `password` in the respective fields,
-the test should be successful confirming Zabbix can authenticate users against
-LDAP server.
+Clique no botão `Test` e digite `user1` e `password` nos respectivos campos. O
+teste deve ser bem-sucedido, confirmando que o Zabbix pode autenticar usuários
+no servidor LDAP.
 
 ???+ tip
 
     We can add multiple LDAP servers and use them for different `User groups`.
 
-To test real users login using LDAP authentication we need to create user groups
-and users in Zabbix. In Zabbix menu select `Users | User groups`. Make sure
-`Zabbix administrators` group exists (we'll need it later) and create new group
-`Zabbix users` by clicking `Create user group` button. Enter "Zabbix users" in
-`Group name` field, select "LDAP" in `Frontend access` drop-down that will make
-Zabbix to authenticate users belonging to this group against LDAP server and in
-`LDAP server` drop-down select LDAP server we earlier configured "Test LDAP
-server". Click `Add` button to create this User group:
+Para testar o login de usuários reais usando a autenticação LDAP, precisamos
+criar grupos de usuários e usuários no Zabbix. No menu do Zabbix, selecione
+`Usuários | Grupos de usuários`. Certifique-se de que o grupo `Zabbix
+administrators` existe (precisaremos dele mais tarde) e crie um novo grupo
+`Zabbix users` clicando no botão `Create user group`. Digite "Zabbix users" no
+campo `Group name`, selecione "LDAP" no menu suspenso `Frontend access` que fará
+com que o Zabbix autentique os usuários pertencentes a esse grupo no servidor
+LDAP e no menu suspenso `LDAP server` selecione o servidor LDAP que configuramos
+anteriormente "Test LDAP server". Clique no botão `Add` para criar esse grupo de
+usuários:
 
-![Add user group in zabbix](ch02.7-ldap-add-user-group-in-zabbix.png){
-align=center }
+![Adicionar grupo de usuários no
+zabbix](ch02.7-ldap-add-user-group-in-zabbix.png){ align=center }
 
-_2.7 Add user group in zabbix_
+_2.7 Adicionar grupo de usuários no zabbix_
 
-Now we need to create our test user. In Zabbix menu select `Users | Users` and
-click `Create user` button. Then enter "user3" in `Username` field. Select
-"Zabbix users" in `Groups` field. What you enter in `Password` and `Password
-(once again)` fields does not matter as Zabbix will not try to use this
-password, instead it will go to LDAP server to authenticate this user since it's
-a member of the User group that has authentication method `LDAP`, just make sure
-you enter the same string in these two fields and it satisfied your password
-strength policy defined in `Users | Authentication`.
+Agora precisamos criar nosso usuário de teste. No menu do Zabbix, selecione
+`Users | Users` e clique no botão `Create user`. Em seguida, digite "user3" no
+campo `Username`. Selecione "Zabbix users" no campo `Groups`. O que você digitar
+nos campos `Password` e `Password (mais uma vez)` não importa, pois o Zabbix não
+tentará usar essa senha; em vez disso, ele irá para o servidor LDAP para
+autenticar esse usuário, já que ele é membro do grupo de usuários que tem o
+método de autenticação `LDAP`, apenas certifique-se de digitar a mesma cadeia de
+caracteres nesses dois campos e de que ela atenda à política de força da senha
+definida em `Users | Authentication`.
 
-![Add user in Zabbix](ch02.8-ldap-add-user-in-zabbix.png){ align=center }
+![Adicionar usuário no Zabbix](ch02.8-ldap-add-user-in-zabbix.png){ align=center
+}
 
-_2.8 Add user in Zabbix_
+_2.8 Adicionar usuário no Zabbix_
 
-Then click `Permissions` tab and select "User role" in `Role` field:
+Em seguida, clique nEm seguida, clique na guia `Permissions (Permissões)` e
+selecione "User role" (Função do usuário) no campo `Role (Função)`:a guia
+`Permissions (Permissões)` e selecione "User role" (Função do usuário) no campo
+`Role (Função)`:
 
-![Add user in Zabbix -
-permissions](ch02.9-ldap-add-user-in-zabbix-permissions.png){ align=center }
+![Adicionar usuário no Zabbix -
+permissões](ch02.9-ldap-add-user-in-zabbix-permissions.png){ align=center }
 
-_2.9 Add user in Zabbix - permissions_
+_2.9 Adicionar usuário no Zabbix - permissões_
 
-Click `Add` button to create the user.
+Clique no botão `Add` para criar o usuário.
 
-We are ready to test our LDAP server authentication! Click `Sign out` in Zabbix
-menu and login with "user3" as Username and "password" as `Password`, if you
-carefully followed the steps above you should successfully login with User role
-permissions.
+Estamos prontos para testar a autenticação do nosso servidor LDAP! Clique em
+`Sign out` no menu do Zabbix e faça login com "user3" como nome de usuário e
+"password" como `Password`, se você seguiu cuidadosamente as etapas acima,
+deverá fazer login com sucesso com permissões de função de usuário.
 
-Click `Sign out` again and login as Admin again to proceed.
+Clique em `. Saia do site` novamente e faça login como administrador para
+continuar.
 
-## Just-in-Time user provisioning
+## Provisionamento de usuários Just-in-Time
 
-Now let's talk about really cool feature Zabbix provides - "Just-in-Time user
-provisioning (JIT) available since Zabbix 6.4.
+Agora vamos falar sobre um recurso muito legal que o Zabbix oferece -
+"Provisionamento de usuário Just-in-Time (JIT) disponível desde o Zabbix 6.4.
 
-This picture illustrates on high level how it works: ![LDAP JIT
+Esta imagem ilustra em alto nível como isso funciona: ![LDAP JIT
 explained](ch02.10-ldap-jit-explained.png){ align=center }
 
-_2.10 LDAP JIT explained_
+_2.10 Explicação do LDAP JIT_
 
-Here when Zabbix gets a username and password from the Zabbix Login form it goes
-to the LDAP server and gets all the information available for this user
-including his/her LDAP groups membership and e-mail address. Obviously, it gets
-all that only if the correct (from LDAP server perspective) username and
-password were provided. Then Zabbix goes through pre-configured mapping that
-defines users from which `LDAP group` goes to which `Zabbix user group`. If at
-least one match is found then a `Zabbix user` is created in the Zabbix database
-belonging to a `Zabbix user group` and having a `Zabbix user role` according to
-configured “match”. So far sounds pretty simple, right? Now let’s go into
-details about how all this should be configured.
+Aqui, quando o Zabbix obtém um nome de usuário e senha do formulário de login do
+Zabbix, ele vai até o servidor LDAP e obtém todas as informações disponíveis
+para esse usuário, incluindo sua associação a grupos LDAP e endereço de e-mail.
+Obviamente, ele obtém tudo isso somente se o nome de usuário e a senha corretos
+(do ponto de vista do servidor LDAP) tiverem sido fornecidos. Em seguida, o
+Zabbix passa pelo mapeamento pré-configurado que define os usuários de qual
+`grupo LDAP ` vai para qual `grupo de usuários Zabbix ` . Se pelo menos uma
+correspondência for encontrada, um `usuário do Zabbix ` será criado no banco de
+dados do Zabbix, pertencente a um grupo de `usuários do Zabbix` e com uma
+`função de usuário do Zabbix ` , de acordo com a "correspondência" configurada.
+Até agora parece bem simples, certo? Agora vamos entrar em detalhes sobre como
+tudo isso deve ser configurado.
 
-In `Users | Authentication` we need to do two things:
+Em `Users | Authentication`, precisamos fazer duas coisas:
 
-- Set `Default authentication` to _LDAP_. When JIT is turned off then type of
-  authentication is defined based on the _User group_ a user that tries to login
-  belongs to. In case of JIT the user does not exist in Zabbix yet thus
-  obviously does not belong to any _User group_ so _Default_ method
-  authentication is used and we want it to be _LDAP_.
+- Defina `Autenticação padrão` para _LDAP_. Quando o JIT está desativado, o tipo
+  de autenticação é definido com base no grupo de usuários __ ao qual o usuário
+  que tenta fazer o login pertence. No caso do JIT, o usuário ainda não existe
+  no Zabbix e, portanto, obviamente não pertence a nenhum grupo de usuários __ ,
+  portanto, o método de autenticação _Padrão_ é usado e queremos que seja
+  _LDAP_.
 
-- Provide `Deprovisioned users group`. This group must be literally _disabled_
-  otherwise you won't be able to select it here. This is the Zabbix user group
-  where all _de-provisioned_ users will be put into so effectively will get
-  disabled from accessing Zabbix.
+- Forneça `Grupo de usuários desprovisionados`. Esse grupo deve ser literalmente
+  _desativado_, caso contrário você não poderá selecioná-lo aqui. Este é o grupo
+  de usuários do Zabbix onde todos os usuários _desprovisionados_ serão
+  colocados para que efetivamente sejam desabilitados de acessar o Zabbix.
 
   ![Default authentication](ch02.11-ldap-default-authentication.png){
   align=center }
