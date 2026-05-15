@@ -9,12 +9,12 @@ tags: [advanced]
 
 One of the neat features that Zabbix offers out of the box is the ability to monitor
 Java applications. To make this happen, Zabbix uses something called the
-`Java Gateway`, which communicates with Java applications via the
-`Java Management Extensions` JMX, for short.
+**Java Gateway**, which communicates with Java applications via the
+**Java Management Extensions** JMX, for short.
 
-`JMX` is a built-in Java technology designed specifically for monitoring and managing
-Java applications and the `Java Virtual Machine` (JVM). It works through components
-called `MBeans` (Managed Beans), which act like data sensors and control points.
+**JMX** is a built-in Java technology designed specifically for monitoring and managing
+Java applications and the **Java Virtual Machine** (JVM). It works through components
+called **MBeans** (Managed Beans), which act like data sensors and control points.
 These MBeans can expose useful information like memory usage, thread counts, and
 even allow runtime configuration changes, all while the application is running.
 
@@ -24,35 +24,39 @@ network, Zabbix can still keep an eye on it. Combined with the Java Gateway, thi
 makes JMX a powerful and scalable option for monitoring Java-based environments
 with minimal setup. Also JMX was an extension but is part of JAVA SE since java 5.
 
+---
+
 ## Key Concepts in JMX Monitoring
 
 Before diving into JMX monitoring with Zabbix, it helps to get familiar with a
 few core building blocks that make it all work:
 
 **Managed Beans (MBeans):**
-These are the heart of JMX. MBeans are Java objects that expose useful bits of
-data (called attributes) and operations (as regular methods) from your application.
-Think of them as little control panels inside your Java app, you can read metrics,
-tweak settings, or trigger actions through them.
+: These are the heart of JMX. MBeans are Java objects that expose useful bits of
+  data (called attributes) and operations (as regular methods) from your application.
+  Think of them as little control panels inside your Java app, you can read metrics,
+  tweak settings, or trigger actions through them.
 
 **JMX Agent:**
-This is the engine behind the scenes. Running inside the Java Virtual Machine (JVM),
-the JMX agent connects everything together. It's what lets management tools
-(like Zabbix) interact with the MBeans.
+: This is the engine behind the scenes. Running inside the Java Virtual Machine (JVM),
+  the JMX agent connects everything together. It's what lets management tools
+  (like Zabbix) interact with the MBeans.
 
 **MBean Server:**
-A key part of the JMX agent, the MBean server is like a central registry where
-MBeans are registered and managed. It keeps everything organized and accessible.
+: A key part of the JMX agent, the MBean server is like a central registry where
+  MBeans are registered and managed. It keeps everything organized and accessible.
 
 **Connectors:**
-Want to monitor your Java app remotely? That's where connectors come in. They
-let external tools connect to the JMX agent over a network. So you're not limited
-to local monitoring.
+: Want to monitor your Java app remotely? That's where connectors come in. They
+  let external tools connect to the JMX agent over a network. So you're not limited
+  to local monitoring.
 
 **Adaptors:**
-Sometimes you need JMX data to speak a different language. Adaptors convert JMX
-info into formats that non-Java tools can understand, like HTTP or SNMP, making
-integration easier with broader monitoring ecosystems.
+: Sometimes you need JMX data to speak a different language. Adaptors convert JMX
+  info into formats that non-Java tools can understand, like HTTP or SNMP, making
+  integration easier with broader monitoring ecosystems.
+
+---
 
 ## JMX Core Architecture
 
@@ -95,6 +99,7 @@ flowchart LR
     class F,G zabbix;
 
 ```
+---
 
 ## Where Does the Zabbix Java Gateway Fit in this picture?
 
@@ -144,31 +149,42 @@ flowchart LR
 
 ```
 
+---
+
 ## Setup Tomcat to monitor with Zabbix.
 
 To ensure accurate testing of JMX monitoring with Zabbix, a dedicated host is essential.
 Although configuration on the Zabbix server is possible, a separate machine provides a
 more realistic representation of a production environment. For our setup, we'll
-use a new virtual machine running either Rocky Linux or Ubuntu. This machine will
+use a new virtual machine running either Rocky Linux, openSUSE or Ubuntu. This machine will
 serve as our JMX-enabled target, and we'll install and configure Tomcat on it for
 this purpose.
+First, prepare the new VM as outlined in the [Preparing the system for Zabbix section](../ch00-getting-started/preparation.md),
+then continue with the following steps to set up Tomcat and enable JMX monitoring.
 
 ???+ info "Setup Tomcat"
 
     Red hat
-    ```
+    ```bash
     dnf install tomcat
     vi /etc/sysconfig/tomcat
     ```
-    Ubuntu
+
+    SUSE
+    ```bash
+    zypper install tomcat
+    vi /etc/sysconfig/tomcat
     ```
+
+    Ubuntu
+    ```bash
     apt install tomcat10
     vi /etc/default/tomcat10
     ```
     Add the following config: in Ubuntu remove the original JAVA_OPTS line or
     place a # in front
 
-    ```yaml
+    ```ini
     JAVA_OPTS="\
       -Dcom.sun.management.jmxremote=true \
       -Dcom.sun.management.jmxremote.port=8686 \
@@ -226,7 +242,6 @@ Apache Tomcat.
 
 ???+ Note
 
-    ``` bash
     There isn't a single, universally "standard" port for JMX that is accepted
     across all applications and vendors. The JMX specification itself does not
     define a default port, leaving it to the implementer to choose one.
@@ -235,22 +250,23 @@ Apache Tomcat.
     ecosystem. The most frequently seen ports for JMX are in the high-number range,
     typically:
 
-    - 1099: This port is a historic default for the RMI Registry, which JMX often
+    - `1099`: This port is a historic default for the RMI Registry, which JMX often
       uses for communication. While it's not strictly a JMX port, it's often
       associated with older JMX configurations.
 
-    - 8686: This port is a well-accepted and formally registered port for JMX with
+    - `8686`: This port is a well-accepted and formally registered port for JMX with
       the Internet Assigned Numbers Authority (IANA). The IANA service name for port
-      8686 is sun-as-jmxrmi. This makes it a great choice because it's officially
+      `8686` is `sun-as-jmxrmi`. This makes it a great choice because it's officially
       recognized and less likely to conflict with other common services.
 
-    Why Port 8686 is a Good Choice?
-    Port 8686 is a User Port (1024-49151), which means it's available for registered
+    Why Port `8686` is a Good Choice?
+    Port `8686` is a User Port (1024-49151), which means it's available for registered
     services but isn't a "well known" port that requires a special permission level
-    to use. It's IANA registration as sun-as-jmxrmi makes it a safe and logical
+    to use. It's IANA registration as `sun-as-jmxrmi` makes it a safe and logical
     choice for JMX monitoring, especially when you need to standardize port assignments
     across a large infrastructure.
     ```
+---
 
 ## Setup Zabbix to monitor JMX
 
@@ -274,43 +290,58 @@ _04.35 JMX Gateway_
     ```
     dnf install zabbix-java-gateway
     ```
+
+    SUSE
+    ```
+    zypper install zabbix-java-gateway
+    ```
+
     Ubuntu
     ```
     apt install zabbix-java-gateway
     ```
 
+---
+
 ## Configuring Zabbix and the JAVA Gateway
 
-After installing the gateway, you'll find its configuration file at `/etc/zabbix/zabbix_java_gateway.conf`.
-The default `LISTEN_IP` is set to 0.0.0.0, which means it listens on all network
-interfaces, though you can change this. The gateway listens on port 10052, a non
+After installing the gateway, you'll find its configuration file at 
+`/etc/zabbix/zabbix_java_gateway.conf`. 
+On SUSE, the file is located at `/usr/etc/zabbix/java_gateway.conf` but is not
+intended to be modified directly and will be overwritten on next package upgrade.
+Instead create a new `.conf` file in `/etc/zabbix/zabbix_java_gateway.d/` adding any
+overrides to the default `zabbix_java_gateway.conf`.
+
+The default `LISTEN_IP` is set to `0.0.0.0`, which means it listens on all network
+interfaces, though you can change this. The gateway listens on port `10052`, a non
 IANA registered port, which can also be adjusted using the `LISTEN_PORT` option
 if needed.
 
-The first setting we'll change is `START_POLLERS`. We need to uncomment this line
+The first setting we'll change is `START_POLLERS`. We need to uncomment or add this line
 and set a value, for example, `START_POLLERS=5` to define the number of concurrent
-connections. The TIMEOUT option controls network operation timeouts, while
+connections. The `TIMEOUT` option controls network operation timeouts, while
 `PROPERTIES_FILE` allows you to define or override additional key-value properties,
 such as a keystore password, without exposing them in a command line.
 
-For your Zabbix server, you'll need to update the configuration file at `/etc/zabbix/zabbix_server.conf`.
+For your Zabbix server, add an additional configfile `zabbix_java_gateway.conf`
+to `/etc/zabbix/zabbix_server.d/`
 
-You'll need to modify three key options:
+You'll need to add three key options:
 
-- **JavaGateway:** Uncomment this line and set its value to the IP address of
+- `JavaGateway`: set its value to the IP address of
   the host running your Java gateway. This will likely be your Zabbix
   server itself, but it can be on a separate VM or proxy.
 
-- **JavaGatewayPort:** This option should remain at the default `10052` unless
+- `JavaGatewayPort`: This option should remain at the default `10052` unless
   you've changed the port in your gateway's configuration.
 
-- **StartJavaPollers:** Uncomment and set this option to define the number of
+- `StartJavaPollers`:** Set this option to define the number of
   concurrent Java pollers the server will use. A good starting
   point is to match the number you set on the gateway, for
-  example, 5.
+  example, `5`.
 
-After making the changes to `/etc/zabbix/zabbix_server.conf` and `/etc/zabbix/zabbix_java_gateway.conf`,
-you need to restart the following services:
+After making the changes to both the Zabbix Server and the Zabbix java gateway
+configuration files, you need to restart the following services:
 
 - Zabbix Java Gateway
 - Zabbix Server
@@ -321,7 +352,6 @@ forget to enable the `Zabbix Java Gateway` service.
 
 ???+ Info "Restart the services"
 
-    RedHat and Ubuntu
     ```
     systemctl enable zabbix-java-gateway --now
     systemclt restart zabbix-server
@@ -332,7 +362,7 @@ On the application side don't forget to open the firewall so that our
 
 !!! info "Allow JMX"
 
-    Red Hat
+    Red Hat / SUSE
     ```
     firewall-cmd --add-port=8686/tcp --permanent
     firewall-cmd --reload
@@ -343,14 +373,15 @@ On the application side don't forget to open the firewall so that our
     sudo ufw allow 8686/tcp
     ```
 
-
 ???+ Warning
 
     ```
-    Don't forget to place SeLinux in permissive mode before you start else the
-    JAVA gateway will not work. You should fix SeLinux permissions once the setup
+    Don't forget to place SELinux in permissive mode before you start else the
+    JAVA gateway will not work. You should fix SELinux permissions once the setup
     is working.
     ```
+
+---
 
 ## Monitoring JMX items
 
@@ -379,32 +410,34 @@ Before we can do this we need to create a new host in our Zabbix server. Let's
 go to `Data collection` - `Hosts` and click on `Create host` in the upper right
 corner. Use the following settings to create our host:
 
-- Hostname : Tomcat
-- Host groups: JMX
-- Interfaces: JMX
-    - IP address: IP of your Tomcat server
-    - Port : 8686 or the port you specified in your Tomcat configuration.
+- **Hostname**: `Tomcat`
+- **Host groups**: `JMX`
+- **Interfaces**: JMX
+    - **IP address**: IP of your Tomcat server
+    - **Port**: `8686` or the port you specified in your Tomcat configuration.
 
 Press the `Add` button when ready.
 
 ???+ Note
 
     ```
-    It seems weird that we not specify the JavaGateway here but it's actually
+    It seems weird that we not specify the `JavaGateway` here but it's actually
     normal. Zabbix knows from its configuration file where the gateway is. So we
     need to specify the IP and the PORT of the JAVA application here that we would
     like to monitor.
     ```
 
+---
+
 ### Create our first item
 
 On our host Tomcat create a new item and add the following information.
 
-- *Name:* requestCount
-- *Type:* JMX Agent
-- *Key:* jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\"", "requestCount"]
-- *Type of information:* Numeric(unsigned)
-- *Host interface:* The JMX interface we just created on our host.
+- **Name**: `requestCount`
+- **Type**: JMX Agent
+- **Key**: `jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\"", "requestCount"]`
+- **Type of information**: Numeric(unsigned)
+- **Host interface**: The JMX interface we just created on our host.
 
 ![JMX Item](ch04.38-jmx-requestCount-item.png)
 
@@ -413,29 +446,30 @@ _ch04.38 JMX item_
 ???+ Info "Verifying and Saving the Item"
 
     ```
-    Before saving the configured item, use the Test button. Clicking Get value
-    or Get value and test should populate the value field with data, confirming
+    Before saving the configured item, use the **Test** button. Clicking **Get value**
+    or **Get value and test** should populate the value field with data, confirming
     that the item is functional. Once the test is successful, you can save the
     item.
     ```
+
 To understand how we constructed the item key, let's look at the process in JConsole.
 
-1. Navigate to the MBeans tab and expand Catalina > GlobalRequestProcessor > http-nio-8080.
+1. Navigate to the MBeans tab and expand Catalina → GlobalRequestProcessor → http-nio-8080.
 
 2. The ObjectNAme field on the right displays the MBean's fully qualified name:
    `Catalina:type=GlobalRequestProcessor,name="http-nio-8080"`. This is the base
    for our Zabbix item key.
 
-The primary challenge with this specific key is that it contains double quotes (")
+The primary challenge with this specific key is that it contains double quotes (`"`)
 within the `name` attribute. Zabbix requires the entire JMX key to be enclosed
 in double quotes, which would conflict with the existing quotes. To resolve this,
-we must **escape** the inner double quotes with a backslash (\).
+we must **escape** the inner double quotes with a backslash (`\`).
 
 This results in the following structure for the Zabbix item key:
 `jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\""]`.
 
 This key is still incomplete. To specify the metric to be monitored, you must
-append an attribute name, such as maxTime, requestCount, or bytesReceived, at
+append an attribute name, such as `maxTime`, `requestCount`, or `bytesReceived`, at
 the end of the key, separated by a comma.
 `jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\"","requestCount"]`
 
@@ -460,6 +494,8 @@ heap memory usage, the Zabbix item key would be: `jmx["java.lang:type=Memory","H
 
 _04.40 HeapMemoryUsage
 
+---
+
 #### Viewing Tabular Data
 
 To view the detailed breakdown of the `HeapMemoryUsage` attribute, double click on
@@ -467,24 +503,31 @@ its value in the attribute value column. This action displays the composite data
 in a tabular format, making it easier to see individual metrics like `init`, `used`,
 `committed`, and `max`.
 
+---
+
 #### Zabbix JMX Item Keys
 
 Zabbix offers three primary item keys for JMX monitoring:
 
-- **jmx[]:** This is the standard key used for monitoring a specific JMX attribute.
+`jmx[]`
+: This is the standard key used for monitoring a specific JMX attribute.
   It's the most common key for creating simple, direct checks.
 
-- **jmx.get[]:** This key is used to retrieve a full object from an MBean. It is
+`jmx.get[]`
+: This key is used to retrieve a full object from an MBean. It is
   often paired with Low Level Discovery (LLD) rules and preprocessing steps to
   extract specific values from the returned data, allowing for more flexible data
   collection.
 
-- **jmx.discovery[]:** This key is specifically designed for use with Low Level
+`jmx.discovery[]`
+: This key is specifically designed for use with Low Level
   Discovery. It helps Zabbix automatically discover multiple JMX MBeans or attributes
   on a monitored host, which is essential for scaling JMX monitoring across a large
   number of components.
 
-### Making use of jmx.get[]
+---
+
+### Making use of `jmx.get[]`
 
 The `jmx.get[]` item key returns a JSON array containing a list of MBean objects or
 their attributes. Unlike `jmx.discovery[]`, it does not automatically define LLD
@@ -501,34 +544,38 @@ For instance, the key `jmx.get[attributes,"*:type=GarbageCollector,name=PS MarkS
 would return a comprehensive payload with all attributes of the specified garbage
 collector.
 
-``` json
-[
-  {
-    "name": "CollectionCount",
-    "description": "java.lang:type=GarbageCollector,name=PS MarkSweep,CollectionCount",
-    "type": "java.lang.Long",
-    "value": "0",
-    "object": "java.lang:type=GarbageCollector,name=PS MarkSweep"
-  },
-  ...
-  ...
-  ...
-  ...
-  {
-    "name": "ObjectName",
-    "description": "java.lang:type=GarbageCollector,name=PS MarkSweep,ObjectName",
-    "type": "javax.management.ObjectName",
-    "value": "java.lang:type=GarbageCollector,name=PS MarkSweep",
-    "object": "java.lang:type=GarbageCollector,name=PS MarkSweep"
-  }
-]
-```
+???+ example "Example JSON Output from `jmx.get[]`"
+
+    ``` json
+    [
+      {
+        "name": "CollectionCount",
+        "description": "java.lang:type=GarbageCollector,name=PS MarkSweep,CollectionCount",
+        "type": "java.lang.Long",
+        "value": "0",
+        "object": "java.lang:type=GarbageCollector,name=PS MarkSweep"
+      },
+      ...
+      ...
+      ...
+      ...
+      {
+        "name": "ObjectName",
+        "description": "java.lang:type=GarbageCollector,name=PS MarkSweep,ObjectName",
+        "type": "javax.management.ObjectName",
+        "value": "java.lang:type=GarbageCollector,name=PS MarkSweep",
+        "object": "java.lang:type=GarbageCollector,name=PS MarkSweep"
+      }
+    ]
+    ```
 
 This JSON output can then be used as the master item for multiple dependent items,
 each with a preprocessing step to extract a specific value (e.g., `CollectionCount`
 or `CollectionTime`) using a JSONPath expression. This technique is a powerful
 way to reduce the load on both the JMX agent and the Zabbix server by making a
 single call to collect multiple metrics.
+
+---
 
 ## Performance Considerations for JMX Monitoring
 
@@ -543,6 +590,7 @@ Zabbix communicates with the Java Gateway synchronously:
 - The Java Gateway connects to the target JVM and retrieves the data.
 - Only when the response comes back does the Zabbix server proceed with that item's
   check.
+
 This means that if JMX queries are slow (due to network, JVM GC pauses, or overloaded
 gateways), your monitoring queue can back up.
 
@@ -563,11 +611,11 @@ To optimize performance:
 Two important parameters in zabbix_server.conf and zabbix_java_gateway.conf directly
 affect JMX performance:
 
-- StartJavaPollers (on Zabbix Server)
+- `StartJavaPollers` (on Zabbix Server)
     * Defines how many parallel JMX pollers the server can use.
     * Too few pollers → JMX checks queue up and fall behind.
     * Too many pollers → high load on Java Gateway and JVMs.
-- StartPollers (general pollers)
+- `StartPollers` (general pollers)
   Balance with Java pollers so your server can handle both JMX and regular agent
   checks without bottlenecks.
 - Rule of thumb: start small (Ex: 5–10 Java pollers) and increase gradually while
@@ -578,6 +626,8 @@ affect JMX performance:
   a few application-specific MBeans that map to real-world performance.
 - Too many JMX items not only stress the JVM but also flood your Zabbix database
   with unnecessary history data.
+
+---
 
 ## Monitoring JMX through Jolokia
 
@@ -599,21 +649,21 @@ Why Jolokia?
 - Secure, it supports HTTPS, authentication, and access control policies out of
   the box.
 
-Example:
+???+ example "Example Jolokia Request"
 
-```bash
-curl -s http://localhost:8778/jolokia/read/java.lang:type=Memory,java.lang:type=Threading
-```
+    ```bash
+    curl -s http://localhost:8778/jolokia/read/java.lang:type=Memory,java.lang:type=Threading
+    ```
 
-In Zabbix:
+    In Zabbix:
 
-Create an HTTP Agent master item pointing to the Jolokia endpoint.
-Add dependent items to extract individual values, e.g.:
+    Create an HTTP Agent master item pointing to the Jolokia endpoint.
+    Add dependent items to extract individual values, e.g.:
 
-```json
-$.value['java.lang:type=Memory']['HeapMemoryUsage']['used']
-$.value['java.lang:type=Threading']['ThreadCount']
-```
+    ```json
+    $.value['java.lang:type=Memory']['HeapMemoryUsage']['used']
+    $.value['java.lang:type=Threading']['ThreadCount']
+    ```
 
 This approach allows you to collect dozens of metrics with a single network request.
 
@@ -624,6 +674,7 @@ This approach allows you to collect dozens of metrics with a single network requ
     Java Gateway if you rely on built-in templates or want a fully integrated,
     out of the box JMX experience.
 
+---
 
 ## Conclusion
 
@@ -631,6 +682,8 @@ Zabbix handles JMX monitoring synchronously, but optimizes performance with requ
 bundling and connection reuse. By tuning pollers, using reasonable update intervals,
 and selecting only the most valuable metrics, you can scale JMX monitoring without
 overloading your monitoring system or your Java applications.
+
+---
 
 ## Questions
 
@@ -643,6 +696,8 @@ overloading your monitoring system or your Java applications.
 - What are security considerations when enabling remote JMX monitoring in production?
   What could go wrong if you leave flags like authenticate=false and ssl=false in
   a live environment?
+
+---
 
 ## Useful URLs
 
