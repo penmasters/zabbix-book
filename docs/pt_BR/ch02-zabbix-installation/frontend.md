@@ -79,7 +79,7 @@ estado original.
 
 _2.5 Reduzir_
 
-???+ tip
+???+ dica
 
     We can also enter and exit kiosk mode by making use of parameters in our Zabbix
     url: `/zabbix.php?action=dashboard.view&kiosk=1` - activate kiosk mode or
@@ -197,7 +197,7 @@ _2.9 Informações do sistema_
     For new installations, since Zabbix 7.0, global script execution is
     disabled by default.
 
-???+ tip
+???+ dica
 
     System information may display some additional warnings like:
 
