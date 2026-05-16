@@ -84,7 +84,7 @@ versões anteriores. Essa abordagem incremental permite a propagação quase em
 tempo real das alterações de configuração e, ao mesmo tempo, minimiza o consumo
 de recursos.
 
-???+ note Configuration settings vs configuration updates
+???+ nota: Configurações de configuração versus atualizações de configuração
 
     When working with a Zabbix proxy, it’s important to distinguish between two 
     types of "configuration":

@@ -104,50 +104,55 @@ menos que você os crie explicitamente.
       slashes.
     - `/` is reserved for nesting and cannot be used in regular group names.
 
-## Applying Permissions and Tag Filters to Nested Groups
+## Aplicação de permissões e filtros de tags a grupos aninhados
 
-Once you've created nested groups, the **Host group overview** screen provides
-an option to apply permissions and tag filters to all subgroups:
+Depois de criar grupos aninhados, a tela **Host group overview** oferece uma
+opção para aplicar permissões e filtros de tags a todos os subgrupos:
 
-1. Click on a parent group (e.g., `Europe`).
-2. A box appears: **Apply permissions and tag filters to all subgroups**.
-3. Enabling this will cascade any rights assigned to the parent group down to
-   its subgroups.
+1. Clique em um grupo pai (por exemplo, `Europe`).
+2. Uma caixa é exibida: **Aplicar permissões e filtros de tags a todos os
+   subgrupos**.
+3. Ao ativar essa opção, os direitos atribuídos ao grupo principal serão
+   transferidos em cascata para seus subgrupos.
 
-![Apply subgroup permissions](ch02-sub-groups.png)
+![Aplicar permissões de subgrupo](ch02-sub-groups.png)
 
-_2.21 subgroup permissions_
+_2.21 permissões de subgrupo_
 
-This is especially useful for user groups. For example:
+Isso é especialmente útil para grupos de usuários. Por exemplo:
 
-- If **Brian** is in a user group with access to `Europe/Belgium`, enabling this
-  option allows Brian to see all hosts in subgroups like `Europe/Belgium/Gent`
-  or `Europe/Belgium/Brussels`, including their tags and data.
+- Se **Brian** estiver em um grupo de usuários com acesso a `Europe/Belgium`,
+  ativar essa opção permitirá que Brian veja todos os hosts em subgrupos como
+  `Europe/Belgium/Gent` ou `Europe/Belgium/Brussels`, incluindo suas tags e
+  dados.
 
-## Best Practices
+## Melhores práticas
 
-- Use a consistent naming convention: `Location/Function`, `Team/Environment`,
-  etc.
-- Assign hosts to **multiple groups** if they logically belong in more than one.
-- Avoid overly deep nesting keep it readable and manageable.
-- Regularly review group usage and clean up unused or outdated groups.
+- Use uma convenção de nomenclatura consistente: `Local/Função`,
+  `Equipe/Ambiente`, etc.
+- Atribua hosts a **vários grupos** se eles pertencerem logicamente a mais de
+  um.
+- Evite aninhamento excessivamente profundo, mantenha-o legível e gerenciável.
+- Revise regularmente o uso de grupos e limpe os grupos não utilizados ou
+  desatualizados.
 
-???+ tip
+???+ dica
 
     You can even try adding **emojis** to group names for a fun visual touch! 🎉
     For example: `🌍 Europe/🇧🇪 Belgium` or `📦 Containers/Docker`.
 
 ## Conclusão
 
-Host groups are a key organizational tool in Zabbix. With the introduction of
-**template groups**, clearer group separation, and support for **nested
-structures**, modern versions of Zabbix offer great flexibility for tailoring
-your monitoring setup to your organization's structure and workflows.
+Os grupos de hosts são uma ferramenta organizacional fundamental no Zabbix. Com
+a introdução dos **grupos de modelos ** , a separação mais clara de grupos e o
+suporte a **estruturas aninhadas ** , as versões modernas do Zabbix oferecem
+grande flexibilidade para adaptar sua configuração de monitoramento à estrutura
+e aos fluxos de trabalho de sua organização.
 
 ## Perguntas
 
-- What are host groups used for in Zabbix?
-- Can you assign a host to more than one group?
+- Para que são usados os grupos de hosts no Zabbix?
+- É possível atribuir um host a mais de um grupo?
 - How are nested groups created in Zabbix?
 - What happens when you apply permissions to subgroups?
 - Why are slashes (/) special in host group names?
