@@ -93,7 +93,7 @@ result.
 - **Zabbix agent (active)**: Reverses the connection direction. The agent connects to
 the server or proxy, retrieves a list of items it should collect, and sends the
 results back on a schedule. This mode is preferred as active agents have a small
-internal cache and as they offload some work form the Zabbis server (they push
+internal cache and as they offload some work form the Zabbix server (they push
 the data to the server), and it is required for log file
 monitoring.
 
