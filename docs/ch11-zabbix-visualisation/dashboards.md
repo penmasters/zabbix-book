@@ -147,14 +147,25 @@ _11.3 Action Log widget_
 
 ### Clock
 
-Shows the current date and time, either as a digital or an analog clock face. You can configure it to show the time in any timezone rather than the browser's local time — useful for teams operating across time zones.
+Shows the current date and time, either as a digital or an analog clock face. You
+can configure it to show the time in any timezone rather than the browser's local
+time. Useful for teams operating across time zones to know the server time.
 
-Key options: *Clock type* (digital / analog), *Time type* (local / server / specified timezone).
+Key options: *Clock type* (digital / analog), *Time type* (local / server /
+specified timezone).
+
+![ch11.4_clock.png](ch11.4_clock.png)
+
+_11.4 Clock widget_
 
 ### Discovery status
 
 Displays a summary of the last network discovery run: how many devices were found
 and in what state. Useful on infrastructure overview dashboards.
+
+![ch11.5_discovery.png](ch11.5_discovery.png)
+
+_11.5 Discovery status_
 
 ### Favourite graphs
 
@@ -162,41 +173,75 @@ Shows a list of manually bookmarked graphs (custom graphs that a user has marked
 as favourites). This widget is personal, it reflects the graphs favourited by the
 user currently viewing the dashboard.
 
+![ch11.6_fav_graph.png](ch11.6_fav_graph.png)
+
+_11.6 Favourite Graphs_
+
 ### Favourite maps
 
-The network-map equivalent of Favourite graphs. Shows the user's bookmarked network
+The network map equivalent of Favourite graphs. Shows the user's bookmarked network
 maps.
+
+![ch11.7_fav_maps.png](ch11.7_fav_maps.png)
+
+_11.7 Favourite Maps_
 
 ### Gauge
 
-Renders a single item's current value as a gauge (arc or circle). Effective for
+Renders a single item's current value as a gauge (180º or 270º). Effective for
 KPI-style displays where you want an instant visual indication of whether a value
 is in a healthy range.
 
-Key options: item to display, minimum and maximum values for the scale, threshold zones with configurable colours, needle/arc display style.
+Key options: item to display, minimum and maximum values for the scale, threshold
+zones with configurable colours, needle/arc display style.
+
+![ch11.8_gauge.png](ch11.8_gauge.png)
+
+_11.8 Gauge_
 
 ### Geomap
 
-Places hosts on a geographic map based on their inventory latitude/longitude fields. Hosts are shown as coloured markers that reflect their current problem severity. Click a marker to drill down to the host.
+Places hosts on a geographic map based on their inventory latitude/longitude fields.
+Hosts are shown as coloured markers that reflect their current problem severity.
+Click a marker to drill down to the host.
 
 Key options: host groups to include, the initial map center and zoom level.
 
-> **Prerequisite:** Host inventory must be populated with latitude and longitude values for the Geomap to place hosts correctly.
+> **Prerequisite:** Host inventory must be populated with latitude and longitude
+  values for the Geomap to place hosts correctly.
+
+![ch11.9_geomaps.png](ch11.9_geomaps.png)
+
+_11.9 Geomap_
 
 ### Graph
 
-The primary graph widget for Zabbix 8.0. Renders a time-series SVG graph and is the recommended widget for displaying metric data over time. It supports multiple data sets, color customization, and is fully interactive in view mode (you can zoom and pan the time range).
+The primary graph widget for Zabbix 8.0. Renders a time-series SVG graph and is
+the recommended widget for displaying metric data over time. It supports multiple
+data sets, color customization, and is fully interactive in view mode (you can
+zoom and pan the time range).
 
 Key options:
 
-- **Data set** — add one or more data sets, each selecting hosts/items via a pattern or direct selection. Each data set gets its own color, draw type (line, points, bar), and y-axis assignment.
-- **Display** — toggle whether to show the working time overlay, whether to fill areas under lines, and how to handle missing data.
-- **Axes** — configure left/right y-axis ranges, labels, and units.
-- **Legend** — control visibility and placement of the legend.
-- **Time period** — either follow the dashboard's global time selector or set a fixed period.
-- **Override host** — allows the widget to be driven by a dynamic host selection from a *Host navigator* widget on the same dashboard page (see below).
+- **Data set**: add one or more data sets, each selecting hosts/items via a pattern
+or direct selection. Each data set gets its own color, draw type (line, points,
+staircase and bars), and y-axis assignment.
+- **Display**: toggle whether to show the working time overlay, simple triggers,
+  hostnames and percentiles.
+- **Time period**: either follow the dashboard's global time selector or set a fixed period.
+- **Axes**:  configure left/right y-axis ranges, labels, and units.
+- **Legend**: control visibility and placement of the legend.
+- **Problems**: Show problems and Severity of selected hosts
+- **Override host**: allows the widget to be driven by a dynamic host selection
+from a *Host navigator* widget on the same dashboard page (see below).
 
-This widget is preferred over the legacy *Graph (classic)* for all new dashboards. It is built on the newer SVG rendering engine introduced in Zabbix 6.0 and offers far more display options.
+This widget is preferred over the legacy *Graph (classic)* for all new dashboards.
+It is built on the newer SVG rendering engine introduced in Zabbix 6.0 and offers
+far more display options.
+
+![ch11.10_graph.png](ch11.10_graph.png)
+
+_11.10 Graph_
 
 ### Graph (classic)
 
