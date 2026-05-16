@@ -16,25 +16,45 @@ definitions.
 
 ## Understanding Dashboard Types
 
-Zabbix 8.0 has two distinct categories of dashboards, and understanding the difference up front will save confusion later.
+Zabbix 8.0 has two distinct categories of dashboards, and understanding the difference
+up front will save confusion later.
 
-**Global dashboards** are created and managed under *Dashboards* in the main menu. They exist independently of any particular host and can show data from any combination of hosts, host groups, or items you choose. This is the most common type — the one you reach when you click *Dashboards* in the left-hand navigation.
+**Global dashboards** are created and managed under *Dashboards* in the main menu.
+They exist independently of any particular host and can show data from any
+combination of hosts, host groups, or items you choose. This is the most common
+type. This is the one you reach when you click *Dashboards* in the left-hand navigation.
 
-**Template dashboards** are defined inside a template and are automatically instantiated for every host that links to that template. When you view a host's dashboards (via *Monitoring → Hosts → Dashboards*), what you see are the rendered instances of those template dashboards, with all widget item references resolved against that specific host. Template dashboards are discussed in a dedicated section at the end of this chapter.
+**Template dashboards** are defined inside a template and are automatically instantiated
+for every host that links to that template. When you view a host's dashboards (via
+*Monitoring → Hosts → Dashboards*), what you see are the rendered instances of those
+template dashboards, with all widget item references resolved against that specific
+host. Template dashboards are discussed in a dedicated section at the end of this
+chapter.
 
 ---
 
 ## The Dashboard List
 
-Navigate to *Dashboards* in the left-hand menu. The page shows a list of all dashboards you have access to. Each row shows the dashboard name, the owner, and whether it is shared.
+Navigate to *Dashboards* in the left hand menu. The page shows a list of all dashboards
+you have access to. Each row shows the dashboard name, the owner, and whether
+it is shared.
 
 From this list you can:
 
 - Click a dashboard name to open it in view mode.
-- Use the *Create dashboard* button in the top-right corner to start a new one.
-- Click the row's action menu (the three-dot icon) to edit, clone, delete, or change sharing settings.
+- Use the *Create dashboard* button in the top-right corner to start a new
+one or click import to import an existing one. ( If you have the correct permissions)
+- Click the row's action menu (the three-line icon) to share, edit, clone, delete, or change
+sharing settings. (Again only if you have those permissions)
+- Since Zabbix 8.0 there is also the option to Export 
 
-Zabbix ships with a default dashboard called *Global view* that gives a good starting point. You can edit it or leave it as-is and create additional dashboards for specific purposes.
+Zabbix ships with a default dashboard called *Global view* that gives a good starting
+point. You can edit it or leave it as is and create additional dashboards for specific
+purposes.
+
+![ch11.1_action_menu.png](ch11.1_action_menu.png)
+
+_11.1 Actions menu_
 
 ---
 
@@ -42,9 +62,17 @@ Zabbix ships with a default dashboard called *Global view* that gives a good sta
 
 Click *Create dashboard*. A dialog appears asking for:
 
-- **Name** — the title shown in the page header and the dashboard list.
-- **Owner** — the Zabbix user who owns the dashboard. Only the owner (and administrators) can edit it by default.
-- **Display period** — how long the dashboard auto-cycles pages before returning to the first. This is relevant only if you add multiple pages.
+- **Name**: the title shown in the page header and the dashboard list.
+- **Owner**: the Zabbix user who owns the dashboard. Only the owner (and administrators)
+can edit it by default.
+- **Display period**: how long the dashboard auto-cycles pages before returning
+to the first. This is relevant only if you add multiple pages.
+- **Start slideshow automatically**: When selected Zabbix will automatically start
+the slideshow if you have multiple pages.
+
+![ch11.2_create_dashboards.png](ch11.2_create_dashboards.png)
+
+_11.2 Create Dashboard_
 
 Click *Apply* to create the dashboard and enter edit mode.
 
@@ -62,32 +90,42 @@ A toolbar appears at the top of the page with these controls:
 - **Paste widget**: available after you have copied a widget.
 - **Cancel** / **Save changes**: discard or commit your edits.
 
-The canvas itself becomes a grid. Widgets snap to this grid when you place or resize them. You can drag a widget by its header to reposition it, and drag the resize handle (bottom-right corner of each widget) to change its dimensions.
+The canvas itself becomes a grid. Widgets snap to this grid when you place or resize
+them. You can drag a widget by its header to reposition it, and drag the resize handle
+(bottom corner of each widget) to change its dimensions.
 
-To exit edit mode without saving, click *Cancel*. To commit all changes, click *Save changes*.
+To exit edit mode without saving, click *Cancel*. To commit all changes, click
+*Save changes*.
 
-> **Note:** Changes are not saved automatically. If you close the browser tab while in edit mode, unsaved work is lost.
+!!! info
+
+    Changes are not saved automatically. If you close the browser tab while in
+    edit mode, unsaved work is lost.
 
 ---
 
 ## Adding and Configuring Widgets
 
-Click *Add widget* to open the widget picker. It lists all available widget types. Select one and a configuration dialog opens.
+Click *Add widget* to open the widget picker. It lists all available widget types.
+Select one and a configuration dialog opens.
 
 Every widget shares a set of common fields at the top of the dialog:
 
 | Field | Description |
 |---|---|
-| **Type** | The widget type. Changing this resets the type-specific fields. |
+| **Type** | The widget type. Changing this resets the type specific fields. |
 | **Name** | An optional label displayed in the widget header. If left blank, the default title for that widget type is used. |
-| **Show header** | Toggle the widget header bar on or off. Useful when you want a clean, borderless display. |
-| **Refresh interval** | How often the widget polls for new data. Options range from *No refresh* to *1 minute*. The default varies by widget type. |
+| **Refresh interval** | How often the widget polls for new data. Options range from *No refresh* to *15 minutes*. The default varies by widget type. |
 
-Below these shared fields, each widget type exposes its own specific configuration options. These are described widget by widget in the next section.
+Below these shared fields, each widget type exposes its own specific configuration
+options. These are described widget by widget in the next section.
 
-Once you have configured a widget, click *Add* (for new widgets) or *Apply* (for edits). The widget appears on the canvas at a default size. You can then reposition and resize it.
+Once you have configured a widget, click *Add* (for new widgets) or *Apply* (for
+edits). The widget appears on the canvas at a default size. You can then reposition
+and resize it.
 
-To edit an existing widget, click the pencil icon in its top-right corner while in edit mode. To delete it, click the X icon.
+To edit an existing widget, click the pencil icon in its top-right corner while
+in edit mode. To delete it, click the X icon.
 
 ---
 
@@ -98,9 +136,14 @@ is best used for, and its key configuration options.
 
 ### Action log
 
-Displays a log of actions (alert notifications, remote commands) that Zabbix has executed. Useful for an audit-style view of what your alerting system has been doing.
+Displays a log of actions (alert notifications, remote commands) that Zabbix has
+executed. Useful for an audit style view of what your alerting system has been doing.
 
-Key options: filter by time period, host groups, host names, and action types. You can also filter by the status of the action (in progress, failed, succeeded).
+**Key options:** filter by time period, media type, status, and recipient.
+
+![ch11.3_action_log.png](ch11.3_action_log.png)
+
+_11.3 Action Log widget_
 
 ### Clock
 
