@@ -368,7 +368,7 @@ Certifique-se de que o serviço Chrony esteja ativo (consulte as etapas
 anteriores, se necessário). Para definir o fuso horário correto, primeiro, você
 pode listar todos os fusos horários disponíveis com o seguinte comando:
 
-!!! info "List the timezones"
+!!! info "listar os fusos horários"
 
     ```bash
     timedatectl list-timezones
@@ -377,7 +377,7 @@ pode listar todos os fusos horários disponíveis com o seguinte comando:
 Esse comando exibirá uma lista de fusos horários disponíveis, permitindo que
 você selecione o mais próximo de sua localização. Por exemplo:
 
-!!! example "List of all the timezones available"
+!!! exemplo "Lista de todos os fusos horários disponíveis"
 
     ```shell-session
     localhost:~ # timedatectl list-timezones
@@ -401,7 +401,7 @@ Depois de identificar seu fuso horário, configure-o usando o seguinte comando:
 Para verificar se o fuso horário foi configurado corretamente, use novamente o
 comando `timedatectl`:
 
-!!! example "Check the time and zone"
+!!! exemplo "Verifique a hora e o fuso horário"
 
     ```shell-session
     localhost:~ # timedatectl
@@ -437,7 +437,7 @@ corretos, você pode executar o seguinte comando:
 
 O resultado deve ser semelhante:
 
-!!! example "Verify your chrony output"
+!!! exemplo "Verifique sua saída de crônica"
 
     ``` shell-session
     localhost:~ # chronyc
@@ -450,12 +450,12 @@ O resultado deve ser semelhante:
     chronyc>
     ```
 
-Once inside the Chrony prompt, type the `sources` command to check the used time
-sources:
+No prompt do Chrony, digite o comando `sources` para verificar as fontes de
+tempo usadas:
 
 Exemplo de saída:
 
-!!! example "Check your time server sources"
+!!! exemplo "Verifique as fontes do seu servidor de horário"
 
     ```shell-session
     chronyc> sources
@@ -476,9 +476,10 @@ servidores NTP locais aqui: [www.ntppool.org](https://www.ntppool.org/).
 
 #### Atualizando os servidores de horário
 
-To update the time servers, modify the Chrony configuration file:
+Para atualizar os servidores de horário, modifique o arquivo de configuração do
+Chrony:
 
-!!! info "Edit chrony config file"
+!!! info "Editar arquivo de configuração do chrony"
 
     Red Hat
     ```bash
@@ -499,11 +500,12 @@ To update the time servers, modify the Chrony configuration file:
     sudo vi /etc/chrony/chrony.conf
     ```
 
-Replace the existing NTP server pool with one closer to your location.
+Substitua o pool de servidores NTP existente por um mais próximo de sua
+localização.
 
 Exemplo da configuração atual:
 
-!!! example "Example ntp pool config"
+!!! example "Exemplo de configuração de pool ntp"
 
     ```
     # Use public servers from the pool.ntp.org project.
@@ -511,9 +513,9 @@ Exemplo da configuração atual:
     pool 2.centos.pool.ntp.org iburst
     ```
 
-Change the pools you want to a local time server:
+Altere os pools desejados para um servidor de horário local:
 
-!!! info "Change ntp pool config"
+!!! info "Alterar a configuração do pool ntp"
 
     ```
     # Use public servers from the pool.ntp.org project.
@@ -524,7 +526,7 @@ Change the pools you want to a local time server:
 Depois de fazer essa alteração, reinicie o serviço Chrony para aplicar a nova
 configuração:
 
-!!! info "Restart the chrony service"
+!!! info "reinicie o serviço chrony"
 
     ```bash
     systemctl restart chronyd
@@ -559,12 +561,12 @@ Isso confirma que o sistema agora está usando servidores de horário local.
 
 ## Conclusão
 
-As we have seen, before even considering the Zabbix packages, attention must be
-paid to the environment in which it will reside. A properly configured and
-up-to-date operating system, an open path through the firewall, and accurate
-timekeeping are not mere suggestions, but essential building blocks. Having laid
-this groundwork, we can now proceed with confidence to the Zabbix installation,
-knowing that the underlying system is prepared for the task.
+Como vimos, antes mesmo de considerar os pacotes do Zabbix, é preciso prestar
+atenção ao ambiente em que ele residirá. Um sistema operacional configurado
+adequadamente, um caminho aberto através do firewall e um controle preciso do
+tempo não são meras sugestões, mas blocos de construção essenciais. Depois de
+estabelecer essa base, agora podemos prosseguir com confiança para a instalação
+do Zabbix, sabendo que o sistema subjacente está preparado para a tarefa.
 
 ## Perguntas
 
