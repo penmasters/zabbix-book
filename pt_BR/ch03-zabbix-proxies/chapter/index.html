@@ -1,0 +1,1067 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Learn how Zabbix proxies enhance scalability and distributed monitoring. This
+chapter guides you through setting up basic proxies, explores active vs. passive
+modes, container deployment, proxy groups, and the web services component
+helping you architect a resilient and efficient Zabbix infrastructure.
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/pt_BR/ch03-zabbix-proxies/chapter/" rel="canonical">
+<link href="../../ch02-zabbix-installation/mfa/" rel="prev"/>
+<link href="../proxy-basics/" rel="next"/>
+<link href="../../../fr/ch03-zabbix-proxies/chapter/" hreflang="fr" rel="alternate"/>
+<link href="../../../nl/ch03-zabbix-proxies/chapter/" hreflang="nl" rel="alternate"/>
+<link href="./" hreflang="pt_BR" rel="alternate"/>
+<link href="../../../ru/ch03-zabbix-proxies/chapter/" hreflang="ru" rel="alternate"/>
+<link href="../../../ch03-zabbix-proxies/chapter/" hreflang="en" rel="alternate"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>Proxies e o serviço da Web do Zabbix - Zabbix Book</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/extra.css?v=00f3eba837c662ba823f1d49c099510f60509368" rel="stylesheet"/>
+<link href="../../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="Proxies e o serviço da Web do Zabbix" property="og:title"/>
+<meta content="Learn how Zabbix proxies enhance scalability and distributed monitoring. This chapter guides you through setting up basic proxies, explores active vs. passive modes, container deployment, proxy groups, and the web services component helping you architect a resilient and efficient Zabbix infrastructure." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/pt_BR/ch03-zabbix-proxies/chapter/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Proxies e o serviço da Web do Zabbix" name="twitter:title"/>
+<meta content="Learn how Zabbix proxies enhance scalability and distributed monitoring. This chapter guides you through setting up basic proxies, explores active vs. passive modes, container deployment, proxy groups, and the web services component helping you architect a resilient and efficient Zabbix infrastructure." name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#proxies-e-o-servico-da-web-do-zabbix">
+          Pular para conteúdo
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "pt_BR";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Cabeçalho" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Proxies e o serviço da Web do Zabbix
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Selecione o idioma" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../../fr/ch03-zabbix-proxies/chapter/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../nl/ch03-zabbix-proxies/chapter/" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="pt_BR">
+              Brazilian Portuguese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ru/ch03-zabbix-proxies/chapter/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ch03-zabbix-proxies/chapter/" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Buscar" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Buscar" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Pesquisar" class="md-search__options">
+<a aria-label="Compartilhar" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Compartilhar">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Limpar" class="md-search__icon md-icon" tabindex="-1" title="Limpar" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch02-zabbix-installation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_8" type="checkbox"/>
+<label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_8_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_8">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Proxies e o serviço da Web do Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Proxies e o serviço da Web do Zabbix
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#o-proxy-zabbix">
+<span class="md-ellipsis">
+      
+        O proxy Zabbix
+      
+    </span>
+</a>
+<nav aria-label="O proxy Zabbix" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quando-usar-um-proxy">
+<span class="md-ellipsis">
+      
+        Quando usar um proxy
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#proxies-ativos-e-passivos">
+<span class="md-ellipsis">
+      
+        Proxies ativos e passivos
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#armazenamento-de-dados-em-buffer-e-resiliencia">
+<span class="md-ellipsis">
+      
+        Armazenamento de dados em buffer e resiliência
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#grupos-de-proxy">
+<span class="md-ellipsis">
+      
+        Grupos de proxy
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#implementacao-de-proxies-como-conteineres-podman-com-o-quadlet">
+<span class="md-ellipsis">
+      
+        Implementação de proxies como contêineres Podman com o Quadlet
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#o-servidor-web-zabbix-frontend">
+<span class="md-ellipsis">
+      
+        O servidor web Zabbix (Frontend)
+      
+    </span>
+</a>
+<nav aria-label="O servidor web Zabbix (Frontend)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quando-os-relatorios-programados-sao-uteis">
+<span class="md-ellipsis">
+      
+        Quando os relatórios programados são úteis
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relacionamento-com-o-servidor-zabbix">
+<span class="md-ellipsis">
+      
+        Relacionamento com o servidor Zabbix
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#o-que-este-capitulo-aborda">
+<span class="md-ellipsis">
+      
+        O que este capítulo aborda
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../proxy-basics/">
+<span class="md-ellipsis">
+    
+  
+    Proxy basics
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../active-passive-proxies/">
+<span class="md-ellipsis">
+    
+  
+    Proxies ativos e passivos
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../proxies-as-container/">
+<span class="md-ellipsis">
+    
+  
+    Execução de proxies como contêineres
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../proxy-groups/">
+<span class="md-ellipsis">
+    
+  
+    Proxy groups
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../web-services/">
+<span class="md-ellipsis">
+    
+  
+    Web services
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch04-zabbix-collecting-data/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch06-zabbix-templates/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/graphs/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch13-advanced-security/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#o-proxy-zabbix">
+<span class="md-ellipsis">
+      
+        O proxy Zabbix
+      
+    </span>
+</a>
+<nav aria-label="O proxy Zabbix" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quando-usar-um-proxy">
+<span class="md-ellipsis">
+      
+        Quando usar um proxy
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#proxies-ativos-e-passivos">
+<span class="md-ellipsis">
+      
+        Proxies ativos e passivos
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#armazenamento-de-dados-em-buffer-e-resiliencia">
+<span class="md-ellipsis">
+      
+        Armazenamento de dados em buffer e resiliência
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#grupos-de-proxy">
+<span class="md-ellipsis">
+      
+        Grupos de proxy
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#implementacao-de-proxies-como-conteineres-podman-com-o-quadlet">
+<span class="md-ellipsis">
+      
+        Implementação de proxies como contêineres Podman com o Quadlet
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#o-servidor-web-zabbix-frontend">
+<span class="md-ellipsis">
+      
+        O servidor web Zabbix (Frontend)
+      
+    </span>
+</a>
+<nav aria-label="O servidor web Zabbix (Frontend)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quando-os-relatorios-programados-sao-uteis">
+<span class="md-ellipsis">
+      
+        Quando os relatórios programados são úteis
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relacionamento-com-o-servidor-zabbix">
+<span class="md-ellipsis">
+      
+        Relacionamento com o servidor Zabbix
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#o-que-este-capitulo-aborda">
+<span class="md-ellipsis">
+      
+        O que este capítulo aborda
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navegação" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../../">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="./">
+<span class="md-ellipsis">
+    Chapter 03 : Proxies and Webcomponents
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/pt_BR/ch03-zabbix-proxies/chapter.md" title="Exibir fonte desta página">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="proxies-e-o-servico-da-web-do-zabbix">Proxies e o serviço da Web do Zabbix</h1>
+<p>Este capítulo aborda dois componentes que são instalados separadamente do
+servidor Zabbix e ampliam o que uma instalação do Zabbix pode fazer.
+Tecnicamente, eles têm pouco em comum, mas ambos estão frequentemente ausentes
+das configurações básicas e ambos têm um impacto significativo na forma como um
+ambiente de monitoramento é dimensionado e opera. O primeiro é o Zabbix proxy,
+um nó de coleta de dados distribuído. O segundo é o serviço Web do Zabbix, um
+componente necessário para a geração programada de relatórios em PDF.</p>
+<h2 id="o-proxy-zabbix">O proxy Zabbix</h2>
+<p>Um proxy Zabbix é um processo que coleta dados de monitoramento em nome do
+servidor Zabbix. Do ponto de vista dos hosts monitorados, um proxy se comporta
+de forma idêntica ao servidor: ele aceita conexões de agentes passivos, inicia
+verificações ativas, executa consultas SNMP, executa verificações externas e
+processa o IPMI. A diferença está no que acontece com os dados após a coleta. Um
+proxy armazena os dados coletados localmente em seu próprio banco de dados e os
+encaminha para o servidor Zabbix em intervalos regulares, em vez de gravar
+diretamente no banco de dados do servidor.</p>
+<p>Esse comportamento de buffer é a propriedade arquitetônica que torna os proxies
+úteis. O servidor Zabbix só precisa manter uma única conexão por proxy,
+independentemente do número de hosts monitorados por esse proxy. O servidor não
+precisa acessar diretamente os hosts monitorados, e o proxy pode continuar
+coletando e armazenando dados mesmo que a conexão com o servidor esteja
+temporariamente indisponível.</p>
+<h3 id="quando-usar-um-proxy">Quando usar um proxy</h3>
+<p>Os proxies são a solução correta em três situações recorrentes.</p>
+<p>A primeira é a localização remota. Quando os hosts monitorados estão em uma
+filial, em um data center em outra região ou em um ambiente de nuvem com acesso
+restrito à rede, não é prático abrir regras de firewall do servidor Zabbix para
+cada host individual. Um proxy colocado nesse local precisa apenas de uma única
+conexão de entrada ou saída com o servidor e lida internamente com toda a coleta
+de dados locais.</p>
+<p>A segunda é a segmentação da rede. Em ambientes em que os sistemas monitorados
+estão em segmentos de rede isolados - uma rede de produção de OT, um ambiente
+com escopo de PCI, uma DMZ - um proxy pode ser colocado dentro do segmento com
+acesso aos hosts monitorados, enquanto o servidor Zabbix permanece do lado de
+fora. O proxy faz a ponte entre os limites da coleta sem exigir que o servidor
+tenha acesso direto às zonas sensíveis da rede.</p>
+<p>A terceira é a distribuição de carga. Um único servidor Zabbix tem limites de
+quantos itens ele pode coletar por segundo antes que o desempenho diminua. A
+distribuição da coleta em vários proxies descarrega o trabalho de sondagem do
+servidor e permite que a instalação seja dimensionada horizontalmente. O
+servidor se concentra no processamento, no armazenamento e na apresentação dos
+dados, enquanto os proxies cuidam da coleta.</p>
+<h3 id="proxies-ativos-e-passivos">Proxies ativos e passivos</h3>
+<p>Os proxies do Zabbix operam em um dos dois modos, que descrevem a direção da
+conexão entre o proxy e o servidor.</p>
+<p>No modo ativo, o proxy inicia a conexão com o servidor Zabbix. O proxy entra em
+contato com o servidor para recuperar sua configuração e enviar os dados
+coletados. Esse modo é o preferido na maioria das implantações porque requer
+apenas conectividade de saída do proxy, o que é mais fácil de permitir através
+de firewalls do que conexões de entrada com o servidor.</p>
+<p>No modo passivo, o servidor inicia a conexão com o proxy. O servidor entra em
+contato com o proxy para solicitar a sincronização da configuração e o envio de
+dados. Esse modo é menos comum e requer que o servidor Zabbix consiga acessar o
+proxy diretamente.</p>
+<h3 id="armazenamento-de-dados-em-buffer-e-resiliencia">Armazenamento de dados em buffer e resiliência</h3>
+<p>Como um proxy armazena os dados coletados em seu próprio banco de dados local
+antes de encaminhá-los ao servidor, o monitoramento continua ininterrupto
+durante as interrupções de conectividade. Quando a conexão com o servidor é
+restabelecida, o proxy encaminha todos os dados armazenados em buffer em
+sequência. O período de tempo em que os dados podem ser armazenados em buffer é
+limitado pela capacidade do banco de dados local do proxy e pelos parâmetros de
+configuração <code>ProxyLocalBuffer</code> e <code>ProxyOfflineBuffer</code>, que controlam por quanto
+tempo o proxy retém os dados localmente.</p>
+<p>Essa propriedade de resiliência é particularmente relevante para locais remotos
+com links de WAN não confiáveis. Um proxy em um local remoto continuará
+coletando dados durante uma interrupção e os entregará ao servidor assim que a
+conectividade for restaurada, preservando o registro de monitoramento sem
+lacunas.</p>
+<h3 id="grupos-de-proxy">Grupos de proxy</h3>
+<p>O Zabbix 7.0 introduziu os grupos de proxy, que alteram a forma como os proxies
+são gerenciados em ambientes que exigem alta disponibilidade ou balanceamento
+automático de carga na camada de proxy.</p>
+<p>Antes dos grupos de proxy, um host era atribuído a um proxy específico. Se esse
+proxy ficasse indisponível, os hosts que ele monitorava deixavam de ser
+coletados até que o proxy se recuperasse ou os hosts fossem reatribuídos
+manualmente. O dimensionamento da coleta significava distribuir manualmente os
+hosts entre os proxies e reequilibrar essa distribuição à medida que o ambiente
+crescia.</p>
+<p>Com os grupos de proxy, os hosts são atribuídos a um grupo em vez de a um proxy
+individual. O servidor Zabbix monitora o estado de todos os proxies do grupo e
+distribui automaticamente os hosts monitorados entre os proxies disponíveis. Se
+um proxy do grupo ficar indisponível, o servidor redistribui seus hosts para os
+proxies restantes do grupo. Quando o proxy se recupera, o servidor reequilibra a
+distribuição novamente. Não é necessária nenhuma intervenção manual.</p>
+<p>Um grupo de proxy requer um número mínimo de proxies on-line para ser
+considerado operacional, o que é configurável por grupo. Se o número de proxies
+disponíveis em um grupo ficar abaixo desse limite, o grupo será considerado
+degradado e o servidor gerará um evento de problema. Esse limite lhe dá controle
+explícito sobre o nível aceitável de redundância em um grupo.</p>
+<p>Os grupos de proxy são a abordagem recomendada para qualquer implementação em
+que a disponibilidade do proxy seja uma preocupação ou em que a população de
+hosts monitorados seja grande o suficiente para justificar a distribuição da
+coleta em vários proxies com reequilíbrio automático.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph hosts ["Remote hosts"]
+        H1[Host] &amp; H2[Host] &amp; H3[Host] &amp; H4[Host]
+    end
+
+    subgraph group ["Proxy group"]
+        P1[Proxy 1]
+        P2[Proxy 2]
+        P3[Proxy 3
+        unavailable]
+    end
+
+    H1 &amp; H2 --&gt; P1
+    H3 &amp; H4 --&gt; P2
+    H3 -.-&gt;|redistributed| P3
+
+    P1 &amp; P2 --&gt; S[Zabbix server]
+    S --&gt; DB[(Database)]
+</code></pre>
+<h3 id="implementacao-de-proxies-como-conteineres-podman-com-o-quadlet">Implementação de proxies como contêineres Podman com o Quadlet</h3>
+<p>Um proxy é uma opção natural para a implementação de contêineres. É um processo
+único com um arquivo de configuração bem definido, expõe uma porta, não tem
+interface com a Web e sua única dependência externa é o banco de dados que usa
+para o buffer local. O Podman é o tempo de execução de contêiner usado neste
+capítulo porque executa contêineres sem um daemon e não exige privilégios de
+raiz, o que o torna uma opção prática para implementações de proxy em sistemas
+padrão baseados em RHEL.</p>
+<p>Este capítulo usa o Quadlet para gerenciar o contêiner do proxy. O Quadlet é um
+recurso do Podman, disponível a partir do Podman 4.4, que gera arquivos de
+unidade do systemd a partir de uma definição declarativa de contêiner. Em vez de
+escrever um arquivo de serviço do systemd manualmente ou confiar no <code>podman
+generate systemd</code>, você escreve um pequeno arquivo <code>.container</code> que descreve a
+imagem, os volumes, as variáveis de ambiente e a configuração de rede, e o
+Quadlet traduz isso em uma unidade do systemd em tempo de execução. O contêiner
+proxy se comporta como um serviço nativo do systemd: ele é iniciado
+automaticamente na inicialização, respeita a ordem de dependência, é reiniciado
+em caso de falha de acordo com a política que você define e é gerenciado com os
+comandos padrão <code>systemctl</code> que qualquer administrador do Linux já conhece.</p>
+<p>A vantagem prática em relação a um comando <code>podman run</code> é que não há nenhuma
+etapa separada para gerar e instalar um arquivo de serviço, nenhum risco de o
+arquivo gerado ficar fora de sincronia com a configuração real do contêiner e
+nenhuma dependência de um daemon Podman em execução. O arquivo <code>.container</code> é a
+única fonte de verdade para o comportamento do contêiner e de seu serviço.</p>
+<p>A principal consideração operacional ao executar um proxy em um contêiner é a
+persistência dos dados. O banco de dados do buffer local do proxy deve
+sobreviver às reinicializações do contêiner, o que significa que o diretório do
+banco de dados precisa ser montado a partir do host ou gerenciado por meio de um
+volume nomeado. Se o banco de dados for perdido em uma reinicialização, todos os
+dados que foram armazenados em buffer, mas ainda não encaminhados ao servidor,
+serão perdidos com ele. Este capítulo aborda como configurar corretamente a
+montagem do volume no arquivo .container<code>do Quadlet</code> para que os dados
+armazenados em buffer sejam preservados nos eventos do ciclo de vida do
+contêiner.</p>
+<p>A execução de proxies como contêineres gerenciados por Quadlet também simplifica
+a consistência da implementação em vários sites. A mesma imagem de contêiner e o
+mesmo arquivo <code>.container</code> podem ser implementados em um local remoto com
+alterações mínimas específicas do ambiente, reduzindo a sobrecarga operacional
+de manter instalações de proxy em vários locais.</p>
+<h2 id="o-servidor-web-zabbix-frontend">O servidor web Zabbix (Frontend)</h2>
+<p>O serviço web do Zabbix é um processo separado que o servidor Zabbix usa para
+gerar relatórios programados em formato PDF. Ele não está envolvido na coleta de
+dados, na avaliação de acionadores ou na emissão de alertas. Sua única função é
+renderizar o front-end do Zabbix como ele apareceria em um navegador e capturar
+o resultado como um PDF, que pode ser entregue por e-mail em uma programação
+definida.</p>
+<p>O serviço da Web usa uma instância do Chromium sem cabeça para renderizar o
+frontend. Isso significa que o host que executa o serviço Web deve ter o
+Chromium ou o Google Chrome instalado, e o serviço Web deve ser capaz de acessar
+o front-end do Zabbix por HTTP ou HTTPS. O servidor Zabbix se comunica com o
+serviço Web por meio de uma porta dedicada, cujo padrão é 10053.</p>
+<h3 id="quando-os-relatorios-programados-sao-uteis">Quando os relatórios programados são úteis</h3>
+<p>Os relatórios programados são usados quando as partes interessadas precisam de
+um resumo regular dos dados de monitoramento sem fazer login diretamente no
+Zabbix. Os casos de uso comuns são resumos semanais de disponibilidade entregues
+à gerência, instantâneos diários do painel enviados às equipes de operações no
+início de um turno e relatórios periódicos de conformidade que precisam ser
+arquivados ou distribuídos por e-mail.</p>
+<p>O conteúdo de um relatório agendado é determinado pelo dashboard selecionado
+quando o relatório é configurado. Qualquer painel visível no front-end do Zabbix
+pode ser renderizado como um relatório agendado, incluindo painéis com gráficos,
+widgets de hosts principais, listas de problemas e relatórios de SLA.</p>
+<h3 id="relacionamento-com-o-servidor-zabbix">Relacionamento com o servidor Zabbix</h3>
+<p>O serviço Web não precisa ser executado no mesmo host que o servidor Zabbix, mas
+deve ser acessível a partir do servidor e deve ser capaz de acessar o front-end
+do Zabbix. Na prática, muitas instalações executam o serviço Web no mesmo host
+que o front-end para simplificar, mas separá-lo é uma opção válida em ambientes
+em que o front-end é executado em servidores Web dedicados.</p>
+<p>O serviço da Web só é necessário se você pretende usar relatórios programados.
+Se sua instalação não precisar de entrega de relatórios em PDF, o serviço da Web
+não precisará ser instalado.</p>
+<h2 id="o-que-este-capitulo-aborda">O que este capítulo aborda</h2>
+<p>Este capítulo começa com uma configuração prática de proxy: instalação do pacote
+de proxy, configuração da conexão com o servidor Zabbix e adição do proxy ao
+frontend.</p>
+<p>A partir daí, o capítulo aborda a mecânica interna da operação do proxy, como
+escolher entre os modos ativo e passivo e como configurar e usar grupos de proxy
+para distribuição automática de hosts e alta disponibilidade na camada de proxy.</p>
+<p>Em seguida, ele aborda a implantação do mesmo proxy como um contêiner Podman
+gerenciado pelo Quadlet, incluindo como escrever o arquivo de definição
+<code>.container</code> e configurar montagens de volume para persistência de dados.</p>
+<p>A parte final do capítulo aborda o serviço da Web do Zabbix: o que é necessário
+para executá-lo, como instalá-lo e configurá-lo, como conectá-lo ao servidor
+Zabbix e como criar e agendar um relatório em um painel existente.</p>
+<p>Ao final deste capítulo, você entenderá onde os proxies se encaixam em uma
+arquitetura Zabbix, quando implantá-los como pacotes em vez de contêineres
+gerenciados por Quadlet, como os grupos de proxy alteram o modelo operacional
+para implantações distribuídas e como o serviço da Web permite a geração de
+relatórios programados em PDF sem nenhuma ferramenta adicional de terceiros.</p>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Voltar para o topo
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../javascripts/tags-data-attr.js?v=00f3eba837c662ba823f1d49c099510f60509368"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>

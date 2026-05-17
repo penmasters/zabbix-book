@@ -1,0 +1,2192 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="nl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Monitor databases with Zabbix ODBC checks. Run SQL queries across MySQL, PostgreSQL
+and more to track performance and availability metrics.
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/nl/ch04-zabbix-collecting-data/database-odbc/" rel="canonical">
+<link href="../ipmi/" rel="prev"/>
+<link href="../database-agent/" rel="next"/>
+<link href="../../../fr/ch04-zabbix-collecting-data/database-odbc/" hreflang="fr" rel="alternate"/>
+<link href="./" hreflang="nl" rel="alternate"/>
+<link href="../../../pt_BR/ch04-zabbix-collecting-data/database-odbc/" hreflang="pt_BR" rel="alternate"/>
+<link href="../../../ru/ch04-zabbix-collecting-data/database-odbc/" hreflang="ru" rel="alternate"/>
+<link href="../../../ch04-zabbix-collecting-data/database-odbc/" hreflang="en" rel="alternate"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>Database Monitoring via ODBC - Zabbix Book</title>
+<link href="../../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/extra.css?v=00f3eba837c662ba823f1d49c099510f60509368" rel="stylesheet"/>
+<link href="../../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="Database Monitoring via ODBC" property="og:title"/>
+<meta content="Monitor databases with Zabbix ODBC checks. Run SQL queries across MySQL, PostgreSQL and more to track performance and availability metrics." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/nl/ch04-zabbix-collecting-data/database-odbc/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Database Monitoring via ODBC" name="twitter:title"/>
+<meta content="Monitor databases with Zabbix ODBC checks. Run SQL queries across MySQL, PostgreSQL and more to track performance and availability metrics." name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#database-monitoring-via-odbc">
+          Ga naar inhoud
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<div class="gmc-announce">
+            Deze pagina is nog niet in het Nederlands vertaald en wordt daarom in het Engels weergegeven.
+            <a href="/gmc/nl/contribute/#translations">Help ons en vertaal deze pagina!</a>
+</div>
+<script>
+        const gGMC_SELECT_VERSION = "Selecteer versie";
+        const gGMC_TRANSLATE_CTA = "Help ons en vertaal deze pagina!";
+        const gGMC_PAGE_LOCALE = "nl";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Database Monitoring via ODBC
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Selecteer taal" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../../fr/ch04-zabbix-collecting-data/database-odbc/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../pt_BR/ch04-zabbix-collecting-data/database-odbc/" hreflang="pt_BR">
+              Brazilian Portuguese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ru/ch04-zabbix-collecting-data/database-odbc/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ch04-zabbix-collecting-data/database-odbc/" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Zoeken" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Zoeken" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Zoeken" class="md-search__options">
+<a aria-label="Delen" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Delen">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Leegmaken" class="md-search__icon md-icon" tabindex="-1" title="Leegmaken" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Zoeken initialiseren
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ga naar repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigatie" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ga naar repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch02-zabbix-installation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch03-zabbix-proxies/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 04 : Collecting data 
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../chapter/">
+<span class="md-ellipsis">
+    
+  
+    Collecting data with your Zabbix environment
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dataflow/">
+<span class="md-ellipsis">
+    
+  
+    Dataflow
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../hosts/">
+<span class="md-ellipsis">
+    
+  
+    Hosts
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../simple-checks/">
+<span class="md-ellipsis">
+    
+  
+    Simple checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../host-interfaces/">
+<span class="md-ellipsis">
+    
+  
+    Host Interfaces
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-passive/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent installation and Passive monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-active/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent Active monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-polling/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Polling
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-trapping/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Trapping
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../http/">
+<span class="md-ellipsis">
+    
+  
+    HTTP Items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../preprocessing/">
+<span class="md-ellipsis">
+    
+  
+    Preprocessing
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dependent/">
+<span class="md-ellipsis">
+    
+  
+    Dependent items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ssh-telnet/">
+<span class="md-ellipsis">
+    
+  
+    SSH / Telnet
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../script/">
+<span class="md-ellipsis">
+    
+  
+    Script item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../jmx/">
+<span class="md-ellipsis">
+    
+  
+    Monitoring Java Applications with JMX
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ipmi/">
+<span class="md-ellipsis">
+    
+  
+    IPMI Monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Database Monitoring via ODBC
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Database Monitoring via ODBC
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Inhoudsopgave" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-odbc-execution-stack">
+<span class="md-ellipsis">
+      
+        The ODBC Execution Stack
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#driver-selection-and-installation">
+<span class="md-ellipsis">
+      
+        Driver Selection and Installation
+      
+    </span>
+</a>
+<nav aria-label="Driver Selection and Installation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mysql-and-mariadb">
+<span class="md-ellipsis">
+      
+        MySQL and MariaDB
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#postgresql">
+<span class="md-ellipsis">
+      
+        PostgreSQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#microsoft-sql-server">
+<span class="md-ellipsis">
+      
+        Microsoft SQL Server
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#built-in-templates">
+<span class="md-ellipsis">
+      
+        Built-in Templates
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#driver-packages-by-platform">
+<span class="md-ellipsis">
+      
+        Driver Packages by Platform
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#installation">
+<span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuration-files">
+<span class="md-ellipsis">
+      
+        Configuration Files
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#validating-the-stack-before-touching-zabbix">
+<span class="md-ellipsis">
+      
+        Validating the Stack Before Touching Zabbix
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#item-design-two-keys-different-philosophies">
+<span class="md-ellipsis">
+      
+        Item Design: Two Keys, Different Philosophies
+      
+    </span>
+</a>
+<nav aria-label="Item Design: Two Keys, Different Philosophies" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dbodbcselect-the-scalar-path">
+<span class="md-ellipsis">
+      
+        db.odbc.select — The Scalar Path
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dbodbcget-the-scalable-path">
+<span class="md-ellipsis">
+      
+        db.odbc.get — The Scalable Path
+      
+    </span>
+</a>
+<nav aria-label="db.odbc.get — The Scalable Path" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-worked-example">
+<span class="md-ellipsis">
+      
+        A Worked Example
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#choosing-between-the-two">
+<span class="md-ellipsis">
+      
+        Choosing Between the Two
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#low-level-discovery-with-odbc">
+<span class="md-ellipsis">
+      
+        Low-Level Discovery with ODBC
+      
+    </span>
+</a>
+<nav aria-label="Low-Level Discovery with ODBC" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#native-discovery-dbodbcdiscovery">
+<span class="md-ellipsis">
+      
+        Native Discovery: db.odbc.discovery
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scalable-discovery-via-dbodbcget">
+<span class="md-ellipsis">
+      
+        Scalable Discovery via db.odbc.get
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#operational-discipline">
+<span class="md-ellipsis">
+      
+        Operational Discipline
+      
+    </span>
+</a>
+<nav aria-label="Operational Discipline" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-design">
+<span class="md-ellipsis">
+      
+        Query Design
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#poller-sizing">
+<span class="md-ellipsis">
+      
+        Poller Sizing
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#timeouts">
+<span class="md-ellipsis">
+      
+        Timeouts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#isolation-via-proxy">
+<span class="md-ellipsis">
+      
+        Isolation via Proxy
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#credentials-and-security">
+<span class="md-ellipsis">
+      
+        Credentials and Security
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connection-pooling">
+<span class="md-ellipsis">
+      
+        Connection Pooling
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#character-encoding">
+<span class="md-ellipsis">
+      
+        Character Encoding
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#anti-patterns-and-how-they-manifest">
+<span class="md-ellipsis">
+      
+        Anti-Patterns and How They Manifest
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#choosing-the-right-database-monitoring-approach">
+<span class="md-ellipsis">
+      
+        Choosing the Right Database Monitoring Approach
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#summary">
+<span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../database-agent/">
+<span class="md-ellipsis">
+    
+  
+    Database checks via Zabbix agent 2
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-trapper/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix trapper
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../external-checks/">
+<span class="md-ellipsis">
+    
+  
+    External checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../browser/">
+<span class="md-ellipsis">
+    
+  
+    Browser item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../calculated/">
+<span class="md-ellipsis">
+    
+  
+    Calculated items
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch06-zabbix-templates/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/graphs/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch13-advanced-security/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Inhoudsopgave" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-odbc-execution-stack">
+<span class="md-ellipsis">
+      
+        The ODBC Execution Stack
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#driver-selection-and-installation">
+<span class="md-ellipsis">
+      
+        Driver Selection and Installation
+      
+    </span>
+</a>
+<nav aria-label="Driver Selection and Installation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mysql-and-mariadb">
+<span class="md-ellipsis">
+      
+        MySQL and MariaDB
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#postgresql">
+<span class="md-ellipsis">
+      
+        PostgreSQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#microsoft-sql-server">
+<span class="md-ellipsis">
+      
+        Microsoft SQL Server
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#built-in-templates">
+<span class="md-ellipsis">
+      
+        Built-in Templates
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#driver-packages-by-platform">
+<span class="md-ellipsis">
+      
+        Driver Packages by Platform
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#installation">
+<span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuration-files">
+<span class="md-ellipsis">
+      
+        Configuration Files
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#validating-the-stack-before-touching-zabbix">
+<span class="md-ellipsis">
+      
+        Validating the Stack Before Touching Zabbix
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#item-design-two-keys-different-philosophies">
+<span class="md-ellipsis">
+      
+        Item Design: Two Keys, Different Philosophies
+      
+    </span>
+</a>
+<nav aria-label="Item Design: Two Keys, Different Philosophies" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dbodbcselect-the-scalar-path">
+<span class="md-ellipsis">
+      
+        db.odbc.select — The Scalar Path
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dbodbcget-the-scalable-path">
+<span class="md-ellipsis">
+      
+        db.odbc.get — The Scalable Path
+      
+    </span>
+</a>
+<nav aria-label="db.odbc.get — The Scalable Path" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-worked-example">
+<span class="md-ellipsis">
+      
+        A Worked Example
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#choosing-between-the-two">
+<span class="md-ellipsis">
+      
+        Choosing Between the Two
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#low-level-discovery-with-odbc">
+<span class="md-ellipsis">
+      
+        Low-Level Discovery with ODBC
+      
+    </span>
+</a>
+<nav aria-label="Low-Level Discovery with ODBC" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#native-discovery-dbodbcdiscovery">
+<span class="md-ellipsis">
+      
+        Native Discovery: db.odbc.discovery
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scalable-discovery-via-dbodbcget">
+<span class="md-ellipsis">
+      
+        Scalable Discovery via db.odbc.get
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#operational-discipline">
+<span class="md-ellipsis">
+      
+        Operational Discipline
+      
+    </span>
+</a>
+<nav aria-label="Operational Discipline" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-design">
+<span class="md-ellipsis">
+      
+        Query Design
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#poller-sizing">
+<span class="md-ellipsis">
+      
+        Poller Sizing
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#timeouts">
+<span class="md-ellipsis">
+      
+        Timeouts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#isolation-via-proxy">
+<span class="md-ellipsis">
+      
+        Isolation via Proxy
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#credentials-and-security">
+<span class="md-ellipsis">
+      
+        Credentials and Security
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connection-pooling">
+<span class="md-ellipsis">
+      
+        Connection Pooling
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#character-encoding">
+<span class="md-ellipsis">
+      
+        Character Encoding
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#anti-patterns-and-how-they-manifest">
+<span class="md-ellipsis">
+      
+        Anti-Patterns and How They Manifest
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#choosing-the-right-database-monitoring-approach">
+<span class="md-ellipsis">
+      
+        Choosing the Right Database Monitoring Approach
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#summary">
+<span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigatie" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../../">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../chapter/">
+<span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<nav class="md-tags">
+<span class="md-tag md-tag-icon" data-tag="advanced">
+      Gevorderde
+    </span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch04-zabbix-collecting-data/database-odbc.md" title="Bron van deze pagina bekijken">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="database-monitoring-via-odbc">Database Monitoring via ODBC</h1>
+<p>Most monitoring conversations start at the wrong layer. CPU load, memory pressure,
+disk I/O — these are the signals that infrastructure teams reach for first, and
+rightly so. But consider what they miss. A perfectly healthy database host can
+be processing a catastrophic workload: a runaway query holding row-level locks
+across thousands of transactions, a replication slot that has grown to consume
+40 GB of WAL because a consumer went silent, an order queue where the pending count
+has been climbing for six hours while the fulfilment process silently stalled.</p>
+<p>None of those failures are visible to an agent watching the OS. They live inside
+the database, and to see them, you have to speak the database's own language: SQL.</p>
+<p>ODBC — Open Database Connectivity — is the mechanism Zabbix uses to do exactly
+that. It enables agentless SQL execution against any database that exposes a compliant
+driver, from on-premise MySQL clusters to managed cloud PostgreSQL services to SQL
+Server environments deep inside enterprise Windows estates. Used with discipline,
+it provides a tier of observability that no other Zabbix check type can match.
+Used carelessly, it becomes one of the fastest ways to destabilise a production
+database.</p>
+<p>This chapter covers the complete ODBC stack — architecture, driver selection,
+configuration, item design, discovery patterns, and the operational disciplines
+that separate sustainable monitoring from the kind that generates incident tickets
+at 3 AM.</p>
+<p><em>Reaching past the operating system layer to observe what actually matters:
+the data.</em></p>
+<hr/>
+<h2 id="the-odbc-execution-stack">The ODBC Execution Stack</h2>
+<p>Before configuring a single item, it is worth understanding precisely what happens
+when Zabbix executes a database monitor check. The path from Zabbix item to query
+result is not direct — it passes through two intermediary layers, and each of those
+layers has its own configuration surface, failure modes, and performance characteristics.</p>
+<pre class="mermaid"><code>flowchart TD
+    A[Zabbix Server / Proxy] --&gt;|"item type: Database monitor"| B
+    B["ODBC Poller Process\n(blocking — poller unavailable while query runs)"] --&gt;|"ODBC API call"| C
+    C["unixODBC Driver Manager\n(/etc/odbcinst.ini, /etc/odbc.ini)"] --&gt;|"resolves DSN → loads driver"| D
+    D["Database-Specific ODBC Driver\n(.so shared library)"] --&gt;|"native wire protocol"| E
+    E[Target Database]
+</code></pre>
+<p>The first layer is unixODBC, the driver manager. It is responsible for maintaining
+the registry of installed drivers and translating the symbolic DSN name in your
+Zabbix item into a concrete connection. It reads two configuration files:
+<code>/etc/odbcinst.ini</code> for driver definitions and <code>/etc/odbc.ini</code> for named connection
+aliases. Without both files populated correctly, nothing downstream can function.</p>
+<p>The second layer is the database-specific ODBC driver — a shared library that understands
+the wire protocol of the target database. This driver is loaded dynamically by
+unixODBC at query time. Its quality matters enormously: driver bugs, TLS implementation
+gaps, and timeout handling differences are the most common sources of mysterious
+ODBC failures in production. The driver, not unixODBC, is what ultimately speaks
+to your database.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>ODBC checks are blocking operations. An ODBC poller process remains fully occupied
+for the duration of the query, it cannot service other items. A slow query does
+not just delay its own item; it reduces the effective throughput of the entire
+ODBC poller pool. This is why query performance discipline and correct poller sizing
+are inseparable concerns.</p>
+</div>
+<p>This blocking nature has a direct consequence for how you should think about ODBC
+at scale. Each concurrent database monitor item in flight consumes one poller slot.
+If you have five pollers and six queries executing simultaneously, even briefly,
+one item queues. If queries are slow, that queue grows. If queries are pathological
+, the entire ODBC poller pool saturates and items go unsupported. Architecture
+first; configuration second.</p>
+<hr/>
+<h2 id="driver-selection-and-installation">Driver Selection and Installation</h2>
+<p>ODBC defines a standard interface. The substance behind that interface, the actual
+quality, reliability, TLS support, and authentication capability of your monitoring
+setup, is entirely determined by the driver you install. Driver selection is not a
+minor configuration detail; it is a foundational architectural decision.</p>
+<p>Three driver families cover the majority of production Zabbix ODBC deployments.</p>
+<h3 id="mysql-and-mariadb">MySQL and MariaDB</h3>
+<p>MariaDB Connector/ODBC is the recommended driver for both <code>MySQL</code> and <code>MariaDB</code>
+workloads, and extends cleanly to cloud-managed MySQL-compatible services including
+<code>Amazon RDS</code> and <code>Azure Database</code> for MySQL. It is actively maintained, widely
+packaged, and behaves consistently across distributions.</p>
+<p>Older MySQL ODBC packages (<code>libmyodbc5</code> and earlier) are still encountered in
+legacy environments but should be migrated away from where possible. Version drift
+between old MySQL ODBC drivers and modern MySQL 8.x servers can produce authentication
+failures, particularly with the <code>caching_sha2_password</code> default authentication plugin
+introduced in MySQL 8.0.</p>
+<p>There is one non-obvious constraint that catches many administrators off-guard:
+the ODBC driver you install must be compatible with the connector library that
+Zabbix itself was compiled against. Mixing MySQL and MariaDB across these two
+layers triggers an upstream bug that causes crashes or silent query failures
+(ZBX-7665). The rule is straightforward in principle but easy to violate in practice:</p>
+<table>
+<thead>
+<tr>
+<th>Zabbix compiled against</th>
+<th>Use this ODBC driver</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PostgreSQL, SQLite, or Oracle connector</td>
+<td>MariaDB <strong>or</strong> MySQL ODBC driver</td>
+</tr>
+<tr>
+<td>MariaDB connector</td>
+<td>MariaDB ODBC driver only</td>
+</tr>
+<tr>
+<td>MySQL connector</td>
+<td>MySQL ODBC driver only</td>
+</tr>
+</tbody>
+</table>
+<p>When in doubt, check how your Zabbix binary was compiled — <code>zabbix_server -V</code> will
+show the linked libraries — and match the ODBC driver to the connector on that
+same side of the MySQL/MariaDB divide. Using the same connector as the driver is
+also best avoided where possible due to the same upstream issue. This is one of
+the few ODBC configuration requirements with no safe workaround other than compliance.</p>
+<p><a href="https://support.zabbix.com/browse/ZBX-7665">https://support.zabbix.com/browse/ZBX-7665</a></p>
+<h3 id="postgresql">PostgreSQL</h3>
+<p>The <code>psqlodbc</code> driver is stable, mature, and widely deployed in enterprise PostgreSQL
+environments. It supports SSL connections and SCRAM-SHA-256 authentication,
+which is the default in PostgreSQL 14 and later.</p>
+<p>When monitoring PostgreSQL with SCRAM authentication, verify that your installed
+<code>psqlodbc</code> version explicitly supports it, older builds do not. Attempting a SCRAM
+handshake with an incompatible driver produces an authentication error that is
+easy to misdiagnose as a permissions problem.</p>
+<h3 id="microsoft-sql-server">Microsoft SQL Server</h3>
+<p>Microsoft's official <code>msodbcsql18</code> driver is the correct choice for SQL Server
+monitoring. It supports TLS encryption (often mandatory in enterprise SQL Server
+configurations), Kerberos and Active Directory authentication, and Azure SQL Database.
+Installation requires Microsoft's official repository and EULA acceptance.</p>
+<p>FreeTDS (<code>tdsodbc</code>) is a fully open-source TDS protocol implementation available
+without any external repository. It works reliably for simple monitoring queries
+against on-premise SQL Server instances. However, its TLS implementation lags
+behind the official driver, Azure SQL compatibility is inconsistent, and authentication
+options are limited. Use it in constrained environments where Microsoft's repository
+is unavailable, but test thoroughly before production deployment.</p>
+<p>FreeTDS also has a query-level requirement that is not documented prominently and
+produces a confusing error when missing. Every SQL query executed through the FreeTDS
+driver must be prefixed with <code>SET NOCOUNT ON</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">SET</span><span class="w"> </span><span class="n">NOCOUNT</span><span class="w"> </span><span class="k">ON</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'pending'</span>
+</span></code></pre></div>
+<p>Without this prefix, the driver returns an empty result set and the Zabbix item
+goes unsupported with the error "SQL query returned empty result", even when the
+query itself is syntactically correct and would return data through any other
+client. This is a known driver behaviour (ZBX-19917), not a Zabbix bug. Once the
+prefix is in place, FreeTDS behaves predictably for straightforward monitoring
+queries.</p>
+<p>One additional SQL Server limitation worth knowing regardless of driver choice:
+XML data queried from Microsoft SQL Server may be truncated in various ways on
+Linux and UNIX systems. If your monitoring queries return XML columns, common in
+some SQL Server system views — verify that the full value is being returned rather
+than silently cut off at a driver or OS boundary.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>ODBC drivers exist for Oracle, IBM Db2, SAP HANA, and many others. Driver quality,
+maintenance cadence, and compatibility with modern authentication standards vary
+significantly outside the three families above. Oracle deserves special mention:
+multiple versions of Oracle Instant Client for Linux have been observed to cause
+Zabbix server crashes when used for ODBC monitoring (ZBX-18402, ZBX-20803). If
+you are monitoring Oracle via ODBC, test driver versions carefully in a non-production
+environment before any production deployment, and treat an upgrade to a new
+Instant Client version as a change that requires re-validation. Before deploying
+any less common driver in production, treat it as an unknown quantity: test
+under realistic load, validate timeout behaviour, and confirm UTF-8 encoding
+handling. Your monitoring reliability is only as good as the driver underneath
+it.</p>
+</details>
+<h3 id="built-in-templates">Built-in Templates</h3>
+<p>Zabbix ships with ready-made ODBC templates for the most common database platforms.
+These are a reasonable starting point, they implement the master item pattern
+correctly and include sensible default triggers, but treat them as a baseline
+to adapt rather than a finished solution. Production environments invariably have
+database configurations, naming conventions, and business metrics that require
+customisation beyond what a generic template can provide.</p>
+<p>The available templates are: <strong>MariaDB by ODBC</strong>, <strong>MySQL by ODBC</strong>, <strong>MSSQL by
+ODBC</strong>, <strong>Oracle by ODBC</strong>, <strong>Percona by ODBC</strong>, and <strong>PostgreSQL by ODBC</strong>. Each
+includes a README accessible from the template detail view in the Zabbix frontend,
+listing the full set of macros, items, and triggers.</p>
+<h3 id="driver-packages-by-platform">Driver Packages by Platform</h3>
+<table>
+<thead>
+<tr>
+<th>Database</th>
+<th>RHEL / Rocky / Alma</th>
+<th>Ubuntu / Debian</th>
+<th>SUSE</th>
+<th>Vendor Repo?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MySQL / MariaDB</td>
+<td><code>mariadb-connector-odbc</code></td>
+<td><code>mariadb-connector-odbc</code></td>
+<td><code>mariadb-connector-odbc</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td><code>psqlodbc</code></td>
+<td><code>odbc-postgresql</code></td>
+<td><code>psqlODBC</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td>SQL Server</td>
+<td><code>msodbcsql18</code></td>
+<td><code>msodbcsql18</code></td>
+<td><code>msodbcsql18</code></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>SQL Server (OSS)</td>
+<td><code>freetds</code>, <code>freetds-odbc</code></td>
+<td><code>freetds-bin</code>, <code>tdsodbc</code></td>
+<td><code>libtdsodbc0</code></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="installation">Installation</h3>
+<p>ODBC components must be installed on the Zabbix Server or Proxy that will perform
+the checks, not on the monitored database host. The package set is the same regardless
+of which database you intend to monitor: the unixODBC driver manager first, then
+the database-specific driver on top.</p>
+<p><strong>Rocky Linux 9 / RHEL / Alma</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>unixODBC<span class="w"> </span>unixODBC-devel
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>mariadb-connector-odbc<span class="w">    </span><span class="c1"># for MySQL or MariaDB targets</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>postgresql-odbc<span class="w">           </span><span class="c1"># for PostgreSQL targets</span>
+</span></code></pre></div>
+<p><strong>Ubuntu 24.04 / Debian</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>unixodbc<span class="w"> </span>unixodbc-dev
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>odbc-mariadb<span class="w">              </span><span class="c1"># for MySQL or MariaDB targets</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>odbc-postgresql<span class="w">           </span><span class="c1"># for PostgreSQL targets</span>
+</span></code></pre></div>
+<p><strong>SUSE</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>sudo<span class="w"> </span>zypper<span class="w"> </span>install<span class="w"> </span>unixODBC-devel
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>sudo<span class="w"> </span>zypper<span class="w"> </span>install<span class="w"> </span>mariadb-connector-odbc<span class="w"> </span><span class="c1"># for MySQL or MariaDB targets</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>sudo<span class="w"> </span>zypper<span class="w"> </span>install<span class="w"> </span>psqlODBC<span class="w">               </span><span class="c1"># for PostgreSQL targets</span>
+</span></code></pre></div>
+<p>After installation, confirm that the driver manager can see the installed drivers:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>odbcinst<span class="w"> </span>-q<span class="w"> </span>-d
+</span></code></pre></div>
+<p>If a driver you just installed does not appear in the output, the package did not
+register it correctly in <code>/etc/odbcinst.ini</code> and you will need to add the entry
+manually before any DSN referencing that driver will function.</p>
+<h3 id="configuration-files">Configuration Files</h3>
+<p>Two files define the ODBC configuration on the Zabbix server or proxy host. They
+must both be correct for any check to function.</p>
+<p><strong><code>/etc/odbcinst.ini</code> — Driver Registry</strong></p>
+<p>Registers installed drivers under symbolic names. The <code>Driver</code> path must point
+to an installed <code>.so</code> file on the local filesystem.</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">[MariaDB]</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="na">Description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MariaDB ODBC Driver</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="na">Driver</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s">/usr/lib64/libmaodbc.so</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="k">[PostgreSQL]</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="na">Description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">PostgreSQL ODBC Driver</span>
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="na">Driver</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s">/usr/lib64/psqlodbc.so</span>
+</span></code></pre></div>
+<p>Verify the registry reflects installed drivers:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>odbcinst<span class="w"> </span>-q<span class="w"> </span>-d
+</span></code></pre></div>
+<p><strong><code>/etc/odbc.ini</code> — Connection Aliases (DSNs)</strong></p>
+<p>Defines named connections that Zabbix items reference by their section header.
+Each entry maps a symbolic name to driver, host, port, and database configuration.</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="k">[InventoryDB]</span>
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="na">Description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Production Inventory Database</span>
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="na">Driver</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s">MariaDB</span>
+</span><span id="__span-7-4"><a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="na">Server</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s">192.168.1.50</span>
+</span><span id="__span-7-5"><a href="#__codelineno-7-5" id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="na">Port</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s">3306</span>
+</span><span id="__span-7-6"><a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="na">Database</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">shop_db</span>
+</span><span id="__span-7-7"><a href="#__codelineno-7-7" id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="na">User</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s">zabbix_mon</span>
+</span><span id="__span-7-8"><a href="#__codelineno-7-8" id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="na">Password</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">strong_password</span>
+</span></code></pre></div>
+<p>The DSN file contains database credentials. Restrict its permissions immediately
+after creation, a world-readable <code>odbc.ini</code> on a multi-user host is a straightforward
+credential exposure:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>/etc/odbc.ini
+</span></code></pre></div>
+<h3 id="validating-the-stack-before-touching-zabbix">Validating the Stack Before Touching Zabbix</h3>
+<p>Every ODBC troubleshooting session that begins inside Zabbix should have started
+here instead. Test the DSN directly with <code>isql</code> before configuring any items:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>isql<span class="w"> </span>-v<span class="w"> </span>InventoryDB
+</span></code></pre></div>
+<p>A successful connection returns a <code>Connected!</code> prompt. If it fails, the problem
+is in the ODBC stack — driver registration, credentials, network access, TLS
+configuration — and it will fail identically inside Zabbix. Resolve it at this
+layer first. The combination of <code>isql</code> verification and a correctly sized poller
+pool eliminates the vast majority of ODBC support issues before they ever reach
+a Zabbix item.</p>
+<hr/>
+<h2 id="item-design-two-keys-different-philosophies">Item Design: Two Keys, Different Philosophies</h2>
+<p>Zabbix exposes two item keys for ODBC-based database monitoring. They are not
+interchangeable variations of the same idea — they represent different philosophies
+about how monitoring data should be collected.</p>
+<h3 id="dbodbcselect-the-scalar-path"><code>db.odbc.select</code> — The Scalar Path</h3>
+<p><code>db.odbc.select</code> executes a SQL query and returns exactly one value: the first
+column of the first row of the result set. Nothing else is preserved.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>db.odbc.select[&lt;description&gt;,&lt;dsn&gt;,&lt;connection string&gt;]
+</span></code></pre></div>
+<p>This simplicity is its strength. There is no JSON preprocessing, no dependent
+item chain, no extraction logic to maintain. Write a query that produces a single
+number, point it at a DSN, and the value flows directly into item history.</p>
+<p><code>db.odbc.select</code> belongs in your design when the question you are asking has
+exactly one answer: how many pending orders exist right now? What is the replication
+lag in seconds? How many active sessions are connected to this instance? For these
+use cases, adding the machinery of <code>db.odbc.get</code> would be engineering overhead
+with no benefit.</p>
+<p>One important operational note: even though you may write a query that intentionally
+returns one row, multi-row queries will still only surface the first column of
+the first row to Zabbix. Write your SQL to be explicit about what you want, not
+reliant on this truncation behaviour.</p>
+<h3 id="dbodbcget-the-scalable-path"><code>db.odbc.get</code> — The Scalable Path</h3>
+<p><code>db.odbc.get</code> executes a SQL query and returns the entire result set as a JSON array.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>db.odbc.get[&lt;description&gt;,&lt;dsn&gt;,&lt;connection string&gt;]
+</span></code></pre></div>
+<p>A query returning multiple rows and columns produces something like:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="p">[</span>
+</span><span id="__span-12-2"><a href="#__codelineno-12-2" id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="w">  </span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">   </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15"</span><span class="p">,</span><span class="w"> </span><span class="nt">"oldest_age_minutes"</span><span class="p">:</span><span class="w"> </span><span class="s2">"47"</span><span class="p">},</span>
+</span><span id="__span-12-3"><a href="#__codelineno-12-3" id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="w">  </span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"processing"</span><span class="p">,</span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">  </span><span class="nt">"oldest_age_minutes"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12"</span><span class="p">},</span>
+</span><span id="__span-12-4"><a href="#__codelineno-12-4" id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="w">  </span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"failed"</span><span class="p">,</span><span class="w">    </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">  </span><span class="nt">"oldest_age_minutes"</span><span class="p">:</span><span class="w"> </span><span class="s2">"183"</span><span class="p">}</span>
+</span><span id="__span-12-5"><a href="#__codelineno-12-5" id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="p">]</span>
+</span></code></pre></div>
+<p>This single query execution, hitting the database once, can feed an unlimited
+number of dependent items through JSONPath preprocessing. As the replication of
+database queries as item counts grows, the database load does not.</p>
+<p>The canonical design pattern is the <strong>master item</strong>: one <code>db.odbc.get</code> item collects
+the full result set on a defined interval; dependent items each extract one metric
+using JSONPath and may apply additional preprocessing steps like type conversion.
+Ten metrics, one query. A hundred metrics, one query. This is not a marginal
+optimisation, in environments monitoring dozens of databases, it is the difference
+between sustainable load and an ODBC poller pool in permanent saturation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Database drivers commonly return numeric columns as strings in ODBC result
+sets. Always include a <strong>Change Type</strong> preprocessing step converting to Numeric
+(unsigned) or Numeric (float) on dependent items that will feed triggers or
+graphs. Type inconsistency is the most common cause of trigger misfires on
+freshly built database monitor templates.</p>
+</div>
+<h4 id="a-worked-example">A Worked Example</h4>
+<p>Consider a production order management database. Rather than running separate
+queries for pending count, processing count, average queue age, and oldest item
+age, a single query captures the relevant state in one round-trip:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="k">SELECT</span>
+</span><span id="__span-13-2"><a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="w">    </span><span class="n">status</span><span class="p">,</span>
+</span><span id="__span-13-3"><a href="#__codelineno-13-3" id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total</span><span class="p">,</span>
+</span><span id="__span-13-4"><a href="#__codelineno-13-4" id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="w">    </span><span class="k">AVG</span><span class="p">(</span><span class="n">TIMESTAMPDIFF</span><span class="p">(</span><span class="k">MINUTE</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">,</span><span class="w"> </span><span class="n">NOW</span><span class="p">()))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">avg_age_minutes</span><span class="p">,</span>
+</span><span id="__span-13-5"><a href="#__codelineno-13-5" id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="w">    </span><span class="k">MAX</span><span class="p">(</span><span class="n">TIMESTAMPDIFF</span><span class="p">(</span><span class="k">MINUTE</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">,</span><span class="w"> </span><span class="n">NOW</span><span class="p">()))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oldest_age_minutes</span>
+</span><span id="__span-13-6"><a href="#__codelineno-13-6" id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
+</span><span id="__span-13-7"><a href="#__codelineno-13-7" id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'pending'</span><span class="p">,</span><span class="w"> </span><span class="s1">'processing'</span><span class="p">,</span><span class="w"> </span><span class="s1">'failed'</span><span class="p">)</span>
+</span><span id="__span-13-8"><a href="#__codelineno-13-8" id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+</span></code></pre></div>
+<p>The master item runs this query every 60 seconds. From it, dependent items extract
+pending count, processing count, failed count, and average and maximum queue age
+per status — all without touching the database again. A trigger fires when the
+oldest failed item exceeds a threshold. Another fires when the pending count exceeds
+a threshold relative to its moving average. Zero additional database load beyond
+the single master query.</p>
+<h3 id="choosing-between-the-two">Choosing Between the Two</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th><code>db.odbc.select</code></th>
+<th><code>db.odbc.get</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of metrics per query</td>
+<td>One</td>
+<td>Unlimited</td>
+</tr>
+<tr>
+<td>JSON preprocessing required</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Suitable for dependent items</td>
+<td>No</td>
+<td>Primary use case</td>
+</tr>
+<tr>
+<td>Suitable for LLD</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Database call per metric</td>
+<td>One</td>
+<td>Fractional (shared)</td>
+</tr>
+<tr>
+<td>Template complexity</td>
+<td>Low</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Recommended for new templates</td>
+<td>Narrow use cases</td>
+<td>Default choice</td>
+</tr>
+</tbody>
+</table>
+<p>In practice: use <code>db.odbc.select</code> when the metric genuinely stands alone, the
+query is trivially simple, and the item will never need to feed discovery or dependent
+logic. In every other case, design around <code>db.odbc.get</code> with a master item pattern
+from the start. Retrofitting a scalar template into a scalable one after the fact
+is substantially more work than getting the architecture right at the outset.</p>
+<hr/>
+<h2 id="low-level-discovery-with-odbc">Low-Level Discovery with ODBC</h2>
+<p>One of the most powerful ODBC patterns available in Zabbix is using it to drive
+Low-Level Discovery — automatically generating monitoring items for database objects
+whose existence cannot be known at template design time. Tables, schemas, replication
+slots, partitions, named queues: anything the database can enumerate, Zabbix can
+discover and monitor.</p>
+<h3 id="native-discovery-dbodbcdiscovery">Native Discovery: <code>db.odbc.discovery</code></h3>
+<p>The <code>db.odbc.discovery</code> key is purpose-built for LLD. It executes a SQL query and
+formats the results as a discovery array. The query must alias column names to
+match LLD macro format exactly:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="k">SELECT</span>
+</span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="w">    </span><span class="k">table_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">"{#TABLE}"</span><span class="p">,</span>
+</span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="w">    </span><span class="n">table_rows</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">"{#APPROX_ROWS}"</span>
+</span><span id="__span-14-4"><a href="#__codelineno-14-4" id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span>
+</span><span id="__span-14-5"><a href="#__codelineno-14-5" id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">table_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'shop_db'</span>
+</span><span id="__span-14-6"><a href="#__codelineno-14-6" id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">table_type</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s1">'BASE TABLE'</span><span class="p">;</span>
+</span></code></pre></div>
+<p>This produces one discovered entity per table, with macros available for use in
+item prototype keys and names. The common mistake is omitting the quoted LLD macro
+format on the alias — the curly brace and hash syntax must be present and quoted,
+or Zabbix will not recognise the column as a macro.</p>
+<h3 id="scalable-discovery-via-dbodbcget">Scalable Discovery via <code>db.odbc.get</code></h3>
+<p>For larger environments, the master item pattern extends naturally to discovery.
+A single <code>db.odbc.get</code> item collects the full dataset; a dependent discovery rule
+extracts the LLD array using JSONPath; item prototypes are defined as further
+dependent items on the master. One query execution per interval drives the entire
+discovery and metric collection pipeline.</p>
+<p>The performance contrast becomes significant at scale. Native <code>db.odbc.discovery</code>
+executes its own query for each discovery rule. If you have five discovery rules
+covering different aspects of a database — tables, indexes, replication slots,
+partitions, connection pools — that is five separate query executions per discovery
+interval. The master item pattern reduces that to one, with all five discovery
+rules fed from the same result set.</p>
+<p>The architectural decision between the two approaches follows a simple heuristic:
+if the discovery dataset is small and the discovery interval is measured in hours,
+native <code>db.odbc.discovery</code> is perfectly adequate and easier to implement. If the
+environment is large, the discovery interval is more frequent, or you need to
+correlate data from the same query across multiple discovery rules, use the master
+item pattern.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Discovery should detect structure, what objects exist, not operational state.
+Keep discovery queries lightweight and prefer metadata sources like <code>information_schema</code>
+over scanning operational tables. Run discovery at intervals appropriate to
+how often the underlying structure actually changes: hourly or daily is typical.
+Minute-level discovery intervals for database object discovery are almost
+always unnecessary.</p>
+</div>
+<hr/>
+<h2 id="operational-discipline">Operational Discipline</h2>
+<p>ODBC monitoring is unusual among Zabbix check types in that its failure modes are
+asymmetric. A misconfigured agent check fails silently or generates a support
+event in Zabbix. A misconfigured or carelessly written ODBC check can generate
+a noticeable workload on the monitored database — a workload that may compound
+under high-frequency polling, grow worse during periods of database stress, and
+produce cascading effects across both the monitoring and production stack.</p>
+<p>The disciplines below are not optional refinements for mature deployments. They
+are the baseline for any production ODBC configuration.</p>
+<h3 id="query-design">Query Design</h3>
+<p>Every monitoring query must be lighter than the production workload it observes.
+This is a firm principle, not a guideline. Queries that use indexed columns,
+return aggregate results, and touch only the rows they need are acceptable. Queries
+that scan large tables, perform unindexed joins, or replicate the logic of reporting
+tools are not.</p>
+<p>Before deploying any monitoring query, run <code>EXPLAIN</code> or <code>EXPLAIN ANALYZE</code> against
+it and inspect the execution plan. A full table scan on a table with millions
+of rows, executed every 30 seconds, is not monitoring, it is a scheduled load
+injection. If the query plan is not acceptable in production context, redesign
+the query or choose a different monitoring approach.</p>
+<p>The temptation to embed business logic in monitoring SQL is common and should
+be resisted. Monitoring observes systems; it does not replicate application
+behaviour. A query that reproduces the calculation your order processing service
+performs to determine fulfilment priority is fragile, hard to maintain, and likely
+to become incorrect the moment the application logic changes.</p>
+<h3 id="poller-sizing">Poller Sizing</h3>
+<p>The <code>StartODBCPollers</code> parameter in <code>zabbix_server.conf</code> or <code>zabbix_proxy.conf</code>
+controls the number of concurrent ODBC poller processes.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>StartODBCPollers=5
+</span></code></pre></div>
+<p>Too few pollers and items queue, then go unsupported. Too many and you risk
+overwhelming the database with concurrent connections, particularly if the monitored
+database enforces connection limits. The correct approach is to start conservatively,
+3 to 5 pollers for small deployments and monitor the ODBC poller busy percentage
+in Zabbix's own internal metrics. Scale up only when utilisation consistently exceeds
+60 to 80 percent. Never increase pollers as a substitute for fixing slow queries;
+doing so shifts the queuing problem to the database layer, where it becomes invisible
+in Zabbix metrics.</p>
+<h3 id="timeouts">Timeouts</h3>
+<p>Unhandled query timeouts are the most reliable path to a fully saturated poller
+pool. A query that hangs indefinitely ties up a poller slot until the database
+eventually errors or the connection is forcibly closed. In a pool of five pollers,
+three hanging queries means 60 percent of your ODBC capacity is unavailable.</p>
+<p>Zabbix 7.0 introduced per-item timeout configuration for database monitor items,
+accepting values from 1 second to 10 minutes. Use this to set timeouts appropriate
+to each query's expected duration. A simple aggregate query should have a 5 second
+timeout. A more complex cross-table query might justify 30 seconds. Nothing in a
+monitoring context should run for minutes.</p>
+<h3 id="isolation-via-proxy">Isolation via Proxy</h3>
+<p>In any environment with more than a handful of ODBC items, database monitoring
+should run through a Zabbix Proxy rather than directly from the server. This
+provides two critical properties: isolation and locality.</p>
+<p>Isolation means that a misbehaving ODBC configuration, slow queries, driver crashes,
+database connectivity loss, affects only the proxy, not the central Zabbix server.
+The server continues operating normally; the proxy's ODBC items simply go unsupported
+until the issue is resolved. Without isolation, the same failure degrades the entire
+server's poller pool.</p>
+<p>Locality means the proxy runs on a host with direct network access to the monitored
+databases, with ODBC drivers installed for that specific database environment,
+and without routing monitoring traffic through wide-area network paths.</p>
+<h3 id="credentials-and-security">Credentials and Security</h3>
+<p>The monitoring database account must be read-only. Not "mostly read-only with a
+few exceptions" — strictly SELECT only, on the specific databases and schemas it
+needs to monitor, with no ability to modify data or schema. Create a dedicated
+account per monitored application:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">'zabbix_mon'</span><span class="o">@</span><span class="s1">'%'</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'strong_password'</span><span class="p">;</span>
+</span><span id="__span-16-2"><a href="#__codelineno-16-2" id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">shop_db</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'zabbix_mon'</span><span class="o">@</span><span class="s1">'%'</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Store credentials in Zabbix macros rather than hardcoded in DSN files where possible.
+For environments with a secrets management platform, Zabbix's vault integration
+allows credentials to be fetched at runtime rather than stored in configuration
+files at all.</p>
+<p>Connection strings embedded directly in item keys are visible in the Zabbix frontend
+to any user with access to the host configuration. This is acceptable in development
+but not in production. Use DSN-level credentials or macros.</p>
+<h3 id="connection-pooling">Connection Pooling</h3>
+<p>unixODBC supports connection pooling from version 2.0.0 onwards. Enabling it reduces
+the overhead of repeated connection establishment — the TCP handshake, TLS negotiation,
+and authentication round-trip that precedes every query in a non-pooled configuration.
+In high-frequency monitoring environments, this overhead accumulates.</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="c1"># In /etc/odbcinst.ini</span>
+</span><span id="__span-17-2"><a href="#__codelineno-17-2" id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="k">[ODBC]</span>
+</span><span id="__span-17-3"><a href="#__codelineno-17-3" id="__codelineno-17-3" name="__codelineno-17-3"></a><span class="na">Pooling</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Yes</span>
+</span></code></pre></div>
+<p>Pooling is particularly valuable in environments where database connection setup
+is expensive, SSL mutual authentication, Kerberos, or databases with slow
+authentication backends. Verify that your specific driver supports pooling
+correctly before enabling it in production, as driver-level pooling bugs can
+produce stale connection state or query result corruption.</p>
+<h3 id="character-encoding">Character Encoding</h3>
+<p>ODBC monitoring is surprisingly sensitive to encoding inconsistencies. The database,
+the operating system locale, and the ODBC driver must all agree on UTF-8. When
+they do not, two failure modes emerge: visually corrupted string data in item
+values, and JSON parse failures in <code>db.odbc.get</code> results.</p>
+<p>The second mode is more operationally dangerous because it produces item errors
+rather than incorrect data. A <code>db.odbc.get</code> item that returns garbled encoding
+in a string column will silently break every dependent item and discovery rule
+that depends on it. Verify encoding consistency during initial deployment, before
+any dependent item logic is built on top of the master item.</p>
+<hr/>
+<h2 id="anti-patterns-and-how-they-manifest">Anti-Patterns and How They Manifest</h2>
+<p>ODBC anti-patterns tend to be invisible until they are not. The symptoms often
+appear distant from the root cause, an unrelated monitoring item goes unsupported,
+database response times spike during a specific window, Zabbix queue depth grows.
+Knowing the common failure patterns in advance makes them faster to diagnose.</p>
+<ul>
+<li>
+<p><strong>Monitoring queries written as reports.</strong>: A query written for a business report
+is designed to be complete and correct, not fast. It likely scans multiple large
+tables, performs several joins, aggregates millions of rows, and computes derived
+fields. Running it once a month in a reporting tool is fine. Running it every 60
+seconds as a Zabbix check against a production database is not. The symptom is a
+gradual increase in database CPU and I/O during monitoring windows, often dismissed
+as coincidental load until someone traces it.</p>
+</li>
+<li>
+<p><strong>High-frequency polling of expensive metrics.</strong>: Not all metrics need to be
+collected at the same frequency. Replication lag, where a drift of even a few
+seconds may be significant, warrants a short polling interval. The number of tables
+in a schema, which changes only when a deployment runs, does not. Applying a 30
+second polling interval uniformly across all ODBC items wastes both poller
+capacity and database resources. Assign intervals based on the operational sensitivity
+of each metric.</p>
+</li>
+<li>
+<p><strong>Using privileged accounts.</strong>: Monitoring with a DBA or application account
+that has write privileges introduces unnecessary risk. A credential leak, an
+injection vulnerability in a poorly constructed monitoring query, or a simple
+configuration mistake could result in data modification. The monitoring account
+must be read-only. There are no legitimate exceptions to this in production.</p>
+</li>
+<li>
+<p><strong>Scaling pollers to mask slow queries.</strong>: When ODBC items go unsupported due
+to poller saturation, the instinct is to increase <code>StartODBCPollers</code>. If the saturation
+is caused by a growing item count or a genuine burst in monitoring demand, more
+pollers is the right answer. If it is caused by slow queries, more pollers shifts
+the problem: instead of queued items in Zabbix, you get queued connections at the
+database layer, which may then cause application connection pool exhaustion. Fix
+the query first. Scale pollers second.</p>
+</li>
+<li>
+<p><strong>Ignoring driver-specific known issues.</strong>: Each driver family carries its own
+list of quirks that are not discoverable through normal testing. The MySQL/MariaDB
+connector mismatch (ZBX-7665), the FreeTDS <code>SET NOCOUNT ON</code> requirement (ZBX-19917),
+Oracle Instant Client crashes on Linux (ZBX-18402, ZBX-20803), and MSSQL XML
+truncation on UNIX systems are all production-grade failure modes that are entirely
+invisible during basic connectivity testing. Reviewing the known issues for your
+specific driver before deployment is not optional reading — it is the step that
+prevents a category of failures that no amount of query tuning or poller sizing
+will fix.</p>
+</li>
+<li>
+<p><strong>Skipping DSN validation.</strong>: Configuring a Zabbix item against an untested DSN
+and then using Zabbix's error output to debug ODBC connectivity is slower and
+less informative than using <code>isql</code> directly. Zabbix normalises ODBC errors
+through its own logging layer; <code>isql</code> surfaces the raw driver error. Always
+validate the full stack with <code>isql</code> before creating Zabbix items.</p>
+</li>
+</ul>
+<hr/>
+<h2 id="choosing-the-right-database-monitoring-approach">Choosing the Right Database Monitoring Approach</h2>
+<p>ODBC is not the only way to monitor databases in Zabbix, and it is not always the
+right one. The choice between ODBC, agent-based monitoring, and application-layer
+HTTP checks depends on what you are measuring, where the database lives, and what
+<strong>operational overhead you are prepared to maintain.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>ODBC</th>
+<th>Zabbix Agent 2 Plugin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent required on DB host</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Custom SQL queries</td>
+<td>Yes — full flexibility</td>
+<td>Limited or none</td>
+</tr>
+<tr>
+<td>Cloud-managed databases</td>
+<td>Yes</td>
+<td>Often not possible</td>
+</tr>
+<tr>
+<td>Infrastructure health metrics</td>
+<td>Good</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>Business KPI monitoring</td>
+<td>Excellent</td>
+<td>Not designed for it</td>
+</tr>
+<tr>
+<td>Risk of slow queries</td>
+<td>High (by design)</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Setup and maintenance cost</td>
+<td>Medium to high</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<p>The strategic division in mature environments is clear: Agent 2 plugins handle
+core database health and OS-level metrics where an agent can be installed; ODBC
+handles everything that requires direct SQL execution, custom business metrics,
+application-level state, replication details, and anything residing in tables
+rather than system views. Neither replaces the other. Together, they provide
+the full observability stack.</p>
+<hr/>
+<h2 id="summary">Summary</h2>
+<p>ODBC occupies a unique position in the Zabbix monitoring toolkit: it is the only
+mechanism that gives you direct access to the data layer, the place where the most
+operationally significant state actually lives. Order queues, replication lag,
+session counts, failed transaction rates, business KPIs, ... none of these are
+visible without SQL.</p>
+<p>The technical complexity of ODBC is moderate. Installing drivers, configuring DSNs,
+and writing <code>db.odbc.select</code> items is straightforward work. The harder discipline
+is operational: choosing queries that are genuinely lightweight, sizing the poller
+pool appropriately, isolating database monitoring through proxies, validating
+the full stack before configuring items, and resisting the temptation to embed
+business logic or reporting queries in monitoring checks.</p>
+<p>The <code>db.odbc.get</code> master item pattern — one query feeding multiple dependent items
+and discovery rules — is the foundation of any scalable ODBC deployment. Build
+around it from the start, and ODBC becomes one of the most powerful sources of
+observability in your Zabbix environment. Treat it as an afterthought, and it
+becomes one of the most reliable sources of production incidents.</p>
+<p>The difference is not in the technology. The difference is in the discipline
+of the person who configures it.</p>
+<hr/>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Why does Zabbix rely on unixODBC instead of communicating directly with databases,
+and what are the operational implications of that indirection?</li>
+<li>A <code>db.odbc.get</code> master item runs a query that returns 12 columns across 8 rows.
+How many dependent items can theoretically be fed from it, and what preprocessing
+steps would you apply to extract a numeric value from one of those columns?</li>
+<li>You have 5 ODBC pollers and notice that ODBC poller busy percentage is consistently
+at 95%. Before increasing <code>StartODBCPollers</code>, what investigation steps should you
+take first?</li>
+<li>An ODBC item returns <code>[08001] Network connectivity issue</code>. Walk through the
+diagnostic sequence you would follow, starting from the most foundational layer.</li>
+<li>You are designing a template to monitor a PostgreSQL database that has a variable
+number of schemas, each with a variable number of tables. Describe the discovery
+architecture you would use and explain why.</li>
+<li>Why is it dangerous to use the same monitoring approach, polling interval, query
+complexity, and account privileges, across both development and production environments?</li>
+<li>Your Zabbix server is compiled against the MariaDB connector. A colleague installs
+the MySQL ODBC driver and configures several database monitor items. What specific
+failure modes should you anticipate, and how would you resolve the configuration
+correctly?</li>
+<li>A FreeTDS-based MSSQL monitor item returns "SQL query returned empty result"
+despite the query executing correctly in a SQL client. What is the cause and what
+is the fix?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks">https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks</a></li>
+<li><a href="https://blog.zabbix.com/database-odbc-monitoring-with-zabbix/8076/">https://blog.zabbix.com/database-odbc-monitoring-with-zabbix/8076/</a></li>
+<li><a href="https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker">https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Terug naar boven
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Gekopieerd naar klembord", "clipboard.copy": "Kopi\u00ebren naar klembord", "search.result.more.one": "1 extra overeenkomst op deze pagina", "search.result.more.other": "# extra overeenkomsten op deze pagina", "search.result.none": "Geen overeenkomende documenten", "search.result.one": "1 overeenkomende document", "search.result.other": "# overeenkomende documenten", "search.result.placeholder": "Typ om te beginnen met zoeken", "search.result.term.missing": "Ontbreekt", "select.version": "Selecteer versie"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../javascripts/tags-data-attr.js?v=00f3eba837c662ba823f1d49c099510f60509368"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>

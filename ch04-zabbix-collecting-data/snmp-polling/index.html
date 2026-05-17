@@ -1,0 +1,2589 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Master SNMP polling in Zabbix. Query OIDs, use MIBs, and leverage asynchronous
+get/walk methods with secure SNMPv3 to monitor network devices efficiently.
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/ch04-zabbix-collecting-data/snmp-polling/" rel="canonical">
+<link href="../zabbix-agent-active/" rel="prev"/>
+<link href="../snmp-trapping/" rel="next"/>
+<link href="../../fr/ch04-zabbix-collecting-data/snmp-polling/" hreflang="fr" rel="alternate"/>
+<link href="../../nl/ch04-zabbix-collecting-data/snmp-polling/" hreflang="nl" rel="alternate"/>
+<link href="../../pt_BR/ch04-zabbix-collecting-data/snmp-polling/" hreflang="pt_BR" rel="alternate"/>
+<link href="../../ru/ch04-zabbix-collecting-data/snmp-polling/" hreflang="ru" rel="alternate"/>
+<link href="./" hreflang="en" rel="alternate"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>SNMP Polling - Zabbix Book</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../stylesheets/extra.css?v=00f3eba837c662ba823f1d49c099510f60509368" rel="stylesheet"/>
+<link href="../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="SNMP Polling" property="og:title"/>
+<meta content="Master SNMP polling in Zabbix. Query OIDs, use MIBs, and leverage asynchronous get/walk methods with secure SNMPv3 to monitor network devices efficiently." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/ch04-zabbix-collecting-data/snmp-polling/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="SNMP Polling" name="twitter:title"/>
+<meta content="Master SNMP polling in Zabbix. Query OIDs, use MIBs, and leverage asynchronous get/walk methods with secure SNMPv3 to monitor network devices efficiently." name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#snmp-polling">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<script>
+        const gGMC_SELECT_VERSION = "Select version";
+        const gGMC_TRANSLATE_CTA = "Support us and translate!";
+        const gGMC_PAGE_LOCALE = "en";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../.." title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              SNMP Polling
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Select language" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../fr/ch04-zabbix-collecting-data/snmp-polling/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../nl/ch04-zabbix-collecting-data/snmp-polling/" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../pt_BR/ch04-zabbix-collecting-data/snmp-polling/" hreflang="pt_BR">
+              Brazilian Portuguese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../ru/ch04-zabbix-collecting-data/snmp-polling/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<a aria-label="Share" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Share">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch02-zabbix-installation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch03-zabbix-proxies/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 04 : Collecting data 
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../chapter/">
+<span class="md-ellipsis">
+    
+  
+    Collecting data with your Zabbix environment
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dataflow/">
+<span class="md-ellipsis">
+    
+  
+    Dataflow
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../hosts/">
+<span class="md-ellipsis">
+    
+  
+    Hosts
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../simple-checks/">
+<span class="md-ellipsis">
+    
+  
+    Simple checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../host-interfaces/">
+<span class="md-ellipsis">
+    
+  
+    Host Interfaces
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-passive/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent installation and Passive monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-active/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent Active monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    SNMP Polling
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    SNMP Polling
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-is-a-mib">
+<span class="md-ellipsis">
+      
+        What is a MIB?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-is-an-oid">
+<span class="md-ellipsis">
+      
+        What is an OID?
+      
+    </span>
+</a>
+<nav aria-label="What is an OID?" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-is-the-oid-tree-structure">
+<span class="md-ellipsis">
+      
+        What Is the OID Tree Structure?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-to-use-the-oid-tree">
+<span class="md-ellipsis">
+      
+        How to Use the OID Tree
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#net-snmp">
+<span class="md-ellipsis">
+      
+        Net-SNMP
+      
+    </span>
+</a>
+<nav aria-label="Net-SNMP" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#testing-an-snmp-device-where-to-start">
+<span class="md-ellipsis">
+      
+        Testing an SNMP Device: Where to Start?
+      
+    </span>
+</a>
+<nav aria-label="Testing an SNMP Device: Where to Start?" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#your-first-test-attempt-snmpv2c-and-the-public-community-string">
+<span class="md-ellipsis">
+      
+        Your First Test Attempt: SNMPv2c and the 'public' Community String
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-if-you-get-no-information-back">
+<span class="md-ellipsis">
+      
+        What if You Get No Information Back?
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#snmpv3-security-levels">
+<span class="md-ellipsis">
+      
+        SNMPv3 Security Levels
+      
+    </span>
+</a>
+<nav aria-label="SNMPv3 Security Levels" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples-of-snmpv3-commands">
+<span class="md-ellipsis">
+      
+        Examples of SNMPv3 Commands
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-note-on-snmpv1-avoid-if-possible">
+<span class="md-ellipsis">
+      
+        A Note on SNMPv1: Avoid if Possible
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-the-output-of-snmpstatus">
+<span class="md-ellipsis">
+      
+        Understanding the Output of snmpstatus
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#installing-snmp-agent-on-a-linux-host">
+<span class="md-ellipsis">
+      
+        Installing SNMP Agent on a Linux Host
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deploying-bare-minimum-mib-files">
+<span class="md-ellipsis">
+      
+        Deploying bare minimum MIB files
+      
+    </span>
+</a>
+<nav aria-label="Deploying bare minimum MIB files" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#include-another-vendor">
+<span class="md-ellipsis">
+      
+        Include another vendor
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#optional-bulletproof-mib-less-solution">
+<span class="md-ellipsis">
+      
+        (optional) Bulletproof, MIB-less solution
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#snmp-monitoring-in-zabbix">
+<span class="md-ellipsis">
+      
+        SNMP Monitoring in Zabbix
+      
+    </span>
+</a>
+<nav aria-label="SNMP Monitoring in Zabbix" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#synchronous-snmp-monitoring">
+<span class="md-ellipsis">
+      
+        Synchronous SNMP Monitoring
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#asynchronous-snmp-monitoring">
+<span class="md-ellipsis">
+      
+        Asynchronous SNMP Monitoring
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#comparison-of-snmp-monitoring-methods">
+<span class="md-ellipsis">
+      
+        Comparison of SNMP Monitoring Methods
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#polling-your-first-oid-in-zabbix">
+<span class="md-ellipsis">
+      
+        Polling Your First OID in Zabbix
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#polling-a-single-snmp-item">
+<span class="md-ellipsis">
+      
+        Polling a single SNMP item
+      
+    </span>
+</a>
+<nav aria-label="Polling a single SNMP item" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-does-change-per-second-work">
+<span class="md-ellipsis">
+      
+        How does change per second work ?
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#polling-a-list-of-item">
+<span class="md-ellipsis">
+      
+        Polling a list of item
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-trapping/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Trapping
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../http/">
+<span class="md-ellipsis">
+    
+  
+    HTTP Items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../preprocessing/">
+<span class="md-ellipsis">
+    
+  
+    Preprocessing
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dependent/">
+<span class="md-ellipsis">
+    
+  
+    Dependent items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ssh-telnet/">
+<span class="md-ellipsis">
+    
+  
+    SSH / Telnet
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../script/">
+<span class="md-ellipsis">
+    
+  
+    Script item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../jmx/">
+<span class="md-ellipsis">
+    
+  
+    Monitoring Java Applications with JMX
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ipmi/">
+<span class="md-ellipsis">
+    
+  
+    IPMI Monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../database-odbc/">
+<span class="md-ellipsis">
+    
+  
+    Database Monitoring via ODBC
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../database-agent/">
+<span class="md-ellipsis">
+    
+  
+    Database checks via Zabbix agent 2
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-trapper/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix trapper
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../external-checks/">
+<span class="md-ellipsis">
+    
+  
+    External checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../browser/">
+<span class="md-ellipsis">
+    
+  
+    Browser item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../calculated/">
+<span class="md-ellipsis">
+    
+  
+    Calculated items
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch06-zabbix-templates/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/graphs/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch13-advanced-security/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-is-a-mib">
+<span class="md-ellipsis">
+      
+        What is a MIB?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-is-an-oid">
+<span class="md-ellipsis">
+      
+        What is an OID?
+      
+    </span>
+</a>
+<nav aria-label="What is an OID?" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-is-the-oid-tree-structure">
+<span class="md-ellipsis">
+      
+        What Is the OID Tree Structure?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-to-use-the-oid-tree">
+<span class="md-ellipsis">
+      
+        How to Use the OID Tree
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#net-snmp">
+<span class="md-ellipsis">
+      
+        Net-SNMP
+      
+    </span>
+</a>
+<nav aria-label="Net-SNMP" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#testing-an-snmp-device-where-to-start">
+<span class="md-ellipsis">
+      
+        Testing an SNMP Device: Where to Start?
+      
+    </span>
+</a>
+<nav aria-label="Testing an SNMP Device: Where to Start?" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#your-first-test-attempt-snmpv2c-and-the-public-community-string">
+<span class="md-ellipsis">
+      
+        Your First Test Attempt: SNMPv2c and the 'public' Community String
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-if-you-get-no-information-back">
+<span class="md-ellipsis">
+      
+        What if You Get No Information Back?
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#snmpv3-security-levels">
+<span class="md-ellipsis">
+      
+        SNMPv3 Security Levels
+      
+    </span>
+</a>
+<nav aria-label="SNMPv3 Security Levels" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples-of-snmpv3-commands">
+<span class="md-ellipsis">
+      
+        Examples of SNMPv3 Commands
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-note-on-snmpv1-avoid-if-possible">
+<span class="md-ellipsis">
+      
+        A Note on SNMPv1: Avoid if Possible
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#understanding-the-output-of-snmpstatus">
+<span class="md-ellipsis">
+      
+        Understanding the Output of snmpstatus
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#installing-snmp-agent-on-a-linux-host">
+<span class="md-ellipsis">
+      
+        Installing SNMP Agent on a Linux Host
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deploying-bare-minimum-mib-files">
+<span class="md-ellipsis">
+      
+        Deploying bare minimum MIB files
+      
+    </span>
+</a>
+<nav aria-label="Deploying bare minimum MIB files" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#include-another-vendor">
+<span class="md-ellipsis">
+      
+        Include another vendor
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#optional-bulletproof-mib-less-solution">
+<span class="md-ellipsis">
+      
+        (optional) Bulletproof, MIB-less solution
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#snmp-monitoring-in-zabbix">
+<span class="md-ellipsis">
+      
+        SNMP Monitoring in Zabbix
+      
+    </span>
+</a>
+<nav aria-label="SNMP Monitoring in Zabbix" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#synchronous-snmp-monitoring">
+<span class="md-ellipsis">
+      
+        Synchronous SNMP Monitoring
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#asynchronous-snmp-monitoring">
+<span class="md-ellipsis">
+      
+        Asynchronous SNMP Monitoring
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#comparison-of-snmp-monitoring-methods">
+<span class="md-ellipsis">
+      
+        Comparison of SNMP Monitoring Methods
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#polling-your-first-oid-in-zabbix">
+<span class="md-ellipsis">
+      
+        Polling Your First OID in Zabbix
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#polling-a-single-snmp-item">
+<span class="md-ellipsis">
+      
+        Polling a single SNMP item
+      
+    </span>
+</a>
+<nav aria-label="Polling a single SNMP item" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-does-change-per-second-work">
+<span class="md-ellipsis">
+      
+        How does change per second work ?
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#polling-a-list-of-item">
+<span class="md-ellipsis">
+      
+        Polling a list of item
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navigation" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../..">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../chapter/">
+<span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<nav class="md-tags">
+<span class="md-tag md-tag-icon" data-tag="advanced">
+      Advanced
+    </span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch04-zabbix-collecting-data/snmp-polling.md" title="View source of this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="snmp-polling">SNMP Polling</h1>
+<p>In the previous chapter, we explored monitoring strategies that relied on both
+active and passive Zabbix agents. This chapter introduces an alternative approach
+monitoring via SNMP (Simple Network Management Protocol) which does not require
+the installation of a Zabbix agent on the monitored device. This method is
+especially useful in environments where agent based monitoring is impractical,
+restricted or simply not allowed.</p>
+<p>Simple Network Management Protocol (SNMP) is a widely adopted protocol designed
+for monitoring and managing devices on IP networks. Despite the word "management"
+in its name, SNMP is predominantly employed for monitoring purposes. Its widespread
+support across networking hardware and embedded systems has made it a cornerstone
+of modern network visibility solutions.</p>
+<p>Originally developed in the late 1980s, SNMP has undergone several revisions.
+Early versions, such as SNMPv1 and SNMPv2c, were hampered by significant security
+limitations. As a result, while SNMP includes functionality for remote device
+configuration, its use has remained largely to status monitoring rather than
+active management of devices.</p>
+<p>SNMP is especially valuable for monitoring resource constrained or embedded devices
+that lack the capacity to run a full monitoring agent.</p>
+<p>Common examples include:</p>
+<ul>
+<li>Printers</li>
+<li>Network switches, routers, and firewalls</li>
+<li>Uninterruptible Power Supplies (UPSs)</li>
+<li>NAS (Network-Attached Storage) appliances</li>
+<li>Environmental sensors (e.g., temperature, humidity sensors)</li>
+</ul>
+<p>These devices often provide built-in SNMP support, making them accessible for monitoring
+with minimal configuration. Additionally, SNMP can be employed on standard servers
+where installing or maintaining a Zabbix agent is either impractical or not permitted.
+This could be due to administrative policies, software compatibility or security
+concerns, or simply a desire to reduce system footprint.</p>
+<p>Recognizing the ubiquity of SNMP, Zabbix provides native SNMP support. This
+capability is powered by the open-source Net-SNMP suite, available at
+<a href="http://net-snmp.sourceforge.net">http://net-snmp.sourceforge.net</a>. The integration
+allows Zabbix to retrieve metrics from SNMP-enabled devices using industry standard
+mechanisms.</p>
+<p>In this chapter, we will cover the following:</p>
+<ul>
+<li>An introduction to the Net-SNMP toolkit and its core utilities.</li>
+<li>How to integrate MIB (Management Information Base) files into Zabbix, enabling
+  the platform to interpret SNMP data correctly.</li>
+<li>The process of SNMP polling within Zabbix, including how to define SNMP-based
+  items and retrieve data from devices.</li>
+</ul>
+<p>This chapter serves as the foundation for SNMP-based monitoring in Zabbix. While
+we begin with the essentials such as polling, MIB usage, and SNMP item
+configuration this is just the start.</p>
+<p>Later in this book, we will build upon this knowledge by exploring Low-Level
+Discovery (LLD) mechanisms using SNMP. LLD allows Zabbix to automatically detect
+and create monitoring items for dynamic or repetitive structures, such as
+network interfaces, power supplies, ...</p>
+<hr/>
+<h2 id="what-is-a-mib">What is a MIB?</h2>
+<p>Imagine you have a house full of smart devices: a smart thermostat, a smart lamp,
+and a smart doorbell. All these devices keep track of various types of information.
+The thermostat has the indoor temperature and battery status, the lamp has its
+brightness and color, and the doorbell has a log of who has been at the door.</p>
+<p>A MIB (Management Information Base) is the "table of contents" or "catalog" of
+all this information on a network device. Every SNMP enabled device has its own
+MIB, which is structured and organized. Without a MIB, your Zabbix server wouldn't
+know what data is available to monitor. The MIB specifies exactly which metrics
+the device can share.</p>
+<hr/>
+<h2 id="what-is-an-oid">What is an OID?</h2>
+<p>To retrieve a specific piece of information from that catalog, you need an address.
+An OID (Object Identifier) is that address.</p>
+<p>You can think of an OID as a GPS coordinate or a book's unique ISBN number. It's
+a hierarchical sequence of numbers (for example, 1.3.6.1.2.1.1.3.0) that leads
+you to one specific piece of information, such as a device's uptime or the
+number of network errors on a particular port.</p>
+<p>The OID is the exact path to the data within the MIB. Zabbix uses these OIDs
+to know what to request from the device. You configure Zabbix to say: "Request
+the value of this specific OID," and the device returns the requested value.</p>
+<p>In short:</p>
+<ul>
+<li>The MIB is the library catalog that describes the structure of all available
+  data.</li>
+<li>The OID is the specific address that leads you to the book (the data) you're
+  looking for.</li>
+</ul>
+<p>When Zabbix wants to monitor a device via SNMP, it uses an OID to send an SNMP
+request. The agent on the device searches its MIB for the data corresponding
+to that OID and sends the value back to Zabbix. This is the foundation of
+SNMP based monitoring.</p>
+<hr/>
+<h3 id="what-is-the-oid-tree-structure">What Is the OID Tree Structure?</h3>
+<p>The OID (Object Identifier) structure is a hierarchical tree, much like a family
+tree or a computer's folder structure. This tree is standardized globally. Each
+point on the tree, from the root to the "leaves," is represented by a number.</p>
+<p>The tree starts at the root, with a few main branches managed by international
+organizations. The most common branch for network management and SNMP often begins
+with <code>1.3.6.1</code>. Let's break down this OID to see how the structure works:</p>
+<ul>
+<li><strong>1:</strong> This branch is managed by <strong>ISO</strong> (International Organization for Standardization).</li>
+<li><strong>1.3:</strong> This branch is for <code>identified-organization</code>.</li>
+<li><strong>1.3.6:</strong> This is the branch for the U.S. Department of Defense (<strong>DoD</strong>).</li>
+<li><strong>1.3.6.1:</strong> This is the <strong>internet</strong> branch, managed by the IETF (Internet
+  Engineering Task Force).</li>
+<li>... and so on.</li>
+</ul>
+<p>Every branch in this tree is responsible for managing the numbers below it. Companies
+like Cisco or projects like Net-SNMP get their own unique number under a specific
+branch, most commonly under <code>1.3.6.1.4.1</code>, which is reserved for private enterprises.</p>
+<hr/>
+<h3 id="how-to-use-the-oid-tree">How to Use the OID Tree</h3>
+<p>For Zabbix, the OID tree is essential for understanding what data is available on
+a device. Instead of remembering long, unreadable strings of numbers, <strong>MIB
+(Management Information Base)</strong> files use text labels to translate the numbers
+into human-readable names.</p>
+<p><strong>Example:</strong></p>
+<ul>
+<li>The OID for a device's system description is: <code>1.3.6.1.2.1.1.1.0</code>.</li>
+<li>An MIB file translates this to: <code>sysDescr.0</code>.</li>
+</ul>
+<p>You can use the OID tree to:</p>
+<ol>
+<li><strong>Look up data manually</strong>: You can browse MIB files or online OID databases to
+   find the exact OID for the metric you want to monitor.</li>
+<li><strong>Use SNMP commands</strong>: With commands like <code>snmpwalk</code>, <code>snmpget</code>, or <code>snmpstatus</code>,
+   you can use the numeric OIDs or the readable names (if MIBs are loaded) to
+   request data from a device.</li>
+<li><strong>Configure LLD (Low-Level Discovery)</strong>: Zabbix uses OID sub-trees to automatically
+   create monitoring items for dynamic components, such as network interfaces or
+   disk partitions.</li>
+</ol>
+<hr/>
+<h2 id="net-snmp">Net-SNMP</h2>
+<p>The <em>Simple Network Management Protocol</em> (SNMP) is a widely used protocol for monitoring
+and managing networked devices. It operates primarily over UDP port 161, though in
+certain cases, SNMP agents or proxies may also support TCP port 161 for enhanced
+reliability or integration with specific tools. SNMP allows administrators to query
+information or trigger actions on remote devices using structured data identified
+by Object Identifiers (OIDs).</p>
+<p>To begin working with SNMP in a lab or testing environment, you may choose between
+two approaches:</p>
+<ul>
+<li>Use an existing SNMP capable device already present in your network infrastructure.</li>
+<li>Deploy a lightweight SNMP agent on a general-purpose server, such as your Zabbix
+  server or a dedicated virtual machine.</li>
+</ul>
+<p>In this chapter, we will walk through the installation and configuration of a basic
+SNMP agent on a RedHat, Suse or Ubuntu based Zabbix server. However, the same setup can
+be applied to any compatible Linux system.</p>
+<p>Note: If you're using a device already present on your network, ensure:</p>
+<ul>
+<li>You have network access to the device (verify routing and firewall settings).</li>
+<li>SNMP access is allowed from your Zabbix server’s IP address.</li>
+<li>The correct community string is configured, and your IP is included in the SNMP
+  access control rules of the device.</li>
+</ul>
+<p>Dataflow between Zabbix and the SNMP device.</p>
+<pre class="mermaid"><code>graph TD
+    A[Zabbix Server] --&gt;|SNMP Request on port 161/UDP| B(Router, Switch, Printer, ...);
+    B --&gt;|SNMP Agent| C{"Management Information Base (MIB)"};
+    C --&gt;|Read data via OID's| B;
+    B --&gt;|SNMP Response| A
+</code></pre>
+<p><em>4.28 Overview</em></p>
+<p>Before we start lets go over a few tools that we will use and explain what they
+exactly do.</p>
+<ul>
+<li><strong>snmpget:</strong> Retrieves the value of a single, specific OID.</li>
+<li><strong>snmpwalk:</strong> Walks an entire OID subtree and displays all of its values.</li>
+<li><strong>snmpstatus:</strong> Provides a summary of a device's basic status.</li>
+</ul>
+<hr/>
+<h3 id="testing-an-snmp-device-where-to-start">Testing an SNMP Device: Where to Start?</h3>
+<p>When you're looking to test an SNMP device, it's crucial to understand the available
+SNMP versions and which ones you should prioritize. Currently, there are three
+commonly used versions: <strong>SNMPv1</strong>, <strong>SNMPv2c</strong>, and <strong>SNMPv3</strong>.</p>
+<ul>
+<li><strong>SNMPv1</strong>: This is the oldest version and should generally be avoided unless
+  absolutely necessary. It's quite limited in functionality and has serious security
+  vulnerabilities.</li>
+<li><strong>SNMPv2c</strong>: Still the most prevalent version today, SNMPv2c offers improvements
+  over v1, especially in data retrieval and performance. It's relatively straightforward
+  to configure and use.</li>
+<li><strong>SNMPv3</strong>: This version is rapidly gaining popularity and is considered the most
+  secure and advanced option. It provides encryption, authentication, and user
+  management, which are essential for secure networks.</li>
+</ul>
+<hr/>
+<h4 id="your-first-test-attempt-snmpv2c-and-the-public-community-string">Your First Test Attempt: SNMPv2c and the 'public' Community String</h4>
+<p>To begin your testing, we recommend trying to connect to your device using <strong>SNMPv2c</strong>
+and the standard <strong>community string 'public'</strong>. Many devices ship with these default
+settings, though it's certainly insecure for production environments.</p>
+<p>You can use the <code>snmpstatus</code> command for this. Here’s an example of how you might
+do this in your terminal:</p>
+<details class="example" open="open">
+<summary>Testing SNMPv2c with the 'public' community string</summary>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="w">  </span>snmpstatus<span class="w"> </span>-v<span class="w"> </span>2c<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span><span class="o">[</span>IP-address_of_the_device<span class="o">]</span>
+</span></code></pre></div>
+<p>Replace <code>[IP-address_of_the_device]</code> with the actual IP address or hostname of the
+device you wish to test.</p>
+</details>
+<hr/>
+<h4 id="what-if-you-get-no-information-back">What if You Get No Information Back?</h4>
+<p>If you don't receive any information after this attempt, don't panic. It simply means
+the default settings likely don't apply to your device, or there might be a network
+related issue. You'll need to dig deeper into your device's configuration or troubleshoot
+your network.</p>
+<p><strong>First, check the device's configuration:</strong></p>
+<ol>
+<li><strong>SNMP Version</strong>: Which SNMP version (v1, v2c, or v3) is configured and enabled?</li>
+<li><strong>Community String (for v1/v2c)</strong>: If your device uses SNMPv1 or SNMPv2c, what
+   is the configured community string (similar to a password) for read-only and
+   potentially read- write access? It's rarely 'public' in a properly configured
+   environment.</li>
+<li>
+<p><strong>Username, Authentication, and Privacy (for v3)</strong>: If your device uses SNMPv3,
+   you'll need more specific information:</p>
+<ul>
+<li><strong>Username</strong>: What username has been created for SNMPv3?</li>
+<li><strong>Authentication Protocol and Password</strong>: Which authentication protocol (e.g.,
+  MD5, SHA) is used, and what is its corresponding password?</li>
+<li><strong>Privacy Protocol and Password</strong>: Which encryption protocol (e.g., DES, AES)
+  is used, and what is its corresponding password?</li>
+</ul>
+</li>
+</ol>
+<p><strong>Next, consider potential network issues:</strong></p>
+<p>Even if your device is correctly configured, network obstacles can prevent SNMP communication.
+Check for:</p>
+<ul>
+<li><strong>Firewall Blocking</strong>: A firewall (either on your testing machine, the network,
+  or the SNMP device itself) might be blocking the UDP port 161, which SNMP typically
+  uses. Ensure the necessary ports are open.</li>
+<li><strong>ACL Settings on the Device</strong>: The SNMP device itself might have Access Control
+  List (ACL) settings configured to restrict access only to specific IP addresses.
+  Verify that your testing machine's IP address is permitted.</li>
+<li><strong>Network Connectivity</strong>: Basic network issues like incorrect IP addresses, subnet
+  masks, or routing problems can also prevent communication. Ensure there's a clear
+  network path between your testing machine and the SNMP device.</li>
+</ul>
+<hr/>
+<h3 id="snmpv3-security-levels">SNMPv3 Security Levels</h3>
+<p>SNMPv3 offers significant security enhancements over older, unsecured versions
+(SNMPv1 and SNMPv2c). The protocol has three security levels:</p>
+<ul>
+<li>
+<p><strong>noAuthNoPriv (Authentication and encryption off):</strong> This is the least secure
+  level. There's no authentication and no encryption. It's similar to SNMPv1
+  and SNMPv2c and offers no protection. It should only be used in strictly
+  controlled lab environments where security is not a concern.</p>
+</li>
+<li>
+<p><strong>authNoPriv (Authentication on, encryption off):</strong> This level authenticates
+  the user, which guarantees data integrity. It verifies that messages come from
+  a trusted source and haven't been tampered with. However, the data isn't
+  encrypted, so it remains readable if the traffic is intercepted. This level
+  is suitable for non-sensitive data in a relatively secure network. Authentication
+  protocols used here are typically MD5 or SHA.</p>
+</li>
+<li>
+<p><strong>authPriv (Authentication and encryption on):</strong> This is the most secure and
+  recommended level. It provides both authentication and data encryption.
+  Authentication ensures the integrity and origin of the message, while encryption
+  makes the data unreadable to third parties. This is essential for monitoring
+  sensitive information or when communicating over unsecured networks. Encryption
+  protocols used include DES, 3DES, and AES.</p>
+</li>
+</ul>
+<hr/>
+<h4 id="examples-of-snmpv3-commands">Examples of SNMPv3 Commands</h4>
+<p>Once you have the necessary information (and have ruled out network issues), you
+can try connecting with SNMPv3. Here are some examples of how you might use <code>snmpstatus</code>
+with SNMPv3 (depending on your configuration):</p>
+<ul>
+<li><strong>Authentication only (no encryption):</strong></li>
+</ul>
+<details class="example" open="open">
+<summary>Testing SNMPv3 with authentication only</summary>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>snmpstatus<span class="w"> </span>-v<span class="w"> </span><span class="m">3</span><span class="w"> </span>-l<span class="w"> </span>authNoPriv<span class="w"> </span>-u<span class="w"> </span><span class="o">[</span>username<span class="o">]</span><span class="w"> </span>-a<span class="w"> </span><span class="o">[</span>authentication_protocol<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">            </span>-A<span class="w"> </span><span class="o">[</span>authentication_password<span class="o">]</span><span class="w"> </span><span class="o">[</span>IP-address_of_the_device<span class="o">]</span>
+</span></code></pre></div>
+(Replace <code>[authentication_protocol]</code> with <code>MD5</code> or <code>SHA</code>)</p>
+</details>
+<ul>
+<li><strong>Authentication and Encryption:</strong></li>
+</ul>
+<details class="example" open="open">
+<summary>Testing SNMPv3 with authentication and encryption</summary>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>snmpstatus<span class="w"> </span>-v<span class="w"> </span><span class="m">3</span><span class="w"> </span>-l<span class="w"> </span>authPriv<span class="w"> </span>-u<span class="w"> </span><span class="o">[</span>username<span class="o">]</span><span class="w"> </span>-a<span class="w"> </span><span class="o">[</span>authentication_protocol<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">            </span>-A<span class="w"> </span><span class="o">[</span>authentication_password<span class="o">]</span><span class="w"> </span>-x<span class="w"> </span><span class="o">[</span>privacy_protocol<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">            </span>-X<span class="w"> </span><span class="o">[</span>privacy_wachtwoord<span class="o">]</span><span class="w"> </span><span class="o">[</span>IP-address_of_the_device<span class="o">]</span>
+</span></code></pre></div>
+<p>(Replace <code>[authentication_protocol]</code> with <code>MD5</code> or <code>SHA</code> and <code>[privacy_protocol]</code>
+with <code>DES</code> or <code>AES</code>)</p>
+</details>
+<hr/>
+<h3 id="a-note-on-snmpv1-avoid-if-possible">A Note on SNMPv1: Avoid if Possible</h3>
+<p>While you can technically test with SNMPv1, we strongly advise against using it
+in production. SNMPv1 is an outdated and insecure protocol version vulnerable to
+various attacks. Always try to connect with v2c or v3 first. Only if you are absolutely
+certain that the device exclusively supports SNMPv1 and you have no other option,
+you can try using it:</p>
+<details class="example" open="open">
+<summary>Trying SNMPv1</summary>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>snmpstatus<span class="w"> </span>-v<span class="w"> </span><span class="m">1</span><span class="w"> </span>-c<span class="w"> </span><span class="o">[</span>community_string<span class="o">]</span><span class="w"> </span><span class="o">[</span>IP-address_of_the_device<span class="o">]</span>
+</span></code></pre></div>
+</details>
+<p>However, remember that using SNMPv1 in a production environment poses a significant
+security risk.</p>
+<hr/>
+<h3 id="understanding-the-output-of-snmpstatus">Understanding the Output of snmpstatus</h3>
+<p>Let's take a look at an example output from the <code>snmpstatus</code> command. Remember
+this is just an example output it will differ from your result.</p>
+<details class="example" open="open">
+<summary>Example output of snmpstatus</summary>
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="gp">localhost:~ $ </span>snmpstatus<span class="w"> </span>-v2c<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span><span class="m">127</span>.0.0.1
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="go">[UDP: [127.0.0.1]:161-&gt;[0.0.0.0]:33310]=&gt;[Linux localhost.localdomain 5.14.0-570.28.1.el9_6.aarch64</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="gp">#</span><span class="m">1</span><span class="w"> </span>SMP<span class="w"> </span>PREEMPT_DYNAMIC<span class="w"> </span>Thu<span class="w"> </span>Jul<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">07</span>:50:10<span class="w"> </span>EDT<span class="w"> </span><span class="m">2025</span><span class="w"> </span>aarch64<span class="o">]</span><span class="w"> </span>Up:<span class="w"> </span><span class="m">1</span>:24:36.58
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="go">Interfaces: 2, Recv/Trans packets: 355763/355129 | IP: 37414/35988</span>
+</span></code></pre></div>
+</details>
+<p>This output provides a concise summary of the device's status, indicating a successful
+SNMP query. Let's break down what each part means:</p>
+<ol>
+<li>
+<p><strong><code>snmpstatus -v2c -c public 127.0.0.1</code></strong>:</p>
+<ul>
+<li><code>-v2c</code>: Specifies that SNMP version 2c was used.</li>
+<li><code>-c public</code>: Indicates that the community string "public" was used for authentication.</li>
+<li><code>127.0.0.1</code>: This is the target IP address, in this case, the localhost (the
+  machine on which the command was run).</li>
+</ul>
+</li>
+<li>
+<p><strong><code>[UDP: [127.0.0.1]:161-&gt;[0.0.0.0]:33310]</code></strong>:</p>
+<ul>
+<li>This section describes the communication path.</li>
+<li><code>UDP</code>: Confirms that the User Datagram Protocol was used, which is standard
+  for SNMP.</li>
+<li><code>[127.0.0.1]:161</code>: This is the source of the SNMP request and the standard
+  SNMP port (161) on which the SNMP agent listens.</li>
+<li><code>-&gt;[0.0.0.0]:33310</code>: This indicates the destination of the response. <code>0.0.0.0</code>
+  is a placeholder for "any address," and <code>33310</code> is a high-numbered ephemeral
+  port used by the client to receive the response.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>[Linux localhost.localdomain 5.14.0-570.28.1.el9_6.aarch64 #1 SMP PREEMPT_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64]</code></strong>:</p>
+<ul>
+<li>This is crucial information about the queried device itself.</li>
+<li><code>Linux localhost.localdomain</code>: Identifies the operating system as Linux, with the hostname <code>localhost.localdomain</code>.</li>
+<li><code>5.14.0-570.28.1.el9_6.aarch64</code>: This is the kernel version and architecture</li>
+<li><code>#1 SMP PREEMPT_DYNAMIC Thu Jul 24 07:50:10 EDT 2025 aarch64</code>: Provides further kernel build details, including the build date and time.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Up: 1:24:36.58</code></strong>:</p>
+<ul>
+<li>This indicates the <strong>uptime</strong> of the device. The system has been running for
+  1 day, 24 hours, 36 minutes, and 58 seconds.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Interfaces: 2, Recv/Trans packets: 355763/355129 | IP: 37414/35988</code></strong>:</p>
+<ul>
+<li><strong><code>Interfaces: 2</code></strong>: This tells us that the device has detected 2 network interfaces.</li>
+<li><strong><code>Recv/Trans packets: 355763/355129</code></strong>: These numbers represent the total
+  number of packets received and transmitted across <em>all</em> network interfaces
+  on the device since it was last booted.</li>
+<li><strong><code>IP: 37414/35988</code></strong>: These figures likely represent the number of IP datagrams
+  received and sent specifically by the IP layer on the device. This provides
+  a more specific metric of IP traffic compared to the total packet count
+  which includes other layer 2 protocols.</li>
+</ul>
+</li>
+</ol>
+<p>In summary, this output from <code>snmpstatus</code> quickly provides a clear overview of a
+Linux system's basic health and network activity, confirming that the SNMP agent
+is reachable and responding with the requested information using SNMPv2c.</p>
+<hr/>
+<h3 id="installing-snmp-agent-on-a-linux-host">Installing SNMP Agent on a Linux Host</h3>
+<p>Now that we know a bit more about SNMP it's time to start playing next we will
+install the SNMP agent and utilities on our Zabbix server to do some testing.
+Or another compatible system if you prefer.</p>
+<p>Follow the steps below to get the SNMP agent installed.</p>
+<ol>
+<li>Install Required Packages</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Install Net-SNMP agent and utilities</p>
+<p>Red Hat
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>net-snmp<span class="w"> </span>net-snmp-utils
+</span></code></pre></div></p>
+<p>Suse
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>zypper<span class="w"> </span>install<span class="w"> </span>net-snmp
+</span></code></pre></div></p>
+<p>Ubuntu
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>snmp<span class="w"> </span>snmpd
+</span></code></pre></div></p>
+</div>
+<ol start="2">
+<li>Configure the SNMP Agent
+   First, create a clean configuration file for the SNMP daemon:</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Create a clean SNMP configuration file</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>sudo<span class="w"> </span>vi<span class="w"> </span>/etc/snmp/snmpd.conf
+</span></code></pre></div>
+</div>
+<p>Paste the following example configuration, which is optimized for SNMP-based
+discovery and testing in Zabbix:</p>
+<div class="admonition example">
+<p class="admonition-title">Example SNMP configuration for Zabbix testing</p>
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="gp">localhost:~ # </span>tee<span class="w"> </span>/etc/snmp/snmpd.conf<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="gp"># </span><span class="s">--------------------------------------------------------------------------</span>
+</span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="gp"># </span><span class="s">BASIC ACCE</span>SS<span class="w"> </span>CONTROL
+</span><span id="__span-9-4"><a href="#__codelineno-9-4" id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="gp"># </span>--------------------------------------------------------------------------
+</span><span id="__span-9-5"><a href="#__codelineno-9-5" id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="gp"># </span>This<span class="w"> </span>defines<span class="w"> </span>who<span class="w"> </span>has<span class="w"> </span>access<span class="w"> </span>and<span class="w"> </span>with<span class="w"> </span>which<span class="w"> </span>community<span class="w"> </span>string.
+</span><span id="__span-9-6"><a href="#__codelineno-9-6" id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="gp"># </span>For<span class="w"> </span>a<span class="w"> </span>LAB<span class="w"> </span>ENVIRONMENT,<span class="w"> </span><span class="s1">'public'</span><span class="w"> </span>is<span class="w"> </span>acceptable,<span class="w"> </span>but<span class="w"> </span>EMPHASIZE<span class="w"> </span>THAT<span class="w"> </span>THIS<span class="w"> </span>IS<span class="w"> </span>UNSAFE
+</span><span id="__span-9-7"><a href="#__codelineno-9-7" id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="gp"># </span>FOR<span class="w"> </span>PRODUCTION.<span class="w"> </span>In<span class="w"> </span>production,<span class="w"> </span>use<span class="w"> </span>SNMPv3<span class="w"> </span>or<span class="w"> </span>restricted<span class="w"> </span>IP<span class="w"> </span>ranges.
+</span><span id="__span-9-8"><a href="#__codelineno-9-8" id="__codelineno-9-8" name="__codelineno-9-8"></a>
+</span><span id="__span-9-9"><a href="#__codelineno-9-9" id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="gp"># </span>Read-only<span class="w"> </span>community<span class="w"> </span>string<span class="w"> </span><span class="s1">'public'</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>all<span class="w"> </span>IP<span class="w"> </span>addresses<span class="w"> </span><span class="o">(</span>WARNING:<span class="w"> </span>LAB<span class="w"> </span>USE<span class="w"> </span>ONLY!<span class="o">)</span>
+</span><span id="__span-9-10"><a href="#__codelineno-9-10" id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="go">rocommunity public</span>
+</span><span id="__span-9-11"><a href="#__codelineno-9-11" id="__codelineno-9-11" name="__codelineno-9-11"></a><span class="gp">#</span>
+</span><span id="__span-9-12"><a href="#__codelineno-9-12" id="__codelineno-9-12" name="__codelineno-9-12"></a><span class="gp"># </span>IMPORTANT<span class="w"> </span>NOTE:<span class="w"> </span>The<span class="w"> </span><span class="s1">'public'</span><span class="w"> </span>community<span class="w"> </span>string<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>and<span class="w"> </span>most<span class="w"> </span>well-known<span class="w"> </span>community<span class="w"> </span>string.
+</span><span id="__span-9-13"><a href="#__codelineno-9-13" id="__codelineno-9-13" name="__codelineno-9-13"></a><span class="gp"># </span>Using<span class="w"> </span>this<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>environment<span class="w"> </span>is<span class="w"> </span>EXTREMELY<span class="w"> </span>INSECURE<span class="w"> </span>and<span class="w"> </span>makes<span class="w"> </span>your<span class="w"> </span>device<span class="w"> </span>vulnerable.
+</span><span id="__span-9-14"><a href="#__codelineno-9-14" id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="gp"># </span>Anyone<span class="w"> </span>who<span class="w"> </span>knows<span class="w"> </span>your<span class="w"> </span>device<span class="err">'</span>s<span class="w"> </span>IP<span class="w"> </span>address<span class="w"> </span>can<span class="w"> </span>query<span class="w"> </span>basic<span class="w"> </span>information<span class="w"> </span>about<span class="w"> </span>your<span class="w"> </span>system.
+</span><span id="__span-9-15"><a href="#__codelineno-9-15" id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="gp"># </span>USE<span class="w"> </span>THIS<span class="w"> </span>ONLY<span class="w"> </span>AND<span class="w"> </span>EXCLUSIVELY<span class="w"> </span>IN<span class="w"> </span>STRICTLY<span class="w"> </span>ISOLATED<span class="w"> </span>TEST<span class="w"> </span>OR<span class="w"> </span>LAB<span class="w"> </span>ENVIRONMENTS!
+</span><span id="__span-9-16"><a href="#__codelineno-9-16" id="__codelineno-9-16" name="__codelineno-9-16"></a><span class="gp"># </span>For<span class="w"> </span>production<span class="w"> </span>environments:
+</span><span id="__span-9-17"><a href="#__codelineno-9-17" id="__codelineno-9-17" name="__codelineno-9-17"></a><span class="gp"># </span>-<span class="w"> </span>Use<span class="w"> </span>a<span class="w"> </span>unique,<span class="w"> </span>complex<span class="w"> </span>community<span class="w"> </span>string<span class="w"> </span><span class="o">(</span>e.g.,<span class="w"> </span>rocommunity<span class="w"> </span>YourSuperSecretString<span class="o">)</span>
+</span><span id="__span-9-18"><a href="#__codelineno-9-18" id="__codelineno-9-18" name="__codelineno-9-18"></a><span class="gp"># </span>-<span class="w"> </span>STRONGLY<span class="w"> </span>CONSIDER<span class="w"> </span>implementing<span class="w"> </span>SNMPv3<span class="w"> </span><span class="k">for</span><span class="w"> </span>superior<span class="w"> </span>security<span class="w"> </span><span class="o">(</span>authentication<span class="w"> </span>and<span class="w"> </span>encryption<span class="o">)</span>.
+</span><span id="__span-9-19"><a href="#__codelineno-9-19" id="__codelineno-9-19" name="__codelineno-9-19"></a><span class="gp">#</span>
+</span><span id="__span-9-20"><a href="#__codelineno-9-20" id="__codelineno-9-20" name="__codelineno-9-20"></a>
+</span><span id="__span-9-21"><a href="#__codelineno-9-21" id="__codelineno-9-21" name="__codelineno-9-21"></a><span class="gp"># </span>BETTER<span class="w"> </span>FOR<span class="w"> </span>LAB<span class="w"> </span><span class="o">(</span>or<span class="w"> </span>production<span class="w"> </span>with<span class="w"> </span>restrictions<span class="o">)</span>:
+</span><span id="__span-9-22"><a href="#__codelineno-9-22" id="__codelineno-9-22" name="__codelineno-9-22"></a><span class="gp"># </span>rocommunity<span class="w"> </span>my_secure_community_string<span class="w"> </span><span class="m">192</span>.168.56.0/24
+</span><span id="__span-9-23"><a href="#__codelineno-9-23" id="__codelineno-9-23" name="__codelineno-9-23"></a><span class="gp"># </span>Replace<span class="w"> </span><span class="s1">'192.168.56.0/24'</span><span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>subnet<span class="w"> </span>where<span class="w"> </span>your<span class="w"> </span>Zabbix<span class="w"> </span>Server<span class="w"> </span>is<span class="w"> </span>located.
+</span><span id="__span-9-24"><a href="#__codelineno-9-24" id="__codelineno-9-24" name="__codelineno-9-24"></a>
+</span><span id="__span-9-25"><a href="#__codelineno-9-25" id="__codelineno-9-25" name="__codelineno-9-25"></a>
+</span><span id="__span-9-26"><a href="#__codelineno-9-26" id="__codelineno-9-26" name="__codelineno-9-26"></a><span class="gp"># </span><span class="o">============================================</span>
+</span><span id="__span-9-27"><a href="#__codelineno-9-27" id="__codelineno-9-27" name="__codelineno-9-27"></a><span class="gp"># </span>SNMPv3<span class="w"> </span>Configuration<span class="w"> </span><span class="o">(</span>Recommended<span class="w"> </span><span class="k">for</span><span class="w"> </span>Production,<span class="w"> </span>but<span class="w"> </span>here<span class="w"> </span>with<span class="w"> </span>examples<span class="o">)</span>
+</span><span id="__span-9-28"><a href="#__codelineno-9-28" id="__codelineno-9-28" name="__codelineno-9-28"></a><span class="gp"># </span><span class="o">============================================</span>
+</span><span id="__span-9-29"><a href="#__codelineno-9-29" id="__codelineno-9-29" name="__codelineno-9-29"></a><span class="gp">#</span>
+</span><span id="__span-9-30"><a href="#__codelineno-9-30" id="__codelineno-9-30" name="__codelineno-9-30"></a><span class="gp"># </span>This<span class="w"> </span>section<span class="w"> </span>defines<span class="w"> </span>users<span class="w"> </span><span class="k">for</span><span class="w"> </span>SNMPv3,<span class="w"> </span>each<span class="w"> </span>with<span class="w"> </span>a<span class="w"> </span>different<span class="w"> </span>security<span class="w"> </span>level.
+</span><span id="__span-9-31"><a href="#__codelineno-9-31" id="__codelineno-9-31" name="__codelineno-9-31"></a><span class="gp"># </span>In<span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>environment,<span class="w"> </span>you<span class="w"> </span>would<span class="w"> </span>typically<span class="w"> </span>ONLY<span class="w"> </span>use<span class="w"> </span>the<span class="w"> </span><span class="s1">'authPriv'</span><span class="w"> </span>option
+</span><span id="__span-9-32"><a href="#__codelineno-9-32" id="__codelineno-9-32" name="__codelineno-9-32"></a><span class="gp"># </span>with<span class="w"> </span>strong,<span class="w"> </span>unique<span class="w"> </span>passwords.<span class="w"> </span>This<span class="w"> </span>setup<span class="w"> </span>is<span class="w"> </span>useful<span class="w"> </span><span class="k">for</span><span class="w"> </span>lab<span class="w"> </span>and<span class="w"> </span>testing<span class="w"> </span>purposes.
+</span><span id="__span-9-33"><a href="#__codelineno-9-33" id="__codelineno-9-33" name="__codelineno-9-33"></a>
+</span><span id="__span-9-34"><a href="#__codelineno-9-34" id="__codelineno-9-34" name="__codelineno-9-34"></a><span class="gp"># </span>---<span class="w"> </span><span class="m">1</span>.<span class="w"> </span>SNMPv3<span class="w"> </span>User<span class="w"> </span>with<span class="w"> </span>Authentication<span class="w"> </span>and<span class="w"> </span>Privacy<span class="w"> </span><span class="o">(</span>authPriv<span class="o">)</span><span class="w"> </span>---
+</span><span id="__span-9-35"><a href="#__codelineno-9-35" id="__codelineno-9-35" name="__codelineno-9-35"></a><span class="gp"># </span>THIS<span class="w"> </span>IS<span class="w"> </span>THE<span class="w"> </span>MOST<span class="w"> </span>SECURE<span class="w"> </span>AND<span class="w"> </span>RECOMMENDED<span class="w"> </span>SECURITY<span class="w"> </span>LEVEL<span class="w"> </span>FOR<span class="w"> </span>PRODUCTION.
+</span><span id="__span-9-36"><a href="#__codelineno-9-36" id="__codelineno-9-36" name="__codelineno-9-36"></a><span class="gp"># </span>It<span class="w"> </span>requires<span class="w"> </span>both<span class="w"> </span>correct<span class="w"> </span>authentication<span class="w"> </span>and<span class="w"> </span>encryption<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>traffic.
+</span><span id="__span-9-37"><a href="#__codelineno-9-37" id="__codelineno-9-37" name="__codelineno-9-37"></a><span class="gp">#</span>
+</span><span id="__span-9-38"><a href="#__codelineno-9-38" id="__codelineno-9-38" name="__codelineno-9-38"></a><span class="gp"># </span>Syntax:<span class="w"> </span>createUser<span class="w"> </span>USERNAME<span class="w"> </span>AUTH_PROTOCOL<span class="w"> </span><span class="s2">"AUTH_PASS"</span><span class="w"> </span>PRIV_PROTOCOL<span class="w"> </span><span class="s2">"PRIV_PASS"</span>
+</span><span id="__span-9-39"><a href="#__codelineno-9-39" id="__codelineno-9-39" name="__codelineno-9-39"></a><span class="gp"># </span>Example:<span class="w"> </span>createUser<span class="w"> </span>mysecureuser<span class="w"> </span>SHA<span class="w"> </span><span class="s2">"StrongAuthP@ss1"</span><span class="w"> </span>AES<span class="w"> </span><span class="s2">"SuperPrivP@ss2"</span>
+</span><span id="__span-9-40"><a href="#__codelineno-9-40" id="__codelineno-9-40" name="__codelineno-9-40"></a>
+</span><span id="__span-9-41"><a href="#__codelineno-9-41" id="__codelineno-9-41" name="__codelineno-9-41"></a><span class="go">createUser secureuser SHA "AuthP@ssSec#1" AES "PrivP@ssSec#2"</span>
+</span><span id="__span-9-42"><a href="#__codelineno-9-42" id="__codelineno-9-42" name="__codelineno-9-42"></a><span class="go">rouser secureuser authPriv</span>
+</span><span id="__span-9-43"><a href="#__codelineno-9-43" id="__codelineno-9-43" name="__codelineno-9-43"></a>
+</span><span id="__span-9-44"><a href="#__codelineno-9-44" id="__codelineno-9-44" name="__codelineno-9-44"></a><span class="gp"># </span>---<span class="w"> </span><span class="m">2</span>.<span class="w"> </span>SNMPv3<span class="w"> </span>User<span class="w"> </span>with<span class="w"> </span>Authentication<span class="w"> </span>Only<span class="w"> </span><span class="o">(</span>authNoPriv<span class="o">)</span><span class="w"> </span>---
+</span><span id="__span-9-45"><a href="#__codelineno-9-45" id="__codelineno-9-45" name="__codelineno-9-45"></a><span class="gp"># </span>This<span class="w"> </span>level<span class="w"> </span>requires<span class="w"> </span>authentication,<span class="w"> </span>but<span class="w"> </span>the<span class="w"> </span>data<span class="w"> </span>is<span class="w"> </span>NOT<span class="w"> </span>encrypted.
+</span><span id="__span-9-46"><a href="#__codelineno-9-46" id="__codelineno-9-46" name="__codelineno-9-46"></a><span class="gp"># </span>The<span class="w"> </span>content<span class="w"> </span>of<span class="w"> </span>SNMP<span class="w"> </span>packets<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span><span class="nb">read</span><span class="w"> </span><span class="k">if</span><span class="w"> </span>traffic<span class="w"> </span>is<span class="w"> </span>intercepted.
+</span><span id="__span-9-47"><a href="#__codelineno-9-47" id="__codelineno-9-47" name="__codelineno-9-47"></a><span class="gp"># </span>NOT<span class="w"> </span>RECOMMENDED<span class="w"> </span>FOR<span class="w"> </span>SENSITIVE<span class="w"> </span>DATA<span class="w"> </span>OR<span class="w"> </span>PRODUCTION<span class="w"> </span>ENVIRONMENTS.
+</span><span id="__span-9-48"><a href="#__codelineno-9-48" id="__codelineno-9-48" name="__codelineno-9-48"></a><span class="gp">#</span>
+</span><span id="__span-9-49"><a href="#__codelineno-9-49" id="__codelineno-9-49" name="__codelineno-9-49"></a><span class="gp"># </span>Syntax:<span class="w"> </span>createUser<span class="w"> </span>USERNAME<span class="w"> </span>AUTH_PROTOCOL<span class="w"> </span><span class="s2">"AUTH_PASS"</span>
+</span><span id="__span-9-50"><a href="#__codelineno-9-50" id="__codelineno-9-50" name="__codelineno-9-50"></a><span class="gp"># </span>Example:<span class="w"> </span>createUser<span class="w"> </span>authonlyuser<span class="w"> </span>SHA<span class="w"> </span><span class="s2">"AuthOnlyP@ss3"</span>
+</span><span id="__span-9-51"><a href="#__codelineno-9-51" id="__codelineno-9-51" name="__codelineno-9-51"></a>
+</span><span id="__span-9-52"><a href="#__codelineno-9-52" id="__codelineno-9-52" name="__codelineno-9-52"></a><span class="go">createUser authonlyuser SHA "AuthOnlyP@ss3"</span>
+</span><span id="__span-9-53"><a href="#__codelineno-9-53" id="__codelineno-9-53" name="__codelineno-9-53"></a><span class="go">rouser authonlyuser authNoPriv</span>
+</span><span id="__span-9-54"><a href="#__codelineno-9-54" id="__codelineno-9-54" name="__codelineno-9-54"></a>
+</span><span id="__span-9-55"><a href="#__codelineno-9-55" id="__codelineno-9-55" name="__codelineno-9-55"></a><span class="gp"># </span>---<span class="w"> </span><span class="m">3</span>.<span class="w"> </span>SNMPv3<span class="w"> </span>User<span class="w"> </span>with<span class="w"> </span><span class="o">[</span><span class="m">48</span><span class="p">;</span><span class="m">32</span><span class="p">;</span><span class="m">186</span><span class="p">;</span><span class="m">960</span><span class="p">;</span>2604tNo<span class="w"> </span>Authentication<span class="w"> </span>and<span class="w"> </span>No<span class="w"> </span>Privacy<span class="w"> </span><span class="o">(</span>noAuthNoPriv<span class="o">)</span><span class="w"> </span>---
+</span><span id="__span-9-56"><a href="#__codelineno-9-56" id="__codelineno-9-56" name="__codelineno-9-56"></a><span class="gp"># </span>THIS<span class="w"> </span>IS<span class="w"> </span>THE<span class="w"> </span>LEAST<span class="w"> </span>SECURE<span class="w"> </span>LEVEL<span class="w"> </span>AND<span class="w"> </span>SHOULD<span class="w"> </span>NEVER<span class="w"> </span>BE<span class="w"> </span>USED<span class="w"> </span>IN<span class="w"> </span>PRODUCTION!
+</span><span id="__span-9-57"><a href="#__codelineno-9-57" id="__codelineno-9-57" name="__codelineno-9-57"></a><span class="gp"># </span>It<span class="w"> </span>offers<span class="w"> </span>NO<span class="w"> </span>SECURITY<span class="w"> </span>WHATSOEVER.<span class="w"> </span>It<span class="err">'</span>s<span class="w"> </span>purely<span class="w"> </span><span class="k">for</span><span class="w"> </span>very<span class="w"> </span>specific<span class="w"> </span><span class="nb">test</span><span class="w"> </span>scenarios
+</span><span id="__span-9-58"><a href="#__codelineno-9-58" id="__codelineno-9-58" name="__codelineno-9-58"></a><span class="gp"># </span>where<span class="w"> </span>security<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>a<span class="w"> </span>concern.
+</span><span id="__span-9-59"><a href="#__codelineno-9-59" id="__codelineno-9-59" name="__codelineno-9-59"></a><span class="gp">#</span>
+</span><span id="__span-9-60"><a href="#__codelineno-9-60" id="__codelineno-9-60" name="__codelineno-9-60"></a><span class="gp"># </span>Syntax:<span class="w"> </span>createUser<span class="w"> </span>USERNAME
+</span><span id="__span-9-61"><a href="#__codelineno-9-61" id="__codelineno-9-61" name="__codelineno-9-61"></a><span class="gp"># </span>Example:<span class="w"> </span>createUser<span class="w"> </span>insecureuser
+</span><span id="__span-9-62"><a href="#__codelineno-9-62" id="__codelineno-9-62" name="__codelineno-9-62"></a>
+</span><span id="__span-9-63"><a href="#__codelineno-9-63" id="__codelineno-9-63" name="__codelineno-9-63"></a><span class="go">createUser insecureuser</span>
+</span><span id="__span-9-64"><a href="#__codelineno-9-64" id="__codelineno-9-64" name="__codelineno-9-64"></a><span class="go">rouser insecureuser noAuthNoPriv</span>
+</span><span id="__span-9-65"><a href="#__codelineno-9-65" id="__codelineno-9-65" name="__codelineno-9-65"></a>
+</span><span id="__span-9-66"><a href="#__codelineno-9-66" id="__codelineno-9-66" name="__codelineno-9-66"></a><span class="gp">#</span>
+</span><span id="__span-9-67"><a href="#__codelineno-9-67" id="__codelineno-9-67" name="__codelineno-9-67"></a><span class="gp"># </span>IMPORTANT<span class="w"> </span>SECURITY<span class="w"> </span>NOTES<span class="w"> </span>FOR<span class="w"> </span>ALL<span class="w"> </span>SNMPv3<span class="w"> </span>USERS:
+</span><span id="__span-9-68"><a href="#__codelineno-9-68" id="__codelineno-9-68" name="__codelineno-9-68"></a><span class="gp"># </span>-<span class="w"> </span>Replace<span class="w"> </span>the<span class="w"> </span>example<span class="w"> </span>usernames<span class="w"> </span>and<span class="w"> </span>passwords<span class="w"> </span>with<span class="w"> </span>your<span class="w"> </span>OWN<span class="w"> </span>strong,<span class="w"> </span>unique<span class="w"> </span>values.
+</span><span id="__span-9-69"><a href="#__codelineno-9-69" id="__codelineno-9-69" name="__codelineno-9-69"></a><span class="gp"># </span>-<span class="w"> </span>Passwords<span class="w"> </span>must<span class="w"> </span>be<span class="w"> </span>a<span class="w"> </span>MINIMUM<span class="w"> </span>of<span class="w"> </span><span class="m">8</span><span class="w"> </span>characters<span class="w"> </span>long.
+</span><span id="__span-9-70"><a href="#__codelineno-9-70" id="__codelineno-9-70" name="__codelineno-9-70"></a><span class="gp"># </span>-<span class="w"> </span>The<span class="w"> </span>passwords<span class="w"> </span><span class="k">for</span><span class="w"> </span>AUTH<span class="w"> </span>and<span class="w"> </span>PRIV<span class="w"> </span><span class="o">(</span>with<span class="w"> </span>authPriv<span class="o">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>not<span class="w"> </span>have<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>the<span class="w"> </span>same.
+</span><span id="__span-9-71"><a href="#__codelineno-9-71" id="__codelineno-9-71" name="__codelineno-9-71"></a><span class="gp"># </span>-<span class="w"> </span>Restrict<span class="w"> </span>access<span class="w"> </span>to<span class="w"> </span>specific<span class="w"> </span>IP<span class="w"> </span>addresses<span class="w"> </span><span class="o">(</span>e.g.,<span class="w"> </span><span class="s1">'rouser USERNAME authPriv 192.168.1.0/24'</span><span class="o">)</span>
+</span><span id="__span-9-72"><a href="#__codelineno-9-72" id="__codelineno-9-72" name="__codelineno-9-72"></a><span class="gp">#   </span><span class="k">if</span><span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>further<span class="w"> </span>tighten<span class="w"> </span>access.
+</span><span id="__span-9-73"><a href="#__codelineno-9-73" id="__codelineno-9-73" name="__codelineno-9-73"></a><span class="gp">#</span>
+</span><span id="__span-9-74"><a href="#__codelineno-9-74" id="__codelineno-9-74" name="__codelineno-9-74"></a>
+</span><span id="__span-9-75"><a href="#__codelineno-9-75" id="__codelineno-9-75" name="__codelineno-9-75"></a><span class="gp"># </span>--------------------------------------------------------------------------
+</span><span id="__span-9-76"><a href="#__codelineno-9-76" id="__codelineno-9-76" name="__codelineno-9-76"></a><span class="gp"># </span>SYSTEM<span class="w"> </span>INFORMATION<span class="w"> </span><span class="o">(</span>OPTIONAL<span class="o">)</span>
+</span><span id="__span-9-77"><a href="#__codelineno-9-77" id="__codelineno-9-77" name="__codelineno-9-77"></a><span class="gp"># </span>--------------------------------------------------------------------------
+</span><span id="__span-9-78"><a href="#__codelineno-9-78" id="__codelineno-9-78" name="__codelineno-9-78"></a><span class="gp"># </span>This<span class="w"> </span>information<span class="w"> </span>is<span class="w"> </span>generally<span class="w"> </span>available<span class="w"> </span>via<span class="w"> </span>SNMP<span class="w"> </span>and<span class="w"> </span>useful<span class="w"> </span><span class="k">for</span><span class="w"> </span>identification.
+</span><span id="__span-9-79"><a href="#__codelineno-9-79" id="__codelineno-9-79" name="__codelineno-9-79"></a><span class="go">syslocation  "Rocky Linux Zabbix SNMP Lab Server"</span>
+</span><span id="__span-9-80"><a href="#__codelineno-9-80" id="__codelineno-9-80" name="__codelineno-9-80"></a><span class="go">syscontact   "Your Name &lt;your.email@example.com&gt;"</span>
+</span><span id="__span-9-81"><a href="#__codelineno-9-81" id="__codelineno-9-81" name="__codelineno-9-81"></a><span class="go">sysname      "RockySNMPHost01" # Often overridden by hostname, but can be specific</span>
+</span><span id="__span-9-82"><a href="#__codelineno-9-82" id="__codelineno-9-82" name="__codelineno-9-82"></a>
+</span><span id="__span-9-83"><a href="#__codelineno-9-83" id="__codelineno-9-83" name="__codelineno-9-83"></a><span class="gp"># </span>--------------------------------------------------------------------------
+</span><span id="__span-9-84"><a href="#__codelineno-9-84" id="__codelineno-9-84" name="__codelineno-9-84"></a><span class="gp"># </span>ENABLING<span class="w"> </span>CRUCIAL<span class="w"> </span>MIB<span class="w"> </span>MODULES<span class="w"> </span>FOR<span class="w"> </span>LLD
+</span><span id="__span-9-85"><a href="#__codelineno-9-85" id="__codelineno-9-85" name="__codelineno-9-85"></a><span class="gp"># </span>--------------------------------------------------------------------------
+</span><span id="__span-9-86"><a href="#__codelineno-9-86" id="__codelineno-9-86" name="__codelineno-9-86"></a><span class="gp"># </span><span class="s1">'view'</span><span class="w"> </span>statements<span class="w"> </span>determine<span class="w"> </span>which<span class="w"> </span>parts<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>MIB<span class="w"> </span>tree<span class="w"> </span>are<span class="w"> </span>visible.
+</span><span id="__span-9-87"><a href="#__codelineno-9-87" id="__codelineno-9-87" name="__codelineno-9-87"></a><span class="gp"># </span><span class="s1">'systemview'</span><span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>standard<span class="w"> </span>view.<span class="w"> </span>We<span class="w"> </span>ensure<span class="w"> </span>that<span class="w"> </span>the<span class="w"> </span>most<span class="w"> </span>useful<span class="w"> </span>OID<span class="w"> </span>trees
+</span><span id="__span-9-88"><a href="#__codelineno-9-88" id="__codelineno-9-88" name="__codelineno-9-88"></a><span class="gp"># </span><span class="k">for</span><span class="w"> </span>Zabbix<span class="w"> </span>LLD<span class="w"> </span>are<span class="w"> </span>included<span class="w"> </span>here.
+</span><span id="__span-9-89"><a href="#__codelineno-9-89" id="__codelineno-9-89" name="__codelineno-9-89"></a>
+</span><span id="__span-9-90"><a href="#__codelineno-9-90" id="__codelineno-9-90" name="__codelineno-9-90"></a><span class="gp"># </span>Standard<span class="w"> </span>System<span class="w"> </span>MIBs<span class="w"> </span><span class="o">(</span>uptime,<span class="w"> </span>description,<span class="w"> </span>etc.<span class="o">)</span>
+</span><span id="__span-9-91"><a href="#__codelineno-9-91" id="__codelineno-9-91" name="__codelineno-9-91"></a><span class="go">view systemview included .1.3.6.1.2.1.1    # SNMPv2-MIB::sysDescr, sysUptime, etc.</span>
+</span><span id="__span-9-92"><a href="#__codelineno-9-92" id="__codelineno-9-92" name="__codelineno-9-92"></a>
+</span><span id="__span-9-93"><a href="#__codelineno-9-93" id="__codelineno-9-93" name="__codelineno-9-93"></a><span class="gp"># </span>HOST-RESOURCES-MIB:<span class="w"> </span>ESSENTIAL<span class="w"> </span>FOR<span class="w"> </span>LLD<span class="w"> </span>OF<span class="w"> </span>HARDWARE/OS<span class="w"> </span>COMPONENTS
+</span><span id="__span-9-94"><a href="#__codelineno-9-94" id="__codelineno-9-94" name="__codelineno-9-94"></a><span class="gp"># </span>This<span class="w"> </span>MIB<span class="w"> </span>contains<span class="w"> </span>information<span class="w"> </span>about<span class="w"> </span>storage<span class="w"> </span><span class="o">(</span>filesystems<span class="o">)</span>,<span class="w"> </span>processors,
+</span><span id="__span-9-95"><a href="#__codelineno-9-95" id="__codelineno-9-95" name="__codelineno-9-95"></a><span class="gp"># </span>installed<span class="w"> </span>software,<span class="w"> </span>running<span class="w"> </span>processes,<span class="w"> </span>etc.
+</span><span id="__span-9-96"><a href="#__codelineno-9-96" id="__codelineno-9-96" name="__codelineno-9-96"></a><span class="go">view systemview included .1.3.6.1.2.1.25</span>
+</span><span id="__span-9-97"><a href="#__codelineno-9-97" id="__codelineno-9-97" name="__codelineno-9-97"></a>
+</span><span id="__span-9-98"><a href="#__codelineno-9-98" id="__codelineno-9-98" name="__codelineno-9-98"></a><span class="gp"># </span>IF-MIB:<span class="w"> </span>ESSENTIAL<span class="w"> </span>FOR<span class="w"> </span>LLD<span class="w"> </span>OF<span class="w"> </span>NETWORK<span class="w"> </span>INTERFACES
+</span><span id="__span-9-99"><a href="#__codelineno-9-99" id="__codelineno-9-99" name="__codelineno-9-99"></a><span class="gp"># </span>Contains<span class="w"> </span>detailed<span class="w"> </span>information<span class="w"> </span>about<span class="w"> </span>network<span class="w"> </span>interfaces.
+</span><span id="__span-9-100"><a href="#__codelineno-9-100" id="__codelineno-9-100" name="__codelineno-9-100"></a><span class="go">view systemview included .1.3.6.1.2.1.2</span>
+</span><span id="__span-9-101"><a href="#__codelineno-9-101" id="__codelineno-9-101" name="__codelineno-9-101"></a>
+</span><span id="__span-9-102"><a href="#__codelineno-9-102" id="__codelineno-9-102" name="__codelineno-9-102"></a><span class="gp"># </span>Other<span class="w"> </span>useful<span class="w"> </span>MIBs<span class="w"> </span><span class="o">(</span>often<span class="w"> </span>standard<span class="w"> </span>or<span class="w"> </span>optional<span class="o">)</span>
+</span><span id="__span-9-103"><a href="#__codelineno-9-103" id="__codelineno-9-103" name="__codelineno-9-103"></a><span class="go">view systemview included .1.3.6.1.2.1.4</span>
+</span><span id="__span-9-104"><a href="#__codelineno-9-104" id="__codelineno-9-104" name="__codelineno-9-104"></a><span class="go">view systemview included .1.3.6.1.2.1.6</span>
+</span><span id="__span-9-105"><a href="#__codelineno-9-105" id="__codelineno-9-105" name="__codelineno-9-105"></a><span class="go">view systemview included .1.3.6.1.2.1.7</span>
+</span><span id="__span-9-106"><a href="#__codelineno-9-106" id="__codelineno-9-106" name="__codelineno-9-106"></a>
+</span><span id="__span-9-107"><a href="#__codelineno-9-107" id="__codelineno-9-107" name="__codelineno-9-107"></a><span class="gp"># </span>--------------------------------------------------------------------------
+</span><span id="__span-9-108"><a href="#__codelineno-9-108" id="__codelineno-9-108" name="__codelineno-9-108"></a><span class="gp"># </span>EXTENDING<span class="w"> </span>SNMPD<span class="w"> </span>WITH<span class="w"> </span>EXEC<span class="w"> </span>COMMANDS<span class="w"> </span><span class="o">(</span>OPTIONAL<span class="w"> </span>FOR<span class="w"> </span>CUSTOM<span class="w"> </span>LLD<span class="o">)</span>
+</span><span id="__span-9-109"><a href="#__codelineno-9-109" id="__codelineno-9-109" name="__codelineno-9-109"></a><span class="gp"># </span>--------------------------------------------------------------------------
+</span><span id="__span-9-110"><a href="#__codelineno-9-110" id="__codelineno-9-110" name="__codelineno-9-110"></a><span class="gp"># </span>This<span class="w"> </span>allows<span class="w"> </span>you<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>the<span class="w"> </span>output<span class="w"> </span>of<span class="w"> </span>shell<span class="w"> </span>commands<span class="w"> </span>or<span class="w"> </span>scripts<span class="w"> </span>available<span class="w"> </span>via<span class="w"> </span>SNMP.
+</span><span id="__span-9-111"><a href="#__codelineno-9-111" id="__codelineno-9-111" name="__codelineno-9-111"></a><span class="gp"># </span>This<span class="w"> </span>is<span class="w"> </span>ideal<span class="w"> </span><span class="k">for</span><span class="w"> </span>monitoring<span class="w"> </span>things<span class="w"> </span>not<span class="w"> </span>natively<span class="w"> </span>available<span class="w"> </span>via<span class="w"> </span>SNMP.
+</span><span id="__span-9-112"><a href="#__codelineno-9-112" id="__codelineno-9-112" name="__codelineno-9-112"></a><span class="gp"># </span>Example:<span class="w"> </span>Monitor<span class="w"> </span>the<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>logged-in<span class="w"> </span>users<span class="w"> </span><span class="o">(</span>not<span class="w"> </span>LLD,<span class="w"> </span>but<span class="w"> </span>demonstrates<span class="w"> </span>the<span class="w"> </span>principle<span class="o">)</span>
+</span><span id="__span-9-113"><a href="#__codelineno-9-113" id="__codelineno-9-113" name="__codelineno-9-113"></a><span class="gp"># </span><span class="nb">exec</span><span class="w"> </span>activeUsers<span class="w"> </span>/usr/bin/who<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
+</span><span id="__span-9-114"><a href="#__codelineno-9-114" id="__codelineno-9-114" name="__codelineno-9-114"></a>
+</span><span id="__span-9-115"><a href="#__codelineno-9-115" id="__codelineno-9-115" name="__codelineno-9-115"></a><span class="gp"># </span>Example:<span class="w"> </span>A<span class="w"> </span>script<span class="w"> </span>that<span class="w"> </span>generates<span class="w"> </span>LLD-like<span class="w"> </span>output
+</span><span id="__span-9-116"><a href="#__codelineno-9-116" id="__codelineno-9-116" name="__codelineno-9-116"></a><span class="gp"># </span>imagine<span class="w"> </span>/opt/scripts/docker_lld.sh<span class="w"> </span>returns<span class="w"> </span>JSON<span class="w"> </span>that<span class="w"> </span>Zabbix<span class="w"> </span>can<span class="w"> </span>parse
+</span><span id="__span-9-117"><a href="#__codelineno-9-117" id="__codelineno-9-117" name="__codelineno-9-117"></a><span class="gp"># </span><span class="nb">exec</span><span class="w"> </span>dockerContainers<span class="w"> </span>/opt/scripts/docker_lld.sh
+</span><span id="__span-9-118"><a href="#__codelineno-9-118" id="__codelineno-9-118" name="__codelineno-9-118"></a><span class="gp"># </span>This<span class="w"> </span>requires<span class="w"> </span>a<span class="w"> </span>custom<span class="w"> </span>LLD<span class="w"> </span>parser<span class="w"> </span><span class="k">in</span><span class="w"> </span>Zabbix.<span class="w"> </span>For<span class="w"> </span>an<span class="w"> </span>introduction,<span class="w"> </span>this
+</span><span id="__span-9-119"><a href="#__codelineno-9-119" id="__codelineno-9-119" name="__codelineno-9-119"></a><span class="gp"># </span>might<span class="w"> </span>be<span class="w"> </span>a<span class="w"> </span>bit<span class="w"> </span>too<span class="w"> </span>advanced,<span class="w"> </span>but<span class="w"> </span>it<span class="err">'</span>s<span class="w"> </span>good<span class="w"> </span>to<span class="w"> </span>mention<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>possibility.
+</span><span id="__span-9-120"><a href="#__codelineno-9-120" id="__codelineno-9-120" name="__codelineno-9-120"></a>
+</span><span id="__span-9-121"><a href="#__codelineno-9-121" id="__codelineno-9-121" name="__codelineno-9-121"></a><span class="gp"># </span>--------------------------------------------------------------------------
+</span><span id="__span-9-122"><a href="#__codelineno-9-122" id="__codelineno-9-122" name="__codelineno-9-122"></a><span class="gp"># </span>SYSLOGGING
+</span><span id="__span-9-123"><a href="#__codelineno-9-123" id="__codelineno-9-123" name="__codelineno-9-123"></a><span class="gp"># </span>--------------------------------------------------------------------------
+</span><span id="__span-9-124"><a href="#__codelineno-9-124" id="__codelineno-9-124" name="__codelineno-9-124"></a><span class="gp"># </span>For<span class="w"> </span>logging<span class="w"> </span>snmpd<span class="w"> </span>activities<span class="w"> </span><span class="o">(</span>useful<span class="w"> </span><span class="k">for</span><span class="w"> </span>debugging<span class="o">)</span>
+</span><span id="__span-9-125"><a href="#__codelineno-9-125" id="__codelineno-9-125" name="__codelineno-9-125"></a><span class="go">dontLogTCPWrappers no</span>
+</span><span id="__span-9-126"><a href="#__codelineno-9-126" id="__codelineno-9-126" name="__codelineno-9-126"></a><span class="go">EOF</span>
+</span></code></pre></div>
+</div>
+<p>Let's do some practical tests with this setup we just created. Start the SNMP Service
+and Configure the Firewall</p>
+<div class="admonition info">
+<p class="admonition-title">Start the SNMP service and configure firewall rules</p>
+<p>Start and enable snmpd service to start on boot
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>snmpd
+</span></code></pre></div></p>
+<p>Check if the service is correctly started and running
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>snmpd
+</span></code></pre></div></p>
+<p>If your system uses a firewall, ensure that SNMP traffic is allowed:</p>
+<p>RedHat / Suse
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a>firewall-cmd<span class="w"> </span>--add-service<span class="o">=</span>snmp<span class="w"> </span>--permanent
+</span><span id="__span-12-2"><a href="#__codelineno-12-2" id="__codelineno-12-2" name="__codelineno-12-2"></a>firewall-cmd<span class="w"> </span>--reload
+</span></code></pre></div></p>
+<p>Ubuntu
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span>snmp
+</span><span id="__span-13-2"><a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>reload
+</span></code></pre></div></p>
+</div>
+<p>Verifying SNMP Functionality
+From your Zabbix server or any SNMP client system with net-snmp-utils installed:</p>
+<details class="example" open="open">
+<summary>Testing SNMP functionality with snmpwalk</summary>
+<p>Replace <code>&lt;IP_ADDRESS&gt;</code> with the IP of the client where you installed the SNMP
+config. If localhost you can use <code>127.0.0.1</code>.</p>
+<p>General system info (sysDescr, sysUptime, etc.)
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>snmpwalk<span class="w"> </span>-v2c<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>&lt;IP_ADDRESS&gt;<span class="w"> </span>.1.3.6.1.2.1.1
+</span></code></pre></div></p>
+<p>List interface names (useful for interface LLD)
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>snmpwalk<span class="w"> </span>-v2c<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>&lt;IP_ADDRESS&gt;<span class="w"> </span>.1.3.6.1.2.1.2.2.1.2
+</span></code></pre></div></p>
+<p>List filesystem descriptions
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>snmpwalk<span class="w"> </span>-v2c<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>&lt;IP_ADDRESS&gt;<span class="w"> </span>.1.3.6.1.2.1.25.2.3.1.3
+</span></code></pre></div></p>
+<p>Get CPU load per processor core
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>snmpwalk<span class="w"> </span>-v2c<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>&lt;IP_ADDRESS&gt;<span class="w"> </span>.1.3.6.1.2.1.25.3.3.1.2
+</span></code></pre></div></p>
+</details>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>For SNMPv3 we can do the same. You could adapt the configuration file or just
+go with what we have prepared already in the <code>snmpd.conf</code> file.</p>
+</details>
+<div class="admonition info">
+<p class="admonition-title">Configure SNMPv3 users</p>
+<p>Look for the following lines in  '/etc/snmp/snmpd.conf` and adapt them as you like.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>createUser<span class="w"> </span>authonlyuser<span class="w"> </span>SHA<span class="w"> </span><span class="s2">"AuthOnlyP@ss3"</span>
+</span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a>rouser<span class="w"> </span>authonlyuser<span class="w"> </span>authNoPriv
+</span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a href="#__codelineno-18-4" id="__codelineno-18-4" name="__codelineno-18-4"></a>createUser<span class="w"> </span>secureuser<span class="w"> </span>SHA<span class="w"> </span><span class="s2">"AuthP@ssSec#1"</span><span class="w"> </span>AES<span class="w"> </span><span class="s2">"PrivP@ssSec#2"</span>
+</span><span id="__span-18-5"><a href="#__codelineno-18-5" id="__codelineno-18-5" name="__codelineno-18-5"></a>rouser<span class="w"> </span>secureuser<span class="w"> </span>authPriv
+</span><span id="__span-18-6"><a href="#__codelineno-18-6" id="__codelineno-18-6" name="__codelineno-18-6"></a>
+</span><span id="__span-18-7"><a href="#__codelineno-18-7" id="__codelineno-18-7" name="__codelineno-18-7"></a>createUser<span class="w"> </span>insecureuser
+</span><span id="__span-18-8"><a href="#__codelineno-18-8" id="__codelineno-18-8" name="__codelineno-18-8"></a>rouser<span class="w"> </span>insecureuser<span class="w"> </span>noAuthNoPriv
+</span></code></pre></div></p>
+<p>After you have adapted your config don't forget to restart the snmpd service
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>snmpd
+</span></code></pre></div></p>
+</div>
+<p>You should now be able to test your items with SNMPv3 Let me give you an example
+command for <code>noAuthNoPriv</code>, <code>authNoPriv</code> and the most secure <code>authPriv</code>. This should
+work out of the box with what is already configured in our <code>snmpd.conf</code> file.</p>
+<details class="example" open="open">
+<summary>Testing SNMPv3 with different security levels</summary>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>snmpwalk<span class="w"> </span>-v3<span class="w"> </span>-l<span class="w"> </span>noAuthNoPriv<span class="w"> </span>-u<span class="w"> </span>insecureuser<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>.1.3.6.1.2.1.2.2.1.2
+</span><span id="__span-20-2"><a href="#__codelineno-20-2" id="__codelineno-20-2" name="__codelineno-20-2"></a>snmpwalk<span class="w"> </span>-v3<span class="w"> </span>-l<span class="w"> </span>authNoPriv<span class="w"> </span>-u<span class="w"> </span>authonlyuser<span class="w"> </span>-a<span class="w"> </span>SHA<span class="w"> </span>-A<span class="w"> </span>AuthOnlyP@ss3<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>.1.3.6.1.2.1.2.2.1.2
+</span><span id="__span-20-3"><a href="#__codelineno-20-3" id="__codelineno-20-3" name="__codelineno-20-3"></a>snmpwalk<span class="w"> </span>-v3<span class="w"> </span>-l<span class="w"> </span>authPriv<span class="w"> </span>-u<span class="w"> </span>secureuser<span class="w"> </span>-a<span class="w"> </span>SHA<span class="w"> </span>-A<span class="w"> </span>AuthP@ssSec#1<span class="w"> </span>-x<span class="w"> </span>AES<span class="w"> </span>-X<span class="w"> </span>PrivP@ssSec#2<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>.1.3.6.1.2.1.2.2.1.2
+</span></code></pre></div>
+</details>
+<details class="tip" open="open">
+<summary>Troubleshooting SNMPv3 Authentication Issues</summary>
+<p>If you change the config file and adapt the passwords and for some reason
+they do not get accepted, do not worry:</p>
+<ul>
+<li>Check if your passwords contain special characters that might need to be
+  escaped in the command line. For bash, these include: <code>$</code>, <code>&amp;</code>, <code>*</code>, <code>(</code>,
+  <code>)</code>, <code>!</code>, etc. If your password contains any of these characters, you need
+  to escape them with a backslash (<code>\</code>) or enclose the entire password in
+  single quotes (<code>'</code>) to prevent the shell from interpreting them.</li>
+<li>If there are no special characters used, just try restarting the service.</li>
+<li>If things still don't work, you can try removing the persistent key file:
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>sudo<span class="w"> </span>rm<span class="w"> </span>/var/lib/net-snmp/snmpd.conf
+</span></code></pre></div>
+  It's quite brutal but in our test environment it should help you out.</li>
+</ul>
+</details>
+<hr/>
+<h3 id="deploying-bare-minimum-mib-files">Deploying bare minimum MIB files</h3>
+<p>Gathering proper MIB files might sounds a tedious and time consuming task.</p>
+<p>Installing too many MIBs will cause degradation for the
+SNMP trap translation process and slow down the SNMP polling process.</p>
+<p>Usually the Linux distribution comes with a set of basic MIB files. For example, on
+Ubuntu, the <code>snmp-mibs-downloader</code> package, or on Suse the <code>snmp-mibs</code> package
+provides a collection of MIB files that can be used for SNMP monitoring. However,
+these MIBs may not cover all the devices in your network, especially if you have
+equipment from multiple vendors.</p>
+<p>Here is an universal method (treat it as one of many possible options) on how 
+to obtain bare minimum MIBs to work with most of devices. This is useful for both
+SNMP polling and trapping.</p>
+<p>The project <a href="https://github.com/netdisco/netdisco-mibs">https://github.com/netdisco/netdisco-mibs</a>
+exist for 20 years and is a collection of MIBs for a lot of vendors. Dare I say: all vendors?
+We will download the collection and install the MIB files in the <code>/usr/local/share/snmp/mibs</code> directory.
+After that we will configure SNMP to use only the MIBS we require. </p>
+<div class="admonition warning">
+<p class="admonition-title">Performance impact</p>
+<p>Loading lots of MIBs will cause degradation for the SNMP trap translation 
+process and slow down the SNMP polling process.</p>
+<p>Also, you might get warnings like:</p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a>Warning: Module MAU-MIB was in /usr/local/share/snmp/mibs//DOT3-MAU-MIB.txt now is /usr/local/share/snmp/mibs//RFC2668-MIB.txt
+</span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a>Warning: Module DISMAN-EVENT-MIB was in /usr/local/share/snmp/mibs//EVENT-MIB.txt now is /usr/local/share/snmp/mibs//DISMAN-EVENT-MIB.txt
+</span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a>Warning: Module P-BRIDGE-MIB was in /usr/local/share/snmp/mibs//P-BRIDGE-MIB.txt now is /usr/local/share/snmp/mibs//P-BRIDGE.txt
+</span></code></pre></div>
+This is because several MIB files may have the same module name defined inside
+them. This may result in incorrect translation of OIDs and unexpected behavior.
+To avoid this, it's important to only load the MIB files that are necessary 
+for your specific devices/vendors and use cases.</p>
+</div>
+<details class="example" open="open">
+<summary>Install MIB files from Netdisco collection</summary>
+<p>Download and unpack the Netdisco MIB collection, then move the relevant MIB 
+files to the SNMP MIB directory:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>curl<span class="w"> </span>-kL<span class="w"> </span>https://github.com/netdisco/netdisco-mibs/archive/refs/heads/master.zip<span class="w"> </span>-o<span class="w"> </span>/tmp/netdisco-mibs.zip
+</span><span id="__span-23-2"><a href="#__codelineno-23-2" id="__codelineno-23-2" name="__codelineno-23-2"></a>unzip<span class="w"> </span>/tmp/netdisco-mibs.zip<span class="w"> </span>-d<span class="w"> </span>/tmp
+</span></code></pre></div>
+<p>Next, move the MIB files from the Netdisco collection to the SNMP MIB directory.
+The Netdisco collection organizes MIBs in subdirectories based on vendor names,
+and we will move only those directories that start with a lowercase letter or
+digit, which typically represent vendor-specific MIBs.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a>mkdir<span class="w"> </span>/usr/local/share/snmp/mibs
+</span><span id="__span-24-2"><a href="#__codelineno-24-2" id="__codelineno-24-2" name="__codelineno-24-2"></a>find<span class="w"> </span>/tmp/netdisco-mibs-master<span class="w"> </span>-mindepth<span class="w"> </span><span class="m">1</span><span class="w"> </span>-maxdepth<span class="w"> </span><span class="m">1</span><span class="w"> </span>-type<span class="w"> </span>d<span class="w"> </span>-name<span class="w"> </span><span class="s1">'[a-z0-9]*'</span><span class="w"> </span>-exec<span class="w"> </span>mv<span class="w"> </span><span class="se">\{\}</span><span class="w"> </span>/usr/local/share/snmp/mibs/<span class="w"> </span><span class="se">\;</span>
+</span></code></pre></div>
+<p>Finally, we can clean up the temporary files:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a>rm<span class="w"> </span>-rf<span class="w"> </span>/tmp/netdisco*
+</span></code></pre></div>
+</details>
+<p>To enable bare minimum MIBs we need to enable two catalogs "rfc" and "net-snmp".</p>
+<p>Overwrite/replace <code>/etc/snmp/snmp.conf</code> by with:</p>
+<div class="admonition info">
+<p class="admonition-title">Configure SNMP to use RFC and Net-SNMP MIBs</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a>mibdirs<span class="w"> </span>/usr/local/share/snmp/mibs/rfc:/usr/local/share/snmp/mibs/net-snmp
+</span></code></pre></div>
+<p>This will override the OS default MIB search path and set it to include only
+the RFC and Net-SNMP MIBs, which are commonly used and provide a good starting
+point for most SNMP monitoring scenarios.</p>
+</div>
+<details class="tip" open="open">
+<summary>Fun fact</summary>
+<p>Changes to the <code>/etc/snmp/snmp.conf</code> file are applied on the fly.
+No need to restart anything.</p>
+</details>
+<div class="admonition warning">
+<p class="admonition-title">Repeat on each Server/Proxy</p>
+<p>If you have multiple Zabbix servers and/or proxies that will be processing SNMP traps,
+you will need to repeat this MIB installation and configuration process on each
+of those servers to ensure consistent trap translation and processing across
+your monitoring infrastructure.</p>
+</div>
+<hr/>
+<h4 id="include-another-vendor">Include another vendor</h4>
+<p>Let's say we need to work with Cisco equipment. We can double-check if vendor
+is included in Netdisco bundle. Grep for case insensitive name:</p>
+<details class="example" open="open">
+<summary>Check if Cisco MIBs are included in Netdisco collection</summary>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a>ls<span class="w"> </span>-1<span class="w"> </span>/usr/local/share/snmp/mibs<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>Cisco
+</span></code></pre></div>
+</details>
+<p>If the vendor is in list, then include "cisco" directory by adding an additional
+line in <code>/etc/snmp/snmp.conf</code>:</p>
+<details class="example" open="open">
+<summary>Include Cisco MIBs in SNMP configuration</summary>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="w">    </span>mibdirs<span class="w"> </span>/usr/local/share/snmp/mibs/rfc:/usr/local/share/snmp/mibs/net-snmp
+</span><span id="__span-28-2"><a href="#__codelineno-28-2" id="__codelineno-28-2" name="__codelineno-28-2"></a><span class="w">    </span><span class="c1"># Cisco MIBs</span>
+</span><span id="__span-28-3"><a href="#__codelineno-28-3" id="__codelineno-28-3" name="__codelineno-28-3"></a><span class="w">    </span>mibdirs<span class="w"> </span>+/usr/local/share/snmp/mibs/cisco
+</span></code></pre></div>
+<p>Note the <code>+</code> sign before the second <code>mibdirs</code> directive, which tells SNMP to append
+the Cisco MIBs to the existing search path rather than replacing it. This allows us
+to maintain the core RFC and Net-SNMP MIBs while adding vendor-specific MIBs as needed
+in a maintainable way.</p>
+</details>
+<div class="admonition warning">
+<p class="admonition-title">Performance impact</p>
+<p>Adding multiple vendors is possible but it will slow down the translation speed.
+Count on an additional 1s for each vendor added, as the SNMP engine needs to
+load and parse all MIB files in the specified directories to translate OIDs into
+human-readable names. 
+To mitigate this, ensure that on each server/proxy you only include the MIBs 
+that are relevant to the devices you are monitoring on that specific server/proxy,
+rather than loading a large number of unnecessary MIBs that can bloat the
+search path and slow down processing.</p>
+</div>
+<hr/>
+<h3 id="optional-bulletproof-mib-less-solution">(optional) Bulletproof, MIB-less solution</h3>
+<p>Official Zabbix SNMP templates do not require installing MIB files, as they target
+raw OIDs for data polling. If we continue this style for trapping too
+we can create a dependency-free solution by enabling a "numerical" flag inside
+<code>/etc/snmp/snmptrapd.conf</code>.</p>
+<div class="admonition info">
+<p class="admonition-title">Enable numerical traps in snmptrapd.conf</p>
+<p>Add or modify the following line in <code>/etc/snmp/snmptrapd.conf</code> to enable
+numerical traps:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a>outputOption n
+</span></code></pre></div>
+</div>
+<p>Next, restart the snmptrapd service, send test, and check the log:</p>
+<div class="admonition info">
+<p class="admonition-title">Check log for numerical traps</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a>tail<span class="w"> </span>-99<span class="w"> </span>/var/log/zabbix_traps_archive/zabbix_traps.log
+</span></code></pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">In the long run</p>
+<p>Using numerical OIDs in Zabbix SNMP items can significantly increase the 
+time required to design a template, since the dot (<code>.</code>) in numerical OIDs is a
+special character in regular expressions. This means that the dot must be
+escaped (e.g., <code>\.</code>) in any regex preprocessing steps to ensure proper parsing.
+Failing to escape the dot can lead to unexpected behavior, even if it appears
+to work correctly 99.9% of the time. Without escaping, the dot acts as a 
+wildcard, matching <em>any</em> character, which violates the principle of a precise
+and bulletproof solution. Proper escaping ensures that the OID is interpreted
+exactly as intended, eliminating ambiguity and potential errors in monitoring.</p>
+</div>
+<hr/>
+<p>Using numerical traps can be best direction if:</p>
+<ul>
+<li>
+<p>There is a big passion about bulletproof solutions. Creating a solution with the
+  bare minimum of dependencies - MIBs are never required for Zabbix proxies.</p>
+</li>
+<li>
+<p>Template readability is not an issue. You are the only person in the
+  monitoring department. There are no team mates.</p>
+</li>
+<li>
+<p>Have a lot of time to design solution</p>
+</li>
+<li>
+<p>You are willing to share your masterpiece with the internet.
+  Perhaps share it at GitHub</p>
+</li>
+</ul>
+<hr/>
+<h2 id="snmp-monitoring-in-zabbix">SNMP Monitoring in Zabbix</h2>
+<p>Now that we have covered how SNMP itself works, it's time to put that knowledge into
+practice. We'll start up our Zabbix instance and begin monitoring, but first,
+it's crucial to understand the two different methods Zabbix offers for retrieving
+SNMP information from a device.</p>
+<div class="admonition warning">
+<p class="admonition-title">EngineID Uniqueness</p>
+<p>The RFC3411 Specs specify that an EngineID needs to be unique this is very
+important for monitoring. You will see errors like Bad parse of ASN.1 if you
+have a conflict.</p>
+<p>Within an administrative domain, an <code>snmpEngineID</code> is the unique and
+unambiguous identifier of an SNMP engine.  Since there is a one-to-
+one association between SNMP engines and SNMP entities, it also
+uniquely and unambiguously identifies the SNMP entity within that
+administrative domain.  Note that it is possible for SNMP entities in
+different administrative domains to have the same value for
+<code>snmpEngineID</code>. Federation of administrative domains may necessitate
+assignment of new values.</p>
+</div>
+<p>Zabbix supports two distinct approaches for SNMP monitoring: <em>synchronous</em> (legacy) 
+and <em>asynchronous</em> (recommended). Each method has unique characteristics, performance 
+implications, and use cases.</p>
+<hr/>
+<h4 id="synchronous-snmp-monitoring">Synchronous SNMP Monitoring</h4>
+<p>In <em>synchronous</em> mode, Zabbix queries SNMP devices one OID at a time, waiting for
+a response before proceeding to the next check. This method is straightforward 
+but can become inefficient in large environments.</p>
+<ul>
+<li>
+<p><strong>OID Handling</strong>:
+  A single textual or numeric OID (e.g., 1.3.6.1.2.1.31.1.1.1.6.3) is specified
+  in the item’s SNMP OID field.</p>
+</li>
+<li>
+<p><strong>Configuration</strong>:
+  Timeout and performance are controlled by the 'Timeout' and 'StartPollers'
+  parameters in the Zabbix server configuration file.</p>
+</li>
+<li>
+<p><strong>Combined processing</strong>:
+  In legacy synchronous monitoring, Zabbix can combine multiple OIDs into a 
+  single request to optimize performance. However, this still operates within 
+  the synchronous framework, meaning Zabbix will wait for the combined response
+  before moving on to the next check.
+  For more details about combined processing, refer to the <a href="https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing">Zabbix documentation: Internal workings of combined processing.</a></p>
+</li>
+</ul>
+<p><strong>Characteristics</strong>:</p>
+<ul>
+<li>Sequential, blocking, and predictable timing.</li>
+<li><strong>Use Case</strong>: Small environments or scenarios requiring precise timing.</li>
+</ul>
+<hr/>
+<h4 id="asynchronous-snmp-monitoring">Asynchronous SNMP Monitoring</h4>
+<p><em>Asynchronous</em> monitoring leverages native SNMP bulk requests (<code>GetBulkRequest-PDUs</code>)
+and parallel processing, significantly improving performance and scalability.</p>
+<div class="admonition warning">
+<p class="admonition-title">Bulk Requests and Combined Processing</p>
+<p><em>Combined processing</em> is a feature of the legacy synchronous SNMP monitoring method
+and is not to be confused with the <em>bulk request</em> capabilities of asynchronous
+monitoring. In earlier versions of Zabbix, <em>combined processing</em> however was called
+"bulk processing" which can lead to confusion. The key difference is that combined
+processing still operates within a synchronous framework, while asynchronous monitoring
+uses true SNMP bulk requests to retrieve multiple OIDs in parallel without waiting
+for each response.</p>
+</div>
+<ul>
+<li>
+<p><strong>OID Handling</strong>:</p>
+<ul>
+<li><strong><code>walk[OID1, OID2, ...]</code></strong>: Retrieves a subtree of values 
+(e.g., <code>walk[1.3.6.1.2.1.2.2.1.2,1.3.6.1.2.1.2.2.1.3]</code>).</li>
+<li><strong><code>get[OID]</code></strong>: Retrieves a single value asynchronously 
+  (e.g., <code>get[1.3.6.1.2.1.31.1.1.1.6.3]</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Configuration</strong>:</p>
+<ul>
+<li>Timeout settings are configurable per item. A low timeout is recommended to
+  avoid delays. As Zabbix retries up to 5 times, a 3-second timeout could lead
+  to a 15-second wait if a device is unreachable.</li>
+<li>Concurrency is managed by the <code>MaxConcurrentChecksPerPoller</code> parameter (max 
+  1000 checks) and <code>StartSNMPPollers</code>.</li>
+<li>DNS resolution is handled asynchronously.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Characteristics</strong>:</p>
+<ul>
+<li>Parallel, non-blocking, and highly efficient.</li>
+<li><strong>Use Case</strong>: Large-scale environments with many SNMP hosts.</li>
+</ul>
+<hr/>
+<h4 id="comparison-of-snmp-monitoring-methods">Comparison of SNMP Monitoring Methods</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Direction</th>
+<th style="text-align: left;">Timing</th>
+<th style="text-align: left;">Example</th>
+<th style="text-align: left;">Pros</th>
+<th style="text-align: left;">Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Polling (Sync)</td>
+<td style="text-align: left;">Zabbix → Device</td>
+<td style="text-align: left;">Periodic</td>
+<td style="text-align: left;">SNMP GET for CPU load</td>
+<td style="text-align: left;">Predictable, simple</td>
+<td style="text-align: left;">Slower, more traffic</td>
+</tr>
+<tr>
+<td style="text-align: left;">Polling (Async)</td>
+<td style="text-align: left;">Zabbix → Device</td>
+<td style="text-align: left;">Parallel</td>
+<td style="text-align: left;">Many SNMP GETs at once</td>
+<td style="text-align: left;">Fast, scalable</td>
+<td style="text-align: left;">More complex tuning</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3 id="polling-your-first-oid-in-zabbix">Polling Your First OID in Zabbix</h3>
+<p>Let's begin by polling our first OID in Zabbix. As you may recall from a previous
+<code>snmpwalk</code> command, querying <code>.1.3.6.1.2.1.2.2.1.2</code> returned two results, identifying
+the network interfaces on the device:</p>
+<ul>
+<li><code>IF-MIB::ifDescr.1 = STRING: lo</code></li>
+<li><code>IF-MIB::ifDescr.2 = STRING: enp0s1</code></li>
+</ul>
+<p>To find the inbound and outbound octets for the <code>enp0s1</code> network card, we need to
+locate the correct OID. While a MIB file would provide a clear map of all available
+OIDs, this isn't always an option. A common method to discover the correct OID is
+to perform a broader <code>snmpwalk</code> by removing the last digit from the initial OID.</p>
+<div class="admonition example">
+<p class="admonition-title">Finding the correct OID with snmpwalk</p>
+<p>This command returns a more extensive list of MIB objects:
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a><span class="gp">localhost:~ $ </span>snmpwalk<span class="w"> </span>-v2c<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>&lt;IP_ADDRESS&gt;<span class="w"> </span>.1.3.6.1.2.1.2.2.1
+</span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a><span class="go">IF-MIB::ifIndex.1 = INTEGER: 1</span>
+</span><span id="__span-31-3"><a href="#__codelineno-31-3" id="__codelineno-31-3" name="__codelineno-31-3"></a><span class="go">IF-MIB::ifIndex.2 = INTEGER: 2</span>
+</span><span id="__span-31-4"><a href="#__codelineno-31-4" id="__codelineno-31-4" name="__codelineno-31-4"></a><span class="go">IF-MIB::ifDescr.1 = STRING: lo</span>
+</span><span id="__span-31-5"><a href="#__codelineno-31-5" id="__codelineno-31-5" name="__codelineno-31-5"></a><span class="go">IF-MIB::ifDescr.2 = STRING: enp0s1</span>
+</span><span id="__span-31-6"><a href="#__codelineno-31-6" id="__codelineno-31-6" name="__codelineno-31-6"></a><span class="go">...</span>
+</span><span id="__span-31-7"><a href="#__codelineno-31-7" id="__codelineno-31-7" name="__codelineno-31-7"></a><span class="go">IF-MIB::ifInOctets.1 = Counter32: 697830615</span>
+</span><span id="__span-31-8"><a href="#__codelineno-31-8" id="__codelineno-31-8" name="__codelineno-31-8"></a><span class="go">IF-MIB::ifInOctets.2 = Counter32: 49954965</span>
+</span><span id="__span-31-9"><a href="#__codelineno-31-9" id="__codelineno-31-9" name="__codelineno-31-9"></a><span class="go">...</span>
+</span></code></pre></div></p>
+</div>
+<p>From this output, we can see that the index for our target network card, <code>enp0s1</code>,
+is <code>2</code>. This confirms that we can use this index to find the correct data.
+The output <code>IF-MIB::ifInOctets.2 = Counter32: 49954965</code> appears to be the value
+we need, but this is not the raw OID.</p>
+<p>To convert this human-readable output into a numerical OID that Zabbix can use,
+we can add the <code>-On</code> flag to our <code>snmpwalk</code> command, which converts the output
+to its numerical form.</p>
+<div class="admonition example">
+<p class="admonition-title">Converting OID to numerical form with snmpwalk</p>
+<p>The result of next command will be the specific OID for the inbound octets
+on the <code>enp0s1</code> interface:
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="gp">localhost:~ $ </span>snmpwalk<span class="w"> </span>-v2c<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>&lt;IP_ADDRESS&gt;<span class="w"> </span>IF-MIB::ifInOctets.2<span class="w"> </span>-On
+</span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a><span class="go">.1.3.6.1.2.1.2.2.1.10.2 = Counter32: 50050587</span>
+</span></code></pre></div></p>
+</div>
+<p>This is the OID you would use to configure an SNMP item in Zabbix to monitor the
+network traffic for this specific interface.</p>
+<p>Another useful tool that will help here is <code>snmptranslate</code> which does the same
+thing and also the other way back.</p>
+<div class="admonition example">
+<p class="admonition-title">snmptranslate</p>
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a><span class="gp">localhost:~ $ </span>snmptranslate<span class="w"> </span>-On<span class="w"> </span>IF-MIB::ifInOctets.2
+</span><span id="__span-33-2"><a href="#__codelineno-33-2" id="__codelineno-33-2" name="__codelineno-33-2"></a><span class="go">.1.3.6.1.2.1.2.2.1.10.2</span>
+</span><span id="__span-33-3"><a href="#__codelineno-33-3" id="__codelineno-33-3" name="__codelineno-33-3"></a>
+</span><span id="__span-33-4"><a href="#__codelineno-33-4" id="__codelineno-33-4" name="__codelineno-33-4"></a><span class="gp">localhost:~ $ </span>snmptranslate<span class="w"> </span>.1.3.6.1.2.1.2.2.1.10.2
+</span><span id="__span-33-5"><a href="#__codelineno-33-5" id="__codelineno-33-5" name="__codelineno-33-5"></a><span class="go">IF-MIB::ifInOctets.2</span>
+</span></code></pre></div>
+</div>
+<p>There is yet another tool that helps to visualise a SNMP table with the easy to
+remember name ... <code>snmptable</code>. This tool allows you to see the data more easy
+then a simple a snmp walk. To stay with our network cards have a look at this
+output.</p>
+<div class="admonition example">
+<p class="admonition-title">snmptable</p>
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-34-1"><a href="#__codelineno-34-1" id="__codelineno-34-1" name="__codelineno-34-1"></a><span class="gp">localhost:~ $ </span>snmptable<span class="w"> </span>-v<span class="w"> </span>2c<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>IF-MIB::ifTable
+</span><span id="__span-34-2"><a href="#__codelineno-34-2" id="__codelineno-34-2" name="__codelineno-34-2"></a><span class="go">SNMP table: IF-MIB::ifTable</span>
+</span><span id="__span-34-3"><a href="#__codelineno-34-3" id="__codelineno-34-3" name="__codelineno-34-3"></a>
+</span><span id="__span-34-4"><a href="#__codelineno-34-4" id="__codelineno-34-4" name="__codelineno-34-4"></a><span class="go"> ifIndex ifDescr    ifType           ifMtu  ifSpeed    ifPhysAddress     ifAdminStatus</span>
+</span><span id="__span-34-5"><a href="#__codelineno-34-5" id="__codelineno-34-5" name="__codelineno-34-5"></a><span class="go">   1      lo        softwareLoopback 65536  10000000                     up</span>
+</span><span id="__span-34-6"><a href="#__codelineno-34-6" id="__codelineno-34-6" name="__codelineno-34-6"></a><span class="go">   2  enp0s1        ethernetCsmacd    1500        0    76:ae:5:aa:5f:45  up</span>
+</span></code></pre></div>
+</div>
+<hr/>
+<h3 id="polling-a-single-snmp-item">Polling a single SNMP item</h3>
+<p>Ok enough with the theory let's create an actual item in Zabbix. Create a new
+host with the name <code>SNMP Device</code> and place it in a group <code>SNMP Devices</code>. We also
+need to tell Zabbix where we can find our SNMP device as Zabbix is doing the
+polling (Or if we use a Proxy it will be the proxy.)</p>
+<p>So let's add a <strong>SNMP Interface</strong> and give it the IP of the device we would like
+to monitor. If you have been following our steps on the local machine you can
+use ip <code>127.0.0.1</code>, our own server.</p>
+<p><img alt="Host Interface" src="ch04.29-snmp-host-.png"/></p>
+<p><em>4.29 SNMP Interface</em></p>
+<p>Once our host is created and saved with the correct interface we have to create
+an item on the host. Click on <strong>items</strong> next to the host <code>SNMP Device</code>. On the top
+right click the box <strong>Create item</strong> you will be greeted with another form to fill
+in the item information.</p>
+<ul>
+<li><strong>Name:</strong> <code>In traffic enp0s1</code> (A short descriptive name)</li>
+<li><strong>Type:</strong> <em>SNMP Agent</em></li>
+<li><strong>Key:</strong> <code>snmp.in</code> (free form short descriptive)</li>
+<li><strong>Type of information:</strong> <em>Numeric (Unsigned)</em></li>
+<li><strong>Host interface:</strong> The SNMP interface we created on our host. If you have
+  more then 1 interface just select the one you need.</li>
+<li><strong>SNMP OID:</strong> <code>get[&lt;OID&gt;]</code> to retrieve the information or only the <code>&lt;OID&gt;</code> but then it
+  will use synchronous polling.</li>
+<li><strong>Units:</strong> The data is in bytes so use <code>B</code>.</li>
+</ul>
+<p><img alt="snmp-polling/ch04.30-snmp-item.png" src="ch04.30-snmp-item.png"/></p>
+<p><em>4.30 SNMP Item</em></p>
+<p>Before we safe this item there is one more important step we need to do. Network
+items are usually counters. Meaning the device is just counting the amount of
+traffic that passed the interface. This means the counter will always go up as
+more data passes the interface over time. So we need to calculate a delta.</p>
+<p>For this we can use preprocessing steps so let's move to the tab <strong>preprocessing</strong>
+first before we save it.</p>
+<p>Add a <em>preprocessing step</em> with the name <code>Change per second</code></p>
+<p><img alt="snmp-polling/ch04.31-snmp-item-preprocessing.png" src="ch04.31-snmp-item-preprocessing.png"/></p>
+<p><em>snmp preprocessing</em></p>
+<p>We can now save the item and have a look at our latest data page we should have
+a nice graph with our data over time.</p>
+<p>If you decide to use the test button before you save the item (which is always a
+good idea) then don't forget that Zabbix needs two item values to calculate the
+difference. So you will have to press the <strong>Get value and test</strong> button twice.</p>
+<p>Also don't forget to select the <strong>Get value from host</strong> box so Zabbix retrieves it
+from the host.</p>
+<hr/>
+<h4 id="how-does-change-per-second-work">How does change per second work ?</h4>
+<p>Given a counter value sampled at two different times:</p>
+<ul>
+<li>At time <span class="arithmatex">\(t_1\)</span>, the counter value is <span class="arithmatex">\(C_1\)</span>.</li>
+<li>At time <span class="arithmatex">\(t_2\)</span> the counter value is <span class="arithmatex">\(C_2\)</span>.</li>
+</ul>
+<p>The change per second (rate) is calculated as:</p>
+<div class="arithmatex">\[
+\text{Rate} = \frac{C_2 - C_1}{t_2 - t_1}
+\]</div>
+<p>where <span class="arithmatex">\(t_2 - t_1\)</span> is the time elapsed in seconds.</p>
+<hr/>
+<p><strong>If the counter rolls over</strong> (i.e., <span class="arithmatex">\(C_2 &lt; C_1\)</span>, and the max counter value
+is <span class="arithmatex">\(M\)</span>, then adjust as:</p>
+<div class="arithmatex">\[
+\text{Rate} = \frac{(M - C_1) + C_2 + 1}{t_2 - t_1}
+\]</div>
+<hr/>
+<h3 id="polling-a-list-of-item">Polling a list of item</h3>
+<p>Let's do the same for our snmp-walk item. This time we will look for the
+information from all our interfaces. For this we need to find our correct OID
+first. This can be done with <code>snmptranslate</code> which will convert our table name
+to an OID,</p>
+<div class="admonition example">
+<p class="admonition-title">Finding the OID for a table with snmptranslate</p>
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-35-1"><a href="#__codelineno-35-1" id="__codelineno-35-1" name="__codelineno-35-1"></a><span class="gp">localhost:~ $ </span>snmptranslate<span class="w"> </span>-On<span class="w"> </span>IF-MIB::ifTable
+</span><span id="__span-35-2"><a href="#__codelineno-35-2" id="__codelineno-35-2" name="__codelineno-35-2"></a><span class="go">.1.3.6.1.2.1.2.2</span>
+</span></code></pre></div>
+</div>
+<p>This is the OID we can use in our item. Let's clone our previous item and make
+some changes.</p>
+<ul>
+<li><strong>Name:</strong> <code>ifTable</code> (or another descriptive name)</li>
+<li><strong>Key:</strong> <code>snmp.ifTable</code></li>
+<li><strong>Type of information:</strong>: Text</li>
+<li><strong>SNMP OID:</strong> <code>walk[.1.3.6.1.2.1.2.2]</code></li>
+</ul>
+<p>The rest can stay as is, just remove the <em>preprocessing step</em> we added in the earlier
+example as this item will return us a whole list of information.</p>
+<p><img alt="snmp-polling/ch04.32-snmp-walk.png" src="ch04.32-snmp-walk.png"/></p>
+<p><em>4.31 SNMP Walk</em></p>
+<p>When we press the <strong>Get value and test</strong> button in the test item screen we get a
+whole list of data.</p>
+<details class="example" open="open">
+<summary>Output of SNMP walk in Zabbix</summary>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a href="#__codelineno-36-1" id="__codelineno-36-1" name="__codelineno-36-1"></a>.1.3.6.1.2.1.2.2.1.1.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>INTEGER:<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-36-2"><a href="#__codelineno-36-2" id="__codelineno-36-2" name="__codelineno-36-2"></a>.1.3.6.1.2.1.2.2.1.1.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>INTEGER:<span class="w"> </span><span class="m">2</span>
+</span><span id="__span-36-3"><a href="#__codelineno-36-3" id="__codelineno-36-3" name="__codelineno-36-3"></a>.1.3.6.1.2.1.2.2.1.2.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>STRING:<span class="w"> </span><span class="s2">"lo"</span>
+</span><span id="__span-36-4"><a href="#__codelineno-36-4" id="__codelineno-36-4" name="__codelineno-36-4"></a>.1.3.6.1.2.1.2.2.1.2.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>STRING:<span class="w"> </span><span class="s2">"enp0s1"</span>
+</span><span id="__span-36-5"><a href="#__codelineno-36-5" id="__codelineno-36-5" name="__codelineno-36-5"></a>.1.3.6.1.2.1.2.2.1.3.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>INTEGER:<span class="w"> </span><span class="m">24</span>
+</span><span id="__span-36-6"><a href="#__codelineno-36-6" id="__codelineno-36-6" name="__codelineno-36-6"></a>.1.3.6.1.2.1.2.2.1.3.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>INTEGER:<span class="w"> </span><span class="m">6</span>
+</span><span id="__span-36-7"><a href="#__codelineno-36-7" id="__codelineno-36-7" name="__codelineno-36-7"></a>.1.3.6.1.2.1.2.2.1.4.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>INTEGER:<span class="w"> </span><span class="m">65536</span>
+</span><span id="__span-36-8"><a href="#__codelineno-36-8" id="__codelineno-36-8" name="__codelineno-36-8"></a>.1.3.6.1.2.1.2.2.1.4.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>INTEGER:<span class="w"> </span><span class="m">1500</span>
+</span><span id="__span-36-9"><a href="#__codelineno-36-9" id="__codelineno-36-9" name="__codelineno-36-9"></a>.1.3.6.1.2.1.2.2.1.5.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Gauge32:<span class="w"> </span><span class="m">10000000</span>
+</span><span id="__span-36-10"><a href="#__codelineno-36-10" id="__codelineno-36-10" name="__codelineno-36-10"></a>.1.3.6.1.2.1.2.2.1.5.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Gauge32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-11"><a href="#__codelineno-36-11" id="__codelineno-36-11" name="__codelineno-36-11"></a>.1.3.6.1.2.1.2.2.1.6.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>STRING:<span class="w"> </span><span class="s2">""</span>
+</span><span id="__span-36-12"><a href="#__codelineno-36-12" id="__codelineno-36-12" name="__codelineno-36-12"></a>.1.3.6.1.2.1.2.2.1.6.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>STRING:<span class="w"> </span><span class="s2">"76:ae:5:aa:5f:45"</span>
+</span><span id="__span-36-13"><a href="#__codelineno-36-13" id="__codelineno-36-13" name="__codelineno-36-13"></a>.1.3.6.1.2.1.2.2.1.7.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>INTEGER:<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-36-14"><a href="#__codelineno-36-14" id="__codelineno-36-14" name="__codelineno-36-14"></a>.1.3.6.1.2.1.2.2.1.7.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>INTEGER:<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-36-15"><a href="#__codelineno-36-15" id="__codelineno-36-15" name="__codelineno-36-15"></a>.1.3.6.1.2.1.2.2.1.8.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>INTEGER:<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-36-16"><a href="#__codelineno-36-16" id="__codelineno-36-16" name="__codelineno-36-16"></a>.1.3.6.1.2.1.2.2.1.8.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>INTEGER:<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-36-17"><a href="#__codelineno-36-17" id="__codelineno-36-17" name="__codelineno-36-17"></a>.1.3.6.1.2.1.2.2.1.9.1<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-18"><a href="#__codelineno-36-18" id="__codelineno-36-18" name="__codelineno-36-18"></a>.1.3.6.1.2.1.2.2.1.9.2<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-19"><a href="#__codelineno-36-19" id="__codelineno-36-19" name="__codelineno-36-19"></a>.1.3.6.1.2.1.2.2.1.10.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">69417222</span>
+</span><span id="__span-36-20"><a href="#__codelineno-36-20" id="__codelineno-36-20" name="__codelineno-36-20"></a>.1.3.6.1.2.1.2.2.1.10.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">59215034</span>
+</span><span id="__span-36-21"><a href="#__codelineno-36-21" id="__codelineno-36-21" name="__codelineno-36-21"></a>.1.3.6.1.2.1.2.2.1.11.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">6460587</span>
+</span><span id="__span-36-22"><a href="#__codelineno-36-22" id="__codelineno-36-22" name="__codelineno-36-22"></a>.1.3.6.1.2.1.2.2.1.11.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">113038</span>
+</span><span id="__span-36-23"><a href="#__codelineno-36-23" id="__codelineno-36-23" name="__codelineno-36-23"></a>.1.3.6.1.2.1.2.2.1.12.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-24"><a href="#__codelineno-36-24" id="__codelineno-36-24" name="__codelineno-36-24"></a>.1.3.6.1.2.1.2.2.1.12.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-25"><a href="#__codelineno-36-25" id="__codelineno-36-25" name="__codelineno-36-25"></a>.1.3.6.1.2.1.2.2.1.13.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-26"><a href="#__codelineno-36-26" id="__codelineno-36-26" name="__codelineno-36-26"></a>.1.3.6.1.2.1.2.2.1.13.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-27"><a href="#__codelineno-36-27" id="__codelineno-36-27" name="__codelineno-36-27"></a>.1.3.6.1.2.1.2.2.1.14.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-28"><a href="#__codelineno-36-28" id="__codelineno-36-28" name="__codelineno-36-28"></a>.1.3.6.1.2.1.2.2.1.14.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-29"><a href="#__codelineno-36-29" id="__codelineno-36-29" name="__codelineno-36-29"></a>.1.3.6.1.2.1.2.2.1.15.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-30"><a href="#__codelineno-36-30" id="__codelineno-36-30" name="__codelineno-36-30"></a>.1.3.6.1.2.1.2.2.1.15.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-31"><a href="#__codelineno-36-31" id="__codelineno-36-31" name="__codelineno-36-31"></a>.1.3.6.1.2.1.2.2.1.16.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">69417222</span>
+</span><span id="__span-36-32"><a href="#__codelineno-36-32" id="__codelineno-36-32" name="__codelineno-36-32"></a>.1.3.6.1.2.1.2.2.1.16.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">44139841</span>
+</span><span id="__span-36-33"><a href="#__codelineno-36-33" id="__codelineno-36-33" name="__codelineno-36-33"></a>.1.3.6.1.2.1.2.2.1.17.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">6460587</span>
+</span><span id="__span-36-34"><a href="#__codelineno-36-34" id="__codelineno-36-34" name="__codelineno-36-34"></a>.1.3.6.1.2.1.2.2.1.17.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">97398</span>
+</span><span id="__span-36-35"><a href="#__codelineno-36-35" id="__codelineno-36-35" name="__codelineno-36-35"></a>.1.3.6.1.2.1.2.2.1.18.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-36"><a href="#__codelineno-36-36" id="__codelineno-36-36" name="__codelineno-36-36"></a>.1.3.6.1.2.1.2.2.1.18.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-37"><a href="#__codelineno-36-37" id="__codelineno-36-37" name="__codelineno-36-37"></a>.1.3.6.1.2.1.2.2.1.19.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-38"><a href="#__codelineno-36-38" id="__codelineno-36-38" name="__codelineno-36-38"></a>.1.3.6.1.2.1.2.2.1.19.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-39"><a href="#__codelineno-36-39" id="__codelineno-36-39" name="__codelineno-36-39"></a>.1.3.6.1.2.1.2.2.1.20.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-40"><a href="#__codelineno-36-40" id="__codelineno-36-40" name="__codelineno-36-40"></a>.1.3.6.1.2.1.2.2.1.20.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Counter32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-41"><a href="#__codelineno-36-41" id="__codelineno-36-41" name="__codelineno-36-41"></a>.1.3.6.1.2.1.2.2.1.21.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>Gauge32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-42"><a href="#__codelineno-36-42" id="__codelineno-36-42" name="__codelineno-36-42"></a>.1.3.6.1.2.1.2.2.1.21.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>Gauge32:<span class="w"> </span><span class="m">0</span>
+</span><span id="__span-36-43"><a href="#__codelineno-36-43" id="__codelineno-36-43" name="__codelineno-36-43"></a>.1.3.6.1.2.1.2.2.1.22.1<span class="w"> </span><span class="o">=</span><span class="w"> </span>OID:<span class="w"> </span>.0.0
+</span><span id="__span-36-44"><a href="#__codelineno-36-44" id="__codelineno-36-44" name="__codelineno-36-44"></a>.1.3.6.1.2.1.2.2.1.22.2<span class="w"> </span><span class="o">=</span><span class="w"> </span>OID:<span class="w"> </span>.0.0
+</span></code></pre></div>
+</details>
+<p>So we have the <em>traffic in</em> metrics but we would like to find <em>traffic out</em> metrics
+as well of course. Let's use our <code>walk</code> item to extract the outgoing traffic. For
+this we need to create a dependent item.</p>
+<p>Go to <strong>Data collection</strong> - <strong>Hosts</strong> and click on <strong>Items</strong>. You should be able to
+see our newly created <code>ifTable</code> item and 3 dots before it's name.</p>
+<p>Click on those 3 dots and select <strong>Create dependent item</strong> from the list.
+Fill in the new item with the following information:</p>
+<ul>
+<li><strong>Name:</strong> <code>Out traffic enp0s1</code></li>
+<li><strong>Type:</strong> <em>Dependent item</em></li>
+<li><strong>Key:</strong> <code>snmp.out</code></li>
+<li><strong>Type of information:</strong> <em>Unsigned</em></li>
+<li><strong>Master item:</strong> Already filled in but should be our item <code>ifTable</code> that we made
+  before.</li>
+<li><strong>Units:</strong> <code>B</code></li>
+</ul>
+<p><img alt="snmp-polling/ch04.33-snmp-dependent-item.png" src="ch04.33-snmp-dependent-item.png"/></p>
+<p><em>4.32 Dependent SNMP Item</em></p>
+<p>This item as is at the moment is an exact copy of our master item so we need to
+add some <em>preprocessing steps</em> first. Let's go to the tab <strong>Preprocessing</strong> and add
+our first step.</p>
+<p>Add the step <strong>SNMP walk value</strong> and paste the OID in the <strong>Parameter</strong> field: 
+<code>.1.3.6.1.2.1.2.2.1.16.1</code> and choose <strong>Unchanged</strong>.</p>
+<div class="admonition example">
+<p class="admonition-title">find our correct OID</p>
+<div class="language-shell-session highlight"><pre><span></span><code><span id="__span-37-1"><a href="#__codelineno-37-1" id="__codelineno-37-1" name="__codelineno-37-1"></a><span class="gp">localhost:~ $ </span>snmptranslate<span class="w"> </span>IF-MIB::ifOutOctets.1<span class="w"> </span>-On
+</span><span id="__span-37-2"><a href="#__codelineno-37-2" id="__codelineno-37-2" name="__codelineno-37-2"></a><span class="go">.1.3.6.1.2.1.2.2.1.16.1</span>
+</span></code></pre></div>
+</div>
+<p>Remember from our previous item we need to calculate the <strong>Changes per second</strong>
+so add this as the second <em>preprocessing step</em>.</p>
+<p><img alt="snmp-polling/ch04.34-snmp-item-preprocessing.png" src="ch04.34-snmp-item-preprocessing.png"/></p>
+<p><em>04.34 preprocessing
+steps</em></p>
+<p>Going now to the <strong>Latest data</strong> page, it will show the "In" and "Out" traffic for our
+network card but with data gathered in different ways. Both ways use the
+<em>synchronous</em> pollers but the last way will gather all data at once and then
+use preprocessing to extract and calculate the required values for the specific items.</p>
+<p>After you have added more items you can remove the option to keep history from
+your master items.</p>
+<hr/>
+<h2 id="conclusion">Conclusion</h2>
+<p>SNMP polling remains a vital method for monitoring network devices when agents
+are not an option. With Zabbix's asynchronous polling, checks can run in parallel,
+dramatically improving performance and lowering the load on both your server and
+the network. SNMPv3 should be your go-to choice, delivering authentication and
+encryption to secure sensitive data. The SNMP walk item type adds another advantage
+collecting multiple metrics in bulk with a single request, making discovery and
+ongoing polling faster and more efficient.</p>
+<p>By combining these modern features with carefully tuned polling intervals and
+item counts, you can create an SNMP setup that is secure, efficient, and scalable.
+And with asynchronous speed, SNMPv3 security, and bulk walks at your disposal, you're
+ready to monitor more devices, in less time, with greater confidence. Now it's
+time to put these capabilities to work and see just how far your monitoring can
+go.</p>
+<hr/>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Why is it better use SNMPv3 instead of v2c or v1 ?</li>
+<li>Do I need to configure pollers for SNMP ? If so which pollers ?</li>
+<li>Should I install MIB files on my Zabbix server ? What about proxies ?</li>
+<li>Can I still use the old style to monitor SNMP ? Should I start using get[]
+  and walk[] instead ?</li>
+</ul>
+<hr/>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp">https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol">https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc3410">https://datatracker.ietf.org/doc/html/rfc3410</a></li>
+<li><a href="https://blog.zabbix.com/zabbix-snmp-what-you-need-to-know-and-how-to-configure-it/10345/">https://blog.zabbix.com/zabbix-snmp-what-you-need-to-know-and-how-to-configure-it/10345/</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc3411#section-3.1.1.1">https://datatracker.ietf.org/doc/html/rfc3411#section-3.1.1.1</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../js/print-site.js"></script>
+<script src="../../javascripts/mathjax.js"></script>
+<script src="../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../javascripts/tags-data-attr.js?v=00f3eba837c662ba823f1d49c099510f60509368"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>
