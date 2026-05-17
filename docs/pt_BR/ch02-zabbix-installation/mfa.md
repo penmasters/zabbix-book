@@ -94,92 +94,97 @@ Certifique-se de selecionar o grupo de usuários `test` no campo `Groups`.
 
 ![MFA novo usuário](ch02.26-mfa_new_user.png){ width=90% }
 
-_2.26 New user configuration_
+_2.26 Nova configuração de usuário_
 
-Then switch to `Permissions` tab and select any role.
+Em seguida, acesse a guia `Permissions` e selecione qualquer função.
 
-![MFA new user permissions](ch02.27-mfa_new_user_permissions.png){ width=90% }
+![Permissões de novo usuário MFA](ch02.27-mfa_new_user_permissions.png){
+width=90% }
 
-_2.27 New user permissions_
+_2.27 Novas permissões de usuário_
 
-Click `Add` button to add the user.
+Clique no botão `Add` para adicionar o usuário.
 
-Now we can test how TOTP MFA works. Sign out and then try to sign in as a test
-user you just created. You will be presented with a QR code. That means that the
-user `test` has not been enrolled in TOTP MFA yet.
+Agora podemos testar como o TOTP MFA funciona. Saia e tente entrar como um
+usuário de teste que você acabou de criar. Será apresentado a você um código QR.
+Isso significa que o usuário `test` ainda não foi registrado no TOTP MFA.
 
-![MFA TOTP QR code](ch02.28-mfa_totp_qr_code.png){ width=30% }
+![Código QR do MFA TOTP](ch02.28-mfa_totp_qr_code.png){ width=30% }
 
-_2.28 TOTP QR code_
+_2.28 Código QR TOTP_
 
-On your phone you need to install either "Microsoft authenticator" or "Google
-authenticator" application. The procedure of adding new QR code is quite
-similar, here is how it looks in "Google authenticator". Tap `Add a code` and
-then `Scan a QR code`. You'll be immediately presented with a 6 digit code
-(remember we selected 6 in `Code length` when we configured TOTP MFA?)
+Em seu telefone, é necessário instalar o aplicativo "Microsoft authenticator" ou
+"Google authenticator". O procedimento para adicionar um novo código QR é
+bastante semelhante; veja como fica no "Google authenticator". Toque em `Add a
+code` e, em seguida, em `Scan a QR code`. Você verá imediatamente um código de 6
+dígitos (lembra-se de que selecionamos 6 em `Comprimento do código` quando
+configuramos o TOTP MFA?)
 
 ![MFA TOTP auth app1](ch02.29-mfa_totp_auth_app1.png){ width=32% }
 
-_2.29 Authenticator app, step 1_
+_2.29 Aplicativo Authenticator, etapa 1_
 
 ![MFA TOTP auth app2](ch02.30-mfa_totp_auth_app2.png){ width=32% }
 
-_2.30 Authenticator app, step 2_
+_2.30 Aplicativo Authenticator, etapa 2_
 
 ![MFA TOTP auth app3](ch02.31-mfa_totp_auth_app3.png){ width=32% }
 
-_2.31 Authenticator app, step 3_
+_2.31 Aplicativo Authenticator, etapa 3_
 
-Enter this code into `Verification code` field of your login screen and click
-`Sign in`, if you did everything right you are logged in into Zabbix at this
-point. At this point the user "test" is considered enrolled into TOTP MFA and
-Zabbix stores a special code used for further authentications in its database.
-The next time user "test" tries to login into Zabbix there will be only a field
-to enter verification code
+Digite este código no campo `Verification code` da sua tela de login e clique em
+`Sign in`, se você fez tudo certo, você está logado no Zabbix neste momento.
+Nesse momento, o usuário "teste" é considerado inscrito no TOTP MFA e o Zabbix
+armazena em seu banco de dados um código especial utilizado para outras
+autenticações. Na próxima vez que o usuário "teste" tentar fazer o login no
+Zabbix, haverá apenas um campo para inserir o código de verificação
 
-![MFA TOTP second login](ch02.32-mfa_totp_second_login.png){ width=32% }
+![MFA TOTP segundo login](ch02.32-mfa_totp_second_login.png){ width=32% }
 
-_2.32 Verification code request_
+_2.32 Solicitação de código de verificação_
 
-???+ warning
+???+ Aviso
 
     For TOTP MFA to work your Zabbix server must have correct time. Sometimes
     it's not the case especially if you are working with containers so pay attention
     to this.
 
-If a user changes (or loses) his/her phone, then Zabbix administrator should
-reset his/her enrolment. To do that in the menu select `Users` then mark a
-check-box to the left of "test" user and click "Reset TOTP secret" button.
+Se um usuário mudar (ou perder) seu telefone, então o administrador do Zabbix
+deve redefinir sua inscrição. Para isso, no menu, selecione `Users` e marque a
+caixa de seleção à esquerda do usuário "teste" e clique no botão "Reset TOTP
+secret".
 
-![MFA TOTP reset password](ch02.33-mfa_totp_reset_password.png){ width=99% }
+![MFA TOTP resetar a senha](ch02.33-mfa_totp_reset_password.png){ width=99% }
 
-_2.33 Reset TOTP secret_
+_2.33 Redefinir o segredo TOTP_
 
-After you reset TOTP secret the "test" user will have to undergo enrolment
-procedure again.
+Depois de redefinir o segredo TOTP, o usuário de "teste" terá de passar
+novamente pelo procedimento de registro.
 
 ---
 
-## Duo MFA provider
+## Provedor Duo MFA
 
-Duo is a very famous security platform that provides a lot of security related
-features/products. To read more please visit [Duo](https://duo.com/). Here we'll
-talk about Duo only in regards to Zabbix MFA.
+A Duo é uma plataforma de segurança muito famosa que oferece muitos
+recursos/produtos relacionados à segurança. Para saber mais, visite
+[Duo](https://duo.com/). Aqui falaremos sobre a Duo apenas com relação ao Zabbix
+MFA.
 
-???+ warning
+???+ Aviso
 
     For Duo MFA to work your Zabbix WebUI must be configured to work with HTTPS
     (valid certificate is not required, self-signed certificate will work).
 
-First of all you need to create an account with Duo (it's free to manage up to
-10 users) then login into Duo, you are an admin here. In the menu on the left
-select `Applications` and click `Protect an Application` button.
+Em primeiro lugar, você precisa criar uma conta no Duo (é gratuito para
+gerenciar até 10 usuários) e, em seguida, fazer login no Duo, pois você é um
+administrador aqui. No menu à esquerda, selecione `Applications (Aplicativos)` e
+clique no botão `Protect an Application (Proteger um aplicativo)`.
 
-![MFA DUO applications](ch02.34-mfa_duo_applications.png){ width=99% }
+![Aplicativos MFA DUO](ch02.34-mfa_duo_applications.png){ width=99% }
 
-_2.34 DUO Applications menu_
+_2.34 Menu Aplicativos DUO_
 
-Then you will see WebSDK in applications list, click on it
+Em seguida, você verá o WebSDK na lista de aplicativos, clique nele
 
 ![MFA DUO applications list](ch02.35-mfa_duo_applications_list.png){ width=99% }
 
