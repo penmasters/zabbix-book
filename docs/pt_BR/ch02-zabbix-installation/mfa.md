@@ -194,15 +194,15 @@ Here you'll see all the data needed for Zabbix.
 
 ![MFA DUO ](ch02.36-mfa_duo_data.png){ width=99% }
 
-_2.36 DUO WebSDK application settings_
+_2.36 Configurações do aplicativo DUO WebSDK_
 
-Now let's go to Zabbix. First we need to configure Duo MFA method. In the menu
-select `Users` and click `Authentication`. Then on `MFA settings` tab click
-`Add` in `Methods` section.
+Agora vamos para o Zabbix. Primeiro, precisamos configurar o método Duo MFA. No
+menu, selecione `Users` e clique em `Authentication`. Em seguida, na guia `MFA
+settings`, clique em `Add` na seção `Methods`.
 
 ![MFA DUO ](ch02.37-mfa_duo_add_method.png){ width=99% }
 
-_2.37 Add MFA method_
+_2.37 Adicionar método MFA_
 
 Fill in all the fields with data from Duo Dashboard -> Applications -> Web SDK
 page (see screenshot above) and click `Add`, then click `Update` to update
