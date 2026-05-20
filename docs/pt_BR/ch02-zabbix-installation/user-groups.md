@@ -75,9 +75,10 @@ Essa guia inicial define as propriedades gerais do grupo e sua associação:
   `NOC-RO`, `System-Admins-RW`).
 * **Usuários:** Adicione usuários existentes a esse grupo. Um usuário pode ser
   membro de vários grupos.
-* **Frontend access:** Controls the authentication method for group members.
-  Options include `System default`, `Internal`, `LDAP`, or `Disabled` (useful
-  for API-only accounts or for temporarily locking frontend access for a role).
+* **Acesso ao front-end:** Controla o método de autenticação para membros do
+  grupo. As opções incluem `Padrão do sistema`, `Interno`, `LDAP`, ou
+  `Desativado` (útil para contas somente de API ou para bloquear temporariamente
+  o acesso ao frontend para uma função).
 * **LDAP server:** If `LDAP` access is chosen, select the specific LDAP server
   configuration to be used for members of this group.
 * **Multi-factor authentication (MFA):** Select the method to be enforced for
@@ -85,62 +86,68 @@ Essa guia inicial define as propriedades gerais do grupo e sua associação:
   setting will typically apply.
 * **Enabled:** The master switch to activate or deactivate the group and its
   members.
-* **Debug mode:** A powerful, optional setting that enables detailed debug
-  logging for all group members in the Zabbix frontend.
+* **Modo de depuração:** Uma configuração avançada e opcional que permite o
+  registro detalhado de depuração para todos os membros do grupo no front-end do
+  Zabbix.
 
-???+ tip "The Debug User Group" Zabbix includes a dedicated `Debug` user group
-out-of-the-box. Instead of activating the debug option for an existing
-production group, it is cleaner practice to simply add the required user to the
-pre-existing `Debug` group.
+Dica "O grupo de usuários de depuração" O Zabbix inclui um grupo de usuários
+dedicado `Debug` pronto para uso. Em vez de ativar a opção de depuração para um
+grupo de produção existente, é uma prática mais limpa simplesmente adicionar o
+usuário necessário ao grupo pré-existente `Debug`.
 
 ---
 
-### Permission Tabs: Host Groups and Template Groups
+### Guias de permissão: Grupos de hosts e grupos de modelos
 
-Permissions are configured by assigning access levels to **Host Groups** and
-**Template Groups**. These entities act as containers, meaning the permissions
-assigned to the group apply to all nested groups and all entities within them.
+As permissões são configuradas com a atribuição de níveis de acesso a **Host
+Groups** e **Template Groups**. Essas entidades atuam como contêineres, o que
+significa que as permissões atribuídas ao grupo se aplicam a todos os grupos
+aninhados e a todas as entidades dentro deles.
 
-#### Template Permissions Tab
+#### Guia Permissões de modelo
 
-This section controls access to the configuration elements of templates (items,
-triggers, graphs, etc.) via their Template Groups.
+Esta seção controla o acesso aos elementos de configuração dos modelos (itens,
+acionadores, gráficos etc.) por meio de seus grupos de modelos.
 
-For each assigned Template Group, one of the following permissions must be
-selected:
+Para cada grupo de modelos atribuído, uma das seguintes permissões deve ser
+selecionada:
 
-* **Read-only:** Users can view the template configuration and see data derived
-  from it, but they **cannot** modify or link the template.
-* **Read-write:** Users can view, modify, and link/unlink the template and its
-  entities (items, triggers, etc.).
-* **Deny:** Explicitly blocks all access.
+* **Somente leitura:** Os usuários podem visualizar a configuração do modelo e
+  ver os dados derivados dele, mas **não podem** modificar ou vincular o modelo.
+* **Leitura e gravação:** Os usuários podem visualizar, modificar e
+  vincular/desvincular o modelo e suas entidades (itens, acionadores, etc.).
+* **Negar:** Bloqueia explicitamente todos os acessos.
 
-#### Host Permissions Tab
+#### Guia Permissões de host
 
-This tab works identically to the Template Permissions tab but applies the
-access levels to **Host Groups** and the hosts contained within them.
+Essa guia funciona de forma idêntica à guia Template Permissions (Permissões de
+modelo), mas aplica os níveis de acesso a **Host Groups** e aos hosts contidos
+neles.
 
-#### Problem Tag Filters: Granular Alert Access
+#### Filtros de tags de problemas: Acesso granular a alertas
 
-The final configuration tab, **Problem tag filter**, allows for fine-grained
-control over which problems (alerts) a user group can see.
+A última guia de configuração, **Filtro de tags de problemas**, permite um
+controle detalhado sobre quais problemas (alertas) um grupo de usuários pode
+ver.
 
-This is invaluable for enterprise environments where users should only be
-alerted to issues relevant to their domain. For instance, a Database
-Administrator should not be distracted by network switch problems.
+Isso é inestimável para ambientes corporativos em que os usuários só devem ser
+alertados sobre problemas relevantes ao seu domínio. Por exemplo, um
+administrador de banco de dados não deve se distrair com problemas de switch de
+rede.
 
-Filters are applied to specific host groups and can be configured to display:
+Os filtros são aplicados a grupos de hosts específicos e podem ser configurados
+para exibição:
 
-* All tags for the specified hosts.
-* Only problems matching specific tag name/value pairs.
+* Todas as tags para os hosts especificados.
+* Somente problemas de correspondência de pares nome/valor de tag específicos.
 
-When a user is a member of multiple groups, the tag filters apply with **OR
-logic**. If any of the user's groups allows visibility of a specific problem
-based on its tags, the user will see it.
+Quando um usuário é membro de vários grupos, os filtros de tags são aplicados
+com a lógica **OR**. Se algum dos grupos do usuário permitir a visibilidade de
+um problema específico com base em suas tags, o usuário o verá.
 
-???+ example "Example: Database Administrator Filter" To ensure a Database
-Administrator group only sees relevant issues, the problem tag filter would be
-configured to specify:
+???+ exemplo "Exemplo: Filtro do administrador de banco de dados" Para garantir
+que um grupo de administradores de banco de dados veja apenas os problemas
+relevantes, o filtro de tags de problemas seria configurado para especificar:
 
     - **Tag name:** `service`
     - **Value:** `mysql`
@@ -150,30 +157,31 @@ configured to specify:
 
 ---
 
-### Template Permissions — Frontend Behavior and Editing Limitations
+### Permissões de modelo - Comportamento do front-end e limitações de edição
 
-The behavior of the Data collection → Templates view and host configuration
-screens is strictly tied to the user’s permission level on template groups.
-Zabbix intentionally hides templates from users who have only Read-only access.
-This is by design, as described in
+O comportamento da visualização Data collection → Templates e das telas de
+configuração do host está estritamente ligado ao nível de permissão do usuário
+nos grupos de templates. O Zabbix intencionalmente oculta os templates dos
+usuários que possuem apenas acesso Read-only. Isso ocorre por design, conforme
+descrito em
 [https://support.zabbix.com/browse/ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)
 
-| **Action or Screen Element**       | **Read-only** | **Read-write** | **Description / Impact**                                                                                                                                                                     |
-| ---------------------------------- | ------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| View *Data collection → Templates* | ❌             | ✅              | Users with Read-only access do **not see any templates**. Template groups are only visible to users with Read-write rights. ([ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)) |
-| Open template configuration        | ❌             | ✅              | Not available for Read-only users — templates are hidden entirely                                                                                                                            |
+| **Ação ou elemento de tela**       | **Somente leitura** | **Leitura e gravação** | **Descrição / Impacto**                                                                                                                                                                                                                    |
+| ---------------------------------- | ------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Exibir *Coleta de dados → Modelos* | ❌                   | ✅                      | **Os usuários com acesso Read-only (somente leitura) não veem nenhum modelo**. Os grupos de modelos são visíveis apenas para usuários com direitos de leitura e gravação. ([ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)) |
+| Configuração do modelo aberto      | ❌                   | ✅                      | Não disponível para usuários somente leitura - os modelos são totalmente ocultos                                                                                                                                                           |
 
-## The Rule of Precedence: Deny Always Wins
+## A regra de precedência: Negar sempre vence
 
-A user's effective permission is the result of combining the rights from **all**
-groups they belong to. Zabbix resolves these overlapping permissions by applying
-a simple, strict hierarchy based on the most restrictive level, unless a `Deny`
-is present.
+A permissão efetiva de um usuário é o resultado da combinação dos direitos de
+**todos os** grupos aos quais ele pertence. O Zabbix resolve essas permissões
+sobrepostas aplicando uma hierarquia simples e rígida com base no nível mais
+restritivo, a menos que um `Deny` esteja presente.
 
-### Hierarchy of Precedence
+### Hierarquia de precedência
 
-The order of precedence is absolute: **Deny** is the highest, followed by
-**Read-write**, and finally **Read-only**.
+A ordem de precedência é absoluta: **Negar** é a mais alta, seguida por
+**Ler-escrever** e, finalmente, **Ler-apenas**.
 
 ``` mermaid
 flowchart TB
@@ -197,11 +205,11 @@ This precedence can be summarized by two core rules:
 2. **Most Permissive Wins (Otherwise):** If no `Deny` is present, the most
    permissive right applies. **Read-write** always overrides **Read-only**.
 
-| Scenario         | Group A    | Group B    | Effective Permission | Rationale                                                        |
-| ---------------- | ---------- | ---------- | -------------------- | ---------------------------------------------------------------- |
-| **RW Over RO**   | Read-only  | Read-write | **Read-write**       | The most permissive right wins when **Deny** is absent.          |
-| **Deny Over RO** | Read-only  | Deny       | **Deny**             | **Deny** always takes precedence and blocks all access.          |
-| **Deny Over RW** | Read-write | Deny       | **Deny**             | The most restrictive right (Deny) overrides the most permissive. |
+| Scenario         | Group A    | Group B    | Effective Permission   | Rationale                                                        |
+| ---------------- | ---------- | ---------- | ---------------------- | ---------------------------------------------------------------- |
+| **RW Over RO**   | Read-only  | Read-write | **Leitura e gravação** | The most permissive right wins when **Deny** is absent.          |
+| **Deny Over RO** | Read-only  | Deny       | **Deny**               | **Deny** always takes precedence and blocks all access.          |
+| **Deny Over RW** | Read-write | Deny       | **Deny**               | The most restrictive right (Deny) overrides the most permissive. |
 
 ### Permissions in the "Update Problem" Dialog
 
@@ -363,7 +371,7 @@ This table outlines the combined, **effective rights** for the user
 
 | Host Group (HG)             | Permission via 'Junior Monitoring' | Permission via 'Critical Exclusion' | **Effective Permission** | Outcome                                 |
 | --------------------------- | ---------------------------------- | ----------------------------------- | ------------------------ | --------------------------------------- |
-| **`HG_All_Linux_Servers`**  | Read-only                          | *No Explicit Rule*                  | **Read-only**            | Access to view data is **Allowed**.     |
+| **`HG_All_Linux_Servers`**  | Read-only                          | *No Explicit Rule*                  | **Somente leitura**      | Access to view data is **Allowed**.     |
 | **`HG_Critical_Databases`** | Read-only                          | Deny                                | **Deny**                 | Access is **Blocked** (host is hidden). |
 
 
