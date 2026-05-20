@@ -249,7 +249,7 @@ $SSO['IDP_CERT']                = 'conf/certs/idp.crt';
 ---
 
 ## Microsoft Entra ID (Azure AD)
-Integrating Microsoft Entra ID as a SAML Identity Provider for Zabbix follows the same core principles as other IdPs, but with Microsoft’s own structure and terminology layered on top. To get it to work, we will have to do some clicking around in the Microsoft Azure UI.
+Integrating Microsoft Entra ID as a SAML Identity Provider for Zabbix follows the same core principles as other IdPs, but with Microsoft's own structure and terminology layered on top. To get it to work, we will have to do some clicking around in the Microsoft Azure UI.
 
 
 ### Configure Entra ID
@@ -364,7 +364,7 @@ The end result should look something like the image below, but in your environme
 
     With SAML and JIT provisioning enabled, Zabbix will automatically create users on their first successful login. This means you do not need to pre-create users manually.
 
-    If you want more control over user lifecycle management beyond first login, that’s where SCIM comes in. SCIM allows your Identity Provider (like Entra ID) to continuously synchronize users with Zabbix.
+    If you want more control over user lifecycle management beyond first login, that's where SCIM comes in. SCIM allows your Identity Provider (like Entra ID) to continuously synchronize users with Zabbix.
 
     The key difference:
 

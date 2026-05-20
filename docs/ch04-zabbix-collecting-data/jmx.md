@@ -323,7 +323,7 @@ connections. The `TIMEOUT` option controls network operation timeouts, while
 `PROPERTIES_FILE` allows you to define or override additional key-value properties,
 such as a keystore password, without exposing them in a command line.
 
-For your Zabbix server, add an additional configfile `zabbix_java_gateway.conf`
+For your Zabbix server, add an additional config file `zabbix_java_gateway.conf`
 to `/etc/zabbix/zabbix_server.d/`
 
 You'll need to add three key options:

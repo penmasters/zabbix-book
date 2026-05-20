@@ -198,7 +198,7 @@ several other internal workers that play important roles:
 
 - **History syncers**: Write collected values to the database
 - **Trend syncers**: Aggregate historical data into trends
-- **Escalators**: Mmanage multi-step alert escalations
+- **Escalators**: Manage multi-step alert escalations
 - **Configuration syncers**: Distribute configuration changes across the system
 - **Availability managers**: Track host and service availability
 

@@ -339,7 +339,7 @@ vault write auth/token/roles/zabbix \
     default max_lease_ttl, commonly 32 days, does not cap periodic tokens unless explicit_max_ttl
     is configured.
 
-    * If you only set period=720h → you’re fine, no 32-day limit
+    * If you only set period=720h → you're fine, no 32-day limit
     * If explicit_max_ttl is set → the token will expire when that explicit maximum TTL is reached.
  
 Create a separate token for each component using the role created in previous section The
