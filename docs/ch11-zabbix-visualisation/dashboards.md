@@ -192,7 +192,7 @@ Renders a single item's current value as a gauge (180º or 270º). Effective for
 KPI-style displays where you want an instant visual indication of whether a value
 is in a healthy range.
 
-Key options: item to display, minimum and maximum values for the scale, threshold
+**Key options:** item to display, minimum and maximum values for the scale, threshold
 zones with configurable colours, needle/arc display style.
 
 ![ch11.8_gauge.png](ch11.8_gauge.png)
@@ -205,7 +205,7 @@ Places hosts on a geographic map based on their inventory latitude/longitude fie
 Hosts are shown as coloured markers that reflect their current problem severity.
 Click a marker to drill down to the host.
 
-Key options: host groups to include, the initial map center and zoom level.
+**Key options:** host groups to include, the initial map center and zoom level.
 
 > **Prerequisite:** Host inventory must be populated with latitude and longitude
   values for the Geomap to place hosts correctly.
@@ -221,7 +221,7 @@ the recommended widget for displaying metric data over time. It supports multipl
 data sets, color customization, and is fully interactive in view mode (you can
 zoom and pan the time range).
 
-Key options:
+**Key options:**
 
 - **Data set**: add one or more data sets, each selecting hosts/items via a pattern
 or direct selection. Each data set gets its own color, draw type (line, points,
@@ -245,31 +245,62 @@ _11.10 Graph_
 
 ### Graph (classic)
 
-Renders a previously defined custom graph (created under *Data collection → Hosts/Templates → Graphs*) or a simple graph for a single item. It uses the older PNG-based rendering engine.
+Renders a previously defined custom graph (created under *Data collection → Hosts/Templates
+→ Graphs*) or a simple graph for a single item. It uses the older PNG-based rendering
+engine.
 
-Use this widget when you need to display a named custom graph that you have already defined elsewhere and do not want to reconfigure in the widget itself. For new visualization work, prefer the *Graph* widget.
+Use this widget when you need to display a named custom graph that you have already
+defined elsewhere and do not want to reconfigure in the widget itself. For new
+visualization work, prefer the *Graph* widget.
+
+![ch11.11_classic_graph.png](ch11.11_classic_graph.png)
+
+_11.11 Classic Graph_
 
 ### Graph prototype
 
-Displays graphs that were created by Low-Level Discovery (LLD) graph prototypes. As new entities are discovered (interfaces, disks, etc.), their automatically generated graphs appear in this widget.
+Displays graphs that were created by Low-Level Discovery (LLD) graph prototypes.
+As new entities are discovered (interfaces, disks, etc.), their automatically
+generated graphs appear in this widget.
 
-Key options: select the LLD rule and graph prototype whose results you want to display.
+**Key options:** select the LLD items or the graph prototype whose results you want
+to display.
+
+![ch11.12_graph_prototype.png](ch11.12_graph_prototype.png)
+
+_11.12 Graph prototype_
 
 ### Honeycomb
 
-Displays a set of items as a grid of coloured hexagonal cells. Each cell represents one host/item combination, and its color reflects the item's current value relative to configured thresholds. Good for a dense, at-a-glance health view over many similar entities.
+Displays a set of items as a grid of coloured hexagonal cells. Each cell represents
+one host/item combination, and its color reflects the item's current value relative
+to configured thresholds. Good for a dense, at-a-glance health view over many similar
+entities.
 
-Key options: hosts/items to include, threshold definitions that control cell colouring.
+**Key options:** hosts/items to include, threshold definitions that control cell
+colouring.
+
+![ch11.13_honeycomb.png](ch11.13_honeycomb.png)
+
+_11.13 Honeycomb_
 
 ### Host availability
 
-Shows a summary bar chart of how many hosts in selected host groups are *available*, *not available*, *unknown*, or *disabled* per interface type (Zabbix agent, SNMP, JMX, IPMI).
+Shows a summary bar chart of how many hosts in selected host groups are *available*,
+*not available*, *unknown*, or *disabled* per interface type (Zabbix agent, SNMP,
+JMX, IPMI).
+
+![ch11.14_host_availability.png](ch11.14_host_availability.png)
+
+_11.14 Host availability_
 
 ### Host card
 
-Displays a compact summary card for a single host: its name, availability indicators, tags, and current problem count per severity. Useful as a focused panel for a host-specific dashboard page.
+Displays a compact summary card for a single host: its name, availability indicators,
+tags, and current problem count per severity. Useful as a focused panel for a
+host specific dashboard page.
 
-Key options: the host to display, which details to include.
+**Key options:** the host to display, which details to include.
 
 ### Host navigator
 
