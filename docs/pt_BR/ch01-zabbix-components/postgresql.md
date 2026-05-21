@@ -445,18 +445,18 @@ novas configurações:
 
 ## Criação da instância do banco de dados Zabbix
 
-With the necessary packages installed, you are now ready to create the Zabbix
-database and users for both the server and frontend.
+Com os pacotes necessários instalados, agora você está pronto para criar o banco
+de dados e os usuários do Zabbix para o servidor e o frontend.
 
-The PostgreSQL packages automatically create a default `postgres` linux-user
-during installation which has administrative privileges on the PostgreSQL
-instance. To administer the database, you will need to execute commands as the
-`postgres` user.
+Os pacotes do PostgreSQL criam automaticamente um usuário Linux padrão
+`postgres` durante a instalação, que tem privilégios administrativos na
+instância do PostgreSQL. Para administrar o banco de dados, você precisará
+executar comandos como o usuário `postgres`.
 
-First, create the Zabbix server database user (also referred to as a "role" in
-PostgreSQL):
+Primeiro, crie o usuário do banco de dados do servidor Zabbix (também chamado de
+"função" no PostgreSQL):
 
-!!! info "Create server users"
+!!! info "criar usuários do servidor"
 
     ```bash
     sudo -u postgres createuser --pwprompt zabbix-srv
@@ -464,10 +464,10 @@ PostgreSQL):
     Enter it again: <server-password>
     ```
 
-Next, create the Zabbix frontend user, which will be used to connect to the
-database:
+Em seguida, crie o usuário front-end do Zabbix, que será usado para se conectar
+ao banco de dados:
 
-!!! info "Create front-end user"
+!!! info "Criar usuário de front-end"
 
     ```bash
     sudo -u postgres createuser --pwprompt zabbix-web
@@ -475,18 +475,18 @@ database:
     Enter it again: <frontend-password>
     ```
 
-Now with the users created, the next step is to create the Zabbix database.
-Execute the following command to create the database `zabbix` with the owner set
-to `zabbix-srv` and the character encoding set to `Unicode` as required by
-Zabbix:
+Agora, com os usuários criados, a próxima etapa é criar o banco de dados do
+Zabbix. Execute o seguinte comando para criar o banco de dados `zabbix` com o
+proprietário definido como `zabbix-srv` e a codificação de caracteres definida
+como `Unicode`, conforme exigido pelo Zabbix:
 
-!!! info "Create DB"
+!!! info "Criar banco de dados"
 
     ``` bash
     sudo -u postgres createdb -E Unicode -T template0 -O zabbix-srv zabbix
     ```
 
-???+ note "What is this 'template0'?"
+???+ nota "O que é esse 'template0'?"
 
     In PostgreSQL, `template0` is a default database template that serves as a pristine
     copy of the database system. When creating a new database using `template0`,
@@ -495,18 +495,18 @@ Zabbix:
     This is particularly useful when you want to create a database with specific
     settings or extensions without inheriting any unwanted elements from other templates.
 
-Once the database is created, you should verify the connection and ensure that
-the correct user session is active. To do this, log into the zabbix database
-using the `zabbix-srv` user:
+Depois que o banco de dados for criado, verifique a conexão e certifique-se de
+que a sessão correta do usuário esteja ativa. Para fazer isso, faça login no
+banco de dados zabbix usando o usuário `zabbix-srv`:
 
-!!! info "Login as user zabbix-srv"
+!!! info "Faça login como usuário zabbix-srv"
 
     ```bash
     psql -d zabbix -U zabbix-srv
     ```
 
-After logging in, run the following SQL query to confirm that both the
-`session_user` and `current_user` are set to `zabbix-srv`:
+Depois de fazer login, execute a seguinte consulta SQL para confirmar que tanto
+o `session_user` quanto o `current_user` estão definidos como `zabbix-srv`:
 
 !!! info ""
 
@@ -518,20 +518,21 @@ After logging in, run the following SQL query to confirm that both the
     (1 row)
     ```
 
-If the output matches, you are successfully connected to the database with the
-correct user.
+Se a saída corresponder, você se conectou com sucesso ao banco de dados com o
+usuário correto.
 
-PostgreSQL differs significantly from MySQL or MariaDB in several aspects, and
-one of the key features that sets it apart is its use of schemas. Unlike MySQL,
-where databases are more standalone, PostgreSQL's schema system provides a
-structured, multi-user environment within a single database.
+O PostgreSQL de fato difere significativamente do MySQL ou do MariaDB em vários
+aspectos, e um dos principais recursos que o diferencia é o uso de esquemas. Ao
+contrário do MySQL, em que os bancos de dados são mais independentes, o sistema
+de esquema do PostgreSQL fornece um ambiente estruturado e multiusuário em um
+único banco de dados.
 
-Schemas act as logical containers within a database, enabling multiple users or
-applications to access and manage data independently without conflicts. This
-feature is especially valuable in environments where several users or
-applications need to interact with the same database server concurrently. Each
-user or application can have its own schema, preventing accidental interference
-with each other's data.
+Os esquemas funcionam como contêineres lógicos dentro de um banco de dados,
+permitindo que vários usuários ou aplicativos acessem e gerenciem dados de forma
+independente, sem conflitos. Esse recurso é especialmente valioso em ambientes
+em que vários usuários ou aplicativos precisam interagir com o mesmo banco de
+dados simultaneamente. Cada usuário ou aplicativo pode ter seu próprio esquema,
+evitando interferências acidentais nos dados dos outros.
 
 ???+ nota
 
@@ -543,22 +544,23 @@ with each other's data.
     this URI, [https://hevodata.com/learn/postgresql-schema/#schema](https://hevodata.com/learn/postgresql-schema/#schema)
     which explains the benefits and use cases for schemas in PostgreSQL.
 
-To finalize the initial database setup for Zabbix, we need to configure schema
-permissions for both the `zabbix-srv` and `zabbix-web` users.
+Para finalizar a configuração inicial do banco de dados do Zabbix, precisamos
+configurar as permissões do esquema para os usuários `zabbix-srv` e
+`zabbix-web`.
 
-First, we create a custom schema named `zabbix_server` and assign ownership to
-the `zabbix-srv` user:
+Primeiro, criamos um esquema personalizado chamado `zabbix_server` e atribuímos
+a propriedade ao usuário `zabbix-srv`:
 
-!!! info "Create the db schema"
+!!! info "create the db schema" (criar o esquema do banco de dados)
 
     ```psql
     zabbix=> CREATE SCHEMA zabbix_server AUTHORIZATION "zabbix-srv";
     ```
 
-Next, we set the `search path` to `zabbix_server` schema so that it's the
-default for the current session:
+Em seguida, definimos o `caminho de pesquisa` para `zabbix_server` schema para
+que seja o padrão da sessão atual:
 
-!!! info "Set search path"
+!!! info "Definir caminho de pesquisa"
 
     ```psql
     zabbix=> SET search_path TO "zabbix_server";
@@ -579,9 +581,10 @@ default for the current session:
     database, the `search_path` is automatically set to `zabbix_server`.
 
 
-To confirm the schema setup, you can list the existing schemas:
+Para confirmar a configuração do esquema, você pode listar os esquemas
+existentes:
 
-!!! example "Verify schema access"
+!!! exemplo "Verificar acesso ao esquema"
 
     ```psql
     zabbix=> \dn
@@ -593,23 +596,24 @@ To confirm the schema setup, you can list the existing schemas:
     (2 rows)
     ```
 
-At this point, the `zabbix-srv` user has full access to the schema, but the
-`zabbix-web` user still needs appropriate permissions to connect and interact
-with the database. First, we grant `USAGE` privileges on the schema to allow
-`zabbix-web` to connect:
+Neste ponto, o usuário `zabbix-srv` tem acesso total ao esquema, mas o usuário
+`zabbix-web` ainda precisa de permissões apropriadas para se conectar e
+interagir com o banco de dados. Primeiro, concedemos a `USAGE` privilégios no
+esquema para permitir que `zabbix-web` se conecte:
 
-!!! info "Grant access to schema for user zabbix-web"
+!!! info "Conceder acesso ao esquema para o usuário zabbix-web"
 
     ```psql
     zabbix=> GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
     ```
 
-Now, the `zabbix-web` user has appropriate access to interact with the schema
-while maintaining security by limiting permissions to essential operations.
+Agora, o usuário `zabbix-web` tem acesso adequado para interagir com o esquema,
+mantendo a segurança ao limitar as permissões às operações essenciais.
 
-If you are ready you can exit the database and return to your linux shell.
+Se estiver pronto, você poderá sair do banco de dados e retornar ao shell do
+Linux.
 
-!!! info "Exit the database shell"
+!!! info "Sair do shell do banco de dados"
 
     ```psql
     zabbix=> \q
@@ -620,9 +624,10 @@ realmente ser usado pelo Zabbix, ainda precisamos preencher o banco de dados com
 as tabelas necessárias e os dados iniciais, mas isso será abordado na próxima
 seção, quando instalarmos o servidor Zabbix.
 
-If you intent to install Zabbix server on a different machine than the one
-hosting the database you will need to open the host firewall to allow incoming
-connections to the database server. By default, PostgreSQL listens on port 5432.
+Se você pretende instalar o Zabbix Server em uma máquina diferente da que
+hospeda o banco de dados, será necessário abrir o firewall do host para permitir
+conexões de entrada com o servidor de banco de dados. Por padrão, o PostgreSQL
+escuta na porta 5432.
 
 !!! info "Adicionar regras de firewall"
 
@@ -640,10 +645,11 @@ connections to the database server. By default, PostgreSQL listens on port 5432.
 
 ## Preencher o banco de dados do Zabbix
 
-During the installation of the database software earlier, we created the
-necessary users, database and schema for Zabbix, however, Zabbix expects certain
-tables, schemas, images, and other elements to be present in the database. To
-set up the database correctly, we need to populate it with the required schema.
+Durante a instalação do software de banco de dados anteriormente, criamos os
+usuários, o banco de dados e o esquema necessários para o Zabbix. No entanto, o
+Zabbix espera que determinadas tabelas, esquemas, imagens e outros elementos
+estejam presentes no banco de dados. Para configurar o banco de dados
+corretamente, precisamos preenchê-lo com o esquema necessário.
 
 Primeiro, precisamos instalar os scripts SQL do Zabbix que contêm os scripts de
 importação necessários para o banco de dados.
@@ -665,10 +671,10 @@ importação necessários para o banco de dados.
     sudo apt install zabbix-sql-scripts
     ```
 
-Next you need to prepare the database schema: unzip the necessary schema files
-by running the following command:
+Em seguida, você precisa preparar o esquema do banco de dados: descompacte os
+arquivos de esquema necessários executando o seguinte comando:
 
-!!! info "Unzip the DB patch"
+!!! info "Descompacte o patch do DB"
 
     Red Hat / SUSE
     ``` bash
@@ -687,17 +693,18 @@ by running the following command:
     look at the Zabbix documentation, there is a good chance that some location was
     changed.
 
-This will extract the database schema required for the Zabbix server.
+Isso extrairá o esquema do banco de dados necessário para o servidor Zabbix.
 
-Now we will execute the SQL file to populate the database. Open a `psql` shell:
+Agora, executaremos o arquivo SQL para preencher o banco de dados. Abra um shell
+`psql`:
 
-!!! info "Open psql shell"
+!!! info "Abrir o shell psql"
 
     ``` bash
     psql -d zabbix -U zabbix-srv
     ```
 
-???+ warning "Ensure correct search_path is set"
+???+ aviso "Certifique-se de que o search_path correto esteja definido"
 
     Make sure you performed previous steps as outlined in [Creating the Zabbix database instance with PostgreSQL](postgresql.md#creating-the-zabbix-database-instance)
     carefully so that you have set the correct `search_path`.
@@ -708,9 +715,10 @@ Now we will execute the SQL file to populate the database. Open a `psql` shell:
     zabbix=> SET search_path TO "zabbix_server";
     ```
 
-Upload the DB schema to the database using the following commands:
+Faça o upload do esquema do banco de dados para o banco de dados usando os
+seguintes comandos:
 
-!!! info "Upload the DB schema to db zabbix"
+!!! info "carregar o esquema do banco de dados para o banco de dados zabbix"
 
     ```psql
     zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
@@ -722,9 +730,10 @@ Upload the DB schema to the database using the following commands:
     from a few seconds to several minutes. Please be patient and avoid cancelling
     the operation.
 
-Monitor the progress as the script runs. You will see output similar to:
+Monitore o progresso à medida que o script é executado. Você verá uma saída
+semelhante a:
 
-!!! example "Output example"
+!!! exemplo "Exemplo de saída"
 
     ```psql
     zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
@@ -745,14 +754,14 @@ Once the script completes and you return to the `zabbix=>` prompt, the database
 should be successfully populated with all the required tables, schemas, images,
 and other elements needed for Zabbix.
 
-However, `zabbix-web` still cannot perform any operations on the tables or
-sequences. To allow basic data interaction without giving too many privileges,
-grant the following permissions:
+Entretanto, `zabbix-web` ainda não pode executar nenhuma operação nas tabelas ou
+sequências. Para permitir a interação básica dos dados sem conceder muitos
+privilégios, conceda as seguintes permissões:
 
-- For tables: SELECT, INSERT, UPDATE, and DELETE.
-- For sequences: SELECT and UPDATE.
+- Para tabelas: SELECT, INSERT, UPDATE e DELETE.
+- Para sequências: SELECT e UPDATE.
 
-!!! info "Grant rights on the schema to user zabbix-web"
+!!! info "Conceder direitos sobre o esquema ao usuário zabbix-web"
 
     ```psql
     zabbix=> GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server
@@ -760,9 +769,9 @@ grant the following permissions:
     zabbix=> GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
     ```
 
-Verify if the rights are correct on the schema :
+Verifique se os direitos estão corretos no esquema:
 
-!!! example "Example schema rights"
+!!! exemplo "Exemplo de direitos de esquema"
 
     ```psql
     zabbix=> \dn+
@@ -785,23 +794,23 @@ Verify if the rights are correct on the schema :
     setting the search path, you ensure that the SQL script will create tables
     and other objects in the intended schema.
 
-To ensure that the Zabbix tables were created successfully and have the correct
-permissions, you can verify the table list and their ownership using the `psql`
-command:
+Para garantir que as tabelas do Zabbix foram criadas com êxito e têm as
+permissões corretas, você pode verificar a lista de tabelas e sua propriedade
+usando o comando `psql`:
 
-- List the Tables: Use the following command to list all tables in the
-  `zabbix_server` schema:
+- Listar as tabelas: Use o seguinte comando para listar todas as tabelas no
+  esquema `zabbix_server`:
 
-!!! info "List tables"
+!!! info "Listar tabelas"
 
     ```psql
     zabbix=# \dt
     ```
 
-You should see a list of tables with their schema, name, type, and owner. For
-example:
+Você verá uma lista de tabelas com seu esquema, nome, tipo e proprietário. Por
+exemplo:
 
-???+ example "List table with relations"
+???+ exemplo "Tabela de listas com relações"
 
     ```psql
     zabbix=> \dt
