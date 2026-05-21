@@ -302,13 +302,26 @@ host specific dashboard page.
 
 **Key options:** the host to display, which details to include.
 
+![ch11.15_host_card.png](ch11.15_host_card.png)
+
+_11.15_host card_
+
 ### Host navigator
 
-A dynamic host selector widget. It renders a filterable, searchable list of hosts (filtered by host groups, tags, or severity). When a user selects a host from the list, other widgets on the same dashboard page that have *Override host* enabled will update to show data for that selected host.
+A dynamic host selector widget. It renders a filterable, searchable list of hosts
+(filtered by host groups,host patterns, tags, or severity). When a user selects
+a host from the list, other widgets on the same dashboard page that have
+*Override host* enabled will update to show data for that selected host.
 
-This widget is powerful for building a single dashboard that can be used to inspect any host by selection, without needing a separate dashboard per host.
+This widget is powerful for building a single dashboard that can be used to inspect
+any host by selection, without needing a separate dashboard per host.
 
-Key options: host groups, tags, and problem severity filters to limit which hosts appear in the list.
+**Key options:** host groups, tags, and problem severity filters to limit which
+hosts appear in the list.
+
+![ch11.16_host_navigator.png](ch11.16_host_navigator.png)
+
+_11.16 Host Navigator_
 
 ### Item card
 
@@ -446,7 +459,6 @@ The sharing dialog offers two models:
 
 To configure: set the type to *Public* or add users/user groups with *Read* or *Read-write* permission as needed, then click *Update*.
 
-> **Tip:** If you want a dashboard to be the default landing page for a group of users, configure their user role to have a specific starting page, or make a well-named public dashboard and communicate its URL to the team. Zabbix does not yet have a per-user "default dashboard" setting in the UI, but you can bookmark the dashboard URL directly.
 
 ---
 
