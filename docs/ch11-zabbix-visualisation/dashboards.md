@@ -325,13 +325,24 @@ _11.16 Host Navigator_
 
 ### Item card
 
-Similar to *Host card*, but focused on a single item rather than a whole host. Displays the item's current value, units, and a small sparkline trend.
+Similar to *Host card*, but focused on a single item rather than a whole host.
+Displays the item's current value, units, and a small sparkline trend.
+
+![ch11.17_item_card.png](ch11.17_item_card.png)
+
+_ch11.17 Item Card__
 
 ### Item history
 
-Displays a table of recent values for one or more items — essentially a compact view of the *Latest data* history for selected items. Useful for keeping an eye on discrete event-like metrics (log entries, state changes).
+Displays a table of recent values for one or more items, essentially a compact
+view of the *Latest data* history for selected items. Useful for keeping an eye
+on discrete event-like metrics (log entries, state changes).
 
 Key options: items to display, number of rows to show, sort order.
+
+![ch11.18_item_history.png](ch11.18_item_history.png)
+
+_ch11.18 item_history_
 
 ### Item navigator
 
