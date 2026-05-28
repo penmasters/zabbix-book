@@ -145,6 +145,8 @@ executed. Useful for an audit style view of what your alerting system has been d
 
 _11.3 Action Log widget_
 
+---
+
 ### Clock
 
 Shows the current date and time, either as a digital or an analog clock face. You
@@ -158,6 +160,8 @@ specified timezone).
 
 _11.4 Clock widget_
 
+---
+
 ### Discovery status
 
 Displays a summary of the last network discovery run: how many devices were found
@@ -166,6 +170,8 @@ and in what state. Useful on infrastructure overview dashboards.
 ![ch11.5_discovery.png](ch11.5_discovery.png)
 
 _11.5 Discovery status_
+
+---
 
 ### Favourite graphs
 
@@ -177,6 +183,8 @@ user currently viewing the dashboard.
 
 _11.6 Favourite Graphs_
 
+---
+
 ### Favourite maps
 
 The network map equivalent of Favourite graphs. Shows the user's bookmarked network
@@ -185,6 +193,8 @@ maps.
 ![ch11.7_fav_maps.png](ch11.7_fav_maps.png)
 
 _11.7 Favourite Maps_
+
+---
 
 ### Gauge
 
@@ -198,6 +208,8 @@ zones with configurable colours, needle/arc display style.
 ![ch11.8_gauge.png](ch11.8_gauge.png)
 
 _11.8 Gauge_
+
+---
 
 ### Geomap
 
@@ -213,6 +225,8 @@ Click a marker to drill down to the host.
 ![ch11.9_geomaps.png](ch11.9_geomaps.png)
 
 _11.9 Geomap_
+
+---
 
 ### Graph
 
@@ -244,6 +258,8 @@ far more display options.
 
 _11.10 Graph_
 
+---
+
 ### Graph (classic)
 
 Renders a previously defined custom graph (created under *Data collection → Hosts/Templates
@@ -258,6 +274,8 @@ visualization work, prefer the *Graph* widget.
 
 _11.11 Classic Graph_
 
+--
+
 ### Graph prototype
 
 Displays graphs that were created by Low-Level Discovery (LLD) graph prototypes.
@@ -270,6 +288,8 @@ to display.
 ![ch11.12_graph_prototype.png](ch11.12_graph_prototype.png)
 
 _11.12 Graph prototype_
+
+---
 
 ### Honeycomb
 
@@ -285,6 +305,8 @@ colouring.
 
 _11.13 Honeycomb_
 
+---
+
 ### Host availability
 
 Shows a summary bar chart of how many hosts in selected host groups are *available*,
@@ -294,6 +316,8 @@ JMX, IPMI).
 ![ch11.14_host_availability.png](ch11.14_host_availability.png)
 
 _11.14 Host availability_
+
+---
 
 ### Host card
 
@@ -306,6 +330,8 @@ host specific dashboard page.
 ![ch11.15_host_card.png](ch11.15_host_card.png)
 
 _11.15_host card_
+
+---
 
 ### Host navigator
 
@@ -324,6 +350,8 @@ hosts appear in the list.
 
 _11.16 Host Navigator_
 
+---
+
 ### Item card
 
 Similar to *Host card*, but focused on a single item rather than a whole host.
@@ -332,6 +360,8 @@ Displays the item's current value, units, and a small sparkline trend.
 ![ch11.17_item_card.png](ch11.17_item_card.png)
 
 _ch11.17 Item Card__
+
+---
 
 ### Item history
 
@@ -345,6 +375,8 @@ on discrete event-like metrics (log entries, state changes).
 
 _ch11.18 Item History_
 
+---
+
 ### Item navigator
 
 The item-level equivalent of *Host navigator*. Renders a searchable list of items
@@ -353,6 +385,8 @@ and allows other widgets on the page to be driven by the user's selection.
 ![ch11.19_item_navigator.png](ch11.19_item_navigator.png)
 
 _ch11.19 Item Navigator_
+
+---
 
 ### Item value
 
@@ -370,6 +404,8 @@ sparkline on/off.
 
 _ch11.20 Item Value_
 
+---
+
 ### Map
 
 Embeds a Zabbix network map into the dashboard. The map displays hosts, links,
@@ -380,6 +416,8 @@ and connection states, and updates in real time as problem states change.
 ![ch11.21_map.png](ch11.21_map.png)
 
 _ch11.21 Map_
+
+---
 
 ### Map navigation tree
 
@@ -393,19 +431,33 @@ a map in the tree updates the map displayed in the *Map* widget on the same page
 
 _ch11.22 Map Navigation_
 
+---
+
 ### Pie chart
 
 Renders item values as slices of a pie or donut chart. Useful for showing proportional
 distribution (disk usage breakdown, traffic by interface, etc.).
 
-Key options: data sets (host/item pairs that become slices), colours, whether
+**Key options:** data sets (host/item pairs that become slices), colours, whether
 to show as pie or donut, legend.
+
+![ch11.23_pie.png](ch11.23_pie.png)
+
+_ch11.23 Pie_
+
+---
 
 ### Problem hosts
 
 Shows a summary table of hosts that currently have active problems, grouped or
 filtered by host group. Each row shows a host name and a count of problems per
 severity level, color-coded.
+
+![ch11.24_problem_hosts.png](ch11.24_problem_hosts.png)
+
+_ch11.24 Problem Hosts_
+
+---
 
 ### Problems
 
@@ -418,18 +470,36 @@ age; number of rows to display.
 
 This is one of the most commonly placed widgets on any operational dashboard.
 
+![ch11.25_problems.png](ch11.25_problems.png)
+
+_ch11.25 Problems_
+
+---
+
 ### Problems by severity
 
 Shows a single summary bar (or count cells) broken down by severity level (Disaster,
 High, Average, Warning, Information, Not classified). Gives an immediate count of
 active problems at each level across a selected scope.
 
+![ch11.26_problems_by_severity.png](ch11.26_problems_by_severity.png)
+
+_ch11.26 Problems By Severity_
+
+---
+
 ### Scatter plot
 
 Plots two item values against each other as dots on an X/Y plane. Useful for correlation
 analysis between two metrics.
 
-Key options: X-axis item, Y-axis item, point size and color, axis labels.
+**Key options:** X-axis item, Y-axis item, point size and color, axis labels.
+
+![ch11.27_scatter_plot.png](ch11.27_scatter_plot.png)
+
+_ch11.27 Scatter Plot_
+
+---
 
 ### SLA report
 
@@ -437,11 +507,23 @@ Displays SLA compliance data for services defined in Zabbix's Service monitoring
 module. Shows SLI values and OK/problem time breakdowns for a selected SLA and
 time period.
 
+![ch11.28_sla_reports.png](ch11.28_sla_reports.png)
+
+_ch11.28 Sla Reports_
+
+---
+
 ### System information
 
 Shows key Zabbix server status figures: number of hosts, items, triggers, users
 logged in, required server performance, etc. Typically placed on an internal
 administration dashboard.
+
+![ch11.29_system_information.png](ch11.29_system_information.png)
+
+_ch11.29 System Information_
+
+---
 
 ### Top hosts
 
