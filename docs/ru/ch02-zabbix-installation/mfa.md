@@ -32,12 +32,12 @@ tags: [advanced]
 
 ![Начальные настройки MFA](ch02.20-mfa_settings_initial.png){ width=90% }
 
-_2.20 Initial MFA settings_
+_2.20 Начальные настройки MFA_
 
 Now in `MFA settings` tab select the `Enable multi-factor authentication`
 check-box, then select `TOTP` in Type drop-down list.
 
-![MFA Settings TOTP](ch02.21-mfa_settings_TOTP_new.png){ width=90% }
+![Настройки MFA TOTP](ch02.21-mfa_settings_TOTP_new.png){ width=90% }
 
 _2.21 New MFA method_
 
