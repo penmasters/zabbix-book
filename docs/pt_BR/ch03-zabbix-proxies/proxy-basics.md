@@ -104,29 +104,33 @@ de recursos.
 
 ---
 
-## Proxy throttling
+## Limitação de proxy
 
-Imagine that you need to restart your Zabbix server and that all proxies start
-to push the data they have gathered during the downtime of the Zabbix server.
+Imagine que você precise reiniciar seu servidor Zabbix e que todos os proxies
+comecem a enviar os dados que coletaram durante o tempo de inatividade do
+servidor Zabbix.
 
-This would create a huge amount of data being sent at once to the Zabbix server
-and possibly bring it to its knees in no time. Since version 6, Zabbix has added
-protection for this kind of situations. When the Zabbix server history cache is
-full the history cache write access is being throttled: Zabbix server will stop
-accepting data from proxies when history cache usage reaches 80%. Instead those
-proxies will be put on a throttling list. This will continue until the cache
-usage falls down to 60%. Now the server will start accepting data from the
-proxies one by one, defined by the throttling list. This means the first proxy
-that attempted to upload data during the throttling period will be served first
-and until it's done the server will not accept data from other proxies.
+Isso criaria uma enorme quantidade de dados sendo enviados ao mesmo tempo para o
+servidor Zabbix e possivelmente o deixaria de joelhos em pouco tempo. Desde a
+versão 6, o Zabbix adicionou uma proteção para esse tipo de situação. Quando o
+cache de histórico do Zabbix Server estiver cheio, o acesso de gravação do cache
+de histórico será limitado: o Zabbix Server deixará de aceitar dados de proxies
+quando o uso do cache de histórico atingir 80%. Em vez disso, esses proxies
+serão colocados em uma lista de limitação. Isso continuará até que o uso do
+cache caia para 60%. Agora o servidor começará a aceitar dados dos proxies um a
+um, definidos pela lista de limitação. Isso significa que o primeiro proxy que
+tentou fazer upload de dados durante o período de limitação será atendido
+primeiro e, até que isso seja feito, o servidor não aceitará dados de outros
+proxies.
 
-This table gives you an overview of how and when throttling works in Zabbix.
+Esta tabela lhe dá uma visão geral de como e quando o throttling funciona no
+Zabbix.
 
-| History write cache usage | Zabbix server mode | Zabbix server action                                                                                             |
-| ------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Reaches 80%               | Wait               | Stops accepting proxy data, but maintains a throttling list (prioritized list of proxies to be contacted later). |
-| Drops to 60%              | Throttled          | Starts processing throttling list, but still not accepting proxy data.                                           |
-| Drops to 20%              | Normal             | Drops the throttling list and starts accepting proxy data normally.                                              |
+| Uso do cache de gravação do histórico | Modo de servidor Zabbix | Ação do servidor Zabbix                                                                                                             |
+| ------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Alcança 80%                           | Esperar                 | Deixa de aceitar dados de proxy, mas mantém uma lista de limitação (lista priorizada de proxies a serem contatados posteriormente). |
+| Drops to 60%                          | Throttled               | Starts processing throttling list, but still not accepting proxy data.                                                              |
+| Drops to 20%                          | Normal                  | Drops the throttling list and starts accepting proxy data normally.                                                                 |
 
 This may cause delays in detection of problems, as you will have to wait for all
 relevant data to be received and processed by the Zabbix server; but you won't
