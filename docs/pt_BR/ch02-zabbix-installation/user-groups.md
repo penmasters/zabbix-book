@@ -81,11 +81,11 @@ Essa guia inicial define as propriedades gerais do grupo e sua associação:
   o acesso ao frontend para uma função).
 * **LDAP server:** If `LDAP` access is chosen, select the specific LDAP server
   configuration to be used for members of this group.
-* **Multi-factor authentication (MFA):** Select the method to be enforced for
-  the group. If a user is a member of multiple groups, the most secure MFA
-  setting will typically apply.
-* **Enabled:** The master switch to activate or deactivate the group and its
-  members.
+* **Autenticação multifatorial (MFA):** Selecione o método a ser aplicado para o
+  grupo. Se um usuário for membro de vários grupos, normalmente será aplicada a
+  configuração de MFA mais segura.
+* **Ativado:** O interruptor principal para ativar ou desativar o grupo e seus
+  membros.
 * **Modo de depuração:** Uma configuração avançada e opcional que permite o
   registro detalhado de depuração para todos os membros do grupo no front-end do
   Zabbix.
