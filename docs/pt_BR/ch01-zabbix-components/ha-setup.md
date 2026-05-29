@@ -133,7 +133,7 @@ servidor Zabbix:
 Repita as etapas de configuração para o segundo servidor Zabbix. Ajuste o
 `HANodeName` e o `NodeAddress` conforme necessário para esse servidor.
 
-???+ example "Zabbix server 2 HA configuration high-availability.conf"
+???+ exemplo "Configuração do Zabbix Server 2 HA high-availability.conf"
 
     ```ini
     HANodeName=zabbix2  # or choose a name you prefer
