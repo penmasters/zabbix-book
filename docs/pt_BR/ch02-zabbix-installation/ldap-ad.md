@@ -89,7 +89,7 @@ with Docker’s CLI and supports rootless containers, making it ideal for
 development, testing, and production environments where security and isolation
 are priorities.
 
-???+ tip
+???+ dica
 
 Se você quiser usar o Docker em vez do Podman, basta substituir todas as
 ocorrências de `podman` nas instruções a seguir por `docker`.
@@ -171,7 +171,7 @@ Clique no botão `Test` e digite `user1` e `password` nos respectivos campos. O
 teste deve ser bem-sucedido, confirmando que o Zabbix pode autenticar usuários
 no servidor LDAP.
 
-???+ tip
+???+ dica
 
     We can add multiple LDAP servers and use them for different `User groups`.
 
