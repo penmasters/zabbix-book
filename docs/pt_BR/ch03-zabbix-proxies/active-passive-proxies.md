@@ -224,7 +224,7 @@ Exemplo "Verifique o homedir padrão do usuário zabbix"
 Verifique se o diretório existe com as permissões corretas e o contexto do
 SELinux:
 
-???+ example "Check existence of zabbix home-directory"
+???+ exemplo "Verificar a existência do diretório inicial do zabbix"
 
     ```shell-session
     localhost:~>ls -laZ /var/lib/zabbix
@@ -233,10 +233,10 @@ SELinux:
     drwxr-xr-x. 1 root   root   system_u:object_r:var_lib_t:s0            364 Jan 10 20:05 ..
     ```
 
-If the directory does not exist, is not owned by user `zabbix` or is missing the
-SELinux label `zabbix_var_lib_t`, then you will need to correct this:
+Se o diretório não existir, não for de propriedade do usuário `zabbix` ou não
+tiver o rótulo SELinux `zabbix_var_lib_t`, será necessário corrigir isso:
 
-!!! info "Create zabbix home-dir"
+!!! info "Criar diretório inicial do zabbix"
 
     ```bash
     # Create the directory
@@ -252,7 +252,7 @@ SELinux label `zabbix_var_lib_t`, then you will need to correct this:
     See [_Advanced security: SELinux_](../ch13-advanced-security/selinux-zabbix.md)
     chapter for more details about SELinux and Zabbix.
 
-???+ note "MariaDB/MySQL or PostgreSQL as database for Zabbix proxy"
+???+ nota "MariaDB/MySQL ou PostgreSQL como banco de dados para o proxy Zabbix"
 
     If you chose to use MariaDB/MySQL or PostgreSQL, please refer to [_Installing the Zabbix server_](../ch01-zabbix-components/zabbix-server.md) for the required database
     settings you will need to set in the `/etc/zabbix/zabbix_proxy.d/database.conf`-file.
@@ -262,9 +262,9 @@ SELinux label `zabbix_var_lib_t`, then you will need to correct this:
     A list of all configuration options can be found in the Zabbix documentation.
     [https://www.zabbix.com/documentation/current/en/manual/appendix/config/zabbix_proxy](https://www.zabbix.com/documentation/current/en/manual/appendix/config/zabbix_proxy)
 
-A notable configuration parameter that was added in `7.0` is `ProxyBufferMode`
-which determines how collected monitoring data is stored by the proxy before it
-is forwarded to the Zabbix server.
+Um parâmetro de configuração importante que foi adicionado em `7.0` é
+`ProxyBufferMode`, que determina como os dados de monitoramento coletados são
+armazenados pelo proxy antes de serem encaminhados ao servidor Zabbix.
 
 Possible buffer modes:
 
