@@ -129,28 +129,28 @@ Zabbix.
 | Uso do cache de gravação do histórico | Modo de servidor Zabbix | Ação do servidor Zabbix                                                                                                             |
 | ------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | Alcança 80%                           | Esperar                 | Deixa de aceitar dados de proxy, mas mantém uma lista de limitação (lista priorizada de proxies a serem contatados posteriormente). |
-| Drops to 60%                          | Throttled               | Starts processing throttling list, but still not accepting proxy data.                                                              |
-| Drops to 20%                          | Normal                  | Drops the throttling list and starts accepting proxy data normally.                                                                 |
+| Cai para 60%                          | Limitado                | Começa a processar a lista de limitação, mas ainda não aceita dados de proxy.                                                       |
+| Cai para 20%                          | Normal                  | Elimina a lista de limitação e começa a aceitar dados de proxy normalmente.                                                         |
 
-This may cause delays in detection of problems, as you will have to wait for all
-relevant data to be received and processed by the Zabbix server; but you won't
-lose any historical data.
+Isso pode causar atrasos na detecção de problemas, pois você terá que esperar
+que todos os dados relevantes sejam recebidos e processados pelo servidor
+Zabbix, mas você não perderá nenhum dado histórico.
 
 ---
 
-## Active versus Passive proxy
+## Proxy ativo versus passivo
 
-Zabbix proxies have been available since Zabbix 1.6. At that time they where
-available only as what we know today as **Active proxies**. _Active_ means that
-the proxy will initiate the connection by itself to the Zabbix Server. In
-version 1.8.3 _passive_ proxies where introduced. This allows the server to
-connect to the proxy instead of the other way around.
+Os proxies do Zabbix estão disponíveis desde o Zabbix 1.6. Naquela época, eles
+estavam disponíveis apenas como o que conhecemos hoje como **Active proxies**.
+_Active_ significa que o proxy iniciará a conexão por si só com o Zabbix Server.
+Na versão 1.8.3, foram introduzidos os proxies _passivos_. Isso permite que o
+servidor se conecte ao proxy, e não o contrário.
 
-As mentioned before Zabbix agents can be both active _and_ passive however
-proxies cannot be both so we have to choose the way of the communication when we
-configure a proxy.
+Conforme mencionado anteriormente, os agentes do Zabbix podem ser ativos _e
+passivos_. No entanto, os proxies não podem ser ambos, portanto, temos que
+escolher a forma de comunicação quando configuramos um proxy.
 
-???+ note "Active/Passive agent on Active/Passive proxy ?"
+???+ nota "Agente ativo/passivo no proxy ativo/passivo?
 
     Remember that choosing the proxy mode _active_ or _passive_ has no impact on 
     how Zabbix agents can communicate with this proxy. It's perfectly fine to have
@@ -160,37 +160,39 @@ configure a proxy.
 
 ### Proxy ativo
 
-In _active_ mode, the proxy takes full control of its operational settings. This
-includes managing when it checks for new configuration updates and when it sends
-collected data to the server.
+No modo _active_, o proxy assume o controle total de suas configurações
+operacionais. Isso inclui gerenciar quando ele verifica se há novas atualizações
+de configuração e quando envia os dados coletados para o servidor.
 
-It’s important to note that the key settings for an _active proxy_ are defined
-exclusively in the _Zabbix proxy_ configuration. Any adjustments to these
-parameters should be made directly within the proxy configuration files.
+É importante observar que as principais configurações de um _proxy ativo_ são
+definidas exclusivamente na configuração do _proxy Zabbix_ . Qualquer ajuste
+nesses parâmetros deve ser feito diretamente nos arquivos de configuração do
+proxy.
 
-These are the proxy configuration settings you will need to set in _active_
-mode:
+Essas são as definições de configuração de proxy que você precisará definir no
+modo _active_:
 
-- `ProxyMode`: `0` - Sets the proxy in 'Active' mode
-- `Server`: IP or DNS of the Zabbix server
-- `Hostname`: Proxy name - this needs to be exactly the same as configured in
-  the frontend.
-- `ProxyOfflineBuffer`: How long we like to keep data in the DB (in hours) if we
-  can't reach the _Zabbix server_.
-- `ProxyLocalBuffer`: How long we like to keep data in the DB (in hours) even
-  when it is already sent to the _Zabbix server_.
-- `ProxyConfigFrequency`: Replaces `ConfigFrequency` in earlier versions and
-  defines how often we request configuration updates (every 10 seconds) from the
-  _Zabbix server_.
-- `DataSenderFrequency`: How often data is sent to _Zabbix server_ (every
-  second).
+- `ProxyMode`: `0` - Define o proxy no modo 'Ativo'
+- `Servidor`: IP ou DNS do servidor Zabbix
+- `Hostname`: Nome do proxy - precisa ser exatamente o mesmo que o configurado
+  no frontend.
+- `ProxyOfflineBuffer`: Por quanto tempo gostaríamos de manter os dados no banco
+  de dados (em horas) se não conseguirmos acessar o servidor _Zabbix_.
+- `ProxyLocalBuffer`: Por quanto tempo gostaríamos de manter os dados no banco
+  de dados (em horas), mesmo quando já tiverem sido enviados para o servidor
+  _Zabbix_.
+- `ProxyConfigFrequency`: Substitui o `ConfigFrequency` em versões anteriores e
+  define a frequência com que solicitamos atualizações de configuração (a cada
+  10 segundos) do _Zabbix Server_.
+- `DataSenderFrequency`: Com que frequência os dados são enviados para o
+  servidor _Zabbix_ (a cada segundo).
 
-When configuring resources for an _Active proxy_, it’s important to account for
-its connection behavior with the _Zabbix server_. During operation, the proxy
-can utilize up to two trapper processes on the server:
+Ao configurar recursos para um _proxy ativo_ , é importante levar em conta seu
+comportamento de conexão com o _servidor Zabbix_ . Durante a operação, o proxy
+pode utilizar até dois processos trapper no servidor:
 
-- One trapper is dedicated to sending collected data to the server.
-- The other trapper is reserved for retrieving configuration updates.
+- Um trapper é dedicado a enviar os dados coletados para o servidor.
+- O outro trapper é reservado para recuperar atualizações de configuração.
 
 ???+ tip
 
@@ -218,10 +220,11 @@ are:
 
 - `ProxyMode`: `1` - Sets the proxy in 'Passive' mode
 - `Server:` IP or DNS of the _Zabbix server_
-- `ProxyOfflineBuffer`: How long we like to keep data in the DB (in hours) if we
-  can't reach the _Zabbix server_.
-- `ProxyLocalBuffer`: How long we like to keep data in the DB (in hours) even
-  when it is already sent to the _Zabbix server_.
+- `ProxyOfflineBuffer`: Por quanto tempo gostaríamos de manter os dados no banco
+  de dados (em horas) se não conseguirmos acessar o servidor _Zabbix_.
+- `ProxyLocalBuffer`: Por quanto tempo gostaríamos de manter os dados no banco
+  de dados (em horas), mesmo quando já tiverem sido enviados para o servidor
+  _Zabbix_.
 
 And finally the config settings we need to change on our _Zabbix server_:
 
