@@ -117,6 +117,7 @@ nav:
       - ch14-zabbix-maintenance/chapter.md
       - maintenance: ch14-zabbix-maintenance/maintenance.md
       - Internal health: ch14-zabbix-maintenance/internal-health.md
+      - Housekeeping and the events tables: ch14-zabbix-maintenance/housekeeper-events-tables.md
       - Backups: ch14-zabbix-maintenance/taking-backups.md
       - Upgrades: ch14-zabbix-maintenance/upgrades.md
   - "Chapter 15 : Real world examples":
