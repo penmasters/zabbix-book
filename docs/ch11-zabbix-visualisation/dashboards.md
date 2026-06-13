@@ -1,3 +1,11 @@
+---
+description: |
+    Create interactive Zabbix dashboards with widgets, graphs, maps, and status
+    views. Transform monitoring data into real-time visibility and actionable
+    operational insights.
+tags: [beginner]
+---
+
 # Setting up Dashboards
 
 Dashboards are the central visualization layer in Zabbix. They bring together
@@ -781,14 +789,42 @@ logically distinct views into separate dashboards instead.
 browser, ensure that anything embedded does not expose data that the Zabbix
 permissions model would otherwise restrict.
 
-**Export dashboards you have invested time in.** A YAML export is an effective backup and makes it easy to share your work with other Zabbix administrators or contribute it back to the community.
+**Export dashboards you have invested time in.** A YAML export is an effective
+backup and makes it easy to share your work with other Zabbix administrators
+or contribute it back to the community.
 
-**Use template dashboards for consistency.** If you monitor many instances of the same technology (Linux hosts, Apache servers, PostgreSQL databases), define the dashboard once in the template and get it automatically for every host.
-
+**Use template dashboards for consistency.** If you monitor many instances of
+the same technology (Linux hosts, Apache servers, PostgreSQL databases), define
+the dashboard once in the template and get it automatically for every host.
 
 
 ## Conclusion
 
+Dashboards are one of the most powerful ways to present monitoring data in Zabbix.
+By combining widgets, graphs, maps, status indicators, and business focused metrics,
+you can transform raw monitoring information into clear and actionable insights.
+
+In this chapter, you learned how to create and customize dashboards, organize
+information for different audiences, and use visualization techniques to highlight
+the most important aspects of your infrastructure. Well designed dashboards help
+operators detect issues faster, enable administrators to monitor system health
+efficiently, and provide management with a high-level overview of service availability
+and performance.
+
+Remember that the best dashboard is not necessarily the one with the most widgets,
+but the one that presents the right information to the right people at the right
+time. By carefully designing your dashboards, you can significantly improve visibility,
+reduce response times, and make better operational decisions based on your monitoring
+data.
+
 ## Questions
 
+- What is the purpose of a dashboard in Zabbix?
+- What factors should you consider when designing an effective dashboard?
+- How can dashboard permissions affect what users are able to see?
+
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards/widgets_overview](https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards/widgets_overview)
+- [https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards](https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards)
+
