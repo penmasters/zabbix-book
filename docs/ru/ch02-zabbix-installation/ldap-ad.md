@@ -30,14 +30,15 @@ LDAP-сервера. Известно, что Zabbix хорошо работае
 
 _2.3 Аутентификация пользователей LDAP_
 
-As shown on the diagram a user that tries to log in must be pre-created in
-Zabbix to be able to log in using LDAP. The database user records do not have
-any fields "saying" that the user will be authenticated via LDAP, it's just
-users' passwords stored in the database are ignored, instead, Zabbix goes to a
-LDAP server to verify whether:
+Как показано на диаграмме, пользователь, пытающийся войти в систему, должен быть
+предварительно создан в Zabbix, чтобы иметь возможность войти в систему с
+помощью LDAP. Записи пользователей в базе данных не содержат никаких полей,
+"говорящих" о том, что пользователь будет аутентифицирован через LDAP, просто
+пароли пользователей, хранящиеся в базе данных, игнорируются, вместо этого
+Zabbix обращается к серверу LDAP для проверки:
 
-- user with a given username exists
-- user provided the correct password
+- пользователь с данным именем пользователя существует
+- пользователь указал правильный пароль
 
 no other attributes configured for the user on the LDAP server side are taken
 into account.

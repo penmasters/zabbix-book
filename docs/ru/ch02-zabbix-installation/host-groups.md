@@ -30,9 +30,9 @@ tags: [beginner]
 
 **Меню → Сбор данных → Группы узлов сети**
 
-![Host Groups Menu Screenshot](ch02-host-grouops.png)
+![Скриншот меню Группы узлов сети] (ch02-host-grouops.png)
 
-_2.19 Host Groups menu_
+_2.19 Меню Группы узлов сети_
 
 In this menu under `Data collection`, you'll notice two distinct sections:
 

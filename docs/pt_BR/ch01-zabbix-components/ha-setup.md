@@ -133,15 +133,15 @@ servidor Zabbix:
 Repita as etapas de configuração para o segundo servidor Zabbix. Ajuste o
 `HANodeName` e o `NodeAddress` conforme necessário para esse servidor.
 
-???+ example "Zabbix server 2 HA configuration high-availability.conf"
+???+ exemplo "Configuração do Zabbix Server 2 HA high-availability.conf"
 
     ```ini
     HANodeName=zabbix2  # or choose a name you prefer
     NodeAddress=<Zabbix server 2 ip>:10051
     ```
 
-You can add more servers by repeating the same steps, ensuring each server has a
-unique `HANodeName` and the correct `NodeAddress` set.
+Você pode adicionar mais servidores repetindo as mesmas etapas, assegurando que
+cada servidor tenha um único `HANodeName` e o conjunto correto `NodeAddress`.
 
 ---
 
@@ -175,7 +175,7 @@ No primeiro servidor:
 Nos logs do sistema, observe as seguintes entradas, indicando a inicialização do
 gerenciador de alta disponibilidade (HA):
 
-???+ example "HA log messages on active node"
+???+ exemplo "Mensagens de registro de HA no nó ativo"
 
     ```shell-session
     localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
@@ -183,14 +183,15 @@ gerenciador de alta disponibilidade (HA):
     22597:20240309:155230.362 HA manager started in active mode
     ```
 
-These log messages confirm that the HA manager process has started and has
-assumed the active role. This means that the Zabbix instance is now the primary
-node in the HA cluster, handling all monitoring operations. If a failover event
-occurs, another standby node will take over based on the configured HA strategy.
+Essas mensagens de registro confirmam que o processo do gerenciador de HA foi
+iniciado e assumiu a função ativa. Isso significa que a instância do Zabbix é
+agora o nó primário no cluster de HA, lidando com todas as operações de
+monitoramento. Se ocorrer um evento de failover, outro nó de espera assumirá o
+controle com base na estratégia de HA configurada.
 
-Running the same command on the second server (and any additional nodes):
+Executar o mesmo comando no segundo servidor (e em quaisquer nós adicionais):
 
-???+ example "HA log messages on standby node"
+???+ exemplo "Mensagens de registro de HA no nó em espera"
 
     ```shell-session
     localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log

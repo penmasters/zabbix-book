@@ -48,13 +48,13 @@ tags: [beginner]
 
 ---
 
-## Configuring a User Group
+## Настройка группы пользователей
 
-In Zabbix, user groups are defined and maintained solely via the web frontend.
-The procedure has remained largely unchanged between version 8.0 and previous
-generations, ensuring a familiar configuration experience for administrators.
+В Zabbix группы пользователей определяются и поддерживаются исключительно через
+веб-фронтенд. Эта процедура осталась практически неизменной между версией 8.0 и
+предыдущими поколениями, обеспечивая администраторам привычный опыт настройки.
 
-### Group Creation and General Attributes
+### Создание групп и общие атрибуты
 
 1. Navigate to **Administration** → **User groups**.
 2. Click **Create user group** (or select an existing group to modify).
