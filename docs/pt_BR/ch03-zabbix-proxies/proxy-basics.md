@@ -194,47 +194,50 @@ pode utilizar até dois processos trapper no servidor:
 - Um trapper é dedicado a enviar os dados coletados para o servidor.
 - O outro trapper é reservado para recuperar atualizações de configuração.
 
-???+ tip
+???+ dica
 
     To ensure smooth communication, it is considered best practice to allocate two 
     trapper processes per _Active proxy_ on the _Zabbix server_. This configuration 
     optimizes performance and prevents potential bottlenecks.
 
-![Active proxy communication](ch03-active-communication.png)
+![Comunicação proxy ativa](ch03-active-communication.png)
 
-_3.1 Active proxy communication_
+_3.1 Comunicação de proxy ativo_
 
 ---
 
 ### Proxy passivo
 
-In contrast to an _active proxy_, a proxy in _passive_ mode will have its
-operational settings controlled by the _Zabbix server_.
+Ao contrário de um _proxy ativo_ , um _proxy no modo passivo_ terá suas
+configurações operacionais controladas pelo _servidor Zabbix_ .
 
-Hence, configuring _passive_ proxies requires changes in in both the _Zabbix
-server_ and the _Zabbix proxy_ configuration files as it is now the server that
-controls when and how proxy data is requested by making use of pollers.
+Portanto, a configuração dos proxies _passivos_ requer alterações nos arquivos
+de configuração do servidor _Zabbix_ e do proxy _Zabbix_, pois agora é o
+servidor que controla quando e como os dados do proxy são solicitados por meio
+do uso de pollers.
 
-The most important setting we can find back in the _proxy_ configuration file
-are:
+As configurações mais importantes que podemos encontrar no arquivo de
+configuração do _proxy_ são:
 
-- `ProxyMode`: `1` - Sets the proxy in 'Passive' mode
-- `Server:` IP or DNS of the _Zabbix server_
+- `ProxyMode`: `1` - Define o proxy no modo 'Passivo'.
+- `Servidor:` IP ou DNS do servidor _Zabbix_
 - `ProxyOfflineBuffer`: Por quanto tempo gostaríamos de manter os dados no banco
   de dados (em horas) se não conseguirmos acessar o servidor _Zabbix_.
 - `ProxyLocalBuffer`: Por quanto tempo gostaríamos de manter os dados no banco
   de dados (em horas), mesmo quando já tiverem sido enviados para o servidor
   _Zabbix_.
 
-And finally the config settings we need to change on our _Zabbix server_:
+E, finalmente, as definições de configuração que precisamos alterar em nosso
+servidor _Zabbix_:
 
-- `StartProxyPollers`: The number of pollers to contact proxies.
-- `ProxyConfigFrequency`: Replaces `ConfigFrequency` and defines how often
-  _Zabbix server_ will sent configuration changes to all proxies.
-- `ProxyDataFrequency`: How often _Zabbix server_ will request monitored data
-  from our proxies.
+- `StartProxyPollers`: O número de pollers para contatar proxies.
+- `ProxyConfigFrequency`: Substitui o `ConfigFrequency` e define a frequência
+  com que o _Zabbix Server_ enviará alterações de configuração para todos os
+  proxies.
+- `ProxyDataFrequency`: Com que frequência o servidor _Zabbix_ solicitará dados
+  monitorados de nossos proxies.
 
-???+ tip
+???+ dica
 
     It is not required for `StartProxyPollers` to be equal to the number of 
     passive proxies you have as one poller can poll multiple proxies. The 
