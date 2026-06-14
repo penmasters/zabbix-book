@@ -153,10 +153,11 @@ e aos fluxos de trabalho de sua organização.
 
 - Para que são usados os grupos de hosts no Zabbix?
 - É possível atribuir um host a mais de um grupo?
-- How are nested groups created in Zabbix?
-- What happens when you apply permissions to subgroups?
-- Why are slashes (/) special in host group names?
-- Can a parent group exist only logically (i.e., not created in Zabbix)?
+- Como os grupos aninhados são criados no Zabbix?
+- O que acontece quando você aplica permissões a subgrupos?
+- Por que as barras (/) são especiais em nomes de grupos de hosts?
+- Um grupo pai pode existir apenas logicamente (ou seja, não pode ser criado no
+  Zabbix)?
 
 ## URLs úteis
 
