@@ -25,9 +25,9 @@ nav:
       - ch01-zabbix-components/chapter.md
       - ch01-zabbix-components/architecture.md
       - "Database":
-        - ch01-zabbix-components/database.md
-        - ch01-zabbix-components/mariadb.md
-        - ch01-zabbix-components/postgresql.md
+          - ch01-zabbix-components/database.md
+          - ch01-zabbix-components/mariadb.md
+          - ch01-zabbix-components/postgresql.md
       - ch01-zabbix-components/zabbix-server.md
       - ch01-zabbix-components/zabbix-frontend.md
       - HA Setup: ch01-zabbix-components/ha-setup.md
@@ -123,6 +123,9 @@ nav:
       - ch15-zabbix-real-world-examples/chapter.md
       - Disk health on Windows: ch15-zabbix-real-world-examples/disk-health-windows.md
       - Filter LLD without JSONPath: ch15-zabbix-real-world-examples/filter-lld-without-jsonpath.md
+  - "Chapter 16 : Windows monitoring":
+      - ch16-windows/chapter.md
+      - Windows: ch16-windows/windows.md
 
 theme:
   language: en
