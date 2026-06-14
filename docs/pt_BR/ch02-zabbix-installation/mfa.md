@@ -186,11 +186,12 @@ _2.34 Menu Aplicativos DUO_
 
 Em seguida, você verá o WebSDK na lista de aplicativos, clique nele
 
-![MFA DUO applications list](ch02.35-mfa_duo_applications_list.png){ width=99% }
+![Lista de aplicativos MFA DUO](ch02.35-mfa_duo_applications_list.png){
+width=99% }
 
-_2.35 DUO Applications list_
+_2.35 Lista de aplicativos DUO_
 
-Here you'll see all the data needed for Zabbix.
+Aqui você verá todos os dados necessários para o Zabbix.
 
 ![MFA DUO ](ch02.36-mfa_duo_data.png){ width=99% }
 
@@ -204,21 +205,22 @@ settings`, clique em `Add` na seção `Methods`.
 
 _2.37 Adicionar método MFA_
 
-Fill in all the fields with data from Duo Dashboard -> Applications -> Web SDK
-page (see screenshot above) and click `Add`, then click `Update` to update
-Authentication settings.
+Preencha todos os campos com os dados da página Duo Dashboard -> Applications ->
+Web SDK (veja a captura de tela acima) e clique em `Add` e, em seguida, clique
+em `Update` para atualizar as configurações de autenticação.
 
 ![MFA DUO ](ch02.38-mfa_duo_method_data.png){ width=99% }
 
-_2.38 DUO method settings_
+_2.38 Configurações do método DUO_
 
-After the MFA method is configured let's switch the "Test" group to use Duo MFA.
-In the menu select `Users` and click `User groups`, then click "test" group. In
-the field `Multi-factor authentication` select "DUO1" and click `Update`.
+Depois que o método MFA for configurado, vamos mudar o grupo "Test" para usar o
+Duo MFA. No menu, selecione `Users` e clique em `User groups` e, em seguida,
+clique em "test" group. No campo `Multi-factor authentication (Autenticação
+multifator)`, selecione "DUO1" e clique em `Update (Atualizar)`.
 
 ![MFA DUO ](ch02.39-mfa_duo_user_group.png){ width=99% }
 
-_2.39 DUO MFA authentication method for user group_
+_2.39 Método de autenticação DUO MFA para grupo de usuários_
 
 Everything is ready. Let's test it. Sign out of Zabbix and sign back in with
 "test" user. You should see a welcome screen from Duo. Click several `Next`
