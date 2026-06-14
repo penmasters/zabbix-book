@@ -197,19 +197,20 @@ flowchart TB
     classDef ro fill:#a7f3d0,stroke:#065f46,stroke-width:2px,color:black;
 ```
 
-This precedence can be summarized by two core rules:
+Essa precedência pode ser resumida em duas regras principais:
 
-1. **Deny Always Overrides:** If any group grants **Deny** access to a host or
-   template group, that user **will not** have access, regardless of any other
-   `Read-only` or `Read-write` permissions.
-2. **Most Permissive Wins (Otherwise):** If no `Deny` is present, the most
-   permissive right applies. **Read-write** always overrides **Read-only**.
+1. **Negar sempre substitui:** Se algum grupo conceder acesso **Deny** a um host
+   ou grupo de modelos, esse usuário **não terá** acesso, independentemente de
+   quaisquer outras permissões `Read-only` ou `Read-write`.
+2. **O mais permissivo vence (caso contrário):** Se nenhum `Deny` estiver
+   presente, o direito mais permissivo será aplicado. **Leitura-escrita** sempre
+   substitui **Somente leitura**.
 
-| Scenario         | Group A    | Group B    | Effective Permission   | Rationale                                                        |
-| ---------------- | ---------- | ---------- | ---------------------- | ---------------------------------------------------------------- |
-| **RW Over RO**   | Read-only  | Read-write | **Leitura e gravação** | The most permissive right wins when **Deny** is absent.          |
-| **Deny Over RO** | Read-only  | Deny       | **Deny**               | **Deny** always takes precedence and blocks all access.          |
-| **Deny Over RW** | Read-write | Deny       | **Deny**               | The most restrictive right (Deny) overrides the most permissive. |
+| Cenário          | Grupo A            | Grupo B            | Permissão efetiva      | Justificativa                                                    |
+| ---------------- | ------------------ | ------------------ | ---------------------- | ---------------------------------------------------------------- |
+| **RW Sobre RO**  | Somente leitura    | Leitura e gravação | **Leitura e gravação** | O direito mais permissivo vence quando **Deny** está ausente.    |
+| **Deny Over RO** | Somente leitura    | Deny               | **Deny**               | **Deny** always takes precedence and blocks all access.          |
+| **Deny Over RW** | Leitura e gravação | Deny               | **Deny**               | The most restrictive right (Deny) overrides the most permissive. |
 
 ### Permissions in the "Update Problem" Dialog
 
@@ -371,8 +372,8 @@ This table outlines the combined, **effective rights** for the user
 
 | Host Group (HG)             | Permission via 'Junior Monitoring' | Permission via 'Critical Exclusion' | **Effective Permission** | Outcome                                 |
 | --------------------------- | ---------------------------------- | ----------------------------------- | ------------------------ | --------------------------------------- |
-| **`HG_All_Linux_Servers`**  | Read-only                          | *No Explicit Rule*                  | **Somente leitura**      | Access to view data is **Allowed**.     |
-| **`HG_Critical_Databases`** | Read-only                          | Deny                                | **Deny**                 | Access is **Blocked** (host is hidden). |
+| **`HG_All_Linux_Servers`**  | Somente leitura                    | *No Explicit Rule*                  | **Somente leitura**      | Access to view data is **Allowed**.     |
+| **`HG_Critical_Databases`** | Somente leitura                    | Deny                                | **Deny**                 | Access is **Blocked** (host is hidden). |
 
 
 ## Conclusão
