@@ -266,34 +266,38 @@ Um parâmetro de configuração importante que foi adicionado em `7.0` é
 `ProxyBufferMode`, que determina como os dados de monitoramento coletados são
 armazenados pelo proxy antes de serem encaminhados ao servidor Zabbix.
 
-Possible buffer modes:
+Possíveis modos de buffer:
 
-`disk` - Disk buffer (default for existing installations prior to Zabbix 7.0)
+`disk` - Buffer de disco (padrão para instalações existentes anteriores ao
+Zabbix 7.0)
 
-: All data is written to the Zabbix Proxy database immediately before it is sent
-to the Zabbix server. In case of a proxy or system crash, all data is retained
-and will be sent to the Zabbix server as soon as the proxy is started again.
+: Todos os dados são gravados no banco de dados do Zabbix Proxy imediatamente
+antes de serem enviados para o servidor Zabbix. Em caso de falha do proxy ou do
+sistema, todos os dados são mantidos e serão enviados ao servidor Zabbix assim
+que o proxy for iniciado novamente.
 
     This is slower due to database I/O but is highly reliable.
 
-`memory` - Memory buffer
+`memory` - Buffer de memória
 
-: Data is stored in RAM and is not written to disk. This makes sure the data is
-sent to the Zabbix server as quickly as possible as there is no I/O wait time
-for the database involved. Downside is that when the proxy or the system crashes
-when the proxy still has data in the buffer, not yet received by the server,
-that data will be lost. Also when the RAM buffer overflows
-(`ProxyMemoryBufferSize`), possibly due to a sudden burst of incoming items or
-the Zabbix server being unavailable for some time, older data will be removed
-from the buffer before it is sent to the Zabbix server.
+: Os dados são armazenados na RAM e não são gravados no disco. Isso garante que
+os dados sejam enviados ao servidor Zabbix o mais rápido possível, pois não há
+tempo de espera de E/S para o banco de dados envolvido. A desvantagem é que,
+quando o proxy ou o sistema trava e o proxy ainda tem dados no buffer, ainda não
+recebidos pelo servidor, esses dados serão perdidos. Além disso, quando o buffer
+da RAM transbordar (`ProxyMemoryBufferSize`), possivelmente devido a uma
+explosão repentina de itens recebidos ou ao fato de o servidor Zabbix estar
+indisponível por algum tempo, os dados mais antigos serão removidos do buffer
+antes de serem enviados ao servidor Zabbix.
 
-`hybrid` - Hybrid buffer (default for new installations since Zabbix 7.0)
+`hybrid` - buffer híbrido (padrão para novas instalações desde o Zabbix 7.0)
 
-: Data is primarily stored in RAM but is automatically written to the database
-when the memory buffer is full, the data is too old or when the proxy is
-stopped. This makes sure that data is preserved in case the Zabbix server is
-unreachable for a longer period or when there are bursts of many incoming items
-and hereby balances speed and reliability.
+: Os dados são armazenados principalmente na RAM, mas são gravados
+automaticamente no banco de dados quando o buffer de memória está cheio, quando
+os dados são muito antigos ou quando o proxy é interrompido. Isso garante que os
+dados sejam preservados no caso de o servidor Zabbix ficar inacessível por um
+longo período ou quando houver uma explosão de muitos itens recebidos,
+equilibrando assim a velocidade e a confiabilidade.
 
 ???+ aviso
 
@@ -303,21 +307,21 @@ and hereby balances speed and reliability.
     7.x or higher. It's now recommended for performance reasons to use the new
     setting `hybrid` and to define the `ProxyMemoryBufferSize`.
 
-Once you have made all the changes you need in the config file besides the ones
-we have covered, we only need to enable the service and start our proxy. Of
-course don't forget to open the firewall port `10051` on your _Zabbix server_
-side for the active proxy.
+Depois de fazer todas as alterações necessárias no arquivo de configuração, além
+das que abordamos, só precisamos ativar o serviço e iniciar nosso proxy.
+Obviamente, não se esqueça de abrir a porta do firewall `10051` no lado do
+servidor _Zabbix_ para o proxy ativo.
 
-!!! info "Enable and start the proxy service"
+!!! info "Habilitar e iniciar o serviço de proxy"
 
       ```bash
       sudo systemctl enable zabbix-proxy --now
       ```
 
-If all goes well we can check the log file from our proxy and we will see that
-Zabbix has created the database by itself.
+Se tudo correr bem, podemos verificar o arquivo de registro do nosso proxy e
+veremos que o Zabbix criou o banco de dados sozinho.
 
-???+ example "View Zabbix proxy logs"
+???+ exemplo "Exibir registros de proxy do Zabbix"
 
     ```shell-session
     localhost:~> sudo tail -f /var/log/zabbix/zabbix_proxy.log`
@@ -339,19 +343,18 @@ Zabbix has created the database by itself.
     11134:20250519:152232.478 required mandatory version: 07030032
     ```
 
-In case of the _active_ proxy, we are now ready. Going back to our frontend we
-should be able to see that our proxy is now online. Zabbix will also show the
-version of our proxy and the last seen age.
+No caso do proxy _ativo_, agora estamos prontos. Voltando ao frontend, poderemos
+ver que nosso proxy está on-line. O Zabbix também mostrará a versão do nosso
+proxy e a última idade vista.
 
-![ProxyA ready](ch03-active-proxy-installed.png)
+![ProxyA pronto](ch03-active-proxy-installed.png)
 
-_3.6 Active proxy configured_
+_3.6 Proxy ativo configurado_
 
-For the _passive_ proxy however, you will notice in the frontend that nothing
-seems to be working at all even when we have configured everything correctly on
-our proxy.
+No caso do proxy _passivo_, no entanto, você notará no frontend que nada parece
+estar funcionando, mesmo quando configuramos tudo corretamente em nosso proxy.
 
-![Passive Proxy not working](ch03-passive-not-working.png)
+![O proxy passivo não está funcionando](ch03-passive-not-working.png)
 
 _3.7 Proxy not working_
 
