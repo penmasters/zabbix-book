@@ -263,48 +263,51 @@ Em `Users | Authentication`, precisamos fazer duas coisas:
   de usuários do Zabbix onde todos os usuários _desprovisionados_ serão
   colocados para que efetivamente sejam desabilitados de acessar o Zabbix.
 
-  ![Default authentication](ch02.11-ldap-default-authentication.png){
-  align=center }
+  ![Autenticação padrão](ch02.11-ldap-default-authentication.png){ align=center
+  }
 
-  _2.11 Default authentication_
+  _2.11 Autenticação padrão_
 
-  Click `Update` button`.
+  Clique no botão `Update` `.
 
-- Enable JIT provisioning check-box which obviously needs to be checked for this
-  feature to work. It's done in our _Test LDAP server_ configuration - select
-  `Users | Authentication | LDAP settings` and click on our server in `Servers`
-  section. After enabling this check-box we'll see some other fields related to
-  JIT to be filled in and what we put in there depends on the method we choose
-  to perform JIT.
+- Habilite a caixa de seleção de provisionamento JIT, que obviamente precisa ser
+  marcada para que esse recurso funcione. Isso é feito na nossa configuração
+  _Test LDAP server_ - selecione `Users | Authentication | LDAP settings` e
+  clique no nosso servidor na seção `Servers`. Depois de ativar essa caixa de
+  seleção, veremos alguns outros campos relacionados ao JIT a serem preenchidos,
+  e o que colocaremos neles dependerá do método que escolhermos para executar o
+  JIT.
 
-### Group configuration method “memberOf”
+### Método de configuração de grupo "memberOf"
 
-All users in our LDAP server have _memberOf_ attribute which defines what LDAP
-groups every user belongs to, e.g. if we perform a LDAP query for _user1_ user
-we’ll get that its _memberOf_ attribute has this value:
+Todos os usuários em nosso servidor LDAP têm o atributo _memberOf_, que define a
+quais grupos LDAP cada usuário pertence. Por exemplo, se fizermos uma consulta
+LDAP para o usuário _user1_, veremos que o atributo _memberOf_ tem esse valor:
 
 **memberOf**: cn=**zabbix-admins**,ou=Group,dc=example,dc=org
 
-Note, that your real LDAP server can have totally different LDAP attribute that
-provides users’ group membership, and of course, you can easily configure what
-attribute to use when searching for user’s LDAP groups by putting it into `User
-group membership attribute` field:
+Observe que o seu servidor LDAP real pode ter um atributo LDAP totalmente
+diferente que fornece a associação ao grupo de usuários e, é claro, você pode
+configurar facilmente qual atributo usar ao procurar grupos LDAP de usuários
+colocando-o no campo `User group membership attribute`:
 
-![LDAP groups mapping](ch02.12-ldap-groups-mapping.png){ align=center }
+![Mapeamento de grupos LDAP](ch02.12-ldap-groups-mapping.png){ align=center }
 
-_2.12 LDAP groups mapping_
+_2.12 Mapeamento de grupos LDAP_
 
-In the picture above we are telling Zabbix to use _memberOf_ attribute to
-extract DN defining user’s group membership (in this case it is
-_cn=zabbix-admins,out=Group,dc=example,dc=org_) and take only _cn_ attribute
-from that DN (in this case it is _zabbix-admins_) to use in searching for a
-match in User group mapping rules. Then we define as many mapping rules as we
-want. In the picture above we have two rules:
+Na figura acima, estamos dizendo ao Zabbix para usar o atributo _memberOf_ para
+extrair o DN que define a associação do usuário ao grupo (nesse caso, é
+_cn=zabbix-admins,out=Group,dc=example,dc=org_) e pegar apenas o atributo _cn_
+desse DN (nesse caso, é _zabbix-admins_) para usar na busca de uma
+correspondência nas regras de mapeamento do grupo de usuários. Em seguida,
+definimos quantas regras de mapeamento quisermos. Na figura acima, temos duas
+regras:
 
-- All users belonging to _zabbix-users_ LDAP group will be created in Zabbix as
-  members of _Zabbix users group_ with _User_ role
-- All users belonging to _zabbix-admins_ LDAP group will be created in Zabbix as
-  members of _Zabbix administrators_ group with _Super admin_ role
+- Todos os usuários pertencentes ao grupo LDAP _zabbix-users_ serão criados no
+  Zabbix como membros do _grupo de usuários do Zabbix_ com a função _User_
+- Todos os usuários pertencentes ao grupo LDAP _zabbix-admins_ serão criados no
+  Zabbix como membros do grupo _Zabbix administrators_ com a função _Super
+  admin_
 
 ### Group configuration method “groupOfNames”
 
