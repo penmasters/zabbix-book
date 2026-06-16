@@ -10,9 +10,9 @@ tags: [beginner]
 
 # Proxy basics
 
-In this chapter we will explain what a proxy is, why you may need or consider
-it, what the basic requirements are and what the difference is between _Active
-proxies_ and _Passive proxies_.
+Neste capítulo, explicaremos o que é um proxy, por que você pode precisar dele
+ou considerá-lo, quais são os requisitos básicos e qual é a diferença entre
+_Proxies ativos_ e _Proxies passivos_.
 
 ---
 
@@ -252,79 +252,81 @@ servidor _Zabbix_:
     the number of values the proxy has received that are yet to be sent to the 
     _Zabbix server_. 
 
-![Passive proxy communication](ch03-passive-communication.png)
+![Comunicação proxy passiva](ch03-passive-communication.png)
 
-_3.2 Passive proxy communication_
+_3.2 Comunicação proxy passiva_
 
 ---
 
-## Proxy runtime control options
+## Opções de controle de tempo de execução de proxy
 
-Just like the _Zabbix server_ our proxy supports runtime control options always
-check latest options with the `--help` option. But here is a short overview of
-options available to use.
+Assim como o servidor _Zabbix_, nosso proxy oferece suporte a opções de controle
+de tempo de execução. Sempre verifique as opções mais recentes com a opção
+`--help`. Mas aqui está uma breve visão geral das opções disponíveis para uso.
 
 `zabbix_proxy --runtime-control housekeeper_execute`
 
-: Triggers the immediate execution of the Zabbix housekeeper process on the
-proxy. The housekeeper is responsible for cleaning up outdated data (e.g., old
-history, trends, or events) according to the configured retention periods in
-Zabbix. This command forces the housekeeper to run now, instead of waiting for
-its scheduled interval.
+: Aciona a execução imediata do processo housekeeper do Zabbix no proxy. O
+housekeeper é responsável pela limpeza de dados desatualizados (por exemplo,
+histórico antigo, tendências ou eventos) de acordo com os períodos de retenção
+configurados no Zabbix. Esse comando força o housekeeper a ser executado agora,
+em vez de aguardar o intervalo programado.
 
 `zabbix_proxy --runtime-control log_level_increase=target`
 
-: Increases the log verbosity level for a specific target process (e.g., by type
-like `configuration syncer`, `housekeeper`, `icmp pinger`, by type and number
-like `poller,3` or by PID). This is useful for debugging or troubleshooting, as
-it provides more detailed log output for the specified target. For a full list
-of available targets, check the [man-page of
+: Aumenta o nível de verbosidade do registro para um processo-alvo específico
+(por exemplo, por tipo, como `configuration syncer`, `housekeeper`, `icmp
+pinger`, por tipo e número, como `poller,3` ou por PID). Isso é útil para
+depuração ou solução de problemas, pois fornece uma saída de registro mais
+detalhada para o alvo especificado. Para obter uma lista completa dos alvos
+disponíveis, consulte a [man-page of
 `zabbix_proxy`](https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy).
-*Example*: `log_level_increase="http poller"` would make http poller-related
-logs more verbose.
+*Exemplo*: `log_level_increase="http poller"` tornaria os registros relacionados
+ao http poller mais detalhados.
 
 `zabbix_proxy --runtime-control log_level_decrease=target`
 
-: Decreases the log verbosity level for a specific target, reducing the amount
-of log output generated. This is helpful to lower noise in logs after debugging
-or to optimize performance by reducing I/O overhead. *Example*:
-`log_level_decrease=trapper,2` would reduce the verbosity of trapper-related
-logs of the second trapper process.
+: Diminui o nível de verbosidade do registro para um destino específico,
+reduzindo a quantidade de saída de registro gerada. Isso é útil para diminuir o
+ruído nos registros após a depuração ou para otimizar o desempenho reduzindo a
+sobrecarga de E/S. *Exemplo*: `log_level_decrease=trapper,2` reduziria a
+verbosidade dos registros relacionados ao trapper do segundo processo do
+trapper.
 
 `zabbix_proxy --runtime-control snmp_cache_reload`
 
-: Forces the proxy to reload its SNMP cache. This is useful if you've made
-changes to SNMP configurations (e.g., updated community strings, OIDs, or device
-IPs) and want the proxy to immediately pick up the new settings without
-restarting the entire service.
+: Força o proxy a recarregar seu cache de SNMP. Isso é útil se você tiver feito
+alterações nas configurações de SNMP (por exemplo, cadeias de caracteres de
+comunidade, OIDs ou IPs de dispositivos atualizados) e quiser que o proxy
+obtenha imediatamente as novas configurações sem reiniciar todo o serviço.
 
 `zabbix_proxy --runtime-control diaginfo=section`
 
-: Generates diagnostic information for a specific section of the proxy’s
-operation. This is typically used for troubleshooting or performance analysis.
-The section parameter can target areas like history cache, preprocessing or
-locks. *Example*: `diaginfo=preprocessing` would provide detailed statistics
-about the preprocessing manager.
+: Gera informações de diagnóstico para uma seção específica da operação do
+proxy. Normalmente, isso é usado para solução de problemas ou análise de
+desempenho. O parâmetro section pode visar áreas como cache de histórico,
+pré-processamento ou bloqueios. *Exemplo*: `diaginfo=preprocessing` forneceria
+estatísticas detalhadas sobre o gerenciador de pré-processamento.
 
 ---
 
-## Proxy firewall
+## Firewall de proxy
 
-Our proxies work like small _Zabbix servers_ so when it comes to the ports to
-connect to agents, SNMP, ... nothing changes, all ports need to be configured
-the same as you would on a _Zabbix server_.
+Nossos proxies funcionam como pequenos servidores _Zabbix_, portanto, quando se
+trata de portas para conexão com agentes, SNMP, ... nada muda, todas as portas
+precisam ser configuradas da mesma forma que em um servidor _Zabbix_.
 
-When it comes to port for the proxy it depends on our proxy being `active` or
-`passive`.
+Quando se trata da porta para o proxy, isso depende do fato de nosso proxy ser
+`ativo` ou `passivo`.
 
-- **Active Proxy:** Zabbix server needs to have port `10051/tcp` open so proxy
-  can connect.
-- **Passive Proxy:** Needs to have port `10051/tcp` open on the proxy so that
-  the `server` can connect to the proxy.
+- **Proxy ativo:** O servidor Zabbix precisa ter a porta `10051/tcp` aberta para
+  que o proxy possa se conectar.
+- **Proxy passivo:** Precisa ter a porta `10051/tcp` aberta no proxy para que o
+  `servidor ` possa se conectar ao proxy.
 
-Do note that for an active _Zabbix Agent_ or _Zabbix Sender_ to communicate with
-your proxy, whether it is an active or a passive one, this will require port
-`10051/tcp` to be open on your proxy server:
+Observe que, para que um agente _Zabbix ativo_ ou um _remetente Zabbix_ se
+comunique com seu proxy, seja ele ativo ou passivo, será necessário que a porta
+`10051/tcp` esteja aberta em seu servidor proxy:
 
 !!! info "Abra o firewall para o zabbix-trapper"
 
