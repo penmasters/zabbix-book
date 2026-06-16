@@ -120,12 +120,12 @@ dados existentes, independentemente do menu em que se encontra.
   base em `User`) **crie e edite painéis** para que eles possam personalizar a
   visualização, mas negar a eles a capacidade de **reconhecer problemas**.
 
-| Permissão                      | Descrição                                                                                                      |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| **Acknowledge problems**       | The ability to add comments to and acknowledge active problems.                                                |
-| **Close problems manually**    | The ability to force-close a problem, even if the underlying issue is unresolved.                              |
-| **Create and edit dashboards** | Controls the ability to build and modify frontend dashboards.                                                  |
-| **Executar scripts**           | Controla a capacidade de executar scripts globais (por exemplo, comandos remotos, atualizações de inventário). |
+| Permissão                        | Descrição                                                                                                      |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **Reconhecer problemas**         | A capacidade de adicionar comentários e reconhecer problemas ativos.                                           |
+| **Fechar problemas manualmente** | A capacidade de forçar o fechamento de um problema, mesmo que o problema subjacente não tenha sido resolvido.  |
+| **Criar e editar painéis**       | Controla a capacidade de criar e modificar painéis de front-end.                                               |
+| **Executar scripts**             | Controla a capacidade de executar scripts globais (por exemplo, comandos remotos, atualizações de inventário). |
 
 ### Permissões de API
 
