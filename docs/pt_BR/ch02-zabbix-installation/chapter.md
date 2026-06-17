@@ -6,8 +6,8 @@ Além da introdução básica à navegação no frontend, este capítulo também
 **configuração de usuários e grupos** , com foco na criação de um sistema de
 gerenciamento de usuários seguro e eficiente.
 
-Vamos configurar a autenticação interna **** com as práticas recomendadas de
-segurança, incluindo a autenticação de fator duplo **** . Para aqueles que
+Vamos configurar a **autenticação interna** com as práticas recomendadas de
+segurança, incluindo a **autenticação de fator duplo** . Para aqueles que
 precisam de integração avançada, exploraremos opções como **SAML, LDAP** e
 outros métodos de autenticação externa.
 
