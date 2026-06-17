@@ -12,11 +12,11 @@ Em qualquer plataforma de monitoramento empresarial, o estabelecimento de
 segurança e a clareza da responsabilidade operacional. Para o Zabbix, esse
 controle é construído sobre o conceito fundamental de **Grupos de usuários**.
 
-In Zabbix 8.0, user groups serve as the primary mechanism for assigning
-permissions and structuring access to the monitored data and configuration
-entities. This chapter details the function of user groups, guides you through
-their configuration, and outlines best practices for applying them in a robust,
-real world deployment.
+No Zabbix 8.0, os grupos de usuários funcionam como o principal mecanismo para
+atribuir permissões e estruturar o acesso aos dados monitorados e às entidades
+de configuração. Este capítulo detalha a função dos grupos de usuários,
+orienta-o em sua configuração e descreve as melhores práticas para aplicá-los em
+uma implementação robusta e real.
 
 ---
 
@@ -79,8 +79,8 @@ Essa guia inicial define as propriedades gerais do grupo e sua associação:
   grupo. As opções incluem `Padrão do sistema`, `Interno`, `LDAP`, ou
   `Desativado` (útil para contas somente de API ou para bloquear temporariamente
   o acesso ao frontend para uma função).
-* **LDAP server:** If `LDAP` access is chosen, select the specific LDAP server
-  configuration to be used for members of this group.
+* **Servidor LDAP:** Se `LDAP` acesso for escolhido, selecione a configuração
+  específica do servidor LDAP a ser usada para os membros desse grupo.
 * **Autenticação multifatorial (MFA):** Selecione o método a ser aplicado para o
   grupo. Se um usuário for membro de vários grupos, normalmente será aplicada a
   configuração de MFA mais segura.
@@ -206,111 +206,115 @@ Essa precedência pode ser resumida em duas regras principais:
    presente, o direito mais permissivo será aplicado. **Leitura-escrita** sempre
    substitui **Somente leitura**.
 
-| Cenário          | Grupo A            | Grupo B            | Permissão efetiva      | Justificativa                                                    |
-| ---------------- | ------------------ | ------------------ | ---------------------- | ---------------------------------------------------------------- |
-| **RW Sobre RO**  | Somente leitura    | Leitura e gravação | **Leitura e gravação** | O direito mais permissivo vence quando **Deny** está ausente.    |
-| **Deny Over RO** | Somente leitura    | Deny               | **Deny**               | **Deny** always takes precedence and blocks all access.          |
-| **Deny Over RW** | Leitura e gravação | Deny               | **Deny**               | The most restrictive right (Deny) overrides the most permissive. |
+| Cenário            | Grupo A            | Grupo B            | Permissão efetiva      | Justificativa                                                 |
+| ------------------ | ------------------ | ------------------ | ---------------------- | ------------------------------------------------------------- |
+| **RW Sobre RO**    | Somente leitura    | Leitura e gravação | **Leitura e gravação** | O direito mais permissivo vence quando **Deny** está ausente. |
+| **Negar sobre RO** | Somente leitura    | Negar              | **Negar**              | **Deny** sempre tem precedência e bloqueia todos os acessos.  |
+| **Negar sobre RW** | Leitura e gravação | Negar              | **Negar**              | O direito mais restritivo (Deny) substitui o mais permissivo. |
 
-### Permissions in the "Update Problem" Dialog
+### Permissões na caixa de diálogo "Atualizar problema"
 
-In Zabbix 8.0, the actions available in the **Monitoring** → **Problems** view
-(via the *Update problem* dialog) are controlled by two distinct mechanisms
-working in tandem:
+No Zabbix 8.0, as ações disponíveis na visualização **Monitoring** →
+**Problems** (por meio da caixa de diálogo *Update problem* ) são controladas
+por dois mecanismos distintos que funcionam em conjunto:
 
-1. **Host/Template Permissions:** Governs basic access to the problem and
-   whether configuration-level changes can be made.
-2. **User Role Capabilities:** Governs which specific administrative actions
-   (like acknowledging, changing severity, or closing) are enabled.
+1. **Permissões de host/modelo:** Controla o acesso básico ao problema e se
+   podem ser feitas alterações no nível da configuração.
+2. **Recursos de função do usuário:** Controla quais ações administrativas
+   específicas (como reconhecimento, alteração da gravidade ou fechamento) estão
+   habilitadas.
 
-The table below clarifies the minimum required permissions to perform actions on
-an active problem:
+A tabela abaixo esclarece as permissões mínimas necessárias para executar ações
+em um problema ativo:
 
-| Action in “Update problem” dialog | Required Host Permission | Required Template Permission       | Required Role Capability / Notes                                   |
-| --------------------------------- | ------------------------ | ---------------------------------- | ------------------------------------------------------------------ |
-| **Message** (add comment)         | Read-only or Read-write  | Same level as host                 | Requires the role capability **Acknowledge problems**.             |
-| **Acknowledge**                   | Read-only or Read-write  | Same level as host                 | Requires **Acknowledge problems**. Read-only access is sufficient. |
-| **Change severity**               | **Read-write** required  | **Read-write** if template trigger | Requires the **Change problem severity** capability.               |
-| **Suppress** / **Unsuppress**     | **Read-write** required  | **Read-write** if template trigger | Requires the **Suppress problems** capability.                     |
-| **Convert to cause**              | **Read-write** required  | **Read-write** if template trigger | Requires **Manage problem correlations** capability.               |
-| **Close problem**                 | **Read-write** required  | **Read-write** if template trigger | Requires **Close problems manually** capability.                   |
-
----
-
-## Best Practices for Enterprise Access Control
-
-Building a maintainable, secure Zabbix environment requires discipline in
-defining groups and permissions.
-
-1. **Adopt Role-Based Naming:** Use clear, standardized names that reflect the
-   user's role and their access level, such as `Ops-RW` (Operations Read/Write)
-   or `NOC-RO` (NOC Read-Only).
-2. **Grant Access via Groups Only:** Never assign permissions directly to an
-   individual user; always rely on **group membership**. This ensures
-   auditability and maintainability.
-3. **Principle of Least Privilege:** Start with the most restrictive access
-   (**Read-only**) and only escalate to **Read-write** when configuration-level
-   changes are an absolute requirement of the user's role.
-4. **Align with Organizational Structure:** Ensure your Host Groups and Template
-   Groups mirror your organization's teams or asset categories (e.g.,
-   `EU-Network`, `US-Database`, `Finance-Templates`). This makes permission
-   assignment intuitive.
-5. **Regular Review and Audit:** Periodically review group memberships and
-   permissions. A user's role may change, and their access in Zabbix must be
-   adjusted accordingly.
-6. **Test Restricted Views:** After creating a group, always log in as a test
-   user belonging to that group to verify that dashboards, widgets, and
-   configuration pages display the correct restricted view.
+| Ação na caixa de diálogo "Atualizar problema“ | Permissão de host necessária          | Permissão de modelo necessária                  | Capacidade da função requerida / Observações                            |
+| --------------------------------------------- | ------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------- |
+| **Mensagem** (adicionar comentário)           | Somente leitura ou leitura e gravação | Mesmo nível do host                             | Requer a capacidade de função **Reconhecer problemas**.                 |
+| **Reconhecer**                                | Somente leitura ou leitura e gravação | Mesmo nível do host                             | Requer **Reconhecer problemas**. O acesso somente leitura é suficiente. |
+| **Alterar a gravidade**                       | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Alterar a gravidade do problema**.                   |
+| **Suprimir** / **Cancelar supressão**         | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Suprimir problemas**.                                |
+| **Converter para causar**                     | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Gerenciar correlações de problemas**.                |
+| **Fechar problema**                           | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Fechar problemas manualmente**.                      |
 
 ---
 
-## Example : User permissions
+## Práticas recomendadas para controle de acesso corporativo
 
-This exercise will demonstrate how Zabbix calculates a user's effective
-permissions when they belong to multiple User Groups, focusing exclusively on
-the core access levels: Read-only, Read-write, and Deny.
+A criação de um ambiente Zabbix seguro e de fácil manutenção exige disciplina na
+definição de grupos e permissões.
 
-### Our Scenario
+1. **Adote a nomenclatura baseada em função:** Use nomes claros e padronizados
+   que reflitam a função do usuário e seu nível de acesso, como `Ops-RW`
+   (Operations Read/Write) ou `NOC-RO` (NOC Read-Only).
+2. **Conceda acesso somente por meio de grupos:** Nunca atribua permissões
+   diretamente a um usuário individual; sempre confie na **associação ao grupo**
+   . Isso garante a capacidade de auditoria e manutenção.
+3. **Princípio do menor privilégio:** Comece com o acesso mais restritivo
+   (**Read-only**) e só passe para **Read-write** quando as alterações no nível
+   da configuração forem um requisito absoluto da função do usuário.
+4. **Alinhe-se à estrutura organizacional:** Certifique-se de que seus Host
+   Groups e Template Groups reflitam as equipes ou categorias de ativos da sua
+   organização (por exemplo, `EU-Network`, `US-Database`, `Finance-Templates`).
+   Isso torna a atribuição de permissões intuitiva.
+5. **Revisão e auditoria regulares:** Revise periodicamente os membros e as
+   permissões do grupo. A função de um usuário pode mudar e seu acesso no Zabbix
+   deve ser ajustado de acordo.
+6. **Teste as visualizações restritas:** Depois de criar um grupo, sempre faça
+   login como um usuário de teste pertencente a esse grupo para verificar se os
+   painéis, widgets e páginas de configuração exibem a visualização restrita
+   correta.
 
-You are managing access rights for a large Zabbix deployment. You need to grant
-general viewing access to all Linux servers but specifically prevent a junior
-team from even seeing, let alone modifying, your highly critical database
-servers.
+---
 
-You will have to configure two overlapping User Groups to demonstrate the
-precedence rules:
+## Exemplo: permissões de usuário
 
-* Group A (Junior Monitoring): Grants general Read-only access to a wide host
-  scope.
-* Group B (Critical Exclusion): Applies an explicit Deny to a specific, critical
-  host subset.
+Este exercício demonstrará como o Zabbix calcula as permissões efetivas de um
+usuário quando ele pertence a vários grupos de usuários, concentrando-se
+exclusivamente nos principais níveis de acesso: Somente leitura, Leitura-escrita
+e Negar.
 
-#### Host Group Preparation
+### Nosso cenário
 
-Ensure the following Host Groups exist in your Zabbix environment:
+Você está gerenciando direitos de acesso para uma grande implantação do Zabbix.
+Você precisa conceder acesso de visualização geral a todos os servidores Linux,
+mas impedir especificamente que uma equipe júnior veja, e muito menos modifique,
+seus servidores de banco de dados altamente críticos.
 
-* HG_All_Linux_Servers (The wide scope of hosts)
-* HG_Critical_Databases (A subset of servers that is also within
+Você terá que configurar dois grupos de usuários sobrepostos para demonstrar as
+regras de precedência:
+
+* Grupo A (monitoramento júnior): Concede acesso geral somente leitura a um
+  amplo escopo de host.
+* Grupo B (Exclusão crítica): Aplica uma negação explícita a um subconjunto
+  específico e crítico de hosts.
+
+#### Preparação do grupo anfitrião
+
+Certifique-se de que os seguintes grupos de hosts existam em seu ambiente
+Zabbix:
+
+* HG_All_Linux_Servers (O amplo escopo de hosts)
+* HG_Critical_Databases (Um subconjunto de servidores que também está dentro de
   HG_All_Linux_Servers)
 
-You can create them under `Data collection` → `Host groups`.
+Você pode criá-los em `Coleta de dados` → `Grupos de hosts`.
 
-#### Configuring the User Groups
+#### Configuração dos grupos de usuários
 
-- Create Group A: 'Junior Monitoring'
-    - Navigate to Users → User groups.
-    - Create a new group named 'Junior Monitoring'.
-    - In the Host permissions tab, assign the following right:
-    - HG_All_Linux_Servers: Read-only (Read)
-    - HG_Critical_Databases: Read-only (Read)
+- Criar Grupo A: 'Monitoramento Júnior'
+    - Navegue até Usuários → Grupos de usuários.
+    - Crie um novo grupo chamado "Monitoramento Júnior".
+    - Na guia Permissões de host, atribua o seguinte direito:
+    - HG_All_Linux_Servers: Somente leitura (Read)
+    - HG_Critical_Databases (Bancos de dados críticos): Somente leitura (Read)
 
-![ch02.21_junior-monitoring.png](ch02.21_junior-monitoring.png) _2.21 Junior
-monitoring_
+![ch02.21_junior-monitoring.png](ch02.21_junior-monitoring.png) _2.21
+Monitoramento júnior_
 
 
-- Create Group B: 'Critical Exclusion'
-    * Create a second group named 'Critical Exclusion'.
-    * In the Host permissions tab, assign the following right:
+- Criar Grupo B: 'Exclusão crítica'
+    * Crie um segundo grupo chamado "Exclusão crítica".
+    * Na guia Permissões de host, atribua o seguinte direito:
     * HG_Critical_Databases: Deny
 
 ![ch02.22_critical-exclusioin.png](ch02.22_critical-exclusioin.png) _ch02.22
@@ -373,7 +377,7 @@ This table outlines the combined, **effective rights** for the user
 | Host Group (HG)             | Permission via 'Junior Monitoring' | Permission via 'Critical Exclusion' | **Effective Permission** | Outcome                                 |
 | --------------------------- | ---------------------------------- | ----------------------------------- | ------------------------ | --------------------------------------- |
 | **`HG_All_Linux_Servers`**  | Somente leitura                    | *No Explicit Rule*                  | **Somente leitura**      | Access to view data is **Allowed**.     |
-| **`HG_Critical_Databases`** | Somente leitura                    | Deny                                | **Deny**                 | Access is **Blocked** (host is hidden). |
+| **`HG_Critical_Databases`** | Somente leitura                    | Negar                               | **Negar**                | Access is **Blocked** (host is hidden). |
 
 
 ## Conclusão
