@@ -13,10 +13,10 @@ A autenticação HTTP é um dos métodos de autenticação externa fornecidos pe
 Zabbix e pode ser usada para proteger adicionalmente sua WebUI do Zabbix com o
 mecanismo de autenticação básica no nível do servidor HTTP.
 
-Basic HTTP authentication protects Website (Zabbix WebUI) resources with a
-username and password. When a user attempts to access Zabbix WebUI, the browser
-pops up a dialog asking for credentials before sending anything over to Zabbix
-WebUI php code.
+A autenticação HTTP básica protege os recursos do site (Zabbix WebUI) com um
+nome de usuário e uma senha. Quando um usuário tenta acessar a Zabbix WebUI, o
+navegador exibe uma caixa de diálogo solicitando as credenciais antes de enviar
+qualquer coisa para o código php da Zabbix WebUI.
 
 Um servidor HTTP tem um arquivo com credenciais que é usado para autenticar
 usuários.

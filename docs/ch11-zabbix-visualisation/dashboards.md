@@ -1,3 +1,11 @@
+---
+description: |
+    Create interactive Zabbix dashboards with widgets, graphs, maps, and status
+    views. Transform monitoring data into real-time visibility and actionable
+    operational insights.
+tags: [beginner]
+---
+
 # Setting up Dashboards
 
 Dashboards are the central visualization layer in Zabbix. They bring together
@@ -533,15 +541,27 @@ find the outliers.
 
 **Key options:** items to rank by, host group filter, number of rows, sort order.
 
+![ch11.30_top_hosts.png](ch11.30_top_hosts.png)
+
+_ch11.30 Top Hosts_
+
 ### Top items
 
 Similar to *Top hosts* but item-centric: lists all item values matching a pattern
 across hosts, ranked by value.
 
+![ch11.31_top_items.png](ch11.31_top_items.png)
+
+_ch11.31 Top Items_
+
 ### Top triggers
 
 Lists the triggers that have fired most frequently in the selected time period,
 ranked by event count. Useful for identifying noisy or chronic problem sources.
+
+![ch11.32_top_triggers.png](ch11.32_top_triggers.png)
+
+_ch11.32 Top Triggers_
 
 ### Trigger overview
 
@@ -552,6 +572,10 @@ health view.
 **Key options:** host groups, trigger name filter, whether to show triggers in
 OK state.
 
+![ch11.33_trigger_overview.png](ch11.33_trigger_overview.png)
+
+_ch11.33 Trigger Overview_
+
 ### URL
 
 Embeds an external URL in an iframe inside the widget. Useful for embedding external
@@ -561,10 +585,18 @@ dashboards, documentation pages, or any web content alongside your Zabbix data.
   must not set `X-Frame-Options: DENY` or an equivalent CSP header, otherwise
   the browser will refuse to render it.
 
+![ch11.34_url.png](ch11.34_url.png)
+
+_ch11.34 url_
+
 ### Web monitoring
 
 Displays the results of Zabbix web scenario checks: which scenarios are OK, failed,
 or unknown, along with availability percentages and average response times.
+
+![ch11.35_web_monitoring.png](ch11.35_web_monitoring.png)
+
+_ch11.35 Web Monitoring_
 
 ---
 
@@ -575,15 +607,19 @@ canvas and its own set of widgets. Pages share the same dashboard name and setti
 but their widget layouts are entirely separate.
 
 To add a page in edit mode, click *Add page*. A new tab appears. You can rename
-a page by double-clicking its tab label. Reorder pages by dragging their tabs.
+a page by clicking on the 3 dots next to it's label. Reorder pages by dragging their tabs.
 
 When a dashboard has multiple pages, a *Display period* setting controls how long
 each page is shown before automatically cycling to the next, useful for NOC screens
-that rotate between views. You can set this per-dashboard when creating or editing
-the dashboard properties, and also override it per-page in the page settings.
+that rotate between views. You can set this per dashboard when creating or editing
+the dashboard properties, and also override it per page in the page settings.
 
-To delete a page, right-click its tab and choose *Delete page*. Note: a dashboard
+To delete a page, click on the 3 dots in its tab and choose *Delete page*. Note: a dashboard
 must always have at least one page.
+
+![ch11.36_add_page.png](ch11.36_add_page.png)
+
+_ch11.36 Add Page_
 
 ---
 
@@ -609,8 +645,8 @@ a manually adjusted range.
 ## Sharing Dashboards
 
 By default a dashboard is visible only to its owner. To make it accessible to
-other users, open the dashboard list, click the action menu for the dashboard,
-and select *Sharing*.
+other users, open the dashboard, click the actions menu (3 horizontal lines) for
+the dashboard, and select *Sharing*.
 
 The sharing dialog offers two models:
 
@@ -630,15 +666,18 @@ _To configure:_ set the type to *Public* or add users/user groups with *Read* or
 
 ## Exporting and Importing Dashboards
 
-Dashboards can be exported as YAML files and imported on the same or a different
-Zabbix instance. This is useful for distributing dashboard templates, backing up
-configurations, or sharing dashboards with the community.
+Dashboards can be exported as YAML files since Zabbix 8 and imported on the same
+or a different Zabbix instance of the same version. This is useful for distributing
+dashboard templates, backing up configurations, or sharing dashboards with the
+community.
 
-**To export:** in the dashboard list, select one or more dashboards using the checkboxes,
-then click the *Export* button that appears. Zabbix downloads a `.yaml` file
-containing the full dashboard definition including all widget configurations.
+**To export:** in the dashboard, select the actions menu (3 horizontal lines),
+then click the *Export* button and choose the format you like. Or go to the
+dashboard list select all the dashboards you like and click on th export button.
+Zabbix downloads a `.yaml, xml or json` file containing the full dashboard definition
+including all widget configurations.
 
-**To import:** click the *Import* button in the top-right of the dashboard list,
+**To import:** click the *Import* button in the top right of the dashboard list,
 select your YAML file, and choose which elements to import. If a dashboard with
 the same name already exists you will be prompted to overwrite it or create a
 new one.
@@ -680,7 +719,7 @@ to the template.
 
 ## Building a Practical Example: Linux Server Overview Dashboard
 
-To put it all together, here is a step-by-step walkthrough of building a useful
+To put it all together, here is a step by step walkthrough of building a useful
 dashboard for monitoring a Linux server. This assumes you have a host monitored
 with the standard *Linux by Zabbix agent* template, so items like `system.cpu.util`,
 `vm.memory.size[available]`, and filesystem usage data are already being collected.
@@ -722,6 +761,8 @@ place it in the middle row.
 Add another *Graph* widget. Add two data sets: one for `net.if.in[eth0]` and one
 for `net.if.out[eth0]`. Give them different colours. Name it *Network Traffic*.
 Place it next to the CPU history graph.
+ 
+The name eth0 can be different on your system.
 
 **Step 7 — Save**
 
@@ -748,14 +789,42 @@ logically distinct views into separate dashboards instead.
 browser, ensure that anything embedded does not expose data that the Zabbix
 permissions model would otherwise restrict.
 
-**Export dashboards you have invested time in.** A YAML export is an effective backup and makes it easy to share your work with other Zabbix administrators or contribute it back to the community.
+**Export dashboards you have invested time in.** A YAML export is an effective
+backup and makes it easy to share your work with other Zabbix administrators
+or contribute it back to the community.
 
-**Use template dashboards for consistency.** If you monitor many instances of the same technology (Linux hosts, Apache servers, PostgreSQL databases), define the dashboard once in the template and get it automatically for every host.
-
+**Use template dashboards for consistency.** If you monitor many instances of
+the same technology (Linux hosts, Apache servers, PostgreSQL databases), define
+the dashboard once in the template and get it automatically for every host.
 
 
 ## Conclusion
 
+Dashboards are one of the most powerful ways to present monitoring data in Zabbix.
+By combining widgets, graphs, maps, status indicators, and business focused metrics,
+you can transform raw monitoring information into clear and actionable insights.
+
+In this chapter, you learned how to create and customize dashboards, organize
+information for different audiences, and use visualization techniques to highlight
+the most important aspects of your infrastructure. Well designed dashboards help
+operators detect issues faster, enable administrators to monitor system health
+efficiently, and provide management with a high-level overview of service availability
+and performance.
+
+Remember that the best dashboard is not necessarily the one with the most widgets,
+but the one that presents the right information to the right people at the right
+time. By carefully designing your dashboards, you can significantly improve visibility,
+reduce response times, and make better operational decisions based on your monitoring
+data.
+
 ## Questions
 
+- What is the purpose of a dashboard in Zabbix?
+- What factors should you consider when designing an effective dashboard?
+- How can dashboard permissions affect what users are able to see?
+
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards/widgets_overview](https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards/widgets_overview)
+- [https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards](https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards)
+
