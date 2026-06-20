@@ -123,6 +123,7 @@ nav:
       - ch15-zabbix-real-world-examples/chapter.md
       - Disk health on Windows: ch15-zabbix-real-world-examples/disk-health-windows.md
       - Filter LLD without JSONPath: ch15-zabbix-real-world-examples/filter-lld-without-jsonpath.md
+      - HTML for the win: ch15-zabbix-real-world-examples/html-for-the-win.md
 
 theme:
   language: en
