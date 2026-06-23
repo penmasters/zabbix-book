@@ -338,16 +338,16 @@ We will create the user first, then assign them to the groups.
 
 ![ch02.23_test-junior.png](ch02.23_test-junior.png) _ch02.23 test user_
 
-#### Create the hosts
+#### Criar os hosts
 
-We will create 2 host a linux server and a db server.
+Criaremos 2 hosts, um servidor Linux e um servidor de banco de dados.
 
-* Navigate to `Data collection` → `Hosts`.
-* Click on create host.
+* Navegue até `Coleta de dados` → `Hosts`.
+* Clique em criar host.
 * Details:
-    * Host name: Linux server
-    * Templates: Linux by Zabbix agent
-    * Host groups: HG_All_Linux_Servers
+    * Nome do host: servidor Linux
+    * Modelos: Linux pelo agente Zabbix
+    * Grupos de hosts: HG_All_Linux_Servers
     * Interfaces: Agent with IP 127.0.0.1
 * Save: Click Add.
 
