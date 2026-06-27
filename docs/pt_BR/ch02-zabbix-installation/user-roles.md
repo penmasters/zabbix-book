@@ -108,23 +108,24 @@ seções de configuração específicas.
 
 ### Permissões de ação (controle de funcionalidade)
 
-This is perhaps the most critical section, defining **operational
-capabilities**. These permissions control what actions a user can perform on
-existing data, regardless of which menu they are in.
+Esta talvez seja a seção mais importante, que define os **recursos operacionais
+do** . Essas permissões controlam as ações que um usuário pode executar nos
+dados existentes, independentemente do menu em que se encontra.
 
-* **Example Use (NOC):** Allow a **NOC Operator** role (based on `User`) to
-  **Acknowledge problems** and **Close problems manually**, but *deny* them the
-  right to **Execute scripts** to prevent unauthorized command execution.
-* **Example Use 2 (Dashboard):** Allow a **Manager** role (based on `User`) to
-  **Create and edit dashboards** so they can customize their view, but deny them
-  the ability to **Acknowledge problems**.
+* **Exemplo de uso (NOC):** Permita que uma função **NOC Operator** (com base em
+  `User`) **Acknowledge problems** e **Close problems manually**, mas *negue a*
+  o direito de **Execute scripts** para evitar a execução não autorizada de
+  comandos.
+* **Exemplo de uso 2 (Dashboard):** Permitir que uma função **Manager** (com
+  base em `User`) **crie e edite painéis** para que eles possam personalizar a
+  visualização, mas negar a eles a capacidade de **reconhecer problemas**.
 
-| Permissão                      | Descrição                                                                                                      |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| **Acknowledge problems**       | The ability to add comments to and acknowledge active problems.                                                |
-| **Close problems manually**    | The ability to force-close a problem, even if the underlying issue is unresolved.                              |
-| **Create and edit dashboards** | Controls the ability to build and modify frontend dashboards.                                                  |
-| **Executar scripts**           | Controla a capacidade de executar scripts globais (por exemplo, comandos remotos, atualizações de inventário). |
+| Permissão                        | Descrição                                                                                                      |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **Reconhecer problemas**         | A capacidade de adicionar comentários e reconhecer problemas ativos.                                           |
+| **Fechar problemas manualmente** | A capacidade de forçar o fechamento de um problema, mesmo que o problema subjacente não tenha sido resolvido.  |
+| **Criar e editar painéis**       | Controla a capacidade de criar e modificar painéis de front-end.                                               |
+| **Executar scripts**             | Controla a capacidade de executar scripts globais (por exemplo, comandos remotos, atualizações de inventário). |
 
 ### Permissões de API
 

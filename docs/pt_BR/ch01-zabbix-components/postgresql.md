@@ -750,9 +750,9 @@ semelhante a:
     COMMIT
     ```
 
-Once the script completes and you return to the `zabbix=>` prompt, the database
-should be successfully populated with all the required tables, schemas, images,
-and other elements needed for Zabbix.
+Quando o script for concluído e você retornar ao prompt `zabbix=#`, o banco de
+dados deverá ser preenchido com sucesso com todas as tabelas, esquemas, imagens
+e outros elementos necessários para o Zabbix.
 
 Entretanto, `zabbix-web` ainda não pode executar nenhuma operação nas tabelas ou
 sequências. Para permitir a interação básica dos dados sem conceder muitos
@@ -834,17 +834,17 @@ exemplo:
     (203 rows)
     ```
 
-- Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
-  the necessary permissions. You can check permissions for specific tables using
-  the \dp command:
+- Verificar permissões: Confirme se o usuário zabbix-srv é o proprietário das
+  tabelas e se tem as permissões necessárias. Você pode verificar as permissões
+  de tabelas específicas usando o comando \dp:
 
-!!! info "Verify table permissions"
+!!! info "Verificar permissões de tabela"
 
     ```psql
     zabbix=> \dp zabbix_server.*
     ```
 
-???+ example "Example output"
+???+ example "Exemplo de saída"
 
     ```psql
     zabbix=> \dp zabbix_server.*
@@ -860,25 +860,28 @@ exemplo:
      zabbix_server | auditlog                   | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
     ```
 
-This will display the access privileges for all tables in the `zabbix_server`
-schema. Ensure that `zabbix-srv` has the required privileges.
+Isso exibirá os privilégios de acesso de todas as tabelas no esquema
+`zabbix_server`. Certifique-se de que `zabbix-srv` tenha os privilégios
+necessários.
 
-If everything looks correct, your tables are properly created and the
-`zabbix-srv` user has the appropriate ownership and permissions. If you need to
-adjust any permissions, you can do so using the GRANT commands as needed.
+Se tudo estiver correto, suas tabelas foram criadas corretamente e o usuário
+`zabbix-srv` tem a propriedade e as permissões adequadas. Se precisar ajustar
+alguma permissão, você poderá fazê-lo usando os comandos GRANT, conforme
+necessário.
 
-This concludes our installation of the PostgreSQL database.
+Isso conclui nossa instalação do banco de dados PostgreSQL.
 
 ---
 
 ## Conclusão
 
-With the installation and configuration of PostgreSQL as the database backend
-for Zabbix complete, you now have a powerful and efficient database system ready
-for your monitoring needs. We've covered the installation of PostgreSQL from
-both vendor-provided packages and official repositories, securing the database,
-creating the necessary Zabbix database and users, and populating the database
-with the required schema and initial data.
+Com a instalação e a configuração do PostgreSQL como backend do banco de dados
+para o Zabbix concluídas, agora você tem um sistema de banco de dados poderoso e
+eficiente pronto para suas necessidades de monitoramento. Cobrimos a instalação
+do PostgreSQL a partir dos pacotes fornecidos pelo fornecedor e dos repositórios
+oficiais, protegendo o banco de dados, criando o banco de dados e os usuários
+necessários do Zabbix e preenchendo o banco de dados com o esquema necessário e
+os dados iniciais.
 
 Seu ambiente Zabbix agora está pronto para os próximos estágios de instalação e
 configuração.
@@ -887,7 +890,8 @@ configuração.
 
 ## Perguntas
 
-1. What version of PostgreSQL should I install for compatibility and stability?
+1. Qual versão do PostgreSQL devo instalar para garantir a compatibilidade e a
+   estabilidade?
 2. Qual é a porta usada pelo meu banco de dados?
 3. Quais usuários do banco de dados eu criei e por quê?
 

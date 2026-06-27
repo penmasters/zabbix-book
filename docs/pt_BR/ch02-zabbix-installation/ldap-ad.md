@@ -82,12 +82,12 @@ Ubuntu
 
 ???+ nota "O que é Podman"?
 
-Podman is a container engine designed as a drop-in replacement for Docker, but
-with a daemonless architecture. This means it runs containers directly under the
-user’s control, improving security and simplicity. Podman is fully compatible
-with Docker’s CLI and supports rootless containers, making it ideal for
-development, testing, and production environments where security and isolation
-are priorities.
+O Podman é um mecanismo de contêiner projetado como substituto do Docker, mas
+com uma arquitetura sem daemon. Isso significa que ele executa contêineres
+diretamente sob o controle do usuário, aumentando a segurança e a simplicidade.
+O Podman é totalmente compatível com a CLI do Docker e oferece suporte a
+contêineres sem raiz, o que o torna ideal para ambientes de desenvolvimento,
+teste e produção em que a segurança e o isolamento são prioridades.
 
 ???+ dica
 
@@ -263,161 +263,174 @@ Em `Users | Authentication`, precisamos fazer duas coisas:
   de usuários do Zabbix onde todos os usuários _desprovisionados_ serão
   colocados para que efetivamente sejam desabilitados de acessar o Zabbix.
 
-  ![Default authentication](ch02.11-ldap-default-authentication.png){
-  align=center }
+  ![Autenticação padrão](ch02.11-ldap-default-authentication.png){ align=center
+  }
 
-  _2.11 Default authentication_
+  _2.11 Autenticação padrão_
 
-  Click `Update` button`.
+  Clique no botão `Update` `.
 
-- Enable JIT provisioning check-box which obviously needs to be checked for this
-  feature to work. It's done in our _Test LDAP server_ configuration - select
-  `Users | Authentication | LDAP settings` and click on our server in `Servers`
-  section. After enabling this check-box we'll see some other fields related to
-  JIT to be filled in and what we put in there depends on the method we choose
-  to perform JIT.
+- Habilite a caixa de seleção de provisionamento JIT, que obviamente precisa ser
+  marcada para que esse recurso funcione. Isso é feito na nossa configuração
+  _Test LDAP server_ - selecione `Users | Authentication | LDAP settings` e
+  clique no nosso servidor na seção `Servers`. Depois de ativar essa caixa de
+  seleção, veremos alguns outros campos relacionados ao JIT a serem preenchidos,
+  e o que colocaremos neles dependerá do método que escolhermos para executar o
+  JIT.
 
-### Group configuration method “memberOf”
+### Método de configuração de grupo "memberOf"
 
-All users in our LDAP server have _memberOf_ attribute which defines what LDAP
-groups every user belongs to, e.g. if we perform a LDAP query for _user1_ user
-we’ll get that its _memberOf_ attribute has this value:
+Todos os usuários em nosso servidor LDAP têm o atributo _memberOf_, que define a
+quais grupos LDAP cada usuário pertence. Por exemplo, se fizermos uma consulta
+LDAP para o usuário _user1_, veremos que o atributo _memberOf_ tem esse valor:
 
 **memberOf**: cn=**zabbix-admins**,ou=Group,dc=example,dc=org
 
-Note, that your real LDAP server can have totally different LDAP attribute that
-provides users’ group membership, and of course, you can easily configure what
-attribute to use when searching for user’s LDAP groups by putting it into `User
-group membership attribute` field:
+Observe que o seu servidor LDAP real pode ter um atributo LDAP totalmente
+diferente que fornece a associação ao grupo de usuários e, é claro, você pode
+configurar facilmente qual atributo usar ao procurar grupos LDAP de usuários
+colocando-o no campo `User group membership attribute`:
 
-![LDAP groups mapping](ch02.12-ldap-groups-mapping.png){ align=center }
+![Mapeamento de grupos LDAP](ch02.12-ldap-groups-mapping.png){ align=center }
 
-_2.12 LDAP groups mapping_
+_2.12 Mapeamento de grupos LDAP_
 
-In the picture above we are telling Zabbix to use _memberOf_ attribute to
-extract DN defining user’s group membership (in this case it is
-_cn=zabbix-admins,out=Group,dc=example,dc=org_) and take only _cn_ attribute
-from that DN (in this case it is _zabbix-admins_) to use in searching for a
-match in User group mapping rules. Then we define as many mapping rules as we
-want. In the picture above we have two rules:
+Na figura acima, estamos dizendo ao Zabbix para usar o atributo _memberOf_ para
+extrair o DN que define a associação do usuário ao grupo (nesse caso, é
+_cn=zabbix-admins,out=Group,dc=example,dc=org_) e pegar apenas o atributo _cn_
+desse DN (nesse caso, é _zabbix-admins_) para usar na busca de uma
+correspondência nas regras de mapeamento do grupo de usuários. Em seguida,
+definimos quantas regras de mapeamento quisermos. Na figura acima, temos duas
+regras:
 
-- All users belonging to _zabbix-users_ LDAP group will be created in Zabbix as
-  members of _Zabbix users group_ with _User_ role
-- All users belonging to _zabbix-admins_ LDAP group will be created in Zabbix as
-  members of _Zabbix administrators_ group with _Super admin_ role
+- Todos os usuários pertencentes ao grupo LDAP _zabbix-users_ serão criados no
+  Zabbix como membros do _grupo de usuários do Zabbix_ com a função _User_
+- Todos os usuários pertencentes ao grupo LDAP _zabbix-admins_ serão criados no
+  Zabbix como membros do grupo _Zabbix administrators_ com a função _Super
+  admin_
 
-### Group configuration method “groupOfNames”
+### Método de configuração de grupo "groupOfNames"
 
-There is another method of finding users’ group membership called “groupOfNames”
-it is not as efficient as “memberOf” method but can provide much more
-flexibility if needed. Here Zabbix is not querying LDAP server for a user
-instead it is searching for LDAP groups based on a given criterion (filter).
-It’s easier to explain with pictures depicting an example:
+Há outro método para encontrar a associação de usuários a grupos chamado
+"groupOfNames", que não é tão eficiente quanto o método "memberOf", mas pode
+oferecer muito mais flexibilidade, se necessário. Aqui o Zabbix não está
+consultando o servidor LDAP para um usuário, em vez disso, ele está procurando
+grupos LDAP com base em um determinado critério (filtro). É mais fácil explicar
+com imagens que descrevem um exemplo:
 
-![LDAP server group of names](ch02.13-ldap-group-of-names.png){ align=center }
+![Grupo de nomes do servidor LDAP](ch02.13-ldap-group-of-names.png){
+align=center }
 
-_2.13 LDAP server groupOfNames_
+_2.13 GroupOfNames do servidor LDAP_
 
-Firstly we define LDAP “sub-tree” where Zabbix will be searching for LDAP groups
-– note _ou=Group,dc=example,dc=org_ in Group base DN field. Then in the field
-`Group name attribute` field we what attribute to use when we search in mapping
-rules (in this case we take _cn_, i.e. only _zabbix-admins_ from full DN
-_cn=zabbix-admins,ou=Group,dc=example,dc=org_). Each LDAP group in our LDAP
-server has _member_ attribute that has all users that belong to this LDAP group
-(look at the right picture) so we put _member_ in `Group member attribute`
-field. Each user’s DN will help us construct `Group filter` field. Now pay
-attention: `Reference attribute` field defines what LDAP user’s attribute Zabbix
-will use in the `Group filter`, i.e. _%{ref}_ will be replaced with the value of
-this attribute (here we are talking about the user’s attributes – we already
-authenticated this user, i.e. got all its attributes from LDAP server). To sum
-up what I've said above Zabbix:
+Primeiro, definimos a "sub-árvore" LDAP onde o Zabbix procurará por grupos LDAP
+- observe _ou=Group,dc=example,dc=org_ no campo Group base DN. Em seguida, no
+campo `Group name attribute`, definimos o atributo a ser usado na pesquisa das
+regras de mapeamento (neste caso, usamos _cn_, ou seja, apenas _zabbix-admins_
+do DN completo _cn=zabbix-admins,ou=Group,dc=example,dc=org_). Cada grupo LDAP
+em nosso servidor LDAP tem o atributo _member_ que contém todos os usuários que
+pertencem a esse grupo LDAP (veja a figura à direita), portanto, colocamos o
+_membro_ no campo `Group member attribute`. O DN de cada usuário nos ajudará a
+construir o campo `Group filter`. Agora preste atenção: `O campo Reference
+attribute` define qual atributo do usuário LDAP o Zabbix usará no Group filter`
+` , ou seja, _%{ref}_ será substituído pelo valor desse atributo (aqui estamos
+falando dos atributos do usuário - já autenticamos esse usuário, ou seja,
+obtivemos todos os seus atributos do servidor LDAP). Para resumir o que eu disse
+acima, o Zabbix:
 
-1. Authenticates the user with entered Username and Password against LDAP server
-   getting all user’s LDAP attributes
-2. Uses `Reference attribute` and `Group filter` fields to construct a filter
-   (when user1 logs in the filter will be
+1. Autentica o usuário com o nome de usuário e a senha inseridos no servidor
+   LDAP, obtendo todos os atributos LDAP do usuário
+2. Usa os campos `Atributo de referência` e `Filtro de grupo` para construir um
+   filtro (quando user1 fizer login, o filtro será
    (_member=uid=user1,ou=Users,dc=example, dc=org_)
-3. Performs LDAP query to get all LDAP groups with member attribute (configured
-   in `Group member attribute` field) containing constructed in step 2) filter
-4. Goes through all LDAP groups received in step 3) and picks `cn` attribute
-   (configured in `Group name attribute` field) and finds a match in User group
-   mapping rules
+3. Realiza uma consulta LDAP para obter todos os grupos LDAP com atributo de
+   membro (configurado no campo `Group member attribute` ) contendo o filtro
+   construído na etapa 2)
+4. Examina todos os grupos LDAP recebidos na etapa 3 e seleciona o atributo `cn`
+   (configurado no campo `Group name attribute` ) e encontra uma correspondência
+   nas regras de mapeamento de grupos de usuários
 
-Looks a bit complicated but all you really need to know is the structure of your
-LDAP data.
+Parece um pouco complicado, mas tudo o que você realmente precisa saber é a
+estrutura dos seus dados LDAP.
 
-### Ready to test
+### Pronto para testar
 
-Now when you login with _user1_ or _user2_ username then these users will be
-created by Zabbix and put into _Zabbix administrators_ user group, when you
-login with _user3_ username then this user will be created by Zabbix and put
-into _Zabbix users_ user group:
+Agora, quando você fizer o login com o nome de usuário _user1_ ou _user2_, esses
+usuários serão criados pelo Zabbix e colocados no grupo de usuários _Zabbix
+administrators_. Quando você fizer o login com o nome de usuário _user3_, esse
+usuário será criado pelo Zabbix e colocado no grupo de usuários _Zabbix users_:
 
 ![Test user1](ch02.14-ldap-jit-test-user1.png){ align=center }
 
-_2.14 Test user1_
+_2.14 Usuário de teste1_
 
 ![Test user3](ch02.15-ldap-jit-test-user3.png){ align=center }
 
-_2.15 Test user3_
+_2.15 Usuário de teste3_
 
 ---
 
 ## Conclusão
 
-Integrating Zabbix with LDAP—or specifically, Active Directory elevates your
-system's authentication capabilities by leveraging existing organizational
-credentials. It allows users to log in using familiar domain credentials, while
-Zabbix offloads the password verification process to a trusted external
-directory. Notably, even when configuring LDAP authentication, corresponding
-user accounts must still exist within Zabbix though their internal passwords
-become irrelevant once external authentication is active.
+A integração do Zabbix com o LDAP - ou especificamente com o Active Directory -
+eleva os recursos de autenticação do seu sistema, aproveitando as credenciais
+organizacionais existentes. Ele permite que os usuários façam login usando
+credenciais de domínio conhecidas, enquanto o Zabbix transfere o processo de
+verificação de senha para um diretório externo confiável. É importante notar
+que, mesmo ao configurar a autenticação LDAP, as contas de usuário
+correspondentes ainda devem existir no Zabbix, embora suas senhas internas se
+tornem irrelevantes quando a autenticação externa estiver ativa.
 
-Particularly powerful is the Just-In-Time (JIT) provisioning feature: this
-enables Zabbix to dynamically create user accounts upon first successful LDAP
-login streamlining onboarding and reducing manual administration. Beyond that,
-JIT supports ongoing synchronization updating user roles, group memberships, or
-even user removals in Zabbix to mirror changes in LDAP—either when a user logs
-in or during configured provisioning intervals.
+Particularmente poderoso é o recurso de provisionamento Just-In-Time (JIT): ele
+permite que o Zabbix crie dinamicamente contas de usuário no primeiro login LDAP
+bem-sucedido, simplificando a integração e reduzindo a administração manual.
+Além disso, o JIT oferece suporte à sincronização contínua, atualizando as
+funções dos usuários, as associações de grupos ou até mesmo as remoções de
+usuários no Zabbix para refletir as alterações no LDAP, seja quando um usuário
+faz login ou durante os intervalos de provisionamento configurados.
 
-Important configuration details such as case sensitivity, authentication binding
-methods, search filters, and group mapping need careful attention to ensure
-reliable and secure operation. And while LDAP offers seamless integration,
-Zabbix still maintains control over roles, permissions, and access behavior
-through its own user and user group models Zabbix.
+Detalhes importantes de configuração, como sensibilidade a maiúsculas e
+minúsculas, métodos de vinculação de autenticação, filtros de pesquisa e
+mapeamento de grupos precisam de atenção cuidadosa para garantir uma operação
+confiável e segura. E, embora o LDAP ofereça uma integração perfeita, o Zabbix
+ainda mantém o controle sobre as funções, as permissões e o comportamento de
+acesso por meio de seus próprios modelos de usuários e grupos de usuários
+Zabbix.
 
-In sum, LDAP/AD authentication offers a scalable, secure, and enterprise-aligned
-approach to centralizing identity management in Zabbix. With flexible
-provisioning and synchronization, organizations can reduce administrative load
-while reinforcing consistency across their access control and authentication
-strategy.
+Em suma, a autenticação LDAP/AD oferece uma abordagem dimensionável, segura e
+alinhada à empresa para centralizar o gerenciamento de identidade no Zabbix. Com
+provisionamento e sincronização flexíveis, as organizações podem reduzir a carga
+administrativa e, ao mesmo tempo, reforçar a consistência em toda a sua
+estratégia de controle de acesso e autenticação.
 
 ## Perguntas
 
-- What are the main benefits of integrating Zabbix authentication with LDAP or
-  Active Directory compared to using only internal Zabbix accounts?
+- Quais são os principais benefícios de integrar a autenticação do Zabbix com
+  LDAP ou Active Directory em comparação com o uso apenas de contas internas do
+  Zabbix?
 
-- Why must a user still exist in Zabbix even when LDAP authentication is
-  enabled, and what role does the internal password play in that case?
+- Por que um usuário ainda deve existir no Zabbix mesmo quando a autenticação
+  LDAP está ativada e qual é o papel da senha interna nesse caso?
 
-- How does Just-In-Time (JIT) provisioning simplify user management in Zabbix,
-  and what potential risks or caveats should an administrator consider when
-  enabling it?
+- Como o provisionamento Just-In-Time (JIT) simplifica o gerenciamento de
+  usuários no Zabbix e quais riscos potenciais ou advertências um administrador
+  deve considerar ao habilitá-lo?
 
-- What is the difference between user authentication and user authorization in
-  the context of LDAP integration with Zabbix? (Hint: Authentication verifies
-  credentials, while authorization determines permissions inside Zabbix.)
+- Qual é a diferença entre autenticação de usuário e autorização de usuário no
+  contexto da integração do LDAP com o Zabbix? (Dica: A autenticação verifica as
+  credenciais, enquanto a autorização determina as permissões dentro do Zabbix).
 
-- Imagine an administrator incorrectly configures the LDAP search filter. What
-  issues might users encounter when attempting to log in, and how could you
-  troubleshoot the problem?
+- Imagine que um administrador configure incorretamente o filtro de pesquisa
+  LDAP. Que problemas os usuários podem encontrar ao tentar fazer login e como
+  você poderia solucionar o problema?
 
-- How could LDAP group mappings be used to streamline permission assignment in
-  Zabbix? Can you think of an example from your own environment?
+- Como os mapeamentos de grupos LDAP poderiam ser usados para simplificar a
+  atribuição de permissões no Zabbix? Você consegue pensar em um exemplo de seu
+  próprio ambiente?
 
-- If an organization disables a user account in Active Directory, how does JIT
-  provisioning ensure that Zabbix access is also updated? What would happen if
-  JIT was not enabled?
+- Se uma organização desativa uma conta de usuário no Active Directory, como o
+  provisionamento JIT garante que o acesso ao Zabbix também seja atualizado? O
+  que aconteceria se o JIT não estivesse habilitado?
 
 ## URLs úteis
 
