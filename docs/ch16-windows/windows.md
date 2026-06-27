@@ -18,7 +18,7 @@ chapter focuses on is putting those pieces together correctly.
 ## Getting the agent onto the host
 
 Zabbix agent 2 is the recommended choice for new Windows installs if you need
-special plugins for monitorig a database for example. All item keys
+special plugins for monitoring a database for example. All item keys
 available on the classic C agent are also available on agent 2, including the
 Windows-specific ones covered in this chapter, so there's no functional gap to
 worry about. If you don't need anything from the Agent 2 plugins then Agent 1
@@ -41,7 +41,7 @@ configured in the Zabbix frontend exactly — this is the single most common cau
 of "host shows as unreachable but the service is clearly running" support tickets.
 `ENABLEPATH=1` adds the agent's install directory to the system `PATH`, which is
 convenient if you ever need to run `zabbix_agent2.exe -t <key>` from a command
-prompt to test an item key directly on the host — and you will want to do that,
+prompt to test an item key directly on the host, and you will want to do that,
 repeatedly, while working through this chapter.
 
 The agent installs as a Windows service ("Zabbix Agent 2"), and its configuration
