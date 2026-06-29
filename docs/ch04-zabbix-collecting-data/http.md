@@ -418,7 +418,16 @@ The table below summarizes the key HTTP agent parameters and their purpose.
 | Client key          | Private key associated with the client certificate.                   |
 | Preprocessing       | Transforms responses into usable metrics.                             |
 
+!!! note
+
+    Starting with Zabbix 8.0, the list of allowed hosts for trapper items is predefined
+    through the macro {$TRAPPER.ALLOWED_HOSTS}. By default, this macro is set to
+    127.0.0.1,::1, allowing only connections from the local host over both IPv4
+    and IPv6. Change this macro to include the IP addresses or networks of any
+    external systems that need to send trapper data to the Zabbix server.
+
 ---
+
 
 ## Conclusion
 

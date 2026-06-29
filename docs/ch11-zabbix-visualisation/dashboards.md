@@ -262,6 +262,11 @@ This widget is preferred over the legacy *Graph (classic)* for all new dashboard
 It is built on the newer SVG rendering engine introduced in Zabbix 6.0 and offers
 far more display options.
 
+!!! note
+
+    Since Zabbix 8.0 we now have the option in the Graph widget to display our
+    data with inverted Y-axis values
+
 ![ch11.10_graph.png](ch11.10_graph.png)
 
 _11.10 Graph_
