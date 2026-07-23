@@ -61,17 +61,18 @@ fichier de configuration d'origine reste intact, ce qui est particulièrement
 utile lorsque vous effectuez des mises à niveau ou gérez des configurations avec
 des outils tels que Ansible, Puppet ou SaltStack.
 
-On SUSE 16 and later, this feature is already enabled and configured by default.
-(see also [SUSE
-documentation](https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)).
-Hence, on SUSE systems, the Zabbix server configuration file is located at
-`/usr/etc/zabbix/zabbix_server.conf`, and it is set up to include all `.conf`
-files from the `/etc/zabbix_server/zabbix_server.d/` directory.
+Sur SUSE 16 et les versions ultérieures, cette fonctionnalité est déjà activée
+et configurée par défaut. (voir aussi [documentation
+SUSE](https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)).
+Ainsi, sur les systèmes SUSE, le fichier de configuration du serveur Zabbix est
+situé dans `/usr/etc/zabbix/zabbix_server.conf`, et il est configuré pour
+inclure tous les fichiers `.conf` du répertoire
+`/etc/zabbix_server/zabbix_server.d/`.
 
-On other distributions, you may need to enable it manually:
+Sur d'autres distributions, vous devrez peut-être l'activer manuellement :
 
-To enable this feature, ensure the next line exists and is not commented (with a
-`#` in front of it) in `/etc/zabbix/zabbix_server.conf`:
+Pour activer cette fonctionnalité, assurez-vous que la ligne suivante existe et
+n'est pas commentée (avec un `#` devant) dans `/etc/zabbix/zabbix_server.conf`:
 
 !!! info ""
 
