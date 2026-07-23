@@ -28,8 +28,8 @@ roles`. Ils peuvent également être définis par utilisateur dans le menu `User
 → `Users` → "some user" → `Permissions`.
 
 Ce tableau illustre les droits d'accès par défaut accordés aux utilisateurs en
-fonction de leur type d'utilisateur initial **** avant tout ajustement de
-**Custom User Role**.
+fonction de leur type **User Type** avant tout ajustement de **Custom User
+Role**.
 
 | Section du menu          | Utilisateur | Admin | Super Admin |
 | ------------------------ | :---------: | :---: | :---------: |
