@@ -22,7 +22,7 @@ trois éléments principaux, que nous allons examiner en détail.
 - Le serveur web Zabbix (frontend)
 - La base de données Zabbix
 
-!!! abstract "Creation of DB users"
+! !! résumé "Création des utilisateurs de la base de données"
 
     In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
     zabbix-web user will be used for the frontend to connect to our zabbix database.
@@ -33,7 +33,7 @@ trois éléments principaux, que nous allons examiner en détail.
 
 ![overview](ch01-basic-installation-zabbixserver.png){ align=left }
 
-_1.1 Zabbix basic split installation_
+_1.1 Installation Zabbix de base_
 
 All of these components can either be installed on a single server or
 distributed across three separate servers. The core of the system is the Zabbix
