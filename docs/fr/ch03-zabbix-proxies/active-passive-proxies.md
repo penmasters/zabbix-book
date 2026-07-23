@@ -25,17 +25,18 @@ le coin supérieur droit sur `Create proxy`.
 
 _3.3 Créer un proxy_
 
-Once pressed, a new modal form will pop-up where we need to fill in some
-information.
+Une fois que vous avez appuyé sur cette touche, un nouveau formulaire modal
+s'affiche, dans lequel vous devez remplir quelques informations.
 
 ---
 
-### Active proxy
+### Proxy actif
 
-For active proxies we only need to enter the _Proxy name_ field. Here we will
-enter `ProxyA` to remind us this will be an active proxy. Don't worry about the
-other fields we will cover them later. In the _Description_ field you could
-enter some text to make it even more clear that this is an active proxy.
+Pour les proxys actifs, il suffit d'entrer dans le champ _Proxy name_. Ici, nous
+indiquerons `ProxyA` pour nous rappeler qu'il s'agit d'un proxy actif. Ne vous
+préoccupez pas des autres champs, nous les aborderons plus tard. Dans le champ
+_Description_, vous pouvez saisir un texte pour préciser qu'il s'agit d'un proxy
+actif.
 
 ???+ note
 
