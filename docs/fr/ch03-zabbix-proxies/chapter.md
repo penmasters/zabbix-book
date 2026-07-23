@@ -37,11 +37,11 @@ serveur est temporairement indisponible.
 
 ### Quand utiliser un proxy
 
-Les mandataires sont la bonne solution dans trois situations récurrentes.
+Les proxies sont la bonne solution dans trois situations récurrentes.
 
 La première concerne les sites distants. Lorsque les hôtes surveillés se
 trouvent dans une succursale, un centre de données dans une autre région ou un
-environnement en nuage avec un accès réseau restreint, il n'est pas pratique
+environnement cloud avec un accès réseau restreint, il n'est pas pratique
 d'ouvrir des règles de pare-feu du serveur Zabbix à chaque hôte individuel. Un
 proxy placé à cet endroit n'a besoin que d'une seule connexion sortante ou
 entrante au serveur, et gère toutes les collectes de données locales en interne.
