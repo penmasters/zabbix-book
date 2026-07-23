@@ -29,7 +29,7 @@ commandes.
 Pour installer le serveur et le client MariaDB par défaut de la distribution,
 exécutez la commande suivante :
 
-!!! info "Install distribution version of Mariadb"
+! !! info "Installer la version de distribution de Mariadb"
 
     Red Hat
     ```bash
@@ -46,14 +46,14 @@ exécutez la commande suivante :
     sudo apt install mariadb-server
     ```
 
-This command will download and install both the server and client packages,
-enabling you to set up, configure, and interact with your MariaDB database. Once
-the installation is complete, you can proceed to the [_Starting the MariaDB
-database_](#starting-the-mariadb-database) section.
+Cette commande télécharge et installe les paquets serveur et client, ce qui vous
+permet de configurer et d'interagir avec votre base de données MariaDB. Une fois
+l'installation terminée, vous pouvez passer à la section [_Démarrer la base de
+données MariaDB_](#starting-the-mariadb-database).
 
 ---
 
-## Installing MariaDB Server and Client from Official MariaDB Repositories
+## Installer le serveur et le client MariaDB à partir des dépôts officiels de MariaDB
 
 If you prefer to install MariaDB from the official MariaDB repositories instead
 of the OS vendor-provided packages, the first step is to add the MariaDB
@@ -173,10 +173,10 @@ To install the MariaDB server and client, execute the following command:
     sudo apt install mariadb-server
     ```
 
-This command will download and install both the server and client packages,
-enabling you to set up, configure, and interact with your MariaDB database. Once
-the installation is complete, you can proceed to the [_Starting the MariaDB
-database_](#starting-the-mariadb-database) section.
+Cette commande télécharge et installe les paquets serveur et client, ce qui vous
+permet de configurer et d'interagir avec votre base de données MariaDB. Une fois
+l'installation terminée, vous pouvez passer à la section [_Démarrer la base de
+données MariaDB_](#starting-the-mariadb-database).
 
 ---
 
