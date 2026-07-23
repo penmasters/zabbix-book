@@ -39,7 +39,7 @@ intégrée pour réduire les besoins en stockage. Cependant, ces avantages
 s'accompagnent d'une complexité accrue lors de l'installation et de quelques
 restrictions sur la conservation des données historiques.
 
-???+ tip "TimescaleDB installation"
+Astuce "Installation de TimescaleDB" (en anglais)
 
     Given its advanced nature, TimescaleDB is not essential for most Zabbix users.
     As such, its installation is beyond the scope of this chapter. If you plan to
@@ -48,12 +48,12 @@ restrictions sur la conservation des données historiques.
 
 ---
 
-## Choosing the Source for Database Installation
+## Choix de la source pour l'installation de la base de données
 
-In this chapter we will focus on installing MariaDB and PostgreSQL, as they are
-the most commonly used databases with Zabbix. For MySQL or Percona
-installations, except for the package installation commands, the steps are very
-similar to MariaDB.
+Dans ce chapitre, nous nous concentrerons sur l'installation de MariaDB et
+PostgreSQL, car ce sont les bases de données les plus couramment utilisées avec
+Zabbix. Pour les installations de MySQL ou Percona, à l'exception des commandes
+d'installation des paquets, les étapes sont très similaires à celles de MariaDB.
 
 When installing MariaDB or PostgreSQL you must determine the source from which
 you will want to install the database server. Two primary options are available:
