@@ -32,10 +32,11 @@ HTTP.
     basic authentication. Please refer to respective HTTP server documentation
     for more details
 
-## Basic authentication
+## Authentification de base
 
-To enable basic authentication, we first need a "password-file" containing all
-usernames and passwords that are allowed to access the frontend.
+Pour activer l'authentification de base, nous avons d'abord besoin d'un "fichier
+de mots de passe" contenant tous les noms d'utilisateurs et mots de passe qui
+sont autorisés à accéder au frontend.
 
 !!! warning "Important"
 
@@ -43,8 +44,8 @@ usernames and passwords that are allowed to access the frontend.
     must exist in Zabbix. But only passwords configured in HTTP server are used
     for users authentication.
 
-To create this file we need the command `htpasswd`. Execute following commands
-to ensure we have this utility:
+Pour créer ce fichier, nous avons besoin de la commande `htpasswd`. Exécutez les
+commandes suivantes pour vous assurer que nous disposons de cet utilitaire :
 
 !!! info "Install htpasswd utility"
 
