@@ -34,7 +34,7 @@ Dans le menu, sélectionnez `Users` section et ensuite `Authentication`
 
 ![MFA Settings initial](ch02.20-mfa_settings_initial.png){ width=90% }
 
-_2.20 Paramètres initiaux de l'AMF_
+_2.20 Paramètres initiaux du MFA_
 
 Now in `MFA settings` tab select the `Enable multi-factor authentication`
 check-box, then select `TOTP` in Type drop-down list.
