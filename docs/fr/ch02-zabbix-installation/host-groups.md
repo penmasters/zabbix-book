@@ -26,11 +26,11 @@ ils jouent également un rôle important dans l'attribution des modèles, la
 configuration des autorisations des utilisateurs et le filtrage des hôtes dans
 les tableaux de bord ou les cartes.
 
-## Accessing Host Groups
+## Accès aux groupes d'hôtes
 
-You can manage host groups by navigating to:
+Vous pouvez gérer les groupes d'hôtes en naviguant vers :
 
-**Menu → Data collection → Host groups**
+**Menu → Collecte de données → Groupes d'accueil**
 
 ![Host Groups Menu Screenshot](ch02-host-grouops.png)
 
