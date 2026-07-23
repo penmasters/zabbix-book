@@ -65,8 +65,9 @@ Sur SUSE 16 et les versions ultérieures, cette fonctionnalité est déjà activ
 et configurée par défaut. (voir aussi [documentation
 SUSE](https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)).
 Ainsi, sur les systèmes SUSE, le fichier de configuration du serveur Zabbix est
-situé à `/usr/etc/zabbix/zabbix_server.conf`, et il est configuré pour inclure
-tous les fichiers `.conf` du répertoire `/etc/zabbix_server/zabbix_server.d/`.
+situé dans `/usr/etc/zabbix/zabbix_server.conf`, et il est configuré pour
+inclure tous les fichiers `.conf` du répertoire
+`/etc/zabbix_server/zabbix_server.d/`.
 
 Sur d'autres distributions, vous devrez peut-être l'activer manuellement :
 
