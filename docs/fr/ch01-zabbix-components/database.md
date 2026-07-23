@@ -39,7 +39,7 @@ intégrée pour réduire les besoins en stockage. Cependant, ces avantages
 s'accompagnent d'une complexité accrue lors de l'installation et de quelques
 restrictions sur la conservation des données historiques.
 
-Astuce "Installation de TimescaleDB" (en anglais)
+???+ tip "Installation de TimescaleDB"
 
     Given its advanced nature, TimescaleDB is not essential for most Zabbix users.
     As such, its installation is beyond the scope of this chapter. If you plan to
