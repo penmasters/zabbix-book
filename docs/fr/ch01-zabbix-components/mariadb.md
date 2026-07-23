@@ -29,7 +29,7 @@ commandes.
 Pour installer le serveur et le client MariaDB par défaut de la distribution,
 exécutez la commande suivante :
 
-! !! info "Installer la version de distribution de Mariadb"
+!!! info "Installer la version de distribution de Mariadb"
 
     Red Hat
     ```bash
