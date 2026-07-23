@@ -30,11 +30,11 @@ fournisseur Duo MFA.
 
 ## Mot de passe à usage unique basé sur le temps (OTP)
 
-In the menu select `Users` section and then `Authentication`
+Dans le menu, sélectionnez `Users` section et ensuite `Authentication`
 
 ![MFA Settings initial](ch02.20-mfa_settings_initial.png){ width=90% }
 
-_2.20 Initial MFA settings_
+_2.20 Paramètres initiaux de l'AMF_
 
 Now in `MFA settings` tab select the `Enable multi-factor authentication`
 check-box, then select `TOTP` in Type drop-down list.
