@@ -38,7 +38,7 @@ Pour activer l'authentification de base, nous avons d'abord besoin d'un "fichier
 de mots de passe" contenant tous les noms d'utilisateurs et mots de passe qui
 sont autorisés à accéder au frontend.
 
-!!! warning "Important"
+! !! avertissement "Important"
 
     Usernames configured for basic authentication in HTTP server
     must exist in Zabbix. But only passwords configured in HTTP server are used
