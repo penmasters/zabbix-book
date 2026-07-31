@@ -34,7 +34,7 @@ tags: [beginner]
 
 _2.19 Меню Группы узлов сети_
 
-In this menu under `Data collection`, you'll notice two distinct sections:
+В этом меню в разделе `Сбор данных` вы увидите два отдельных раздела:
 
 - **Host groups**: Groups that contain hosts.
 - **Template groups**: A newer addition, specifically created for organizing
