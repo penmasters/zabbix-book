@@ -1,8 +1,10 @@
 ---
 description: |
-
+    Master Zabbix graphs with step-by-step guidance on creating, configuring, and
+    customizing graphs to visualize performance and monitoring data.
 tags:[beginner]
 ---
+
 # Using the built-in Graphs
 
 Before you reach for a dashboard widget or start exporting data to an external
@@ -71,7 +73,7 @@ chapter, since it's shared behavior across all graph types.
 ## Ad-hoc graphs
 
 Simple graphs are great for a single item, but what if you want to compare
-two or three items on the same chart — say, CPU load and memory usage — 
+two or three items on the same chart, say, CPU load and memory usage — 
 without going through the effort of configuring a custom graph first? That's
 exactly what ad-hoc graphs are for.
 
@@ -86,7 +88,7 @@ To build an ad-hoc graph:
    totals made up of parts).
 
 The result is a graph built on the fly, with no configuration saved
-anywhere. Close the tab and it's gone — which is exactly the point. Ad-hoc
+anywhere. Close the tab and it's gone, which is exactly the point. Ad-hoc
 graphs are disposable by design, meant for quick investigation rather than
 long-term reuse.
 
@@ -101,7 +103,7 @@ long-term reuse.
 ## Custom graphs
 
 When you find yourself building the same ad-hoc comparison over and over, or
-when you need more control than a simple line chart offers — different line
+when you need more control than a simple line chart offers, different line
 styles, a pie chart, stacked areas with specific colors — it's time to
 configure a **custom graph**.
 
@@ -141,10 +143,10 @@ separate simple graphs.
 Custom graphs support a few different chart types, selectable when you
 create the graph:
 
-- **Normal** — the standard line/area graph, most common by far.
-- **Stacked** — values are stacked on top of one another, useful when the
+- **Normal**: the standard line/area graph, most common by far.
+- **Stacked**: values are stacked on top of one another, useful when the
   sum of the parts matters as much as the individual values.
-- **Pie** and **Exploded** — proportional views, useful for a snapshot
+- **Pie** and **Exploded**: proportional views, useful for a snapshot
   comparison (for example, disk space usage split by mount point) rather
   than a trend over time.
 
@@ -163,7 +165,7 @@ when you don't remember which items have a custom graph and which don't.
 At the top of the page, the filter lets you narrow things down by host,
 graph name, and a **Show** option (all graphs, host graphs only, or simple
 graphs only). Note that if no host is selected in the filter, no graphs are
-displayed at all — a common point of confusion for people new to this page.
+displayed at all, a common point of confusion for people new to this page.
 
 Below the main filter, you'll find the **subfilter**. If your graphs are
 associated with tagged entities, the subfilter shows clickable tag
@@ -200,7 +202,7 @@ screen. Simple graphs need no setup at all, ad-hoc graphs let you compare
 items on the fly without saving anything, and custom graphs give you a
 reusable, configurable visualization once you know exactly what you need.
 Combined with tagging and the subfilter on the Monitoring → Hosts page,
-these tools scale surprisingly well even in larger environments — and they
+these tools scale surprisingly well even in larger environments and they
 form a natural stepping stone toward the dashboard widgets we'll cover next.
 
 ## Questions
@@ -219,7 +221,7 @@ form a natural stepping stone toward the dashboard widgets we'll cover next.
 
 ## Useful URLs
 
-- [Zabbix documentation — Simple graphs](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/simple)
-- [Zabbix documentation — Ad-hoc graphs](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/adhoc)
-- [Zabbix documentation — Custom graphs](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/custom)
-- [Zabbix documentation — Monitoring → Hosts → Graphs](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/simple](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/simple)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/adhoc](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/adhoc)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/custom](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/custom)
+- [https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs)
