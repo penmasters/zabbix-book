@@ -5,13 +5,15 @@ description: |
 tags: [advanced]
 ---
 
-# Storing history data in ClickhouseDB
+# Storing history data in Clickhouse
 
-ClickHouse is a high-performance, column-oriented database management system built
-for analytical workloads. Beginning with Zabbix 8, it can be used as an external
-history storage backend, allowing history data to be offloaded from the primary
-database while trends, configuration, and other operational data remain where
-they've always lived.
+Beginning with Zabbix 8, ClickHouse can be used as an external storage backend
+for item history. Configuration, events, problems, audit data, and other
+operational data remain in the primary PostgreSQL or MySQL database.
+
+When an item value type is stored in ClickHouse, Zabbix does not calculate or
+store trend data for that history. Long-term graphing therefore depends on retaining
+sufficient raw history in ClickHouse.
 
 For environments collecting large volumes of monitoring data, this architecture
 significantly reduces load on the primary database and improves overall scalability.
@@ -20,34 +22,40 @@ In this chapter, you will install ClickHouse and configure it for use with
 Zabbix 8, import the required history schema, and verify that Zabbix is successfully
 storing history in ClickHouse.
 
-## What Moves to ClickHouse — and What Doesn't
+## What Moves to ClickHouse ...  and What Doesn't
 
-Before diving into the installation, it's worth being precise about what ClickHouse
-actually takes over, since this is usually the first question readers ask.
+ClickHouse stores the raw item history values for the value types assigned
+to the ClickHouse history provider:
 
-ClickHouse stores **history data only**, the raw, per-item values collected by Zabbix
-(numeric, string, text, log, and JSON). Everything else stays in the primary database:
+- Numeric unsigned
+- Numeric floating point
+- Character
+- Log
+- Text
+- JSON
 
-* **Configuration data** — hosts, items, triggers, templates, users, actions,
-  and so on
-* **Trends** — the hourly aggregated min/avg/max data used for long-term graphing
-* **Events and problems** — the operational state Zabbix uses to evaluate and display
-  problems
-* **Audit log**
-* **Other operational tables** (sessions, queues, discovered hosts, etc.)
+The following data remains in the primary PostgreSQL or MySQL database:
 
-> **In short**: the primary database (PostgreSQL or MySQL) remains the single
-  source of truth for *what Zabbix is* and *what it currently thinks is
-  wrong*. ClickHouse becomes the place where the raw measurement history
-  lives, optimized for the kind of high-volume, append-only, time-series
-  writes that relational databases handle less gracefully at scale.
+- Configuration data
+- Events and problems
+- Audit log
+- Users, sessions, actions, and operational tables
+- History value types that were not assigned to ClickHouse
 
-The high-level flow looks like this:
+!!! warning "Trends are not generated"
+    
+    Zabbix does not calculate or store trends for history value types stored
+    in ClickHouse. 
+ 
+    This means that long-term graphs cannot fall back to hourly
+    trend data after the raw history has expired. Configure a sufficiently long
+    ClickHouse TTL for the period that must remain available for graphs,
+    reports, and historical analysis.
 
 ```mermaid
 flowchart LR
     A[Zabbix Server] -->|history values| B[(ClickHouse)]
-    A -->|config, trends, events, problems, audit| C[(Primary DB
+    A -->|config, events, problems, audit| C[(Primary DB
 PostgreSQL / MySQL)]
     D[Zabbix Frontend] --> C
     D -->|history queries| B
@@ -149,7 +157,8 @@ BY 'zabbix';
 Grant the required privileges:
 
 ```sql
-GRANT ALL ON zabbix.* TO zabbix;
+GRANT CREATE, ALTER, DROP, INSERT, SELECT, UPDATE, OPTIMIZE
+ON zabbix.* TO zabbix;
 ```
 
 Exit the client and verify connectivity over HTTP:
@@ -197,6 +206,7 @@ history_text_schema.sh
 history_log_schema.sh
 history_json_schema.sh
 ```
+You can also use `history_all.sh` instead of running the script one by one.
 
 Once complete, ClickHouse will contain a separate table for every supported Zabbix
 history value type.
@@ -368,6 +378,42 @@ history_json
 If all six tables are present and Zabbix reports a successful connection, the
 history backend is correctly configured.
 
+## Frontend
+
+In our frontend file `zabbix.conf.php` we also need to make some changes so that
+the frontend knows where to find the history data.
+
+`Restart PHP-FPM or Apache after modifying zabbix.conf.php if configuration caching is enabled.`
+
+```
+$HISTORY_PROVIDERS[] = [
+    'types' => ['uint', 'dbl', 'str', 'log', 'text', 'json'],
+    'provider' => 'clickhouse',
+    'url' => 'http://127.0.0.1:8123',
+    'db' => 'zabbix',
+    'username' => 'zabbix',
+    'password' => 'zabbix'
+];
+```
+
+
+??? note
+
+    ClickHouse history storage is supported by the Zabbix server only.
+    It cannot be configured as the local database or history backend of a
+    Zabbix proxy.
+
+
+### Important limitations
+
+- Binary history values are not supported by ClickHouse.
+- JSON arrays cannot be stored as JSON item values.
+- Data stored in ClickHouse is not managed by the Zabbix housekeeper. Retention
+  must be configured using ClickHouse TTL policies.
+- Both the Zabbix server and the frontend must be able to connect to the ClickHouse
+  server.
+- Trend functions are unavailable for value types stored in ClickHouse.
+
 ## Backups
 
 It's worth treating ClickHouse's backup strategy as a separate decision from your
@@ -397,6 +443,14 @@ ClickHouse supports clustering through **ClickHouse Keeper** (for coordination),
 tables** (to query across shards transparently).
 
 ## Troubleshooting
+
+### Frontend Shows Empty History
+
+If graphs or Latest data do not display history after enabling ClickHouse:
+
+- verify the `$HISTORY_PROVIDERS` configuration in `zabbix.conf.php`
+- verify the frontend can reach the ClickHouse HTTP endpoint
+- confirm that new history is being written to the ClickHouse tables
 
 ### ClickHouse Cannot Create Tables — Permission Denied
 
@@ -429,9 +483,13 @@ over a hostname, this avoids potential DNS or hostname resolution issues.
 
 ## questions
 
-
+- Why would you use ClickHouse instead of storing all history in PostgreSQL or MySQL?
+- Which Zabbix data is stored in ClickHouse, and which data remains in the primary database?
+- What is the purpose of the `HistoryProvider` parameter in `zabbix_server.conf`?
+- Why doesn't the Zabbix housekeeper remove data from ClickHouse?
 
 ## Useful URLs
 
 [https://clickhouse.com/docs/faq/operations/delete-old-data](https://clickhouse.com/docs/faq/operations/delete-old-data)
 [https://clickhouse.com/docs/](https://clickhouse.com/docs/)
+[https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE](https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE)
