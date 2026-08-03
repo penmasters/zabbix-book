@@ -34,9 +34,9 @@ de surveillance.
 
 En résumé, un proxy Zabbix peut être utilisé pour :
 
-- Monitor remote locations
-- Monitor devices on separate network segments
-- Monitor locations that have unreliable connections
+- Surveiller les sites distants
+- Surveiller des appareils sur des segments de réseau distincts
+- Surveiller les endroits où les connexions ne sont pas fiables
 - Offload the Zabbix server when monitoring thousands of devices
 - Simplify the maintenance and management
 
@@ -154,7 +154,7 @@ configure a proxy.
 
 ---
 
-### Active proxy
+### Proxy actif
 
 In _active_ mode, the proxy takes full control of its operational settings. This
 includes managing when it checks for new configuration updates and when it sends

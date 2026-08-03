@@ -41,10 +41,10 @@ supportée par Zabbix.
 
 ## Installation du serveur et du client PostgreSQL à partir des paquets fournis par l'éditeur du système d'exploitation
 
-To install the distribution default PostgreSQL server, execute the following
-commands:
+Pour installer le serveur PostgreSQL par défaut de la distribution, exécutez les
+commandes suivantes :
 
-!!! info "Install the Postgres server"
+!!! info "Installer le serveur PostgreSQL"
 
     Red Hat
     ``` bash
@@ -61,8 +61,8 @@ commands:
     sudo apt install postgresql postgresql-client postgresql-contrib
     ```
 
-This command will download and install both the server and client packages,
-enabling you to set up, configure, and interact with your PostgreSQL database.
+Cette commande téléchargera et installera les paquets serveur et client, vous
+permettant de configurer et d'interagir avec votre base de données PostgreSQL.
 
 !!! warning "Database initialization required on Red Hat"
 
@@ -194,8 +194,8 @@ components to run and manage your database.
     sudo apt install postgresql-17 postgresql-client-17
     ```
 
-This command will download and install both the server and client packages,
-enabling you to set up, configure, and interact with your PostgreSQL database.
+Cette commande téléchargera et installera les paquets serveur et client, vous
+permettant de configurer et d'interagir avec votre base de données PostgreSQL.
 
 Next, before we can start the PostgreSQL server we need to initialize a new
 empty database:

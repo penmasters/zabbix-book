@@ -6,49 +6,52 @@ description: |
     helping you architect a resilient and efficient Zabbix infrastructure.
 ---
 
-# Proxies and the Zabbix web service
+# Proxies et service web Zabbix
 
-This chapter covers two components that are installed separately from the Zabbix
-server and extend what a Zabbix installation can do. They have little in common
-technically, but both are frequently absent from basic setups and both have a
-meaningful impact on how a monitoring environment scales and operates. The first
-is the Zabbix proxy, a distributed data collection node. The second is the
-Zabbix web service, a component required for scheduled PDF report generation.
+Ce chapitre couvre deux composants qui sont installés séparément du serveur
+Zabbix et qui étendent les possibilités d'une installation Zabbix. Ils ont peu
+de choses en commun d'un point de vue technique, mais ils sont souvent absents
+des configurations de base et ont tous deux un impact significatif sur la façon
+dont un environnement de surveillance évolue et fonctionne. Le premier est le
+proxy Zabbix, un nœud de collecte de données distribué. Le second est le service
+web Zabbix, un composant nécessaire à la génération programmée de rapports PDF.
 
-## The Zabbix proxy
+## Le proxy Zabbix
 
-A Zabbix proxy is a process that collects monitoring data on behalf of the
-Zabbix server. From the perspective of the monitored hosts, a proxy behaves
-identically to the server: it accepts passive agent connections, initiates
-active checks, runs SNMP queries, executes external checks, and processes IPMI.
-The difference is in what happens to the data after collection. A proxy buffers
-the collected data locally in its own database and forwards it to the Zabbix
-server at regular intervals, rather than writing directly to the server's
-database.
+Un proxy Zabbix est un processus qui collecte des données de surveillance au nom
+du serveur Zabbix. Du point de vue des hôtes surveillés, un proxy se comporte de
+la même manière que le serveur : il accepte les connexions d'agents passifs,
+lance des vérifications actives, exécute des requêtes SNMP, exécute des
+vérifications externes et traite l'IPMI. La différence réside dans ce qu'il
+advient des données après leur collecte. Un proxy met en mémoire tampon les
+données collectées localement dans sa propre base de données et les transmet au
+serveur Zabbix à intervalles réguliers, au lieu d'écrire directement dans la
+base de données du serveur.
 
-This buffering behaviour is the architectural property that makes proxies
-useful. The Zabbix server only needs to maintain a single connection per proxy,
-regardless of how many hosts that proxy monitors. The server does not need to
-reach monitored hosts directly, and the proxy can continue collecting and
-storing data even if the connection to the server is temporarily unavailable.
+Ce comportement de mise en mémoire tampon est la propriété architecturale qui
+rend les proxys utiles. Le serveur Zabbix n'a besoin de maintenir qu'une seule
+connexion par proxy, quel que soit le nombre d'hôtes surveillés par le proxy. Le
+serveur n'a pas besoin d'atteindre directement les hôtes surveillés, et le proxy
+peut continuer à collecter et à stocker des données même si la connexion au
+serveur est temporairement indisponible.
 
-### When to use a proxy
+### Quand utiliser un proxy
 
-Proxies are the correct solution in three recurring situations.
+Les proxies sont la bonne solution dans trois situations récurrentes.
 
-The first is remote locations. When monitored hosts are in a branch office, a
-data centre in another region, or a cloud environment with restricted network
-access, opening firewall rules from the Zabbix server to every individual host
-is impractical. A proxy placed in that location needs only a single outbound or
-inbound connection to the server, and handles all local data collection
-internally.
+La première concerne les sites distants. Lorsque les hôtes surveillés se
+trouvent dans une succursale, un centre de données dans une autre région ou un
+environnement cloud avec un accès réseau restreint, il n'est pas pratique
+d'ouvrir des règles de pare-feu du serveur Zabbix à chaque hôte individuel. Un
+proxy placé à cet endroit n'a besoin que d'une seule connexion sortante ou
+entrante au serveur, et gère toutes les collectes de données locales en interne.
 
-The second is network segmentation. In environments where monitored systems are
-in isolated network segments — a production OT network, a PCI-scoped
-environment, a DMZ — a proxy can be placed inside the segment with access to the
-monitored hosts while the Zabbix server remains outside. The proxy bridges the
-collection boundary without requiring the server to have direct access to
-sensitive network zones.
+La seconde est la segmentation du réseau. Dans les environnements où les
+systèmes surveillés se trouvent dans des segments de réseau isolés - un réseau
+OT de production, un environnement PCI, une DMZ - un proxy peut être placé à
+l'intérieur du segment avec un accès aux hôtes surveillés tandis que le serveur
+Zabbix reste à l'extérieur. Le proxy comble la frontière de la collecte sans que
+le serveur n'ait besoin d'accéder directement aux zones sensibles du réseau.
 
 The third is load distribution. A single Zabbix server has limits on how many
 items it can collect per second before performance degrades. Distributing

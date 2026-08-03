@@ -27,11 +27,11 @@ la rédaction et de la révision du contenu, de la fourniture de commentaires ou
 du partage d'expertise, vos efforts ont contribué à faire de cette ressource un
 outil précieux pour les communautés de la surveillance et des logiciels libres.
 
-- **Patrik Uytterhoeven** :
+- **Patrik Uytterhoeven**:
   [http://github.com/Trikke76](http://github.com/Trikke76)
-- **Nathan Liefting** :
+- **Nathan Liefting**:
   [https://github.com/larcorba](https://github.com/larcorba)
-- Evgeny Yurchenko: [https://github.com/BGmot](https://github.com/BGmot)
+- Evgeny Yurchenko : [https://github.com/BGmot](https://github.com/BGmot)
 - Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
 - Aigars Kadikis :
   [https://github.com/aigarskadikis](https://github.com/aigarskadikis)

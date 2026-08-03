@@ -34,16 +34,18 @@ Cette architecture centrée sur le groupe offre plusieurs avantages majeurs :
 * **Gestion simplifiée :** Les droits d'accès sont gérés par **rôle** (par
   exemple, "Network Engineers", "Database Administrators") au lieu d'être gérés
   par utilisateur individuel.
-* **Consistency:** Ensures that all users within the same role possess a
-  consistent, standardized set of permissions.
-* **Segregation of Duties:** Enables clear separation between viewing
-  (read-only) and configuration (read-write) access.
+* **Cohérence :** Assure que tous les utilisateurs d'un même rôle disposent d'un
+  ensemble de permissions cohérent et standardisé.
+* **Séparation des tâches :** Permet une séparation claire entre l'accès à la
+  visualisation (lecture seule) et l'accès à la configuration
+  (lecture-écriture).
 
-> **Technical Definition:** User groups allow grouping users for both
-> organizational purposes and for assigning permissions to data. Permissions to
-> viewing and configuring data of host groups and template groups are assigned
-> to user groups, not individual users. A user can belong to any number of
-> groups.
+> **Définition technique :** Les groupes d'utilisateurs permettent de regrouper
+> les utilisateurs à des fins d'organisation et d'attribution d'autorisations
+> aux données. Les droits de visualisation et de configuration des données des
+> groupes d'hôtes et des groupes de modèles sont attribués aux groupes
+> d'utilisateurs, et non aux utilisateurs individuels. Un utilisateur peut
+> appartenir à un nombre illimité de groupes.
 
 ---
 

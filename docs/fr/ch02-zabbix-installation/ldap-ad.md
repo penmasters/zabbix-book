@@ -25,15 +25,18 @@ L'authentification LDAP peut être configurée selon deux modes :
 
 Le processus d'authentification des utilisateurs suit ce schéma.
 
-![LDAP users authentication](ch02.3-ldap-auth-diagram.png){ align=center }
+![Authentification des utilisateurs LDAP](ch02.3-ldap-auth-diagram.png){
+align=center }
 
-_2.3 LDAP users authentication_
+_2.3 Authentification des utilisateurs LDAP_
 
-As shown on the diagram a user that tries to log in must be pre-created in
-Zabbix to be able to log in using LDAP. The database user records do not have
-any fields "saying" that the user will be authenticated via LDAP, it's just
-users' passwords stored in the database are ignored, instead, Zabbix goes to a
-LDAP server to verify whether:
+Comme le montre le diagramme, un utilisateur qui tente de se connecter doit être
+pré-créé dans Zabbix pour pouvoir se connecter à l'aide de LDAP. Les
+enregistrements des utilisateurs dans la base de données n'ont pas de champs
+"indiquant" que l'utilisateur sera authentifié via LDAP, c'est juste que les
+mots de passe des utilisateurs stockés dans la base de données sont ignorés, au
+lieu de cela, Zabbix va sur un serveur LDAP pour vérifier si l'utilisateur est
+authentifié par LDAP :
 
 - user with a given username exists
 - user provided the correct password
