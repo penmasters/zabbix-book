@@ -139,6 +139,7 @@ use the standard config and serve the Zabbix frontend on port 80.
     ```bash
     vi /etc/nginx/nginx.conf
     ```
+If you are on Ubuntu no need to edit `nginx.conf` just run `sudo unlink /etc/nginx/sites-enabled/default`
 
 In this configuration file look for the following block that starts with `server {`:
 

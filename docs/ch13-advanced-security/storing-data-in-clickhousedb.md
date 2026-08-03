@@ -397,7 +397,7 @@ $HISTORY_PROVIDERS[] = [
 ```
 
 
-??? note
+???+ note
 
     ClickHouse history storage is supported by the Zabbix server only.
     It cannot be configured as the local database or history backend of a
