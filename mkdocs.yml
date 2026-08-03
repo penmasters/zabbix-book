@@ -114,7 +114,7 @@ nav:
       - Storing secrets: ch13-advanced-security/using-vault.md
       - Partitioning MariaDB: ch13-advanced-security/partitioning-database.md
       - Partitioning PostgreSQL with TimescaleDB: ch13-advanced-security/partitioning-postgresql-database.md
-      - Storing data in ClickhouseDB: ch13-advanced-security/storing-data-in-clickhousedb.md
+      - Storing data in Clickhouse: ch13-advanced-security/storing-data-in-clickhousedb.md
   - "Chapter 14 : Maintenance":
       - ch14-zabbix-maintenance/chapter.md
       - maintenance: ch14-zabbix-maintenance/maintenance.md

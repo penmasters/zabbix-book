@@ -22,7 +22,7 @@ In this chapter, you will install ClickHouse and configure it for use with
 Zabbix 8, import the required history schema, and verify that Zabbix is successfully
 storing history in ClickHouse.
 
-## What Moves to ClickHouse — and What Doesn't
+## What Moves to ClickHouse ...  and What Doesn't
 
 ClickHouse stores the raw item history values for the value types assigned
 to the ClickHouse history provider:
@@ -397,7 +397,7 @@ $HISTORY_PROVIDERS[] = [
 ```
 
 
-!!! note
+??? note
 
     ClickHouse history storage is supported by the Zabbix server only.
     It cannot be configured as the local database or history backend of a
@@ -483,7 +483,10 @@ over a hostname, this avoids potential DNS or hostname resolution issues.
 
 ## questions
 
-
+- Why would you use ClickHouse instead of storing all history in PostgreSQL or MySQL?
+- Which Zabbix data is stored in ClickHouse, and which data remains in the primary database?
+- What is the purpose of the `HistoryProvider` parameter in `zabbix_server.conf`?
+- Why doesn't the Zabbix housekeeper remove data from ClickHouse?
 
 ## Useful URLs
 
