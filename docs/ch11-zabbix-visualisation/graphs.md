@@ -2,7 +2,7 @@
 description: |
     Master Zabbix graphs with step-by-step guidance on creating, configuring, and
     customizing graphs to visualize performance and monitoring data.
-tags:[beginner]
+tags: [beginner]
 ---
 
 # Using the built-in Graphs
