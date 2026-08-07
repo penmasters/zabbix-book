@@ -104,7 +104,7 @@ long-term reuse.
 
 When you find yourself building the same ad-hoc comparison over and over, or
 when you need more control than a simple line chart offers, different line
-styles, a pie chart, stacked areas with specific colors — it's time to
+styles, a pie chart, stacked areas with specific colours — it's time to
 configure a **custom graph**.
 
 Unlike simple and ad-hoc graphs, custom graphs are configured manually and
@@ -167,7 +167,7 @@ graph name, and a **Show** option (all graphs, host graphs only, or simple
 graphs only). Note that if no host is selected in the filter, no graphs are
 displayed at all, a common point of confusion for people new to this page.
 
-Below the main filter, you'll find the **subfilter**. If your graphs are
+Below the main filter, you'll find the **sub-filter**. If your graphs are
 associated with tagged entities, the subfilter shows clickable tag
 name/value combinations, letting you narrow the graph list without touching
 the main filter or clicking Apply. Selecting a tag highlights it and
