@@ -103,7 +103,7 @@ have the word `password` as their passwords.
 Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
 `user3` is a member of `zabbix-users` LDAP group.
 
-???+ tip Tip: use phpLdapAdmin as an LDAP GUI
+???+ tip "use phpLdapAdmin as an LDAP GUI"
 
     To visually see LDAP server data (and add your own configuration like users
     and groups) you can start this standard container:
