@@ -74,6 +74,7 @@ is this important, well let's look at the `Monitoring` | `Latest data` page with
 default template:
 
 ![MEM-CPU sorting](ch04.6-latest-data-memcpu-sorting.png){ align=center }
+
 *4.6 Latest data Memory and CPU items sorting*
 
 If this template had used CPU and Memory as a prefix for all respective items. Then this page

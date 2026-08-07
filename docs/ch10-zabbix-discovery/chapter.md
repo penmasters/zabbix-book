@@ -1,6 +1,6 @@
 # Network discovery and active agent auto autoregistration.
 
-Monitoring a static infrastructure is relatively straightforward. But in today’s
+Monitoring a static infrastructure is relatively straightforward. But in today's
 dynamic IT environments — with cloud instances, containers, virtual machines, and
 frequently changing hardware — manually adding and maintaining hosts quickly
 becomes impractical.
