@@ -163,6 +163,29 @@ the book.
 [https://my-urul.com](https://my-url.com)
 ```
 
+## Subject index
+
+The subject index is generated from `index/en.yml`. Do not edit
+`docs/subject-index.md` directly.
+
+Index concepts and useful tasks rather than every occurrence of a word. Prefer
+the section where a concept is explained, configured, or troubleshot. Use a
+page range only for one uninterrupted procedure.
+
+Main entries should normally be nouns, such as `proxy groups`, `triggers`, or
+`preprocessing`. Subentries and locator labels should be short reader actions,
+such as `configuring`, `monitoring`, or `troubleshooting`.
+
+After changing the index, generate and validate it with:
+
+```bash
+python3 tools/build_subject_index.py
+python3 tools/build_subject_index.py --check
+```
+
+The validation rejects missing pages, missing heading anchors, duplicate terms,
+undefined cross-references, and stale generated output.
+
 ## reference
 
 - [https://google.github.io/styleguide/docguide/style.html](https://google.github.io/styleguide/docguide/style.html)

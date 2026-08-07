@@ -130,6 +130,7 @@ nav:
   - "Chapter 16 : Windows monitoring":
       - ch16-windows/chapter.md
       - Windows: ch16-windows/windows.md
+  - Subject index: subject-index.md
 
 theme:
   language: en

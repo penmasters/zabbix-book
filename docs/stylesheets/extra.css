@@ -101,3 +101,83 @@ img[alt$="><"] {
   padding: 0.2rem 0.6rem;
   font-size: 0.85em;
 }
+
+/* Subject index ----------------------------------------------------------- */
+
+.subject-index-letters {
+  margin: 1.5rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 2;
+  word-spacing: 0.35rem;
+}
+
+.subject-index > h2 {
+  margin-top: 1.8rem;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.subject-index > ul {
+  margin-bottom: 1.25rem;
+}
+
+.subject-index > ul > li {
+  break-inside: avoid;
+  margin-bottom: 0.35rem;
+}
+
+.subject-index > ul > li > ul {
+  margin-top: 0.1rem;
+}
+
+.subject-index .index-range-end {
+  display: none;
+}
+
+@media print {
+  .subject-index-letters {
+    display: none;
+  }
+
+  .subject-index {
+    column-count: 2;
+    column-gap: 0.35in;
+    font-size: 10pt;
+    line-height: 1.25;
+  }
+
+  .subject-index > h2 {
+    break-after: avoid;
+    margin: 0.8rem 0 0.25rem;
+    border: 0;
+    font-size: 18pt;
+  }
+
+  .subject-index > ul {
+    break-before: avoid;
+    margin-top: 0;
+  }
+
+  .subject-index a.index-target::after {
+    content: " " target-counter(attr(href url), page);
+    color: var(--md-default-fg-color);
+    text-decoration: none;
+  }
+
+  .subject-index a.index-range-end {
+    display: inline;
+    font-size: 0;
+    text-decoration: none;
+  }
+
+  .subject-index a.index-range-end::before {
+    content: "-";
+    font-size: 10pt;
+  }
+
+  .subject-index a.index-range-end::after {
+    content: target-counter(attr(href url), page);
+    font-size: 10pt;
+    color: var(--md-default-fg-color);
+  }
+}
