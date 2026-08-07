@@ -38,8 +38,8 @@ to this external endpoint, where the actual browser (usually Chrome in a standal
 container) is controlled. The results of the simulated session, including metrics
 and error information, are then returned to Zabbix as a structured JSON object.
 
-![Architecture design](ch03_xx_architecture.png)
-_CH03.xx Architecture Overview_
+![Architecture design](ch04.95-architecture.png)
+_4.95 Architecture Overview_
 
 ### Browser Item vs. Classic Web Scenarios: The Strategic Choice
 
@@ -731,8 +731,8 @@ try {
 Since we only make screenshots when it fails also add a custom on fail option to
 your item.
 
-![ch03_xx_discard-value.png](ch03_xx_discard-value.png)
-_CH03 Discard Value_
+![ch03_xx_discard-value.png](ch04.96-discard-value.png)
+_4.96 Discard Value_
 
 **A few other JSONPath regexes that you can use:**
 

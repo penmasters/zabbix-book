@@ -307,16 +307,16 @@ Isso deve ajudá-lo a localizar os erros que você cometeu.
 Ao acessar o URL apropriado, deverá aparecer uma página semelhante à ilustrada
 abaixo:
 
-![overview](ch01-basic-installation-setup.png){ align=left }
+![overview](ch01.2-basic-installation-setup.png){ align=left }
 
-_1.4 Boas-vindas ao Zabbix_
+_1.2 Boas-vindas ao Zabbix_
 
 O front-end do Zabbix apresenta um conjunto limitado de localizações
 disponíveis, conforme mostrado.
 
-![overview language](ch01-basic-installation-setuplanguage.png){ align=left }
+![overview language](ch01.3-basic-installation-setuplanguage.png){ align=left }
 
-_!.5 Escolha do idioma de boas-vindas do Zabbix_
+_1.3 Escolha do idioma de boas-vindas do Zabbix_
 
 E se quisermos instalar o chinês como idioma ou outro idioma da lista? Execute o
 comando a seguir para obter uma lista de todas as localidades disponíveis para
@@ -445,9 +445,9 @@ instalado ou não.
 Quando retornamos ao nosso front-end, podemos selecionar o idioma chinês, depois
 de recarregar o navegador.
 
-![selecione o idioma](ch01-basic-installation-selectlanguage.png){ align=left }
+![selecione o idioma](ch01.4-basic-installation-selectlanguage.png){ align=left }
 
-_1.6 Zabbix selecionar idioma_
+_1.4 Zabbix selecionar idioma_
 
 ???+ Nota
 
@@ -469,9 +469,9 @@ atendidos. Se algum pré-requisito não for atendido, resolva esses problemas
 primeiro. Entretanto, se tudo estiver em ordem, você poderá prosseguir clicando
 em `Next`.
 
-![pré-requisitos](ch01-basic-installation-prerequisites.png){ align=left }
+![pré-requisitos](ch01.5-basic-installation-prerequisites.png){ align=left }
 
-_1.7 Pré-requisitos do Zabbix_
+_1.5 Pré-requisitos do Zabbix_
 
 Na próxima página, você configurará os parâmetros de conexão do banco de dados:
 
@@ -495,9 +495,9 @@ Na próxima página, você configurará os parâmetros de conexão do banco de d
 Certifique-se de que a opção `Database TLS encryption` não esteja selecionada e
 clique em `Next step` para prosseguir.
 
-![dbconnection](ch01-basic-installation-dbconnection.png){ align=left }
+![dbconnection](ch01.6-basic-installation-dbconnection.png){ align=left }
 
-_1.8 Conexões do Zabbix_
+_1.6 Conexões do Zabbix_
 
 Você está quase terminando a configuração! As etapas finais envolvem:
 
@@ -520,23 +520,23 @@ Você está quase terminando a configuração! As etapas finais envolvem:
     in time-sensitive actions and events, as the server’s timezone is often used for
     calculating and displaying time-related information.
 
-![configurações](ch01-basic-installation-settings.png){ align=left }
+![configurações](ch01.7-basic-installation-settings.png){ align=left }
 
-_1.9 Resumo do Zabbix_
+_1.7 Resumo do Zabbix_
 
 Depois de clicar novamente em `Next step`, você será levado a uma página que
 confirma que a configuração foi bem-sucedida. Clique em `Finish` para concluir o
 processo de configuração.
 
-![configurações](ch01-basic-installation-final.png){ align=left }
+![configurações](ch01.8-basic-installation-final.png){ align=left }
 
-_1.10 Instalação do Zabbix_
+_1.8 Instalação do Zabbix_
 
 Agora estamos prontos para fazer o login:
 
-![configurações](ch01-basic-installation-login.png)
+![configurações](ch01.9-basic-installation-login.png)
 
-_1.11 Login do Zabbix_
+_1.9 Login do Zabbix_
 
 - Login : Administrador
 - Senha : zabbix

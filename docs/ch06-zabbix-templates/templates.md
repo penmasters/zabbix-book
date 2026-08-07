@@ -170,7 +170,9 @@ rather than editing individual templates.
 If you like to make a new template group then they can be found under `Data collection`
 → `Host groups` → `Create template group`
 
-![ch06.01-template-group.png](ch06.01-template-group.png)
+![ch06.01-template-group.png](ch06.1-template-group.png)
+
+_6.1 ch06.01-template-group.png_
 
 ### Permissions and Access Control
 
@@ -330,7 +332,9 @@ or templates, helping to describe what the metric or event represents.
 
 `Data collection` → `Templates` → `Template` → `Tags`
 
-![ch06.02-template-tags.png](ch06.02-template-tags.png)
+![ch06.02-template-tags.png](ch06.2-template-tags.png)
+
+_6.2 ch06.02-template-tags.png_
 
 ### Purpose of Tags
 
@@ -454,7 +458,9 @@ logic.
 
 `Data collection` → `Templates` → `Template` → `Macros`
 
-![ch06.03-template-macros.png](ch06.03-template-macros.png)
+![ch06.03-template-macros.png](ch06.3-template-macros.png)
+
+_6.3 ch06.03-template-macros.png_
 
 Example:
 
@@ -504,7 +510,9 @@ SNMP status codes like 1, 2, 3 into Up, Down, Unknown.
 
 `Data collection` → `Templates` → `Template` → `Value maps`
 
-![ch06.04-template-value maps.png](ch06.04-template-value maps.png)
+![ch06.04-template-value maps.png](ch06.4-template-value maps.png)
+
+_6.4 ch06.04-template-value maps.png_
 
 ### Scope and Availability
 
@@ -635,7 +643,9 @@ Template dashboards support the same widget types as user dashboards, including:
 Each widget automatically substitutes host-specific data when rendered under
 `Monitoring` → `Hosts` → `Dashboards`. No manual host configuration is required.
 
-![ch06.05-template-dashboards.png](ch06.05-template-dashboards.png)
+![ch06.05-template-dashboards.png](ch06.5-template-dashboards.png)
+
+_6.5 ch06.05-template-dashboards.png_
 
 ### Some Good Practices
 
@@ -685,7 +695,9 @@ These operations are accessible under:
 
 `Data collection → Hosts` on the host itself.
 
-![ch06.06-template-unlink-clear.png](ch06.06-template-unlink-clear.png)
+![ch06.06-template-unlink-clear.png](ch06.6-template-unlink-clear.png)
+
+_6.6 ch06.06-template-unlink-clear.png_
 
 ### Unlink vs. Unlink and Clear
 
@@ -706,7 +718,9 @@ receives a new UUID, ensuring full independence from the original.
 
 `Data collection` → `Templates` on the template itself.
 
-![ch06.07-template-delete-clear.png](ch06.07-template-delete-clear.png)
+![ch06.07-template-delete-clear.png](ch06.7-template-delete-clear.png)
+
+_6.7 ch06.07-template-delete-clear.png_
 
 Example:
 
@@ -777,7 +791,9 @@ standard now in Zabbix.
 
 Navigate to `Data collection` → `Templates` → `Select Your Template(s)` → `Export`, then select `YAML`.
 
-![ch06.08-template-export.png](ch06.08-template-export.png)
+![ch06.08-template-export.png](ch06.8-template-export.png)
+
+_6.8 ch06.08-template-export.png_
 
 A typical export looks like:
 
@@ -809,7 +825,9 @@ You can import templates via:
 
 The button is on the upper right side of your window.
 
-![ch06.09-template-export.png](ch06.09-template-export.png)
+![ch06.09-template-export.png](ch06.9-template-export.png)
+
+_6.9 ch06.09-template-export.png_
 
 Zabbix supports both `YAML` `JSON and `XML`, though YAML is preferred due to its
 readability and UUID retention.

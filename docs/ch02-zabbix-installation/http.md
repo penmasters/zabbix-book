@@ -171,9 +171,9 @@ to configure Zabbix server. In Zabbix menu select `Users | Authentication |
 HTTP settings` and check `Enable HTTP authentication` check-box. Click `Update`
 and confirm the changes by clicking `OK` button.
 
-![HTTP users authentication](ch02.1-http-auth-settings.png){ align=center }
+![HTTP users authentication](ch02.29-http-auth-settings.png){ align=center }
 
-_2.1 HTTP users authentication_
+_2.29 HTTP users authentication_
 
 `Remove domain name` field should have a comma separated list of domains that
 Zabbix will remove from provided username, e.g. if a user enters
@@ -191,9 +191,9 @@ If you click on the link you will be automatically logged in into Zabbix WebUI
 with the same username you previously used. Or you can enter different
 Username and Password and normally log in into Zabbix WebUI as different user.
 
-![HTTP users authentication login](ch02.2-http-auth-login.png){ align=center }
+![HTTP users authentication login](ch02.30-http-auth-login.png){ align=center }
 
-_2.2 HTTP users authentication login form_
+_2.30 HTTP users authentication login form_
 
 If you select "HTTP login form" in `Default login form` drop-down you won't see
 standard Zabbix login form when you try to log out. You actually won't be able

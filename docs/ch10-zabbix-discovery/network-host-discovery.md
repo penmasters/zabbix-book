@@ -63,13 +63,13 @@ Now we need to configure our discovery checks. In our example, we will be going 
 
 Adding those checks will looks like this.
 
-![Network discovery rule check hostname](network-discovery/ch10.x-network-discovery-check-hostname.png){ align=center }
+![Network discovery rule check hostname](network-discovery/ch10.1-network-discovery-check-hostname.png){ align=center }
 
-*10.x Network discovery rule check hostname*
+*10.1 Network discovery rule check hostname*
 
-![Network discovery rule check description](network-discovery/ch10.x-network-discovery-check-description.png){ align=center }
+![Network discovery rule check description](network-discovery/ch10.2-network-discovery-check-description.png){ align=center }
 
-*10.x Network discovery rule check description*
+*10.2 Network discovery rule check description*
 
 Our Linux servers in the IP range 192.168.46.1-254 will only be discovered when these checks succeeds.
 
@@ -84,9 +84,9 @@ We also need to configure an update interval, which determines how often Zabbix 
 
 With everything set our discovery rule now looks like the image below.
 
-![Creating a network discovery rule](network-discovery/ch10.x-network-discovery-rule.png){ align=center }
+![Creating a network discovery rule](network-discovery/ch10.3-network-discovery-rule.png){ align=center }
 
-*10.x Creating a network discovery rule*
+*10.3 Creating a network discovery rule*
 
 
 ## Creating discovery actions
@@ -99,33 +99,33 @@ Autoregistration actions, discovery actions and even trigger actions are all ver
 
 With our discovery rule receiving the OID `1.3.6.1.2.1.1.1.0`, we have a great value to check if the host is actually running like. With it we can create the following conditions.
 
-![Network discovery action condition](network-discovery/ch10.x-network-discovery-action-condition-linux.png){ align=center }
+![Network discovery action condition](network-discovery/ch10.4-network-discovery-action-condition-linux.png){ align=center }
 
-*10.x Network discovery action condition*
+*10.4 Network discovery action condition*
 
 Added that looks like the following.
 
 
-![Network discovery action conditions](network-discovery/ch10.x-network-discovery-action-conditions.png){ align=center }
+![Network discovery action conditions](network-discovery/ch10.5-network-discovery-action-conditions.png){ align=center }
 
-*10.x Network discovery action conditions*
+*10.5 Network discovery action conditions*
 
 When the conditions are met, we can then set up the operations to.
 
 - Add host to `Servers/Linux`
 - Link the `Linux by SNMP` template
 
-![Network discovery action operations](network-discovery/ch10.x-network-discovery-action-operations.png){ align=center }
+![Network discovery action operations](network-discovery/ch10.6-network-discovery-action-operations.png){ align=center }
 
-*10.x Network discovery action operations*
+*10.6 Network discovery action operations*
 
 ## Checking the discovered hosts
 
 Once discovery is running, we can check our discovered devices easily under `Monitoring` | `Discovery`. On this page you will find any discovered devices in the IP range, as well as their linked host, if any was created.
 
-![Network discovery monitoring](network-discovery/ch10.x-network-discovery-result.png){ align=center }
+![Network discovery monitoring](network-discovery/ch10.7-network-discovery-result.png){ align=center }
 
-*10.x Network discovery monitoring*
+*10.7 Network discovery monitoring*
 
 ## Discovery by proxies
 

@@ -101,14 +101,14 @@ This will make sure only the zabbix user on your Linux system has read only acce
 
 Open you host configuration and go to the `Encryption` tab. By default it will be set to not use encryption.
 
-![Unencrypted agent](ch13.xx-frontend-agent-host-no-encryption.png){ align=center }
-*13.xx Unencrypted agent settings*
+![Unencrypted agent](ch13.4-frontend-agent-host-no-encryption.png){ align=center }
+*13.4 Unencrypted agent settings*
 
 Let's fill our the details here, just as we did on the Zabbix agent host side.
 
-![Encrypted agent](ch13.xx-frontend-agent-host-encryption.png){ align=center }
+![Encrypted agent](ch13.5-frontend-agent-host-encryption.png){ align=center }
 
-*13.xx Encrypted agent settings*
+*13.5 Encrypted agent settings*
 
 As you can see, even though this is an Active Zabbix agent, I set up encryption requirements for both. Click on the `Update` button to save these changes and go back to the Zabbix agent host CLI to restart the agent.
 
@@ -121,22 +121,22 @@ As you can see, even though this is an Active Zabbix agent, I set up encryption 
 
 Your agent icon should remain green and you should now see that the agent is encrypted.
 
-![Encrypted agent status](ch13.xx-frontend-agent-host-encryption-status.png){ align=center }
+![Encrypted agent status](ch13.6-frontend-agent-host-encryption-status.png){ align=center }
 
-*13.xx Encrypted agent status*
+*13.6 Encrypted agent status*
 
 ### Active agent autoregistration
 Another thing you might want to do is encrypt all of the Zabbix agents in active mode that are being registered into Zabbix automatically. This process called autoregistration was discussed in detail in chapter 10. What we did not cover however is how to encrypt this process.
 
 When you navigate to `Administration` | `General` | `Autoregistration` there are not many options available. As you can see we are using `No encryption` by default. 
 
-![Autoregistration without encryption](ch13.xx-autoregistration-no-encryption.png){ align=center }
-*13.xx Autoregistration without encryption*
+![Autoregistration without encryption](ch13.7-autoregistration-no-encryption.png){ align=center }
+*13.7 Autoregistration without encryption*
 
 We can only change this `PSK` to encrypt all of the autoregistered Zabbix agents. There is no certificate option for autoregistration. But, we can now do the following setup.
 
-![Autoregistration with encryption](ch13.xx-autoregistration-encryption.png){ align=center }
-*13.xx Autoregistration with encryption*
+![Autoregistration with encryption](ch13.8-autoregistration-encryption.png){ align=center }
+*13.8 Autoregistration with encryption*
 
 This will allow us to define our PSK identity and PSK value on the agents configured for autoregistration. 
 
@@ -313,9 +313,9 @@ Lastly, it will be important to set up the Zabbix agent for the certificate to b
 
 Moving to the Zabbix frontend, all that's left to do is edit our host configuration under `Data collection` | `Hosts` and add the following information under `Encryption`.
 
-![Encrypted agent certificate](ch13.xx-agent-certificate-encryption.png){ align=center }
+![Encrypted agent certificate](ch13.9-agent-certificate-encryption.png){ align=center }
 
-*13.xx Encrypted agent settings certificate*
+*13.9 Encrypted agent settings certificate*
 
 ## Conclusion
 If you want simple to set up security for your Zabbix agent, use pre-shared keys. They are secure, especially when using 2048-bit (512 hexadecimal digits) and if possible unique pre-shared keys for each agent.

@@ -35,7 +35,7 @@ usando o Podman.
 
 ### Adicionar o proxy ao front-end do zabbix
 
-![Adicionar o proxy](ch03-container-proxy-new.png)
+![Adicionar o proxy](ch03.9-container-proxy-new.png)
 
 _3.9 Adicionar proxy ao frontend_
 

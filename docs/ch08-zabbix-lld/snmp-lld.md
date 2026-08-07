@@ -185,9 +185,9 @@ Go to `Data collection | Hosts` and either create a new host or open an
 existing one, then add an `SNMP interface` pointing at the device (IP,
 port 161, SNMP version and community).
 
-![SNMP Interface](ch08.22_snmp_interface.png)
+![SNMP Interface](ch08.20-snmp_interface.png)
 
-_ch08.22 SNMP Interface_
+_8.20 SNMP Interface_
 
 Next, create the master item that performs the bulk walk:
 
@@ -232,9 +232,9 @@ in front of the item and select the `create dependent discovery rule`
 - **Key**: `net.if.discovery`
 - **Master item**: RAW: Interface table walk
 
-![Discovery Rule](ch08.23_discovery_rule.png)
+![Discovery Rule](ch08.21-discovery_rule.png)
 
-_ch08.23 LLD discovery rule_
+_8.21 LLD discovery rule_
 
 Now open the `Preprocessing` tab and add a single step:
 
@@ -243,9 +243,9 @@ Now open the `Preprocessing` tab and add a single step:
 - **OID prefix**: `1.3.6.1.2.1.2.2.1.2`
 - **Format**: Unchanged
 
-![Discovery Preprocessing](ch08.24_discovery_preprocessing.png)
+![Discovery Preprocessing](ch08.22-discovery_preprocessing.png)
 
-_ch08.24 LLD discovery preprocessing_
+_8.22 LLD discovery preprocessing_
 
 **Note**
 
@@ -285,9 +285,9 @@ Then, on the host, go to `Macros` and create:
 - **Macro**: `{$IF.NOT.MATCHES}`
 - **Value**: `^lo$`
 
-![LLD Filters](ch28.25_filters.png)
+![LLD Filters](ch08.23-filters.png)
 
-_ch08.25 LLD Filters_
+_8.23 LLD Filters_
 
 ## Creating the item prototypes
 
@@ -306,9 +306,9 @@ In `Preprocessing`, add:
 - **Parameter**: `1.3.6.1.2.1.2.2.1.8.{#SNMPINDEX}`
 - **Format**: Unchanged
 
-![LLD Prototype item](ch28.26_lld_item.png)
+![LLD Prototype item](ch08.24-lld_item.png)
 
-_ch28.26_lld_item_
+_8.24_lld_item_
 
 The `{#SNMPINDEX}` macro is what ties this item to one specific row of the
 table, `ifOperStatus.1`, `ifOperStatus.2` and so on. This is the same

@@ -25,9 +25,9 @@ A autenticação LDAP pode ser configurada em dois modos:
 
 O processo de autenticação de usuários segue este diagrama.
 
-![Autenticação de usuários LDAP](ch02.3-ldap-auth-diagram.png){ align=center }
+![Autenticação de usuários LDAP](ch02.31-ldap-auth-diagram.png){ align=center }
 
-_2.3 Autenticação de usuários LDAP_
+_2.31 Autenticação de usuários LDAP_
 
 Conforme mostrado no diagrama, um usuário que tenta fazer login deve ser
 pré-criado no Zabbix para poder fazer login usando o LDAP. Os registros de
@@ -125,9 +125,9 @@ Os usuários `user1` e `user2` são membros do grupo LDAP `zabbix-admins`. Usuá
     Password field, click Authenticate. You should see the following structure
     of the LDAP server (picture shows ‘zabbix-admins’ group configuration):
 
-    ![LDAP server data](ch02.4-ldap-ldap-server-data.png){ align=center }
+    ![LDAP server data](ch02.32-ldap-ldap-server-data.png){ align=center }
 
-    _2.4 LDAP server data_
+    _2.32 LDAP server data_
 
 ### Configurar a autenticação LDAP do Zabbix
 
@@ -145,9 +145,9 @@ _2.5 Configurações do servidor LDAP no Zabbix_
 O diagrama a seguir pode ajudá-lo a entender como configurar o servidor LDAP no
 Zabbix com base na estrutura de dados do seu servidor LDAP:
 
-![Servidor LDAP para Zabbix](ch02.6-ldap-server-to-zabbix.png){ align=center }
+![Servidor LDAP para Zabbix](ch02.34-ldap-server-to-zabbix.png){ align=center }
 
-_2.6 Servidor LDAP para Zabbix_
+_2.34 Servidor LDAP para Zabbix_
 
 "Especial" _Distinguished Name_ (DN) _cn=ldap_search,dc=example,dc=org_ é usado
 para pesquisa, ou seja, o Zabbix usa esse DN para se conectar ao servidor LDAP
@@ -201,7 +201,9 @@ método de autenticação `LDAP`, apenas certifique-se de digitar a mesma cadeia
 caracteres nesses dois campos e de que ela atenda à política de força da senha
 definida em `Users | Authentication`.
 
-![Adicionar usuário no Zabbix](ch02.8-ldap-add-user-in-zabbix.png){ align=center
+![Adicionar usuário no Zabbix](ch02.36-ldap-add-user-in-zabbix.png){ align=center
+
+_2.36 Adicionar usuário no Zabbix_
 }
 
 _2.8 Adicionar usuário no Zabbix_
@@ -263,7 +265,9 @@ Em `Users | Authentication`, precisamos fazer duas coisas:
   de usuários do Zabbix onde todos os usuários _desprovisionados_ serão
   colocados para que efetivamente sejam desabilitados de acessar o Zabbix.
 
-  ![Autenticação padrão](ch02.11-ldap-default-authentication.png){ align=center
+  ![Autenticação padrão](ch02.39-ldap-default-authentication.png){ align=center
+
+  _2.39 Autenticação padrão_
   }
 
   _2.11 Autenticação padrão_
@@ -291,9 +295,9 @@ diferente que fornece a associação ao grupo de usuários e, é claro, você po
 configurar facilmente qual atributo usar ao procurar grupos LDAP de usuários
 colocando-o no campo `User group membership attribute`:
 
-![Mapeamento de grupos LDAP](ch02.12-ldap-groups-mapping.png){ align=center }
+![Mapeamento de grupos LDAP](ch02.40-ldap-groups-mapping.png){ align=center }
 
-_2.12 Mapeamento de grupos LDAP_
+_2.40 Mapeamento de grupos LDAP_
 
 Na figura acima, estamos dizendo ao Zabbix para usar o atributo _memberOf_ para
 extrair o DN que define a associação do usuário ao grupo (nesse caso, é
@@ -318,7 +322,9 @@ consultando o servidor LDAP para um usuário, em vez disso, ele está procurando
 grupos LDAP com base em um determinado critério (filtro). É mais fácil explicar
 com imagens que descrevem um exemplo:
 
-![Grupo de nomes do servidor LDAP](ch02.13-ldap-group-of-names.png){
+![Grupo de nomes do servidor LDAP](ch02.41-ldap-group-of-names.png){
+
+_2.41 Grupo de nomes do servidor LDAP_
 align=center }
 
 _2.13 GroupOfNames do servidor LDAP_
@@ -360,13 +366,13 @@ usuários serão criados pelo Zabbix e colocados no grupo de usuários _Zabbix
 administrators_. Quando você fizer o login com o nome de usuário _user3_, esse
 usuário será criado pelo Zabbix e colocado no grupo de usuários _Zabbix users_:
 
-![Test user1](ch02.14-ldap-jit-test-user1.png){ align=center }
+![Test user1](ch02.42-ldap-jit-test-user1.png){ align=center }
 
-_2.14 Usuário de teste1_
+_2.42 Usuário de teste1_
 
-![Test user3](ch02.15-ldap-jit-test-user3.png){ align=center }
+![Test user3](ch02.43-ldap-jit-test-user3.png){ align=center }
 
-_2.15 Usuário de teste3_
+_2.43 Usuário de teste3_
 
 ---
 

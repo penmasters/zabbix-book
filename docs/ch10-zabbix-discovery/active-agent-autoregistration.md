@@ -163,9 +163,9 @@ _10.x Zabbix Agent autoregistration action conditions_
 
 The operations should contain the following.
 
-![Zabbix Agent autoregistration action operations](autoregistration/ch10.x-autoregistration-action-operations.png){ align=center }
+![Zabbix Agent autoregistration action operations](autoregistration/ch10.8-autoregistration-action-operations.png){ align=center }
 
-_10.x Zabbix Agent autoregistration action operations
+_10.8 Zabbix Agent autoregistration action operations
 
 One of my favourite tricks here is to let a tool like Ansible set the `HostMetadata`
 field with software like `NGINX` automatically. Then we can add additional Actions
@@ -174,9 +174,9 @@ as an incoming host registering itself will create an autoregistration event. In
 Zabbix, any event coming in will always be matches against all action conditions
 and execute the operations for all matches.
 
-![Zabbix Agent autoregistration action list](ch10.x-autoregistration-action-list.png){ align=center }
+![Zabbix Agent autoregistration action list](ch10.9-autoregistration-action-list.png){ align=center }
 
-_10.x Zabbix Agent autoregistration action list_
+_10.9 Zabbix Agent autoregistration action list_
 
 ## Using HostMetadataItem
 

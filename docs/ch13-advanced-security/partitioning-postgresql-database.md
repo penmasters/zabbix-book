@@ -278,9 +278,9 @@ Let's start our zabbix server again before we continue
 
 Let's have a look at them go in our menu to **Administration** -> **Housekeeping**
 
-![TimescaleDB settings](ch13-timescaledb.png)
+![TimescaleDB settings](ch13.12-timescaledb.png)
 
-_13.1 housekeeper
+_13.12 housekeeper
 settings_
 
 ???+ warning

@@ -841,7 +841,9 @@ In the Zabbix web interface, navigate to:
 - **Host groups :** SNMP Devices
 - **Interfaces :** SNMP with IP `127.0.0.1`
 
-![ch04.35-snmp-host.png](ch04.35-snmp-host.png)
+![ch04.35-snmp-host.png](ch04.34-snmp-host.png)
+
+_4.34 ch04.35-snmp-host.png_
 
 In Zabbix, the macro `{$SNMP_COMMUNITY}` is often defined globally under **Administration**
 → **Macros**. This *global* macro provides a default SNMP community string used by all
@@ -994,7 +996,9 @@ use `IF-MIB::ifAdminStatus[\s\S]*?INTEGER:\s+(\d+)` in the Parameters field and
 
 Select the box **Custom on fail** and use the option **Discard value**.
 
-![ch04.36-snmp-preprocessing.png](ch04.36-snmp-preprocessing.png)
+![ch04.36-snmp-preprocessing.png](ch04.35-snmp-preprocessing.png)
+
+_4.35 ch04.36-snmp-preprocessing.png_
 
 Next we create our second item also dependent on our Fallback item.
 
@@ -1013,6 +1017,8 @@ Again add a **Custom on fail** step and select **Discard value**.
 
 ![ch04.37-snmp-preprocessing.png](ch04.36-snmp-preprocessing.png)
 
+_4.36 ch04.37-snmp-preprocessing.png_
+
 We have our items now but we still are missing our trigger. Go back to your host
 and click on the triggers and add the following trigger.
 
@@ -1021,7 +1027,9 @@ and click on the triggers and add the following trigger.
 - **Problem expression:** `last(/Network Switch 01/trap.ifOperStatus)=2 and last(/Network Switch 01/trap.ifAdminStatus)=2`
 - **Recovery expression:** `last(/Network Switch 01/trap.ifOperStatus)=1 and last(/Network Switch 01/trap.ifAdminStatus)=1`
 
-![ch04.38-snmp-trigger.png](ch04.38-snmp-trigger.png)
+![ch04.38-snmp-trigger.png](ch04.37-snmp-trigger.png)
+
+_4.37 ch04.38-snmp-trigger.png_
 
 Make sure to also select the box **Allow manual close**. This can help to close
 the problem in case we don't receive a TRAP.
@@ -1038,7 +1046,9 @@ based on the status of the ifOperStatus and the ifAdminStatus
 
 As a bonus you can add on the host a value map and link the items with it.
 
-![ch04.39-snmp-valuemap.png](ch04.39-snmp-valuemap.png)
+![ch04.39-snmp-valuemap.png](ch04.38-snmp-valuemap.png)
+
+_4.38 ch04.39-snmp-valuemap.png_
 
 If you don't like 2 different items and want to have a more fancy solution you
 could create a dependent item like we did above and use JS instead of perl regex.

@@ -23,7 +23,7 @@ During installation:
   the server IP.
 - Complete the installation normally.
 
-![ch15_01_agent_config.jpg](ch15_01_agent_config.jpg)
+![ch15_01_agent_config.jpg](ch15.1-agent_config.jpg)
 _15.1_agent_config_
 
 ## Set the Agent service to automatic start
@@ -38,7 +38,7 @@ In Windows:
 
 monitoring continues after PC restarts
 
-![ch15_02_services.jpg](ch15_02_services.jpg)
+![ch15_02_services.jpg](ch15.2-services.jpg)
 _15.2 Configure Services_
 
 ## Test Smartmontools
@@ -54,7 +54,7 @@ After installing Smartmontools, open Command Prompt (CMD) and run:
 If everything is correct, it will display detailed information about your SSD/HDD
 such as temperature, usage hours, alerts, and more.
 
-![ch15_03_smartmontool.jpg](ch15_03_smartmontool.jpg)
+![ch15_03_smartmontool.jpg](ch15.3-smartmontool.jpg)
 _15.3 Smartmontools_
 
 ## Configure the Smart plugin in Zabbix Agent 2
@@ -66,10 +66,10 @@ Locate the plugin configuration folder:
     - Plugins.Smart.Path=C:\PROGRA~1\smartmontools\bin\smartctl.exe Save and close the file.
 
 
-![ch15_04_plugins.jpg](ch15_04_plugins.jpg)
+![ch15_04_plugins.jpg](ch15.4-plugins.jpg)
 _15.4 Plugins_
 
-![ch15_05_plugins.jpg](ch15_05_plugins.jpg)
+![ch15_05_plugins.jpg](ch15.5-plugins.jpg)
 _15.5 plugin config_
 
 ## Test communication between Zabbix Agent 2 and Smartmontools
@@ -77,7 +77,7 @@ _15.5 plugin config_
 Inside the Zabbix Agent 2 installation folder, run: zabbix_agent2.exe -t smart.disk.get
 If successful, it will return the disk information that will be sent to Zabbix.
 
-![ch15_06_communication.png](ch15_06_communication.png)
+![ch15_06_communication.png](ch15.6-communication.png)
 _15.6 communication check_
 
 ## Configure it in the Zabbix Web Interface
@@ -88,7 +88,7 @@ In Zabbix do the following steps:
 - Go to Templates
 - Add the following template:
 
-![ch15_07_host-add.png](ch15_07_host-add.png)
+![ch15_07_host-add.png](ch15.7-host-add.png)
 _15.7 Host add_
 
 Wait 1–5 minutes for Zabbix to automatically detect the disk sensors and metrics.
@@ -109,7 +109,7 @@ After collecting all the data, Zabbix will display all relevant disk health data
 
 Let's have a look at our latest data page. Monitoring -> Latest data.
 
-![ch15_08_latestdata.png](ch15_08_latestdata.png)
+![ch15_08_latestdata.png](ch15.8-latestdata.png)
 
 _15.8 latest data_
 
