@@ -331,7 +331,9 @@ The HTTP agent item is configured with a POST request and the following body:
 The `Content-Type` header must be set to `application/json`. Without it, the API
 will reject the request.
 
-![ch04.60_http_item.png](ch04.60_http_item.png)
+![ch04.60_http_item.png](ch04.39-http_item.png)
+
+_4.39 ch04.60_http_item.png_
 
 The response looks like this:
 

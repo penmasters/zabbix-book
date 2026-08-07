@@ -276,7 +276,9 @@ zabbix_export:
     Create 2 files with the content from the above examples and import them as a
     host. When import make sure to not delete missing hosts.
 
-![import-host.png](import-host.png)
+![import-host.png](ch15.9-import-host.png)
+
+_15.9 import-host.png_
 
 
 ## Comparison Summary

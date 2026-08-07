@@ -35,7 +35,7 @@ comme ceci où nous avons la `fenêtre principale` en
 <font color='red'>rouge</font> et les `liens` marqués en
 <font color='gold'>jaune</font>.
 
-![Vue d'ensemble](ch02-frontend-overview.png)
+![Vue d'ensemble](ch02.1-frontend-overview.png)
 
 _2.1 Vue d'ensemble_
 
@@ -43,7 +43,7 @@ Le menu principal peut être caché en le réduisant complètement ou en le
 réduisant à un ensemble de petites icônes. En cliquant sur le bouton avec les 2
 flèches à gauche :
 
-![Réduire](ch02-frontend-collapse.png)
+![Réduire](ch02.2-frontend-collapse.png)
 
 _2.2 Réduction_
 
@@ -53,7 +53,7 @@ sur ">>", le `menu principal` de reviendra à son état d'origine.
 En cliquant sur l'icône qui ressemble à une boîte avec une flèche qui dépasse, à
 côté du bouton "<<", vous masquerez complètement le `menu principal ` .
 
-![Masquer](ch02-frontend-hide.png)
+![Masquer](ch02.3-frontend-hide.png)
 
 _2.3 Masquer_
 
@@ -69,7 +69,7 @@ de l'écran et ressemble à 4 flèches pointant vers chaque coin de l'écran. En
 appuyant sur ce bouton, tous les menus disparaissent et il ne reste plus que la
 `fenêtre principale` sur laquelle vous pouvez vous concentrer.
 
-![Expand](ch02-frontend-expand.png)
+![Expand](ch02.4-frontend-expand.png)
 
 _2.4 Élargir_
 
@@ -77,7 +77,7 @@ Lorsque nous voulons quitter le mode kiosque, le bouton sera remplacé par 2
 flèches pointant vers l'intérieur de l'écran. En appuyant sur ce bouton, nous
 reviendrons à l'état d'origine.
 
-![Expand](ch02-frontend-shrink.png)
+![Expand](ch02.5-frontend-shrink.png)
 
 _2.5 Réduire_
 
@@ -99,7 +99,7 @@ obtenons une vue d'ensemble de tous les `templates`, `host groups` et `hosts`
 avec le serveur de nom dedans. C'est pourquoi on l'appelle la boîte de
 `recherche globale` .
 
-![Recherche globale](ch02-global-search.png)
+![Recherche globale](ch02.6-global-search.png)
 
 _2.6 Recherche globale_
 
@@ -107,7 +107,7 @@ Voici notre résultat après avoir cherché le mot `serveur`. Si vous avez une
 configuration Zabbix standard, votre page devrait ressembler plus ou moins à la
 même chose.
 
-![Résultat de la recherche globale](ch02-global-search-result.png)
+![Résultat de la recherche globale](ch02.7-global-search-result.png)
 
 _2.7 Résultat de la recherche globale_
 
@@ -150,7 +150,7 @@ d'hyperliens utiles pour les utilisateurs.
 Quelques éléments interactifs restent à traiter dans la partie droite de
 l'écran.
 
-![Modifier le tableau de bord](ch02-edit-dashboard.png)
+![Modifier le tableau de bord](ch02.8-edit-dashboard.png)
 
 _2.8 Editer le tableau de bord_
 
@@ -175,7 +175,7 @@ est cruciale pour la compréhension du système.
 
 </br>
 
-![Information système](ch02-system-information.png)
+![Information système](ch02.9-system-information.png)
 
 _2.9 Informations sur le système_
 
@@ -223,7 +223,7 @@ Zabbix works with 3 different levels of users we have the regular `users`,
 `Zabbix Admin` and `Zabbix Super Admin` users. Let's have a deeper look at the
 differences :
 
-![Main Menu sections](ch02-main-menu.png){ width=20% }
+![Main Menu sections](ch02.10-main-menu.png){ width=20% }
 
 _2.10 Main menu sections_
 
@@ -237,7 +237,7 @@ _2.10 Main menu sections_
 
   ***
 
-  ![Monitoring Menu](ch02-monitoring-menu.png){ width=20% }
+  ![Monitoring Menu](ch02.11-monitoring-menu.png){ width=20% }
 
 _2.11 Monitoring menu_
 
@@ -256,7 +256,7 @@ _2.11 Monitoring menu_
 
 ---
 
-![Services menu](ch02-services-menu.png){ width="20%" }
+![Services menu](ch02.12-services-menu.png){ width="20%" }
 
 _2.12 Services menu_
 
@@ -267,7 +267,7 @@ _2.12 Services menu_
 
 ---
 
-![Inventory menu](ch02-inventory-menu.png){ width="20%" }
+![Inventory menu](ch02.13-inventory-menu.png){ width="20%" }
 
 _2.13 Inventory menu_
 
@@ -278,7 +278,7 @@ _2.13 Inventory menu_
 
 ---
 
-![Reports menu](ch02-reports-menu.png){ width="20%" }
+![Reports menu](ch02.14-reports-menu.png){ width="20%" }
 
 _2.14 Inventory menu_
 
@@ -299,7 +299,7 @@ _2.14 Inventory menu_
 
 ---
 
-![Data collection](ch02-datacollection-menu.png){ width="20%" }
+![Data collection](ch02.15-datacollection-menu.png){ width="20%" }
 
 _2.15 Data collection_
 
@@ -319,7 +319,7 @@ _2.15 Data collection_
 
 ---
 
-![Alerts menu](ch02-alerts-menu.png){ width="20%" }
+![Alerts menu](ch02.16-alerts-menu.png){ width="20%" }
 
 _2.16 Alerts menu_
 
@@ -333,7 +333,7 @@ _2.16 Alerts menu_
 
 ---
 
-![Users menu](ch02-users-menu.png){ width="20%" }
+![Users menu](ch02.17-users-menu.png){ width="20%" }
 
 _2.17 Users menu_
 
@@ -353,7 +353,7 @@ _2.17 Users menu_
 
 ---
 
-![Administration menu](ch02-administration-menu.png){ width="20%" }
+![Administration menu](ch02.18-administration-menu.png){ width="20%" }
 
 _2.18 Administration menu_
 

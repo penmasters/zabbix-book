@@ -33,7 +33,7 @@ Assim, temos nossa ` janela principal `em <font color='green'>verde</font>,
 nosso `menu principal `marcado em <font color='red'>vermelho</font> e nossos
 `links` marcados em <font color='gold'>amarelo</font>.
 
-![Visão geral](ch02-frontend-overview.png)
+![Visão geral](ch02.1-frontend-overview.png)
 
 _2.1 Visão geral_
 
@@ -41,7 +41,7 @@ O menu principal pode ser ocultado, recolhendo-o completamente ou reduzindo-o a
 um conjunto de pequenos ícones. Quando clicamos no botão com as duas setas à
 esquerda:
 
-![Recolher](ch02-frontend-collapse.png)
+![Recolher](ch02.2-frontend-collapse.png)
 
 _2.2 Recolher_
 
@@ -51,7 +51,7 @@ fará com que o `menu principal do` volte ao seu estado original.
 Ao clicar no ícone que se parece com uma caixa com uma seta para fora, ao lado
 do botão "<<", você ocultará completamente o `menu principal do site ` .
 
-![Ocultar](ch02-frontend-hide.png)
+![Ocultar](ch02.3-frontend-hide.png)
 
 _2.3 Ocultar_
 
@@ -67,7 +67,7 @@ lado esquerdo da tela e se parece com quatro setas apontando para cada canto da
 tela. Pressionar esse botão removerá todos os menus e deixará apenas a` janela
 principal ` para o foco.
 
-![Expandir](ch02-frontend-expand.png)
+![Expandir](ch02.4-frontend-expand.png)
 
 _2.4 Expandir_
 
@@ -75,7 +75,7 @@ Quando quisermos sair do modo de quiosque, o botão será alterado para duas set
 apontando para a parte interna da tela. Ao pressionar esse botão, voltaremos ao
 estado original.
 
-![Expandir](ch02-frontend-shrink.png)
+![Expandir](ch02.5-frontend-shrink.png)
 
 _2.5 Reduzir_
 
@@ -96,7 +96,7 @@ Se digitarmos na caixa de pesquisa a palavra `server`, você verá que teremos u
 visão geral de todos os `modelos ` , `grupos de hosts ` e hosts ` com o servidor
 de nomes. É por isso que essa caixa é chamada de `global search`.
 
-![Pesquisa global](ch02-global-search.png)
+![Pesquisa global](ch02.6-global-search.png)
 
 _2.6 Pesquisa global_
 
@@ -104,7 +104,7 @@ Este é o nosso resultado depois de procurarmos a palavra `server`. Se você tiv
 uma configuração padrão do Zabbix, sua página deverá ter mais ou menos a mesma
 aparência.
 
-![Resultado da pesquisa global](ch02-global-search-result.png)
+![Resultado da pesquisa global](ch02.7-global-search-result.png)
 
 _2.7 Resultado de pesquisa global_
 
@@ -147,7 +147,7 @@ pertinentes para acesso do usuário.
 Alguns elementos interativos ainda precisam ser abordados na parte direita da
 tela.
 
-![Editar painel de controle](ch02-edit-dashboard.png)
+![Editar painel de controle](ch02.8-edit-dashboard.png)
 
 _2.8 Editar painel de controle_
 
@@ -172,7 +172,7 @@ compreensão do sistema.
 
 </br>
 
-![Informações do sistema](ch02-system-information.png)
+![Informações do sistema](ch02.9-system-information.png)
 
 _2.9 Informações do sistema_
 
@@ -220,7 +220,7 @@ restrições. O Zabbix trabalha com três níveis diferentes de usuários: os
 `usuários comuns ` , `Zabbix Admin` e `Zabbix Super Admin`. Vamos dar uma olhada
 mais profunda nas diferenças:
 
-![Seções do menu principal](ch02-main-menu.png){ width=20% }
+![Seções do menu principal](ch02.10-main-menu.png){ width=20% }
 
 _2.10 Seções do menu principal_
 
@@ -234,7 +234,7 @@ _2.10 Seções do menu principal_
 
   ***
 
-  ![Menu de monitoramento](ch02-monitoring-menu.png){ width=20% }
+  ![Menu de monitoramento](ch02.11-monitoring-menu.png){ width=20% }
 
 _2.11 Menu de monitoramento_
 
@@ -255,7 +255,7 @@ _2.11 Menu de monitoramento_
 
 ---
 
-![Menu Serviços](ch02-services-menu.png){ width="20%" }
+![Menu Serviços](ch02.12-services-menu.png){ width="20%" }
 
 _2.12 Menu Serviços_
 
@@ -267,7 +267,7 @@ _2.12 Menu Serviços_
 
 ---
 
-![Menu Inventário](ch02-inventory-menu.png){ width="20%" }
+![Menu Inventário](ch02.13-inventory-menu.png){ width="20%" }
 
 _2.13 Menu Inventário_
 
@@ -278,7 +278,7 @@ _2.13 Menu Inventário_
 
 ---
 
-![Menu de relatórios](ch02-reports-menu.png){ width="20%" }
+![Menu de relatórios](ch02.14-reports-menu.png){ width="20%" }
 
 _2.14 Menu Inventário_
 
@@ -299,7 +299,7 @@ _2.14 Menu Inventário_
 
 ---
 
-![Coleta de dados](ch02-datacollection-menu.png){ width="20%" }
+![Coleta de dados](ch02.15-datacollection-menu.png){ width="20%" }
 
 _2.15 Coleta de dados_
 
@@ -320,7 +320,7 @@ _2.15 Coleta de dados_
 
 ---
 
-![Menu de alertas](ch02-alerts-menu.png){ width="20%" }
+![Menu de alertas](ch02.16-alerts-menu.png){ width="20%" }
 
 _2.16 Menu de alertas_
 
@@ -335,7 +335,7 @@ _2.16 Menu de alertas_
 
 ---
 
-![Menu de usuários](ch02-users-menu.png){ width="20%" }
+![Menu de usuários](ch02.17-users-menu.png){ width="20%" }
 
 _2.17 Menu de usuários_
 
@@ -358,7 +358,7 @@ _2.17 Menu de usuários_
 
 ---
 
-![Menu de administração](ch02-administration-menu.png){ width="20%" }
+![Menu de administração](ch02.18-administration-menu.png){ width="20%" }
 
 _2.18 Menu de administração_
 

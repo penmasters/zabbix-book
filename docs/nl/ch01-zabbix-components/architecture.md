@@ -31,7 +31,7 @@ hoofdcomponenten, die we in detail zullen bespreken.
     needed.
 
 
-![overview](ch01-basic-installation-zabbixserver.png){ align=left }
+![overview](ch01.1-basic-installation-zabbixserver.png){ align=left }
 
 _1.1 Zabbix basissplit installatie_
 

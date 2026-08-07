@@ -177,9 +177,9 @@ Authentication | HTTP settings` e marque a caixa de seleção `Enable HTTP
 authentication`. Clique em `Update` e confirme as alterações clicando no botão
 `OK`.
 
-![Autenticação de usuários HTTP](ch02.1-http-auth-settings.png){ align=center }
+![Autenticação de usuários HTTP](ch02.29-http-auth-settings.png){ align=center }
 
-_2.1 Autenticação de usuários HTTP_
+_2.29 Autenticação de usuários HTTP_
 
 `Remover nome de domínio` campo deve ter uma lista separada por vírgulas de
 domínios que o Zabbix removerá do nome de usuário fornecido, por exemplo, se um
@@ -198,7 +198,9 @@ conectado à WebUI do Zabbix com o mesmo nome de usuário usado anteriormente. O
 você pode digitar um nome de usuário e uma senha diferentes e fazer o login
 normalmente na Zabbix WebUI como um usuário diferente.
 
-![Login de autenticação de usuários HTTP](ch02.2-http-auth-login.png){
+![Login de autenticação de usuários HTTP](ch02.30-http-auth-login.png){
+
+_2.30 Login de autenticação de usuários HTTP_
 align=center }
 
 _2.2 Formulário de login de autenticação de usuários HTTP_

@@ -116,7 +116,9 @@ of structured data.
 Now this data file becomes our "master item". It will be collected by Zabbix
 native item `vfs.file.contents`, like:
 
-![Dependent items - first master item](ch04.xx-dependent-items-hello-world-master.png)
+![Dependent items - first master item](ch04.47-dependent-items-hello-world-master.png)
+
+_4.47 Dependent items - first master item_
 
 ???+ info
 
@@ -129,21 +131,29 @@ native item `vfs.file.contents`, like:
 
 And then we can set our dependent items:
 
-![Dependent items - first dependent item](ch04.xx-dependent-items-hello-world-dependent.png)
+![Dependent items - first dependent item](ch04.48-dependent-items-hello-world-dependent.png)
+
+_4.48 Dependent items - first dependent item_
 
 This dependent item will have the following preprocessing - it will extract the 
 number from the line starting with "a":
 
-![Dependent items - first dependent item preprocessing](ch04.xx-dependent-items-hello-world-dependent-preprocessing.png)
+![Dependent items - first dependent item preprocessing](ch04.49-dependent-items-hello-world-dependent-preprocessing.png)
+
+_4.49 Dependent items - first dependent item preprocessing_
 
 We will then clone the first item in same fashion and get a full set of items:
 
-![Dependent items - first dependent items all](ch04.xx-dependent-items-hello-world-all.png)
+![Dependent items - first dependent items all](ch04.50-dependent-items-hello-world-all.png)
+
+_4.50 Dependent items - first dependent items all_
 
 Now data is being collected only once but we now have 3 separate numeric items, which we
 can use depending on our needs - draw some graphs, have some triggers on top, etc.
 
-![Dependent items - first dependent items results](ch04.xx-dependent-items-hello-world-result.png)
+![Dependent items - first dependent items results](ch04.51-dependent-items-hello-world-result.png)
+
+_4.51 Dependent items - first dependent items results_
 
 ---
 
@@ -192,7 +202,9 @@ Now we can have a similar approach of one single master item and bunch of
 dependent items nearby. Just this time, we would have `JSONPath` as
 preprocessing step for dependent items.
 
-![Dependent items - first dependent item - json](ch04.xx-dependent-items-hello-world-dependent-preprocessing-json.png)
+![Dependent items - first dependent item - json](ch04.52-dependent-items-hello-world-dependent-preprocessing-json.png)
+
+_4.52 Dependent items - first dependent item - json_
 
 Easy and smooth!
 
@@ -220,19 +232,27 @@ can be found in the "Useful URLs" section. It will have item prototypes of type
 "**Dependent item**" and will rely on a *master item* in the same template, just
 outside of discovery.
 
-![Dependent items - LLD](ch04.xx-dependent-items-hello-world-lld.png)
+![Dependent items - LLD](ch04.53-dependent-items-hello-world-lld.png)
+
+_4.53 Dependent items - LLD_
 
 And then item prototypes would look like:
 
-![Dependent items - LLD item prototype](ch04.xx-dependent-items-hello-world-lld-item-prototype.png)
+![Dependent items - LLD item prototype](ch04.54-dependent-items-hello-world-lld-item-prototype.png)
+
+_4.54 Dependent items - LLD item prototype_
 
 Once LLD "magic" happens, we have all items in place:
 
-![Dependent items - LLD item values](ch04.xx-dependent-items-hello-world-lld-item-latest-data.png)
+![Dependent items - LLD item values](ch04.55-dependent-items-hello-world-lld-item-latest-data.png)
+
+_4.55 Dependent items - LLD item values_
 
 Now by using wildcard in our dashboard "Graph" widget:
 
-![Dependent items - LLD graph widget](ch04.xx-dependent-items-hello-world-lld-widget.png)
+![Dependent items - LLD graph widget](ch04.56-dependent-items-hello-world-lld-widget.png)
+
+_4.56 Dependent items - LLD graph widget_
 
 we are able to select all of our items at once. Thanks to LLD, we are able to
 create all of our items at once. Finally, thanks to the concept of "Dependent
@@ -240,7 +260,9 @@ items", we are able to collect all of our data at once.
 
 This is truly beautiful once you understand it.
 
-![Dependent items - LLD result](ch04.xx-dependent-items-hello-world-lld-result.png)
+![Dependent items - LLD result](ch04.57-dependent-items-hello-world-lld-result.png)
+
+_4.57 Dependent items - LLD result_
 
 ---
 

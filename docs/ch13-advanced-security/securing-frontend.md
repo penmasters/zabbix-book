@@ -29,11 +29,15 @@ create our own root certificate and private key.
 
 <br />
 
-![SSL Ok](ssl-ca.png)
+![SSL Ok](ch13.1-ssl-ca.png)
+
+_13.1 SSL Ok_
 
 ## How SSL works - Client - Server flow
 
-![SSL Ok](ssl-workflow.png)
+![SSL Ok](ch13.2-ssl-workflow.png)
+
+_13.2 SSL Ok_
 <br />
 
 ???+ Note
@@ -308,7 +312,9 @@ firewall-cmd --reload
 
 When we go to our url ```http://<IP or DNS>/``` we get redirected to our ```https:// ``` page and when we check we can see that our site is secure:
 
-![SSL Ok](cert-ok.png)
+![SSL Ok](ch13.3-cert-ok.png)
+
+_13.3 SSL Ok_
 
 ???+ Note
     - To be even more secure have a loot at https://cipherlist.eu/ this page maintains a list of strong ciphers that you can use so secure your Nginx even more.<br />

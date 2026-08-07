@@ -135,9 +135,9 @@ B, C, D and so on as you add them, and you write the formula yourself. For examp
 `(A or B) and C and not D`. Use this when the default AND/OR logic does not produce
 the correct result.
 
-![ch07_type_of_calculation.png](ch07_type_of_calculation.png)
+![ch07_type_of_calculation.png](ch07.2-type_of_calculation.png)
 
-_CH07 type of calculation_
+_7.2 type of calculation_
 
 !!! note
 
@@ -258,9 +258,9 @@ When a problem event fires:
    3–0 means "step 3 to infinity"), `management` gets notified again.
 5. This continues indefinitely until the problem resolves.
 
-![ch07_pause_operations.png](ch07_pause_operations.png)
+![ch07_pause_operations.png](ch07.3-pause_operations.png)
 
-_ch07 pause operations_
+_7.3 pause operations_
 
 !!! warning
 

@@ -15,9 +15,9 @@ another can take over seamlessly.
 For this guide, we will use two Zabbix servers and one database, but the setup allows
 for adding more zabbix servers if necessary.
 
-![HA-Setup](./ha-setup/ch01-HA-setup.png)
+![HA-Setup](./ha-setup/ch01.10-HA-setup.png)
 
-_1.1 HA
+_1.10 HA
 Setup_
 
 It's important to note that Zabbix HA setup is straightforward, providing redundancy
@@ -448,9 +448,9 @@ At the bottom of the page, you should see a list of servers, with at least one
 marked as active. The number of servers displayed will depend on the total configured
 in your HA setup.
 
-![1st active frontend](ha-setup/ch01-HA-check1.png)
+![1st active frontend](ha-setup/ch01.11-HA-check1.png)
 
-_1.2 verify
+_1.11 verify
 HA_
 
 Shut down or reboot the active frontend server and observe that the Zabbix frontend
@@ -458,9 +458,9 @@ remains accessible. Upon reloading the page, you will notice that the other fron
 server has taken over as the active instance, ensuring an almost seamless failover
 and high availability.
 
-![2st active frontend](ha-setup/ch01-HA-check2.png)
+![2st active frontend](ha-setup/ch01.12-HA-check2.png)
 
-_1.3 verify
+_1.12 verify
 HA_
 
 In addition to monitoring the status of HA nodes, Zabbix provides several runtime

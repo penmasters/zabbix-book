@@ -16,9 +16,9 @@ naadloos overnemen.
 Voor deze handleiding gebruiken we twee Zabbix servers en één database, maar de
 setup maakt het mogelijk om meer Zabbix servers toe te voegen als dat nodig is.
 
-![HA-Setup](./ha-setup/ch01-HA-setup.png)
+![HA-Setup](./ha-setup/ch01.10-HA-setup.png)
 
-_1.1 HA Configuratie_
+_1.10 HA Configuratie_
 
 Het is belangrijk op te merken dat de Zabbix HA setup eenvoudig is en
 redundantie biedt zonder complexe functies zoals load balancing. Slechts één
@@ -453,18 +453,18 @@ menu. At the bottom of the page, you should see a list of servers, with at least
 one marked as active. The number of servers displayed will depend on the total
 configured in your HA setup.
 
-![1st active frontend](ha-setup/ch01-HA-check1.png)
+![1st active frontend](ha-setup/ch01.11-HA-check1.png)
 
-_1.2 verify HA_
+_1.11 verify HA_
 
 Shut down or reboot the active frontend server and observe that the Zabbix
 frontend remains accessible. Upon reloading the page, you will notice that the
 other frontend server has taken over as the active instance, ensuring an almost
 seamless failover and high availability.
 
-![2st active frontend](ha-setup/ch01-HA-check2.png)
+![2st active frontend](ha-setup/ch01.12-HA-check2.png)
 
-_1.3 verify HA_
+_1.12 verify HA_
 
 In addition to monitoring the status of HA nodes, Zabbix provides several
 runtime commands that allow administrators to manage failover settings and

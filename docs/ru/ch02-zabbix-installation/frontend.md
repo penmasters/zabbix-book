@@ -33,14 +33,14 @@ tags: [beginner]
 <font color='red'>красным</font>, а наши `ссылки` отмечены
 <font color='gold'>желтым</font>.
 
-![Обзор](ch02-frontend-overview.png)
+![Обзор](ch02.1-frontend-overview.png)
 
 _2.1 Обзор_
 
 Главное меню можно скрыть, свернув его полностью или сведя к набору маленьких
 иконок. Когда мы нажимаем на кнопку с двумя стрелками слева:
 
-![Крах](ch02-frontend-collapse.png)
+![Крах](ch02.2-frontend-collapse.png)
 
 _2.2 Свернуть_
 
@@ -50,7 +50,7 @@ _2.2 Свернуть_
 При нажатии на иконку, похожую на квадратик с торчащей стрелкой, рядом с кнопкой
 "<<" `главное меню` будет полностью скрыто.
 
-![Скрыть](ch02-frontend-hide.png)
+![Скрыть](ch02.3-frontend-hide.png)
 
 _2.3 Скрыть_
 
@@ -65,7 +65,7 @@ _2.3 Скрыть_
 Нажатие этой кнопки убирает все меню и оставляет только `главное окно` , на
 котором можно сосредоточиться.
 
-![Развернуть](ch02-frontend-expand.png)
+![Развернуть](ch02.4-frontend-expand.png)
 
 _2.4 Развернуть_
 
@@ -73,7 +73,7 @@ _2.4 Развернуть_
 направленные внутрь экрана. Нажатие на эту кнопку вернет нас в исходное
 состояние.
 
-![Развернуть](ch02-frontend-shrink.png)
+![Развернуть](ch02.5-frontend-shrink.png)
 
 _2.5 Свернуть_
 
@@ -94,14 +94,14 @@ _2.5 Свернуть_
 `групп узлов` и `узлы` с указанным именем сервера. Поэтому это поле называется
 `глобальным поиском`.
 
-![Глобальный поиск](ch02-global-search.png)
+![Глобальный поиск](ch02.6-global-search.png)
 
 _2.6 Глобальный поиск_
 
 Это наш результат после поиска слова `сервер`. Если у вас стандартная настройка
 Zabbix, то ваша страница должна выглядеть примерно так же.
 
-![Результаты глобального поиска](ch02-global-search-result.png)
+![Результаты глобального поиска](ch02.7-global-search-result.png)
 
 _2.7 Результаты глобального поиска_
 
@@ -144,7 +144,7 @@ _2.7 Результаты глобального поиска_
 A few interactive elements remains to be addressed on the right-hand portion of
 the display.
 
-![Edit dashboard](ch02-edit-dashboard.png)
+![Edit dashboard](ch02.8-edit-dashboard.png)
 
 _2.8 Edit dashboard_
 
@@ -168,7 +168,7 @@ panel, as their interpretation is crucial for system comprehension.
 
 </br>
 
-![System Information](ch02-system-information.png)
+![System Information](ch02.9-system-information.png)
 
 _2.9 System Information_
 
@@ -216,7 +216,7 @@ Zabbix works with 3 different levels of users we have the regular `users`,
 `Zabbix Admin` and `Zabbix Super Admin` users. Let's have a deeper look at the
 differences :
 
-![Main Menu sections](ch02-main-menu.png){ width=20% }
+![Main Menu sections](ch02.10-main-menu.png){ width=20% }
 
 _2.10 Main menu sections_
 
@@ -230,7 +230,7 @@ _2.10 Main menu sections_
 
   ***
 
-  ![Monitoring Menu](ch02-monitoring-menu.png){ width=20% }
+  ![Monitoring Menu](ch02.11-monitoring-menu.png){ width=20% }
 
 _2.11 Monitoring menu_
 
@@ -249,7 +249,7 @@ _2.11 Monitoring menu_
 
 ---
 
-![Services menu](ch02-services-menu.png){ width="20%" }
+![Services menu](ch02.12-services-menu.png){ width="20%" }
 
 _2.12 Services menu_
 
@@ -260,7 +260,7 @@ _2.12 Services menu_
 
 ---
 
-![Inventory menu](ch02-inventory-menu.png){ width="20%" }
+![Inventory menu](ch02.13-inventory-menu.png){ width="20%" }
 
 _2.13 Inventory menu_
 
@@ -271,7 +271,7 @@ _2.13 Inventory menu_
 
 ---
 
-![Reports menu](ch02-reports-menu.png){ width="20%" }
+![Reports menu](ch02.14-reports-menu.png){ width="20%" }
 
 _2.14 Inventory menu_
 
@@ -292,7 +292,7 @@ _2.14 Inventory menu_
 
 ---
 
-![Data collection](ch02-datacollection-menu.png){ width="20%" }
+![Data collection](ch02.15-datacollection-menu.png){ width="20%" }
 
 _2.15 Data collection_
 
@@ -312,7 +312,7 @@ _2.15 Data collection_
 
 ---
 
-![Alerts menu](ch02-alerts-menu.png){ width="20%" }
+![Alerts menu](ch02.16-alerts-menu.png){ width="20%" }
 
 _2.16 Alerts menu_
 
@@ -326,7 +326,7 @@ _2.16 Alerts menu_
 
 ---
 
-![Users menu](ch02-users-menu.png){ width="20%" }
+![Users menu](ch02.17-users-menu.png){ width="20%" }
 
 _2.17 Users menu_
 
@@ -346,7 +346,7 @@ _2.17 Users menu_
 
 ---
 
-![Administration menu](ch02-administration-menu.png){ width="20%" }
+![Administration menu](ch02.18-administration-menu.png){ width="20%" }
 
 _2.18 Administration menu_
 
