@@ -1,0 +1,710 @@
+# Curated English subject index.
+#
+# A target's start is linked on the website and converted to a page number in
+# print. When end is present, print renders a page range. Keep labels short and
+# action-oriented. Run `python3 tools/build_subject_index.py` after editing.
+
+entries:
+  - term: active agent autoregistration
+    targets:
+      - label: configuring
+        start: ch10-zabbix-discovery/active-agent-autoregistration.md
+        end: ch10-zabbix-discovery/active-agent-autoregistration.md#conclusion
+    see_also:
+      - Zabbix agent, active checks
+
+  - term: active checks
+    see: Zabbix agent, active checks
+
+  - term: actions
+    targets:
+      - label: configuring alert actions
+        start: ch07-zabbix-alerts/actions.md
+        end: ch07-zabbix-alerts/actions.md#conclusion
+    see_also:
+      - alerting
+      - media types
+      - triggers
+
+  - term: agent encryption
+    see: Zabbix agent, encryption
+
+  - term: alert scripts
+    targets:
+      - label: creating custom scripts
+        start: ch07-zabbix-alerts/scripts.md
+    see_also:
+      - alerting
+      - media types
+
+  - term: alerting
+    subterms:
+      - term: actions
+        targets:
+          - label: actions
+            start: ch07-zabbix-alerts/actions.md
+            end: ch07-zabbix-alerts/actions.md#conclusion
+      - term: custom scripts
+        targets:
+          - label: custom scripts
+            start: ch07-zabbix-alerts/scripts.md
+      - term: media types
+        targets:
+          - label: media types
+            start: ch07-zabbix-alerts/media-types.md
+            end: ch07-zabbix-alerts/media-types.md#conclusion
+
+  - term: API
+    see: Zabbix API
+
+  - term: automated PDF reports
+    targets:
+      - label: creating
+        start: ch11-zabbix-visualisation/automated-pdf-reports.md
+        end: ch11-zabbix-visualisation/automated-pdf-reports.md#conclusion
+    see_also:
+      - reports
+      - Zabbix web service
+
+  - term: backups
+    targets:
+      - label: creating and restoring
+        start: ch14-zabbix-maintenance/taking-backups.md
+        end: ch14-zabbix-maintenance/taking-backups.md#conclusion
+
+  - term: browser items
+    targets:
+      - label: configuring browser monitoring
+        start: ch04-zabbix-collecting-data/browser.md
+        end: ch04-zabbix-collecting-data/browser.md#conclusion
+    see_also:
+      - web monitoring
+
+  - term: calculated items
+    targets:
+      - label: creating and using
+        start: ch04-zabbix-collecting-data/calculated.md
+        end: ch04-zabbix-collecting-data/calculated.md#conclusion
+    see_also:
+      - items
+
+  - term: ClickHouse
+    targets:
+      - label: storing Zabbix data
+        start: ch13-advanced-security/storing-data-in-clickhousedb.md
+
+  - term: database
+    subterms:
+      - term: choosing
+        targets:
+          - label: choosing a database
+            start: ch01-zabbix-components/database.md
+            end: ch01-zabbix-components/database.md#conclusion
+      - term: MariaDB
+        targets:
+          - label: installing MariaDB
+            start: ch01-zabbix-components/mariadb.md
+            end: ch01-zabbix-components/mariadb.md#conclusion
+      - term: monitoring with agent 2
+        targets:
+          - label: monitoring with Zabbix agent 2
+            start: ch04-zabbix-collecting-data/database-agent.md
+            end: ch04-zabbix-collecting-data/database-agent.md#conclusion
+      - term: ODBC monitoring
+        targets:
+          - label: monitoring with ODBC
+            start: ch04-zabbix-collecting-data/database-odbc.md
+      - term: PostgreSQL
+        targets:
+          - label: installing PostgreSQL
+            start: ch01-zabbix-components/postgresql.md
+            end: ch01-zabbix-components/postgresql.md#conclusion
+
+  - term: data collection
+    targets:
+      - label: understanding the data flow
+        start: ch04-zabbix-collecting-data/dataflow.md
+        end: ch04-zabbix-collecting-data/dataflow.md#conclusion
+    see_also:
+      - items
+      - preprocessing
+
+  - term: dashboards
+    targets:
+      - label: creating and configuring
+        start: ch11-zabbix-visualisation/dashboards.md
+        end: ch11-zabbix-visualisation/dashboards.md#conclusion
+    see_also:
+      - graphs
+      - maps
+
+  - term: dependent items
+    targets:
+      - label: configuring
+        start: ch04-zabbix-collecting-data/dependent.md
+        end: ch04-zabbix-collecting-data/dependent.md#conclusion
+    see_also:
+      - low-level discovery
+      - preprocessing
+
+  - term: discovery
+    subterms:
+      - term: active agent autoregistration
+        targets:
+          - label: active agent autoregistration
+            start: ch10-zabbix-discovery/active-agent-autoregistration.md
+            end: ch10-zabbix-discovery/active-agent-autoregistration.md#conclusion
+      - term: network discovery
+        targets:
+          - label: network discovery
+            start: ch10-zabbix-discovery/network-host-discovery.md
+            end: ch10-zabbix-discovery/network-host-discovery.md#conclusion
+    see_also:
+      - low-level discovery
+
+  - term: external authentication
+    subterms:
+      - term: HTTP
+        targets:
+          - label: HTTP authentication
+            start: ch02-zabbix-installation/http.md
+            end: ch02-zabbix-installation/http.md#conclusion
+      - term: LDAP
+        targets:
+          - label: LDAP and Active Directory
+            start: ch02-zabbix-installation/ldap-ad.md
+            end: ch02-zabbix-installation/ldap-ad.md#conclusion
+      - term: SAML
+        targets:
+          - label: SAML authentication
+            start: ch02-zabbix-installation/saml.md
+            end: ch02-zabbix-installation/saml.md#conclusion
+
+  - term: external checks
+    targets:
+      - label: creating and using
+        start: ch04-zabbix-collecting-data/external-checks.md
+        end: ch04-zabbix-collecting-data/external-checks.md#conclusion
+
+  - term: frontend
+    see: Zabbix frontend
+
+  - term: frontend scripts
+    targets:
+      - label: creating
+        start: ch09-zabbix-extending/frontend-scripts.md
+        end: ch09-zabbix-extending/frontend-scripts.md#conclusion
+
+  - term: graphs
+    targets:
+      - label: creating and configuring
+        start: ch11-zabbix-visualisation/graphs.md
+        end: ch11-zabbix-visualisation/graphs.md#conclusion
+    see_also:
+      - dashboards
+      - visualisation
+
+  - term: high availability
+    targets:
+      - label: configuring Zabbix server HA
+        start: ch01-zabbix-components/ha-setup.md
+        end: ch01-zabbix-components/ha-setup.md#conclusion
+    see_also:
+      - proxy groups
+
+  - term: host groups
+    targets:
+      - label: creating and managing
+        start: ch02-zabbix-installation/host-groups.md
+        end: ch02-zabbix-installation/host-groups.md#conclusion
+
+  - term: host interfaces
+    targets:
+      - label: configuring
+        start: ch04-zabbix-collecting-data/host-interfaces.md
+        end: ch04-zabbix-collecting-data/host-interfaces.md#conclusion
+    see_also:
+      - hosts
+
+  - term: hosts
+    targets:
+      - label: creating and configuring
+        start: ch04-zabbix-collecting-data/hosts.md
+        end: ch04-zabbix-collecting-data/hosts.md#conclusion
+    see_also:
+      - host groups
+      - host interfaces
+
+  - term: HTTP agent items
+    targets:
+      - label: configuring
+        start: ch04-zabbix-collecting-data/http.md
+        end: ch04-zabbix-collecting-data/http.md#conclusion
+    see_also:
+      - web monitoring
+
+  - term: ICMP checks
+    targets:
+      - label: configuring simple checks
+        start: ch04-zabbix-collecting-data/simple-checks.md
+        end: ch04-zabbix-collecting-data/simple-checks.md#conclusion
+
+  - term: internal health
+    targets:
+      - label: monitoring Zabbix health
+        start: ch14-zabbix-maintenance/internal-health.md
+        end: ch14-zabbix-maintenance/internal-health.md#conclusion
+
+  - term: IPMI
+    targets:
+      - label: configuring IPMI monitoring
+        start: ch04-zabbix-collecting-data/ipmi.md
+        end: ch04-zabbix-collecting-data/ipmi.md#conclusion
+
+  - term: items
+    subterms:
+      - term: browser
+        targets:
+          - label: browser items
+            start: ch04-zabbix-collecting-data/browser.md
+            end: ch04-zabbix-collecting-data/browser.md#conclusion
+      - term: calculated
+        targets:
+          - label: calculated items
+            start: ch04-zabbix-collecting-data/calculated.md
+            end: ch04-zabbix-collecting-data/calculated.md#conclusion
+      - term: dependent
+        targets:
+          - label: dependent items
+            start: ch04-zabbix-collecting-data/dependent.md
+            end: ch04-zabbix-collecting-data/dependent.md#conclusion
+      - term: HTTP agent
+        targets:
+          - label: HTTP agent items
+            start: ch04-zabbix-collecting-data/http.md
+            end: ch04-zabbix-collecting-data/http.md#conclusion
+      - term: script
+        targets:
+          - label: script items
+            start: ch04-zabbix-collecting-data/script.md
+            end: ch04-zabbix-collecting-data/script.md#conclusion
+      - term: trapper
+        targets:
+          - label: trapper items
+            start: ch04-zabbix-collecting-data/zabbix-trapper.md
+            end: ch04-zabbix-collecting-data/zabbix-trapper.md#conclusion
+
+  - term: Java Management Extensions
+    see: JMX
+
+  - term: JMX
+    targets:
+      - label: monitoring Java applications
+        start: ch04-zabbix-collecting-data/jmx.md
+        end: ch04-zabbix-collecting-data/jmx.md#conclusion
+
+  - term: LDAP
+    targets:
+      - label: configuring LDAP and Active Directory authentication
+        start: ch02-zabbix-installation/ldap-ad.md
+        end: ch02-zabbix-installation/ldap-ad.md#conclusion
+    see_also:
+      - external authentication
+
+  - term: low-level discovery
+    subterms:
+      - term: custom
+        targets:
+          - label: custom LLD
+            start: ch08-zabbix-lld/custom.md
+            end: ch08-zabbix-lld/custom.md#conclusion
+      - term: dependent items
+        targets:
+          - label: LLD with dependent items
+            start: ch08-zabbix-lld/lld-with-dependent-items.md
+            end: ch08-zabbix-lld/lld-with-dependent-items.md#conclusion
+      - term: SNMP
+        targets:
+          - label: SNMP LLD
+            start: ch08-zabbix-lld/snmp-lld.md
+            end: ch08-zabbix-lld/snmp-lld.md#conclusion
+    see_also:
+      - discovery
+
+  - term: LLD
+    see: low-level discovery
+
+  - term: maintenance
+    targets:
+      - label: creating and managing maintenance periods
+        start: ch14-zabbix-maintenance/maintenance.md
+        end: ch14-zabbix-maintenance/maintenance.md#conclusion
+
+  - term: maps
+    targets:
+      - label: creating and configuring
+        start: ch11-zabbix-visualisation/maps.md
+        end: ch11-zabbix-visualisation/maps.md#conclusion
+    see_also:
+      - dashboards
+      - visualisation
+
+  - term: MariaDB
+    subterms:
+      - term: installation
+        targets:
+          - label: installing
+            start: ch01-zabbix-components/mariadb.md
+            end: ch01-zabbix-components/mariadb.md#conclusion
+      - term: partitioning
+        targets:
+          - label: partitioning
+            start: ch13-advanced-security/partitioning-database.md
+    see_also:
+      - database
+
+  - term: master items
+    see: dependent items
+
+  - term: media types
+    targets:
+      - label: configuring
+        start: ch07-zabbix-alerts/media-types.md
+        end: ch07-zabbix-alerts/media-types.md#conclusion
+    see_also:
+      - actions
+      - alerting
+
+  - term: MFA
+    see: multi-factor authentication
+
+  - term: multi-factor authentication
+    targets:
+      - label: configuring
+        start: ch02-zabbix-installation/mfa.md
+        end: ch02-zabbix-installation/mfa.md#conclusion
+
+  - term: network discovery
+    targets:
+      - label: discovering hosts
+        start: ch10-zabbix-discovery/network-host-discovery.md
+        end: ch10-zabbix-discovery/network-host-discovery.md#conclusion
+    see_also:
+      - discovery
+
+  - term: ODBC
+    targets:
+      - label: database monitoring
+        start: ch04-zabbix-collecting-data/database-odbc.md
+    see_also:
+      - database
+
+  - term: passive checks
+    see: Zabbix agent, passive checks
+
+  - term: PostgreSQL
+    subterms:
+      - term: installation
+        targets:
+          - label: installing
+            start: ch01-zabbix-components/postgresql.md
+            end: ch01-zabbix-components/postgresql.md#conclusion
+      - term: partitioning with TimescaleDB
+        targets:
+          - label: partitioning with TimescaleDB
+            start: ch13-advanced-security/partitioning-postgresql-database.md
+            end: ch13-advanced-security/partitioning-postgresql-database.md#conclusion
+    see_also:
+      - database
+
+  - term: preprocessing
+    targets:
+      - label: transforming item values
+        start: ch04-zabbix-collecting-data/preprocessing.md
+        end: ch04-zabbix-collecting-data/preprocessing.md#conclusion
+    see_also:
+      - dependent items
+      - items
+
+  - term: proxy groups
+    targets:
+      - label: configuring and managing
+        start: ch03-zabbix-proxies/proxy-groups.md
+        end: ch03-zabbix-proxies/proxy-groups.md#conclusion
+    see_also:
+      - high availability
+      - Zabbix proxy
+
+  - term: reports
+    subterms:
+      - term: automated PDF reports
+        targets:
+          - label: automated PDF reports
+            start: ch11-zabbix-visualisation/automated-pdf-reports.md
+            end: ch11-zabbix-visualisation/automated-pdf-reports.md#conclusion
+      - term: built-in reports
+        targets:
+          - label: built-in reports
+            start: ch11-zabbix-visualisation/built-in-reports.md
+            end: ch11-zabbix-visualisation/built-in-reports.md#conclusion
+
+  - term: SAML
+    targets:
+      - label: configuring authentication
+        start: ch02-zabbix-installation/saml.md
+        end: ch02-zabbix-installation/saml.md#conclusion
+    see_also:
+      - external authentication
+
+  - term: script items
+    targets:
+      - label: creating and using
+        start: ch04-zabbix-collecting-data/script.md
+        end: ch04-zabbix-collecting-data/script.md#conclusion
+
+  - term: SELinux
+    targets:
+      - label: configuring for Zabbix
+        start: ch13-advanced-security/selinux-zabbix.md
+        end: ch13-advanced-security/selinux-zabbix.md#conclusion
+
+  - term: simple checks
+    targets:
+      - label: configuring ICMP and service checks
+        start: ch04-zabbix-collecting-data/simple-checks.md
+        end: ch04-zabbix-collecting-data/simple-checks.md#conclusion
+
+  - term: SNMP
+    subterms:
+      - term: low-level discovery
+        targets:
+          - label: low-level discovery
+            start: ch08-zabbix-lld/snmp-lld.md
+            end: ch08-zabbix-lld/snmp-lld.md#conclusion
+      - term: polling
+        targets:
+          - label: polling
+            start: ch04-zabbix-collecting-data/snmp-polling.md
+            end: ch04-zabbix-collecting-data/snmp-polling.md#conclusion
+      - term: trapping
+        targets:
+          - label: trapping
+            start: ch04-zabbix-collecting-data/snmp-trapping.md
+            end: ch04-zabbix-collecting-data/snmp-trapping.md#conclusion
+
+  - term: SSH checks
+    targets:
+      - label: configuring SSH checks
+        start: ch04-zabbix-collecting-data/ssh-telnet.md
+        end: ch04-zabbix-collecting-data/ssh-telnet.md#conclusion
+
+  - term: tags
+    targets:
+      - label: using in templates
+        start: ch06-zabbix-templates/templates.md
+        end: ch06-zabbix-templates/templates.md#conclusion
+
+  - term: Telnet checks
+    targets:
+      - label: configuring Telnet checks
+        start: ch04-zabbix-collecting-data/ssh-telnet.md
+        end: ch04-zabbix-collecting-data/ssh-telnet.md#conclusion
+
+  - term: templates
+    targets:
+      - label: creating and using
+        start: ch06-zabbix-templates/templates.md
+        end: ch06-zabbix-templates/templates.md#conclusion
+    see_also:
+      - low-level discovery
+      - user macros
+
+  - term: TimescaleDB
+    targets:
+      - label: partitioning PostgreSQL
+        start: ch13-advanced-security/partitioning-postgresql-database.md
+        end: ch13-advanced-security/partitioning-postgresql-database.md#conclusion
+
+  - term: trapper items
+    targets:
+      - label: creating and using
+        start: ch04-zabbix-collecting-data/zabbix-trapper.md
+        end: ch04-zabbix-collecting-data/zabbix-trapper.md#conclusion
+
+  - term: triggers
+    subterms:
+      - term: advanced expressions
+        targets:
+          - label: advanced expressions
+            start: ch05-zabbix-triggers/advanced-triggers.md
+            end: ch05-zabbix-triggers/advanced-triggers.md#conclusion
+      - term: creating
+        targets:
+          - label: creating and configuring
+            start: ch05-zabbix-triggers/triggers.md
+            end: ch05-zabbix-triggers/triggers.md#conclusion
+
+  - term: upgrades
+    targets:
+      - label: planning and performing
+        start: ch14-zabbix-maintenance/upgrades.md
+        end: ch14-zabbix-maintenance/upgrades.md#conclusion
+    see_also:
+      - backups
+
+  - term: user groups
+    targets:
+      - label: creating and managing
+        start: ch02-zabbix-installation/user-groups.md
+        end: ch02-zabbix-installation/user-groups.md#conclusion
+    see_also:
+      - user roles
+
+  - term: user macros
+    targets:
+      - label: using in templates
+        start: ch06-zabbix-templates/templates.md
+        end: ch06-zabbix-templates/templates.md#conclusion
+
+  - term: user parameters
+    targets:
+      - label: creating custom items
+        start: ch09-zabbix-extending/user-parameters.md
+        end: ch09-zabbix-extending/user-parameters.md#conclusion
+
+  - term: user roles
+    targets:
+      - label: creating and managing
+        start: ch02-zabbix-installation/user-roles.md
+        end: ch02-zabbix-installation/user-roles.md#conclusion
+    see_also:
+      - user groups
+
+  - term: Vault
+    targets:
+      - label: storing Zabbix secrets
+        start: ch13-advanced-security/using-vault.md
+        end: ch13-advanced-security/using-vault.md#conclusion
+
+  - term: visualisation
+    subterms:
+      - term: dashboards
+        targets:
+          - label: dashboards
+            start: ch11-zabbix-visualisation/dashboards.md
+            end: ch11-zabbix-visualisation/dashboards.md#conclusion
+      - term: graphs
+        targets:
+          - label: graphs
+            start: ch11-zabbix-visualisation/graphs.md
+            end: ch11-zabbix-visualisation/graphs.md#conclusion
+      - term: maps
+        targets:
+          - label: maps
+            start: ch11-zabbix-visualisation/maps.md
+            end: ch11-zabbix-visualisation/maps.md#conclusion
+
+  - term: web monitoring
+    subterms:
+      - term: browser items
+        targets:
+          - label: browser items
+            start: ch04-zabbix-collecting-data/browser.md
+            end: ch04-zabbix-collecting-data/browser.md#conclusion
+      - term: HTTP agent items
+        targets:
+          - label: HTTP agent items
+            start: ch04-zabbix-collecting-data/http.md
+            end: ch04-zabbix-collecting-data/http.md#conclusion
+
+  - term: Windows monitoring
+    subterms:
+      - term: disk health
+        targets:
+          - label: monitoring disk health
+            start: ch15-zabbix-real-world-examples/disk-health-windows.md
+      - term: overview
+        targets:
+          - label: monitoring Windows
+            start: ch16-windows/windows.md
+
+  - term: Zabbix agent
+    subterms:
+      - term: active checks
+        targets:
+          - label: active checks
+            start: ch04-zabbix-collecting-data/zabbix-agent-active.md
+            end: ch04-zabbix-collecting-data/zabbix-agent-active.md#conclusion
+      - term: encryption
+        targets:
+          - label: encryption
+            start: ch13-advanced-security/agent-security.md
+            end: ch13-advanced-security/agent-security.md#conclusion
+      - term: passive checks
+        targets:
+          - label: passive checks
+            start: ch04-zabbix-collecting-data/zabbix-agent-passive.md
+            end: ch04-zabbix-collecting-data/zabbix-agent-passive.md#conclusion
+
+  - term: Zabbix API
+    targets:
+      - label: using the API
+        start: ch12-zabbix-api/self-engaging.md
+    see_also:
+      - API tokens
+
+  - term: API tokens
+    targets:
+      - label: using with the Zabbix API
+        start: ch12-zabbix-api/self-engaging.md
+    see_also:
+      - Zabbix API
+
+  - term: Zabbix architecture
+    targets:
+      - label: understanding components and data flow
+        start: ch01-zabbix-components/architecture.md
+
+  - term: Zabbix frontend
+    targets:
+      - label: installing
+        start: ch01-zabbix-components/zabbix-frontend.md
+        end: ch01-zabbix-components/zabbix-frontend.md#conclusion
+      - label: navigating and configuring
+        start: ch02-zabbix-installation/frontend.md
+        end: ch02-zabbix-installation/frontend.md#conclusion
+
+  - term: Zabbix proxy
+    subterms:
+      - term: active and passive modes
+        targets:
+          - label: active and passive modes
+            start: ch03-zabbix-proxies/active-passive-proxies.md
+            end: ch03-zabbix-proxies/active-passive-proxies.md#conclusion
+      - term: containers
+        targets:
+          - label: running as containers
+            start: ch03-zabbix-proxies/proxies-as-container.md
+            end: ch03-zabbix-proxies/proxies-as-container.md#conclusion
+      - term: proxy groups
+        targets:
+          - label: proxy groups
+            start: ch03-zabbix-proxies/proxy-groups.md
+            end: ch03-zabbix-proxies/proxy-groups.md#conclusion
+
+  - term: Zabbix server
+    targets:
+      - label: installing
+        start: ch01-zabbix-components/zabbix-server.md
+        end: ch01-zabbix-components/zabbix-server.md#conclusion
+    see_also:
+      - high availability
+      - internal health
+
+  - term: Zabbix web service
+    targets:
+      - label: installing and configuring
+        start: ch03-zabbix-proxies/web-services.md
+        end: ch03-zabbix-proxies/web-services.md#conclusion
+    see_also:
+      - automated PDF reports
