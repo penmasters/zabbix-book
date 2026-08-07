@@ -573,3 +573,10 @@ subtrees
 systemonly
 systemview
 adhoc
+oids
+departements
+nmap
+lo
+journalctl
+ifdescr
+valuemap

@@ -256,17 +256,17 @@ Integrating Microsoft Entra ID as a SAML Identity Provider for Zabbix follows th
 
 First, navigate to the the Microsoft Entra admin center. You can type the name in the search bar and it should come right up.
 
-![Microsoft Entra ID](ch02.20-ms-entra-id-app.png){ align=center }
+![Microsoft Entra ID](ch02.48-ms-entra-id-app.png){ align=center }
 
-*2.20 Microsoft Entra ID*
+*2.48 Microsoft Entra ID*
 
 Here you should be able to find an `add` button and then navigate to `Enterprise application`. This is where we are going to create the SAML integration by clicking on `Create your own application`.
 
 Choose a simple descriptive name here. My recommendation is to go with something like `Zabbix SAML`. You will have to use the option `Integrate any other application you don’t find in the gallery`.
 
-![Microsoft Entra ID - Create app](ch02.21-ms-entra-id-create-app.png){ align=center }
+![Microsoft Entra ID - Create app](ch02.49-ms-entra-id-create-app.png){ align=center }
 
-*2.21 Microsoft Entra ID - Create app*
+*2.49 Microsoft Entra ID - Create app*
 
 After creating the application, open it and go to `Manage` | `Single sign-on`, where you can enable `SAML`. This should present you with the form to configure all the details needed. 
 
@@ -277,24 +277,24 @@ https://your_zabbix_server/zabbix
 - Reply URL (ACS URL)
 https://your_zabbix_server/zabbix/index_sso.php?acs
 
-![Microsoft Entra ID - Basic configuration](ch02.22-ms-entra-id-basic.png){ align=center }
+![Microsoft Entra ID - Basic configuration](ch02.50-ms-entra-id-basic.png){ align=center }
 
-*2.22 Microsoft Entra ID - Basic configuration*
+*2.50 Microsoft Entra ID - Basic configuration*
 
 Next, at `Attributes & Claims` we need to specify some claims. Click `Add new claim` and add at least the following:
 - `user_email` with `Source attribute` set to `user.mail`
 - `user_name` with `Source attribute` set to `user.givenname`
 - `user_lastname` with `Source attribute` set to `user.surname`
 
-![Microsoft Entra ID - Claim](ch02.23-ms-entra-id-claim.png){ align=center }
+![Microsoft Entra ID - Claim](ch02.51-ms-entra-id-claim.png){ align=center }
 
-*2.23 Microsoft Entra ID - Claim*
+*2.51 Microsoft Entra ID - Claim*
 
 We also need to add click on `Add a group claim` to make sure our users groups can be sent to Zabbix. Add the following.
 
-![Microsoft Entra ID - Group claims](ch02.24-ms-entra-id-group-claims.png){ align=center }
+![Microsoft Entra ID - Group claims](ch02.52-ms-entra-id-group-claims.png){ align=center }
 
-*2.24 Microsoft Entra ID - Group claims*
+*2.52 Microsoft Entra ID - Group claims*
 
 Now, let's download the `Certificate (Base64)` under `SAML Certificates` and save it as `idp.crt`. Then we upload this to the Zabbix server(s).
 
@@ -327,17 +327,17 @@ In the last steps, we can now start the configuration of Zabbix SAML.
 
 In the Entra ID Application configuration window you should now find the URLs we need to configure Zabbix.
 
-![Microsoft Entra ID - SAML URLs](ch02.25-ms-entra-id-saml-urls.png){ align=center }
+![Microsoft Entra ID - SAML URLs](ch02.53-ms-entra-id-saml-urls.png){ align=center }
 
-*2.25 Microsoft Entra ID - SAML URLs*
+*2.53 Microsoft Entra ID - SAML URLs*
 
 Copy the `Login URL` as the `SSO service URL` and `SLO service URL`. The `Microsoft Entra Identifier` can go into the `IdP entity ID` field.
 
 Fill in the `Username attribute` as `user_email` and the `SP entity ID` as the name of your application, in this case `Zabbix SAML`.
 
-![Microsoft Entra ID - Zabbix basic SAML configuration](ch02.26-ms-entra-id-zabbix-basic-config.png){ align=center }
+![Microsoft Entra ID - Zabbix basic SAML configuration](ch02.54-ms-entra-id-zabbix-basic-config.png){ align=center }
 
-*2.26 Microsoft Entra ID - Zabbix basic SAML configuration*
+*2.54 Microsoft Entra ID - Zabbix basic SAML configuration*
 
 If you press `Update` now, I would recommend you to test these settings first.
 
@@ -349,15 +349,15 @@ If you'd like to continue the work however and make SAML truly worthwhile, we ca
 
 To map the permissions in Azure to permissions in Zabbix, we need to set up the group mappings. At `User group mapping` click on the small `Add` button. Fill out your `SAML group pattern` with the name of your group in Azure. The select the `User groups` and `User roles` to assign permissions in Zabbix, like below.
 
-![Microsoft Entra ID - Zabbix SAML group configuration](ch02.27-ms-entra-id-zabbix-group-config.png){ align=center }
+![Microsoft Entra ID - Zabbix SAML group configuration](ch02.55-ms-entra-id-zabbix-group-config.png){ align=center }
 
-*2.27 Microsoft Entra ID - Zabbix SAML group configuration*
+*2.55 Microsoft Entra ID - Zabbix SAML group configuration*
 
 The end result should look something like the image below, but in your environment you will probably add more groups. It is also possible to map certain media types to the user, for example by mapping the `user_email` attribute to an email media type.
 
-![Microsoft Entra ID - Zabbix SAML JIT configuration](ch02.28-ms-entra-id-zabbix-jit-config.png){ align=center }
+![Microsoft Entra ID - Zabbix SAML JIT configuration](ch02.56-ms-entra-id-zabbix-jit-config.png){ align=center }
 
-*2.28 Microsoft Entra ID - Zabbix SAML JIT configuration*
+*2.56 Microsoft Entra ID - Zabbix SAML JIT configuration*
 
 
 ???+ note
@@ -388,7 +388,7 @@ as Google Workspace, Microsoft Entra ID, or Okta. This provides users with a sea
 login experience while allowing administrators to centrally enforce password policies,
 multi-factor authentication, and access control.
 
-In this chapter, you’ve learned how to configure SAML authentication, exchange
+In this chapter, you've learned how to configure SAML authentication, exchange
 certificates, map user attributes, and integrate user groups with Zabbix. You also
 explored Just-in-Time (JIT) provisioning, which automatically creates user accounts
 during their first login, and saw how SCIM can extend this by continuously synchronizing
