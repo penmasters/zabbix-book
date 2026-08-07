@@ -16,9 +16,9 @@ un autre peut prendre le relais de manière transparente.
 Pour ce guide, nous utiliserons deux serveurs Zabbix et une base de données,
 mais la configuration permet d'ajouter d'autres serveurs Zabbix si nécessaire.
 
-![Configuration HA](./ha-setup/ch01-HA-setup.png)
+![Configuration HA](./ha-setup/ch01.10-HA-setup.png)
 
-_1.1 Configuration HA_
+_1.10 Configuration HA_
 
 Il est important de noter que la configuration de Zabbix HA est simple,
 fournissant une redondance sans fonctionnalités complexes telles que
@@ -456,18 +456,18 @@ menu. At the bottom of the page, you should see a list of servers, with at least
 one marked as active. The number of servers displayed will depend on the total
 configured in your HA setup.
 
-![1er frontend actif](ha-setup/ch01-HA-check1.png)
+![1er frontend actif](ha-setup/ch01.11-HA-check1.png)
 
-_1.2 vérifier l'HA_
+_1.11 vérifier l'HA_
 
 Shut down or reboot the active frontend server and observe that the Zabbix
 frontend remains accessible. Upon reloading the page, you will notice that the
 other frontend server has taken over as the active instance, ensuring an almost
 seamless failover and high availability.
 
-![2nd serveur frontend actif](ha-setup/ch01-HA-check2.png)
+![2nd serveur frontend actif](ha-setup/ch01.12-HA-check2.png)
 
-_1.3 vérifier l'HA_
+_1.12 vérifier l'HA_
 
 Outre la surveillance de l'état des nœuds HA, Zabbix fournit plusieurs commandes
 d'exécution qui permettent aux administrateurs de gérer les paramètres de

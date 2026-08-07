@@ -31,7 +31,7 @@ like this where we have our `main window` in <font color='green'>green</font>
 our `main menu` marked in
 <font color='red'>red</font> and our `links` marked in <font color='gold'>yellow</font>.
 
-![Overview](ch02-frontend-overview.png)
+![Overview](ch02.1-frontend-overview.png)
 
 _2.1
 Overview_
@@ -39,7 +39,7 @@ Overview_
 The main menu can be hidden by collapsing it completely or to reduce it to a set
 of small icons. When we click on the button with the 2 arrows to the left:
 
-![Collapse](ch02-frontend-collapse.png)
+![Collapse](ch02.2-frontend-collapse.png)
 
 _2.2
 Collapse_
@@ -50,7 +50,7 @@ bring the `main menu` back to it's original state.
 When you click on the icon that looks like a box with an arrow sticking out, next
 to the "<<" button will hide the `main menu` completely.
 
-![Hide](ch02-frontend-hide.png)
+![Hide](ch02.3-frontend-hide.png)
 
 _2.3
 Hide_
@@ -66,7 +66,7 @@ left side of your screen and looks like 4 arrows pointing to every corner of the
 screen. Pressing this button will remove all the menus and leave only the `main window`
 to focus on.
 
-![Expand](ch02-frontend-expand.png)
+![Expand](ch02.4-frontend-expand.png)
 
 _2.4
 Expand_
@@ -75,7 +75,7 @@ When we want to leave the kiosk mode, the button will be changed to 2 arrows poi
 to the inside of the screen. Pressing this button will revert us back to the original
 state.
 
-![Expand](ch02-frontend-shrink.png)
+![Expand](ch02.5-frontend-shrink.png)
 
 _2.5
 Shrink_
@@ -97,7 +97,7 @@ If we type in the search box the word `server` you will see that we get an overv
 of all `templates`, `host groups` and `hosts` with the name server in it. That's
 why this is called the `global search` box.
 
-![Global search](ch02-global-search.png)
+![Global search](ch02.6-global-search.png)
 
 _2.6 Global
 search_
@@ -105,7 +105,7 @@ search_
 This is our result after we looked for the word `server`. If you have a standard
 Zabbix setup your page should look more or less the same.
 
-![Global search result](ch02-global-search-result.png)
+![Global search result](ch02.7-global-search-result.png)
 
 _2.7 Global search
 result_
@@ -149,7 +149,7 @@ for user access.
 A few interactive elements remains to be addressed on the right-hand portion of the
 display.
 
-![Edit dashboard](ch02-edit-dashboard.png)
+![Edit dashboard](ch02.8-edit-dashboard.png)
 
 _2.8 Edit
 dashboard_
@@ -173,7 +173,7 @@ interpretation is crucial for system comprehension.
 
 </br>
 
-![System Information](ch02-system-information.png)
+![System Information](ch02.9-system-information.png)
 
 _2.9 System
 Information_
@@ -221,7 +221,7 @@ what we can see and do in Zabbix as this user has no restrictions. Zabbix works
 with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 `Zabbix Super Admin` users. Let's have a deeper look at the differences :
 
-![Main Menu sections](ch02-main-menu.png){ width=20% }
+![Main Menu sections](ch02.10-main-menu.png){ width=20% }
 
 _2.10 Main
 menu sections_
@@ -235,7 +235,7 @@ menu sections_
 
   ***
 
-  ![Monitoring Menu](ch02-monitoring-menu.png){ width=20% }
+  ![Monitoring Menu](ch02.11-monitoring-menu.png){ width=20% }
 
 _2.11 Monitoring
 menu_
@@ -254,7 +254,7 @@ menu_
 
 ---
 
-![Services menu](ch02-services-menu.png){ width="20%" }
+![Services menu](ch02.12-services-menu.png){ width="20%" }
 
 _2.12 Services
 menu_
@@ -266,7 +266,7 @@ menu_
 
 ---
 
-![Inventory menu](ch02-inventory-menu.png){ width="20%" }
+![Inventory menu](ch02.13-inventory-menu.png){ width="20%" }
 
 _2.13 Inventory
 menu_
@@ -278,7 +278,7 @@ menu_
 
 ---
 
-![Reports menu](ch02-reports-menu.png){ width="20%" }
+![Reports menu](ch02.14-reports-menu.png){ width="20%" }
 
 _2.14 Inventory
 menu_
@@ -300,7 +300,7 @@ menu_
 
 ---
 
-![Data collection](ch02-datacollection-menu.png){ width="20%" }
+![Data collection](ch02.15-datacollection-menu.png){ width="20%" }
 
 _2.15 Data
 collection_
@@ -321,7 +321,7 @@ collection_
 
 ---
 
-![Alerts menu](ch02-alerts-menu.png){ width="20%" }
+![Alerts menu](ch02.16-alerts-menu.png){ width="20%" }
 
 _2.16 Alerts
 menu_
@@ -336,7 +336,7 @@ menu_
 
 ---
 
-![Users menu](ch02-users-menu.png){ width="20%" }
+![Users menu](ch02.17-users-menu.png){ width="20%" }
 
 _2.17 Users
 menu_
@@ -349,7 +349,7 @@ menu_
 
 ---
 
-![Administration menu](ch02-administration-menu.png){ width="20%" }
+![Administration menu](ch02.18-administration-menu.png){ width="20%" }
 
 _2.18 Administration
 menu_

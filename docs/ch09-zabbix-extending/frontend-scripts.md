@@ -71,7 +71,7 @@ To create a token for your Admin user:
 - Navigate to `User settings`
 - Select the `API tokens` sections
 
-![User API](ch09-scripts-user.png)
+![User API](ch09.1-scripts-user.png)
 
 *9.1 User API*
 
@@ -79,7 +79,7 @@ After selecting `API tokens` from the menu, you'll land on the `API tokens` page
 Look for the `Create API` token button in the top right corner and click it to
 begin the creation process.
 
-![Create API](ch09-create-api.png)
+![Create API](ch09.2-create-api.png)
 
 *9.2 Create API page*
 
@@ -87,7 +87,7 @@ A popup window will appear for creating your new API token. You'll need to provi
 a unique `Name` for your token. While there's an option to set an expiration date,
 we'll keep our token active indefinitely by leaving the time limit settings unchanged.
 
-![New API token](ch09-new-api-token.png)
+![New API token](ch09.3-new-api-token.png)
 
 *9.3 Create new API token*
 
@@ -97,7 +97,7 @@ as it will no longer be visible once you click `Close`. If you lose this token,
 you'll need to delete it and create a new one. There's no way to retrieve or view
 the token again through the interface.
 
-![API Token Created](ch09-api-token-added.png)
+![API Token Created](ch09.4-api-token-added.png)
 
 *9.4 Added API token*
 
@@ -119,7 +119,7 @@ Now that our script is properly configured, we need to set it up in the Zabbix
 interface. From the main Zabbix menu, navigate to `Alerts` and then select `Scripts`
 from the dropdown to access the scripts configuration area.
 
-![Alerts scripts menu](ch09-Alert-scripts-menu.png)
+![Alerts scripts menu](ch09.5-Alert-scripts-menu.png)
 
 *9.5 Scripts menu*
 
@@ -152,7 +152,7 @@ the user to fill in the time he wants to place the host in maintenance.
 
 If everything went well you should end up with a similar looking page :
 
-![Script form](ch09-script-form.png)
+![Script form](ch09.6-script-form.png)
 
 *9.6 Script form*
 
@@ -173,13 +173,13 @@ and from the `scripts` menu select `Maintenance` and click on the sub Menu
 `Create maintenance no data collection`. You should see a popup asking you how 
 many minutes you like to place the host in maintenance.
 
-![Monitoring host](ch09-host-testing-script.png)
+![Monitoring host](ch09.7-host-testing-script.png)
 
 *9.7 Create maintenance*
 
 When we click continue however we get a popup telling us that Zabbix cannot execute the script.
 
-![error execute](ch09-error-execute-script.png)
+![error execute](ch09.8-error-execute-script.png)
 
 *9.8 Error executing script*
 
@@ -194,7 +194,7 @@ file with you favourite editor and enable the parameter and restart the server s
 
 If all goes well this time you will see a popup telling you it was successful this time.
 
-![Maintenance ok](ch09-ok-execute-script.png)
+![Maintenance ok](ch09.9-ok-execute-script.png)
 
 *9.9 Maintenance successful*
 

@@ -163,13 +163,17 @@ side.
 So just hit "Create item" on your host (or, of course, better on your template)
 and fill in all the needed fields:
 
-![New Custom Item](ch09-user-parameters-new-item.png)
+![New Custom Item](ch09.10-user-parameters-new-item.png)
+
+_9.10 New Custom Item_
 
 Depending on the nature of the data that you are collecting, set correct "Type
 of information" as well as needed "Update interval". Once you are finished,
 you will see data being collected:
 
-![New Custom Item - Result](ch09-user-parameters-new-item-result.png)
+![New Custom Item - Result](ch09.11-user-parameters-new-item-result.png)
+
+_9.11 New Custom Item - Result_
 
 ### Creating flexible `UserParameter`
 
@@ -214,12 +218,16 @@ binary@binary:~$
 So now once creating items, we can provide parameters in `[]` part of item
 keys, like:
 
-![New Custom Item](ch09-user-parameters-new-flexible-item.png)
+![New Custom Item](ch09.12-user-parameters-new-flexible-item.png)
+
+_9.12 New Custom Item_
 
 Given that we want multiple different waves, we will clone such item with
 different sets of parameters and end up in having all of them being collected:
 
-![New Custom Item - Result](ch09-user-parameters-new-flexible-item-result.png)
+![New Custom Item - Result](ch09.13-user-parameters-new-flexible-item-result.png)
+
+_9.13 New Custom Item - Result_
 
 ???+ note
 
@@ -294,7 +302,9 @@ Always pay attention to how long it takes for your `UserParameter` to collect
 data. If it runs for too long you might hit Zabbix agent timeout. This timeout
 is configurable on item level, so you can adjust it:
 
-![Custom Item - Timeout](ch09-user-parameters-timeout.png)
+![Custom Item - Timeout](ch09.14-user-parameters-timeout.png)
+
+_9.14 Custom Item - Timeout_
 
 Also, be wise with number of such items. If you have many, especially more
 heavy ones, observe if it doesn't affect overall agent (or even host itself!)

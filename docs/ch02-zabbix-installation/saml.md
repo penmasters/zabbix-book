@@ -51,9 +51,9 @@ Retrieving the IdP Certificate (idp.crt) from Google Workspace:
 4. **Create a New Application:** Initiate the creation of a new application to
    facilitate SAML integration. This action will trigger Google Workspace to generate
    the necessary IdP certificate.
-   ![Add google app](ch02.16-add-google-app.png)
+   ![Add google app](ch02.44-add-google-app.png)
 
-_2.16 create
+_2.44 create
 new application_
 
 5. **Download the IdP Certificate:** Within the newly created application's settings,
@@ -62,9 +62,9 @@ new application_
 6. **Placement of idp.crt:** Copy the downloaded `idp.crt` file to the same directory
    as the SP certificates in Zabbix, under `ui/conf/certs/`.
 
-![Add google app](ch02.17-saml-download.png)
+![Add google app](ch02.45-saml-download.png)
 
-_2.17 add
+_2.45 add
 certificate_
 
 ---
@@ -102,9 +102,9 @@ This attribute mapping ensures that users can log in using their familiar Google
 Workspace credentials and that their access privileges within Zabbix are determined
 by their Google Workspace group memberships.
 
-![saml mappings](ch02.18-saml-mappings.png)
+![saml mappings](ch02.46-saml-mappings.png)
 
-_2.18 SAML
+_2.46 SAML
 mappings_
 
 ---
@@ -149,9 +149,9 @@ Example Configuration (Conceptual)
 - SP entity ID: https://your_zabbix_server/zabbix
 - Sign: Assertions
 
-![google saml config](ch02.19-saml-zabbix-options.png)
+![google saml config](ch02.47-saml-zabbix-options.png)
 
-_2.19 SAML
+_2.47 SAML
 config_
 
 **Additional Configuration Options:**

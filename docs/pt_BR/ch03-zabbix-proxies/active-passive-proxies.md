@@ -21,7 +21,7 @@ uma dessas etapas é adicionar o proxy no frontend do Zabbix. Então, no menu,
 vamos selecionar `Administration` => `Proxies` e clicar no canto superior
 direito em `Create proxy`.
 
-![Criar proxy](ch03-add-active-proxy.png)
+![Criar proxy](ch03.3-add-active-proxy.png)
 
 _3.3 Criar proxy_
 
@@ -44,7 +44,7 @@ que este é um proxy ativo.
     This hostname acts as the unique identifier that the Zabbix server uses to distinguish
     between different active proxies and manage their data correctly.
 
-![Proxy ativo](ch03-new-active-proxy.png)
+![Proxy ativo](ch03.4-new-active-proxy.png)
 
 _3.4 Novo proxy_
 
@@ -57,7 +57,7 @@ também precisamos especificar o campo _Interface_. Aqui adicionamos o IP do hos
 em que nosso proxy é executado. Você também notou que usamos a mesma porta
 `10051` que o servidor Zabbix __ para nos comunicarmos com o nosso proxy.
 
-![Proxy passivo](ch03-new-passive-proxy.png)
+![Proxy passivo](ch03.5-new-passive-proxy.png)
 
 _3.5 Novo proxy passivo_
 
@@ -347,14 +347,14 @@ No caso do proxy _ativo_, agora estamos prontos. Voltando ao frontend, poderemos
 ver que nosso proxy está on-line. O Zabbix também mostrará a versão do nosso
 proxy e a última idade vista.
 
-![ProxyA pronto](ch03-active-proxy-installed.png)
+![ProxyA pronto](ch03.6-active-proxy-installed.png)
 
 _3.6 Proxy ativo configurado_
 
 No caso do proxy _passivo_, no entanto, você notará no frontend que nada parece
 estar funcionando, mesmo quando configuramos tudo corretamente em nosso proxy.
 
-![O proxy passivo não está funcionando](ch03-passive-not-working.png)
+![O proxy passivo não está funcionando](ch03.7-passive-not-working.png)
 
 _3.7 O proxy não está funcionando_
 
@@ -385,7 +385,7 @@ Agora, voltando ao frontend, veremos que o nosso _proxy passivo_ está
 disponível. Se ele não estiver verde, aguarde alguns segundos ou verifique todas
 as etapas novamente e verifique seus arquivos de registro.
 
-![Proxy passivo funcionando](ch03-passive-working.png)
+![Proxy passivo funcionando](ch03.8-passive-working.png)
 
 _3.8 Funcionamento do proxy_
 

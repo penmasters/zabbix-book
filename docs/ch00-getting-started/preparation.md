@@ -110,9 +110,9 @@ for your environment, which will be Rocky Linux 9, openSUSE Leap 16 or Ubuntu 24
 We will be installing the Zabbix Server along with NGINX as the web server for
 the front-end. Make sure to download the relevant packages for your chosen configuration.
 
-![Zabbix Download](./getting-started/ch00-getting-started-zabbixdownload.png)
+![Zabbix Download](./getting-started/ch00.1-getting-started-zabbixdownload.png)
 
-_1.2 Zabbix
+_0.1 Zabbix
 download_
 
 ---

@@ -31,7 +31,7 @@ which we will discuss in detail.
     needed.
 
 
-![overview](ch01-basic-installation-zabbixserver.png){ align=left }
+![overview](ch01.1-basic-installation-zabbixserver.png){ align=left }
 
 _1.1 Zabbix basic
 split installation_

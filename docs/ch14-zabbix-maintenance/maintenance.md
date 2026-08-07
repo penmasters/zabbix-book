@@ -61,7 +61,9 @@ This tab defines the precise scheduling:
     maintenance period that will show that the server is in maintenance or not
     in the frontend.
 
-![ch14.01-maintenance.png](ch14.01-maintenance.png)
+![ch14.01-maintenance.png](ch14.1-maintenance.png)
+
+_14.1 ch14.01-maintenance.png_
 
 ### 4. Scope (Hosts and Host Groups)
 
@@ -106,7 +108,9 @@ When suppressed problems are configured to be shown, a dedicated status icon is
 displayed next to the problem. Hovering the mouse pointer over this icon reveals
 additional details about the suppression state.
 
-![ch14.05-maintenance-icon.png](ch14.05-maintenance-icon.png)
+![ch14.05-maintenance-icon.png](ch14.2-maintenance-icon.png)
+
+_14.2 ch14.05-maintenance-icon.png_
 
 ---
 
@@ -190,7 +194,9 @@ every month** at midnight for **2 hours**. Only suppress problems related to the
 | **Tags Tab** | **Tag evaluation:** `AND` | Ensures both conditions (maintenance and tag) are met for suppression. |
 | **Tags Tab** | **Tag:** `service` **Operator:** `=` **Value:** `database` | **Crucial:** Only problems with the tag `service:database` are suppressed. |
 
-![ch14.02-maintenance-config.png](ch14.02-maintenance-config.png)
+![ch14.02-maintenance-config.png](ch14.3-maintenance-config.png)
+
+_14.3 ch14.02-maintenance-config.png_
 
 ### Execution Summary
 
@@ -422,7 +428,9 @@ script.
 
 A working easy to use maintenance script can be found here : [https://github.com/penmasters/trikke76-fork/tree/master/maintenance](https://github.com/penmasters/trikke76-fork/tree/master/maintenance)
 
-![ch14.03-maintenance-api.png](ch14.03-maintenance-api.png)
+![ch14.03-maintenance-api.png](ch14.4-maintenance-api.png)
+
+_14.4 ch14.03-maintenance-api.png_
 
 ---
 

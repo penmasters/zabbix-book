@@ -23,14 +23,14 @@ install Groups **No access to the frontend**,
 Under **Permissions** tab, assign user role **Super admin role**
 which will automatically give user type **Super admin**.
 
-![Create API user](ch12.01-create-api-user.png)
+![Create API user](ch12.1-create-api-user.png)
 
 _12.1
 Create API user_
 
 Permissions tab:
 
-![API user permissions](ch12.02-api-user-permissions.png) 
+![API user permissions](ch12.2-api-user-permissions.png)
 
 _12.2
 API user role and user type_
@@ -39,7 +39,7 @@ Under **Users** => **API tokens** press **New API token**,
 assign user **api**. We can uncheck **Set expiration date and time**,
 press **Add**. Copy macro to clipboard.
 
-![Add token to user object](ch12.03-token-added-to-user.png) 
+![Add token to user object](ch12.3-token-added-to-user.png)
 
 _12.3
 Add token to user object_
@@ -70,7 +70,7 @@ we will use a reference on the API endpoint in a format of:
 
 Now we can take new 2 variables and install globally:
 
-![User macros](ch12.04-user-macro-global.png)
+![User macros](ch12.4-user-macro-global.png)
 
 _12.4
 User macros_
@@ -165,7 +165,7 @@ Headers
 | :---------------------- | :-------------------------------------------------|
 | **Authorization**       | `Bearer {$ZABBIX.API.TOKEN}`                      |
 
-![User macros](ch12.05-host-get.png)
+![User macros](ch12.5-host-get.png)
 
 _12.5
 Host get method via HTTP agent item_
@@ -177,7 +177,7 @@ Preprocessing steps
 | JSONPath            | `$.result[0].hostgroups[*].name`                      |
 | JavaScript          | `return JSON.parse(value).join(',');`                 |
 
-![User macros](ch12.06-host-get-preprocessing.png)
+![User macros](ch12.6-host-get-preprocessing.png)
 
 _12.6
 Preprocessing_
@@ -193,7 +193,7 @@ To access suggested inventory field, we must use:
 
 To include extra information inside the message template follow this lead:
 
-![Inventory fields in media type](ch12.07-use-invenotry-field-in-media-type-with-numbers.png)
+![Inventory fields in media type](ch12.7-use-invenotry-field-in-media-type-with-numbers.png)
 
 _12.7
 Inventory fields in media type_
@@ -220,14 +220,14 @@ Inventory fields in media type_
     Trigger settings must support `Allow manual close`. On trigger which needs
     to be auto closed there must be a tag `auto` with a value `close`.
     An action will invoke a webhook which will use Zabbix API to close event.
-    
+
 ---
 
 To implement, visit **Alerts** => **Scripts**, press **Create script**
 
-![Auto close problem](ch12.13-zabbix-api-auto-close-problem-webhook.png) 
+![Auto close problem](ch12.8-zabbix-api-auto-close-problem-webhook.png)
 
-_12.13
+_12.8
 Auto close problem_
 
 | Field               | Value                                                 |
@@ -264,16 +264,16 @@ For the triggers which need to be closed automatically, we need to:
 
 1) Set `Allow manual close` checkbox ON
 
-![Allow manual close](ch12.08-trigger-configuration-allow-manual-close.png) 
+![Allow manual close](ch12.9-trigger-configuration-allow-manual-close.png)
 
-_12.8
+_12.9
 Allow manual close_
 
 2) Install tag `auto` with value `close`
 
-![Install trigger tags](ch12.09-trigger-configuration-install-tags.png) 
+![Install trigger tags](ch12.10-trigger-configuration-install-tags.png)
 
-_12.9
+_12.10
 Trigger tags_
 
 Go to **Alerts** => **Actions** => **Trigger actions**
@@ -281,24 +281,24 @@ Go to **Alerts** => **Actions** => **Trigger actions**
 Create an action which will be targetable
 by using tag name `auto` with a tag value `close`.
 
-![Set up conditions for action](ch12.10-create-new-action-install-conditions.png) 
+![Set up conditions for action](ch12.11-create-new-action-install-conditions.png)
 
-_12.10
+_12.11
 Conditions for action_
 
 It's important to not create operation step 1, but start operation with step 2:
 
-![A delayed operation](ch12.11-create-new-action-install-operations.png)
+![A delayed operation](ch12.12-create-new-action-install-operations.png)
 
-_12.11
+_12.12
 A delayed operation_
 
 The **Default operation step duration** field will serve the purpose
-to tell how long the event will be in problem state. 
+to tell how long the event will be in problem state.
 
-![Default operation step](ch12.12-default-operation-step-duration.png)
+![Default operation step](ch12.13-default-operation-step-duration.png)
 
-_12.12
+_12.13
 Close event later_
 
 This solution has been tested with 7.0/7.4
@@ -324,9 +324,9 @@ This solution has been tested with 7.0/7.4
 
 To implement, visit **Alerts** => **Scripts**, press **Create script**
 
-![Delete host webhook](ch12.14-delete-host-webhook.png) 
+![Delete host webhook](ch12.14-delete-host-webhook.png)
 
-_12.13
+_12.14
 Auto close problem_
 
 | Field               | Value                                                 |
@@ -363,7 +363,7 @@ return JSON.stringify(hostDelete);
 To setup action, the trigger must running a tag `delete` with value `host`.
 The conditions can be to target tag plus value and trigger severity:
 
-![Delete host action conditions](ch12.15-delete-host-action-conditions.png) 
+![Delete host action conditions](ch12.15-delete-host-action-conditions.png)
 
 _12.15
 Delete host target tag and tag value_
@@ -735,8 +735,8 @@ Zabbix agent autoregistration completed_
     and reinstall the date right after the midnight.
     Inside template level there will be a single/static item key
     which will be able to read today's log.
-    
-    
+
+
 
 
 Go to **Data collection** => **Hosts** => press **Create host**
@@ -898,7 +898,7 @@ After running a script now, there are global variables available:
 
 ![Reinstall YYYY-MM-DD](ch12.25-yyyy-mm-dd-result.png)
 
-_12.24
+_12.25
 Global YYYY, MM, DD macros_
 
 
