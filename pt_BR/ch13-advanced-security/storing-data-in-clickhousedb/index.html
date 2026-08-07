@@ -1,0 +1,1505 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Learn how to configure ClickHouse for Zabbix to store history data, improve
+performance, reduce database load and scale large monitoring environments.
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/pt_BR/ch13-advanced-security/storing-data-in-clickhousedb/" rel="canonical">
+<link href="../partitioning-postgresql-database/" rel="prev"/>
+<link href="../../ch14-zabbix-maintenance/chapter/" rel="next"/>
+<link href="../../../fr/ch13-advanced-security/storing-data-in-clickhousedb/" hreflang="fr" rel="alternate"/>
+<link href="../../../nl/ch13-advanced-security/storing-data-in-clickhousedb/" hreflang="nl" rel="alternate"/>
+<link href="./" hreflang="pt_BR" rel="alternate"/>
+<link href="../../../ru/ch13-advanced-security/storing-data-in-clickhousedb/" hreflang="ru" rel="alternate"/>
+<link href="../../../ch13-advanced-security/storing-data-in-clickhousedb/" hreflang="en" rel="alternate"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator"/>
+<title>Storing data in Clickhouse - Zabbix Book</title>
+<link href="../../../assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/extra.css?v=4759fdbe66d6ec7bb7d2a476ef66ee6802975c38" rel="stylesheet"/>
+<link href="../../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="Storing data in Clickhouse" property="og:title"/>
+<meta content="Learn how to configure ClickHouse for Zabbix to store history data, improve performance, reduce database load and scale large monitoring environments." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/pt_BR/ch13-advanced-security/storing-data-in-clickhousedb/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Storing data in Clickhouse" name="twitter:title"/>
+<meta content="Learn how to configure ClickHouse for Zabbix to store history data, improve performance, reduce database load and scale large monitoring environments." name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#storing-history-data-in-clickhouse">
+          Pular para conteúdo
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<div class="gmc-announce">
+            Esta página ainda não foi traduzida para o português. Portanto, está sendo exibida em inglês.
+            <a href="/gmc/pt_BR/contribute/#translations">Ajude-nos a traduzir!</a>
+</div>
+<script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Cabeçalho" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Storing data in Clickhouse
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Selecione o idioma" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../../fr/ch13-advanced-security/storing-data-in-clickhousedb/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../nl/ch13-advanced-security/storing-data-in-clickhousedb/" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="pt_BR">
+              Brazilian Portuguese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ru/ch13-advanced-security/storing-data-in-clickhousedb/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ch13-advanced-security/storing-data-in-clickhousedb/" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Buscar" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Buscar" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Pesquisar" class="md-search__options">
+<a aria-label="Compartilhar" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Compartilhar">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Limpar" class="md-search__icon md-icon" tabindex="-1" title="Limpar" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch02-zabbix-installation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch03-zabbix-proxies/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch04-zabbix-collecting-data/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch06-zabbix-templates/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_18" type="checkbox"/>
+<label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_18_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_18">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 13 : Advanced set up and security
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../chapter/">
+<span class="md-ellipsis">
+    
+  
+    Advanced set-up and security
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../selinux-zabbix/">
+<span class="md-ellipsis">
+    
+  
+    SELinux
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../securing-frontend/">
+<span class="md-ellipsis">
+    
+  
+    Securing the frontend
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../agent-security/">
+<span class="md-ellipsis">
+    
+  
+    Securing the Zabbix agent with encryption
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../using-vault/">
+<span class="md-ellipsis">
+    
+  
+    Storing secrets
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../partitioning-database/">
+<span class="md-ellipsis">
+    
+  
+    Partitioning MariaDB
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../partitioning-postgresql-database/">
+<span class="md-ellipsis">
+    
+  
+    Partitioning PostgreSQL with TimescaleDB
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Storing data in Clickhouse
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Storing data in Clickhouse
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-moves-to-clickhouse-and-what-doesnt">
+<span class="md-ellipsis">
+      
+        What Moves to ClickHouse ... and What Doesn't
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lab-environment">
+<span class="md-ellipsis">
+      
+        Lab Environment
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#installing-clickhouse">
+<span class="md-ellipsis">
+      
+        Installing ClickHouse
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-clickhouse">
+<span class="md-ellipsis">
+      
+        Configuring ClickHouse
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#correcting-filesystem-permissions">
+<span class="md-ellipsis">
+      
+        Correcting Filesystem Permissions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#creating-the-database">
+<span class="md-ellipsis">
+      
+        Creating the Database
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#creating-the-zabbix-user">
+<span class="md-ellipsis">
+      
+        Creating the Zabbix User
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#importing-the-zabbix-history-schema">
+<span class="md-ellipsis">
+      
+        Importing the Zabbix History Schema
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-retention-and-partitioning">
+<span class="md-ellipsis">
+      
+        Configuring Retention and Partitioning
+      
+    </span>
+</a>
+<nav aria-label="Configuring Retention and Partitioning" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-retention-ttl">
+<span class="md-ellipsis">
+      
+        Configuring Retention (TTL)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#choosing-a-partitioning-strategy">
+<span class="md-ellipsis">
+      
+        Choosing a Partitioning Strategy
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-zabbix">
+<span class="md-ellipsis">
+      
+        Configuring Zabbix
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#verifying-the-configuration">
+<span class="md-ellipsis">
+      
+        Verifying the Configuration
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#verifying-clickhouse">
+<span class="md-ellipsis">
+      
+        Verifying ClickHouse
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#frontend">
+<span class="md-ellipsis">
+      
+        Frontend
+      
+    </span>
+</a>
+<nav aria-label="Frontend" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#important-limitations">
+<span class="md-ellipsis">
+      
+        Important limitations
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#backups">
+<span class="md-ellipsis">
+      
+        Backups
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#looking-ahead-clusters-and-high-availability">
+<span class="md-ellipsis">
+      
+        Looking Ahead: Clusters and High Availability
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#troubleshooting">
+<span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+</a>
+<nav aria-label="Troubleshooting" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#frontend-shows-empty-history">
+<span class="md-ellipsis">
+      
+        Frontend Shows Empty History
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#clickhouse-cannot-create-tables-permission-denied">
+<span class="md-ellipsis">
+      
+        ClickHouse Cannot Create Tables — Permission Denied
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-cannot-connect-to-clickhouse">
+<span class="md-ellipsis">
+      
+        Zabbix Cannot Connect to ClickHouse
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch16-windows/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 16 : Windows monitoring
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../subject-index/">
+<span class="md-ellipsis">
+    
+  
+    Subject index
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-moves-to-clickhouse-and-what-doesnt">
+<span class="md-ellipsis">
+      
+        What Moves to ClickHouse ... and What Doesn't
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lab-environment">
+<span class="md-ellipsis">
+      
+        Lab Environment
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#installing-clickhouse">
+<span class="md-ellipsis">
+      
+        Installing ClickHouse
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-clickhouse">
+<span class="md-ellipsis">
+      
+        Configuring ClickHouse
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#correcting-filesystem-permissions">
+<span class="md-ellipsis">
+      
+        Correcting Filesystem Permissions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#creating-the-database">
+<span class="md-ellipsis">
+      
+        Creating the Database
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#creating-the-zabbix-user">
+<span class="md-ellipsis">
+      
+        Creating the Zabbix User
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#importing-the-zabbix-history-schema">
+<span class="md-ellipsis">
+      
+        Importing the Zabbix History Schema
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-retention-and-partitioning">
+<span class="md-ellipsis">
+      
+        Configuring Retention and Partitioning
+      
+    </span>
+</a>
+<nav aria-label="Configuring Retention and Partitioning" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-retention-ttl">
+<span class="md-ellipsis">
+      
+        Configuring Retention (TTL)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#choosing-a-partitioning-strategy">
+<span class="md-ellipsis">
+      
+        Choosing a Partitioning Strategy
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#configuring-zabbix">
+<span class="md-ellipsis">
+      
+        Configuring Zabbix
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#verifying-the-configuration">
+<span class="md-ellipsis">
+      
+        Verifying the Configuration
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#verifying-clickhouse">
+<span class="md-ellipsis">
+      
+        Verifying ClickHouse
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#frontend">
+<span class="md-ellipsis">
+      
+        Frontend
+      
+    </span>
+</a>
+<nav aria-label="Frontend" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#important-limitations">
+<span class="md-ellipsis">
+      
+        Important limitations
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#backups">
+<span class="md-ellipsis">
+      
+        Backups
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#looking-ahead-clusters-and-high-availability">
+<span class="md-ellipsis">
+      
+        Looking Ahead: Clusters and High Availability
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#troubleshooting">
+<span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+</a>
+<nav aria-label="Troubleshooting" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#frontend-shows-empty-history">
+<span class="md-ellipsis">
+      
+        Frontend Shows Empty History
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#clickhouse-cannot-create-tables-permission-denied">
+<span class="md-ellipsis">
+      
+        ClickHouse Cannot Create Tables — Permission Denied
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#zabbix-cannot-connect-to-clickhouse">
+<span class="md-ellipsis">
+      
+        Zabbix Cannot Connect to ClickHouse
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navegação" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../../">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../chapter/">
+<span class="md-ellipsis">
+    Chapter 13 : Advanced set up and security
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<nav class="md-tags">
+<span class="md-tag md-tag-icon" data-tag="advanced">
+      Avançado
+    </span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch13-advanced-security/storing-data-in-clickhousedb.md" title="Exibir fonte desta página">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="storing-history-data-in-clickhouse">Storing history data in Clickhouse</h1>
+<p>Beginning with Zabbix 8, ClickHouse can be used as an external storage backend
+for item history. Configuration, events, problems, audit data, and other
+operational data remain in the primary PostgreSQL or MySQL database.</p>
+<p>When an item value type is stored in ClickHouse, Zabbix does not calculate or
+store trend data for that history. Long-term graphing therefore depends on retaining
+sufficient raw history in ClickHouse.</p>
+<p>For environments collecting large volumes of monitoring data, this architecture
+significantly reduces load on the primary database and improves overall scalability.</p>
+<p>In this chapter, you will install ClickHouse and configure it for use with
+Zabbix 8, import the required history schema, and verify that Zabbix is successfully
+storing history in ClickHouse.</p>
+<h2 id="what-moves-to-clickhouse-and-what-doesnt">What Moves to ClickHouse ...  and What Doesn't</h2>
+<p>ClickHouse stores the raw item history values for the value types assigned
+to the ClickHouse history provider:</p>
+<ul>
+<li>Numeric unsigned</li>
+<li>Numeric floating point</li>
+<li>Character</li>
+<li>Log</li>
+<li>Text</li>
+<li>JSON</li>
+</ul>
+<p>The following data remains in the primary PostgreSQL or MySQL database:</p>
+<ul>
+<li>Configuration data</li>
+<li>Events and problems</li>
+<li>Audit log</li>
+<li>Users, sessions, actions, and operational tables</li>
+<li>History value types that were not assigned to ClickHouse</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Trends are not generated</p>
+<p>Zabbix does not calculate or store trends for history value types stored
+in ClickHouse. </p>
+<p>This means that long-term graphs cannot fall back to hourly
+trend data after the raw history has expired. Configure a sufficiently long
+ClickHouse TTL for the period that must remain available for graphs,
+reports, and historical analysis.</p>
+</div>
+<pre class="mermaid"><code>flowchart LR
+    A[Zabbix Server] --&gt;|history values| B[(ClickHouse)]
+    A --&gt;|config, events, problems, audit| C[(Primary DB
+PostgreSQL / MySQL)]
+    D[Zabbix Frontend] --&gt; C
+    D --&gt;|history queries| B
+</code></pre>
+<p>With that distinction in mind, let's set up the backend.</p>
+<h2 id="lab-environment">Lab Environment</h2>
+<p>The examples in this chapter were tested using:</p>
+<ul>
+<li>Rocky Linux 9</li>
+<li>ClickHouse 26.6.1.1193</li>
+<li>Zabbix 8</li>
+</ul>
+<h2 id="installing-clickhouse">Installing ClickHouse</h2>
+<p>Begin by installing the official ClickHouse repository and packages.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>dnf-plugins-core
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>dnf<span class="w"> </span>config-manager<span class="w"> </span>--add-repo<span class="w"> </span>https://packages.clickhouse.com/rpm/clickhouse.repo
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>clickhouse-server<span class="w"> </span>clickhouse-client
+</span></code></pre></div>
+<p>Enable the ClickHouse service so it starts automatically at boot.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>clickhouse-server
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>systemctl<span class="w"> </span>start<span class="w"> </span>clickhouse-server
+</span></code></pre></div>
+<p>Verify that the service is running before continuing.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>systemctl<span class="w"> </span>status<span class="w"> </span>clickhouse-server
+</span></code></pre></div>
+<h2 id="configuring-clickhouse">Configuring ClickHouse</h2>
+<p>By default, ClickHouse only listens on the loopback interface. That's fine when
+Zabbix and ClickHouse run on the same host, but many environments use a dedicated
+ClickHouse server or cluster instead.</p>
+<p>Create the following configuration file:</p>
+<p><code>/etc/clickhouse-server/config.d/listen.xml</code></p>
+<div class="language-xml highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nt">&lt;clickhouse&gt;</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">    </span><span class="nt">&lt;listen_host&gt;</span>0.0.0.0<span class="nt">&lt;/listen_host&gt;</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="nt">&lt;/clickhouse&gt;</span>
+</span></code></pre></div>
+<p>Reload the configuration by restarting ClickHouse.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>clickhouse-server
+</span></code></pre></div>
+<h2 id="correcting-filesystem-permissions">Correcting Filesystem Permissions</h2>
+<p>ClickHouse needs write access to its data directory. Incorrect ownership or SELinux
+contexts are a common source of startup failures or permission errors during database
+creation.</p>
+<p>Ensure the directory has the correct ownership and permissions.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>chown<span class="w"> </span>-R<span class="w"> </span>clickhouse:clickhouse<span class="w"> </span>/var/lib/clickhouse
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a>chmod<span class="w"> </span><span class="m">0750</span><span class="w"> </span>/var/lib/clickhouse
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a>restorecon<span class="w"> </span>-Rv<span class="w"> </span>/var/lib/clickhouse
+</span></code></pre></div>
+<h2 id="creating-the-database">Creating the Database</h2>
+<p>Connect to ClickHouse:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>clickhouse-client
+</span></code></pre></div>
+<p>Create the Zabbix database:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">zabbix</span><span class="p">;</span>
+</span></code></pre></div>
+<h2 id="creating-the-zabbix-user">Creating the Zabbix User</h2>
+<p>Create a dedicated database user for Zabbix:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">zabbix</span>
+</span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">sha256_password</span>
+</span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="k">BY</span><span class="w"> </span><span class="s1">'zabbix'</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Grant the required privileges:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="p">,</span><span class="w"> </span><span class="k">ALTER</span><span class="p">,</span><span class="w"> </span><span class="k">DROP</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="n">OPTIMIZE</span>
+</span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="k">ON</span><span class="w"> </span><span class="n">zabbix</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">zabbix</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Exit the client and verify connectivity over HTTP:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a>curl<span class="w"> </span>-u<span class="w"> </span>zabbix:zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="s2">"http://127.0.0.1:8123/?database=zabbix&amp;query=SELECT%201"</span>
+</span></code></pre></div>
+<p>The command should return:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="m">1</span>
+</span></code></pre></div>
+<p>This confirms the HTTP interface is working and the user has sufficient permissions.</p>
+<h2 id="importing-the-zabbix-history-schema">Importing the Zabbix History Schema</h2>
+<p>The Zabbix source distribution contains helper scripts that automatically create
+the required ClickHouse tables.</p>
+<p>Navigate to the ClickHouse database scripts:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="nb">cd</span><span class="w"> </span>database/clickhouse
+</span></code></pre></div>
+<p>Execute each schema script:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a>./history_schema.sh<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-2"><a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="w">    </span>--server<span class="w"> </span>http://127.0.0.1:8123<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-3"><a href="#__codelineno-13-3" id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">    </span>--db<span class="w"> </span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-4"><a href="#__codelineno-13-4" id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="w">    </span>--user<span class="w"> </span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-5"><a href="#__codelineno-13-5" id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="w">    </span>--password<span class="w"> </span>zabbix
+</span></code></pre></div>
+<p>Repeat the process for the remaining history types:</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a>history_uint_schema.sh
+</span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a>history_str_schema.sh
+</span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a>history_text_schema.sh
+</span><span id="__span-14-4"><a href="#__codelineno-14-4" id="__codelineno-14-4" name="__codelineno-14-4"></a>history_log_schema.sh
+</span><span id="__span-14-5"><a href="#__codelineno-14-5" id="__codelineno-14-5" name="__codelineno-14-5"></a>history_json_schema.sh
+</span></code></pre></div>
+You can also use <code>history_all.sh</code> instead of running the script one by one.</p>
+<p>Once complete, ClickHouse will contain a separate table for every supported Zabbix
+history value type.</p>
+<h2 id="configuring-retention-and-partitioning">Configuring Retention and Partitioning</h2>
+<p>The schema generation scripts let you customize both data retention and partitioning
+at creation time.</p>
+<h3 id="configuring-retention-ttl">Configuring Retention (TTL)</h3>
+<p>Each history table includes a Time-To-Live (TTL) expression that automatically
+removes old history data. By default, the scripts retain history for 31
+days (2,678,400 seconds).</p>
+<p>To retain history for 90 days instead, specify:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>--ttl<span class="w"> </span><span class="m">7776000</span>
+</span></code></pre></div>
+<p>The generated table will include:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="n">TTL</span><span class="w"> </span><span class="n">clock_ns</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">toIntervalSecond</span><span class="p">(</span><span class="mi">7776000</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Unlike traditional databases, ClickHouse removes expired data automatically during
+background merge operations, there's no housekeeping job to schedule or monitor.</p>
+<h3 id="choosing-a-partitioning-strategy">Choosing a Partitioning Strategy</h3>
+<p>The default partitioning strategy creates one partition per day:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a>--partition<span class="w"> </span>toDate
+</span></code></pre></div>
+<p>Daily partitions work well for smaller installations, but can result in a very
+large number of partitions over time. Larger environments generally benefit
+from monthly partitions instead:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a>--partition<span class="w"> </span>toYYYYMM
+</span></code></pre></div>
+<p>This produces tables similar to:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="n">ENGINE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MergeTree</span>
+</span><span id="__span-19-2"><a href="#__codelineno-19-2" id="__codelineno-19-2" name="__codelineno-19-2"></a><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">toYYYYMM</span><span class="p">(</span><span class="n">clock_ns</span><span class="p">)</span>
+</span><span id="__span-19-3"><a href="#__codelineno-19-3" id="__codelineno-19-3" name="__codelineno-19-3"></a><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">itemid</span><span class="p">,</span><span class="w"> </span><span class="n">clock_ns</span><span class="p">)</span>
+</span><span id="__span-19-4"><a href="#__codelineno-19-4" id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="p">(</span><span class="n">itemid</span><span class="p">,</span><span class="w"> </span><span class="n">clock_ns</span><span class="p">)</span>
+</span><span id="__span-19-5"><a href="#__codelineno-19-5" id="__codelineno-19-5" name="__codelineno-19-5"></a><span class="n">TTL</span><span class="w"> </span><span class="n">clock_ns</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">toIntervalSecond</span><span class="p">(</span><span class="mi">7776000</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Monthly partitions typically strike the best balance between:</p>
+<ul>
+<li>partition count</li>
+<li>merge efficiency</li>
+<li>retention management</li>
+<li>query performance</li>
+</ul>
+<p>For most production deployments, monthly partitions combined with an appropriate
+TTL are recommended.</p>
+<p><strong>Example:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a>./history_uint_schema.sh<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-2"><a href="#__codelineno-20-2" id="__codelineno-20-2" name="__codelineno-20-2"></a><span class="w">    </span>--server<span class="w"> </span>http://127.0.0.1:8123<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-3"><a href="#__codelineno-20-3" id="__codelineno-20-3" name="__codelineno-20-3"></a><span class="w">    </span>--db<span class="w"> </span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-4"><a href="#__codelineno-20-4" id="__codelineno-20-4" name="__codelineno-20-4"></a><span class="w">    </span>--user<span class="w"> </span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-5"><a href="#__codelineno-20-5" id="__codelineno-20-5" name="__codelineno-20-5"></a><span class="w">    </span>--password<span class="w"> </span>zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-6"><a href="#__codelineno-20-6" id="__codelineno-20-6" name="__codelineno-20-6"></a><span class="w">    </span>--ttl<span class="w"> </span><span class="m">7776000</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-7"><a href="#__codelineno-20-7" id="__codelineno-20-7" name="__codelineno-20-7"></a><span class="w">    </span>--partition<span class="w"> </span>toYYYYMM
+</span></code></pre></div>
+<h2 id="configuring-zabbix">Configuring Zabbix</h2>
+<p>Edit the Zabbix server configuration file:</p>
+<p><code>/etc/zabbix/zabbix_server.conf</code></p>
+<p>Configure ClickHouse as the history provider:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a>HistoryProvider=clickhouse;value_types="uint,dbl,str,log,text,json",url=http://127.0.0.1:8123,db=zabbix,username=zabbix,password="zabbix"
+</span></code></pre></div>
+<p>When using ClickHouse 26.6 or another version newer than officially supported,
+also set:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a>AllowUnsupportedDBVersions=1
+</span></code></pre></div>
+<p>Save the configuration file.</p>
+<h2 id="verifying-the-configuration">Verifying the Configuration</h2>
+<p>Before restarting the server, validate the configuration:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a>zabbix_server<span class="w"> </span>-T
+</span></code></pre></div>
+<p>Restart the Zabbix server:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>zabbix-server
+</span></code></pre></div>
+<p>Monitor the log:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/zabbix/zabbix_server.log
+</span></code></pre></div>
+<p>A successful connection produces output similar to:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a>retrieving<span class="w"> </span><span class="nb">history</span><span class="w"> </span>provider<span class="w"> </span><span class="s2">"clickhouse"</span><span class="w"> </span>information
+</span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a><span class="nb">history</span><span class="w"> </span>provider<span class="w"> </span><span class="s2">"clickhouse"</span><span class="w"> </span>version<span class="w"> </span><span class="s2">"26.6.1.1193"</span>
+</span></code></pre></div>
+<p>At this point, newly collected history values are being written directly
+to ClickHouse.</p>
+<h2 id="verifying-clickhouse">Verifying ClickHouse</h2>
+<p>A few simple commands confirm that ClickHouse is functioning correctly.</p>
+<p>Check the installed version:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a>clickhouse-client<span class="w"> </span>--query<span class="w"> </span><span class="s2">"SELECT version()"</span>
+</span></code></pre></div>
+<p>Verify that the HTTP interface is operational:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a>curl<span class="w"> </span>http://127.0.0.1:8123/ping
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a>Ok.
+</span></code></pre></div>
+<p>List the imported tables:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a><span class="nb">history</span>
+</span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a>history_uint
+</span><span id="__span-31-3"><a href="#__codelineno-31-3" id="__codelineno-31-3" name="__codelineno-31-3"></a>history_str
+</span><span id="__span-31-4"><a href="#__codelineno-31-4" id="__codelineno-31-4" name="__codelineno-31-4"></a>history_text
+</span><span id="__span-31-5"><a href="#__codelineno-31-5" id="__codelineno-31-5" name="__codelineno-31-5"></a>history_log
+</span><span id="__span-31-6"><a href="#__codelineno-31-6" id="__codelineno-31-6" name="__codelineno-31-6"></a>history_json
+</span></code></pre></div>
+<p>If all six tables are present and Zabbix reports a successful connection, the
+history backend is correctly configured.</p>
+<h2 id="frontend">Frontend</h2>
+<p>In our frontend file <code>zabbix.conf.php</code> we also need to make some changes so that
+the frontend knows where to find the history data.</p>
+<p><code>Restart PHP-FPM or Apache after modifying zabbix.conf.php if configuration caching is enabled.</code></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a>$HISTORY_PROVIDERS[] = [
+</span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a>    'types' =&gt; ['uint', 'dbl', 'str', 'log', 'text', 'json'],
+</span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a>    'provider' =&gt; 'clickhouse',
+</span><span id="__span-32-4"><a href="#__codelineno-32-4" id="__codelineno-32-4" name="__codelineno-32-4"></a>    'url' =&gt; 'http://127.0.0.1:8123',
+</span><span id="__span-32-5"><a href="#__codelineno-32-5" id="__codelineno-32-5" name="__codelineno-32-5"></a>    'db' =&gt; 'zabbix',
+</span><span id="__span-32-6"><a href="#__codelineno-32-6" id="__codelineno-32-6" name="__codelineno-32-6"></a>    'username' =&gt; 'zabbix',
+</span><span id="__span-32-7"><a href="#__codelineno-32-7" id="__codelineno-32-7" name="__codelineno-32-7"></a>    'password' =&gt; 'zabbix'
+</span><span id="__span-32-8"><a href="#__codelineno-32-8" id="__codelineno-32-8" name="__codelineno-32-8"></a>];
+</span></code></pre></div>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>ClickHouse history storage is supported by the Zabbix server only.
+It cannot be configured as the local database or history backend of a
+Zabbix proxy.</p>
+</details>
+<h3 id="important-limitations">Important limitations</h3>
+<ul>
+<li>Binary history values are not supported by ClickHouse.</li>
+<li>JSON arrays cannot be stored as JSON item values.</li>
+<li>Data stored in ClickHouse is not managed by the Zabbix housekeeper. Retention
+  must be configured using ClickHouse TTL policies.</li>
+<li>Both the Zabbix server and the frontend must be able to connect to the ClickHouse
+  server.</li>
+<li>Trend functions are unavailable for value types stored in ClickHouse.</li>
+</ul>
+<h2 id="backups">Backups</h2>
+<p>It's worth treating ClickHouse's backup strategy as a separate decision from your
+primary database's backup strategy, rather than assuming they should mirror each
+other.</p>
+<p>For many organizations, raw history data is effectively disposable: it's valuable
+for troubleshooting and short-term analysis, but it isn't the system of record
+for configuration or for the current state of problems, that all lives in the
+primary database, which still needs rigorous, tested backups. Depending on your
+retention requirements and risk tolerance, ClickHouse history may warrant a
+lighter-weight approach, such as periodic snapshots or simply relying on TTL-based
+expiry and re-collection, rather than the same RPO/RTO targets you'd apply to
+PostgreSQL or MySQL.</p>
+<p>If you do need durable ClickHouse backups, for example, to satisfy a compliance
+requirement around historical data retention — tools like <code>clickhouse-backup</code> can
+perform consistent backups of MergeTree tables without stopping the server. Weigh
+this against your actual retention needs before adding the operational overhead.</p>
+<h2 id="looking-ahead-clusters-and-high-availability">Looking Ahead: Clusters and High Availability</h2>
+<p>This chapter covers a single-node ClickHouse instance, which is sufficient for many
+lab and small production environments. For larger or high-availability deployments,
+ClickHouse supports clustering through <strong>ClickHouse Keeper</strong> (for coordination),
+<strong>ReplicatedMergeTree</strong> tables (for data redundancy across nodes), and <strong>distributed
+tables</strong> (to query across shards transparently).</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="frontend-shows-empty-history">Frontend Shows Empty History</h3>
+<p>If graphs or Latest data do not display history after enabling ClickHouse:</p>
+<ul>
+<li>verify the <code>$HISTORY_PROVIDERS</code> configuration in <code>zabbix.conf.php</code></li>
+<li>verify the frontend can reach the ClickHouse HTTP endpoint</li>
+<li>confirm that new history is being written to the ClickHouse tables</li>
+</ul>
+<h3 id="clickhouse-cannot-create-tables-permission-denied">ClickHouse Cannot Create Tables — Permission Denied</h3>
+<p>If ClickHouse reports a permission error such as:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a>Permission<span class="w"> </span>denied
+</span></code></pre></div>
+<p>verify the ownership and SELinux contexts:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-34-1"><a href="#__codelineno-34-1" id="__codelineno-34-1" name="__codelineno-34-1"></a>chown<span class="w"> </span>-R<span class="w"> </span>clickhouse:clickhouse<span class="w"> </span>/var/lib/clickhouse
+</span><span id="__span-34-2"><a href="#__codelineno-34-2" id="__codelineno-34-2" name="__codelineno-34-2"></a>restorecon<span class="w"> </span>-Rv<span class="w"> </span>/var/lib/clickhouse
+</span></code></pre></div>
+<p>Restart ClickHouse afterwards.</p>
+<h3 id="zabbix-cannot-connect-to-clickhouse">Zabbix Cannot Connect to ClickHouse</h3>
+<p>Verify connectivity manually:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a href="#__codelineno-35-1" id="__codelineno-35-1" name="__codelineno-35-1"></a>curl<span class="w"> </span>-u<span class="w"> </span>zabbix:zabbix<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-35-2"><a href="#__codelineno-35-2" id="__codelineno-35-2" name="__codelineno-35-2"></a><span class="s2">"http://127.0.0.1:8123/?database=zabbix&amp;query=SELECT%201"</span>
+</span></code></pre></div>
+<p>When Zabbix and ClickHouse run on the same server, prefer <code>http://127.0.0.1:8123</code>
+over a hostname, this avoids potential DNS or hostname resolution issues.</p>
+<h2 id="questions">questions</h2>
+<ul>
+<li>Why would you use ClickHouse instead of storing all history in PostgreSQL or MySQL?</li>
+<li>Which Zabbix data is stored in ClickHouse, and which data remains in the primary database?</li>
+<li>What is the purpose of the <code>HistoryProvider</code> parameter in <code>zabbix_server.conf</code>?</li>
+<li>Why doesn't the Zabbix housekeeper remove data from ClickHouse?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<p><a href="https://clickhouse.com/docs/faq/operations/delete-old-data">https://clickhouse.com/docs/faq/operations/delete-old-data</a>
+<a href="https://clickhouse.com/docs/">https://clickhouse.com/docs/</a>
+<a href="https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE">https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE</a></p>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Voltar para o topo
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../javascripts/tags-data-attr.js?v=4759fdbe66d6ec7bb7d2a476ef66ee6802975c38"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>
