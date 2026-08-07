@@ -98,6 +98,7 @@ nav:
       - ch10-zabbix-discovery/network-host-discovery.md
       - ch10-zabbix-discovery/active-agent-autoregistration.md
   - "Chapter 11 : Visualisation":
+      - ch11-zabbix-discovery/chapter.md
       - ch11-zabbix-visualisation/graphs.md
       - ch11-zabbix-visualisation/dashboards.md
       - ch11-zabbix-visualisation/maps.md
