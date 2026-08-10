@@ -100,7 +100,7 @@ configuration changes while minimizing resource consumption.
         They include:
 
         - New or modified monitoring items, triggers, or templates assigned to the proxy.
-        - Changes to host configurations or data collection rules. 
+        - Changes to host configurations or data collection rules.
 
 ---
 
@@ -240,7 +240,7 @@ And finally the config settings we need to change on our _Zabbix server_:
     _Zabbix proxies_ internal metrics. Make sure to use them and closely watch
     the value of the `zabbix[proxy_history]` item on the proxies which represents
     the number of values the proxy has received that are yet to be sent to the 
-    _Zabbix server_. 
+    _Zabbix server_.
 
 ![Passive proxy communication](ch03.2-passive-communication.png)
 

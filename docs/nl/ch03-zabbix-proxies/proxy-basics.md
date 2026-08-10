@@ -1,10 +1,10 @@
 ---
-description: |
-    This chapter from The Zabbix Book, titled "Proxy Basics," introduces the role
-    of proxies in a Zabbix environment. It explains how proxies collect monitoring
-    data, forward it to the server, and help reduce load in distributed setups.
-    The guide covers installation, configuration, and when to use proxies for
-    scalability and efficiency.
+beschrijving: |
+    Dit hoofdstuk uit The Zabbix Book, getiteld "Proxy Basics", introduceert de rol
+    van proxies in een Zabbix omgeving. Er wordt uitgelegd hoe proxies monitoring
+    gegevens verzamelen, doorsturen naar de server en helpen de belasting te verminderen in gedistribueerde opstellingen.
+    De gids behandelt installatie, configuratie en wanneer proxies te gebruiken voor
+    schaalbaarheid en efficiëntie.
 tags: [beginner]
 ---
 
@@ -99,7 +99,7 @@ configuration changes while minimizing resource consumption.
         They include:
 
         - New or modified monitoring items, triggers, or templates assigned to the proxy.
-        - Changes to host configurations or data collection rules. 
+        - Changes to host configurations or data collection rules.
 
 ---
 
@@ -239,7 +239,7 @@ And finally the config settings we need to change on our _Zabbix server_:
     _Zabbix proxies_ internal metrics. Make sure to use them and closely watch
     the value of the `zabbix[proxy_history]` item on the proxies which represents
     the number of values the proxy has received that are yet to be sent to the 
-    _Zabbix server_. 
+    _Zabbix server_.
 
 ![Passive proxy communication](ch03.2-passive-communication.png)
 
