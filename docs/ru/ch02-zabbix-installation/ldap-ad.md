@@ -25,12 +25,10 @@ LDAP-сервера. Известно, что Zabbix хорошо работае
 
 Процесс аутентификации пользователей происходит по следующей схеме.
 
-![Аутентификация пользователей LDAP](ch02.31-ldap-auth-diagram.png){ align=center
+![Аутентификация пользователей LDAP](ch02.31-ldap-auth-diagram.png){
+align=center }
 
-_2.31 Аутентификация пользователей LDAP_
-}
-
-_2.3 Аутентификация пользователей LDAP_
+_2.31 LDAP users authentication_
 
 Как показано на диаграмме, пользователь, пытающийся войти в систему, должен быть
 предварительно создан в Zabbix, чтобы иметь возможность войти в систему с
@@ -93,8 +91,8 @@ are priorities.
 
 ???+ tip
 
-If you want to use Docker instead of Podman, you can just replace any
-occurrences of `podman` in following instructions by `docker`.
+    If you want to use Docker instead of Podman, you can just replace any
+    occurrences of `podman` in following instructions by `docker`.
 
 Now we can start containers. Start an OpenLDAP server in a container:
 
@@ -110,7 +108,7 @@ have the word `password` as their passwords.
 Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
 `user3` is a member of `zabbix-users` LDAP group.
 
-???+ tip Tip: use phpLdapAdmin as an LDAP GUI
+???+ tip "use phpLdapAdmin as an LDAP GUI"
 
     To visually see LDAP server data (and add your own configuration like users
     and groups) you can start this standard container:
@@ -138,11 +136,9 @@ authentication` and click `Add` under `Servers` (change IP address of your LDAP
 server and port number according to your set up):
 
 ![LDAP server settings in Zabbix](ch02.33-ldap-server-settings-in-zabbix.png){
-
-_2.33 LDAP server settings in Zabbix_
 align=center }
 
-_2.5 LDAP server settings in Zabbix_
+_2.33 LDAP server settings in Zabbix_
 
 Following diagram can help you understand how to configure LDAP server in Zabbix
 based on your LDAP server data structure:
@@ -186,11 +182,9 @@ Zabbix to authenticate users belonging to this group against LDAP server and in
 server". Click `Add` button to create this User group:
 
 ![Add user group in zabbix](ch02.35-ldap-add-user-group-in-zabbix.png){
-
-_2.35 Add user group in zabbix_
 align=center }
 
-_2.7 Add user group in zabbix_
+_2.35 Add user group in zabbix_
 
 Now we need to create our test user. In Zabbix menu select `Users | Users` and
 click `Create user` button. Then enter "user3" in `Username` field. Select
@@ -208,9 +202,9 @@ _2.36 Add user in Zabbix_
 Then click `Permissions` tab and select "User role" in `Role` field:
 
 ![Add user in Zabbix -
-permissions](ch02.9-ldap-add-user-in-zabbix-permissions.png){ align=center }
+permissions](ch02.37-ldap-add-user-in-zabbix-permissions.png){ align=center }
 
-_2.9 Add user in Zabbix - permissions_
+_2.37 Add user in Zabbix - permissions_
 
 Click `Add` button to create the user.
 
@@ -227,9 +221,9 @@ Now let's talk about really cool feature Zabbix provides - "Just-in-Time user
 provisioning (JIT) available since Zabbix 6.4.
 
 This picture illustrates on high level how it works: ![LDAP JIT
-explained](ch02.10-ldap-jit-explained.png){ align=center }
+explained](ch02.38-ldap-jit-explained.png){ align=center }
 
-_2.10 LDAP JIT explained_
+_2.38 LDAP JIT explained_
 
 Here when Zabbix gets a username and password from the Zabbix Login form it goes
 to the LDAP server and gets all the information available for this user
@@ -256,11 +250,9 @@ In `Users | Authentication` we need to do two things:
   disabled from accessing Zabbix.
 
   ![Default authentication](ch02.39-ldap-default-authentication.png){
-
-  _2.39 Default authentication_
   align=center }
 
-  _2.11 Default authentication_
+  _2.39 Default authentication_
 
   Click `Update` button`.
 
