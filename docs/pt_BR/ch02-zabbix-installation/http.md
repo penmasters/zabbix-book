@@ -179,7 +179,7 @@ authentication`. Clique em `Update` e confirme as alterações clicando no botã
 
 ![Autenticação de usuários HTTP](ch02.29-http-auth-settings.png){ align=center }
 
-_2.29 Autenticação de usuários HTTP_
+_2.29 HTTP users authentication_
 
 `Remover nome de domínio` campo deve ter uma lista separada por vírgulas de
 domínios que o Zabbix removerá do nome de usuário fornecido, por exemplo, se um
@@ -199,11 +199,9 @@ você pode digitar um nome de usuário e uma senha diferentes e fazer o login
 normalmente na Zabbix WebUI como um usuário diferente.
 
 ![Login de autenticação de usuários HTTP](ch02.30-http-auth-login.png){
-
-_2.30 Login de autenticação de usuários HTTP_
 align=center }
 
-_2.2 Formulário de login de autenticação de usuários HTTP_
+_2.30 HTTP users authentication login form_
 
 Se você selecionar "HTTP login form" em `Default login form` drop-down, você não
 verá o formulário de login padrão do Zabbix quando tentar sair. Na verdade, você

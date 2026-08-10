@@ -34,7 +34,7 @@ Dans le menu, sélectionnez `Users` section et ensuite `Authentication`
 
 ![MFA Settings initial](ch02.57-mfa_settings_initial.png){ width=90% }
 
-_2.57 Paramètres initiaux du MFA_
+_2.57 Initial MFA settings_
 
 Now in `MFA settings` tab select the `Enable multi-factor authentication`
 check-box, then select `TOTP` in Type drop-down list.
@@ -53,11 +53,9 @@ Click `Add` and then `Update`. Now you have TOTP MFA configured and it is the
 default method of MFA.
 
 ![MFA Settings TOTP configured](ch02.59-mfa_settings_TOTP_configured.png){
-
-_2.59 MFA Settings TOTP configured_
 width=90% }
 
-_2.22 New MFA method added_
+_2.59 New MFA method added_
 
 Now you need to tell Zabbix for which User group (or groups) to use MFA. Let's
 create a User group that would require MFA.
