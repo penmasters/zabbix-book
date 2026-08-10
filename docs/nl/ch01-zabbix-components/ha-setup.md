@@ -18,7 +18,7 @@ setup maakt het mogelijk om meer Zabbix servers toe te voegen als dat nodig is.
 
 ![HA-Setup](./ha-setup/ch01.10-HA-setup.png)
 
-_1.10 HA Configuratie_
+_1.10 HA Setup_
 
 Het is belangrijk op te merken dat de Zabbix HA setup eenvoudig is en
 redundantie biedt zonder complexe functies zoals load balancing. Slechts één

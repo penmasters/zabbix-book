@@ -18,7 +18,7 @@ configuração permite adicionar mais servidores Zabbix, se necessário.
 
 ![Configuração-HA](./ha-setup/ch01.10-HA-setup.png)
 
-_1.10 Configuração de HA_
+_1.10 HA Setup_
 
 É importante observar que a configuração do Zabbix HA é simples, fornecendo
 redundância sem recursos complexos como balanceamento de carga. Apenas um nó
@@ -470,7 +470,7 @@ configuração de HA.
 
 ![1º frontend ativo](ha-setup/ch01.11-HA-check1.png)
 
-_1.11 verificar HA_
+_1.11 verify HA_
 
 Desligue ou reinicie o servidor de front-end ativo e observe que o `Zabbix
 front-end ` permanece acessível. Ao recarregar a página, você notará que o outro
@@ -479,7 +479,7 @@ failover quase perfeito e alta disponibilidade.
 
 ![2st ativar frontend](ha-setup/ch01.12-HA-check2.png)
 
-_1.12 verificar HA_
+_1.12 verify HA_
 
 Além de monitorar o status dos nós de HA, o Zabbix fornece vários comandos de
 tempo de execução que permitem aos administradores gerenciar as configurações de
