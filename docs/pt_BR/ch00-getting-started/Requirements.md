@@ -1,7 +1,7 @@
 ---
-description: |
-    Learn Zabbix system requirements: supported OS, database options, hardware
-    specs, firewall ports, and time sync needed for a smooth installation.
+descrição: |
+    Conheça os requisitos de sistema do Zabbix: sistema operacional suportado, opções de banco de dados, especificações de hardware
+    especificações de hardware, portas de firewall e sincronização de tempo necessários para uma instalação tranquila.
 tags: [beginner]
 ---
 
