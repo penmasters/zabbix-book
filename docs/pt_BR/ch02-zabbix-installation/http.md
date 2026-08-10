@@ -60,7 +60,7 @@ seguir para garantir que temos esse utilitário:
     Ubuntu
     ```bash
     sudo apt install apache2-utils
-    ``` 
+    ```
 
 Em seguida, criaremos o arquivo necessário e o usuário `Administrador` nele:
 

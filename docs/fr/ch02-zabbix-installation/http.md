@@ -62,7 +62,7 @@ commandes suivantes pour vous assurer que nous disposons de cet utilitaire :
     Ubuntu
     ```bash
     sudo apt install apache2-utils
-    ``` 
+    ```
 
 Next we will create the required file and the `Admin` user in it:
 
