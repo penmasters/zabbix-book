@@ -1,7 +1,7 @@
 ---
-description: |
-    Learn how Zabbix user roles control frontend and API permissions. Define what
-    users can do, while user groups define what they can see.
+descrição: |
+    Saiba como as funções de usuário do Zabbix controlam as permissões de front-end e API. Defina o que os
+    os usuários podem fazer, enquanto os grupos de usuários definem o que eles podem ver.
 tags: [beginner]
 ---
 
@@ -35,22 +35,22 @@ na **função de usuário personalizada** .
 | **Monitoramento**             |         |               |                     |
 | Painéis de controle           |    ✅    |       ✅       |          ✅          |
 | Problemas                     |    ✅    |       ✅       |          ✅          |
-| Hospedeiros                   |    ✅    |       ✅       |          ✅          |
+| Hosts                         |    ✅    |       ✅       |          ✅          |
 | Dados mais recentes           |    ✅    |       ✅       |          ✅          |
 | Mapas                         |    ✅    |       ✅       |          ✅          |
-| Descoberta                    |         |       ✅       |          ✅          |
+| Discovery                     |         |       ✅       |          ✅          |
 | Serviços                      |    ✅    |       ✅       |          ✅          |
 | SLA                           |         |       ✅       |          ✅          |
 | Relatório SLA                 |    ✅    |       ✅       |          ✅          |
 | **Inventário**                |         |               |                     |
 | Visão geral                   |    ✅    |       ✅       |          ✅          |
-| Hospedeiros                   |    ✅    |       ✅       |          ✅          |
+| Hosts                         |    ✅    |       ✅       |          ✅          |
 | **Relatórios**                |         |               |                     |
 | Informações do sistema        |         |       ✅       |          ✅          |
 | Relatórios programados        |         |       ✅       |          ✅          |
 | Relatório de disponibilidade  |    ✅    |       ✅       |          ✅          |
 | Os 100 principais acionadores |    ✅    |       ✅       |          ✅          |
-| Registro de auditoria         |         |       ✅       |          ✅          |
+| Audit log                     |         |       ✅       |          ✅          |
 | Registro de ações             |         |       ✅       |          ✅          |
 | Notificações                  |         |       ✅       |          ✅          |
 | **Configuração**              |         |               |                     |
@@ -58,10 +58,10 @@ na **função de usuário personalizada** .
 | Grupos de modelos             |         |       ✅       |          ✅          |
 | Grupos de acolhimento         |         |       ✅       |          ✅          |
 | Modelos                       |         |       ✅       |          ✅          |
-| Hospedeiros                   |         |       ✅       |          ✅          |
+| Hosts                         |         |       ✅       |          ✅          |
 | Manutenção                    |         |       ✅       |          ✅          |
 | Correlação de eventos         |         |       ✅       |          ✅          |
-| Descoberta                    |         |       ✅       |          ✅          |
+| Discovery                     |         |       ✅       |          ✅          |
 | **Alertas (ações)**           |         |               |                     |
 | Ações de acionamento          |         |       ✅       |          ✅          |
 | Ações de serviço              |         |       ✅       |          ✅          |
@@ -77,7 +77,7 @@ na **função de usuário personalizada** .
 | tokens de API                 |         |               |          ✅          |
 | Autenticação                  |         |               |          ✅          |
 | Geral                         |         |               |          ✅          |
-| Registro de auditoria         |         |               |          ✅          |
+| Audit log                     |         |               |          ✅          |
 | Serviço de limpeza            |         |               |          ✅          |
 | Grupos de proxy               |         |               |          ✅          |
 | Proxies                       |         |               |          ✅          |
