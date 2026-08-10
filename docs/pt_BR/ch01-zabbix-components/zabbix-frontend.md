@@ -142,11 +142,13 @@ na porta 80.
     ```bash
     vi /etc/nginx/nginx.conf
     ```
+If you are on Ubuntu no need to edit `nginx.conf` just run `sudo unlink
+/etc/nginx/sites-enabled/default`
 
 Nesse arquivo de configuração, procure o seguinte bloco que começa com `server
 {`:
 
-!!! exemplo "Configuração original"
+!!! example "Original config"
 
     ```nginx
     server {
@@ -186,7 +188,7 @@ para edição:
 
 E altere as seguintes linhas:
 
-!!! exemplo "Configuração original"
+!!! example "Original config"
 
     ```nginx
     server {
@@ -243,7 +245,7 @@ sobreviva à nossa reinicialização na próxima vez.
     ```bash
     sudo systemctl status nginx
     ```
-???+ example "Exemplo de saída"
+???+ example "Example output"
 
     ```shell-session
     localhost:~> sudo systemctl status nginx
@@ -309,14 +311,14 @@ abaixo:
 
 ![overview](ch01.2-basic-installation-setup.png){ align=left }
 
-_1.2 Boas-vindas ao Zabbix_
+_1.2 Zabbix welcome_
 
 O front-end do Zabbix apresenta um conjunto limitado de localizações
 disponíveis, conforme mostrado.
 
 ![overview language](ch01.3-basic-installation-setuplanguage.png){ align=left }
 
-_1.3 Escolha do idioma de boas-vindas do Zabbix_
+_1.3 Zabbix welcome language choice_
 
 E se quisermos instalar o chinês como idioma ou outro idioma da lista? Execute o
 comando a seguir para obter uma lista de todas as localidades disponíveis para
@@ -352,7 +354,7 @@ language "en_US" is not found on the web server."``
 
 Isso lhe dará uma lista como:
 
-???+ example "Exemplo de saída"
+???+ example "Example output"
 
     Red Hat
     ```
@@ -445,11 +447,12 @@ instalado ou não.
 Quando retornamos ao nosso front-end, podemos selecionar o idioma chinês, depois
 de recarregar o navegador.
 
-![selecione o idioma](ch01.4-basic-installation-selectlanguage.png){ align=left }
+![selecione o idioma](ch01.4-basic-installation-selectlanguage.png){ align=left
+}
 
-_1.4 Zabbix selecionar idioma_
+_1.4 Zabbix select language_
 
-???+ Nota
+???+ note
 
     If your preferred language is not available in the Zabbix front-end, don't
     worry, it simply means that the translation is either incomplete or not yet
@@ -471,7 +474,7 @@ em `Next`.
 
 ![pré-requisitos](ch01.5-basic-installation-prerequisites.png){ align=left }
 
-_1.5 Pré-requisitos do Zabbix_
+_1.5 Zabbix pre-requisites_
 
 Na próxima página, você configurará os parâmetros de conexão do banco de dados:
 
@@ -497,7 +500,7 @@ clique em `Next step` para prosseguir.
 
 ![dbconnection](ch01.6-basic-installation-dbconnection.png){ align=left }
 
-_1.6 Conexões do Zabbix_
+_1.6 Zabbix connections_
 
 Você está quase terminando a configuração! As etapas finais envolvem:
 
@@ -513,30 +516,30 @@ Você está quase terminando a configuração! As etapas finais envolvem:
    essas configurações estiverem definidas, você poderá concluir a instalação e
    prosseguir com as etapas finais de configuração, conforme necessário.
 
-???+ Nota
+???+ note
 
     It's a good practice to set your Zabbix server to the UTC timezone, especially
     when managing systems across multiple timezones. Using UTC helps ensure consistency
     in time-sensitive actions and events, as the server’s timezone is often used for
     calculating and displaying time-related information.
 
-![configurações](ch01.7-basic-installation-settings.png){ align=left }
+![settings](ch01.7-basic-installation-settings.png){ align=left }
 
-_1.7 Resumo do Zabbix_
+_1.7 Zabbix summary_
 
 Depois de clicar novamente em `Next step`, você será levado a uma página que
 confirma que a configuração foi bem-sucedida. Clique em `Finish` para concluir o
 processo de configuração.
 
-![configurações](ch01.8-basic-installation-final.png){ align=left }
+![settings](ch01.8-basic-installation-final.png){ align=left }
 
-_1.8 Instalação do Zabbix_
+_1.8 Zabbix install_
 
 Agora estamos prontos para fazer o login:
 
 ![configurações](ch01.9-basic-installation-login.png)
 
-_1.9 Login do Zabbix_
+_1.9 Zabbix login_
 
 - Login : Administrador
 - Senha : zabbix
