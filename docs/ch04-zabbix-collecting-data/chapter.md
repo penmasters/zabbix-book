@@ -65,6 +65,10 @@ flowchart TB
     I -- Yes --> K[Operations
     executed]
 ```
+
+/// figure-caption | 4.1 #figure-4-1
+Zabbix data collection and event processing flow
+///
 At scale, each stage of this flow can become a bottleneck. Data collection may be
 limited by poller capacity, preprocessing by available workers, and storage by
 database performance. Understanding this flow is not only important for

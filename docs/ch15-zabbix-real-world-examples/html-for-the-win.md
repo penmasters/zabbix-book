@@ -15,9 +15,9 @@ many different custom ways as your imagination (or HTML limitations) allows you
 to. That widget is "Item history", but with these two options taken into
 consideration:
 
-![HTML for the win - how to](ch15.10-html-for-the-win-how-to.png)
+![HTML for the win - how to](ch15.12-html-for-the-win-how-to.png)
 
-_15.10 HTML for the win - how to_
+_15.12 HTML for the win - how to_
 
 Our goal here is to form a valid HTML code for an item value - this allows us to
 feed it into "Item history" widget and let Zabbix display it not as a plain
@@ -89,9 +89,9 @@ progress-bar type of display of how much time did we spend today so far:
 
 Now look at the result. Isn't it beautiful?
 
-![HTML for the win - how to](ch15.11-html-for-the-win-hello-world.png)
+![HTML for the win - how to](ch15.13-html-for-the-win-hello-world.png)
 
-_15.11 HTML for the win - how to_
+_15.13 HTML for the win - how to_
 
 ???+ warning
     Keep in mind Zabbix has light and dark themes, so pick colours that suits
@@ -171,15 +171,15 @@ end sooner. So here we have a script that forms HTML output:
 Here is the configuration on Zabbix GUI - worth to note that we provide list of
 websites straight from here:
 
-![HTML for the win - how to](ch15.12-html-for-the-win-simple-table-config.png)
+![HTML for the win - how to](ch15.14-html-for-the-win-simple-table-config.png)
 
-_15.12 HTML for the win - how to_
+_15.14 HTML for the win - how to_
 
 And here is the result:
 
-![HTML for the win - how to](ch15.13-html-for-the-win-simple-table-result.png)
+![HTML for the win - how to](ch15.15-html-for-the-win-simple-table-result.png)
 
-_15.13 HTML for the win - how to_
+_15.15 HTML for the win - how to_
 
 ## Output of top and cmdline
 
@@ -254,9 +254,9 @@ display it. In this case - by additional help of `<details>` element.
 
 Result:
 
-![HTML for the win - how to](ch15.14-html-for-the-win-advanced-table-result.png)
+![HTML for the win - how to](ch15.16-html-for-the-win-advanced-table-result.png)
 
-_15.14 HTML for the win - how to_
+_15.16 HTML for the win - how to_
 
 ## Vertical position
 
@@ -324,9 +324,9 @@ its current floor at any given moment and we want to visualize it.
 
 Result:
 
-![HTML for the win - how to](ch15.15-html-for-the-win-vertical-position-result.png)
+![HTML for the win - how to](ch15.17-html-for-the-win-vertical-position-result.png)
 
-_15.15 HTML for the win - how to_
+_15.17 HTML for the win - how to_
 
 ## Conclusion
 

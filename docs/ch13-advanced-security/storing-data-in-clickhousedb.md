@@ -61,6 +61,10 @@ PostgreSQL / MySQL)]
     D -->|history queries| B
 ```
 
+/// figure-caption | 13.13 #figure-13-13
+Zabbix ClickHouse history storage architecture
+///
+
 With that distinction in mind, let's set up the backend.
 
 ## Lab Environment
