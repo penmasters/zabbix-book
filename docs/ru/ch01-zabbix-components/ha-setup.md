@@ -1,7 +1,7 @@
 ---
 description: |
-    Set up Zabbix High Availability with clustered servers, shared DB, and Keepalived
-    for VIP failover—ensuring zero-downtime monitoring.
+    Настройте Zabbix High Availability с кластерными серверами, общей БД и Keepalived 
+    для VIP отказоустойчивости, гарантирующей мониторинг с нулевым временем простоя.
 tags: [expert]
 ---
 
