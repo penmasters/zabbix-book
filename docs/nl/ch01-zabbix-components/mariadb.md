@@ -1,11 +1,12 @@
 ---
 description: |
-    This section from The Zabbix Book titled "Installing a MariaDB Database"
-    guides you through installing MariaDB as the database backend for Zabbix.
-    It covers two installation methods: using OS vendor-provided packages or the
-    official MariaDB repositories. The section includes steps to start and 
-    secure the MariaDB server, create a Zabbix database with appropriate users,
-    and configure firewall rules if necessary. 
+    Dit gedeelte uit The Zabbix Book met de titel "Een MariaDB database installeren" leidt je door de installatie 
+    van MariaDB als database backend   voor Zabbix.
+    leidt je door de installatie van MariaDB als database backend voor Zabbix.
+    Het behandelt twee installatiemethoden: het gebruik van door de leverancier van het OS geleverde pakketten of de
+    officiële MariaDB opslagplaatsen. De sectie bevat stappen om de 
+    MariaDB server te starten en te beveiligen, een Zabbix database aan te maken met de juiste gebruikers,
+    en configureren van firewall regels indien nodig. 
 tags: [beginner]
 ---
 
@@ -385,7 +386,7 @@ database for Zabbix:
 
 ???+ note "What is utf8mb4"
 
-     utf8mb4 is a proper implementation of UTF-8 in MySQL/MariaDB, supporting all
+    utf8mb4 is a proper implementation of UTF-8 in MySQL/MariaDB, supporting all
      Unicode characters, including emojis. The older utf8 charset in MySQL/MariaDB
      only supports up to three bytes per character and is not a true UTF-8 implementation,
      which is why utf8mb4 is recommended.
