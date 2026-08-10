@@ -295,7 +295,7 @@ plugins:
       toc_title: "Table of Contents"
       toc_depth: 6
       enumerate_headings: false
-      enumerate_figures: true
+      enumerate_figures: false
       add_cover_page: false
       cover_page_template: "docs/assets/templates/custom_cover_page.tpl"
       path_to_pdf: ""
@@ -323,7 +323,8 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:mermaid2.fence_mermaid_custom
-  - pymdownx.blocks.caption
+  - pymdownx.blocks.caption:
+      auto: false
   - tables
   - attr_list
   - md_in_html

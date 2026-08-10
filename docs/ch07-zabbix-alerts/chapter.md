@@ -57,6 +57,10 @@ flowchart TD
     reports failure]
 ```
 
+/// figure-caption | 7.1 #figure-7-1
+Zabbix alerting pipeline
+///
+
 ## Where alerting problems come from
 
 In production environments, alerting failures are rarely caused by a single
