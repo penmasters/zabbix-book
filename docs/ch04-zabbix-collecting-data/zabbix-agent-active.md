@@ -19,9 +19,9 @@ requested item data according to the configuration received. The connection as
 such is always initiated from the Zabbix agent side, meaning you will have to allow
 your many agents to connect to your Zabbix servers or proxies instead.
 
-![Zabbix Agent active hosts](ch04.25-windows-linux-active-agent.png){ align=center }
+![Zabbix Agent active hosts](ch04.24-windows-linux-active-agent.png){ align=center }
 
-_4.25 Zabbix Agent active hosts_
+_4.24 Zabbix Agent active hosts_
 
 ---
 
@@ -106,9 +106,9 @@ management console, for `Linux` issue the command below.
 This finalizes the configuration file changes. Now we need to configure the host
  in Zabbix.
 
-![Zabbix Agent active hosts in Zabbix](ch04.26-windows-linux-active-agent-host.png){ align=center }
+![Zabbix Agent active hosts in Zabbix](ch04.25-windows-linux-active-agent-host.png){ align=center }
 
-_4.26 Zabbix Agent active hosts in Zabbix_
+_4.25 Zabbix Agent active hosts in Zabbix_
 
 All we need to do here is make sure to match the hostname of what we configured
 in the Zabbix agent configuration file. Keep in mind that the `Hostname` field
@@ -123,9 +123,9 @@ Now that the agent is configured to perform active checks, we can now start to
 create some items on our active agent host in Zabbix frontend. Let's click on
 `Items` for our host and configure a new Zabbix active type items.
 
-![Zabbix Agent active item](ch04.27-active-agent-item.png){ align=center }
+![Zabbix Agent active item](ch04.26-active-agent-item.png){ align=center }
 
-_4.27 Zabbix Agent active item_
+_4.26 Zabbix Agent active item_
 
 Make sure to set the item `Type` to `Zabbix agent (active)`. Most item keys will
 be the same between `Passive` and `Active` mode, but the `Type` needs to be set
@@ -133,9 +133,9 @@ correctly.
 
 Also, do not forget to add the tag to this item.
 
-![Zabbix Agent active item tag](ch04.28-active-agent-item-tag.png){ align=center }
+![Zabbix Agent active item tag](ch04.27-active-agent-item-tag.png){ align=center }
 
-_4.28 Zabbix Agent active item tag_
+_4.27 Zabbix Agent active item tag_
 
 Your `ZBX` icon for this host should now turn green, even in active mode.
 

@@ -144,10 +144,6 @@ flowchart LR
     S --> DB[(Database)]
 ```
 
-/// figure-caption | 3.1 #figure-3-1
-Fluxo de dados do grupo de proxies do Zabbix
-///
-
 ### Implementação de proxies como contêineres Podman com o Quadlet
 
 Um proxy é uma opção natural para a implementação de contêineres. É um processo

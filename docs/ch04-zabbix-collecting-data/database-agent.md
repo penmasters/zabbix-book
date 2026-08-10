@@ -29,8 +29,8 @@ server running that database. Since the Zabbix agent is running on the local
 machine, the Zabbix agent can now be used to connect using localhost (127.0.0.1) 
 to the database.
 
-![Zabbix ODBC vs Agent Database connection*](ch04.84-odbc-vs-agent.png){ align=center }
-*4.84 Zabbix ODBC vs Agent Database connection*
+![Zabbix ODBC vs Agent Database connection*](ch04.79-odbc-vs-agent.png){ align=center }
+*4.79 Zabbix ODBC vs Agent Database connection*
 
 ---
 
@@ -111,9 +111,9 @@ For the default setup with a Microsoft SQL server, things are fairly simple.
 First, we go to **Data collection** → **Hosts** and create a new host for our 
 Windows server.
 
-![Host creation - Windows server SQL](ch04.85-host-creation-windows-server-sql.png){ align=center }
+![Host creation - Windows server SQL](ch04.80-host-creation-windows-server-sql.png){ align=center }
 
-*4.85 Host creation - Windows server SQL*
+*4.80 Host creation - Windows server SQL*
 
 With the host created, it's important to note here we used the template 
 *MSSQL by Zabbix agent 2*. This is a default template provided by Zabbix which 
@@ -128,9 +128,9 @@ you have the agent connection setup we can do the next step. We need to configur
 our Zabbix agent to connect to the database server via the network. We do this
 using the macros on the host.
 
-![Windows server SQL host macros](ch04.86-windows-server-sql-macros.png){ align=center }
+![Windows server SQL host macros](ch04.81-windows-server-sql-macros.png){ align=center }
 
-*4.86 Windows server SQL host macros*
+*4.81 Windows server SQL host macros*
 
 Since the agent is installed on the server running Microsoft SQL, we can simply
 connect to `localhost` or `127.0.0.1`. That means the connection from the Zabbix
@@ -147,9 +147,9 @@ macros, the Zabbix agent should be able to connect to our SQL server. Navigating
 to **Monitoring** → **Latest data** should now show us a bunch of data from the
 SQL server marking the successful configuration of our monitoring.
 
-![Microsoft SQL server data](ch04.87-windows-server-sql-data.png){ align=center }
+![Microsoft SQL server data](ch04.82-windows-server-sql-data.png){ align=center }
 
-*4.87 Microsoft SQL server data*
+*4.82 Microsoft SQL server data*
 
 ???+ warning "Microsoft SQL server port configuration"
 
@@ -223,24 +223,24 @@ create a new item to monitor this `sleeping_sessions.sql` query we created. Navi
 to **Data collection** → **Hosts** and go to **Items**. Then click on **Create item**. 
 Preferably you would add the item to a template, but for now let's create it here.
 
-![Microsoft SQL server custom query](ch04.88-windows-server-sql-custom-query.png){ align=center }
+![Microsoft SQL server custom query](ch04.83-windows-server-sql-custom-query.png){ align=center }
 
-*4.88 Microsoft SQL server custom query*
+*4.83 Microsoft SQL server custom query*
 
 The full key is `mssql.custom.query["{$MSSQL.URI}","{$MSSQL.USER}","{$MSSQL.PASSWORD}",sleeping-sessions]`
 
 Make sure to add some preprocessing with the type *JSONPath* using the 
 **Parameter**: `$..sleeping_sessions.first()`.
 
-![Microsoft SQL server custom query preprocessing](ch04.89-windows-server-sql-custom-query-preprocessing.png){ align=center }
+![Microsoft SQL server custom query preprocessing](ch04.84-windows-server-sql-custom-query-preprocessing.png){ align=center }
 
-*4.89 Microsoft SQL server custom query preprocessing*
+*4.84 Microsoft SQL server custom query preprocessing*
 
 Don't forget to add a tag to the item.
 
-![Microsoft SQL server custom query tag](ch04.90-windows-server-sql-custom-query-tag.png){ align=center }
+![Microsoft SQL server custom query tag](ch04.85-windows-server-sql-custom-query-tag.png){ align=center }
 
-*4.90 Microsoft SQL server custom query tag*
+*4.85 Microsoft SQL server custom query tag*
 
 This item should now return a nice numeric value which you can see at 
 **Monitoring** → **Latest data**.

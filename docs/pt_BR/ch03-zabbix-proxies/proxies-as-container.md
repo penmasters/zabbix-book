@@ -35,9 +35,9 @@ usando o Podman.
 
 ### Adicionar o proxy ao front-end do zabbix
 
-![Adicionar o proxy](ch03.10-container-proxy-new.png)
+![Adicionar o proxy](ch03.9-container-proxy-new.png)
 
-_3.10 Adicionar proxy ao frontend_
+_3.9 Adicionar proxy ao frontend_
 
 Para manter a configuração simples, implantaremos um proxy Zabbix ativo. Nesse
 caso, apenas dois parâmetros precisam ser configurados: o nome do host do proxy

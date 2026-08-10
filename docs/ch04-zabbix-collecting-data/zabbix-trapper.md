@@ -67,9 +67,9 @@ template for this purpose, and add a new **Zabbix trapper** item to it:
   * Key: `hello.world`
   * Type of information: **Text**
 
-![Zabbix trapper - first item](ch04.91-trapper-hello-world.png)
+![Zabbix trapper - first item](ch04.86-trapper-hello-world.png)
 
-_4.91 Zabbix trapper - first item_
+_4.86 Zabbix trapper - first item_
 
 Attach this template to your Zabbix server host and apply changes.
 
@@ -87,9 +87,9 @@ the item key from the previous step using the `-k` option:
 
 And that is about it! Our trapper item is updated.
 
-![Zabbix trapper - first item result](ch04.92-trapper-hello-world-result.png)
+![Zabbix trapper - first item result](ch04.87-trapper-hello-world-result.png)
 
-_4.92 Zabbix trapper - first item result_
+_4.87 Zabbix trapper - first item result_
 
 ???+ info
 
@@ -156,16 +156,16 @@ send this duration to Zabbix via `zabbix_sender`:
     exit 0
     ```
 
-![Zabbix trapper - not aligned time](ch04.93-trapper-not-aligned-time.png)
+![Zabbix trapper - not aligned time](ch04.88-trapper-not-aligned-time.png)
 
-_4.93 Zabbix trapper - not aligned time_
+_4.88 Zabbix trapper - not aligned time_
 
 Problem here is that since the script runs with chaotic durations, results will be
 displayed on the time axis of graphs in unequal intervals between collected values:
 
-![Zabbix trapper - not aligned time graph](ch04.94-trapper-not-aligned-time-graph.png)
+![Zabbix trapper - not aligned time graph](ch04.89-trapper-not-aligned-time-graph.png)
 
-_4.94 Zabbix trapper - not aligned time graph_
+_4.89 Zabbix trapper - not aligned time graph_
 
 That is visually unappealing and we can easily fix it by forcing Zabbix to
 store results not when the value was sent to Zabbix server, but at the 00
@@ -193,15 +193,15 @@ seconds of the minute the script was started:
 
 Now the values are collected exactly at the 00 second of each minute:
 
-![Zabbix trapper - not aligned time](ch04.95-trapper-aligned-time.png)
+![Zabbix trapper - not aligned time](ch04.90-trapper-aligned-time.png)
 
-_4.95 Zabbix trapper - not aligned time_
+_4.90 Zabbix trapper - not aligned time_
 
 And our graph becomes smooth:
 
-![Zabbix trapper - aligned time graph](ch04.96-trapper-aligned-time-graph.png)
+![Zabbix trapper - aligned time graph](ch04.91-trapper-aligned-time-graph.png)
 
-_4.96 Zabbix trapper - aligned time graph_
+_4.91 Zabbix trapper - aligned time graph_
 
 The bigger the possible gaps between the values, the more such approach makes
 sense.
@@ -215,9 +215,9 @@ possible. Just form sets of data from your data sources (e.g. logs) and feed
 them into Zabbix by creating some temporary trapper items. You will then have a
 view of what has happened, even if you didn't monitor it in real time.
 
-![Zabbix trapper - past incident](ch04.97-trapper-past-incident.png)
+![Zabbix trapper - past incident](ch04.92-trapper-past-incident.png)
 
-_4.97 Zabbix trapper - past incident_
+_4.92 Zabbix trapper - past incident_
 
 ### Have some fun
 
@@ -226,9 +226,9 @@ in Zabbix by creating sets of data aligned so in time and value amplitude, that
 it would form some image. That is a fun way to entertain your colleagues or
 just sharpen your skills in scripting!
 
-![Zabbix trapper - fun](ch04.98-trapper-fun.png)
+![Zabbix trapper - fun](ch04.93-trapper-fun.png)
 
-_4.98 Zabbix trapper - fun_
+_4.93 Zabbix trapper - fun_
 
 ---
 
@@ -369,9 +369,9 @@ you will update this item:
 You will see the result in the Zabbix GUI **Latest data** section for the host 
 where the Zabbix trapper item resides:
 
-![Zabbix trapper - API item result](ch04.99-trapper-api-item-result.png)
+![Zabbix trapper - API item result](ch04.94-trapper-api-item-result.png)
 
-_4.99 Zabbix trapper - API item result_
+_4.94 Zabbix trapper - API item result_
 
 !!! note
 

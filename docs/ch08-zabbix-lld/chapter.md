@@ -51,10 +51,6 @@ flowchart TD
     M -- No --> N[Items, triggers and graphs deleted]
 ```
 
-/// figure-caption | 8.1 #figure-8-1
-Low-level discovery lifecycle
-///
-
 ## The two categories of LLD
 
 Zabbix ships with a set of built-in discovery rules that cover the most common use

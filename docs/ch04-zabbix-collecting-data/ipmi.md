@@ -77,10 +77,6 @@ flowchart TB
   class H sensors
 ```
 
-/// figure-caption | 4.76 #figure-4-76
-Zabbix IPMI monitoring architecture
-///
-
 ---
 
 ### IPMI Architecture and Sensors
@@ -679,9 +675,9 @@ In the Zabbix frontend, go to **Data collection** → **Hosts**
 
 ---
 
-![ch04.50_create_redfish_host.png](ch04.77-create_redfish_host.png)
+![ch04.50_create_redfish_host.png](ch04.72-create_redfish_host.png)
 
-_4.77 create Redfish host_
+_4.72 create Redfish host_
 
 This host will represent the Redfish endpoint rather than a traditional server.
 Next we can create a HTTP item on our host.
@@ -740,15 +736,15 @@ the *master item* using preprocessing.
 
 Press **Add** to save the item.
 
-![ch04.51_create_dependent_item.png](ch04.78-create_dependent_item.png)
+![ch04.51_create_dependent_item.png](ch04.73-create_dependent_item.png)
 
-_4.78 Dependent item_
+_4.73 Dependent item_
 
 Let's go to our latest data page and have a look at our newly created item.
 
-![ch04.52_latest_data.png](ch04.79-latest_data.png)
+![ch04.52_latest_data.png](ch04.74-latest_data.png)
 
-_4.79 Latest data_
+_4.74 Latest data_
 
 ---
 
@@ -811,9 +807,9 @@ Press the '**...**' in front of the item and select **Create dependent discovery
 | **Preprocessing** | JSONPath | `$.Members[*]` |
 | **LLD macros** | `{#CHASSIS_URI}` | `$['@odata.id']` |
 
-![ch04.53_discovery_rule.png](ch04.80-discovery_rule.png)
+![ch04.53_discovery_rule.png](ch04.75-discovery_rule.png)
 
-_4.80 LLD Discovery rule_
+_4.75 LLD Discovery rule_
 
 The JSONPath will output each member object individually, for example:
 
@@ -857,9 +853,9 @@ queries each discovered chassis.
 
 This produces one HTTP item per discovered chassis.
 
-![ch04.54_item_prototype_raw.png](ch04.81-item_prototype_raw.png)
+![ch04.54_item_prototype_raw.png](ch04.76-item_prototype_raw.png)
 
-_4.81 Item prototype raw_
+_4.76 Item prototype raw_
 
 ---
 
@@ -890,9 +886,9 @@ We can extract this cleanly using a dependent item.
 | **Type of information** | Character | |
 | **Preprocessing** | JSONPath | `$.Status.Health` |
 
-![ch04.55_item_prototype_health.png](ch04.82-item_prototype_health.png)
+![ch04.55_item_prototype_health.png](ch04.77-item_prototype_health.png)
 
-_4.82 Dependent discovery item health_
+_4.77 Dependent discovery item health_
 
 Once done clone this item and create one for the `Status state`. You can use
 this JSONPath `$.Status.State` for it.
@@ -908,9 +904,9 @@ And as a final step we can create a simple **Trigger prototype** to make the dis
 | **Name:** | `Chassis health is not OK` | |
 | **Expression** | `last(/Redfish Mockup Server/redfish.chassis.health[{#CHASSIS_URI}])<>"OK"` | Adapt trigger names if needed |
 
-![ch04.56_trigger_prototype.png](ch04.83-trigger_prototype.png)
+![ch04.56_trigger_prototype.png](ch04.78-trigger_prototype.png)
 
-_4.83 Trigger Prototype_
+_4.78 Trigger Prototype_
 
 ---
 
