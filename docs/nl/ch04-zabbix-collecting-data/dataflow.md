@@ -146,7 +146,7 @@ detected.
 
 ---
 
-## Conclusion
+## Conclusie
 
 To summarize, all the steps in the dataflow work together to make sure that you
 can build the perfect Zabbix environment. When we put the entire dataflow
@@ -187,7 +187,7 @@ deeper into creating the configuration for the steps in the dataflow.
 
 ---
 
-## Questions
+## Vragen
 
 - Can you give two examples of what a "host" could represent in Zabbix, besides
   a server?
@@ -198,7 +198,7 @@ deeper into creating the configuration for the steps in the dataflow.
 
 ---
 
-## Useful URLs
+## Nuttige URL's
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/items](https://www.zabbix.com/documentation/current/en/manual/config/items)
 - [https://www.zabbix.com/documentation/current/en/manual/config/triggers](https://www.zabbix.com/documentation/current/en/manual/config/triggers)
