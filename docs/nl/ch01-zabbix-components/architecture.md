@@ -1,9 +1,9 @@
 ---
-description: |
-    This section from The Zabbix Book titled "Zabbix architecture" explains the 
-    modular structure of a Zabbix setup. It highlights the roles of each component
-    and their interdependencies, while providing an introduction to how we will 
-    perform the installation of the components in next sections.
+beschrijving: |
+    Dit gedeelte uit The Zabbix Book met de titel "Zabbix architecture" legt de 
+    modulaire structuur van een Zabbix setup uit. Het benadrukt de rollen van elk component
+    en hun onderlinge afhankelijkheden, terwijl het een introductie geeft van hoe we 
+    de installatie van de componenten in de volgende secties zullen uitvoeren.
 tags: [beginner]
 ---
 
