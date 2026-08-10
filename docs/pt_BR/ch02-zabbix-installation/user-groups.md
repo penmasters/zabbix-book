@@ -206,11 +206,11 @@ Essa precedência pode ser resumida em duas regras principais:
    presente, o direito mais permissivo será aplicado. **Leitura-escrita** sempre
    substitui **Somente leitura**.
 
-| Cenário            | Grupo A            | Grupo B            | Permissão efetiva      | Justificativa                                                 |
-| ------------------ | ------------------ | ------------------ | ---------------------- | ------------------------------------------------------------- |
-| **RW Sobre RO**    | Somente leitura    | Leitura e gravação | **Leitura e gravação** | O direito mais permissivo vence quando **Deny** está ausente. |
-| **Negar sobre RO** | Somente leitura    | Negar              | **Negar**              | **Deny** sempre tem precedência e bloqueia todos os acessos.  |
-| **Negar sobre RW** | Leitura e gravação | Negar              | **Negar**              | O direito mais restritivo (Deny) substitui o mais permissivo. |
+| Cenário            | Grupo A         | Grupo B    | Permissão efetiva      | Justificativa                                                 |
+| ------------------ | --------------- | ---------- | ---------------------- | ------------------------------------------------------------- |
+| **RW Sobre RO**    | Somente leitura | Read-write | **Leitura e gravação** | O direito mais permissivo vence quando **Deny** está ausente. |
+| **Negar sobre RO** | Somente leitura | Negar      | **Negar**              | **Deny** sempre tem precedência e bloqueia todos os acessos.  |
+| **Negar sobre RW** | Read-write      | Negar      | **Negar**              | O direito mais restritivo (Deny) substitui o mais permissivo. |
 
 ### Permissões na caixa de diálogo "Atualizar problema"
 
@@ -227,14 +227,14 @@ por dois mecanismos distintos que funcionam em conjunto:
 A tabela abaixo esclarece as permissões mínimas necessárias para executar ações
 em um problema ativo:
 
-| Ação na caixa de diálogo "Atualizar problema“ | Permissão de host necessária          | Permissão de modelo necessária                  | Capacidade da função requerida / Observações                            |
-| --------------------------------------------- | ------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------- |
-| **Mensagem** (adicionar comentário)           | Somente leitura ou leitura e gravação | Mesmo nível do host                             | Requer a capacidade de função **Reconhecer problemas**.                 |
-| **Reconhecer**                                | Somente leitura ou leitura e gravação | Mesmo nível do host                             | Requer **Reconhecer problemas**. O acesso somente leitura é suficiente. |
-| **Alterar a gravidade**                       | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Alterar a gravidade do problema**.                   |
-| **Suprimir** / **Cancelar supressão**         | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Suprimir problemas**.                                |
-| **Converter para causar**                     | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Gerenciar correlações de problemas**.                |
-| **Fechar problema**                           | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Fechar problemas manualmente**.                      |
+| Ação na caixa de diálogo "Atualizar problema“ | Permissão de host necessária | Permissão de modelo necessária     | Capacidade da função requerida / Observações                            |
+| --------------------------------------------- | ---------------------------- | ---------------------------------- | ----------------------------------------------------------------------- |
+| **Mensagem** (adicionar comentário)           | Read-only or Read-write      | Same level as host                 | Requer a capacidade de função **Reconhecer problemas**.                 |
+| **Reconhecer**                                | Read-only or Read-write      | Same level as host                 | Requer **Reconhecer problemas**. O acesso somente leitura é suficiente. |
+| **Alterar a gravidade**                       | **Read-write** required      | **Read-write** if template trigger | Requer o recurso **Alterar a gravidade do problema**.                   |
+| **Suprimir** / **Cancelar supressão**         | **Read-write** required      | **Read-write** if template trigger | Requer o recurso **Suprimir problemas**.                                |
+| **Converter para causar**                     | **Read-write** required      | **Read-write** if template trigger | Requer o recurso **Gerenciar correlações de problemas**.                |
+| **Fechar problema**                           | **Read-write** required      | **Read-write** if template trigger | Requer o recurso **Fechar problemas manualmente**.                      |
 
 ---
 
