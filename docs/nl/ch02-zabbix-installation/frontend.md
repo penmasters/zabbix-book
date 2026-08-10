@@ -1,9 +1,9 @@
 ---
-description: |
-    This chapter from The Zabbix Book, titled "Frontend Installation," provides a
-    step-by-step guide to setting up the Zabbix web interface. Learn how to install
-    required packages, configure PHP, and integrate with Apache or Nginx for a
-    secure and fully functional monitoring frontend.
+beschrijving: |
+    Dit hoofdstuk uit The Zabbix Book, getiteld "Frontend Installation," geeft een
+    stap-voor-stap handleiding voor het instellen van de Zabbix webinterface. Leer hoe je
+    pakketten installeert, PHP configureert en integreert met Apache of Nginx voor een
+    veilige en volledig functionele monitoring frontend.
 tags: [beginner]
 ---
 
@@ -29,9 +29,10 @@ menu aan de linkerkant van het scherm heeft een kleine opknapbeurt gekregen.
 Laten we er eens in duiken. Als we de eerste keer inloggen in onze Zabbix setup
 met onze Admin-gebruiker zien we een pagina
 
-zoals dit waar we ons `hoofdvenster` in <font color='green'>groen</font> ons
-`hoofdmenu` gemarkeerd in <font color='red'>rood</font> en onze `links`
-gemarkeerd in <font color='gold'>geel</font> hebben.
+like this where we have our `main window` in <font color='green'>green</font>\
+our `main menu` marked in\
+<font color='red'>red</font> and our `links` marked in
+<font color='gold'>yellow</font>.
 
 ![Overview](ch02.1-frontend-overview.png)
 
@@ -223,8 +224,8 @@ _2.10 Main menu sections_
 - A `Zabbix User` will only see the <font color='red'>red</font> part of our
   `main menu` and will only be able to see our collected data.
 - A `Zabbix Admin` will see the red part and the
-  <font color='gold'>yellow</font> part of the `main menu` and is able to change
-  our configuration.
+  <font color='gold'>yellow</font>\
+  part of the `main menu` and is able to change our configuration.
 - A `Zabbix Super Admin` will see the complete `main menu` and so is able to
   change the configuration and all the global settings.
 

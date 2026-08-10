@@ -1,10 +1,12 @@
 ---
-description: |
-    This chapter from The Zabbix Book, titled "Frontend Installation," provides a
-    step-by-step guide to setting up the Zabbix web interface. Learn how to install
-    required packages, configure PHP, and integrate with Apache or Nginx for a
-    secure and fully functional monitoring frontend.
-tags: [beginner]
+Description : |
+    Cette section du livre Zabbix, intitulée "Authentification HTTP",
+    explique comment sécuriser l'accès au frontend Zabbix à l'aide de
+    méthodes d'authentification de serveur web. Elle couvre la configuration avec
+    Apache ou Nginx, l'intégration avec Zabbix et la façon dont l'authentification
+    HTTP ajoute une couche de protection supplémentaire à votre environnement
+    de surveillance.
+tags: [avancé]
 ---
 
 # Frontend expliqué
@@ -30,10 +32,10 @@ menu sur le côté gauche de l'écran a été légèrement remanié. Voyons cela
 près. Lorsque nous nous connectons à notre installation Zabbix pour la première
 fois avec notre utilisateur Admin, nous voyons une page
 
-comme ceci où nous avons la `fenêtre principale` en
-<font color='green'>vert</font> le `menu principal` marqué en
-<font color='red'>rouge</font> et les `liens` marqués en
-<font color='gold'>jaune</font>.
+like this where we have our `main window` in <font color='green'>green</font>\
+our `main menu` marked in\
+<font color='red'>red</font> and our `links` marked in
+<font color='gold'>yellow</font>.
 
 ![Vue d'ensemble](ch02.1-frontend-overview.png)
 
@@ -230,8 +232,8 @@ _2.10 Main menu sections_
 - A `Zabbix User` will only see the <font color='red'>red</font> part of our
   `main menu` and will only be able to see our collected data.
 - A `Zabbix Admin` will see the red part and the
-  <font color='gold'>yellow</font> part of the `main menu` and is able to change
-  our configuration.
+  <font color='gold'>yellow</font>\
+  part of the `main menu` and is able to change our configuration.
 - A `Zabbix Super Admin` will see the complete `main menu` and so is able to
   change the configuration and all the global settings.
 
