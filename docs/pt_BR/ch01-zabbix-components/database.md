@@ -1,8 +1,8 @@
 ---
-description: |
-  This section from The Zabbix Book titled "Database choices" helps you select
-  the appropriate database backend and packages for your Zabbix installation.
-tags: [beginner]
+descrição: |
+  Esta seção do Zabbix Book intitulada "Database choices" (Opções de banco de dados) o ajuda a selecionar o backend de banco de dados e os pacotes
+  o banco de dados apropriado e os pacotes para sua instalação do Zabbix.
+tags: [iniciantes]
 ---
 
 # Opções de banco de dados
