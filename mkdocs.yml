@@ -89,6 +89,7 @@ nav:
       - Custom LLD: ch08-zabbix-lld/custom.md
       - Dependent LLD: ch08-zabbix-lld/lld-with-dependent-items.md
       - SNMP LLD: ch08-zabbix-lld/snmp-lld.md
+      - Nested LLD: ch08-zabbix-lld/nested-lld.md
   - "Chapter 09 : Extending Zabbix":
       - ch09-zabbix-extending/chapter.md
       - ch09-zabbix-extending/frontend-scripts.md
