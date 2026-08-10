@@ -1,13 +1,13 @@
 ---
 description: |
-    This section from The Zabbix Book titled "Installing the frontend" provides
-    step-by-step instructions for installing the Zabbix frontend with NGINX on
-    various Linux distributions. It covers the installation of necessary packages,
-    configuration of SELinux and SystemD for PHP-FPM, and modification of the
-    NGINX configuration to serve the Zabbix frontend on port 80. Additionally, 
-    it guides users through the initial setup of the Zabbix frontend, including
-    database connection configuration and basic settings such as instance name,
-    timezone, and time format.
+    Deze sectie uit The Zabbix Book getiteld "Installing the frontend" geeft
+    stapsgewijze instructies voor het installeren van het Zabbix frontend met NGINX op
+    verschillende Linux distributies. Het behandelt de installatie van de benodigde pakketten,
+    configuratie van SELinux en SystemD voor PHP-FPM en het aanpassen van de
+    NGINX configuratie om de Zabbix frontend op poort 80 te serveren. Bovendien 
+    begeleidt het gebruikers door de initiële installatie van het Zabbix frontend, inclusief
+    database connectie configuratie en basisinstellingen zoals instance naam,
+    tijdzone en tijdformaat.
 tags: [beginner]
 ---
 
