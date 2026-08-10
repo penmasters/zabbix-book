@@ -141,10 +141,6 @@ flowchart LR
     S --> DB[(Database)]
 ```
 
-/// figure-caption | 3.1 #figure-3-1
-Flux de donnees d'un groupe de proxys Zabbix
-///
-
 ### Deploying proxies as Podman containers with Quadlet
 
 A proxy is a natural fit for container deployment. It is a single process with a

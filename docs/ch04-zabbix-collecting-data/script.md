@@ -132,9 +132,9 @@ Add the following code in the script box of the item.
 
     ```
 
-![ch04.40-script-example1.png](ch04.66-script-example1.png)
+![ch04.40-script-example1.png](ch04.63-script-example1.png)
 
-_4.66 ch04.40-script-example1.png_
+_4.63 ch04.40-script-example1.png_
 
 ### Example trigger
 
@@ -203,9 +203,9 @@ Add the following code in the script box.
 
     ```
 
-![ch04.42-script-example2.png](ch04.67-script-example2.png)
+![ch04.42-script-example2.png](ch04.64-script-example2.png)
 
-_4.67 ch04.42-script-example2.png_
+_4.64 ch04.42-script-example2.png_
 
 Next create a few dependent items that use this script as master item.
 
@@ -237,9 +237,9 @@ Next create a few dependent items that use this script as master item.
 | **Type of information:** | Unsigned                 |
 | Preprocessing            | JSONPath: -> `$.is_day`  |
 
-![ch04.41-script-example2.png](ch04.68-script-example2.png)
+![ch04.41-script-example2.png](ch04.65-script-example2.png)
 
-_4.68 ch04.41-script-example2.png_
+_4.65 ch04.41-script-example2.png_
 
 ---
 

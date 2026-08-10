@@ -196,9 +196,7 @@ graph TD
     B -->|SNMP Response| A
 ```
 
-/// figure-caption | 4.29 #figure-4-29
-SNMP polling overview
-///
+_4.28 Overview_
 
 Before we start lets go over a few tools that we will use and explain what they
 exactly do.
@@ -1086,9 +1084,9 @@ So let's add a **SNMP Interface** and give it the IP of the device we would like
 to monitor. If you have been following our steps on the local machine you can
 use ip `127.0.0.1`, our own server.
 
-![Host Interface](ch04.30-snmp-host-.png)
+![Host Interface](ch04.28-snmp-host-.png)
 
-_4.30 SNMP Interface_
+_4.28 SNMP Interface_
 
 Once our host is created and saved with the correct interface we have to create
 an item on the host. Click on **items** next to the host `SNMP Device`. On the top
@@ -1105,9 +1103,9 @@ in the item information.
   will use synchronous polling.
 - **Units:** The data is in bytes so use `B`.
 
-![ch04.30-snmp-item.png](ch04.31-snmp-item.png)
+![ch04.30-snmp-item.png](ch04.29-snmp-item.png)
 
-_4.31 SNMP Item_
+_4.29 SNMP Item_
 
 Before we safe this item there is one more important step we need to do. Network
 items are usually counters. Meaning the device is just counting the amount of
@@ -1119,9 +1117,9 @@ first before we save it.
 
 Add a *preprocessing step* with the name `Change per second`
 
-![ch04.31-snmp-item-preprocessing.png](ch04.32-snmp-item-preprocessing.png)
+![ch04.31-snmp-item-preprocessing.png](ch04.30-snmp-item-preprocessing.png)
 
-_4.32 ch04.31-snmp-item-preprocessing.png_
+_4.30 ch04.31-snmp-item-preprocessing.png_
 
 _snmp preprocessing_
 
@@ -1188,9 +1186,9 @@ some changes.
 The rest can stay as is, just remove the *preprocessing step* we added in the earlier
 example as this item will return us a whole list of information.
 
-![ch04.32-snmp-walk.png](ch04.33-snmp-walk.png)
+![ch04.32-snmp-walk.png](ch04.31-snmp-walk.png)
 
-_4.33 SNMP Walk_
+_4.31 SNMP Walk_
 
 When we press the **Get value and test** button in the test item screen we get a
 whole list of data.
@@ -1262,9 +1260,9 @@ Fill in the new item with the following information:
   before.
 - **Units:** `B`
 
-![ch04.33-snmp-dependent-item.png](ch04.34-snmp-dependent-item.png)
+![ch04.33-snmp-dependent-item.png](ch04.32-snmp-dependent-item.png)
 
-_4.34 Dependent SNMP Item_
+_4.32 Dependent SNMP Item_
 
 This item as is at the moment is an exact copy of our master item so we need to
 add some *preprocessing steps* first. Let's go to the tab **Preprocessing** and add
@@ -1283,9 +1281,9 @@ Add the step **SNMP walk value** and paste the OID in the **Parameter** field:
 Remember from our previous item we need to calculate the **Changes per second**
 so add this as the second *preprocessing step*.
 
-![ch04.34-snmp-item-preprocessing.png](ch04.35-snmp-item-preprocessing.png)
+![ch04.34-snmp-item-preprocessing.png](ch04.33-snmp-item-preprocessing.png)
 
-_4.35 preprocessing
+_4.33 preprocessing
 steps_
 
 Going now to the **Latest data** page, it will show the "In" and "Out" traffic for our
