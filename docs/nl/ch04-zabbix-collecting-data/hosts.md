@@ -124,7 +124,7 @@ click on the `Add` button to create the host.
 
 ---
 
-## Conclusion
+## Conclusie
 
 In this section we have learned how to create a host in Zabbix. We have covered
 the important fields like `Host name`, `Visible name` and `Host groups`. We have
@@ -135,7 +135,7 @@ section to create our first items.
 
 ---
 
-## Questions
+## Vragen
 
 - What is the purpose of a host in Zabbix?
 - What is the difference between the "Host name" and "Visible name" fields when
@@ -145,6 +145,6 @@ section to create our first items.
 
 ---
 
-## Useful URLs
+## Nuttige URL's
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/hosts/host](https://www.zabbix.com/documentation/current/en/manual/config/hosts/host)
