@@ -385,7 +385,7 @@ database for Zabbix:
 
 ???+ note "What is utf8mb4"
 
-     utf8mb4 is a proper implementation of UTF-8 in MySQL/MariaDB, supporting all
+    utf8mb4 is a proper implementation of UTF-8 in MySQL/MariaDB, supporting all
      Unicode characters, including emojis. The older utf8 charset in MySQL/MariaDB
      only supports up to three bytes per character and is not a true UTF-8 implementation,
      which is why utf8mb4 is recommended.

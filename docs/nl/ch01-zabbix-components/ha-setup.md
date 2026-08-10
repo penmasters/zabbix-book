@@ -1,7 +1,7 @@
 ---
-description: |
-    Set up Zabbix High Availability with clustered servers, shared DB, and Keepalived
-    for VIP failover—ensuring zero-downtime monitoring.
+beschrijving: |
+    Zabbix High Availability instellen met geclusterde servers, gedeelde DB en Keepalived
+    voor VIP failover-bewaking zonder downtime.
 tags: [expert]
 ---
 
@@ -52,11 +52,12 @@ en een plaats om hun respectievelijke IP-adressen toe te voegen:
 
 ## De database installeren
 
-Refer to the [_Zabbix components: Database_](database.md) chapter for detailed
-instructions on setting up the database. That chapter provides step-by-step
-guidance on installing either a PostgreSQL or MariaDB database on a dedicated
-node running Ubuntu, SUSE or Rocky Linux. The same installation steps apply when
-configuring the database for this setup.
+Raadpleeg het hoofdstuk [_Zabbix components: Database_](database.md) voor
+gedetailleerde instructies over het opzetten van de database. Dat hoofdstuk
+geeft stapsgewijze richtlijnen voor het installeren van een PostgreSQL of
+MariaDB database op een speciaal knooppunt met Ubuntu, SUSE of Rocky Linux.
+Dezelfde installatiestappen zijn van toepassing bij het configureren van de
+database voor deze opstelling.
 
 ---
 

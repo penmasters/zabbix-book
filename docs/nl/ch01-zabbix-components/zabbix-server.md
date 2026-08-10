@@ -1,13 +1,13 @@
 ---
 description: |
-    This section from The Zabbix Book titled "Installing the Zabbix server" 
-    guides you through the installation and configuration of the Zabbix server 
-    on various Linux distributions. It covers the installation of the Zabbix 
-    server package, configuration of the database connection settings, and setup 
-    of the firewall to allow incoming connections to the Zabbix server. 
-    Additionally, it provides instructions for starting and enabling the Zabbix 
-    server service, validating the configuration, and checking the server's log
-    file for any issues. 
+    Dit gedeelte uit The Zabbix Book met de titel "De Zabbix server installeren" leidt je door de installatie en configuratie van de Zabbix server. 
+    leidt je door de installatie en configuratie van de Zabbix server 
+    op verschillende Linux distributies. Het behandelt de installatie van het Zabbix 
+    serverpakket, de configuratie van de verbindingsinstellingen voor de database en het instellen 
+    van de firewall om inkomende verbindingen naar de Zabbix server toe te staan. 
+    Daarnaast geeft het instructies voor het starten en inschakelen van de Zabbix 
+    server service te starten en in te schakelen, de configuratie te valideren en het logbestand van de server
+    logbestand van de server te controleren op eventuele problemen. 
 tags: [beginner]
 ---
 

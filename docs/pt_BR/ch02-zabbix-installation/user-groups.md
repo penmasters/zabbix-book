@@ -65,7 +65,7 @@ configuração familiar para os administradores.
 
 ![ch02.20_user-groups_menu.png](ch02.22-user-groups_menu.png)
 
-_2.22 menu do grupo de usuários_
+_2.22 user group menu_
 
 #### O `grupo de usuários` Guia
 
@@ -206,11 +206,11 @@ Essa precedência pode ser resumida em duas regras principais:
    presente, o direito mais permissivo será aplicado. **Leitura-escrita** sempre
    substitui **Somente leitura**.
 
-| Cenário            | Grupo A            | Grupo B            | Permissão efetiva      | Justificativa                                                 |
-| ------------------ | ------------------ | ------------------ | ---------------------- | ------------------------------------------------------------- |
-| **RW Sobre RO**    | Somente leitura    | Leitura e gravação | **Leitura e gravação** | O direito mais permissivo vence quando **Deny** está ausente. |
-| **Negar sobre RO** | Somente leitura    | Negar              | **Negar**              | **Deny** sempre tem precedência e bloqueia todos os acessos.  |
-| **Negar sobre RW** | Leitura e gravação | Negar              | **Negar**              | O direito mais restritivo (Deny) substitui o mais permissivo. |
+| Cenário            | Grupo A         | Grupo B    | Permissão efetiva      | Justificativa                                                 |
+| ------------------ | --------------- | ---------- | ---------------------- | ------------------------------------------------------------- |
+| **RW Sobre RO**    | Somente leitura | Read-write | **Leitura e gravação** | O direito mais permissivo vence quando **Deny** está ausente. |
+| **Negar sobre RO** | Somente leitura | Negar      | **Negar**              | **Deny** sempre tem precedência e bloqueia todos os acessos.  |
+| **Negar sobre RW** | Read-write      | Negar      | **Negar**              | O direito mais restritivo (Deny) substitui o mais permissivo. |
 
 ### Permissões na caixa de diálogo "Atualizar problema"
 
@@ -227,14 +227,14 @@ por dois mecanismos distintos que funcionam em conjunto:
 A tabela abaixo esclarece as permissões mínimas necessárias para executar ações
 em um problema ativo:
 
-| Ação na caixa de diálogo "Atualizar problema“ | Permissão de host necessária          | Permissão de modelo necessária                  | Capacidade da função requerida / Observações                            |
-| --------------------------------------------- | ------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------- |
-| **Mensagem** (adicionar comentário)           | Somente leitura ou leitura e gravação | Mesmo nível do host                             | Requer a capacidade de função **Reconhecer problemas**.                 |
-| **Reconhecer**                                | Somente leitura ou leitura e gravação | Mesmo nível do host                             | Requer **Reconhecer problemas**. O acesso somente leitura é suficiente. |
-| **Alterar a gravidade**                       | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Alterar a gravidade do problema**.                   |
-| **Suprimir** / **Cancelar supressão**         | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Suprimir problemas**.                                |
-| **Converter para causar**                     | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Gerenciar correlações de problemas**.                |
-| **Fechar problema**                           | **Leitura e gravação** necessário     | **Leitura e gravação** se o modelo for acionado | Requer o recurso **Fechar problemas manualmente**.                      |
+| Ação na caixa de diálogo "Atualizar problema“ | Permissão de host necessária | Permissão de modelo necessária     | Capacidade da função requerida / Observações                            |
+| --------------------------------------------- | ---------------------------- | ---------------------------------- | ----------------------------------------------------------------------- |
+| **Mensagem** (adicionar comentário)           | Read-only or Read-write      | Same level as host                 | Requer a capacidade de função **Reconhecer problemas**.                 |
+| **Reconhecer**                                | Read-only or Read-write      | Same level as host                 | Requer **Reconhecer problemas**. O acesso somente leitura é suficiente. |
+| **Alterar a gravidade**                       | **Read-write** required      | **Read-write** if template trigger | Requer o recurso **Alterar a gravidade do problema**.                   |
+| **Suprimir** / **Cancelar supressão**         | **Read-write** required      | **Read-write** if template trigger | Requer o recurso **Suprimir problemas**.                                |
+| **Converter para causar**                     | **Read-write** required      | **Read-write** if template trigger | Requer o recurso **Gerenciar correlações de problemas**.                |
+| **Fechar problema**                           | **Read-write** required      | **Read-write** if template trigger | Requer o recurso **Fechar problemas manualmente**.                      |
 
 ---
 
@@ -308,10 +308,8 @@ Você pode criá-los em `Coleta de dados` → `Grupos de hosts`.
     - HG_All_Linux_Servers: Somente leitura (Read)
     - HG_Critical_Databases (Bancos de dados críticos): Somente leitura (Read)
 
-![ch02.21_junior-monitoring.png](ch02.23-junior-monitoring.png) _2.21
-
-_2.23 ch02.21_junior-monitoring.png_
-Monitoramento júnior_
+![ch02.21_junior-monitoring.png](ch02.23-junior-monitoring.png) _2.23 Junior
+monitoring_
 
 
 - Criar Grupo B: 'Exclusão crítica'
@@ -319,9 +317,7 @@ Monitoramento júnior_
     * Na guia Permissões de host, atribua o seguinte direito:
     * HG_Critical_Databases: Deny
 
-![ch02.22_critical-exclusioin.png](ch02.24-critical-exclusioin.png) _ch02.22
-
-_2.24 ch02.22_critical-exclusioin.png_
+![ch02.22_critical-exclusioin.png](ch02.24-critical-exclusioin.png) _2.24
 Critical exclusion_
 
 #### Creating the Test User
@@ -341,9 +337,7 @@ We will create the user first, then assign them to the groups.
     * Add the user to both group `Junior Monitoring` and `Critical Exclusion`.
 * Save: Click Add.
 
-![ch02.23_test-junior.png](ch02.25-test-junior.png) _ch02.23 test user_
-
-_2.25 ch02.23_test-junior.png_
+![ch02.23_test-junior.png](ch02.25-test-junior.png) _2.25 test user_
 
 #### Criar os hosts
 
@@ -358,9 +352,7 @@ Criaremos 2 hosts, um servidor Linux e um servidor de banco de dados.
     * Interfaces: Agent with IP 127.0.0.1
 * Save: Click Add.
 
-![ch02.24_hosts.png](ch02.26-hosts.png) _ch02.24 Add hosts_
-
-_2.26 ch02.24_hosts.png_
+![ch02.24_hosts.png](ch02.26-hosts.png) _2.26 Add hosts_
 
 Add a DB server exact as above but change :
 

@@ -1,9 +1,9 @@
 ---
 description: |
-    This section from The Zabbix Book, titled "HTTP Authentication," explains how
-    to secure Zabbix frontend access using web server authentication methods. It
-    covers setup with Apache or Nginx, integration with Zabbix, and how HTTP auth
-    adds an extra protection layer to your monitoring environment.
+    В этом разделе книги The Zabbix Book, озаглавленном "Аутентификация HTTP", объясняется, как
+    защитить доступ к фронтенду Zabbix с помощью методов аутентификации веб-сервера. Здесь
+    рассказывается о настройке Apache или Nginx, интеграции с Zabbix и о том, как HTTP-аутентификация
+    добавляет дополнительный уровень защиты в вашу среду мониторинга.
 tags: [advanced]
 ---
 
@@ -60,7 +60,7 @@ Zabbix WebUI, браузер выводит диалог с запросом у�
     Ubuntu
     ```bash
     sudo apt install apache2-utils
-    ``` 
+    ```
 
 Далее мы создадим необходимый файл и пользователя `Admin` в нем:
 

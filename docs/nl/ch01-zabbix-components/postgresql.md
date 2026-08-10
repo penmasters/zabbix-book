@@ -1,12 +1,14 @@
 ---
 description: |
-    This section from The Zabbix Book titled "Installing a PostgreSQL database"
-    guides you through installing PostgreSQL as an alternative database backend
-    for Zabbix. It covers installation methods using OS vendor-provided packages
-    or official PostgreSQL repositories, with specific commands for Red Hat, SUSE,
-    and Ubuntu systems. The section also includes steps to start and secure the
-    PostgreSQL server, create the Zabbix database and users, and configure
-    firewall rules if necessary.
+    Dit gedeelte uit The Zabbix Book met de titel "Installatie van een PostgreSQL database"
+    leidt je door de installatie van PostgreSQL als  alternatieve database backend.
+    leidt je door de installatie van PostgreSQL als een alternatieve database backend
+    voor Zabbix. Het behandelt installatiemethoden met behulp van door de leverancier 
+    van het OS geleverde pakketten of officiële PostgreSQL repositories, met specifieke
+    commando's voor Red Hat, SUSE, en Ubuntu systemen. De sectie bevat ook stappen 
+    voor het starten en beveiligen van de PostgreSQL server te starten en te beveiligen,
+    de Zabbix database en gebruikers aan te maken, en indien nodig
+    firewall regels te configureren.
 tags: [beginner]
 ---
 

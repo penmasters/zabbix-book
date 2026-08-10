@@ -1,7 +1,7 @@
 ---
 description: |
-  This section from The Zabbix Book titled "Database choices" helps you select
-  the appropriate database backend and packages for your Zabbix installation.
+  Dit gedeelte uit The Zabbix Book met de titel "Database keuzes" helpt je bij het selecteren van
+  de juiste database backend en pakketten te kiezen voor je Zabbix installatie.
 tags: [beginner]
 ---
 

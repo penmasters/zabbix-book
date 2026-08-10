@@ -1,9 +1,9 @@
 ---
-descripton: |
-    This section from The Zabbix Book, titled "Duo MFA Provider," explains how
-    to integrate Duo Security with Zabbix for multi-factor authentication. It
-    covers setup, configuration, and login testing, adding an extra security
-    layer to protect access to the Zabbix frontend.
+beschrijving: |
+    Deze sectie uit The Zabbix Book, getiteld "Duo MFA Provider," legt uit hoe
+    Duo Security te integreren met Zabbix voor multi-factor authenticatie. Het
+    gaat in op de installatie, configuratie en het testen van het inloggen.
+    laag om de toegang tot de Zabbix frontend te beschermen.
 tags: [advanced]
 ---
 
@@ -51,11 +51,9 @@ Click `Add` and then `Update`. Now you have TOTP MFA configured and it is the
 default method of MFA.
 
 ![MFA Settings TOTP configured](ch02.59-mfa_settings_TOTP_configured.png){
-
-_2.59 MFA Settings TOTP configured_
 width=90% }
 
-_2.22 New MFA method added_
+_2.59 New MFA method added_
 
 Now you need to tell Zabbix for which User group (or groups) to use MFA. Let's
 create a User group that would require MFA.
