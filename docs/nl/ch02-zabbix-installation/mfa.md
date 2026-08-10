@@ -1,9 +1,9 @@
 ---
-descripton: |
-    This section from The Zabbix Book, titled "Duo MFA Provider," explains how
-    to integrate Duo Security with Zabbix for multi-factor authentication. It
-    covers setup, configuration, and login testing, adding an extra security
-    layer to protect access to the Zabbix frontend.
+beschrijving: |
+    Deze sectie uit The Zabbix Book, getiteld "Duo MFA Provider," legt uit hoe
+    Duo Security te integreren met Zabbix voor multi-factor authenticatie. Het
+    gaat in op de installatie, configuratie en het testen van het inloggen.
+    laag om de toegang tot de Zabbix frontend te beschermen.
 tags: [advanced]
 ---
 
