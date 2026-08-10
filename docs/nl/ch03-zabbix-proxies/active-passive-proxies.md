@@ -1,9 +1,9 @@
 ---
 description: |
-    This chapter from The Zabbix Book, titled "Active and Passive Proxies," explores
-    the two proxy modes available in Zabbix. It explains how active proxies push
-    data to the server, while passive proxies wait for polling requests. The guide
-    covers setup, use cases, and how to choose the right mode for your environment.
+    Dit hoofdstuk uit The Zabbix Book, getiteld "Active and Passive Proxies," onderzoekt
+    de twee proxy modi die beschikbaar zijn in Zabbix. Het legt uit hoe actieve proxies gegevens
+    gegevens naar de server pushen, terwijl passieve proxies wachten op polling verzoeken. De gids
+    behandelt de setup, gebruikssituaties en hoe je de juiste modus voor jouw omgeving kiest.
 tags: [advanced]
 ---
 
@@ -307,7 +307,7 @@ side for the active proxy.
 
 !!! info "Enable and start the proxy service"
 
-      ```bash
+    ```bash
       sudo systemctl enable zabbix-proxy --now
       ```
 

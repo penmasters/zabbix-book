@@ -308,7 +308,7 @@ side for the active proxy.
 
 !!! info "Enable and start the proxy service"
 
-      ```bash
+    ```bash
       sudo systemctl enable zabbix-proxy --now
       ```
 
