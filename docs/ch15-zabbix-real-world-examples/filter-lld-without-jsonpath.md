@@ -113,6 +113,7 @@ flowchart TD
 ```
 
 _15.10 Dependent LLD using an LLD macro as lookup key_
+
 **The bridge between the two payloads is `{#ID}`**. Its value in `db.raw`
 (e.g. `db1`) must exactly match a top-level key in `db.raw2`. The
 LLD macro path `$.id` extracts it from each object during discovery.
