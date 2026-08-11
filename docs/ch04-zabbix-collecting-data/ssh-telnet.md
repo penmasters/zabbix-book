@@ -41,8 +41,8 @@ In our Zabbix frontend, let's navigate to **Monitoring** → **Hosts** and creat
 a new host for SSH and Telnet monitoring. Let's call it `cli-monitoring` and 
 put it in the hostgroup XYZ.
 
-![CLI Monitoring](ch04.58-cli-monitoring-host.png){ align=left }
-*4.58 Zabbix CLI Monitoring host*
+![CLI Monitoring](ch04.61-cli-monitoring-host.png){ align=left }
+*4.61 Zabbix CLI Monitoring host*
 
 After creating the host, click on **Items** for this host and then in the top 
 right corner click on **Create item**. We will set the **Type** to **SSH Agent**,
@@ -143,13 +143,13 @@ for testing.
 
 Afterwards let's double-check our item configuration, make sure everything is set up correctly. 
 
-![CLI Monitoring SSH item](ch04.59-cli-monitoring-ssh-item.png){ align=left }
-*4.59 Zabbix CLI Monitoring SSH item*
+![CLI Monitoring SSH item](ch04.62-cli-monitoring-ssh-item.png){ align=left }
+*4.62 Zabbix CLI Monitoring SSH item*
 
 Do not forget to add your tag.
 
-![CLI Monitoring SSH item tag](ch04.60-cli-monitoring-ssh-item-tag.png){ align=left }
-*4.60 Zabbix CLI Monitoring SSH item tag*
+![CLI Monitoring SSH item tag](ch04.63-cli-monitoring-ssh-item-tag.png){ align=left }
+*4.63 Zabbix CLI Monitoring SSH item tag*
 
 This should now work as expected and when you navigate to **Monitoring** → 
 **Latest data** you should now see a value for this host.
@@ -210,13 +210,13 @@ again.
 
 Again, let's double-check our item configuration, to make sure everything is set up correctly. 
 
-![CLI Monitoring Telnet item](ch04.61-cli-monitoring-telnet-item.png){ align=left }
-*4.61 Zabbix CLI Monitoring Telnet item*
+![CLI Monitoring Telnet item](ch04.64-cli-monitoring-telnet-item.png){ align=left }
+*4.64 Zabbix CLI Monitoring Telnet item*
 
 Do not forget to add your tag.
 
-![CLI Monitoring Telnet item tag](ch04.62-cli-monitoring-telnet-item-tag.png){ align=left }
-*4.62 Zabbix CLI Monitoring Telnet item tag*
+![CLI Monitoring Telnet item tag](ch04.65-cli-monitoring-telnet-item-tag.png){ align=left }
+*4.65 Zabbix CLI Monitoring Telnet item tag*
 
 Then, if you had a Telnet user set up. You can go to **Monitoring** →
 **Latest data** to check if the value is coming in.

@@ -21,9 +21,9 @@ een van die stappen is het toevoegen van de proxy in de frontend van Zabbix. Dus
 laten we in het menu `Administration` => `Proxies` selecteren en in de
 rechterbovenhoek op `Create proxy` klikken.
 
-![Maak proxy](ch03.3-add-active-proxy.png)
+![Maak proxy](ch03.4-add-active-proxy.png)
 
-_3.3 Proxy maken_
+_3.4 Proxy maken_
 
 Eenmaal ingedrukt, verschijnt er een nieuw modaal formulier waar we wat
 informatie moeten invullen.
@@ -43,9 +43,9 @@ enter some text to make it even more clear that this is an active proxy.
     This hostname acts as the unique identifier that the Zabbix server uses to distinguish
     between different active proxies and manage their data correctly.
 
-![Active proxy](ch03.4-new-active-proxy.png)
+![Active proxy](ch03.5-new-active-proxy.png)
 
-_3.4 New proxy_
+_3.5 New proxy_
 
 ---
 
@@ -56,9 +56,9 @@ need to specify the _Interface_ field. Here we add the IP of the host where our
 proxy runs on. You also notice that we use the same port `10051` as the _Zabbix
 server_ to communicate with our proxy.
 
-![Passive proxy](ch03.5-new-passive-proxy.png)
+![Passive proxy](ch03.6-new-passive-proxy.png)
 
-_3.5 New passive proxy_
+_3.6 New passive proxy_
 
 ---
 
@@ -340,17 +340,17 @@ In case of the _active_ proxy, we are now ready. Going back to our frontend we
 should be able to see that our proxy is now online. Zabbix will also show the
 version of our proxy and the last seen age.
 
-![ProxyA ready](ch03.6-active-proxy-installed.png)
+![ProxyA ready](ch03.7-active-proxy-installed.png)
 
-_3.6 Active proxy configured_
+_3.7 Active proxy configured_
 
 For the _passive_ proxy however, you will notice in the frontend that nothing
 seems to be working at all even when we have configured everything correctly on
 our proxy.
 
-![Passive Proxy not working](ch03.7-passive-not-working.png)
+![Passive Proxy not working](ch03.8-passive-not-working.png)
 
-_3.7 Proxy not working_
+_3.8 Proxy not working_
 
 The explanation is rather easy as we run a _passive_ proxy, the _Zabbix server_
 needs to poll our proxy. But we did not yet configure our Server to do that
@@ -378,9 +378,9 @@ Now going back to the frontend, we will see that our _passive proxy_ becomes
 available. If it's not green give it a few seconds or check all steps again and
 verify your log files.
 
-![Passive Proxy working](ch03.8-passive-working.png)
+![Passive Proxy working](ch03.9-passive-working.png)
 
-_3.8 Proxy working_
+_3.9 Proxy working_
 
 You are now ready.
 

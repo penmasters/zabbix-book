@@ -112,8 +112,8 @@ we need for our host and press `Add`.
 Go to the host and click on `items` the next step will be to create our item so
 that we can retrieve the data from our printers.
 
-![Create Host](ch08.11-dependent-lld-create-host.png)
-*8.11 Create host*
+![Create Host](ch08.12-dependent-lld-create-host.png)
+*8.12 Create host*
 
 ???+ note
     Remember this is just an example file we made in real life you will use probably
@@ -128,8 +128,8 @@ Once the `New Item` popup is on the screen fill in the following details:
 - **Type** : Zabbix agent
 - **Key** : vfs.file.contents[/home/printer-status.txt\]
 
-![Create lld item](ch08.12-dependent-lld-item.png)
-*8.12 Create a LLD item*
+![Create lld item](ch08.13-dependent-lld-item.png)
+*8.13 Create a LLD item*
 
 Before you press `Add` let's test our item first to see if we can retrieve the
 data we need.
@@ -146,8 +146,8 @@ and return you the information form the txt file.
     Zabbix will not resolve them you will need to fill in the correct information
     first by yourself.
 
-![test lld item](ch08.13-dependent-lld-test-item.png)
-*8.13 Test LLD item*
+![test lld item](ch08.14-dependent-lld-test-item.png)
+*8.14 Test LLD item*
 
 ???+ tip
     Keep a copy of the output somewhere you will need it in the following steps
@@ -158,8 +158,8 @@ and return you the information form the txt file.
 To create a discovery rule first to go `Discovery rules` on the top next to Items,
 Triggers and Graphs and click on `Create discovery rule`.
 
-![Create discovery rule](ch08.14-dependent-lld-create-discovery.png)
-*8.14 Create a discovery rule*
+![Create discovery rule](ch08.15-dependent-lld-create-discovery.png)
+*8.15 Create a discovery rule*
 
 Before configuring our Low-Level Discovery (LLD) rule, we can test our JSON queries
 using tools like [JSON Query Tool](https://www.jsonquerytool.com/). If we apply the
@@ -189,8 +189,8 @@ in our LLD items, triggers, graphs .... .
 - **{#PRINTER.NAME}** : Map it with `$.name`.
 - **{#PRINTER.STATUS}** : Map it with `$.status`.
 
-![LLD Macros](ch08.15-dependent-lld-create-lldmacro.png)
-*8.15 Create a LLD Macro*
+![LLD Macros](ch08.16-dependent-lld-create-lldmacro.png)
+*8.16 Create a LLD Macro*
 
 When ready press `Update` at the bottom of the page.
 
@@ -212,8 +212,8 @@ macros, the next step is to create an LLD item. This is done through item protot
 This setup ensures that the discovered printer statuses are correctly assigned and
 processed through the LLD mechanism.  
 
-![LLD Item create](ch08.16-dependent-lld-create-llditem.png)
-*8.16 Create a LLD item*
+![LLD Item create](ch08.17-dependent-lld-create-llditem.png)
+*8.17 Create a LLD item*
 
 Before saving the item, navigate to the `Preprocessing` tab to define the necessary
 preprocessing steps. These steps will ensure that the extracted data is correctly
@@ -366,8 +366,8 @@ as `python printer-demo.py`.
 This script will change the status of our printers you can verify this in the
 `Latest data` page.
 
-![Latest data updated](ch08.17-dependent-lld-create-latestdata-updated.png)
-*8.17 Latest data*
+![Latest data updated](ch08.18-dependent-lld-create-latestdata-updated.png)
+*8.18 Latest data*
 
 But hey wait as we can see there is an extra devices detected with the name
 `This is not a printer` and Zabbix hasn't detected any status for it .....
@@ -392,8 +392,8 @@ following to the fields:
 - **Label** : {#PRINTER.NAME} `does not match`
 - **regular expression** : `{$PRINTERS.NOT.TO.DETECT}`
 
-![LLD Filters](ch08.18-dependent-lld-create-filters.png)
-*8.18 LLD Filters*
+![LLD Filters](ch08.19-dependent-lld-create-filters.png)
+*8.19 LLD Filters*
 
 Press update and go to our Host and click on the tab `Macros`. Here we will create
 our macro and link it with a regular expression.
@@ -402,8 +402,8 @@ Fill in the following values :
 - **Macro**: {$PRINTERS.NOT.TO.DETECT}
 - **Value** : ^This is not a printer$
 
-![Filter macros](ch08.19-dependent-lld-create-filter-macro.png)
-*8.19 LLD Filter Macros*
+![Filter macros](ch08.20-dependent-lld-create-filter-macro.png)
+*8.20 LLD Filter Macros*
 
 After executing our discovery rule and sending updated values to Zabbix, we can
 verify the filter's effectiveness by checking the `Latest data` view, where the

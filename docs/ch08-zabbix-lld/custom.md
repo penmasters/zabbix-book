@@ -131,9 +131,9 @@ in the upper-right corner.
 Fill in the required information, specifying at least a **template name** and 
 the **template group** it belongs to.
 
-![lld user template](ch08.1-template-lld-users.png)
+![lld user template](ch08.2-template-lld-users.png)
 
-_8.1 lld user template_
+_8.2 lld user template_
 
 Once the template is created click on `Discovery` in the template between `Dashboards`
 and `Web`. In the upper right corner of the screen you see now a button `create discovery rule`.
@@ -143,9 +143,9 @@ Click on the button.
 
 Fill in the needed information like on the screenshot :
 
-![discovery rule](ch08.2-template-discovery-rule.png)
+![discovery rule](ch08.3-template-discovery-rule.png)
 
-_8.2 discovery rule_
+_8.3 discovery rule_
 
 ### Creating a Template for LLD Rules  
 
@@ -224,9 +224,9 @@ With the setup complete, it is time to perform some tests.
 If everything is configured correctly, Zabbix will retrieve the expected value and
 store it in the database.
 
-![lld-test](ch08.3-lld-discovery-test.png)
+![lld-test](ch08.4-lld-discovery-test.png)
 
-_8.3 lld-test_
+_8.4 lld-test_
 
 If all went well you should have received some data back in JSON like you see here, 
 depending on the number of users you made and what name you gave them.
@@ -294,9 +294,9 @@ item prototype. Follow these steps to configure the item prototype correctly:
 
 With these configurations, your LLD item prototype is ready for deployment.
 
-  ![create lld item](ch08.4-lld-item-create.png)
+  ![create lld item](ch08.5-lld-item-create.png)
 
-  _8.4 create lld item_
+  _8.5 create lld item_
 
 ### Configuring the Agent to Listen for LLD Items
 
@@ -333,9 +333,9 @@ at the bottom. Fill in the needed information:
 Press `Get value` and if all goes well Zabbix will return the value 1 or 0 depending
 if the user is online or not.
 
-![test lld item](ch08.5-lld-test-item.png)
+![test lld item](ch08.6-lld-test-item.png)
 
-_8.5 test lld item_
+_8.6 test lld item_
 
 Apply the template to your host and have a look at the latest data. Things should
 slowly start to populate.
@@ -352,9 +352,9 @@ Fill in the following fields:
 - **Expression** : We want to get a notification if someone is online you can
   make use of the `Add` button or just copy : `last(/Discover users/custom.user[{#USERNAME}])=1`
 
-![lld trigger](ch08.6-lld-trigger.png)
+![lld trigger](ch08.7-lld-trigger.png)
 
-_8.6 lld trigger_
+_8.7 lld trigger_
 
 ???+ note
     Copying the Expression will only work if you used the same name for the
@@ -364,9 +364,9 @@ You can  now log in with a user that we created before or root and have a look a
 our dashboard. A notification should popup soon to inform you that a user was
 logged in.
 
-![user root logged](ch08.7-lld-user-root-loggedin.png)
+![user root logged](ch08.8-lld-user-root-loggedin.png)
 
-_8.7 user root logged_
+_8.8 user root logged_
 
 ### Creating LLD overrides.
 
@@ -384,18 +384,18 @@ Press on the button `Add` and fill in the needed information.
 - **Filters** : Here we filter for certain information that we find in our LLD 
   macros. In our case we look in the macro `{#USERNAME}` for the user `root`.
 
-![lld override](ch08.8-lld-override.png)
+![lld override](ch08.9-lld-override.png)
 
-_8.8 lld override_
+_8.9 lld override_
 
 - **Operation** : Here we define what needs to happen. We want to manipulate the
   trigger so select for object `Trigger prototype` and select that we want to modify
   the `Severity` and select `High`. This will modify the severity of our trigger
   and change it to `High` if the user that is detected is the user `root`.
 
-![lld override operation ](ch08.9-lld-override-operation.png)
+![lld override operation ](ch08.10-lld-override-operation.png)
 
-_8.9 lld override operation _
+_8.10 lld override operation _
 
 ???+ note
     It can take a while before changes are applied to your host. Don't panic this
@@ -406,9 +406,9 @@ Once everything is changed you can login on your system with the user `root` and
 one of the other users. As you will see both triggers will fire off but with
 different severity levels.
 
-![lld different severity](ch08.10-lld-users-override.png)
+![lld different severity](ch08.11-lld-users-override.png)
 
-_8.10 lld different severity_
+_8.11 lld different severity_
 
 ## Conclusion
 
