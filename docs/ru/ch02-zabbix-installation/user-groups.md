@@ -1,7 +1,7 @@
 ---
 description: |
-    Learn how Zabbix user groups simplify access control, improve security, and
-    organize monitoring teams efficiently for better network management.
+    Узнайте, как группы пользователей Zabbix упрощают контроль доступа, повышают безопасность 
+    и эффективно организуют команды мониторинга для лучшего управления сетью.
 tags: [beginner]
 ---
 
