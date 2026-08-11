@@ -448,6 +448,8 @@ Quando retornamos ao nosso front-end, podemos selecionar o idioma chinês, depoi
 de recarregar o navegador.
 
 ![selecione o idioma](ch01.4-basic-installation-selectlanguage.png){ align=left
+
+_1.4 selecione o idioma_
 }
 
 _1.4 Zabbix select language_

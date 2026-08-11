@@ -60,6 +60,8 @@ flowchart TD
     $[?(@.db == '#123;#DB#125;')].price.first()"]
 ```
 
+_15.9 Dependent LLD using JSONPath filtering_
+
 **Test payload:**
 
 ```bash
@@ -109,6 +111,8 @@ flowchart TD
     preprocessing: $[0]['#123;#ID#125;']"]
     C -. "#123;#ID#125; is the bridge" .-> D
 ```
+
+_15.10 Dependent LLD using an LLD macro as lookup key_
 **The bridge between the two payloads is `{#ID}`**. Its value in `db.raw`
 (e.g. `db1`) must exactly match a top-level key in `db.raw2`. The
 LLD macro path `$.id` extracts it from each object during discovery.
@@ -276,9 +280,9 @@ zabbix_export:
     Create 2 files with the content from the above examples and import them as a
     host. When import make sure to not delete missing hosts.
 
-![import-host.png](ch15.9-import-host.png)
+![import-host.png](ch15.11-import-host.png)
 
-_15.9 import-host.png_
+_15.11 import-host.png_
 
 
 ## Comparison Summary

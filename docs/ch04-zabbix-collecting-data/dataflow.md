@@ -27,8 +27,8 @@ storing the metrics in Zabbix. This is something we do with a process called pre
 which will take the collected data and change it before storing it in the Zabbix database.
 Our dataflow in the end then looks as such:
 
-![Basic dataflow](ch04.1-dataflow-basic.png){ align=left }
-*4.1 Zabbix basic dataflow*
+![Basic dataflow](ch04.2-dataflow-basic.png){ align=left }
+*4.2 Zabbix basic dataflow*
 
 This gives us a very basic understanding of what steps we have to go through in
 Zabbix to get from data being collected to alerts being sent out. Very important
@@ -141,8 +141,8 @@ To summarize, all the steps in the dataflow work together to make sure that you 
 build the perfect Zabbix environment. When we put the entire dataflow together it
 looks like the image below.
 
-![Detailed dataflow](ch04.2-dataflow-detailed.png){ align=left }
-*4.2 Zabbix detailed dataflow*
+![Detailed dataflow](ch04.3-dataflow-detailed.png){ align=left }
+*4.3 Zabbix detailed dataflow*
 
 Here we can see the various steps coming together.
 

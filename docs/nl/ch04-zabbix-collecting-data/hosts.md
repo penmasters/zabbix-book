@@ -24,7 +24,9 @@ At this point, we should create our first monitoring host in Zabbix. Navigate to
 `Data collection` | `Hosts` and in the top right corner click on the `Create
 host` button. This will open up the following modal window:
 
-![Host creation empty](ch04.3-empty-host-creation.png){ align=left } *4.3 Empty
+![Host creation empty](ch04.4-empty-host-creation.png){ align=left } *4.3 Empty
+
+_4.4 Host creation empty_
 host creation window*
 
 There are a lot of fields we can fill in, but few are important to note here
@@ -108,7 +110,9 @@ it will ask you if you want to create the host group.
 
 Let's add the host `simple-checks` in the `Linux/Servers` host group:
 
-![Host creation - new host group](ch04.4-host-creation-new-group.png){
+![Host creation - new host group](ch04.5-host-creation-new-group.png){
+
+_4.5 Host creation - new host group_
 align=center }
 
 *4.4 Host creation - new host group*

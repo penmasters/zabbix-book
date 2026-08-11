@@ -33,9 +33,9 @@ host `simple-checks`. You should see a `Create item` button in the top right
 corner. Click on this button and lets have a look at the item creation modal
 popup window:
 
-![Empty Item creation](ch04.5-empty-item-creation.png){ align=left }
+![Empty Item creation](ch04.6-empty-item-creation.png){ align=left }
 
-*4.5 Empty Item creation window*
+*4.6 Empty Item creation window*
 
 Make sure to change the `Type` to `Simple check` to get a similar result. We can
 see there are only two fields mandatory (that aren't selectors). These, we have
@@ -80,9 +80,9 @@ My final and favourite tip is: **Remember: Zabbix uses alphabetical sorting in a
 lot of places**. Why is this important, well let's look at the `Monitoring` |
 `Latest data` page with a host using a default template:
 
-![MEM-CPU sorting](ch04.6-latest-data-memcpu-sorting.png){ align=center }
+![MEM-CPU sorting](ch04.7-latest-data-memcpu-sorting.png){ align=center }
 
-*4.6 Latest data Memory and CPU items sorting*
+*4.7 Latest data Memory and CPU items sorting*
 
 If this template had used CPU and Memory as a prefix for all respective items.
 Then this page would have nicely sorted them together. While right now, there
@@ -146,13 +146,17 @@ for now let's use the parameter instead.
 
 The item will now look like this:
 
-![ICMP Ping item](ch04.7-icmpping-item.png){ align=center } *4.7 ICMP Ping item*
+![ICMP Ping item](ch04.8-icmpping-item.png){ align=center } *4.7 ICMP Ping item*
+
+_4.8 ICMP Ping item_
 
 It's also best practise to add a tag with the name `component` to every item we
 create. Let's switch to the `Tags` tab on the item creation window, and create
 the tag `component:system`.
 
-![ICMP Ping item tags](ch04.8-icmpping-item-tags.png){ align=center } *4.8 ICMP
+![ICMP Ping item tags](ch04.9-icmpping-item-tags.png){ align=center } *4.8 ICMP
+
+_4.9 ICMP Ping item tags_
 Ping item tags*
 
 Zabbix utilises the fping utility, installed on the Zabbix server and/or proxy,

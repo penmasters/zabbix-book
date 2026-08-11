@@ -200,9 +200,9 @@ pode utilizar até dois processos trapper no servidor:
     trapper processes per _Active proxy_ on the _Zabbix server_. This configuration 
     optimizes performance and prevents potential bottlenecks.
 
-![Comunicação proxy ativa](ch03.1-active-communication.png)
+![Comunicação proxy ativa](ch03.2-active-communication.png)
 
-_3.1 Comunicação de proxy ativo_
+_3.2 Comunicação de proxy ativo_
 
 ---
 
@@ -252,9 +252,9 @@ servidor _Zabbix_:
     the number of values the proxy has received that are yet to be sent to the 
     _Zabbix server_.
 
-![Comunicação proxy passiva](ch03.2-passive-communication.png)
+![Comunicação proxy passiva](ch03.3-passive-communication.png)
 
-_3.2 Comunicação proxy passiva_
+_3.3 Comunicação proxy passiva_
 
 ---
 
