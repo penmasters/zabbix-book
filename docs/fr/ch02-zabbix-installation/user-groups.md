@@ -295,6 +295,8 @@ You can create them under `Data collection` → `Host groups`.
     - HG_Critical_Databases: Read-only (Read)
 
 ![ch02.21_junior-monitoring.png](ch02.23-junior-monitoring.png) _2.23 Junior
+
+_2.23 ch02.21_junior-monitoring.png_
 monitoring_
 
 
@@ -304,6 +306,8 @@ monitoring_
     * HG_Critical_Databases: Deny
 
 ![ch02.22_critical-exclusioin.png](ch02.24-critical-exclusioin.png) _2.24
+
+_2.24 ch02.22_critical-exclusioin.png_
 Critical exclusion_
 
 #### Creating the Test User
@@ -324,6 +328,8 @@ We will create the user first, then assign them to the groups.
 
 ![ch02.23_test-junior.png](ch02.25-test-junior.png) _2.25 test user_
 
+_2.25 ch02.23_test-junior.png_
+
 #### Create the hosts
 
 We will create 2 host a linux server and a db server.
@@ -338,6 +344,8 @@ We will create 2 host a linux server and a db server.
 * Save: Click Add.
 
 ![ch02.24_hosts.png](ch02.26-hosts.png) _2.26 Add hosts_
+
+_2.26 ch02.24_hosts.png_
 
 Add a DB server exact as above but change :
 

@@ -306,7 +306,7 @@ template maintainers or automation accounts. This separation of function and
 visibility not only strengthens security but also creates a cleaner, more
 focused user experience for every role within the monitoring ecosystem.
 
-## Questions
+## Vragen
 
 - What is the key difference between a **User Role** and a **User Group** in
   Zabbix?

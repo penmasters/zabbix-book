@@ -201,6 +201,8 @@ flowchart LR
     PX2 -.Failover/Load Balancing.-> PX3
 ```
 
+_3.11 Zabbix proxy group architecture and failover_
+
 ## Important Considerations and Limitations
 
 * **Version Requirements:** All proxies must run Zabbix **7.0 or later** and
@@ -279,7 +281,9 @@ create and assign the Proxy Group.
     - Proxy group: Leave as None for now.
 - Click Add.
 
-![ch03-add-proxy.png](ch03.10-add-proxy.png) _3.10 Add proxy_
+![ch03-add-proxy.png](ch03.12-add-proxy.png) _3.10 Add proxy_
+
+_3.12 ch03-add-proxy.png_
 
 #### Create the Proxy Group (Administration -> Proxy groups)
 
@@ -293,7 +297,9 @@ create and assign the Proxy Group.
     - Failover period: `1m` (The time the server waits before redistributing
       hosts from an offline proxy).
 
-![ch03-create-proxy-group.png](ch03.11-create-proxy-group.png) _3.11 Create
+![ch03-create-proxy-group.png](ch03.13-create-proxy-group.png) _3.11 Create
+
+_3.13 ch03-create-proxy-group.png_
 Proxy groups_
 
 #### Assign Proxies to the Group (Administration -> Proxies)
@@ -304,10 +310,14 @@ Proxy groups_
 - Define `Address for active agents` add the IP of the proxy.
 - Click `Update`.
 
-![ch03-add-proxy-to-group.png](ch03.12-add-proxy-to-group.png) _3.12 Add proxy
+![ch03-add-proxy-to-group.png](ch03.14-add-proxy-to-group.png) _3.12 Add proxy
+
+_3.14 ch03-add-proxy-to-group.png_
 to proxy group_
 
-![ch03-all-proxy-linked.png](ch03.13-all-proxy-linked.png) _3.13 All proxies
+![ch03-all-proxy-linked.png](ch03.15-all-proxy-linked.png) _3.13 All proxies
+
+_3.15 ch03-all-proxy-linked.png_
 linked with a proxy group_
 
 ### Zabbix Agent Configuration (zabbix_agentd.conf)
@@ -456,7 +466,9 @@ if __name__ == "__main__":
     create_hosts()
 ```
 
-![ch03-proxy-groups.png](ch03.14-proxy-groups.png) _3.14 proxy groups_
+![ch03-proxy-groups.png](ch03.16-proxy-groups.png) _3.14 proxy groups_
+
+_3.16 ch03-proxy-groups.png_
 
 ## Troubleshooting Tips
 

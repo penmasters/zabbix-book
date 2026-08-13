@@ -32,9 +32,9 @@ chapter for instructions on preparing your system for running containers using P
 
 ### Add the proxy to the zabbix frontend
 
-![Add the proxy](ch03.9-container-proxy-new.png)
+![Add the proxy](ch03.10-container-proxy-new.png)
 
-_3.9 Add proxy
+_3.10 Add proxy
 to frontend_
 
 To keep the configuration straightforward, we will deploy an active Zabbix proxy.

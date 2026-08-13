@@ -343,9 +343,9 @@ with an expression that is immediately true, such as `last(/your-host/system.upt
 The moment that trigger fires, Zabbix runs the webhook script for real and the
 request will appear in webhook.site within seconds.
 
-![webhook](ch07.1-webhook.png)
+![webhook](ch07.2-webhook.png)
 
-_7.1
+_7.2
 webhook_
 
 Once you see the request on webhook.site and the JSON looks correct, the media type

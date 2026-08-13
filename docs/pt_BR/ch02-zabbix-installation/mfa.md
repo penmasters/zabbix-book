@@ -62,6 +62,8 @@ No menu, selecione a seção `Users` e, em seguida, `User groups`, depois clique
 no botão `Create user group`
 
 ![Lista MFA de grupos de usuários](ch02.60-mfa_create_user_groups.png){
+
+_2.60 Lista MFA de grupos de usuários_
 width=90% }
 
 _2.60 Create user group_
@@ -99,6 +101,8 @@ _2.63 New user configuration_
 Em seguida, acesse a guia `Permissions` e selecione qualquer função.
 
 ![Permissões de novo usuário MFA](ch02.64-mfa_new_user_permissions.png){
+
+_2.64 Permissões de novo usuário MFA_
 width=90% }
 
 _2.64 New user permissions_
@@ -187,6 +191,8 @@ _2.71 DUO Applications menu_
 Em seguida, você verá o WebSDK na lista de aplicativos, clique nele
 
 ![Lista de aplicativos MFA DUO](ch02.72-mfa_duo_applications_list.png){
+
+_2.72 Lista de aplicativos MFA DUO_
 width=99% }
 
 _2.72 DUO Applications list_

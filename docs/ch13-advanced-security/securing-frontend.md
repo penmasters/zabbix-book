@@ -38,6 +38,7 @@ _13.1 SSL Ok_
 ![SSL Ok](ch13.2-ssl-workflow.png)
 
 _13.2 SSL Ok_
+
 <br />
 
 ???+ Note

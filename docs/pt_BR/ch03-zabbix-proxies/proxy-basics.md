@@ -100,7 +100,7 @@ de recursos.
         They include:
 
         - New or modified monitoring items, triggers, or templates assigned to the proxy.
-        - Changes to host configurations or data collection rules. 
+        - Changes to host configurations or data collection rules.
 
 ---
 
@@ -200,9 +200,9 @@ pode utilizar até dois processos trapper no servidor:
     trapper processes per _Active proxy_ on the _Zabbix server_. This configuration 
     optimizes performance and prevents potential bottlenecks.
 
-![Comunicação proxy ativa](ch03.1-active-communication.png)
+![Comunicação proxy ativa](ch03.2-active-communication.png)
 
-_3.1 Comunicação de proxy ativo_
+_3.2 Comunicação de proxy ativo_
 
 ---
 
@@ -250,11 +250,11 @@ servidor _Zabbix_:
     _Zabbix proxies_ internal metrics. Make sure to use them and closely watch
     the value of the `zabbix[proxy_history]` item on the proxies which represents
     the number of values the proxy has received that are yet to be sent to the 
-    _Zabbix server_. 
+    _Zabbix server_.
 
-![Comunicação proxy passiva](ch03.2-passive-communication.png)
+![Comunicação proxy passiva](ch03.3-passive-communication.png)
 
-_3.2 Comunicação proxy passiva_
+_3.3 Comunicação proxy passiva_
 
 ---
 
