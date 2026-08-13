@@ -134,6 +134,13 @@ For our setup, the configuration will look like this:
     DBPort=5432
     ```
 
+!!! note "For PostgreSQL in HA"
+
+    With Zabbix 8.0 it is now possible to add more then 1 IP for DBHost. This way
+    it is possible to setup a HA DB setup with PostgreSQL without the need to
+    use a loadbalancer. Zabbix will detect the active DB himself. Ex:
+    DBHost=192.168.10.2:5432,192.168.10.3:5432
+
 In this example:
 
 - DBHost refers to the host where your database is running (use localhost if it's
