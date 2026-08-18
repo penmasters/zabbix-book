@@ -448,8 +448,6 @@ Quando retornamos ao nosso front-end, podemos selecionar o idioma chinês, depoi
 de recarregar o navegador.
 
 ![selecione o idioma](ch01.4-basic-installation-selectlanguage.png){ align=left
-
-_1.4 selecione o idioma_
 }
 
 _1.4 Zabbix select language_
@@ -580,6 +578,14 @@ próximo nível.
 
 ## Perguntas
 
+- Why is it necessary to comment out the default listen 80 block in nginx.conf
+  before editing zabbix.conf?
+- Which web server and PHP process manager services need to be enabled and
+  started after adjusting the configurations?
+- During the frontend database setup wizard, why should you enter the zabbix-web
+  database user instead of zabbix-srv?
+- When connecting a PostgreSQL database in the Zabbix setup wizard, what
+  additional parameter must be supplied compared to MySQL/MariaDB?
 ---
 
 ## URLs úteis
