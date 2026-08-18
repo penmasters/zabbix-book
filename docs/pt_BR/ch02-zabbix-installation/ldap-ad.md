@@ -202,8 +202,6 @@ caracteres nesses dois campos e de que ela atenda à política de força da senh
 definida em `Users | Authentication`.
 
 ![Adicionar usuário no Zabbix](ch02.36-ldap-add-user-in-zabbix.png){
-
-_2.36 Adicionar usuário no Zabbix_
 align=center }
 
 _2.36 Add user in Zabbix_
@@ -266,8 +264,6 @@ Em `Users | Authentication`, precisamos fazer duas coisas:
   colocados para que efetivamente sejam desabilitados de acessar o Zabbix.
 
   ![Autenticação padrão](ch02.39-ldap-default-authentication.png){ align=center
-
-  _2.39 Autenticação padrão_
   }
 
   _2.39 Default authentication_
@@ -323,8 +319,6 @@ grupos LDAP com base em um determinado critério (filtro). É mais fácil explic
 com imagens que descrevem um exemplo:
 
 ![Grupo de nomes do servidor LDAP](ch02.41-ldap-group-of-names.png){
-
-_2.41 Grupo de nomes do servidor LDAP_
 align=center }
 
 _2.41 LDAP server groupOfNames_

@@ -133,8 +133,6 @@ authentication` and click `Add` under `Servers` (change IP address of your LDAP
 server and port number according to your set up):
 
 ![LDAP server settings in Zabbix](ch02.33-ldap-server-settings-in-zabbix.png){
-
-_2.33 LDAP server settings in Zabbix_
 align=center }
 
 _2.33 LDAP server settings in Zabbix_
@@ -181,8 +179,6 @@ Zabbix to authenticate users belonging to this group against LDAP server and in
 server". Click `Add` button to create this User group:
 
 ![Add user group in zabbix](ch02.35-ldap-add-user-group-in-zabbix.png){
-
-_2.35 Add user group in zabbix_
 align=center }
 
 _2.35 Add user group in zabbix_
@@ -251,8 +247,6 @@ In `Users | Authentication` we need to do two things:
   disabled from accessing Zabbix.
 
   ![Default authentication](ch02.39-ldap-default-authentication.png){
-
-  _2.39 Default authentication_
   align=center }
 
   _2.39 Default authentication_
