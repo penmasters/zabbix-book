@@ -47,10 +47,10 @@ simplificar, anote os detalhes do servidor:
 
 ???+ aviso
 
-    Starting from Zabbix 7.2, only MySQL (including its forks) and PostgreSQL are
-    supported as back-end databases. Earlier versions of Zabbix also included support
-    for Oracle Database; however, this support was discontinued with Zabbix 7.0 LTS,
-    making it the last LTS version to officially support Oracle DB.
+    A partir do Zabbix 7.2, apenas o MySQL (incluindo seus forks) e o PostgreSQL são
+    suportados como bancos de dados back-end. Versões anteriores do Zabbix também incluíam suporte
+    ao Oracle Database; no entanto, esse suporte foi descontinuado com o Zabbix 7.0 LTS,
+    tornando-o a última versão LTS a oferecer suporte oficial ao Oracle DB.
 
 ---
 
@@ -75,10 +75,10 @@ Rocky Linux 9.x, o openSUSE Leap 16 e o Ubuntu LTS 24.04.x.
 
 ???+ nota
 
-    OS installation steps are outside the scope of this book, but a default or even a
-    minimal installation of your preferred OS should be sufficient. Please refrain from
-    installing graphical user interfaces (GUIs) or desktop environments, as they are
-    unnecessary for server setups and consume valuable resources.
+    As etapas de instalação do sistema operacional estão fora do escopo deste livro, mas uma instalação padrão ou mesmo
+    mínima do seu sistema operacional preferido deve ser suficiente. Evite
+    instalar interfaces gráficas de usuário (GUIs) ou ambientes de área de trabalho, pois eles são
+    desnecessários para configurações de servidor e consomem recursos valiosos.
 
 Depois de instalar o sistema operacional de sua preferência, há algumas
 configurações essenciais a serem realizadas antes de prosseguir com a instalação
@@ -133,9 +133,9 @@ operacional:
 
 ???+ dica
 
-    Regularly updating your system is crucial for security and performance.
-    Consider setting up automatic updates or scheduling regular maintenance windows
-    to keep your systems current.
+    Atualizar regularmente seu sistema é fundamental para a segurança e o desempenho.
+    Considere configurar atualizações automáticas ou agendar janelas de manutenção regulares
+    para manter seus sistemas atualizados.
 
 ---
 
@@ -158,11 +158,11 @@ o usuário root.
 
 !!! info "O que é sudo"
 
-    `sudo` (short for "superuser do") is a command-line utility that allows
-    permitted users to execute commands with the security privileges of another
-    user, typically the superuser (root). It is commonly used in Unix-like
-    operating systems to perform administrative tasks without needing to log in
-    as the root user.
+    `O sudo` (abreviação de “superuser do”) é um utilitário de linha de comando que permite
+    que usuários autorizados executem comandos com os privilégios de segurança de outro
+    usuário, normalmente o superusuário (root). É comumente usado em sistemas operacionais do tipo Unix
+    para realizar tarefas administrativas sem a necessidade de fazer login
+    como usuário root.
 
 Para instalar o `sudo`, execute o seguinte comando de acordo com seu sistema
 operacional:
@@ -219,11 +219,11 @@ Para instalar e ativar o firewall, execute o seguinte comando:
     ```
 ???+ nota "O que é firewalld / ufw"
 
-    Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
-    changes to take effect immediately without needing to restart the service.
-    If your distribution does not use [Firewalld](https://www.firewalld.org),
-    refer to your OS documentation for the appropriate firewall configuration steps.
-    Ubuntu makes use of UFW which is merely a frontend for iptables.
+    O Firewalld é o substituto do iptables em sistemas baseados no RHEL e no SUSE e permite que
+    as alterações entrem em vigor imediatamente, sem a necessidade de reiniciar o serviço.
+    Se a sua distribuição não utilizar o [Firewalld](https://www.firewalld.org),
+    consulte a documentação do seu sistema operacional para obter as etapas adequadas de configuração do firewall.
+    O Ubuntu utiliza o UFW, que é apenas uma interface para o iptables.
 
 Durante a instalação do Zabbix nos próximos capítulos, precisaremos abrir portas
 específicas no firewall para permitir a comunicação entre os componentes do
@@ -293,7 +293,7 @@ PostgreSQL"
     firewall-cmd --reload
     ```
 
-Onde o ` IP de origem` é o único endereço permitido para estabelecer uma conexão
+Onde o `IP de origem` é o único endereço permitido para estabelecer uma conexão
 com o banco de dados.
 
 Se você quiser usar zonas ao usar o firewalld, adapte as instruções dos
@@ -342,10 +342,10 @@ seu status com o seguinte comando:
 
 ???+ nota "O que é Chrony"
 
-    Chrony is a modern replacement for `ntpd`, offering faster and
-    more accurate time synchronization. If your OS does not support
-    [Chrony](https://chrony-project.org/), consider using
-    `ntpd` instead.
+    O Chrony é um substituto moderno para o `ntpd`, oferecendo sincronização de hora mais rápida e
+    mais precisa. Se o seu sistema operacional não for compatível com
+    [Chrony](https://chrony-project.org/), considere usar
+    `ntpd` em vez disso.
 
 Depois que o Chrony estiver instalado, a próxima etapa é garantir que o fuso
 horário correto esteja definido. Você pode ver a configuração do horário atual
@@ -353,15 +353,15 @@ usando o comando `timedatectl`:
 
 !!! exemplo "Verifique a configuração da hora"
 
-    ```shell-session
+    ```sessão do shell
     localhost:~ # timedatectl
-                   Local time: Thu 2023-11-16 15:09:14 UTC
-               Universal time: Thu 2023-11-16 15:09:14 UTC
-                     RTC time: Thu 2023-11-16 15:09:15
-                    Time zone: UTC (UTC, +0000)
-    System clock synchronized: yes
-                  NTP service: active
-              RTC in local TZ: no
+                   Hora local: qui 16/11/2023 15:09:14 UTC
+               Hora universal: qui 16/11/2023 15:09:14 UTC
+                     Hora do RTC: Qui 16/11/2023 15:09:15
+                    Fuso horário: UTC (UTC, +0000)
+    Relógio do sistema sincronizado: sim
+                  Serviço NTP: ativo
+              RTC no fuso horário local: não
     ```
 
 Certifique-se de que o serviço Chrony esteja ativo (consulte as etapas
@@ -416,11 +416,11 @@ comando `timedatectl`:
 
 ???+ nota
 
-    Some administrators prefer installing all servers in the UTC time zone to
-    ensure that server logs across global deployments are synchronized.
-    Zabbix supports user-based time zone settings, which allows the server to
-    remain in UTC while individual users can adjust the time zone via the
-    interface if needed.
+    Alguns administradores preferem instalar todos os servidores no fuso horário UTC para
+    garantir que os logs dos servidores em implantações globais fiquem sincronizados.
+    O Zabbix oferece suporte a configurações de fuso horário por usuário, o que permite que o servidor
+    permaneça no fuso horário UTC, enquanto usuários individuais podem ajustar o fuso horário por meio da
+    interface, se necessário.
 
 ---
 
@@ -508,8 +508,8 @@ Exemplo da configuração atual:
 !!! example "Exemplo de configuração de pool ntp"
 
     ```
-    # Use public servers from the pool.ntp.org project.
-    # Please consider joining the pool (http://www.pool.ntp.org/join.html).
+    # Use servidores públicos do projeto pool.ntp.org.
+    # Considere participar do pool (http://www.pool.ntp.org/join.html).
     pool 2.centos.pool.ntp.org iburst
     ```
 
@@ -518,8 +518,8 @@ Altere os pools desejados para um servidor de horário local:
 !!! info "Alterar a configuração do pool ntp"
 
     ```
-    # Use public servers from the pool.ntp.org project.
-    # Please consider joining the pool (http://www.pool.ntp.org/join.html).
+    # Use servidores públicos do projeto pool.ntp.org.
+    # Considere participar do pool (http://www.pool.ntp.org/join.html).
     pool be.pool.ntp.org iburst
     ```
 
@@ -540,7 +540,7 @@ locais estejam em uso:
 !!! info "Verificar as fontes do chrony "
 
     ```
-    chronyc> sources
+    chronyc> fontes
     ```
 
 Exemplo de saída esperada com servidores locais:
