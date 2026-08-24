@@ -470,7 +470,7 @@ if __name__ == "__main__":
 
 ---
 
-## Questions
+## Perguntas
 
 1.  **What is the minimum Zabbix version required** for both the proxy and agent
     to fully support Proxy Groups, including Active checks?
@@ -489,7 +489,7 @@ if __name__ == "__main__":
 
 ---
 
-## Conclusion
+## Conclusão
 
 Zabbix Proxy Groups significantly enhance the resilience and scalability of
 distributed monitoring environments. Through seamless failover and intelligent
@@ -500,7 +500,7 @@ groups form a foundational component of modern Zabbix deployments.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring](https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring)
 - [https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring/proxies/ha](https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring/proxies/ha)
