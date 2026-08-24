@@ -177,9 +177,10 @@ from your monitoring system comes with additional security risks.
 
 ### Interface availability
 
-All four interface types, also come with an icon that can turn
+All four interface types, also come with an icon that can turn\
 <span style="color: green;">Green</span>,\
-<span style="color: orange;">Orange</span>, <span style="color: red;">Red</span>
+<span style="color: orange;">Orange</span>,
+<span style="color: red;">Red</span>\
 or\
 <span style="color: grey;">Grey</span>. This color determines the interfaces'
 current availability and is shown in a few places in the Zabbix frontend:
@@ -227,7 +228,7 @@ that there is an additional interface **Active checks** automatically added
 whenever the host has any item of the type '*Zabbix agent (active)*' enabled.
 
 The availability of the Active checks is determined by heartbeats sent by the
-Zabbix agent to the Zabbix server or proxy. The status remains
+Zabbix agent to the Zabbix server or proxy. The status remains\
 <span style="color: grey;">Unknown</span>\
 until the first heartbeat is received. Once the first heartbeat is received, the
 status will switch to <span style="color: green;">Available</span>.
@@ -265,7 +266,7 @@ of all interfaces of that specific type and can have the following colours:
 
 ---
 
-## Conclusion
+## Conclusão
 
 When configuring your host interfaces in Zabbix, we need to match our `Item
 type` to our `Interface type`. When we have the correct `Host interface`
@@ -284,7 +285,7 @@ your network somehow.
 
 ---
 
-## Questions
+## Perguntas
 
 - What are the four types of host interfaces in Zabbix, and what is each used
   for?
@@ -300,7 +301,7 @@ your network somehow.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://www.zabbix.com/documentation/current/en/manual/quickstart/host](https://www.zabbix.com/documentation/current/en/manual/quickstart/host)
 - [https://www.zabbix.com/documentation/current/en/manual/config/hosts/host](https://www.zabbix.com/documentation/current/en/manual/config/hosts/host)
