@@ -198,7 +198,7 @@ port is actually being used by that service.
 
 ---
 
-## Conclusion
+## Conclusão
 
 The simple checks are mainly used for ICMP ping and Port checks, which means
 they are quite useful for almost every host. It's always a good idea to do some
@@ -211,7 +211,7 @@ observability platform.
 
 ---
 
-## Questions
+## Perguntas
 
 - What are simple checks in Zabbix and what are they used for?
 - What are the two mandatory fields when creating a simple check item in Zabbix?
@@ -221,7 +221,7 @@ observability platform.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 [https://www.youtube.com/watch?v=5etxbNPrygU](https://www.youtube.com/watch?v=5etxbNPrygU)
 [https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/simple_checks](https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/simple_checks)
