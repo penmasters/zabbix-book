@@ -698,10 +698,10 @@ arquivos de esquema necessários executando o seguinte comando:
 
 ???+ nota
 
-    Zabbix seems to like to change the locations of the script to populate the
-    DB every version or even in between versions. If you encounter an error take a
-    look at the Zabbix documentation, there is a good chance that some location was
-    changed.
+    O Zabbix parece gostar de alterar os caminhos dos scripts que alimentam o
+    banco de dados a cada versão ou até mesmo entre versões. Se você encontrar um erro, dê uma
+    olhada na documentação do Zabbix; é bem provável que algum caminho tenha sido
+    alterado.
 
 Isso extrairá o esquema do banco de dados necessário para o servidor Zabbix.
 
