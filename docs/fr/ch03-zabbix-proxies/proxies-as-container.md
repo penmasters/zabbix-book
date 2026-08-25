@@ -35,9 +35,9 @@ l'exécution de conteneurs à l'aide de Podman.
 
 ### Ajouter le proxy au frontend zabbix
 
-[Ajouter le proxy](ch03.9-container-proxy-new.png)
+[Ajouter le proxy](ch03.10-container-proxy-new.png)
 
-_3.9 Ajouter un proxy au frontend_
+_3.10 Add proxy to frontend_
 
 Pour que la configuration reste simple, nous allons déployer un proxy Zabbix
 actif. Dans ce cas, seuls deux paramètres doivent être configurés : le nom
