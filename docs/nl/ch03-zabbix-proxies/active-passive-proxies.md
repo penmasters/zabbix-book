@@ -23,7 +23,7 @@ rechterbovenhoek op `Create proxy` klikken.
 
 ![Maak proxy](ch03.4-add-active-proxy.png)
 
-_3.4 Proxy maken_
+_3.4 Create proxy_
 
 Eenmaal ingedrukt, verschijnt er een nieuw modaal formulier waar we wat
 informatie moeten invullen.

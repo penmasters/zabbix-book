@@ -23,7 +23,7 @@ le coin supérieur droit sur `Create proxy`.
 
 ![Créer un proxy](ch03.4-add-active-proxy.png)
 
-_3.4 Créer un proxy_
+_3.4 Create proxy_
 
 Une fois que vous avez appuyé sur cette touche, un nouveau formulaire modal
 s'affiche, dans lequel vous devez remplir quelques informations.

@@ -29,7 +29,7 @@ direito em `Create proxy`.
 
 ![Criar proxy](ch03.4-add-active-proxy.png)
 
-_3.4 Criar proxy_
+_3.4 Create proxy_
 
 Uma vez pressionado, um novo formulário modal será exibido, no qual precisaremos
 preencher algumas informações.
@@ -52,7 +52,7 @@ que este é um proxy ativo.
 
 ![Proxy ativo](ch03.5-new-active-proxy.png)
 
-_3.5 Novo proxy_
+_3.5 New proxy_
 
 ---
 
@@ -65,7 +65,7 @@ em que nosso proxy é executado. Você também notou que usamos a mesma porta
 
 ![Proxy passivo](ch03.6-new-passive-proxy.png)
 
-_3.6 Novo proxy passivo_
+_3.6 New passive proxy_
 
 ---
 
@@ -355,14 +355,14 @@ proxy e a última idade vista.
 
 ![ProxyA pronto](ch03.7-active-proxy-installed.png)
 
-_3.7 Proxy ativo configurado_
+_3.7 Active proxy configured_
 
 No caso do proxy _passivo_, no entanto, você notará no frontend que nada parece
 estar funcionando, mesmo quando configuramos tudo corretamente em nosso proxy.
 
 ![O proxy passivo não está funcionando](ch03.8-passive-not-working.png)
 
-_3.8 O proxy não está funcionando_
+_3.8 Proxy not working_
 
 A explicação é bastante simples, pois executamos um proxy _passivo_ e o servidor
 _Zabbix_ precisa pesquisar nosso proxy. Mas ainda não configuramos nosso
@@ -393,7 +393,7 @@ as etapas novamente e verifique seus arquivos de registro.
 
 ![Proxy passivo funcionando](ch03.9-passive-working.png)
 
-_3.9 Funcionamento do proxy_
+_3.9 Proxy working_
 
 Agora você está pronto.
 
