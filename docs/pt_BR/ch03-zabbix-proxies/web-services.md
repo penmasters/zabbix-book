@@ -430,7 +430,7 @@ now ready to generate scheduled reports as configured in the Zabbix server.
 
 ---
 
-## Conclusion
+## Conclusão
 
 This chapter has covered the installation and configuration of the Zabbix web
 service which is an essential component for generating scheduled reports in
@@ -440,7 +440,7 @@ Zabbix server can communicate with it.
 
 ---
 
-## Questions
+## Perguntas
 
 - What is the primary function of the Zabbix web service?
 - What are the system requirements for installing the Zabbix web service?
@@ -451,7 +451,7 @@ Zabbix server can communicate with it.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://www.zabbix.com/documentation/current/en/manual/concepts/web_service](https://www.zabbix.com/documentation/current/en/manual/concepts/web_service)
 - [https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service](https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service)
