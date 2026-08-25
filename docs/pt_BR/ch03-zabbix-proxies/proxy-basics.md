@@ -202,7 +202,7 @@ pode utilizar até dois processos trapper no servidor:
 
 ![Comunicação proxy ativa](ch03.2-active-communication.png)
 
-_3.2 Comunicação de proxy ativo_
+_3.2 Active proxy communication_
 
 ---
 
@@ -254,7 +254,7 @@ servidor _Zabbix_:
 
 ![Comunicação proxy passiva](ch03.3-passive-communication.png)
 
-_3.3 Comunicação proxy passiva_
+_3.3 Passive proxy communication_
 
 ---
 
