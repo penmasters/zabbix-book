@@ -146,17 +146,13 @@ for now let's use the parameter instead.
 
 The item will now look like this:
 
-![ICMP Ping item](ch04.8-icmpping-item.png){ align=center } *4.7 ICMP Ping item*
-
-_4.8 ICMP Ping item_
+![ICMP Ping item](ch04.8-icmpping-item.png){ align=center } *4.8 ICMP Ping item*
 
 It's also best practise to add a tag with the name `component` to every item we
 create. Let's switch to the `Tags` tab on the item creation window, and create
 the tag `component:system`.
 
-![ICMP Ping item tags](ch04.9-icmpping-item-tags.png){ align=center } *4.8 ICMP
-
-_4.9 ICMP Ping item tags_
+![ICMP Ping item tags](ch04.9-icmpping-item-tags.png){ align=center } *4.9 ICMP
 Ping item tags*
 
 Zabbix utilises the fping utility, installed on the Zabbix server and/or proxy,
