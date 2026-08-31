@@ -178,6 +178,8 @@ Authentication | HTTP settings` et cochez la case `Enable HTTP authentication`.
 Cliquez sur `Update` et confirmez les changements en cliquant sur `OK`.
 
 ![Authentification des utilisateurs HTTP](ch02.29-http-auth-settings.png){
+
+_2.29 Authentification des utilisateurs HTTP_
 align=center }
 
 _2.29 HTTP users authentication_

@@ -28,7 +28,7 @@ before storing the metrics in Zabbix. This is something we do with a process
 called pre-processing, which will take the collected data and change it before
 storing it in the Zabbix database. Our dataflow in the end then looks as such:
 
-![Basic dataflow](ch04.1-dataflow-basic.png){ align=left } *4.1 Zabbix basic
+![Basic dataflow](ch04.2-dataflow-basic.png){ align=left } *4.2 Zabbix basic
 dataflow*
 
 This gives us a very basic understanding of what steps we have to go through in
@@ -144,13 +144,13 @@ detected.
 
 ---
 
-## Conclusion
+## Conclusão
 
 To summarize, all the steps in the dataflow work together to make sure that you
 can build the perfect Zabbix environment. When we put the entire dataflow
 together it looks like the image below.
 
-![Detailed dataflow](ch04.2-dataflow-detailed.png){ align=left } *4.2 Zabbix
+![Detailed dataflow](ch04.3-dataflow-detailed.png){ align=left } *4.3 Zabbix
 detailed dataflow*
 
 Here we can see the various steps coming together.
@@ -183,7 +183,7 @@ deeper into creating the configuration for the steps in the dataflow.
 
 ---
 
-## Questions
+## Perguntas
 
 - Can you give two examples of what a "host" could represent in Zabbix, besides
   a server?
@@ -194,7 +194,7 @@ deeper into creating the configuration for the steps in the dataflow.
 
 ---
 
-## Useful URLs
+## URLs úteis
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/items](https://www.zabbix.com/documentation/current/en/manual/config/items)
 - [https://www.zabbix.com/documentation/current/en/manual/config/triggers](https://www.zabbix.com/documentation/current/en/manual/config/triggers)

@@ -1,10 +1,10 @@
 ---
-description: |
-    This chapter from The Zabbix Book, titled "Proxies as Containers," explains
-    how to deploy Zabbix proxies using container technologies like Docker or Podman.
-    It covers installation, configuration, and networking considerations, showing
-    how containerized proxies simplify scaling and management in modern monitoring
-    environments.
+description:
+    Dit hoofdstuk uit The Zabbix Book, getiteld "Proxies als Containers", legt uit
+    hoe Zabbix proxies ingezet kunnen worden met container technologieën zoals Docker of Podman.
+    Het behandelt installatie, configuratie en netwerk overwegingen, en laat zien
+    hoe gecontaineriseerde proxies het schalen en beheren in moderne monitoringomgevingen vereenvoudigen.
+    omgevingen vereenvoudigen.
 tags: [expert]
 ---
 
@@ -35,9 +35,9 @@ containers met Podman.
 
 ### De proxy toevoegen aan het zabbix frontend
 
-[Voeg de proxy toe](ch03.9-container-proxy-new.png)
+[Voeg de proxy toe](ch03.10-container-proxy-new.png)
 
-_3.9 Add proxy to frontend_
+_3.10 Add proxy to frontend_
 
 To keep the configuration straightforward, we will deploy an active Zabbix
 proxy. In this case, only two parameters need to be configured: the proxy's

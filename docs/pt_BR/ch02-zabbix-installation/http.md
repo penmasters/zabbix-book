@@ -199,6 +199,8 @@ você pode digitar um nome de usuário e uma senha diferentes e fazer o login
 normalmente na Zabbix WebUI como um usuário diferente.
 
 ![Login de autenticação de usuários HTTP](ch02.30-http-auth-login.png){
+
+_2.30 Login de autenticação de usuários HTTP_
 align=center }
 
 _2.30 HTTP users authentication login form_
