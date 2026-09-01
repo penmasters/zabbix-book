@@ -361,7 +361,7 @@ TimescaleDB extension and apply the new settings.:
     ```
 ---
 
-### Configure Zabbix for timescaledb
+### Enable TimescaleDB extension in Zabbix database
 
 Next, we connect to the Zabbix database as the user `zabbixsrv`, or whichever database
 user you have configured earlier, and create the TimescaleDB extension. However,
@@ -403,7 +403,11 @@ Make sure the extension is installed by running `\dx`.
 
 ### Patch Zabbix database
 
-While still connected to the Zabbix database, you can now apply the TimescaleDB
+To patch the Zabbix database for TimescaleDB, you will need to run the `schema.sql` script
+provided by Zabbix in the `zabbix-sql-scripts` package. Make sure you have this
+package installed on your system, refer to [Chapter 0 - Getting Started: Preparing the system for Zabbix](../ch00-getting-started/preparation.md#install-the-zabbix-repository) to configure the Zabbix repository.
+
+With `zabbix-sql-scripts` installed, you can now apply the TimescaleDB
 patch. This patch will migrate your existing history, trends, and audit log tables
 to the TimescaleDB format. Depending on the amount of existing data, this process
 may take some time.
