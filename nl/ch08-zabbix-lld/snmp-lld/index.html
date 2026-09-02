@@ -1,0 +1,2615 @@
+
+<!doctype html>
+<html lang="nl" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Automate SNMP monitoring with Zabbix SNMP LLD rules. Dynamically discover
+ojbjest on your devices and create items and triggers automatically.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/nl/ch08-zabbix-lld/snmp-lld/">
+      
+      
+        <link rel="prev" href="../lld-with-dependent-items/">
+      
+      
+        <link rel="next" href="../nested-lld/">
+      
+      
+        
+          <link rel="alternate" href="../../../fr/ch08-zabbix-lld/snmp-lld/" hreflang="fr">
+        
+          <link rel="alternate" href="./" hreflang="nl">
+        
+          <link rel="alternate" href="../../../pt_BR/ch08-zabbix-lld/snmp-lld/" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../../ru/ch08-zabbix-lld/snmp-lld/" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch08-zabbix-lld/snmp-lld/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>SNMP LLD - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=9f4ce43004116a77b5e1b69d811714aa3ebcefe2">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="SNMP LLD">
+    <meta property="og:description" content="Automate SNMP monitoring with Zabbix SNMP LLD rules. Dynamically discover ojbjest on your devices and create items and triggers automatically.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/nl/ch08-zabbix-lld/snmp-lld/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SNMP LLD">
+    <meta name="twitter:description" content="Automate SNMP monitoring with Zabbix SNMP LLD rules. Dynamically discover ojbjest on your devices and create items and triggers automatically.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#snmp-lld" class="md-skip">
+          Ga naar inhoud
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Deze pagina is nog niet in het Nederlands vertaald en wordt daarom in het Engels weergegeven.
+            <a href="/gmc/nl/contribute/#translations">Help ons en vertaal deze pagina!</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Selecteer versie";
+        const gGMC_TRANSLATE_CTA = "Help ons en vertaal deze pagina!";
+        const gGMC_PAGE_LOCALE = "nl";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SNMP LLD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecteer taal">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch08-zabbix-lld/snmp-lld/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt_BR/ch08-zabbix-lld/snmp-lld/" hreflang="pt_BR" class="md-select__link">
+              Brazilian Portuguese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch08-zabbix-lld/snmp-lld/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch08-zabbix-lld/snmp-lld/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Zoeken" placeholder="Zoeken" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Zoeken">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Delen" aria-label="Delen" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Leegmaken" aria-label="Leegmaken" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Zoeken initialiseren
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Ga naar repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigatie" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Ga naar repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 08 : LLD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using Low level discovery to automate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom LLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lld-with-dependent-items/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependent LLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SNMP LLD
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SNMP LLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-the-classic-approach-doesnt-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the classic approach doesn't scale
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-dependent-master-item-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The dependent master item approach
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-our-test-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting up our test data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-host-and-the-master-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating the host and the master item
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-discovery-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating the discovery rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating the discovery rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filtering-out-interfaces-we-dont-care-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filtering out interfaces we don't care about
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-item-prototypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating the item prototypes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trigger-prototypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trigger prototypes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-interval-to-rule-them-all-in-this-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One interval to rule them all (in this example)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nested-lld/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nested LLD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch16-windows/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 16 : Windows monitoring
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subject-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subject index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhoudsopgave">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhoudsopgave
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-the-classic-approach-doesnt-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the classic approach doesn't scale
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-dependent-master-item-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The dependent master item approach
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-our-test-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting up our test data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-host-and-the-master-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating the host and the master item
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-discovery-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating the discovery rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating the discovery rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filtering-out-interfaces-we-dont-care-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filtering out interfaces we don't care about
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-item-prototypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating the item prototypes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trigger-prototypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trigger prototypes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-interval-to-rule-them-all-in-this-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One interval to rule them all (in this example)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigatie" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 08 : LLD
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="advanced">
+      Gevorderde
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch08-zabbix-lld/snmp-lld.md" title="Bron van deze pagina bekijken" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="snmp-lld">SNMP LLD</h1>
+<p>SNMP devices are one of the most common targets for Low-Level Discovery: switches
+and routers with dozens of interfaces, UPS units with several outlets, printers
+with multiple supplies. Rather than configuring items one by one, we want Zabbix
+to discover these objects automatically and keep them in sync as hardware changes.</p>
+<p>For a long time there was only one way to do SNMP LLD: a native <code>SNMP agent</code>
+discovery rule that walks the device itself, followed by SNMP item prototypes
+that each poll the device again for their own value. Since Zabbix 6.4 there is a
+second, far more efficient option: collect the whole table in a single bulk
+<code>walk[]</code> request and let dependent items and a dependent discovery rule slice up
+that one response. This is now the recommended approach, and the one we will
+focus on in this chapter.</p>
+<hr />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This chapter assumes you already went through <code>Custom LLD</code> and <code>Dependent LLD</code>
+earlier in this chapter. If dependent items and the <code>Discard unchanged with
+heartbeat</code> preprocessing step are new to you, read those topics first, we will
+build directly on top of that knowledge here.</p>
+</div>
+<h2 id="why-the-classic-approach-doesnt-scale">Why the classic approach doesn't scale</h2>
+<p>In the classic setup, a native SNMP discovery rule queries the device for a
+column such as <code>ifDescr</code> to find out which interfaces exist. For every
+interface it discovers, Zabbix then creates item prototypes that are, again,
+plain SNMP items. Each of those items performs its own SNMP request against the
+device on every check.</p>
+<p>For a switch with 48 interfaces and three metrics per interface (status,
+inbound traffic, outbound traffic), that is one discovery request plus 144
+separate polling requests, every polling cycle. On a device that also has to
+answer routing, spanning-tree and hardware sensors, this adds up quickly and
+is a common source of <code>SNMP timeout</code> errors in busy environments.</p>
+<h2 id="the-dependent-master-item-approach">The dependent master item approach</h2>
+<p>The idea behind the new approach is the same one we used in <code>Dependent LLD</code>:
+collect the data once, then reuse it. The difference is that Zabbix now has
+native support for this on the SNMP side through two building blocks:</p>
+<ul>
+<li>The <code>walk[OID1,OID2,...]</code> item key, which performs a single bulk SNMP walk
+ over one or more OID subtrees and stores the raw result.</li>
+<li>Two dedicated preprocessing steps, <code>SNMP walk to JSON</code> and <code>SNMP walk value</code>,
+ that know how to read that raw result and turn it into LLD macros or item
+ values without touching the device again.</li>
+</ul>
+<p>One request, one response, and every discovered interface plus every metric
+for that interface is derived from data we already have in memory.</p>
+<h2 id="setting-up-our-test-data">Setting up our test data</h2>
+<p>To keep this example reproducible without any extra infrastructure, we will
+install a standard SNMP daemon on a Linux host and expose its own network
+interfaces through the standard <code>IF-MIB</code>. Any Linux host with <code>net-snmp</code>
+installed and at least two network interfaces (a loopback and a real one)
+works, including your Zabbix server itself.</p>
+<div class="admonition info">
+<p class="admonition-title">Setup the SNMP daemon and config</p>
+<p>Ubuntu</p>
+<ol>
+<li><strong>Install the SNMP daemon and client tools</strong></li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo apt update
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo apt install snmpd snmp -y
+</span></code></pre></div>
+<ol start="2">
+<li><strong>Allow read access to the standard MIBs</strong></li>
+</ol>
+<p>Edit <code>/etc/snmp/snmpd.conf</code> and make sure a read-only community is defined,
+for example:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>rocommunity public default 
+</span></code></pre></div>
+<ol start="3">
+<li><strong>Restart and enable the service</strong></li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo systemctl restart snmpd
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sudo systemctl enable snmpd
+</span></code></pre></div>
+<ol start="4">
+<li><strong>Verify locally</strong></li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>snmpwalk -v2c -c public localhost 1.3.6.1.2.1.2.2.1.2
+</span></code></pre></div>
+<p>Red hat</p>
+<ol>
+<li><strong>Install the SNMP daemon and client tools</strong></li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo dnf install net-snmp net-snmp-utils -y
+</span></code></pre></div>
+<ol start="2">
+<li><strong>Allow read access to the standard MIBs</strong></li>
+</ol>
+<p>Rocky's stock /etc/snmp/snmpd.conf does two things that will trip you up if
+you just add a rocommunity line and move on:</p>
+<p>It has a commented-out demo line, # rocommunity public default -V  systemonly,
+which looks like a quick fix but restricts you to the same dead end described above.
+More importantly, further down the file it already wires the community public
+to a restricted view through a separate block, roughly:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>com2sec notConfigUser  default       public
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>group   notConfigGroup v1           notConfigUser
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>group   notConfigGroup v2c          notConfigUser
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>view    systemview    included   .1.3.6.1.2.1.1
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>view    systemview    included   .1.3.6.1.2.1.25.1.1
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>access  notConfigGroup ""      any       noauth    exact  systemview none none
+</span></code></pre></div>
+<p>That block matches on the community string itself, so adding your own rocommunity
+public default further up the file does not override it, public stays tied
+to systemview, which only ever includes system and hrSystemUptime, never ifTable.</p>
+<p>The reliable fix is to comment out that entire block and use a community string
+of your own for the lab:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>rocommunity zabbix default
+</span></code></pre></div>
+<ol start="3">
+<li><strong>Open the firewall</strong></li>
+</ol>
+<p><code>firewalld</code> is enabled by default on Rocky and blocks SNMP's UDP port 161
+unless you allow it:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo firewall-cmd --permanent --add-service=snmp
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>sudo firewall-cmd --reload
+</span></code></pre></div>
+<ol start="4">
+<li><strong>Restart and enable the service</strong></li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo systemctl restart snmpd
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>sudo systemctl enable snmpd
+</span></code></pre></div>
+<ol start="5">
+<li><strong>Verify locally</strong></li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>snmpwalk -v2c -c public localhost 1.3.6.1.2.1.2.2.1.2
+</span></code></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the service still doesn't return interface data after fixing the community
+line, check journalctl -u snmpd and sealert before assuming snmpd.conf itself
+is still wrong, SELinux on Rocky is fairly strict by default and can silently
+block a restart.</p>
+<p>Either way, this should list the ifDescr value for every interface on the host,
+for example lo and eth0 (Ubuntu) or lo and enp0s3 (Rocky's predictable network
+interface naming). Note that the community string differs between our two examples,
+public on Ubuntu, zabbix on Rocky, use whichever one you actually configured.
+If you get a result here, Zabbix will too.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In production you will point this at a real switch or router instead of a
+Linux host, the configuration on the Zabbix side is identical. Only the
+community string, SNMP version and OIDs you are interested in change.</p>
+</div>
+<h2 id="creating-the-host-and-the-master-item">Creating the host and the master item</h2>
+<p>Go to <code>Data collection | Hosts</code> and either create a new host or open an
+existing one, then add an <code>SNMP interface</code> pointing at the device (IP,
+port 161, SNMP version and community).</p>
+<p><img alt="SNMP Interface" src="../../../ch08-zabbix-lld/snmp-lld/ch08.21-snmp_interface.png" /></p>
+<p><em>8.21 SNMP Interface</em></p>
+<p>Next, create the master item that performs the bulk walk:</p>
+<ul>
+<li><strong>Name</strong>: RAW: Interface table walk</li>
+<li><strong>Type</strong>: SNMP agent</li>
+<li><strong>Key</strong>: <code>snmp.walk.raw</code> (the key is a free-form identifier, unlike a regular
+  SNMP item there is nothing SNMP-specific about it)</li>
+<li>SNMP OID: walk[1.3.6.1.2.1.2.2]</li>
+<li><strong>Type of information</strong>: Text</li>
+<li><strong>Update interval</strong>: 3m</li>
+<li><strong>History</strong>: Do not keep history (we only need this item to feed our
+ discovery rule and item prototypes, see <code>Dependent LLD</code> for why)</li>
+</ul>
+<p>The OID <code>1.3.6.1.2.1.2.2</code> is the <code>ifTable</code> subtree of <code>IF-MIB</code>. Walking it once
+returns every column, <code>ifDescr</code>, <code>ifType</code>, <code>ifSpeed</code>, <code>ifOperStatus</code>,
+<code>ifInOctets</code>, <code>ifOutOctets</code> and more, for every interface in a single SNMP
+session.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Press <code>Test</code> before saving. The raw result looks like a plain list of
+<code>OID = value</code> pairs, for example:</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>IF-MIB::ifDescr.1 = STRING: lo
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>IF-MIB::ifDescr.2 = STRING: eth0
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>IF-MIB::ifOperStatus.1 = INTEGER: up(1)
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>IF-MIB::ifOperStatus.2 = INTEGER: up(1)
+</span></code></pre></div>
+<p>This is not JSON yet, and that is fine. Both <code>SNMP walk to JSON</code> and <code>SNMP
+walk value</code> read this raw walk result directly, we never have to convert it
+ourselves.</p>
+<h2 id="creating-the-discovery-rule">Creating the discovery rule</h2>
+<p>Go to <code>Discovery rules</code> and click <code>Create discovery rule</code> or click on the 3 dots
+in front of the item and select the <code>create dependent discovery rule</code></p>
+<ul>
+<li><strong>Name</strong>: Interface discovery</li>
+<li><strong>Type</strong>: Dependent item</li>
+<li><strong>Key</strong>: <code>net.if.discovery</code></li>
+<li><strong>Master item</strong>: RAW: Interface table walk</li>
+</ul>
+<p><img alt="Discovery Rule" src="../../../ch08-zabbix-lld/snmp-lld/ch08.22-discovery_rule.png" /></p>
+<p><em>8.22 LLD discovery rule</em></p>
+<p>Now open the <code>Preprocessing</code> tab and add a single step:</p>
+<ul>
+<li><strong>Name</strong>: SNMP walk to JSON</li>
+<li><strong>Field name</strong>: <code>{#IFDESCR}</code></li>
+<li><strong>OID prefix</strong>: <code>1.3.6.1.2.1.2.2.1.2</code></li>
+<li><strong>Format</strong>: Unchanged</li>
+</ul>
+<p><img alt="Discovery Preprocessing" src="../../../ch08-zabbix-lld/snmp-lld/ch08.23-discovery_preprocessing.png" /></p>
+<p><em>8.23 LLD discovery preprocessing</em></p>
+<p><strong>Note</strong></p>
+<p>Unlike the JSONPath based dependent LLD we built earlier, there is no
+separate <code>LLD macros</code> tab to fill in here. <code>SNMP walk to JSON</code> produces the
+finished LLD JSON by itself, matching every index it finds under the given
+OID prefix to a <code>{#SNMPINDEX}</code> macro and pairing it with the value you asked
+for. If you need more than one LLD macro (say, both <code>{#IFDESCR}</code> and
+<code>{#IFTYPE}</code>), just add a second <code>SNMP walk to JSON</code> step with its own field
+name and OID prefix, both will end up in the same discovered objects.</p>
+<p>Testing this rule against our sample data produces something like:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">[</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w"> </span><span class="nt">"{#SNMPINDEX}"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w"> </span><span class="nt">"{#IFDESCR}"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lo"</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w"> </span><span class="nt">"{#SNMPINDEX}"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w"> </span><span class="nt">"{#IFDESCR}"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eth0"</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="p">]</span>
+</span></code></pre></div>
+<h3 id="filtering-out-interfaces-we-dont-care-about">Filtering out interfaces we don't care about</h3>
+<p>We are not interested in the loopback interface. Go to the <code>Filters</code> tab of the
+discovery rule and add:</p>
+<ul>
+<li><strong>Label</strong>: <code>{#IFDESCR}</code> <code>does not match</code></li>
+<li><strong>Regular expression</strong>: <code>{$IF.NOT.MATCHES}</code></li>
+</ul>
+<p>Then, on the host, go to <code>Macros</code> and create:</p>
+<ul>
+<li><strong>Macro</strong>: <code>{$IF.NOT.MATCHES}</code></li>
+<li><strong>Value</strong>: <code>^lo$</code></li>
+</ul>
+<p><img alt="LLD Filters" src="../../../ch08-zabbix-lld/snmp-lld/ch08.24-filters.png" /></p>
+<p><em>8.24 LLD Filters</em></p>
+<h2 id="creating-the-item-prototypes">Creating the item prototypes</h2>
+<p>With the discovery rule saved, open <code>Item prototypes</code> and create the first
+prototype for the interface's operational status:</p>
+<ul>
+<li><strong>Name</strong>: Interface {#IFDESCR}: Operational status</li>
+<li><strong>Type</strong>: Dependent item</li>
+<li><strong>Key</strong>: <code>net.if.status[{#SNMPINDEX}]</code></li>
+<li><strong>Type of information</strong>: Numeric (unsigned)</li>
+<li><strong>Master item</strong>: RAW: Interface table walk</li>
+</ul>
+<p>In <code>Preprocessing</code>, add:</p>
+<ul>
+<li><strong>Name</strong>: SNMP walk value</li>
+<li><strong>Parameter</strong>: <code>1.3.6.1.2.1.2.2.1.8.{#SNMPINDEX}</code></li>
+<li><strong>Format</strong>: Unchanged</li>
+</ul>
+<p><img alt="LLD Prototype item" src="../../../ch08-zabbix-lld/snmp-lld/ch08.25-lld_item.png" /></p>
+<p><em>8.25_lld_item</em></p>
+<p>The <code>{#SNMPINDEX}</code> macro is what ties this item to one specific row of the
+table, <code>ifOperStatus.1</code>, <code>ifOperStatus.2</code> and so on. This is the same
+principle as the <code>{#PRINTER.NAME}</code> filter we used with JSONPath in the
+previous topic, just resolved through a preprocessing step instead of an
+expression.</p>
+<p>Repeat this pattern for inbound and outbound traffic:</p>
+<ul>
+<li><strong>Interface {#IFDESCR}: Inbound traffic</strong></li>
+<li><strong>Key</strong>: <code>net.if.in[{#SNMPINDEX}]</code></li>
+<li><strong>Type of information</strong>: Numeric (unsigned)</li>
+<li><strong>Units</strong>: bps</li>
+<li>
+<p><strong>Preprocessing</strong>:</p>
+<ol>
+<li>SNMP walk value, parameter <code>1.3.6.1.2.1.2.2.1.10.{#SNMPINDEX}</code></li>
+<li>Change per second</li>
+<li>Custom multiplier, <code>8</code> (converts bytes to bits)</li>
+</ol>
+</li>
+<li>
+<p><strong>Interface {#IFDESCR}: Outbound traffic</strong></p>
+</li>
+<li><strong>Key</strong>: <code>net.if.out[{#SNMPINDEX}]</code></li>
+<li>Identical setup, using OID <code>1.3.6.1.2.1.2.2.1.16.{#SNMPINDEX}</code></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>ifInOctets</code> and <code>ifOutOctets</code> are counters, they only ever go up until they
+wrap. <code>Change per second</code> is what turns that counter into a usable
+bits-per-second value, exactly as you would configure it for a regular
+(non-discovered) traffic item.</p>
+</div>
+<h2 id="trigger-prototypes">Trigger prototypes</h2>
+<p>A simple trigger prototype to flag a down interface:</p>
+<ul>
+<li><strong>Name</strong>: Interface {#IFDESCR} is down</li>
+<li><strong>Expression</strong>: <code>last(/Host/net.if.status[{#SNMPINDEX}])&lt;&gt;1</code></li>
+</ul>
+<p>Because the operational status and the traffic items all share the same
+<code>{#SNMPINDEX}</code>, trigger prototypes, graph prototypes and item prototypes stay
+consistently linked to the same discovered interface without any extra
+bookkeeping on our part.</p>
+<h2 id="one-interval-to-rule-them-all-in-this-example">One interval to rule them all (in this example)</h2>
+<p>There is a side effect of this design worth calling out. In the classic approach
+you had to balance two separate intervals: how often the discovery rule re-walks
+the device, and how often each item polls it. Here there is only one, the update
+interval of our walk[] master item, since both discovery and every dependent item
+are fed from that same request.</p>
+<p>For a small lab that's convenient, but it hides a real cost. ifInOctets and
+ifOutOctets are counters, they change on practically every poll. Since our single
+master item bundles those counters together with ifDescr, its raw value is different
+every single cycle too, which means the discovery rule reprocesses the interface
+list every cycle as well, even though the actual set of interfaces on a switch
+rarely changes. On a device with a lot of interfaces polled every minute, that is
+a lot of needless discovery bookkeeping for something that almost never has anything
+new to discover.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In a real production template, split this single master item into two:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>RAW: Interface discovery
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>SNMP OID: walk[1.3.6.1.2.1.2.2.1.2] (just ifDescr, or whichever columns your LLD macros need)
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Preprocessing: Discard unchanged with heartbeat, 1h
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>Used only as the master item for the discovery rule.
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>RAW: Interface data
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>SNMP OID: walk[1.3.6.1.2.1.2.2.1.8,1.3.6.1.2.1.2.2.1.10,1.3.6.1.2.1.2.2.1.16] (status, inbound, outbound)
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>Update interval: as fast as your data actually needs, e.g. 1m
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>Used only as the master item for the item prototypes.
+</span></code></pre></div></p>
+<p>The item prototypes and their SNMP walk value preprocessing stay exactly as
+described above, only their Master item field now points at RAW: Interface
+data instead of the combined item. The discovery rule's Master item keeps
+pointing at RAW: Interface discovery.</p>
+<p>Because ifDescr barely ever changes, Discard unchanged with heartbeat: 1h means
+the discovery rule only actually reprocesses once an hour, or immediately the
+moment an interface really does appear or disappear, whichever comes first.
+The data item, meanwhile, is free to poll as often as you need without ever
+touching the discovery logic. This is exactly the same Discard unchanged with
+heartbeat trick from the previous topic, just applied to decouple discovery
+frequency from data collection frequency instead of reducing history writes.</p>
+<p>We kept everything in a single master item in this chapter purely to keep the
+walkthrough shorter, once you understand the pattern, splitting it is a five-minute
+change.</p>
+</div>
+<h2 id="conclusion">Conclusion</h2>
+<p>The dependent master item approach turns SNMP LLD from "one request per discovered
+object, every cycle" into "one request, then pure preprocessing". The walk[] SNMP
+OID collects the whole table in a single SNMP session, SNMP walk to JSON derives
+the LLD macros directly from it without any JSONPath mapping, and SNMP walk value
+lets every dependent item prototype read its own value straight out of that same
+response.</p>
+<p>The result scales the same way regardless of how many interfaces, outlets or sensors
+a device exposes, because the number of SNMP requests per cycle stays low and fixed,
+one if you keep discovery and data together like we did here, two if you split them
+as recommended above, instead of growing with every object discovered. Everything
+we covered here for ifTable applies just as well to any other SNMP table: UPS outlets,
+printer supplies, disk arrays, as long as the data is organised in indexed columns,
+this pattern will discover and monitor it.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Why does the dependent master item approach reduce the number of SNMP
+ requests compared to the classic native SNMP discovery rule?</li>
+<li>What is the practical difference between the <code>SNMP walk to JSON</code> and
+ <code>SNMP walk value</code> preprocessing steps, and where is each one used?</li>
+<li>Why is there no <code>LLD macros</code> tab to configure when using <code>SNMP walk to
+ JSON</code>, unlike the JSONPath based dependent LLD from the previous topic?</li>
+<li>How would you extend this example to also discover and monitor the
+ interface speed (<code>ifSpeed</code>, OID <code>1.3.6.1.2.1.2.2.1.5</code>)?</li>
+</ul>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp">https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/snmp_oids_walk">https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/snmp_oids_walk</a></li>
+<li><a href="https://blog.zabbix.com/improving-snmp-monitoring-performance-with-bulk-snmp-data-collection/27231/">https://blog.zabbix.com/improving-snmp-monitoring-performance-with-bulk-snmp-data-collection/27231/</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Terug naar boven
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Gekopieerd naar klembord", "clipboard.copy": "Kopi\u00ebren naar klembord", "search.result.more.one": "1 extra overeenkomst op deze pagina", "search.result.more.other": "# extra overeenkomsten op deze pagina", "search.result.none": "Geen overeenkomende documenten", "search.result.one": "1 overeenkomende document", "search.result.other": "# overeenkomende documenten", "search.result.placeholder": "Typ om te beginnen met zoeken", "search.result.term.missing": "Ontbreekt", "select.version": "Selecteer versie"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=9f4ce43004116a77b5e1b69d811714aa3ebcefe2"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>

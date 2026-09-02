@@ -1,0 +1,4196 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Test website performance with Zabbix browser items. Automate real browser
+checks to measure load times, content accuracy, and user experience.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/pt_BR/ch04-zabbix-collecting-data/browser/">
+      
+      
+        <link rel="prev" href="../external-checks/">
+      
+      
+        <link rel="next" href="../calculated/">
+      
+      
+        
+          <link rel="alternate" href="../../../fr/ch04-zabbix-collecting-data/browser/" hreflang="fr">
+        
+          <link rel="alternate" href="../../../nl/ch04-zabbix-collecting-data/browser/" hreflang="nl">
+        
+          <link rel="alternate" href="./" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../../ru/ch04-zabbix-collecting-data/browser/" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch04-zabbix-collecting-data/browser/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Browser item - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=9f4ce43004116a77b5e1b69d811714aa3ebcefe2">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Browser item">
+    <meta property="og:description" content="Test website performance with Zabbix browser items. Automate real browser checks to measure load times, content accuracy, and user experience.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/pt_BR/ch04-zabbix-collecting-data/browser/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Browser item">
+    <meta name="twitter:description" content="Test website performance with Zabbix browser items. Automate real browser checks to measure load times, content accuracy, and user experience.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#browser-item" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Esta página ainda não foi traduzida para o português. Portanto, está sendo exibida em inglês.
+            <a href="/gmc/pt_BR/contribute/#translations">Ajude-nos a traduzir!</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Browser item
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch04-zabbix-collecting-data/browser/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch04-zabbix-collecting-data/browser/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt_BR" class="md-select__link">
+              Brazilian Portuguese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch04-zabbix-collecting-data/browser/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch04-zabbix-collecting-data/browser/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartilhar" aria-label="Compartilhar" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 04 : Collecting data 
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collecting data with your Zabbix environment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dataflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hosts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hosts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simple-checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simple checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-agent-passive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix Agent installation and Passive monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-agent-active/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix Agent Active monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snmp-polling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SNMP Polling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snmp-trapping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SNMP Trapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP Items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../preprocessing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preprocessing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dependent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependent items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ssh-telnet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH / Telnet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script item
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jmx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitoring Java Applications with JMX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipmi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IPMI Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database-odbc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Monitoring via ODBC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database checks via Zabbix agent 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../zabbix-trapper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix trapper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../external-checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Browser item
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Browser item
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#foundational-concepts-and-synthetic-monitoring-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Foundational Concepts and Synthetic Monitoring Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Foundational Concepts and Synthetic Monitoring Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-zabbix-browser-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the Zabbix Browser Item?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-technological-foundation-webdriver-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Technological Foundation: WebDriver API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#browser-item-vs-classic-web-scenarios-the-strategic-choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Browser Item vs. Classic Web Scenarios: The Strategic Choice
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architectural-requirements-setting-up-the-webdriver-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architectural Requirements: Setting up the WebDriver Endpoint
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architectural Requirements: Setting up the WebDriver Endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementing-selenium-standalone-chrome-via-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementing Selenium Standalone Chrome via Docker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-of-the-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation of the Connectivity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zabbix-serverproxy-configuration-and-scalability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zabbix Server/Proxy Configuration and Scalability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Zabbix Server/Proxy Configuration and Scalability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#server-configuration-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server Configuration Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scalability-and-isolation-with-zabbix-proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalability and Isolation with Zabbix Proxies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#host-configuration-and-the-master-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Configuration and the Master Item
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Host Configuration and the Master Item">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#host-and-template-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host and Template Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#host-macro-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Macro Definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#master-browser-item-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Master Browser Item Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scripting-advanced-browser-interactions-javascript-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scripting Advanced Browser Interactions (JavaScript API)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scripting Advanced Browser Interactions (JavaScript API)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-zabbix-javascript-context-and-the-browser-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Zabbix JavaScript Context and the Browser Object
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-browsers-in-headless-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Browsers in Headless Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#essential-methods-for-interaction-and-timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Essential Methods for Interaction and Timing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-a-multi-step-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementing a Multi-Step Login
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defensive-scripting-and-error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defensive Scripting and Error Handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-processing-preprocessing-and-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Processing, Preprocessing, and Visualization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Processing, Preprocessing, and Visualization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extraction-via-dependent-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extraction via Dependent Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preprocessing-jsonpath-for-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preprocessing: JSONPath for Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capturing-and-storing-screenshots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capturing and Storing Screenshots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visualization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-troubleshooting-and-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tips, Troubleshooting and Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tips, Troubleshooting and Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#performance-optimization-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Optimization Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting Matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Considerations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical example
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Script
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-the-script-returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Script Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lets-go-over-the-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Let's go over the script
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependent-items-screenshot-useful-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependent items – screenshot + useful metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../calculated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Calculated items
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch16-windows/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 16 : Windows monitoring
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subject-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subject index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#foundational-concepts-and-synthetic-monitoring-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Foundational Concepts and Synthetic Monitoring Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Foundational Concepts and Synthetic Monitoring Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-zabbix-browser-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the Zabbix Browser Item?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-technological-foundation-webdriver-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Technological Foundation: WebDriver API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#browser-item-vs-classic-web-scenarios-the-strategic-choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Browser Item vs. Classic Web Scenarios: The Strategic Choice
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architectural-requirements-setting-up-the-webdriver-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architectural Requirements: Setting up the WebDriver Endpoint
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architectural Requirements: Setting up the WebDriver Endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementing-selenium-standalone-chrome-via-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementing Selenium Standalone Chrome via Docker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-of-the-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation of the Connectivity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zabbix-serverproxy-configuration-and-scalability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zabbix Server/Proxy Configuration and Scalability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Zabbix Server/Proxy Configuration and Scalability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#server-configuration-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server Configuration Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scalability-and-isolation-with-zabbix-proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalability and Isolation with Zabbix Proxies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#host-configuration-and-the-master-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Configuration and the Master Item
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Host Configuration and the Master Item">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#host-and-template-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host and Template Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#host-macro-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Macro Definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#master-browser-item-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Master Browser Item Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scripting-advanced-browser-interactions-javascript-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scripting Advanced Browser Interactions (JavaScript API)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scripting Advanced Browser Interactions (JavaScript API)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-zabbix-javascript-context-and-the-browser-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Zabbix JavaScript Context and the Browser Object
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-browsers-in-headless-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Browsers in Headless Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#essential-methods-for-interaction-and-timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Essential Methods for Interaction and Timing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-a-multi-step-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementing a Multi-Step Login
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defensive-scripting-and-error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defensive Scripting and Error Handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-processing-preprocessing-and-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Processing, Preprocessing, and Visualization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Processing, Preprocessing, and Visualization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extraction-via-dependent-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extraction via Dependent Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preprocessing-jsonpath-for-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preprocessing: JSONPath for Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capturing-and-storing-screenshots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capturing and Storing Screenshots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visualization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-troubleshooting-and-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tips, Troubleshooting and Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tips, Troubleshooting and Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#performance-optimization-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Optimization Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting Matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Considerations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical example
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Script
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-the-script-returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Script Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lets-go-over-the-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Let's go over the script
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependent-items-screenshot-useful-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependent items – screenshot + useful metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navegação" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="advanced">
+      Avançado
+    </span>
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="expert">
+      Expert
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch04-zabbix-collecting-data/browser.md" title="Exibir fonte desta página" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="browser-item">Browser item</h1>
+<h2 id="foundational-concepts-and-synthetic-monitoring-architecture">Foundational Concepts and Synthetic Monitoring Architecture</h2>
+<p>The introduction of the <strong>Browser Item</strong> in Zabbix 7.0 marked a significant
+expansion of monitoring capabilities, allowing Zabbix to serve not only as a traditional
+IT infrastructure monitoring tool but also as a powerful resource for monitoring
+strategic web-based information. This item type enables synthetic monitoring, a
+method that simulates the behavior of a real user, including multi-step journeys
+(user journeys) such as logging in, navigating through menus, or completing a checkout
+process.</p>
+<h3 id="what-is-the-zabbix-browser-item">What is the Zabbix Browser Item?</h3>
+<p>In essence, the Browser Item collects data by executing user-defined JavaScript code
+in an automated browser environment via HTTP/HTTPS. Unlike simple HTTP requests,
+this item simulates complex actions like clicks, text input, and dynamic navigation
+within web applications. The ability to simulate the website in this manner, including
+capturing screenshots and measuring performance, enables organizations to ensure
+the availability and integrity of both internal websites and external strategic
+information sources (such as government portals for tenders).</p>
+<h3 id="the-technological-foundation-webdriver-api">The Technological Foundation: WebDriver API</h3>
+<p>The functioning of the Browser Item relies on a crucial architectural dependency:
+<strong>the WebDriver API</strong> (based on the W3C WebDriver standard). This is an established
+framework, often implemented by solutions such as Selenium Server or a headless
+<em>WebDriver</em> (e.g., ChromeDriver), which acts as the web testing endpoint. The Zabbix
+Server or Proxy functions as the client; it sends the defined JavaScript commands
+to this external endpoint, where the actual browser (usually Chrome in a standalone
+container) is controlled. The results of the simulated session, including metrics
+and error information, are then returned to Zabbix as a structured JSON object.</p>
+<p><img alt="Architecture design" src="../../../ch04-zabbix-collecting-data/browser/ch04.100-architecture.png" />
+<em>4.100 Architecture Overview</em></p>
+<h3 id="browser-item-vs-classic-web-scenarios-the-strategic-choice">Browser Item vs. Classic Web Scenarios: The Strategic Choice</h3>
+<p>Before implementing the Browser Item, it is crucial to understand the difference
+between this and the older, classic Web Scenarios. Classic web scenarios are based
+on the HTTP Agent and execute steps sequentially, collecting only protocol-level
+metrics such as download speed, response time, and the HTTP response code. They
+check whether a predefined string is present in the HTML response and can perform
+a simulated login, but they do not render the full Document Object Model (DOM)
+of the page.</p>
+<p>The Browser Item, conversely, simulates the entire browser stack. This is indispensable
+for monitoring modern, complex JavaScript-based Single Page Applications (SPAs) or
+other web pages where content is loaded asynchronously. Where classic scenarios fail
+due to the lack of JavaScript execution, the <strong>Browser Item</strong> ensures the reliability of
+synthetic checks by using a real browser engine. Furthermore, the <strong>Browser Item</strong> is the
+only method within Zabbix that can capture visual snapshots (screenshots), which is
+invaluable for troubleshooting. The implication of this superior functionality is that
+<strong>Browser Items</strong> require significantly more CPU and memory on the <em>WebDriver</em> host and on
+the Zabbix processes performing the polling.</p>
+<hr />
+<h2 id="architectural-requirements-setting-up-the-webdriver-endpoint">Architectural Requirements: Setting up the WebDriver Endpoint</h2>
+<p>A successful implementation of the <strong>Browser Item</strong> requires careful configuration of the
+external web testing endpoint. The recommended and most robust method is to use <em>Docker</em>
+containers to create an isolated, scalable <em>Selenium Server</em> environment.</p>
+<h4 id="implementing-selenium-standalone-chrome-via-docker">Implementing Selenium Standalone Chrome via Docker</h4>
+<p>The Zabbix system is designed to communicate robustly with a Selenium Standalone
+Server using a Chrome browser engine. It is essential to launch the container with
+the correct flags to enable stability and debugging.</p>
+<p>For this setup, you will need Podman installed to deploy the Selenium Standalone 
+Server container. You can also use Docker if you prefer by replacing <code>podman</code> with
+ <code>docker</code> in the commands below.</p>
+<p>Refer to the <a href="../../ch00-getting-started/preparation/#preparing-the-system-for-running-containers-using-podman"><em>Preparing the system for Zabbix</em></a> 
+chapter for instructions on preparing your system for running containers using Podman.</p>
+<p>The following <code>podman run</code> command is used to start the Selenium Server with Chrome
+in detached mode (-d), allocating the necessary ports and memory :</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>podman<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>browser<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>-p<span class="w"> </span><span class="m">4444</span>:4444<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>-p<span class="w"> </span><span class="m">7900</span>:7900<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>--shm-size<span class="o">=</span><span class="s2">"2g"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>-d<span class="w"> </span>selenium/standalone-chrome:latest
+</span></code></pre></div>
+</div>
+<p><strong>The parameters in this command serve specific, critical purposes :</strong></p>
+<ol>
+<li><strong><code>podman run --name browser</code>:</strong> This initiates a new container named "browser"</li>
+<li><strong><code>-p 4444:4444</code>:</strong> This is the primary communication port. It maps port 4444
+   on the host machine to the container port. This is the port the Selenium Server
+   uses to accept WebDriver commands from the Zabbix Browser Pollers.</li>
+<li><strong><code>-p 7900:7900</code>:</strong> This port is optional but highly recommended for diagnostics.
+   It maps the Virtual Network Computing (VNC) server port of the container,
+   allowing an administrator to visually observe the automated browser in real
+   time remotely (via a VNC client). This is crucial for debugging complex JavaScript
+   scripts and unexpected web interactions.</li>
+<li><strong><code>--shm-size="2g"</code>:</strong> This is a critical stability parameter. It allocates 2GB
+   of shared memory to the container. Chrome requires a significant amount of
+   shared memory (/dev/shm) to function correctly and stable under automation.
+   Failing to set this can lead to unpredictable browser crashes or slow execution
+   times that are difficult to diagnose from Zabbix.</li>
+<li><strong><code>-d</code></strong>: Runs the container in detached mode, meaning it will run in the background.</li>
+<li><strong><code>selenium/standalone-chrome:latest</code>:</strong> Specifies the Docker image to use.</li>
+</ol>
+<h4 id="validation-of-the-connectivity">Validation of the Connectivity</h4>
+<p>Before configuring the Zabbix Server, the accessibility and functionality of the
+WebDriver Endpoint must be validated. This eliminates network or container issues
+as potential causes of subsequent Zabbix errors.</p>
+<p>The validation steps are as follows :</p>
+<ol>
+<li><strong>Determine IP Address:</strong> Identify the IP address of the Docker interface
+   (e.g., 192.0.2.1).</li>
+<li><strong>Test Port Connectivity:</strong> Use nc (Ncat) to verify the connection to the
+   WebDriver port:</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+</div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>nc<span class="w"> </span>-zv<span class="w"> </span><span class="m">192</span>.0.2.1<span class="w"> </span><span class="m">4444</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Expected output: Connection to 192.0.2.1 4444 port [tcp/*] succeeded!</span>
+</span></code></pre></div>
+<ol start="3">
+<li>Test Selenium Server Response: Use curl to confirm that the Selenium Server
+   is serving a valid HTML response:</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-L<span class="w"> </span><span class="m">192</span>.0.2.1:4444
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Expected output: HTML content, often starting with &lt;!DOCTYPE html&gt;...&lt;title&gt;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Selenium<span class="w"> </span>Grid&lt;/title&gt;
+</span></code></pre></div>
+</div>
+<p>If these steps succeed, the external dependency is correctly configured, and it is
+time to configure the Zabbix components themselves.</p>
+<hr />
+<h2 id="zabbix-serverproxy-configuration-and-scalability">Zabbix Server/Proxy Configuration and Scalability</h2>
+<p><strong>Browser Items</strong> are executed by specific Zabbix processes called <strong>browser pollers</strong>.
+These must be correctly configured on the Zabbix Server or Proxy responsible for
+executing the synthetic checks.</p>
+<hr />
+<h3 id="server-configuration-parameters">Server Configuration Parameters</h3>
+<p>Two parameters in the Zabbix server configuration files (<code>/etc/zabbix/zabbix_server.conf.d/*.conf</code>)
+or <code>zabbix_proxy.conf.d</code>) are essential: <code>WebDriverURL</code> and <code>StartBrowserPollers</code>.</p>
+<p><strong>WebDriverURL (Mandatory)</strong>
+This parameter must specify the web testing endpoint configured before (our container).
+This is a mandatory parameter, as the default value is empty. Without a valid URL,
+Zabbix cannot initialize the WebDriver sessions.</p>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="na">WebDriverURL</span><span class="o">=</span><span class="s">http://192.0.2.1:4444`</span>
+</span></code></pre></div>
+</details>
+<p><strong>StartBrowserPollers (Scalability)</strong>
+This controls the number of pre-forked Zabbix processes dedicated to executing and
+processing <strong>Browser Item</strong> checks. The default value is <code>1</code>, and the range is <code>0</code> to <code>1000</code>.</p>
+<p>Since browser automation is a CPU-intensive and time-consuming task, <strong>Browser Items</strong>
+are inherently high-latency items. The number of pollers set N<sub>Pollers</sub>
+determines how many synthetic checks Zabbix can initiate concurrently. It is a
+common mistake to increase this number without increasing the capacity of the
+WebDriver Endpoint (the number of simultaneous browser sessions Selenium can handle).
+An imbalance here causes the Zabbix Queue Overview to grow, indicating that values
+are taking too long to update. To optimize monitoring performance, the
+N<sub>Pollers</sub> in Zabbix must be balanced with the actual parallel execution
+capacity of the WebDriver host.</p>
+<p>After modifying the configuration files, the service must be restarted:</p>
+<div class="admonition info">
+<p class="admonition-title">Restarting Zabbix Server or Proxy</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>zabbix-server
+</span></code></pre></div>
+or</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>zabbix-proxy
+</span></code></pre></div>
+</div>
+<hr />
+<h3 id="scalability-and-isolation-with-zabbix-proxies">Scalability and Isolation with Zabbix Proxies</h3>
+<p>For large-scale monitoring or monitoring remote locations, using Zabbix Proxies
+is highly recommended. The <strong>Browser Item</strong> functionality is available on both the
+Server and the Proxy, meaning the CPU-intensive rendering and script execution
+can be isolated to a dedicated Proxy environment.</p>
+<p>The advantage of isolating synthetic checks on a Proxy is twofold: firstly, the
+load on the central Zabbix Server is reduced, and secondly, the risk is avoided
+that the high-resource-consuming browser automation interferes with the performance
+of regular, critical infrastructure checks.</p>
+<p>The table below summarizes the essential configuration parameters.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">Recommended Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>WebDriverURL</code></td>
+<td style="text-align: left;">URL/IP of the WebDriver Endpoint (e.g., Selenium Server)</td>
+<td style="text-align: left;">Mandatory to set. Format: <code>http://&lt;IP&gt;:&lt;Port&gt;</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>StartBrowserPollers</code></td>
+<td style="text-align: left;">Number of pre-forked processes for Browser Item checks</td>
+<td style="text-align: left;">Increase this in line with the parallel capacity of the WebDriver host.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="host-configuration-and-the-master-item">Host Configuration and the Master Item</h3>
+<p>The following steps describe the necessary configuration in the Zabbix Frontend
+to set up website monitoring.</p>
+<h4 id="host-and-template-configuration">Host and Template Configuration</h4>
+<ol>
+<li><strong>Host Creation:</strong> Create a new host representing the web application to be
+   monitored (e.g., "Production Web Portal").</li>
+<li><strong>Template Link:</strong> Link the out-of-the-box template "Website by Browser"
+   to this host. This template is designed for complex web applications and includes
+   standard Master Items, Dependent Items, Triggers, and Dashboards.</li>
+</ol>
+<h4 id="host-macro-definitions">Host Macro Definitions</h4>
+<p>The linked template typically uses User Macros to set dynamic parameters, keeping
+the template reusable. These macros must be set at the Host level (via the Macros
+tab -&gt; Inherited and host macros) :</p>
+<ul>
+<li><code>{$WEBSITE.DOMAIN}</code>: Define the target URL or domain name to be monitored
+  (e.g., <code>git.zabbix.com/projects/ZBX/repos/zabbix/browse</code>).</li>
+<li><code>{$WEBSITE.GET.DATA.INTERVAL}</code>: The update interval for the Master Item. Due to
+  the high resource cost of a full browser check, a longer interval is often used
+  (e.g., <code>15m</code>).</li>
+</ul>
+<h4 id="master-browser-item-configuration">Master Browser Item Configuration</h4>
+<p>The <strong>Browser Item</strong> itself acts as the <em>Master Item</em> that returns a large, structured
+JSON data set. Configuration at the item level is crucial for functionality :</p>
+<ul>
+<li><strong>Type:</strong> Select Browser.</li>
+<li><strong>Key:</strong> Enter a unique key (e.g., <code>web.browser.scenario[login_check]</code>).</li>
+<li><strong>Parameters:</strong> This is a list of name/value pairs passed as variables to the
+  JavaScript script. This is the ideal place to define non-sensitive parameters
+  (URLs, viewport sizes) and, using User Macros, sensitive credentials (usernames,
+  passwords).</li>
+<li><strong>Script:</strong> This is the central component where the JavaScript code for browser
+  interaction is entered.</li>
+<li><strong>Timeout:</strong> Set the maximum execution time of the JavaScript (range: <code>1</code>–<code>600</code> seconds).
+  Exceeding this time results in an error. Since synthetic checks are inherently
+  time-consuming, this value should be set generously, but not excessively, to
+  prevent long-running checks from blocking the poller queues.</li>
+</ul>
+<hr />
+<h2 id="scripting-advanced-browser-interactions-javascript-api">Scripting Advanced Browser Interactions (JavaScript API)</h2>
+<p>The power of the <strong>Browser Item</strong> lies in the specialized JavaScript environment provided
+by Zabbix. The JavaScript script directs the entire browser interaction and data
+collection.</p>
+<h3 id="the-zabbix-javascript-context-and-the-browser-object">The Zabbix JavaScript Context and the Browser Object</h3>
+<p>The script has access to Zabbix's additions to the JavaScript language, particularly
+the <strong>Browser objects</strong>. The central <code>Browser</code> object manages the WebDriver session;
+it is initialized upon creation and terminated upon destruction. A single script
+can support up to four <code>Browser</code> objects but they will share the same WebDriver
+session internally.</p>
+<p><strong>The basic workflow of any script includes :</strong></p>
+<ul>
+<li>Initialization of a <code>Browser</code> session, optionally with custom <code>chromeOptions</code>
+  (e.g., <code>--headless=new</code> for performance).</li>
+<li>Navigation to the starting URL (<code>browser.navigate(url)</code>).</li>
+<li>Execution of the defined interactions.</li>
+<li>Data collection via <code>browser.collectPerfEntries()</code> at crucial points.</li>
+<li>Returning the results as a JSON string via <code>JSON.stringify(browser.getResult()</code>).</li>
+</ul>
+<h3 id="running-browsers-in-headless-mode">Running Browsers in Headless Mode</h3>
+<p>Most Zabbix environments run on Linux servers which do not have a GUI. A typical
+browser expects an X11/Wayland display environment. Without one, Chrome or Firefox
+fails with errors such as:</p>
+<ul>
+<li>“Missing X server”</li>
+<li>“No DISPLAY variable set”</li>
+<li>“GPU process initialization failed”</li>
+</ul>
+<p>The solution is Headless Mode, which allows Chrome/Firefox to run without a
+graphical environment.</p>
+<div class="admonition tip">
+<p class="admonition-title">Recommended Chrome options:</p>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">var</span><span class="w"> </span><span class="nx">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Browser</span><span class="p">.</span><span class="nx">chromeOptions</span><span class="p">({</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nx">args</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">        </span><span class="s1">'--headless=new'</span><span class="p">,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="s1">'--no-sandbox'</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">        </span><span class="s1">'--disable-gpu'</span><span class="p">,</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="s1">'--window-size=1920,1080'</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="p">});</span>
+</span></code></pre></div>
+<p>Why these flags matter:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--headless</code></td>
+<td>Runs Chrome without GUI. Required.</td>
+</tr>
+<tr>
+<td><code>--no-sandbox</code></td>
+<td>Needed in SELinux/sandboxed server environments.</td>
+</tr>
+<tr>
+<td><code>--disable-gpu</code></td>
+<td>Prevents GPU-related crashes in headless mode.</td>
+</tr>
+<tr>
+<td><code>--window-size</code></td>
+<td>Ensures consistent screenshots and layout.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr />
+<h3 id="essential-methods-for-interaction-and-timing">Essential Methods for Interaction and Timing</h3>
+<p>For executing complex interactions, the following methods of the <code>Browser</code> object
+are crucial :</p>
+<ul>
+<li><code>navigate(url)</code>: Navigates the browser to the specified URL.</li>
+<li><code>findElement(strategy, selector)</code>: Finds a single element on the page (e.g., an
+  input field or button) using a location strategy (CSS, XPath )</li>
+<li><code>sendKeys(text)/click()</code>: Methods of the returned Element object to enter text
+  or click buttons.</li>
+<li><code>setElementWaitTimeout(timeout)</code>: Sets the implicit wait time (in milliseconds)
+  the browser uses when searching for elements. This is a critical method for
+  making scripts robust against variable web page load times.</li>
+<li><code>collectPerfEntries(mark)</code>: Collects performance data from the browser (based
+  on the browser's Performance API). The optional mark parameter labels this
+  snapshot, which is essential for measuring the duration of specific steps in
+  a transaction (e.g., "open page" or "login").</li>
+</ul>
+<h3 id="implementing-a-multi-step-login">Implementing a Multi-Step Login</h3>
+<p>A common scenario is monitoring a login procedure. A robust script for this task
+must dynamically handle credentials (passed as parameters/macros) and time each
+step.
+The script initializes a session, navigates, uses <code>findElement</code> to locate the
+username and password fields (often via XPath or CSS selectors), and enters the
+data using <code>sendKeys</code>. The login button is then clicked. Using
+<code>collectPerfEntries()</code> immediately after navigation and again after clicking the
+login button makes it possible to measure the pure page load time and the total
+login time separately. Finally, the script should perform a check (e.g.,
+<code>findElement</code> for the "Sign out" link) to validate the success of the transaction.</p>
+<h3 id="defensive-scripting-and-error-handling">Defensive Scripting and Error Handling</h3>
+<p>The stability of synthetic monitoring depends entirely on the quality of error
+handling. Zabbix's JavaScript environment allows for robust error handling with
+try...catch blocks.</p>
+<ul>
+<li><strong>Error Handling and Screenshots:</strong> When detecting an error (e.g., an element not
+  found, a <code>WebdriverError</code> ), the <code>catch</code> block should capture a screenshot using
+  <code>browser.getScreenshot()</code>. This Base64-encoded image is added to the JSON results.
+  This provides immediate visual context of the error, resulting in significant
+  time savings during debugging compared to just a textual error message.</li>
+</ul>
+<hr />
+<h2 id="data-processing-preprocessing-and-visualization">Data Processing, Preprocessing, and Visualization</h2>
+<p>The Master Browser Item produces a single, large JSON string containing all
+collected data, including performance metrics, status information, and the
+Base64 screenshot. To make this raw data useful for triggers, graphs, and
+dashboards, <strong>Dependent Items</strong> and <strong>Preprocessing</strong> are necessary.</p>
+<h3 id="extraction-via-dependent-items">Extraction via Dependent Items</h3>
+<p>A <em>Dependent Item</em> is directly linked to its <em>Master Item</em> and obtains its value by
+processing the <em>Master Item's</em> value. For every desired metric from the <strong>Browser
+Item's</strong> JSON output, a separate <em>Dependent Item</em> must be created.</p>
+<p>The configuration of a <em>Dependent Item</em> includes :</p>
+<ul>
+<li><strong>Type:</strong> Select Dependent item.</li>
+<li><strong>Master item:</strong> Select the previously configured Browser Item.</li>
+<li><strong>Type of information:</strong> Determines the data format (e.g., Numeric Float for times,
+  Character for error messages, Binary for screenshots).</li>
+</ul>
+<h3 id="preprocessing-jsonpath-for-metrics">Preprocessing: JSONPath for Metrics</h3>
+<p><em>Preprocessing steps</em> are used to extract the necessary data from the JSON
+payload. The primary method for this is <em>JSONPath</em>. JSONPath allows the
+administrator to execute queries on the JSON structure to isolate specific
+values (such as the duration of the login step or an error code).</p>
+<p>Once the value is extracted, the preprocessing pipeline must ensure that the data
+type matches the <strong>Type of information</strong> of the <em>Dependent Item</em>.</p>
+<h3 id="capturing-and-storing-screenshots">Capturing and Storing Screenshots</h3>
+<p>The capture and visualization of screenshots is one of the most valued features
+of the Browser Item.</p>
+<ul>
+<li><strong>Extraction:</strong> Create a Dependent Item specifically for the screenshot.</li>
+<li><strong>Type of Information:</strong> Set this to Binary. This data type is specifically designed
+  to store and display large binary data, such as Base64-encoded images.</li>
+<li><strong>Preprocessing:</strong> Use JSONPath to extract the Base64-encoded string produced
+  by <code>browser.getScreenshot()</code>. </li>
+</ul>
+<p>It is vital to consider storage limits. The Base64-encoded image may be a maximum
+of 1 MB in size. This limit can theoretically be adjusted via the <code>ZBX_MAX_IMAGE_SIZE</code>
+environment variable, but it is usually more practical to reduce the browser viewport using
+<code>browser.setScreenSize(x,y)</code> in the JavaScript script to comply with the 1MB limit,
+especially for complex pages.</p>
+<h3 id="visualization">Visualization</h3>
+<p>The stored binary data can be visualized directly in the Zabbix Frontend. The
+<strong>Item History Widget</strong> on Zabbix Dashboards is optimized to display binary data
+(such as the Base64 image). When the user hovers over or clicks the <strong>Show</strong>
+option of the binary value, a pop-up window opens with the actual captured
+image. This provides an immediate, visual overview of the web application's
+status at the moment of the check.</p>
+<hr />
+<h2 id="tips-troubleshooting-and-security">Tips, Troubleshooting and Security</h2>
+<p>Effective management of the <strong>Browser Item</strong> requires proactive monitoring and attention
+to performance and security.</p>
+<h3 id="performance-optimization-best-practices">Performance Optimization Best Practices</h3>
+<p>Synthetic monitoring is resource intensive. Balancing the Zabbix settings with the
+underlying WebDriver infrastructure is essential.   </p>
+<ul>
+<li>
+<p><strong>Timeout Optimization:</strong> In addition to the Zabbix Master Item Timeout parameter,
+  script authors should actively use the internal JavaScript timeouts, such as
+  <code>browser.setElementWaitTimeout(ms)</code> and <code>browser.setSessionTimeout(ms)</code> and,
+  when needed, <code>browser.setScriptTimeout(ms)</code>.
+  This ensures the script fails as quickly as possible if a
+  step fails, releasing the costly Browser Poller sessions sooner for other checks.</p>
+</li>
+<li>
+<p><strong>Data Retention Policy:</strong> Storing Base64-encoded images (Binary data) can lead
+  to very rapid database growth. It is crucial to set an aggressive retention
+  policy for the Dependent Items that store screenshots (e.g., 7 days history),
+  while numerical performance metrics can maintain a longer retention (e.g., 90
+  days trends).</p>
+</li>
+</ul>
+<h3 id="troubleshooting-matrix">Troubleshooting Matrix</h3>
+<p>Errors with <strong>Browser Items</strong> often fall into three categories: Network/Connectivity,
+WebDriver-related (Selenium/Chrome), and Script Logics. The Zabbix Server logs
+and the external WebDriver logs should be investigated jointly.</p>
+<p><strong>Troubleshooting Matrix for Browser Items:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Problem/Error Message</th>
+<th style="text-align: left;">Possible Cause</th>
+<th style="text-align: left;">Diagnosis Tool</th>
+<th style="text-align: left;">Solution/Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Failed to get JSON of the requested website</td>
+<td style="text-align: left;">Zabbix cannot reach the <code>WebDriverURL</code> or the WebDriver is not responding correctly.</td>
+<td style="text-align: left;">Zabbix Server log (<code>zabbix_server.log</code>); <code>nc</code>/<code>curl</code> to the WebDriver port 4444.</td>
+<td style="text-align: left;">Check network connectivity, firewall rules, and the Selenium Server status.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Zabbix Queue backlog for Browser Items</td>
+<td style="text-align: left;">Too few <code>StartBrowserPollers</code> set, or the WebDriver host is overloaded.</td>
+<td style="text-align: left;"><strong>Zabbix Monitoring</strong> → <strong>Queue Overview</strong>; OS metrics on the WebDriver host (CPU/RAM).</td>
+<td style="text-align: left;">Increase <code>StartBrowserPollers</code> or scale the WebDriver infrastructure (e.g., via Proxies).</td>
+</tr>
+<tr>
+<td style="text-align: left;">WebdriverError or unexplained crashes</td>
+<td style="text-align: left;">Problems with the Chrome engine in the container, often due to insufficient shared memory.</td>
+<td style="text-align: left;">Selenium Container logs; use VNC (port 7900) for visual debugging.</td>
+<td style="text-align: left;">Confirm that the <code>--shm-size="2g"</code> parameter was used when starting the Docker container.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Timeouts on complex scripts</td>
+<td style="text-align: left;">Implicit wait times are too short for dynamic content; Zabbix Timeout is too low.</td>
+<td style="text-align: left;">Increase the <strong>Timeout</strong> at the item level; adjust <code>setElementWaitTimeout</code> in the JS.</td>
+<td style="text-align: left;">Use <code>try</code>...<code>catch</code> to isolate the exact error position and generate a Base64 screenshot.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="security-considerations">Security Considerations</h3>
+<p>The deployment of a WebDriver Endpoint introduces an automated browser with web access.
+This requires strict security measures.</p>
+<ul>
+<li>Network Isolation: The WebDriver Endpoint (ports 4444 and 7900) should only be
+  accessible to the Zabbix Server or Proxy. Exposure to the public network is a
+  serious risk. Use strict firewall rules to restrict access to the internal IP
+  addresses of the Zabbix components.</li>
+<li>Principle of Least Privilege: Ensure that all Zabbix processes, including the
+  browser pollers, and the underlying Docker host and containers run under a
+  non-privileged user (zabbix user). This limits potential damage if a vulnerability
+  in the browser or WebDriver step is exploited.   </li>
+</ul>
+<hr />
+<h2 id="practical-example">Practical example</h2>
+<p>In this example we will monitor the website https://www.zabbix.com</p>
+<h3 id="scenario">Scenario:</h3>
+<ul>
+<li>Navigate to https://www.zabbix.com/</li>
+<li>Click the "GET ZABBIX" link</li>
+<li>Wait for the Download page to load</li>
+<li>Extract the : headline text</li>
+<li>Collect performance timing</li>
+<li>Return all results as JSON</li>
+</ul>
+<h3 id="script">Script</h3>
+<div class="language-JavaScript highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// Chrome settings (headless, sandbox, viewport)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kd">var</span><span class="w"> </span><span class="nx">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Browser</span><span class="p">.</span><span class="nx">chromeOptions</span><span class="p">({</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nx">args</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">        </span><span class="s2">"--headless=new"</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">        </span><span class="s2">"--no-sandbox"</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span><span class="s2">"--disable-gpu"</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">        </span><span class="s2">"--window-size=1920,1080"</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="p">});</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="kd">var</span><span class="w"> </span><span class="nx">browser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="kd">var</span><span class="w"> </span><span class="nx">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">    </span><span class="nx">browser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Browser</span><span class="p">(</span><span class="nx">opts</span><span class="p">);</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">    </span><span class="nx">browser</span><span class="p">.</span><span class="nx">setSessionTimeout</span><span class="p">(</span><span class="mf">15000</span><span class="p">);</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">    </span><span class="nx">browser</span><span class="p">.</span><span class="nx">setElementWaitTimeout</span><span class="p">(</span><span class="mf">10000</span><span class="p">);</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">    </span><span class="nx">browser</span><span class="p">.</span><span class="nx">setScreenSize</span><span class="p">(</span><span class="mf">1920</span><span class="p">,</span><span class="w"> </span><span class="mf">1080</span><span class="p">);</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">    </span><span class="c1">// 1) Load homepage</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">    </span><span class="nx">browser</span><span class="p">.</span><span class="nx">navigate</span><span class="p">(</span><span class="s2">"https://www.zabbix.com/"</span><span class="p">);</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">    </span><span class="nx">browser</span><span class="p">.</span><span class="nx">collectPerfEntries</span><span class="p">(</span><span class="s2">"open_home"</span><span class="p">);</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">    </span><span class="c1">// 2) Click GET ZABBIX</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">btn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">browser</span><span class="p">.</span><span class="nx">findElement</span><span class="p">(</span><span class="s2">"link text"</span><span class="p">,</span><span class="w"> </span><span class="s2">"GET ZABBIX"</span><span class="p">);</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">btn</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s2">"cannot find 'GET ZABBIX' link"</span><span class="p">);</span>
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="w">    </span><span class="nx">btn</span><span class="p">.</span><span class="nx">click</span><span class="p">();</span>
+</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>
+</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="w">    </span><span class="nx">browser</span><span class="p">.</span><span class="nx">collectPerfEntries</span><span class="p">(</span><span class="s2">"after_click"</span><span class="p">);</span>
+</span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>
+</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="w">    </span><span class="c1">// 3) Extract H1 headline</span>
+</span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">h1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">browser</span><span class="p">.</span><span class="nx">findElement</span><span class="p">(</span><span class="s2">"tag name"</span><span class="p">,</span><span class="w"> </span><span class="s2">"h1"</span><span class="p">);</span>
+</span><span id="__span-7-36"><a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a><span class="w">    </span><span class="nx">out</span><span class="p">.</span><span class="nx">headline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">h1</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">h1</span><span class="p">.</span><span class="nx">getText</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+</span><span id="__span-7-37"><a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a>
+</span><span id="__span-7-38"><a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a><span class="w">    </span><span class="c1">// Build result</span>
+</span><span id="__span-7-39"><a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a><span class="w">    </span><span class="nx">out</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"ok"</span><span class="p">;</span>
+</span><span id="__span-7-40"><a id="__codelineno-7-40" name="__codelineno-7-40" href="#__codelineno-7-40"></a>
+</span><span id="__span-7-41"><a id="__codelineno-7-41" name="__codelineno-7-41" href="#__codelineno-7-41"></a><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-42"><a id="__codelineno-7-42" name="__codelineno-7-42" href="#__codelineno-7-42"></a>
+</span><span id="__span-7-43"><a id="__codelineno-7-43" name="__codelineno-7-43" href="#__codelineno-7-43"></a><span class="w">    </span><span class="c1">// Catch any JS or WebDriver error</span>
+</span><span id="__span-7-44"><a id="__codelineno-7-44" name="__codelineno-7-44" href="#__codelineno-7-44"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">err</span><span class="w"> </span><span class="ow">instanceof</span><span class="w"> </span><span class="nx">BrowserError</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-45"><a id="__codelineno-7-45" name="__codelineno-7-45" href="#__codelineno-7-45"></a><span class="w">        </span><span class="nx">browser</span><span class="p">.</span><span class="nx">setError</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span><span id="__span-7-46"><a id="__codelineno-7-46" name="__codelineno-7-46" href="#__codelineno-7-46"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-47"><a id="__codelineno-7-47" name="__codelineno-7-47" href="#__codelineno-7-47"></a>
+</span><span id="__span-7-48"><a id="__codelineno-7-48" name="__codelineno-7-48" href="#__codelineno-7-48"></a><span class="w">    </span><span class="nx">out</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"error"</span><span class="p">;</span>
+</span><span id="__span-7-49"><a id="__codelineno-7-49" name="__codelineno-7-49" href="#__codelineno-7-49"></a><span class="w">    </span><span class="nx">out</span><span class="p">.</span><span class="nx">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+</span><span id="__span-7-50"><a id="__codelineno-7-50" name="__codelineno-7-50" href="#__codelineno-7-50"></a>
+</span><span id="__span-7-51"><a id="__codelineno-7-51" name="__codelineno-7-51" href="#__codelineno-7-51"></a><span class="w">    </span><span class="c1">// Attach screenshot</span>
+</span><span id="__span-7-52"><a id="__codelineno-7-52" name="__codelineno-7-52" href="#__codelineno-7-52"></a><span class="w">    </span><span class="nx">out</span><span class="p">.</span><span class="nx">screenshot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">browser</span><span class="p">.</span><span class="nx">getScreenshot</span><span class="p">();</span>
+</span><span id="__span-7-53"><a id="__codelineno-7-53" name="__codelineno-7-53" href="#__codelineno-7-53"></a>
+</span><span id="__span-7-54"><a id="__codelineno-7-54" name="__codelineno-7-54" href="#__codelineno-7-54"></a><span class="p">}</span><span class="w"> </span><span class="k">finally</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-55"><a id="__codelineno-7-55" name="__codelineno-7-55" href="#__codelineno-7-55"></a>
+</span><span id="__span-7-56"><a id="__codelineno-7-56" name="__codelineno-7-56" href="#__codelineno-7-56"></a><span class="w">    </span><span class="c1">// Zabbix BrowserResult (contains perf + duration + URL)</span>
+</span><span id="__span-7-57"><a id="__codelineno-7-57" name="__codelineno-7-57" href="#__codelineno-7-57"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">browser</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-58"><a id="__codelineno-7-58" name="__codelineno-7-58" href="#__codelineno-7-58"></a><span class="w">        </span><span class="nx">out</span><span class="p">.</span><span class="nx">final_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">browser</span><span class="p">.</span><span class="nx">getUrl</span><span class="p">();</span>
+</span><span id="__span-7-59"><a id="__codelineno-7-59" name="__codelineno-7-59" href="#__codelineno-7-59"></a><span class="w">        </span><span class="nx">out</span><span class="p">.</span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">browser</span><span class="p">.</span><span class="nx">getResult</span><span class="p">();</span>
+</span><span id="__span-7-60"><a id="__codelineno-7-60" name="__codelineno-7-60" href="#__codelineno-7-60"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-61"><a id="__codelineno-7-61" name="__codelineno-7-61" href="#__codelineno-7-61"></a>
+</span><span id="__span-7-62"><a id="__codelineno-7-62" name="__codelineno-7-62" href="#__codelineno-7-62"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">out</span><span class="p">);</span>
+</span><span id="__span-7-63"><a id="__codelineno-7-63" name="__codelineno-7-63" href="#__codelineno-7-63"></a><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="what-the-script-returns">What the Script Returns</h4>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="s2">"status"</span><span class="o">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="s2">"headline"</span><span class="o">:</span><span class="w"> </span><span class="s2">"Zabbix Cloud"</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="s2">"final_url"</span><span class="o">:</span><span class="w"> </span><span class="s2">"https://www.zabbix.com/zabbix_cloud"</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="s2">"result"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="s2">"duration"</span><span class="o">:</span><span class="w"> </span><span class="mf">2.53</span><span class="p">,</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="s2">"performance_data"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">      </span><span class="s2">"summary"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="s2">"navigation"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">          </span><span class="s2">"response_time"</span><span class="o">:</span><span class="w"> </span><span class="mf">0.19</span><span class="p">,</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">          </span><span class="s2">"dom_content_loading_time"</span><span class="o">:</span><span class="w"> </span><span class="mf">0.01</span><span class="p">,</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">          </span><span class="s2">"load_finished"</span><span class="o">:</span><span class="w"> </span><span class="mf">0.64</span><span class="p">,</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">          </span><span class="s2">"encoded_size"</span><span class="o">:</span><span class="w"> </span><span class="mf">17753</span><span class="p">,</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">          </span><span class="s2">"total_size"</span><span class="o">:</span><span class="w"> </span><span class="mf">102839</span><span class="p">,</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">          </span><span class="s2">"redirect_count"</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">        </span><span class="s2">"resource"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">          </span><span class="s2">"response_time"</span><span class="o">:</span><span class="w"> </span><span class="mf">12.37</span><span class="p">,</span>
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="w">          </span><span class="s2">"resource_fetch_time"</span><span class="o">:</span><span class="w"> </span><span class="mf">0.42</span><span class="p">,</span>
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="w">          </span><span class="s2">"count"</span><span class="o">:</span><span class="w"> </span><span class="mf">42</span>
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="w">      </span><span class="s2">"details"</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">          </span><span class="s2">"mark"</span><span class="o">:</span><span class="w"> </span><span class="s2">"open_home"</span><span class="p">,</span>
+</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="w">          </span><span class="s2">"navigation"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* navigation timing for homepage */</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="w">          </span><span class="s2">"resource"</span><span class="o">:</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="cm">/* aggregated resource metrics */</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="w">          </span><span class="s2">"user"</span><span class="o">:</span><span class="w">       </span><span class="p">[</span><span class="w"> </span><span class="cm">/* optional marks set by the website itself */</span><span class="w"> </span><span class="p">]</span>
+</span><span id="__span-8-30"><a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-8-31"><a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-8-32"><a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a><span class="w">          </span><span class="s2">"mark"</span><span class="o">:</span><span class="w"> </span><span class="s2">"after_click"</span><span class="p">,</span>
+</span><span id="__span-8-33"><a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a><span class="w">          </span><span class="s2">"navigation"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* navigation timing for /zabbix_cloud */</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-8-34"><a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a><span class="w">          </span><span class="s2">"resource"</span><span class="o">:</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="cm">/* aggregated resource metrics */</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-8-35"><a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-8-36"><a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a><span class="w">      </span><span class="p">],</span>
+</span><span id="__span-8-37"><a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a><span class="w">      </span><span class="s2">"marks"</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-8-38"><a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="s2">"name"</span><span class="o">:</span><span class="w"> </span><span class="s2">"open_home"</span><span class="p">,</span><span class="w">   </span><span class="s2">"index"</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-8-39"><a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="s2">"name"</span><span class="o">:</span><span class="w"> </span><span class="s2">"after_click"</span><span class="p">,</span><span class="w"> </span><span class="s2">"index"</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-8-40"><a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a><span class="w">      </span><span class="p">]</span>
+</span><span id="__span-8-41"><a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-42"><a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-8-43"><a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>On error, you'll see something like:</strong></p>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="s2">"status"</span><span class="o">:</span><span class="w"> </span><span class="s2">"error"</span><span class="p">,</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="s2">"error"</span><span class="o">:</span><span class="w"> </span><span class="s2">"cannot find 'GET ZABBIX' link"</span><span class="p">,</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="s2">"screenshot"</span><span class="o">:</span><span class="w"> </span><span class="s2">"&lt;base64-encoded PNG&gt;"</span><span class="p">,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="s2">"final_url"</span><span class="o">:</span><span class="w"> </span><span class="s2">"https://www.zabbix.com/"</span><span class="p">,</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">  </span><span class="s2">"result"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="s2">"duration"</span><span class="o">:</span><span class="w"> </span><span class="mf">12.02</span><span class="p">,</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">    </span><span class="s2">"error"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">      </span><span class="s2">"http_status"</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">      </span><span class="s2">"code"</span><span class="o">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">      </span><span class="s2">"message"</span><span class="o">:</span><span class="w"> </span><span class="s2">"cannot find 'GET ZABBIX' link"</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="lets-go-over-the-script">Let's go over the script</h4>
+<p><strong>Top-level fields (script-defined)</strong></p>
+<dl>
+<dt><code>status</code></dt>
+<dd>
+<p>High-level outcome of the synthetic scenario:</p>
+</dd>
+<dd>
+<ul>
+<li><code>ok</code> – the script completed the full user journey as intended.</li>
+<li><code>error</code> – something failed (element not found, timeout, navigation error, etc.).</li>
+</ul>
+</dd>
+<dt><code>headline</code></dt>
+<dd>
+<p>The text content of the <code>&lt;h1&gt;</code> element on the final page after clicking GET ZABBIX.
+  This is a functional assertion: “Did we end up on the expected page with the expected headline?”</p>
+</dd>
+<dt><code>final_url</code></dt>
+<dd>
+<p>The final URL seen by the browser after all redirects and navigation.
+  This allows you to verify whether the button still leads to <code>/zabbix_cloud</code> or was changed/redirected elsewhere.</p>
+</dd>
+<dt><code>error</code> (optional)</dt>
+<dd>
+<p>A human-readable explanation if something went wrong (for example: <code>cannot find 'GET ZABBIX' link</code>).
+  This is added by the script using <code>err.toString()</code> for quick diagnosis from the Zabbix frontend.</p>
+</dd>
+<dt><code>screenshot</code> (optional, on error)</dt>
+<dd>
+<p>A Base64-encoded PNG image captured at the time of failure.
+  This allows the operator to see what the user would have seen at the moment of the error (login form, cookie banner, error page, etc.). It’s stored as a Binary dependent item.</p>
+</dd>
+<dt><code>result</code></dt>
+<dd>
+<p>This is the <code>BrowserResult</code> object returned by Zabbix (<code>browser.getResult()</code>), which wraps:</p>
+</dd>
+<dd>
+<ul>
+<li>Timing and performance data</li>
+<li>Duration of the scenario</li>
+<li>Any internal error information</li>
+<li>Marks set by <code>browser.collectPerfEntries(...)</code></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Inside result</strong></p>
+<dl>
+<dt><code>duration</code></dt>
+<dd>
+<p>Total execution time of the Browser scenario in seconds, from start of the script to completion.
+  This is useful as a high-level synthetic transaction time.</p>
+</dd>
+<dt><code>performance_data.summary.navigation</code></dt>
+<dd>
+<p>Aggregated navigation metrics for the page load (in seconds), for example:</p>
+</dd>
+<dd>
+<ul>
+<li><code>response_time</code> – backend response time (server + network).</li>
+<li><code>dom_content_loading_time</code> – time until the DOM is ready (DOMContentLoaded).</li>
+<li><code>load_finished</code> – time until the load event fires (page fully loaded).</li>
+<li><code>encoded_size</code> / <code>total_size</code> – size of transferred and decoded content.</li>
+<li><code>redirect_count</code> – number of redirects for the navigation.</li>
+</ul>
+</dd>
+<dd>
+<p>You can think of this section as “the synthetic page-speed metrics from the browser’s point of view”.</p>
+</dd>
+<dt><code>performance_data.summary.resource</code></dt>
+<dd>
+<p>Aggregated metrics for all resources (images, CSS, JS, fonts, etc.):</p>
+</dd>
+<dd>
+<ul>
+<li><code>count</code> – number of resources loaded.</li>
+<li><code>resource_fetch_time</code> – time spent fetching resources.</li>
+<li><code>response_time</code> – cumulative response time for resources.</li>
+</ul>
+</dd>
+<dt><code>performance_data.details[]</code></dt>
+<dd>
+<p>An array with one entry per <code>collectPerfEntries("mark")</code> call in your script:
+  Each element has:</p>
+</dd>
+<dd>
+<ul>
+<li><code>mark</code> – the label you passed (e.g. "open_home", "after_click").</li>
+<li><code>navigation</code> – detailed timings for that navigation.</li>
+<li><code>resource</code> – resource stats for that step.</li>
+<li><code>user</code> – optional PerformanceEntry marks set by the website itself (e.g. third-party SDKs, analytics, etc.).</li>
+</ul>
+</dd>
+<dd>
+<p>This enables per-step decomposition of your user journey: open homepage vs. landing page after click, etc.</p>
+</dd>
+<dt><code>marks[]</code></dt>
+<dd>
+<p>A list of all marks with their indices. Mostly useful if you need to correlate external tools with Zabbix data.</p>
+</dd>
+</dl>
+<h3 id="dependent-items-screenshot-useful-metrics">Dependent items – screenshot + useful metrics</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Master item</th>
+<th style="text-align: left;">Type of information</th>
+<th style="text-align: left;">Preprocessing</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Website screenshot (GET ZABBIX)</td>
+<td style="text-align: left;">Dependent item</td>
+<td style="text-align: left;">your Browser item</td>
+<td style="text-align: left;">Binary</td>
+<td style="text-align: left;">JSONPath</td>
+<td style="text-align: left;"><code>$.screenshot</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">GET ZABBIX – headline</td>
+<td style="text-align: left;">Dependent item</td>
+<td style="text-align: left;">your Browser item</td>
+<td style="text-align: left;">Binary</td>
+<td style="text-align: left;">JSONPath</td>
+<td style="text-align: left;"><code>$.headline</code></td>
+</tr>
+</tbody>
+</table>
+<p>Since we only make screenshots when it fails also add a custom on fail option to
+your item.</p>
+<p><img alt="ch03_xx_discard-value.png" src="../../../ch04-zabbix-collecting-data/browser/ch04.101-discard-value.png" />
+<em>4.101 Discard Value</em></p>
+<p><strong>A few other JSONPath regexes that you can use:</strong></p>
+<ul>
+<li><code>$.result.performance_data.details[0].navigation.duration</code></li>
+<li><code>$.result.performance_data.details[1].navigation.duration</code></li>
+<li><code>$.result.performance_data.summary.navigation.load_finished</code></li>
+<li><code>$.result.duration</code></li>
+<li><code>$.final_url</code>
+...</li>
+</ul>
+<hr />
+<h2 id="conclusion">Conclusion</h2>
+<p>The Zabbix Browser Item in version 8.0 represents a mature and powerful solution
+for synthetic monitoring, essential for managing modern web applications. It surpasses
+the limitations of classic Web Scenarios by enabling the realistic simulation of
+complex multi-step user journeys, including capturing the visual state of the
+application via screenshots.</p>
+<p>The success of this functionality depends on a robust, orchestrated architecture,
+where the Zabbix Server acts as the conductor and the external WebDriver Endpoint
+(preferably Selenium Standalone Chrome in a Docker container with adequate shared
+memory allocation) acts as the specialized executor.</p>
+<p>Administrators should prioritize the following actions to ensure a stable and
+scalable environment:</p>
+<ul>
+<li><strong>Dependency Validation:</strong> Configure and validate the external WebDriver Endpoint
+  before configuring the Zabbix Server. Ensure adequate resource allocation,
+  especially the <code>--shm-size="2g"</code> for Docker containers.</li>
+<li><strong>Load-Based Scalability:</strong> Dynamically manage StartBrowserPollers and use Zabbix
+  Proxies to isolate the synthetic workload from core infrastructure monitoring.</li>
+<li><strong>Defensive Scripting:</strong> Invest time in writing robust JavaScript scripts that
+  utilize setElementWaitTimeout and integrate error handling with screenshots,
+  significantly reducing the Mean Time To Resolution (MTTR) upon failure.</li>
+<li><strong>Efficient Data Processing:</strong> Use Dependent Items and JSONPath preprocessing to
+  transform the Master Item's JSON payload into usable, individual metrics and
+  binary stored screenshots, with an appropriate retention policy for the large
+  binary items.</li>
+</ul>
+<hr />
+<h2 id="questions">Questions</h2>
+<ul>
+<li>What key limitation of classic Web Scenarios does the Browser item solve, and
+  why is this especially important for modern JavaScript-heavy applications?</li>
+<li>Why is it generally a bad idea to run many Browser items directly on the main
+  Zabbix server, and how can proxies help?</li>
+<li>Why are screenshots stored as Binary items, and what are the main risks if you
+  keep them for a long retention period?</li>
+<li>What is the purpose of browser.setElementWaitTimeout() in your script, and what
+  kind of failures do you prevent by tuning it correctly?</li>
+</ul>
+<hr />
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/browser">https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/browser</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/guides/monitor_browser">https://www.zabbix.com/documentation/current/en/manual/guides/monitor_browser</a></li>
+<li><a href="https://blog.zabbix.com/monitoring-website-changes-with-zabbix-browser-item/31684/">https://blog.zabbix.com/monitoring-website-changes-with-zabbix-browser-item/31684/</a></li>
+<li><a href="https://blog.zabbix.com/an-introduction-to-browser-monitoring/29245/">https://blog.zabbix.com/an-introduction-to-browser-monitoring/29245/</a></li>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/browser_item_javascript_objects">https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/browser_item_javascript_objects</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=9f4ce43004116a77b5e1b69d811714aa3ebcefe2"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>
