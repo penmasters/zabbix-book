@@ -458,6 +458,76 @@ for data integrity or crafting your trigger expressions later on.
 
 ---
 
+### Check for not supported value and error handlers
+
+So far every preprocessing step we looked at transforms a value that was
+collected successfully. But what happens when an item *fails* to collect a
+value at all? An SNMP OID returns an error, a file cannot be read, an agent
+key is unsupported on that host. In that case the item becomes **not
+supported**, and by default Zabbix skips the rest of the preprocessing
+pipeline.
+
+This matters more than it first looks. Every time an item flips to *not
+supported* (and every time a trigger can no longer be calculated and goes to
+*unknown*), Zabbix writes an **internal event** to the database. On a single
+host this is harmless. But across a large environment, these internal events
+can be generated continuously, on every poll, for every broken item: a
+low-level discovery that picks up virtual or transient entities, an SNMP
+template polling hardware that is not present, a file that only exists on some
+hosts. They pile up in the `events` and `event_tag` tables, give the
+housekeeper far more to delete, and bury the genuinely interesting problems in
+noise.
+
+Zabbix gives us two tools to deal with this in preprocessing.
+
+**Check for not supported value** is a special step that, unlike the others,
+runs *because* the item failed to collect. Placed as the first step, it lets
+us catch the collection error and decide what to do with it, instead of
+letting the item drop straight to *not supported*.
+
+**Error handlers** (the *Custom on fail* option) can be attached to almost any
+preprocessing step. When a step fails, instead of marking the item not
+supported we can tell Zabbix to:
+
+- **Discard value** discards the value silently. The item stays supported and
+  no internal event is generated.
+- **Set value to** substitutes a fixed value (for example `0`).
+- **Set error to** replaces the error message with our own text.
+
+Combining the two gives a clean recipe for taming a *not supported* flood: add
+**Check for not supported value** as the first step with the error handler set
+to **Discard value**. Now, when the collection fails, the bad result is quietly
+dropped, the item never becomes *not supported*, no internal event is written,
+and the database stops growing for no reason.
+
+A few real-world examples where this is useful:
+
+- A network-interface discovery reads `/sys/class/net/<if>/speed`. For virtual
+  interfaces (WireGuard tunnels, bridges, container `veth` links) the kernel
+  returns *invalid argument* on every poll. A *Check for not supported value*
+  step set to *Discard value* stops the endless stream of internal events.
+- An SNMP hardware template polls disk or memory-module OIDs. Empty slots
+  answer with `genError`. Discarding on not supported keeps those absent
+  components quiet.
+- A dependent item extracts a metric from a Prometheus endpoint with a
+  *Prometheus pattern* step. When the source object (say a pod) disappears, the
+  pattern no longer matches and the step fails. Here the collection itself
+  succeeded, so we do not use *Check for not supported*; instead we set the
+  **error handler of the Prometheus pattern step** to *Discard value*.
+
+!!! tip "First line of defence"
+    Preprocessing fixes the symptom. The cleaner fix is often to not collect
+    the data at all: tighten your **low-level discovery filters** so virtual or
+    absent entities are never discovered, and only fall back to *Discard value*
+    for the cases you cannot filter out.
+
+A word of caution: discarding errors *hides* them. Use it deliberately, for
+entities you know are noisy and not actionable. If an item failing genuinely
+means something is wrong, you want that *not supported* state to stay visible,
+not silently swallowed.
+
+---
+
 ## Conclusion
 
 As we can see preprocessing can be used to turns raw received data into 
