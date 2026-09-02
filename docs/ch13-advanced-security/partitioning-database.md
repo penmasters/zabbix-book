@@ -68,11 +68,17 @@ installed onto your database server yet, do that now.
 !!! info "Check disk space availability"
 
     Red Hat-based
-    ```
+    ```bash
     dnf install tmux
     ```
-    Debian-based
+
+    SUSE
+    ```bash
+    zypper install tmux
     ```
+
+    Debian-based
+    ```bash
     apt install tmux
     ```
 
@@ -80,7 +86,7 @@ Now we can issue the tmux command to open a new tmux session:
 
 !!! info "Open tmux session"
 
-    ```
+    ```bash
     tmux
     ```
 
@@ -197,7 +203,8 @@ to use the `tmux` command as we mentioned earlier.
 
 !!! info "Login to MariaDB"
 
-    ```mariadb -u root -p
+    ```bash
+    mariadb -u root -p
     ```
 
 Execute the history and trends partitioning commands you prepared in your notepad
@@ -219,14 +226,16 @@ in the following folder:
 
 !!! info "Script folder (create the folder if it doesn't exist)"
 
-    ```/usr/lib/zabbix/
+    ```bash
+    mkdir -p /usr/lib/zabbix/
     ```
 
 Then make the script executable, so we can create a cronjob later to execute it.
 
 !!! info "Make the script executable"
 
-    ```chmod 750 /usr/lib/zabbix/mysql_zbx_part.pl
+    ```bash
+    chmod 750 /usr/lib/zabbix/mysql_zbx_part.pl
     ```
 
 Now, let's make sure all the settings in the script are set-up correctly. Edit the
@@ -234,7 +243,8 @@ script with your favourite editor (yes, nano is also an option).
 
 !!! info "Edit the script"
 
-    ```vim /usr/lib/zabbix/mysql_zbx_part.pl
+    ```bash
+    vim /usr/lib/zabbix/mysql_zbx_part.pl
     ```
 
 There are a few lines here we need to edit to make sure the script works. Let's start
@@ -242,7 +252,7 @@ with our MariaDB login details.
 
 !!! info "Add login details to the script"
 
-    ```
+    ```bash
     my $dsn = 'DBI:mysql:'.$db_schema.':mysql_socket=/var/lib/mysql/mysql.sock';
 
     my $db_user_name = 'zabbix';
@@ -264,7 +274,7 @@ We define that in the following block.
 
 !!! info "Add login details to the script"
 
-    ```
+    ```bash
     my $tables = {  'history' => { 'period' => 'day', 'keep_history' => '31'},
 
                     'history_log' => { 'period' => 'day', 'keep_history' => '31'},
@@ -289,7 +299,8 @@ database server. As this was written in the the Netherlands, I will use `Europe/
 
 !!! info "Add correct timezone"
 
-    ```my $curr_tz = 'Europe/Amsterdam';
+    ```bash
+    my $curr_tz = 'Europe/Amsterdam';
     ```
 
 Then the last important step is to make sure that we comment or uncomment some lines
@@ -303,7 +314,7 @@ to do anything.
 For the `MySQL 8.x` users comment the following `MariaDB` lines.
 !!! info "Comment MariaDB"
 
-    ```
+    ```bash
     # MySQL 5.6 + MariaDB
 
         #my $sth = $dbh->prepare(qq{SELECT plugin_status FROM information_schema.plugins
@@ -324,7 +335,7 @@ For the `MySQL 8.x` users comment the following `MariaDB` lines.
 And uncomment the `MySQL 8.x` lines.
 !!! info "Uncomment MySQL 8.x"
 
-    ```
+    ```bash
     # MySQL 8.x (NOT MariaDB!)
 
         my $sth = $dbh->prepare(qq{select version();});
@@ -346,7 +357,7 @@ But do not do this for Zabbix 6.0 and higher though.
 
 !!! info "Uncomment for Zabbix 5.4 and older only"
 
-    ```
+    ```bash
     # Uncomment the following line for Zabbix 5.4 and earlier
 
         # $dbh->do("DELETE FROM auditlog_details WHERE NOT EXISTS (SELECT NULL FROM
@@ -360,7 +371,8 @@ Do not do this for Zabbix 7.0 and higher though:
 
 !!! info "Uncomment for Zabbix 6.4 and older only"
 
-    ```'history_bin' => { 'period' => 'day', 'keep_history' => '60'},
+    ```bash
+    'history_bin' => { 'period' => 'day', 'keep_history' => '60'},
     ```
 
 We also need to install some Perl dependencies to make sure we can execute the script.
@@ -368,11 +380,19 @@ We also need to install some Perl dependencies to make sure we can execute the s
 !!! info "Install dependencies"
 
     Red Hat-Based
-    ```
+    ```bash
     dnf install perl-DateTime perl-Sys-Syslog
     ```
-    Debian-based
+
+    SUSE
+    ```bash
+    zypper install perl-DateTime
     ```
+    note: on SUSE, the Sys::Syslog module is included in the perl package, so no 
+    separate installation is needed.
+
+    Debian-based
+    ```bash
     apt-get install libdatetime-perl liblogger-syslog-perl
     ```
 
@@ -382,22 +402,22 @@ the powertools repo.
 !!! info "Install correct repository"
 
     Red Hat 7 based
-    ```
+    ```bash
     yum config-manager --set-enabled powertools
     ```
 
     Red Hat 9 based
-    ```
+    ```bash
     dnf config-manager --enable crb
     ```
 
     Genuine Red Hat
-    ```
+    ```bash
     subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms
     ```
 
     Oracle Linux
-    ```
+    ```bash
     dnf config-manager --set-enabled ol8_codeready_builder
     ```
 
@@ -405,28 +425,32 @@ Then the last step is to add a cronjob to execute the script everyday.
 
 !!! info "Open crontab"
 
-    ```crontab -e
+    ```bash
+    crontab -e
     ```
 
 Add the following line to create the cronjob.
 
 !!! info "Create cronjob"
 
-    ```55 22 * * * /usr/lib/zabbix/mysql_zbx_part.pl >/dev/null 2>&1
+    ```bash
+    55 22 * * * /usr/lib/zabbix/mysql_zbx_part.pl >/dev/null 2>&1
     ```
 
 Execute the script manually to test.
 
 !!! info "Manual script execution for testing"
 
-    ```perl /usr/lib/zabbix/mysql_zbx_part.pl
+    ```bash
+    perl /usr/lib/zabbix/mysql_zbx_part.pl
     ```
 
 Then we can check and see if it worked.
 
 !!! info "Check the script log"
 
-    ```journalctl -t mysql_zbx_part
+    ```bash
+    journalctl -t mysql_zbx_part
     ```
 
 This will give you back a list of created and deleted partitions if you've done

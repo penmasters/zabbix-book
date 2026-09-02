@@ -34,6 +34,12 @@ a good idea to go with the latest version that is supported by Zabbix.
     If you choose to install PostgreSQL from the OS vendor-provided packages,
     you will need to compile and install the TimescaleDB extension from source.
 
+    Extra note: TimescaleDB doest not provide packages for SUSE Linux Enterprise
+    Server (SLES) or openSUSE Leap. Instead Suse provides the TimescaleDB 
+    extension in their own repositories. But for that to work you will need to
+    install PostgreSQL from the OS vendor-provided packages instead of the official
+    PostgreSQL repositories.
+
 ---
 
 ## Installing PostgreSQL Server and Client from OS Vendor-Provided Packages
