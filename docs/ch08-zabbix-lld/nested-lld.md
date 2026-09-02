@@ -82,9 +82,9 @@ In the Zabbix frontend go to **Data collection → Hosts**, select your host, th
 | Key | `vfs.file.contents[/home/db-cluster-status.json]` |
 | Type of information | Text |
 
-??? tip
-    Use the **Test** button to confirm that the agent can read the file and
-    returns the expected JSON.
+???+ tip
+     Use the **Test** button to confirm that the agent can read the file and
+     returns the expected JSON.
 
 Any item that produces valid JSON can serve as master item (HTTP agent, trapper,
 script item, etc.). A file-based item is used here purely for simplicity.
@@ -112,7 +112,7 @@ Under the parent discovery rule go to **Item prototypes → Create item prototyp
 
 | Field | Value |
 |-------|-------|
-| Name | Status of database {#DB} |
+| Name | Status of database `{#DB}` |
 | Type | Dependent item |
 | Master item | RAW: Database cluster metrics |
 | Key | `db.status[{#DB}]` |
@@ -158,7 +158,7 @@ tab and click **Create discovery prototype**.
 
 | Field | Value |
 |-------|-------|
-| Name | Discover tablespaces for {#DB} |
+| Name | Discover tablespaces for `{#DB}` |
 | Type | Nested |
 | Key | `db.tablespace.discovery[{#DB}]` |
 
@@ -183,10 +183,10 @@ On the **LLD macros** tab of the discovery prototype:
 {#TSNAME} → $.name
 ```
 
-??? note
-    LLD macros defined on the parent rule (`{#DB}`) are automatically inherited
-    and remain available inside nested discovery prototypes and all of their
-    child prototypes.
+???+ note
+     LLD macros defined on the parent rule (`{#DB}`) are automatically inherited
+     and remain available inside nested discovery prototypes and all of their
+     child prototypes.
 
 ### 4. Item Prototypes for the Nested Level
 
