@@ -71,6 +71,10 @@ Among other information, the report shows:
 The host, item and trigger statistics are further divided into states
 such as monitored, disabled and unsupported where applicable.
 
+![ch11.37-system-information.png](ch11.37-system-information.png)
+
+_ch11.37 system-information_
+
 ### Required server performance
 
 One particularly useful value is:
@@ -94,6 +98,7 @@ are more appropriate.
 
 The value shown in System information is therefore best used as a
 configuration-based estimate rather than as a performance measurement.
+
 
 ### Version information
 
@@ -193,11 +198,11 @@ information graphically, with bars representing the OK and Problem time.
 
 ### Availability is based on trigger state
 
-It is important to understand what this report represents.
-
-The Availability report calculates the amount of time that a **trigger**
-was in an OK or Problem state. It is therefore not automatically
-equivalent to a business SLA or the availability of an entire service.
+**Important:** this report only shows how long a trigger spent in OK or Problem
+state. It is not a business SLA and it does not equal the availability of a
+whole service. An ICMP trigger and an application trigger on the same host
+can easily produce very different percentages depending on how the triggers
+were written.
 
 The result depends directly on how the trigger has been designed.
 
@@ -223,6 +228,10 @@ generated from that data during the maintenance period.
 
 Keep this behavior in mind when using Availability reports for
 historical analysis.
+
+![ch11.38-availability-report.png](ch11.38-availability-report.png)
+
+_ch11.38 availability-report_
 
 ------------------------------------------------------------------------
 
@@ -255,13 +264,11 @@ information such as its latest events and related monitoring data.
 
 ### Finding noisy triggers
 
-One of the most useful applications of this report is identifying
-**noisy triggers**.
-
-A trigger appearing near the top of this report does not necessarily
-represent the most important problem in the environment. It simply means
-that the trigger generated a large number of problem events during the
-selected period.
+This report is especially useful for spotting noisy triggers. A trigger at the
+top of the list is not necessarily the most critical problem, it just means it
+fired a lot of events in the selected period. That often points to overly
+sensitive thresholds, missing hysteresis, or monitoring that doesn't really
+help operations.
 
 This can reveal configuration that deserves further investigation, such
 as:
@@ -276,6 +283,10 @@ as:
 The report is therefore useful not only for finding infrastructure
 problems, but also for improving the quality of the monitoring
 configuration itself.
+
+![ch11.39-triggers-100.png](ch11.39-triggers-100.png)
+
+_ch11.39 triggers Top 100.png_
 
 ------------------------------------------------------------------------
 
