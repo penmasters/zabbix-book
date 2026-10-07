@@ -188,7 +188,7 @@ will combine output of `top` command with some more details about specific
 process from `/proc/$pid/cmdline`.
 
 In the end, it's nothing much more complex than previous one - just know what
-you want to achieve, be able to do it and and employ HTML capabilities to
+you want to achieve, be able to do it and employ HTML capabilities to
 display it. In this case - by additional help of `<details>` element.
 
 ???+ example "Script for advanced table"

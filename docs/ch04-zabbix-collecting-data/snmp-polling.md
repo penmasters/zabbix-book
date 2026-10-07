@@ -40,7 +40,7 @@ Common examples include:
 These devices often provide built-in SNMP support, making them accessible for monitoring
 with minimal configuration. Additionally, SNMP can be employed on standard servers
 where installing or maintaining a Zabbix agent is either impractical or not permitted.
-This could be due to administrative policies, software compatibility or security
+This could be due to administrative policies, software compatibility, or security
 concerns, or simply a desire to reduce system footprint.
 
 Recognizing the ubiquity of SNMP, Zabbix provides native SNMP support. This
@@ -176,7 +176,7 @@ two approaches:
   server or a dedicated virtual machine.
 
 In this chapter, we will walk through the installation and configuration of a basic
-SNMP agent on a RedHat, Suse or Ubuntu based Zabbix server. However, the same setup can
+SNMP agent on a RedHat, Suse, or Ubuntu based Zabbix server. However, the same setup can
 be applied to any compatible Linux system.
 
 Note: If you're using a device already present on your network, ensure:
@@ -198,7 +198,7 @@ graph TD
 
 _4.29 Overview_
 
-Before we start lets go over a few tools that we will use and explain what they
+Before we start let's go over a few tools that we will use and explain what they
 exactly do.
 
 - **snmpget:** Retrieves the value of a single, specific OID.
@@ -676,7 +676,7 @@ From your Zabbix server or any SNMP client system with net-snmp-utils installed:
     ```
 
 You should now be able to test your items with SNMPv3 Let me give you an example
-command for `noAuthNoPriv`, `authNoPriv` and the most secure `authPriv`. This should
+command for `noAuthNoPriv`, `authNoPriv`, and the most secure `authPriv`. This should
 work out of the box with what is already configured in our `snmpd.conf` file.
 
 ???+ example "Testing SNMPv3 with different security levels"
@@ -1098,7 +1098,7 @@ in the item information.
 - **Key:** `snmp.in` (free form short descriptive)
 - **Type of information:** *Numeric (Unsigned)*
 - **Host interface:** The SNMP interface we created on our host. If you have
-  more then 1 interface just select the one you need.
+  more than one interface just select the one you need.
 - **SNMP OID:** `get[<OID>]` to retrieve the information or only the `<OID>` but then it
   will use synchronous polling.
 - **Units:** The data is in bytes so use `B`.

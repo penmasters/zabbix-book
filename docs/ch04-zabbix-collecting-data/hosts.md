@@ -17,7 +17,7 @@ in this part.
 ## Creating a host
 
 As we mentioned, Hosts in Zabbix are nothing more than a container (not the Docker kind).
-They contain our `Items`, `Triggers`, `graphs`, `Low Level Discovery` rules and `Web scenarios`.  
+They contain our `Items`, `Triggers`, `graphs`, `Low Level Discovery` rules, and `Web scenarios`.  
 
 At this point, we should create our first monitoring host in Zabbix. Navigate to `Data collection` | `Hosts` 
 and in the top right corner click on the `Create host` button. This will open up the following modal window:
@@ -70,7 +70,7 @@ do not fill it out. Unless, there is an actual need to use the field.
 The visible name was added in Zabbix as the host name and visible name fields in Zabbix use
 different character encoding in the Zabbix database. 
 
-`Host name` = `UTF8` and supports alphanumeric, dashes, underscores and spaces (not leading or trailing).
+`Host name` = `UTF8` and supports alphanumeric, dashes, underscores, and spaces (not leading or trailing).
 `Visible name` = `UTF8_MB4` and supports special characters like `ç` and even emojis like `👀`.
 
 This is the main difference. When you want to use a local language for example you could do:
@@ -111,7 +111,7 @@ Finally click on the `Add` button to create the host.
 ## Conclusion
 
 In this section we have learned how to create a host in Zabbix. We have covered
-the important fields like `Host name`, `Visible name` and `Host groups`.
+the important fields like `Host name`, `Visible name`, and `Host groups`.
 We have also discussed best practices around naming conventions for hosts in Zabbix
 and when to use the visible name field. Finally, we created our first host
 called `simple-checks` in the `Linux/Servers` host group, which we will use

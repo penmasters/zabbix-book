@@ -11,7 +11,7 @@ The Zabbix dataflow is a concept that is meant to guide us through the various d
 stages of building up our monitoring system. In the end, when building a Zabbix
 environment we want to achieve a few things:
 
-- **Collected metrics** are stored, can be easily found and are visualised
+- **Collected metrics** are stored, can be easily found, and are visualised
 - **Problems** are created from our data and shown in the frontend
 - **We take action** on important problems by sending a message or executing commands
 
@@ -45,14 +45,14 @@ concept we need to understand.
 ## Hosts
 To create `Items` in Zabbix, we first need to create `Hosts`. A `host` is nothing
 more than a container (not the Docker kind), it's something that contains `Items`,
-`Triggers`, `graphs`, `Low Level Discovery` rules and `Web scenarios`. All of these
+`Triggers`, `graphs`, `Low Level Discovery` rules, and `Web scenarios`. All of these
 various different entities are contained within our **Hosts**.
 
 Often times, Zabbix users and administrators make the misconception here that a
 *`host`* always represents a physical or virtualised host. But in the end, hosts
 are nothing more than a representation of a `monitoring target`. A monitoring
 target is something we want to monitor. This can be a server in your datacenter,
-a virtual machine on your hypervisor, a Docker container or even just a website.
+a virtual machine on your hypervisor, a Docker container, or even just a website.
 Everything you want to monitor in Zabbix will need a host and the host will then
 contain your monitoring configuration on its entities.
 
@@ -88,7 +88,7 @@ With all of the collected metrics, we can now also start to create triggers if w
 would want to. A trigger is Zabbix is nothing more than a bit of configuration on
 our host, which we will use to define thresholds using metrics collected on items. 
 
-A trigger can be setup to use the data collected on an item in a logical expression.
+A trigger can be set up to use the data collected on an item in a logical expression.
 This logical expression will define the threshold and when data is received on the
 item(s) used in the logical expression the trigger can go or stay in on of two states:
 

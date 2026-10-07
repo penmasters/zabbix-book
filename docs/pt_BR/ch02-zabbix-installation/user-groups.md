@@ -56,7 +56,7 @@ configuração familiar para os administradores.
 
 ### Criação de grupos e atributos gerais
 
-1. Navegue até **Administration** → **User groups**.
+1. Navegue até `Administration` | `User groups`.
 2. Clique em **Create user group** (ou selecione um grupo existente para
    modificar).
 3. O formulário de configuração é dividido em quatro guias essenciais: **Grupo
@@ -159,7 +159,7 @@ relevantes, o filtro de tags de problemas seria configurado para especificar:
 
 ### Permissões de modelo - Comportamento do front-end e limitações de edição
 
-O comportamento da visualização Data collection → Templates e das telas de
+O comportamento da visualização `Data collection` | `Templates` e das telas de
 configuração do host está estritamente ligado ao nível de permissão do usuário
 nos grupos de templates. O Zabbix intencionalmente oculta os templates dos
 usuários que possuem apenas acesso Read-only. Isso ocorre por design, conforme
@@ -168,7 +168,7 @@ descrito em
 
 | **Ação ou elemento de tela**       | **Somente leitura** | **Leitura e gravação** | **Descrição / Impacto**                                                                                                                                                                                                                    |
 | ---------------------------------- | ------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Exibir *Coleta de dados → Modelos* | ❌                   | ✅                      | **Os usuários com acesso Read-only (somente leitura) não veem nenhum modelo**. Os grupos de modelos são visíveis apenas para usuários com direitos de leitura e gravação. ([ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)) |
+| Exibir `Coleta de dados` \| `Modelos` | ❌                   | ✅                      | **Os usuários com acesso Read-only (somente leitura) não veem nenhum modelo**. Os grupos de modelos são visíveis apenas para usuários com direitos de leitura e gravação. ([ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)) |
 | Configuração do modelo aberto      | ❌                   | ✅                      | Não disponível para usuários somente leitura - os modelos são totalmente ocultos                                                                                                                                                           |
 
 ## A regra de precedência: Negar sempre vence
@@ -214,8 +214,7 @@ Essa precedência pode ser resumida em duas regras principais:
 
 ### Permissões na caixa de diálogo "Atualizar problema"
 
-No Zabbix 8.0, as ações disponíveis na visualização **Monitoring** →
-**Problems** (por meio da caixa de diálogo *Update problem* ) são controladas
+No Zabbix 8.0, as ações disponíveis na visualização `Monitoring` | `Problems` (por meio da caixa de diálogo *Update problem* ) são controladas
 por dois mecanismos distintos que funcionam em conjunto:
 
 1. **Permissões de host/modelo:** Controla o acesso básico ao problema e se
@@ -297,12 +296,12 @@ Zabbix:
 * HG_Critical_Databases (Um subconjunto de servidores que também está dentro de
   HG_All_Linux_Servers)
 
-Você pode criá-los em `Coleta de dados` → `Grupos de hosts`.
+Você pode criá-los em `Coleta de dados` | `Grupos de hosts`.
 
 #### Configuração dos grupos de usuários
 
 - Criar Grupo A: 'Monitoramento Júnior'
-    - Navegue até Usuários → Grupos de usuários.
+    - Navegue até `Usuários` | `Grupos de usuários`.
     - Crie um novo grupo chamado "Monitoramento Júnior".
     - Na guia Permissões de host, atribua o seguinte direito:
     - HG_All_Linux_Servers: Somente leitura (Read)
@@ -328,7 +327,7 @@ Critical exclusion_
 
 We will create the user first, then assign them to the groups.
 
-* Navegue até a criação do usuário: Vá para Usuários → Usuários no front-end do
+* Navegue até a criação do usuário: Vá para `Usuários` | `Usuários` no front-end do
   Zabbix.
 * Clique em Criar usuário.
 * Detalhes:
@@ -349,7 +348,7 @@ _2.25 ch02.23_test-junior.png_
 
 Criaremos 2 hosts, um servidor Linux e um servidor de banco de dados.
 
-* Navegue até `Coleta de dados` → `Hosts`.
+* Navegue até `Coleta de dados` | `Hosts`.
 * Clique em criar host.
 * Detalhes:
     * Nome do host: servidor Linux
@@ -376,7 +375,7 @@ server with an agent.
 
 Logout as the `Super admin` user and log back in as user `test_junior`.
 
-When we now navigate to `Monitoring` → `Hosts`, we see that only the `Linux
+When we now navigate to `Monitoring` | `Hosts`, we see that only the `Linux
 server` is visible in the list of hosts. When we click on `Select` behind `Host
 groups` we will only be able to see the group `HG_All_Linux_Servers`.
 
@@ -400,7 +399,7 @@ user can see and configure (via host/template permissions).
 ## Perguntas
 
 - If a user only has Read-only permissions assigned to a Template Group, will
-  they be able to see those templates listed under Data collection → Templates?
+  they be able to see those templates listed under `Data collection` | `Templates`?
 - Scenario: A user, Bob, is a member of two User Groups: 'NOC Viewers' (which
   has Read-only access to HG_Routers) and 'Tier 2 Techs' (which has Read-write
   access to the same HG_Routers). Question: Can Bob modify the configuration of

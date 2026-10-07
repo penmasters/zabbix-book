@@ -172,8 +172,7 @@ alteração.
 ## Configuração do Zabbix para autenticação HTTP
 
 Quando tivermos um servidor WEB configurado com autenticação básica, é hora de
-configurar o servidor Zabbix. No menu do Zabbix, selecione `Users |
-Authentication | HTTP settings` e marque a caixa de seleção `Enable HTTP
+configurar o servidor Zabbix. No menu do Zabbix, selecione `Users` | `Authentication` | `HTTP settings` e marque a caixa de seleção `Enable HTTP
 authentication`. Clique em `Update` e confirme as alterações clicando no botão
 `OK`.
 
@@ -244,8 +243,7 @@ usabilidade do front-end com medidas de proteção robustas.
   autenticação HTTP está ativada e por que a senha do Zabbix se torna
   irrelevante nesse caso?
 
-- Quais são as opções de configuração no front-end do Zabbix em "Administração →
-  Autenticação" para autenticação HTTP e como cada uma delas pode afetar o
+- Quais são as opções de configuração no front-end do Zabbix em `Administração` | `Autenticação` para autenticação HTTP e como cada uma delas pode afetar o
   comportamento de login? Os exemplos incluem ativar/desativar a sensibilidade a
   maiúsculas e minúsculas, a remoção de domínio e a escolha do formulário de
   login.

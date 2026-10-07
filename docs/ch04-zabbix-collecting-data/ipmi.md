@@ -666,7 +666,7 @@ In the mock environment, the full URL is: http://127.0.0.1:8000/redfish/v1
 
 Start by creating a dedicated host for the Redfish simulator.
 
-In the Zabbix frontend, go to **Data collection** → **Hosts**
+In the Zabbix frontend, go to `Data collection` | `Hosts`
 
 1. Click Create host
 2. Set:
@@ -711,7 +711,7 @@ No authentication or headers are required for the mock server.
     step, we will extract individual values using [Dependent items](./dependent.md).
 
 After a short wait, the item should start collecting data. This can be verified
-under **Monitoring** → **Latest data**
+under `Monitoring` | `Latest data`
 
 If this works we can move over to the next step and create an item.
 

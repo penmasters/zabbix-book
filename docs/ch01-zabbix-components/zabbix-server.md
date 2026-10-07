@@ -136,20 +136,20 @@ For our setup, the configuration will look like this:
 
 !!! note "For PostgreSQL in HA"
 
-    With Zabbix 8.0 it is now possible to add more then 1 IP for DBHost. This way
+    With Zabbix 8.0 it is now possible to add more than 1 IP for DBHost. This way
     it is possible to setup a HA DB setup with PostgreSQL without the need to
     use a loadbalancer. Zabbix will detect the active DB himself. Ex:
     DBHost=192.168.10.2:5432,192.168.10.3:5432
 
 In this example:
 
-- DBHost refers to the host where your database is running (use localhost if it's
+- `DBHost` refers to the host where your database is running (use localhost if it's
   on the same machine).
-- DBName is the name of the Zabbix database.
-- DBSchema is the schema name used in PostgreSQL (only needed for PostgreSQL).
-- DBUser is the database user.
-- DBPassword is the password for the database user.
-- DBPort is the port number on which your database server is listening (default for
+- `DBName` is the name of the Zabbix database.
+- `DBSchema` is the schema name used in PostgreSQL (only needed for PostgreSQL).
+- `DBUser` is the database user.
+- `DBPassword` is the password for the database user.
+- `DBPort` is the port number on which your database server is listening (default for
   MySQL/MariaDB is 3306 and PostgreSQL is 5432).
 
 Make sure the settings reflect your environment's database configuration.
@@ -205,7 +205,7 @@ to enable the Zabbix server and ensure it starts automatically on boot:
 
 !!! info "Enable and start zabbix-server service"
 
-    Red Hat, SUSE and Ubuntu
+    Red Hat, SUSE, and Ubuntu
     ``` bash
     sudo systemctl enable zabbix-server --now
     ```
@@ -227,7 +227,7 @@ are any issues, the log file will provide details to help with troubleshooting.
 !!! example "Example output"
 
     ```
-    12074:20250225:145333.529 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
+    12074:20250225:145333.529 Starting Zabbix Server. Zabbix 8.0.0 (revision dd0d9c26a3a).
     12074:20250225:145333.530 ****** Enabled features ******
     12074:20250225:145333.530 SNMP monitoring:           YES
     12074:20250225:145333.530 IPMI monitoring:           YES
@@ -240,8 +240,8 @@ are any issues, the log file will provide details to help with troubleshooting.
     12074:20250225:145333.530 TLS support:               YES
     12074:20250225:145333.530 ******************************
     12074:20250225:145333.530 using configuration file: /etc/zabbix/zabbix_server.conf
-    12074:20250225:145333.545 current database version (mandatory/optional): 07020000/07020000
-    12074:20250225:145333.545 required mandatory version: 07020000
+    12074:20250225:145333.545 current database version (mandatory/optional): 08000000/08000000
+    12074:20250225:145333.545 required mandatory version: 08000000
     12075:20250225:145333.557 starting HA manager
     12075:20250225:145333.566 HA manager started in active mode
     12074:20250225:145333.567 server #0 started [main process]
@@ -261,7 +261,7 @@ would see something like this in the server log file :
 !!! example "Example log with errors"
 
     ```
-    12068:20250225:145309.018 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
+    12068:20250225:145309.018 Starting Zabbix Server. Zabbix 8.0.0 (revision dd0d9c26a3a).
     12068:20250225:145309.018 ****** Enabled features ******
     12068:20250225:145309.018 SNMP monitoring:           YES
     12068:20250225:145309.018 IPMI monitoring:           YES

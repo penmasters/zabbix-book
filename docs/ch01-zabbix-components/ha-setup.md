@@ -54,7 +54,7 @@ respective IP addresses for your convenience :
 Refer to the [_Zabbix components: Database_](database.md) chapter for detailed
 instructions on setting up the database. That chapter provides step-by-step guidance
 on installing either a PostgreSQL or MariaDB database on a dedicated node running
-Ubuntu, SUSE or Rocky Linux. The same installation steps apply when configuring the
+Ubuntu, SUSE, or Rocky Linux. The same installation steps apply when configuring the
 database for this setup.
 
 ---
@@ -443,7 +443,7 @@ managing the VIP:
 ### Verify the correct working
 
 To verify that the setup is functioning correctly, access your Zabbix server
-using the Virtual IP (VIP). Navigate to Reports → System Information in the menu.
+using the Virtual IP (VIP). Navigate to `Reports` | `System Information` in the menu.
 At the bottom of the page, you should see a list of servers, with at least one
 marked as active. The number of servers displayed will depend on the total configured
 in your HA setup.
@@ -539,4 +539,4 @@ a resilient monitoring infrastructure that can be further enhanced as needed.
 
 - <https://www.redhat.com/sysadmin/advanced-keepalived>
 - <https://keepalived.readthedocs.io/en/latest/introduction.html>
-- <https://www.zabbix.com/documentation/7.2/en/manual/concepts/server/ha>
+- <https://www.zabbix.com/documentation/current/en/manual/concepts/server/ha>

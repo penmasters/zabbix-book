@@ -39,7 +39,7 @@ a step. However, before we dive deeper into how to create our steps let's have a
 look at exactly what preprocessing does within our Zabbix application.
 
 For our Zabbix monitoring to function as it does, we have to have a collector 
-process running. A process like the *Pollers*, *SNMP Pollers*, *Trappers* and all of 
+process running. A process like the *Pollers*, *SNMP Pollers*, *Trappers*, and all of 
 the other ones. These processes are in charge of connecting over the network to 
 collect a value using a specific protocol like the *Zabbix agent* or *SNMP*. In case 
 of the *Trappers*, the process is waiting around to receive data instead. They have 
@@ -183,7 +183,7 @@ larger data.
 
 ### JSONPath and additional steps
 Within Zabbix monitoring, JSON data structures are used quite a lot. We can find
-it in Low Level Discovery, export files and it is often the data format sent back 
+it in Low Level Discovery, export files, and it is often the data format sent back 
 by API's. As such, being able to process JSON datasets is important and that is 
 where *JSONPath* comes in. Let's say we have a basic JSON dataset we collected 
 from an API.

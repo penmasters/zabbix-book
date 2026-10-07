@@ -24,7 +24,7 @@ Let's get started
 ## Overview of the interface
 
 With Zabbix 7 the user interface after logging in is a bit changed. Our menu on
-the left side of the screen has has a small overhaul. Let's dive into it.
+the left side of the screen has a small overhaul. Let's dive into it.
 When we login into our Zabbix setup the first time with our Admin user we see a page
 
 like this where we have our `main window` in <font color='green'>green</font>
@@ -89,12 +89,12 @@ Shrink_
 ???+ note
 
     There are many other page parameters we can use. A full list can be found at
-    [https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters](https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters)
-    Zabbix also has a global search menu that we can use to find hosts, host groups
+    [https://www.zabbix.com/documentation/current/en/manual/web_interface/page_parameters](https://www.zabbix.com/documentation/current/en/manual/web_interface/page_parameters)
+    Zabbix also has a global search menu that we can use to find hosts, host groups,
     and templates.
 
 If we type in the search box the word `server` you will see that we get an overview
-of all `templates`, `host groups` and `hosts` with the name server in it. That's
+of all `templates`, `host groups`, and `hosts` with the name server in it. That's
 why this is called the `global search` box.
 
 ![Global search](ch02.6-global-search.png)
@@ -142,7 +142,7 @@ for user access.
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Support       | This brings us to the technical support page that you can buy from Zabbix. Remember that your local partner is also able to sell these contracts and can help you in your own language. [Your local distributors](https://www.zabbix.com/distributors) |
 | Integrations  | The official zabbix [integration page](https://www.zabbix.com/integrations)                                                                                                                                                                            |
-| Help          | The link to the documentation of your [Zabbix version](https://www.zabbix.com/documentation/7.0/)                                                                                                                                                      |
+| Help          | The link to the documentation of your [Zabbix version](https://www.zabbix.com/documentation/current/en)                                                                                                                                                 |
 | User settings | The user profile settings.                                                                                                                                                                                                                             |
 | Sign out      | Log out of the current session.                                                                                                                                                                                                                        |
 
@@ -244,7 +244,7 @@ menu_
   With filter we can look at recent problems past problems and problems
   that are active now. There are many more filters tor drill down more.
 - **Hosts**: This will give us a quick overview page with what's happening
-  on our hosts and allows us to quickly go to the latest data, graphs and dashboards.
+  on our hosts and allows us to quickly go to the latest data, graphs, and dashboards.
 - **Latest data**: This page I probably use the most, it shows us all the information
   collected from all our hosts.
 - **Maps**: The location where we can create map that are an overview of our
@@ -328,7 +328,7 @@ menu_
 
 - **Actions**: This menu allows us to configure actions based on `events` in
   Zabbix. We can create such actions for triggers, services, discovery,
-  autoregistration and internal events.
+  autoregistration, and internal events.
 - **Media types**: Zabbix can sent messages, emails etc ... based on the actions
   we have configured. Those media types need templates and need to be activated.
 - **Scripts**: In Zabbix it's possible to make use of scripts in our actions and
@@ -365,7 +365,7 @@ menu_
 
 ???+ info
 
-    More information can be found in the online Zabbix documentation [here](https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections)
+    More information can be found in the online Zabbix documentation [here](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections)
 
 ???+ tip Movable modal forms
 

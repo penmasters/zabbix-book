@@ -1,7 +1,7 @@
 ---
 description: |
     Protect your Zabbix frontend with SSL/TLS, secure web server configuration,
-    certificate management, HTTPS enforcement and security best practices.
+    certificate management, HTTPS enforcement, and security best practices.
 tags: [beginner]
 ---
 # Securing the frontend
@@ -81,7 +81,7 @@ Let's explain all the options;
 >- name prime256v1: Name of the elliptic curve; X9.62/SECG curve over a 256 bit
    prime field
 >- ecparam: This command is used to manipulate or generate EC parameter files.
->- genkey: This option will generate a EC private key using the specified parameters.
+>- genkey: This option will generate an EC private key using the specified parameters.
 
 
 ### Generate a Root Certificate
@@ -265,7 +265,7 @@ openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 #### Adapt your Nginx Zabbix config
 
 Add the following lines to your Nginx configuration, modifying the file paths as needed.
-Replace the the already existing lines with port 80 with this configuration. This
+Replace the already existing lines with port 80 with this configuration. This
 will enable SSL and HTTP2.
 
 
@@ -318,7 +318,7 @@ When we go to our url ```http://<IP or DNS>/``` we get redirected to our ```http
 _13.3 SSL Ok_
 
 ???+ Note
-    - To be even more secure have a loot at https://cipherlist.eu/ this page maintains a list of strong ciphers that you can use so secure your Nginx even more.<br />
+    - To be even more secure have a look at https://cipherlist.eu/ this page maintains a list of strong ciphers that you can use so secure your Nginx even more.<br />
     - You can test your nginx config with 'nginx -t' before you restart.<br />
     - For HTTP/2 to work you need at least nginx 1.9.5 or later
 

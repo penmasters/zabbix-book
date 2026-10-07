@@ -199,7 +199,7 @@ communication_
 In contrast to an _active proxy_, a proxy in _passive_ mode will have its operational
 settings controlled by the _Zabbix server_.
 
-Hence, configuring _passive_ proxies requires changes in in both the _Zabbix server_ 
+Hence, configuring _passive_ proxies requires changes in both the _Zabbix server_ 
 and the _Zabbix proxy_ configuration files as it is now the server
 that controls when and how proxy data is requested by making use of pollers.
 
@@ -285,7 +285,7 @@ options available to use.
 
 :   Generates diagnostic information for a specific section of the proxy’s 
     operation. This is typically used for troubleshooting or performance analysis. 
-    The section parameter can target areas like history cache, preprocessing or locks.
+    The section parameter can target areas like history cache, preprocessing, or locks.
     *Example*: `diaginfo=preprocessing` would provide detailed statistics about 
     the preprocessing manager.
 

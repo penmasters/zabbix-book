@@ -126,7 +126,7 @@ Deploying proxy groups effectively involves three main steps.
 
 In the Zabbix frontend:
 
-1.  Navigate to **Administration → Proxy groups**.
+1.  Navigate to `Administration` | `Proxy groups`.
 2.  Click **Create proxy group**.
 
 | Parameter | Description | Recommendation |
@@ -187,7 +187,7 @@ _3.11 Zabbix proxy group architecture and failover_
 
 ## Important Considerations and Limitations
 
-* **Version Requirements:** All proxies must run Zabbix **7.0 or later** and match the server version.
+* **Version Requirements:** Proxy groups were introduced in Zabbix **7.0**, making it the minimum required version. The Zabbix server and all proxies must run matching versions.
 * **Firewall Requirements:** Agents must be able to communicate with **every proxy** in the group.
 * **SNMP Traps Not Supported:** Proxy groups **cannot process SNMP traps**. Traps must be routed to a dedicated, non-grouped proxy.
 * **External Dependencies Must Be Identical:** If proxies use external check scripts, ODBC configuration, or third-party integrations, ensure **all proxies have identical configurations**.
@@ -233,10 +233,10 @@ The IPs are just examples, adapt them to your own setup.
 
 | Parameter | zbx-proxy-A1 (Active) | zbx-proxy-A3 (Passive) | zbx-proxy-A2 (Active) | Critical Note |
 |:---       |:---                   |:---                    |:---                   |:---           |
-| IP       | 10.0.0.1              | 10.0.0.2               | 10.0.0.3              | IP/DNS of the the Proxy server. |
+| IP       | 10.0.0.1              | 10.0.0.2               | 10.0.0.3              | IP/DNS of the Proxy server. |
 | Hostname | zbx-proxy-A1 | zbx-proxy-A3 | zbx-proxy-A2 | Must match the Proxy Name defined in the Zabbix Frontend. |
 | ProxyMode | 1 | 0 | 1 | 1 = Active (proxy connects to server). 0 = Passive (server connects to proxy).|
-| DBName | /tmp/proxy_a1.db | /tmp/proxy_a3.db | /tmp/proxy_a2.db | Each proxy must use a unique database file when use SQlite3 .|
+| DBName | /tmp/proxy_a1.db | /tmp/proxy_a3.db | /tmp/proxy_a2.db | Each proxy must use a unique database file when using SQlite3 .|
 
 ### Zabbix Frontend Setup (Administration)
 
@@ -308,7 +308,7 @@ Just here is a script for you that will handle those things. Just create an API
 token for the Zabbix Administrator account or any account with enough privileges
 and fill in the API token and the URL of the zabbix frontend. Make the script
 executable `chmod +x create_hosts.py` or whatever you used as name for the
-script. Verify also the `Host_group_id`, `Template_id` and the `Proxy_group_id`. 
+script. Verify also the `Host_group_id`, `Template_id`, and the `Proxy_group_id`. 
 This can be done by looking at the URL when clicking on them.
 
 ???+ note

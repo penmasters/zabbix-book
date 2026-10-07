@@ -34,7 +34,7 @@ type. This is the one you reach when you click *Dashboards* in the left-hand nav
 
 **Template dashboards** are defined inside a template and are automatically instantiated
 for every host that links to that template. When you view a host's dashboards (via
-*Monitoring → Hosts → Dashboards*), what you see are the rendered instances of those
+`Monitoring` | `Hosts` | `Dashboards`), what you see are the rendered instances of those
 template dashboards, with all widget item references resolved against that specific
 host. Template dashboards are discussed in a dedicated section at the end of this
 chapter.
@@ -275,8 +275,7 @@ _11.10 Graph_
 
 ### Graph (classic)
 
-Renders a previously defined custom graph (created under *Data collection → Hosts/Templates
-→ Graphs*) or a simple graph for a single item. It uses the older PNG-based rendering
+Renders a previously defined custom graph (created under `Data collection` | `Hosts/Templates` | `Graphs`) or a simple graph for a single item. It uses the older PNG-based rendering
 engine.
 
 Use this widget when you need to display a named custom graph that you have already
@@ -474,7 +473,7 @@ _11.24 Problem Hosts_
 
 ### Problems
 
-Displays a live list of current active problems, similar to the *Monitoring → Problems*
+Displays a live list of current active problems, similar to the `Monitoring` | `Problems`
 page but embedded as a widget. You can apply the same filters available on that page:
 host group, host, severity, tags, and so on.
 
@@ -698,7 +697,7 @@ at the right items for that host.
 
 ### Creating a template dashboard
 
-Navigate to *Data collection → Templates*, open a template, and click the *Dashboards*
+Navigate to `Data collection` | `Templates`, open a template, and click the *Dashboards*
 tab. Click *Create dashboard*.
 
 The dashboard editor looks identical to the global dashboard editor, with one
@@ -712,7 +711,7 @@ item `system.cpu.util` and when you view the dashboard for *Host A*, it shows
 
 ### Viewing template dashboards for a host
 
-Go to *Monitoring → Hosts*, find your host in the list, click the *Dashboards*
+Go to `Monitoring` | `Hosts`, find your host in the list, click the *Dashboards*
 item in the host's row action menu (or use the *Dashboards* link in the host's
 detail view). This opens a view of all template dashboards that have been
 instantiated for this host, one tab per dashboard.
@@ -731,7 +730,7 @@ with the standard *Linux by Zabbix agent* template, so items like `system.cpu.ut
 
 **Step 1 — Create the dashboard**
 
-Go to *Dashboards → Create dashboard*. Name it *Linux Server Overview*, set yourself
+Go to `Dashboards` | `Create dashboard`. Name it *Linux Server Overview*, set yourself
 as owner, click *Apply*.
 
 **Step 2 — Add a Problems widget**
@@ -830,6 +829,5 @@ data.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards/widgets_overview](https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards/widgets_overview)
-- [https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards](https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards)
-
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards/widgets_overview](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards/widgets_overview)
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards)

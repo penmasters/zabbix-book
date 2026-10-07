@@ -220,7 +220,7 @@ Check if the directory exists with correct permissions and SELinux context:
     drwxr-xr-x. 1 root   root   system_u:object_r:var_lib_t:s0            364 Jan 10 20:05 ..
     ```
 
-If the directory does not exist, is not owned by user `zabbix` or is missing the
+If the directory does not exist, is not owned by user `zabbix`, or is missing the
 SELinux label `zabbix_var_lib_t`, then you will need to correct this:
 
 !!! info "Create zabbix home-dir"
@@ -277,7 +277,7 @@ Possible buffer modes:
 `hybrid` - Hybrid buffer (default for new installations since Zabbix 7.0)
 
 :   Data is primarily stored in RAM but is automatically written to the database
-    when the memory buffer is full, the data is too old or when the proxy is 
+    when the memory buffer is full, the data is too old, or when the proxy is 
     stopped. This makes sure that data is preserved in case the Zabbix server is
     unreachable for a longer period or when there are bursts of many incoming
     items and hereby balances speed and reliability.

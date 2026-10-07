@@ -167,8 +167,7 @@ This model provides flexible role based access control (RBAC): administrators ca
 manage access centrally by assigning or revoking permissions for user groups
 rather than editing individual templates.
 
-If you like to make a new template group then they can be found under `Data collection`
-→ `Host groups` → `Create template group`
+If you like to make a new template group then they can be found under `Data collection` | `Host groups` | `Create template group`
 
 ![ch06.01-template-group.png](ch06.1-template-group.png)
 
@@ -258,7 +257,7 @@ This clear separation ensures operational access (hosts) and configuration acces
 
 ???+ note
 
-    Roles (user, admin and super admin) define what you can do.
+    Roles (user, admin, and super admin) define what you can do.
     Usergroup permissions define where you can do it.
 
 ### Best Practices for Permissions
@@ -330,7 +329,7 @@ Tags are metadata elements used throughout Zabbix for event classification, filt
 correlation, and alert routing. They attach semantic meaning to triggers, items,
 or templates, helping to describe what the metric or event represents.
 
-`Data collection` → `Templates` → `Template` → `Tags`
+`Data collection` | `Templates` | `Template` | `Tags`
 
 ![ch06.02-template-tags.png](ch06.2-template-tags.png)
 
@@ -449,7 +448,7 @@ component: replication
   acme).
 - Apply item/trigger-level tags for event specificity (component: disk, component:
   replication).
-- Regularly audit merged event tags under Monitoring → Problems → Tags to verify
+- Regularly audit merged event tags under `Monitoring` | `Problems` | `Tags` to verify
   inheritance behavior.
 
 ## Template macros
@@ -458,7 +457,7 @@ Macros are variables that make templates flexible and reusable. They define thre
 credentials, or paths that can be adjusted per environment without editing template
 logic.
 
-`Data collection` → `Templates` → `Template` → `Macros`
+`Data collection` | `Templates` | `Template` | `Macros`
 
 ![ch06.03-template-macros.png](ch06.4-template-macros.png)
 
@@ -510,7 +509,7 @@ Value maps convert raw numeric or coded values into meaningful, human readable t
 They make dashboards, triggers, and data views more intuitive. For example, turning
 SNMP status codes like 1, 2, 3 into Up, Down, Unknown.
 
-`Data collection` → `Templates` → `Template` → `Value maps`
+`Data collection` | `Templates` | `Template` | `Value maps`
 
 ![ch06.04-template-value maps.png](ch06.5-template-value maps.png)
 
@@ -598,13 +597,13 @@ building dashboards for each one.
 
 Template dashboards can be accessed and edited under:
 
-`Data collection → Templates → [select template] → Dashboards tab`
+`Data collection` | `Templates` | `[select template]` | `Dashboards tab`
 
 Each template may include one or more dashboards.
 When a host is linked to a template containing a dashboard, that dashboard appears
 automatically under:
 
-`Monitoring → Hosts → [select host] → Dashboards tab`
+`Monitoring` | `Hosts` | `[select host]` | `Dashboards tab`
 
 This dashboard is generated dynamically for the selected host, showing metrics
 and graphs populated with that host’s data.
@@ -643,7 +642,7 @@ Template dashboards support the same widget types as user dashboards, including:
 | **Layout elements**    | Text, maps, URL embeds             | Add context, documentation, or external views |
 
 Each widget automatically substitutes host-specific data when rendered under
-`Monitoring` → `Hosts` → `Dashboards`. No manual host configuration is required.
+`Monitoring` | `Hosts` | `Dashboards`. No manual host configuration is required.
 
 ![ch06.05-template-dashboards.png](ch06.6-template-dashboards.png)
 
@@ -695,7 +694,7 @@ cleaning, and synchronizing templates efficiently.
 
 These operations are accessible under:
 
-`Data collection → Hosts` on the host itself.
+`Data collection` | `Hosts` on the host itself.
 
 ![ch06.06-template-unlink-clear.png](ch06.7-template-unlink-clear.png)
 
@@ -718,7 +717,7 @@ The `clone` button creates an exact copy of an existing template, including all
 items, triggers, dashboards, macros, and value maps. Every entity within the clone
 receives a new UUID, ensuring full independence from the original.
 
-`Data collection` → `Templates` on the template itself.
+`Data collection` | `Templates` on the template itself.
 
 ![ch06.07-template-delete-clear.png](ch06.8-template-delete-clear.png)
 
@@ -726,7 +725,7 @@ _6.8 ch06.07-template-delete-clear.png_
 
 Example:
 
-`Template OS Linux → Clone → Template OS Rocky Linux (Custom)`
+`Template OS Linux` | `Clone` | `Template OS Rocky Linux (Custom)`
 
 ???+ tip
 
@@ -754,7 +753,7 @@ remain in configuration cache.
 Zabbix 8 provides a Mass update feature to modify multiple templates simultaneously.
 This is available via:
 
-`Data collection → Templates → Mass update`
+`Data collection` | `Templates` | `Mass update`
 
 It’s particularly useful for enforcing consistent macro values, tags, or template
 group structures across many templates.
@@ -791,7 +790,7 @@ standard now in Zabbix.
 
 ### Exporting
 
-Navigate to `Data collection` → `Templates` → `Select Your Template(s)` → `Export`, then select `YAML`.
+Navigate to `Data collection` | `Templates` | `Select Your Template(s)` | `Export`, then select `YAML`.
 
 ![ch06.08-template-export.png](ch06.9-template-export.png)
 
@@ -823,7 +822,7 @@ The import process in Zabbix 8.0  is intelligent — it compares UUIDs, detects
 differences, and optionally merges or removes entities.
 You can import templates via:
 
-`Data collection → Templates → Import`
+`Data collection` | `Templates` | `Import`
 
 The button is on the upper right side of your window.
 

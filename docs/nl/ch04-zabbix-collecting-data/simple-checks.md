@@ -28,7 +28,7 @@ template.
 
 We shall start with a simple ICMP Ping check on our host `simple-checks` in the
 `Servers/Linux` host group, created in the [previous section](hosts.md). Now go
-to **Data collection** | **Hosts** and click on the link `Items` next to the
+to `Data collection` | `Hosts` and click on the link `Items` next to the
 host `simple-checks`. You should see a `Create item` button in the top right
 corner. Click on this button and lets have a look at the item creation modal
 popup window:

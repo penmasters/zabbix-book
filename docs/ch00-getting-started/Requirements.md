@@ -59,7 +59,7 @@ For simplicity, take note of the server details:
 Operating systems, so many choices, each with its own advantages and loyal user base.
 While Zabbix can be installed on a wide range of platforms, documenting the process
 for every available OS would be impractical. To keep this book focused and efficient,
-we have chosen to cover only the most widely used options: Ubuntu, Red Hat and Suse 
+we have chosen to cover only the most widely used options: Ubuntu, Red Hat, and Suse 
 based distributions.
 
 Since not everyone has access to a Red Hat Enterprise Linux (RHEL) or a SUSE Linux
@@ -115,7 +115,7 @@ To update your system, run the following command based on your OS:
     sudo apt update
     sudo apt upgrade
     ```
-???+ note "What is apt, dnf or zypper"
+???+ note "What is apt, dnf, or zypper"
 
     - DNF (Dandified YUM) is a package manager used in recent Red Hat-based systems (invoked as `dnf`).
     - ZYpp (Zen / YaST Packages Patches Patterns Products) is the package manager 
@@ -123,7 +123,7 @@ To update your system, run the following command based on your OS:
     - APT (Advanced Package Tool) is the package manager used on Debian/Ubuntu-based systems (invoked as `apt`). 
 
     If you're using another distribution, replace `dnf`/`zypper`/`apt` with your appropriate 
-    package manager, such as `yum`, `pacman`, `emerge`, `apk` or ... .
+    package manager, such as `yum`, `pacman`, `emerge`, `apk`, or ... .
 
     Do note that package names may also vary from distribution to distribution.
 

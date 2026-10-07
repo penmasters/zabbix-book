@@ -1,7 +1,7 @@
 ---
 description: |
     Learn how to configure ClickHouse for Zabbix to store history data, improve
-    performance, reduce database load and scale large monitoring environments.
+    performance, reduce database load, and scale large monitoring environments.
 tags: [advanced]
 ---
 
@@ -191,9 +191,9 @@ Enable the ClickHouse service so it starts automatically at boot.
     systemctl enable /lib/systemd/system/clickhouse-server.service
     ```
 
-    This will probably be fixed in a future SUSE release as from SystemD 260,
+    This will probably be fixed in a future SUSE release as from Systemd 260,
     SysV init compatibility will also be removed from systemd itself, but for
-    now Suse ships SystemD 257.
+    now Suse ships Systemd 257.
 
 Verify that the service is running before continuing.
 
@@ -421,7 +421,7 @@ Monthly partitions typically strike the best balance between:
 For most production deployments, monthly partitions combined with an appropriate
 TTL are recommended.
 
-!!! eample "Importing the history schema with a 90-day retention and monthly partitions"
+!!! example "Importing the history schema with a 90-day retention and monthly partitions"
 
     ```bash
     ./history_uint_schema.sh \
@@ -683,4 +683,4 @@ over a hostname, this avoids potential DNS or hostname resolution issues.
 
 [https://clickhouse.com/docs/faq/operations/delete-old-data](https://clickhouse.com/docs/faq/operations/delete-old-data)
 [https://clickhouse.com/docs/](https://clickhouse.com/docs/)
-[https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE](https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE)
+[https://www.zabbix.com/documentation/current/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE](https://www.zabbix.com/documentation/current/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE)

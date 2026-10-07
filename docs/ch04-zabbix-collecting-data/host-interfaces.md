@@ -73,7 +73,7 @@ will be dependent on your DNS servers.
 
 The SNMP interface has the most options of all four interface types. The reason
 for this is because the SNMP type interface allows us to specify the SNMP details
-like version, community and credentials.
+like version, community, and credentials.
 
 ![SNMPv2 interface](ch04.11-snmpv2-interface.png){ align=center }
 *4.11 SNMPv2 interface*
@@ -180,9 +180,9 @@ All four interface types, also come with an icon that can turn <span style="colo
 <span style="color: grey;">Grey</span>. This color determines the interfaces'
 current availability and is shown in a few places in the Zabbix frontend:
 
-- On the host overview page (**Monitoring** → **Hosts**)
-- On the hosts configuration page (**Data Collection** → **Hosts**)
-- On the host configuration page when editing a host (**Data Collection** → **Hosts** → *[Host name]*)
+- On the host overview page (`Monitoring` | `Hosts`)
+- On the hosts configuration page (`Data Collection` | `Hosts`)
+- On the host configuration page when editing a host (`Data Collection` | `Hosts` | `[Host name]`)
 
 When you hover over, or click on one of the availability icons, you will get a 
 tooltip with the current status and possible error reason of each individual 

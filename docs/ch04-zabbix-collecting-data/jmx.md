@@ -158,7 +158,7 @@ _4.69 Zabbix JMX monitoring architecture_
 To ensure accurate testing of JMX monitoring with Zabbix, a dedicated host is essential.
 Although configuration on the Zabbix server is possible, a separate machine provides a
 more realistic representation of a production environment. For our setup, we'll
-use a new virtual machine running either Rocky Linux, openSUSE or Ubuntu. This machine will
+use a new virtual machine running either Rocky Linux, openSUSE, or Ubuntu. This machine will
 serve as our JMX-enabled target, and we'll install and configure Tomcat on it for
 this purpose.
 First, prepare the new VM as outlined in the [Preparing the system for Zabbix section](../ch00-getting-started/preparation.md),
@@ -404,7 +404,7 @@ After a successful login you should be greeted with a screen like this. Were you
 have a tree view overview of all the Mbeans we can use to gather information
 from.
 
-![ch04.37 Succesful login](ch04.72-jconsole-mbeans-tree.png)
+![ch04.37 Successful login](ch04.72-jconsole-mbeans-tree.png)
 
 _4.72 Login screen_
 

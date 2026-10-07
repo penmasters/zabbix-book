@@ -32,7 +32,7 @@ The Reports menu in Zabbix 8.0 contains the following sections:
 
 These reports serve different purposes. Some are useful for day-to-day
 monitoring, while others are particularly valuable when troubleshooting
-configuration changes, notification problems or the overall health of
+configuration changes, notification problems, or the overall health of
 the Zabbix installation.
 
 !!! note
@@ -68,8 +68,8 @@ Among other information, the report shows:
 -   required server performance in new values per second
 -   Zabbix server high availability status
 
-The host, item and trigger statistics are further divided into states
-such as monitored, disabled and unsupported where applicable.
+The host, item, and trigger statistics are further divided into states
+such as monitored, disabled, and unsupported where applicable.
 
 ![ch11.37-system-information.png](ch11.37-system-information.png)
 
@@ -145,7 +145,7 @@ A scheduled report can generate a dashboard report on a daily, weekly,
 monthly or yearly schedule.
 
 The overview shows information such as the report owner, reporting
-period, generation frequency, last delivery and current status.
+period, generation frequency, last delivery, and current status.
 
 Scheduled reports require additional components, including the **Zabbix
 Web Service** and a supported browser used to render the dashboard.
@@ -188,7 +188,7 @@ When using **By host**, the report can be filtered by host groups and
 hosts.
 
 When using **By trigger template**, results can be filtered using
-template groups, templates, template triggers and host groups.
+template groups, templates, template triggers, and host groups.
 
 Clicking a trigger name provides access to the latest events for that
 trigger.
@@ -320,7 +320,7 @@ changes.
 
 Consider a situation where monitoring for a host suddenly changes. An
 administrator can use the Audit log to investigate whether someone
-recently modified the host, template, item, trigger or another related
+recently modified the host, template, item, trigger, or another related
 configuration object.
 
 The **Details** field can show what was changed, making the Audit log
@@ -463,7 +463,7 @@ volume per user.
 The report can be viewed for:
 
 -   a specific media type or all media types
--   daily, weekly, monthly or yearly periods
+-   daily, weekly, monthly, or yearly periods
 -   a selected year
 
 Each user is represented separately, allowing administrators to see how
@@ -546,9 +546,9 @@ provides detailed information about notifications and remote commands
 executed by actions. Finally, the **Notifications** report provides an
 aggregated view of notification volume per user.
 
-These reports do not replace dashboards, Services, SLAs or external
+These reports do not replace dashboards, Services, SLAs, or external
 reporting tools. Instead, they provide focused operational views that
-are especially useful for administration, troubleshooting and reviewing
+are especially useful for administration, troubleshooting, and reviewing
 the behavior of a Zabbix environment.
 
 Knowing where to look is often more important than the amount of
