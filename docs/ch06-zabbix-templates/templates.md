@@ -257,7 +257,7 @@ This clear separation ensures operational access (hosts) and configuration acces
 
 ???+ note
 
-    Roles (user, admin and super admin) define what you can do.
+    Roles (user, admin, and super admin) define what you can do.
     Usergroup permissions define where you can do it.
 
 ### Best Practices for Permissions

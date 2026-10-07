@@ -14,7 +14,7 @@ or consider it, what the requirements are and finally how to install it..
 ## What is the Zabbix web service?
 
 The Zabbix web service is an optional component that can be deployed on the same
-server as the Zabbix server, proxy, frontend or on a separate server. The web service is responsible for handling certain tasks that require a headless browser.
+server as the Zabbix server, proxy, frontend, or on a separate server. The web service is responsible for handling certain tasks that require a headless browser.
 
 Currently the Zabbix web service is primarily used for generating and sending
 scheduled reports, but there are plans to expand its functionality in future

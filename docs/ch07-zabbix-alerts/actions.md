@@ -747,7 +747,7 @@ The available operations are identical to discovery actions:
 
 - Add host, Remove host, Enable host, Disable host
 - Add to host group, Remove from host group
-- Link to template, Unlink from template, Unlink and clear
+- Link to template, Unlink from template, Unlink, and clear
 - Set host inventory mode
 - Send message
 - Run global script

@@ -177,13 +177,13 @@ works, including your Zabbix server itself.
 
     In production you will point this at a real switch or router instead of a
     Linux host, the configuration on the Zabbix side is identical. Only the
-    community string, SNMP version and OIDs you are interested in change.
+    community string, SNMP version, and OIDs you are interested in change.
 
 ## Creating the host and the master item
 
 Go to `Data collection` | `Hosts` and either create a new host or open an
 existing one, then add an `SNMP interface` pointing at the device (IP,
-port 161, SNMP version and community).
+port 161, SNMP version, and community).
 
 ![SNMP Interface](ch08.21-snmp_interface.png)
 
@@ -346,7 +346,7 @@ A simple trigger prototype to flag a down interface:
 - **Expression**: `last(/Host/net.if.status[{#SNMPINDEX}])<>1`
 
 Because the operational status and the traffic items all share the same
-`{#SNMPINDEX}`, trigger prototypes, graph prototypes and item prototypes stay
+`{#SNMPINDEX}`, trigger prototypes, graph prototypes, and item prototypes stay
 consistently linked to the same discovered interface without any extra
 bookkeeping on our part.
 
@@ -408,7 +408,7 @@ the LLD macros directly from it without any JSONPath mapping, and SNMP walk valu
 lets every dependent item prototype read its own value straight out of that same
 response.
 
-The result scales the same way regardless of how many interfaces, outlets or sensors
+The result scales the same way regardless of how many interfaces, outlets, or sensors
 a device exposes, because the number of SNMP requests per cycle stays low and fixed,
 one if you keep discovery and data together like we did here, two if you split them
 as recommended above, instead of growing with every object discovered. Everything

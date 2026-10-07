@@ -10,7 +10,7 @@ tags: [advanced]
 
 At this point we are familiar with the Zabbix dataflow, how to create hosts and,
 add interfaces and items to a host. As a system administrator or anyone else working
-with Linux, Unix or Windows systems usually we jump right into installing the Zabbix
+with Linux, Unix, or Windows systems usually we jump right into installing the Zabbix
 agent and monitoring with it. Using our previous steps however, we have laid the
 groundwork for building a proper monitoring solution. We have prepared our systems
 before monitoring, which is the most important part to avoid `Monitoring fatigue`
@@ -26,7 +26,7 @@ later on.
       or Signal with too many alerts your users will not respond to them any longer.
 
     - **Monitoring fatigue** happens in Zabbix when you misconfigure things like 
-      dashboards, items, host groups, tags and other internal systems that keep 
+      dashboards, items, host groups, tags, and other internal systems that keep 
       things structured. The result is that you or your co-workers do not want 
       to use your own system any longer as it does not deliver the right 
       information easily enough.
@@ -205,7 +205,7 @@ Zabbix agent will be updated when updating with commands like `dnf update` and
 other and as such new versions will contain security and bug fixes. Whatever
 installation method you choose, keep your Zabbix agent up-to-date.
 
-We will be using the packages on RedHat-, SUSE-based or Ubuntu to install 
+We will be using the packages on RedHat-, SUSE-based, or Ubuntu to install 
 `Zabbix agent 2`. To use the packages we will need to prepare our system 
 as outlined in chapter: [_Getting started_](../ch00-getting-started/preparation.md).
 Only adding the Zabbix repository is mandatory here, however following the 
@@ -310,7 +310,7 @@ be both installed and configured.
 ## Agent installation on Unix
 
 For Unix based systems, simply download the files on the Zabbix download page for
- either `AIX`, `FreeBSD`, `OpenBSD` or `Solaris`.
+ either `AIX`, `FreeBSD`, `OpenBSD`, or `Solaris`.
 
 <https://www.zabbix.com/download_agents>
 
@@ -328,7 +328,7 @@ through the `.pkg` installer.
 ## Agent side configuration
 
 Configuring the Zabbix agent is similar for all installations. Whether you are on
-`Linux`, `Unix`, `Windows` or `MacOS` you will always find the `zabbix_agent2.conf` file.
+`Linux`, `Unix`, `Windows`, or `MacOS` you will always find the `zabbix_agent2.conf` file.
 The parameters in this configuration file are mostly the same, regardless of the
 operating system.
 
@@ -344,7 +344,7 @@ operating system.
 
 For `Passive` Zabbix agent connections we have only one important parameter to
 configure out of the box. The `Server=` parameter. This parameter functions as an
-allowlist, where we can add IP addresses, IP ranges and DNS entries to a list.
+allowlist, where we can add IP addresses, IP ranges, and DNS entries to a list.
 All of the entries in this `Server=` allowlist will be allowed to make a connection
 to the `Passive` Zabbix agent and collect data from it.
 

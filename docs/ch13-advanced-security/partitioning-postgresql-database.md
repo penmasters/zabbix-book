@@ -1,7 +1,7 @@
 ---
 description: |
     Learn how to partition a PostgreSQL database with TimescaleDB for Zabbix to
-    improve performance, automate retention and scale large deployments.
+    improve performance, automate retention, and scale large deployments.
 tags: [advanced]
 ---
 

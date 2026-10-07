@@ -105,7 +105,7 @@ file is also in permissive mode.
 From the Zabbix Download page [https://www.zabbix.com/download](https://www.zabbix.com/download),
 select the appropriate Zabbix version you wish to install. In this case, we will
 be using Zabbix 8.0 LTS. Additionally, ensure you choose the correct OS distribution
-for your environment, which will be Rocky Linux 9, openSUSE Leap 16 or Ubuntu 24.04 in our case.
+for your environment, which will be Rocky Linux 9, openSUSE Leap 16, or Ubuntu 24.04 in our case.
 
 We will be installing the Zabbix Server along with NGINX as the web server for
 the front-end. Make sure to download the relevant packages for your chosen configuration.

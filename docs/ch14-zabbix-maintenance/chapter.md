@@ -30,7 +30,7 @@ backup is sufficient to recover most of a Zabbix environment. The chapter covers
 logical dumps using `mysqldump`, `mariadb-dump`, and `pg_dump` for smaller
 installations, and physical backup approaches including WAL archiving and dedicated
 tools such as PgBackRest and PgBarman for larger PostgreSQL environments. Alongside
-the database, a set of configuration files and custom scripts deserve equal
+the database, a set of configuration files, and custom scripts deserve equal
 attention: alert scripts, external checks, and web server configuration are easy
 to overlook and time-consuming to rebuild from memory.
 

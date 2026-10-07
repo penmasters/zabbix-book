@@ -1,7 +1,7 @@
 ---
 description: |
     Learn how to integrate HashiCorp Vault with Zabbix to securely store secrets,
-    protect credentials and manage sensitive data using Vault macros.
+    protect credentials, and manage sensitive data using Vault macros.
 tags: [advanced]
 ---
 

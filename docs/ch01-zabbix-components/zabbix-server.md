@@ -205,7 +205,7 @@ to enable the Zabbix server and ensure it starts automatically on boot:
 
 !!! info "Enable and start zabbix-server service"
 
-    Red Hat, SUSE and Ubuntu
+    Red Hat, SUSE, and Ubuntu
     ``` bash
     sudo systemctl enable zabbix-server --now
     ```

@@ -6,7 +6,7 @@ tags: [advanced]
 ---
 
 # Securing the Zabbix agent with encryption
-In chapter 4 we have learned how to set up our Zabbix agent in both the active and the passive mode. In an internal network, this might be all you need to do for your monitoring of Linux, Unix and Windows systems. But what if you need to monitor a Zabbix agent host over the internet or what if you'd just like to add an additional layer of security. This is where Zabbix agent encryption comes in. 
+In chapter 4 we have learned how to set up our Zabbix agent in both the active and the passive mode. In an internal network, this might be all you need to do for your monitoring of Linux, Unix, and Windows systems. But what if you need to monitor a Zabbix agent host over the internet or what if you'd just like to add an additional layer of security. This is where Zabbix agent encryption comes in. 
 
 There are two basic methods to encrypt your Zabbix agent and they apply to both passive and active agents.
 - Pre-shared keys
@@ -56,7 +56,7 @@ I've used `zbx-agent-active-rocky` as the identity, as that is the hostname on m
 - *TLSPSKIdentity*: The plain text non-secret identity used for PSK encryption.
 - *TLSPSKFile*: The path to the file where the secret PSK is stored.
 
-As you might have noticed, I have set both `TLSConnect` and `TLSAccept`. This is something recommended to always do to safeguard against configuration mistakes. Let's say you only use the Active Zabbix agent connection, but left `TLSConnect` set to `unencrypted`. If your Zabbix agent allows passive agent connections (due to configuration error, history or on purpose) an unencrypted connection will still be allowed. Recommendation, set both always unless you have a good reason not to.
+As you might have noticed, I have set both `TLSConnect` and `TLSAccept`. This is something recommended to always do to safeguard against configuration mistakes. Let's say you only use the Active Zabbix agent connection, but left `TLSConnect` set to `unencrypted`. If your Zabbix agent allows passive agent connections (due to configuration error, history, or on purpose) an unencrypted connection will still be allowed. Recommendation, set both always unless you have a good reason not to.
 
 We're not done with the configuration on the Zabbix agent side however, we still need to create the PSK. There is a simple command to execute and create the PSK.
 

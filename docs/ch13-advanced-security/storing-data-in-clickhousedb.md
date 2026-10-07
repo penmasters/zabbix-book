@@ -1,7 +1,7 @@
 ---
 description: |
     Learn how to configure ClickHouse for Zabbix to store history data, improve
-    performance, reduce database load and scale large monitoring environments.
+    performance, reduce database load, and scale large monitoring environments.
 tags: [advanced]
 ---
 

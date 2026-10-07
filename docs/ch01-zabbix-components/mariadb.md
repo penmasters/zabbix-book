@@ -408,7 +408,7 @@ with a strong password of your choice.
 
     ???+ tip
 
-        If your Zabbix server, frontend and database are on the same machine, you can replace
+        If your Zabbix server, frontend, and database are on the same machine, you can replace
         `<zabbix server ip>` and `<zabbix frontend ip>` with `localhost` or `127.0.0.1`.
 
 This creates new users `zabbix-web` and `zabbix-srv`, grants them access to the

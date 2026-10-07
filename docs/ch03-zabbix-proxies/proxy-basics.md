@@ -285,7 +285,7 @@ options available to use.
 
 :   Generates diagnostic information for a specific section of the proxy’s 
     operation. This is typically used for troubleshooting or performance analysis. 
-    The section parameter can target areas like history cache, preprocessing or locks.
+    The section parameter can target areas like history cache, preprocessing, or locks.
     *Example*: `diaginfo=preprocessing` would provide detailed statistics about 
     the preprocessing manager.
 

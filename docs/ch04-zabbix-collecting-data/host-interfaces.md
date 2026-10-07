@@ -73,7 +73,7 @@ will be dependent on your DNS servers.
 
 The SNMP interface has the most options of all four interface types. The reason
 for this is because the SNMP type interface allows us to specify the SNMP details
-like version, community and credentials.
+like version, community, and credentials.
 
 ![SNMPv2 interface](ch04.11-snmpv2-interface.png){ align=center }
 *4.11 SNMPv2 interface*

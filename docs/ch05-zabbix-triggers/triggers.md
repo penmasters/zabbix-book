@@ -112,7 +112,7 @@ For example, `Informational` is often used to indicate something we just want to
 log. Specifically, often `Informational` is something we do not necessarily want
 to see on our dashboards or receive external alerts from. `Disaster` on the other
 end however is often used to indicate something that requires immediate attention.
-The `Warning`, `Average` and `High` severities can be used to classify anything
+The `Warning`, `Average`, and `High` severities can be used to classify anything
 in between. My favourite basic setup usually looks like below.
 
 - **Informational: Just for logging and not showing on dashboards**

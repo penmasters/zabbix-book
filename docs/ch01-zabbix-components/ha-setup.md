@@ -54,7 +54,7 @@ respective IP addresses for your convenience :
 Refer to the [_Zabbix components: Database_](database.md) chapter for detailed
 instructions on setting up the database. That chapter provides step-by-step guidance
 on installing either a PostgreSQL or MariaDB database on a dedicated node running
-Ubuntu, SUSE or Rocky Linux. The same installation steps apply when configuring the
+Ubuntu, SUSE, or Rocky Linux. The same installation steps apply when configuring the
 database for this setup.
 
 ---

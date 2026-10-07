@@ -15,7 +15,7 @@ control application functionality (what buttons a user can click).
 ## The role hierarchy
 
 Every User Role, whether default or custom, is fundamentally based on one of the
-classic User Types (Super Admin, Admin or User). This User Type serves as the maximum
+classic User Types (Super Admin, Admin, or User). This User Type serves as the maximum
 allowed privilege for the role.
 
 ## Default Menu Access by User Type

@@ -90,11 +90,11 @@ Shrink_
 
     There are many other page parameters we can use. A full list can be found at
     [https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters](https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters)
-    Zabbix also has a global search menu that we can use to find hosts, host groups
+    Zabbix also has a global search menu that we can use to find hosts, host groups,
     and templates.
 
 If we type in the search box the word `server` you will see that we get an overview
-of all `templates`, `host groups` and `hosts` with the name server in it. That's
+of all `templates`, `host groups`, and `hosts` with the name server in it. That's
 why this is called the `global search` box.
 
 ![Global search](ch02.6-global-search.png)
@@ -244,7 +244,7 @@ menu_
   With filter we can look at recent problems past problems and problems
   that are active now. There are many more filters tor drill down more.
 - **Hosts**: This will give us a quick overview page with what's happening
-  on our hosts and allows us to quickly go to the latest data, graphs and dashboards.
+  on our hosts and allows us to quickly go to the latest data, graphs, and dashboards.
 - **Latest data**: This page I probably use the most, it shows us all the information
   collected from all our hosts.
 - **Maps**: The location where we can create map that are an overview of our
@@ -328,7 +328,7 @@ menu_
 
 - **Actions**: This menu allows us to configure actions based on `events` in
   Zabbix. We can create such actions for triggers, services, discovery,
-  autoregistration and internal events.
+  autoregistration, and internal events.
 - **Media types**: Zabbix can sent messages, emails etc ... based on the actions
   we have configured. Those media types need templates and need to be activated.
 - **Scripts**: In Zabbix it's possible to make use of scripts in our actions and

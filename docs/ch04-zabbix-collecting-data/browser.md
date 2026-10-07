@@ -380,7 +380,7 @@ try...catch blocks.
 The Master Browser Item produces a single, large JSON string containing all
 collected data, including performance metrics, status information, and the
 Base64 screenshot. To make this raw data useful for triggers, graphs, and
-dashboards, **Dependent Items** and **Preprocessing** are necessary.
+dashboards, **Dependent Items**, and **Preprocessing** are necessary.
 
 ### Extraction via Dependent Items
 
@@ -433,7 +433,7 @@ status at the moment of the check.
 
 ---
 
-## Tips, Troubleshooting and Security
+## Tips, Troubleshooting, and Security
 
 Effective management of the **Browser Item** requires proactive monitoring and attention
 to performance and security.

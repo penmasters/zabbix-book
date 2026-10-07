@@ -308,7 +308,7 @@ Just here is a script for you that will handle those things. Just create an API
 token for the Zabbix Administrator account or any account with enough privileges
 and fill in the API token and the URL of the zabbix frontend. Make the script
 executable `chmod +x create_hosts.py` or whatever you used as name for the
-script. Verify also the `Host_group_id`, `Template_id` and the `Proxy_group_id`. 
+script. Verify also the `Host_group_id`, `Template_id`, and the `Proxy_group_id`. 
 This can be done by looking at the URL when clicking on them.
 
 ???+ note

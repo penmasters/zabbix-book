@@ -138,11 +138,11 @@ agent towards the Microsoft SQL server never leaves the server itself and we do
 not need to expose our SQL server port to the network for our Zabbix server or
 proxy. Combined with Zabbix agent active mode, a limited Microsoft SQL user and
 agent encryption, we can guarantee a secure setup that is ready for high-risk
-environments like banks, hospitals, air traffic and even military applications.
+environments like banks, hospitals, air traffic, and even military applications.
 This is the biggest advantage of using the Zabbix agent 2 database monitoring,
 compared to ODBC.
 
-Once we fill out the `{$MSSQL.USER}`, `{$MSSQL.PASSWORD}` and `{$MSSQL.URI}` 
+Once we fill out the `{$MSSQL.USER}`, `{$MSSQL.PASSWORD}`, and `{$MSSQL.URI}` 
 macros, the Zabbix agent should be able to connect to our SQL server. Navigating 
 to `Monitoring` | `Latest data` should now show us a bunch of data from the
 SQL server marking the successful configuration of our monitoring.

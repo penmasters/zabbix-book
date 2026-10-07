@@ -11,7 +11,7 @@ Automation via Low-Level Discovery (LLD) rarely stops at a single infrastructure
 layer. In complex environments you frequently deal with hierarchical structures:
 a database server hosting multiple instances, each containing multiple tablespaces;
 a hypervisor running virtual machines that each have multiple virtual disks; or a
-storage array with pools, volumes and LUNs.
+storage array with pools, volumes, and LUNs.
 
 Previously, monitoring these layered structures required separate discovery rules
 or custom multi-stage scripts. Starting with **Zabbix 7.4**, Nested LLD (discovery

@@ -391,7 +391,7 @@ by adding a *foreach* function as the sole parameter to select the items to aggr
     `vfs.fs.size[/,free]`. 
     The `conditions` then allow you to further filter the
     items based on their host `group` or item `tag` or a combination of both
-    using logical operators `and`, `or` and `not`.
+    using logical operators `and`, `or`, and `not`.
 
     An example of an item filter that selects all items with the key: 
     `system.cpu.load[all,avg1]` from all hosts in the "Web Servers" group would

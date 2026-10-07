@@ -1,7 +1,7 @@
 ---
 description: |
     Configure SELinux securely for Zabbix using best practices for contexts,
-    policies, booleans, audit logs, custom modules and Enterprise Linux.
+    policies, booleans, audit logs, custom modules, and Enterprise Linux.
 tags:[advanced]
 ---
 

@@ -95,7 +95,7 @@ With the network discovery rule created, we have done only half of the process. 
 
 Navigate to `Alerts` | `Actions` | `Discovery actions`, then click on `Create action`.
 
-Autoregistration actions, discovery actions and even trigger actions are all very alike. They consist of conditions and operations.
+Autoregistration actions, discovery actions, and even trigger actions are all very alike. They consist of conditions and operations.
 
 With our discovery rule receiving the OID `1.3.6.1.2.1.1.1.0`, we have a great value to check if the host is actually running like. With it we can create the following conditions.
 

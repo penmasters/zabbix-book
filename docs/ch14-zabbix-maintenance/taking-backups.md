@@ -22,10 +22,10 @@ alerts and similar, it is usually not a big deal, if the backups are done with
 dumps instead of physical backups.
 Zabbix relies heavily on the underlying database not only for the collected items
 (metrics), but also for storing the Zabbix configuration we create in the Zabbix
-frontend. This database should either be a MariaDB, PostgreSQL or MySQL database
+frontend. This database should either be a MariaDB, PostgreSQL, or MySQL database
 in Zabbix 8.0 as those are the official production supported database types.
 
-Since our history, trends and configuration data is all stored in this central
+Since our history, trends, and configuration data is all stored in this central
 database, taking a meaningful backup of our Zabbix environment is fairly simple.
 All we have to do is pick a backup method we like for our chosen database and then
 use that to backup the database. Giving you a backup you can easily restore 99%
@@ -60,7 +60,7 @@ For dumping the contents of the database, various tools exists:
   SQL statements, allowing us to restore our database fully.
 - **`(Virtual) Machine disk snapshots`:** There are various utilities on the market to
   create (incremental) snapshots of a database server. Some examples are snapshots
-  built into Azure/Amazon AWS, Proxmox PBS server, Veeam, Rubrik and more.
+  built into Azure/Amazon AWS, Proxmox PBS server, Veeam, Rubrik, and more.
   Beware, that VM disk snapshots cannot be considered safe backups of a database, as
   there is a significant chance of the data not being consistent.
 
@@ -378,7 +378,7 @@ When Zabbix is installed from packages, it will always store the configuration f
     cp -R /etc/zabbix/* /opt/zabbix-backup/
     ```
 
-You can run this command on all of your Zabbix server, Frontend, Database and Proxy hosts. This should cover the most important configuration files already, but there is another folder that could contain very important files.
+You can run this command on all of your Zabbix server, Frontend, Database, and Proxy hosts. This should cover the most important configuration files already, but there is another folder that could contain very important files.
 
 !!! info "Create other Zabbix files backup"
 
@@ -396,7 +396,7 @@ The /usr/share/zabbix/ folder contains important PHP files and Zabbix binaries. 
     cp -R /usr/lib/zabbix/ /opt/zabbix-backup/
     ```
 
-Lastly, it is also recommended to create a backup of your webserver configuration. Depending on if you have `httpd`, `apache2` or `nginx` we will need to create the backup slightly differently. 
+Lastly, it is also recommended to create a backup of your webserver configuration. Depending on if you have `httpd`, `apache2`, or `nginx` we will need to create the backup slightly differently. 
 
 !!! info "Install MariaDB client"
 
