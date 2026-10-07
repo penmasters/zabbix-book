@@ -199,7 +199,7 @@ communication_
 In contrast to an _active proxy_, a proxy in _passive_ mode will have its operational
 settings controlled by the _Zabbix server_.
 
-Hence, configuring _passive_ proxies requires changes in in both the _Zabbix server_ 
+Hence, configuring _passive_ proxies requires changes in both the _Zabbix server_ 
 and the _Zabbix proxy_ configuration files as it is now the server
 that controls when and how proxy data is requested by making use of pollers.
 

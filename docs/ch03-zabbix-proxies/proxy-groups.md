@@ -126,7 +126,7 @@ Deploying proxy groups effectively involves three main steps.
 
 In the Zabbix frontend:
 
-1.  Navigate to **Administration → Proxy groups**.
+1.  Navigate to `Administration` | `Proxy groups`.
 2.  Click **Create proxy group**.
 
 | Parameter | Description | Recommendation |
@@ -233,10 +233,10 @@ The IPs are just examples, adapt them to your own setup.
 
 | Parameter | zbx-proxy-A1 (Active) | zbx-proxy-A3 (Passive) | zbx-proxy-A2 (Active) | Critical Note |
 |:---       |:---                   |:---                    |:---                   |:---           |
-| IP       | 10.0.0.1              | 10.0.0.2               | 10.0.0.3              | IP/DNS of the the Proxy server. |
+| IP       | 10.0.0.1              | 10.0.0.2               | 10.0.0.3              | IP/DNS of the Proxy server. |
 | Hostname | zbx-proxy-A1 | zbx-proxy-A3 | zbx-proxy-A2 | Must match the Proxy Name defined in the Zabbix Frontend. |
 | ProxyMode | 1 | 0 | 1 | 1 = Active (proxy connects to server). 0 = Passive (server connects to proxy).|
-| DBName | /tmp/proxy_a1.db | /tmp/proxy_a3.db | /tmp/proxy_a2.db | Each proxy must use a unique database file when use SQlite3 .|
+| DBName | /tmp/proxy_a1.db | /tmp/proxy_a3.db | /tmp/proxy_a2.db | Each proxy must use a unique database file when using SQlite3 .|
 
 ### Zabbix Frontend Setup (Administration)
 

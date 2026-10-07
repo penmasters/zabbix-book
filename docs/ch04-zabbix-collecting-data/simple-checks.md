@@ -24,9 +24,9 @@ everything on a host level for now. Check out [Chapter 06](../ch06-zabbix-templa
 
 We shall start with a simple ICMP Ping check on our host `simple-checks` in the
 `Servers/Linux` host group, created in the [previous section](hosts.md). 
-Now go to **Data collection** | **Hosts** and click on the link `Items` next to
+Now go to `Data collection` | `Hosts` and click on the link `Items` next to
 the host `simple-checks`. You should see a `Create item` button in the top right
-corner. Click on this button and lets have a look at the item creation modal popup
+corner. Click on this button and let's have a look at the item creation modal popup
 window:
 
 ![Empty Item creation](ch04.6-empty-item-creation.png){ align=left }
@@ -115,7 +115,7 @@ of the uniqueness of the item keys. For example:
 ### ICMP Ping
 
 With all of this in mind, let's finish the creation our ICMP Ping item. First, we will give our
-new item a name. Since this is a simple ICMP Ping to the host lets go for:
+new item a name. Since this is a simple ICMP Ping to the host let's go for:
 
 - **Name** = `ICMP Ping`
 

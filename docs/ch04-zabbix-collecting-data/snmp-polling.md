@@ -198,7 +198,7 @@ graph TD
 
 _4.29 Overview_
 
-Before we start lets go over a few tools that we will use and explain what they
+Before we start let's go over a few tools that we will use and explain what they
 exactly do.
 
 - **snmpget:** Retrieves the value of a single, specific OID.
@@ -1098,7 +1098,7 @@ in the item information.
 - **Key:** `snmp.in` (free form short descriptive)
 - **Type of information:** *Numeric (Unsigned)*
 - **Host interface:** The SNMP interface we created on our host. If you have
-  more then 1 interface just select the one you need.
+  more than one interface just select the one you need.
 - **SNMP OID:** `get[<OID>]` to retrieve the information or only the `<OID>` but then it
   will use synchronous polling.
 - **Units:** The data is in bytes so use `B`.

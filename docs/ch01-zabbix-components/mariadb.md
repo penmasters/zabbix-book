@@ -202,7 +202,7 @@ The expected output should resemble this:
 
     ```shell-session
     localhost:~ $ mariadb -V
-    mariadb  Ver 15.1 Distrib 10.11.14-MariaDB, for Linux (x86_64) using  EditLine wrapper
+    mariadb from 11.4.13-MariaDB, client 15.2 for Linux (aarch64) using  EditLine wrapper
     ```
 
 To ensure that the MariaDB service is running properly, you can check its status
@@ -239,7 +239,7 @@ is active and running:
     Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
     Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] Server socket created on IP: '127.0.0.1', port: '3306'.
     Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] /usr/sbin/mysqld: ready for connections.
-    Dec 03 00:16:04 localhost.localdomain systemd[1]: Version: '10.11.14-MariaDB'  socket: '/run/mysql/mysql.sock'  port: 3306  MariaDB package
+    Dec 03 00:16:04 localhost.localdomain systemd[1]: Version: '11.4.13-MariaDB'  socket: '/run/mysql/mysql.sock'  port: 3306  MariaDB package
     Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] InnoDB: Buffer pool(s) load completed at 251203  0:16:04
     Dec 03 00:16:04 localhost.localdomain systemd[1]: Started MariaDB database server.
     ```
@@ -484,7 +484,7 @@ import scripts for the database.
         mariadb -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 1;"
         ```
 
-Now lets upload the data from zabbix (db structure, images, user, ... )
+Now let's upload the data from zabbix (db structure, images, user, ... )
 for this we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
 
 !!! info "Populate the database"

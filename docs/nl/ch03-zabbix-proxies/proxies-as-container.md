@@ -51,7 +51,7 @@ communication with the Zabbix server.
 The next step is to create a `.container` unit file for our Quadlet setup. This
 file should be placed in the directory `~/.config/containers/systemd/`. For
 example, we will create a file named `zabbix-proxy-sqlite.container`, which will
-define the configuration for running the Zabbix proxy container under SystemD
+define the configuration for running the Zabbix proxy container under Systemd
 using Podman.
 
 Ensure you are logged in as user `podman`.
@@ -139,7 +139,7 @@ With our configuration now complete, the final step is to reload the systemd
 user daemon so it recognizes the new Quadlet unit. This can be done using the
 following command:
 
-!!! info "Reload SystemD user daemon"
+!!! info "Reload Systemd user daemon"
 
     ``` bash
     systemctl --user daemon-reload
@@ -191,7 +191,7 @@ then retrieve the container's logs using:
     ```
     Where `b5716f8f379d` is the `CONTAINER ID` of your container
 
-    On some distributions, you can also view the logs directly through SystemD:
+    On some distributions, you can also view the logs directly through Systemd:
     ```bash
     journalctl --user -u zabbix-proxy-sqlite.service
     ```
@@ -384,10 +384,10 @@ This activates a systemd timer that periodically invokes
 
 ## Conclusie
 
-In this chapter, we deployed a Zabbix active proxy using Podman and SystemD
+In this chapter, we deployed a Zabbix active proxy using Podman and Systemd
 Quadlets. We configured SELinux, enabled user lingering, and created both
 `.container` and `.env` files to define proxy behavior. Using Podman in rootless
-mode ensures improved security and system integration. SystemD management makes
+mode ensures improved security and system integration. Systemd management makes
 the container easy to control and monitor. This setup offers a lightweight,
 flexible, and secure approach to deploying Zabbix proxies. It is ideal for
 modern environments, especially when using containers or virtualisation. With
@@ -400,7 +400,7 @@ efficiently.
 
 - What are the main advantages of using Podman over Docker for running
   containers on Red Hat-based systems?
-- Why is the `loginctl enable-linger` command important when using SystemD with
+- Why is the `loginctl enable-linger` command important when using Systemd with
   rootless Podman containers?
 - What is the purpose of the `.env` file in the context of a Quadlet-managed
   container?

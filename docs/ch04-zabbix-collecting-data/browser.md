@@ -467,7 +467,7 @@ and the external WebDriver logs should be investigated jointly.
 | Problem/Error Message | Possible Cause    | Diagnosis Tool | Solution/Mitigation | 
 |:---                   |:---               |:---            |:---                 |
 | Failed to get JSON of the requested website | Zabbix cannot reach the `WebDriverURL` or the WebDriver is not responding correctly. | Zabbix Server log (`zabbix_server.log`); `nc`/`curl` to the WebDriver port 4444. | Check network connectivity, firewall rules, and the Selenium Server status.|
-| Zabbix Queue backlog for Browser Items | Too few `StartBrowserPollers` set, or the WebDriver host is overloaded. | **Zabbix Monitoring** → **Queue Overview**; OS metrics on the WebDriver host (CPU/RAM).| Increase `StartBrowserPollers` or scale the WebDriver infrastructure (e.g., via Proxies).|
+| Zabbix Queue backlog for Browser Items | Too few `StartBrowserPollers` set, or the WebDriver host is overloaded. | `Zabbix Monitoring` \| `Queue Overview`; OS metrics on the WebDriver host (CPU/RAM).| Increase `StartBrowserPollers` or scale the WebDriver infrastructure (e.g., via Proxies).|
 | WebdriverError or unexplained crashes  | Problems with the Chrome engine in the container, often due to insufficient shared memory. | Selenium Container logs; use VNC (port 7900) for visual debugging. | Confirm that the `--shm-size="2g"` parameter was used when starting the Docker container.|
 | Timeouts on complex scripts | Implicit wait times are too short for dynamic content; Zabbix Timeout is too low. | Increase the **Timeout** at the item level; adjust `setElementWaitTimeout` in the JS. | Use `try`...`catch` to isolate the exact error position and generate a Base64 screenshot. |
 

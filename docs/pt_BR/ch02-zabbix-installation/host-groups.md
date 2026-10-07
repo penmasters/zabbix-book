@@ -29,7 +29,7 @@ de permissões de usuário e na filtragem de hosts em painéis ou mapas.
 
 Você pode gerenciar grupos de hosts navegando até:
 
-**Menu → Coleta de dados → Grupos de hosts**
+`Menu` | `Coleta de dados` | `Grupos de hosts`
 
 ![Captura de tela do menu Grupos de hosts](ch02.19-host-grouops.png)
 
@@ -69,14 +69,14 @@ Há duas maneiras principais de criar grupos de hosts:
 
 Ao adicionar um novo host:
 
-1. Acesse **Coleta de dados → Hosts**.
+1. Acesse `Coleta de dados` | `Hosts`.
 2. Clique em **Create host** (canto superior direito).
 3. No campo **Host groups**, selecione um grupo existente ou digite um novo nome
    para criar um na hora.
 
 ### 2. Na página Grupos de hosts
 
-1. Navegue até **Data collection → Host groups**.
+1. Navegue até `Data collection` | `Host groups`.
 2. Clique em **Create host group** no canto superior direito.
 3. Digite um **nome de grupo** e clique em **Add**.
 

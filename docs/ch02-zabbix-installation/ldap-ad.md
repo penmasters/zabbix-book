@@ -126,7 +126,7 @@ Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
 ### Configure Zabbix LDAP authentication
 
 Let's configure LDAP server settings in Zabbix. In Zabbix menu select
-`Users | Authentication | LDAP settings`, then check the check-box
+`Users` | `Authentication` | `LDAP settings`, then check the check-box
 `Enable LDAP authentication` and click `Add` under `Servers` (change IP address
 of your LDAP server and port number according to your set up):
 
@@ -167,7 +167,7 @@ server.
     We can add multiple LDAP servers and use them for different `User groups`.
 
 To test real users login using LDAP authentication we need to create user
-groups and users in Zabbix. In Zabbix menu select `Users | User groups`. Make
+groups and users in Zabbix. In Zabbix menu select `Users` | `User groups`. Make
 sure `Zabbix administrators` group exists (we'll need it later) and create new
 group `Zabbix users` by clicking `Create user group` button. Enter "Zabbix
 users" in `Group name` field, select "LDAP" in `Frontend access` drop-down that
@@ -179,14 +179,14 @@ server and in `LDAP server` drop-down select LDAP server we earlier configured
 
 _2.35 Add user group in zabbix_
 
-Now we need to create our test user. In Zabbix menu select `Users | Users` and
+Now we need to create our test user. In Zabbix menu select `Users` | `Users` and
 click `Create user` button. Then enter "user3" in `Username` field. Select
 "Zabbix users" in `Groups` field. What you enter in `Password` and `Password
 (once again)` fields does not matter as Zabbix will not try to use this
 password, instead it will go to LDAP server to authenticate this user since
 it's a member of the User group that has authentication method `LDAP`, just
 make sure you enter the same string in these two fields and it satisfied your
-password strength policy defined in `Users | Authentication`.
+password strength policy defined in `Users` | `Authentication`.
 
 ![Add user in Zabbix](ch02.36-ldap-add-user-in-zabbix.png){ align=center }
 
@@ -228,7 +228,7 @@ belonging to a `Zabbix user group` and having a `Zabbix user role` according to
 configured “match”. So far sounds pretty simple, right? Now let’s go into
 details about how all this should be configured.
 
-In `Users | Authentication` we need to do two things:
+In `Users` | `Authentication` we need to do two things:
 
 - Set `Default authentication` to _LDAP_. When JIT is turned off then type of
   authentication is defined based on the _User group_ a user that tries to login
@@ -249,7 +249,7 @@ In `Users | Authentication` we need to do two things:
 
 - Enable JIT provisioning check-box which obviously needs to be checked for this
   feature to work. It's done in our _Test LDAP server_ configuration - select
-  `Users | Authentication | LDAP settings` and click on our server in `Servers`
+  `Users` | `Authentication` | `LDAP settings` and click on our server in `Servers`
   section. After enabling this check-box we'll see some other fields related to
   JIT to be filled in and what we put in there depends on the method we choose to
   perform JIT.

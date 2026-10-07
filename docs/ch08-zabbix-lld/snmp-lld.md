@@ -181,7 +181,7 @@ works, including your Zabbix server itself.
 
 ## Creating the host and the master item
 
-Go to `Data collection | Hosts` and either create a new host or open an
+Go to `Data collection` | `Hosts` and either create a new host or open an
 existing one, then add an `SNMP interface` pointing at the device (IP,
 port 161, SNMP version and community).
 
@@ -433,4 +433,3 @@ this pattern will discover and monitor it.
 - [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp)
 - [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/snmp_oids_walk](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/snmp_oids_walk)
 - [https://blog.zabbix.com/improving-snmp-monitoring-performance-with-bulk-snmp-data-collection/27231/](https://blog.zabbix.com/improving-snmp-monitoring-performance-with-bulk-snmp-data-collection/27231/)
-

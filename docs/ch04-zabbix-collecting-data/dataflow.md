@@ -88,7 +88,7 @@ With all of the collected metrics, we can now also start to create triggers if w
 would want to. A trigger is Zabbix is nothing more than a bit of configuration on
 our host, which we will use to define thresholds using metrics collected on items. 
 
-A trigger can be setup to use the data collected on an item in a logical expression.
+A trigger can be set up to use the data collected on an item in a logical expression.
 This logical expression will define the threshold and when data is received on the
 item(s) used in the logical expression the trigger can go or stay in on of two states:
 

@@ -167,8 +167,7 @@ Do not forget to restart apache2 or httpd service after making this change.
 ## Zabbix configuration for HTTP authentication
 
 When we have a WEB server configured with basic authentication it is high time
-to configure Zabbix server. In Zabbix menu select `Users | Authentication |
-HTTP settings` and check `Enable HTTP authentication` check-box. Click `Update`
+to configure Zabbix server. In Zabbix menu select `Users` | `Authentication` | `HTTP settings` and check `Enable HTTP authentication` check-box. Click `Update`
 and confirm the changes by clicking `OK` button.
 
 ![HTTP users authentication](ch02.29-http-auth-settings.png){ align=center }
@@ -228,8 +227,7 @@ frontend usability with robust protective measures.
 - Why is it essential that a user must exist in Zabbix even when HTTP authentication
   is enabled and why does the Zabbix password become irrelevant in that case?
 
-- What are the configuration options in Zabbix's frontend under “Administration
-  → Authentication” for HTTP authentication, and how might each affect login behavior?
+- What are the configuration options in Zabbix's frontend under `Administration` | `Authentication` for HTTP authentication, and how might each affect login behavior?
   Examples include enabling/disabling case sensitivity, domain stripping, and choice
   of login form. 
 

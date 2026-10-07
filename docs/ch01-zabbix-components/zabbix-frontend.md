@@ -3,7 +3,7 @@ description: |
     This section from The Zabbix Book titled "Installing the frontend" provides
     step-by-step instructions for installing the Zabbix frontend with NGINX on
     various Linux distributions. It covers the installation of necessary packages,
-    configuration of SELinux and SystemD for PHP-FPM, and modification of the
+    configuration of SELinux and Systemd for PHP-FPM, and modification of the
     NGINX configuration to serve the Zabbix frontend on port 80. Additionally, 
     it guides users through the initial setup of the Zabbix frontend, including
     database connection configuration and basic settings such as instance name,
@@ -90,10 +90,10 @@ We need to tell SELinux to allow all this:
     suggestions on how to resolve them.
 
 Depending on your Linux distribution defaults, PHP-FPM may by default not be 
-allowed by SystemD to write to the `/etc/zabbix/web` directory required for the
+allowed by Systemd to write to the `/etc/zabbix/web` directory required for the
 Zabbix frontend setup. To enable this we need to create a drop-in file to allow this:
 
-!!! info "SystemD: Allow PHP-FPM to write to /etc/zabbix/web"
+!!! info "Systemd: Allow PHP-FPM to write to /etc/zabbix/web"
 
     ```bash
     systemctl edit php-fpm
@@ -109,20 +109,20 @@ Zabbix frontend setup. To enable this we need to create a drop-in file to allow 
     ReadWritePaths=/etc/zabbix/web
     ```
 
-    Then exit the editor and reload the SystemD configuration:
+    Then exit the editor and reload the Systemd configuration:
 
     ```bash
     systemctl daemon-reload
     ```
 
-???+ note "How is SystemD preventing PHP-FPM from writing to /etc/zabbix/web?"
+???+ note "How is Systemd preventing PHP-FPM from writing to /etc/zabbix/web?"
 
-    On many modern Linux distributions, SystemD employs a security feature known as
+    On many modern Linux distributions, Systemd employs a security feature known as
     sandboxing to restrict the capabilities of services. This is done to enhance
     security by limiting the access of services to only the resources they need to function.
     By default, PHP-FPM may be restricted from writing to certain directories,
     including `/etc/zabbix/web`, to prevent potential security vulnerabilities.
-    This is enforced through SystemD's `ProtectSystem` and `ReadWritePaths` directives, which
+    This is enforced through Systemd's `ProtectSystem` and `ReadWritePaths` directives, which
     control the file system access of services.
 
 ???+ tip
@@ -306,6 +306,11 @@ should appear:
 
 _1.2 Zabbix
 welcome_
+
+!!! tip "Choose the appropriate English locale"
+
+    The `en_US` locale uses American date notation and a 12-hour clock, whereas
+    `en_GB` uses international date notation and a 24-hour clock.
 
 The Zabbix frontend presents a limited array of available localizations, as shown.
 

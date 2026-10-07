@@ -48,7 +48,7 @@ Trigger actions additionally have **Recovery operations** (what to do when the
 problem resolves) and **Update operations** (what to do when someone acknowledges
 or comments on the problem). Internal actions also support recovery operations.
 
-You can reach all action types from **Alerts → Actions** in the left-hand menu.
+You can reach all action types from `Alerts` | `Actions` in the left-hand menu.
 Each event source has its own tab: `Trigger actions`, `Service actions`,
 `Autoregistration actions`, `Internal actions`, and `Discovery actions`.
 
@@ -330,7 +330,7 @@ The targets available are:
 - **Hosts of a host group** — all hosts in a specific host group
 - A **specific host** — a statically named host
 
-The global script itself must already exist under **Alerts → Scripts**. Crucially,
+The global script itself must already exist under `Alerts` | `Scripts`. Crucially,
 all execution permissions and the execution context (run on Zabbix server, run
 on agent) are configured in the script definition, not in the action. The action
 only selects *which* script to run and *where* (current host, a host group, etc.).
@@ -448,7 +448,7 @@ how actions behave.
 ### Maintenance Mode
 
 A **maintenance period** is a scheduled or on-demand window configured under
-**Monitoring → Maintenance**. Maintenance applies to hosts or host groups.
+`Monitoring` | `Maintenance`. Maintenance applies to hosts or host groups.
 
 There are two types of maintenance:
 
@@ -489,7 +489,7 @@ controls what happens:
 ### Manual Suppression
 
 Problems can also be manually suppressed outside a maintenance window via
-**Monitoring → Problems** by selecting a problem and using the suppress action.
+`Monitoring` | `Problems` by selecting a problem and using the suppress action.
 The same **Pause operations for suppressed problems** logic applies. Manually
 suppressed problems pause the escalation; unsuppressing them resumes it.
 
@@ -598,7 +598,7 @@ a real-time scheduler; it is a periodic batch processor.
 **High alert volume:** if your environment generates thousands of problem events
 per minute, the alerter queue can grow faster than it is drained. You can increase
 `StartAlerters` in `zabbix_server.conf` to add more parallel alerter processes.
-Check queue depth under **Administration → Queue** in the frontend.
+Check queue depth under `Administration` | `Queue` in the frontend.
 
 **Database write pressure:** Every escalation step generates database writes (updating
 escalation state, writing alert records). On busy servers with many concurrent
@@ -611,7 +611,7 @@ of the alerts table is the common remediation.
 !!! tip
 
     If you notice that notifications are arriving late under load, check the
-    escalator and alerter process health under **Reports → System information**
+    escalator and alerter process health under `Reports` | `System Information`
     (look for processes that are busy more than 75% of the time). Adding more
     alerter processes is usually the first remedy.
 
@@ -620,7 +620,7 @@ of the alerts table is the common remediation.
 ## Discovery Actions
 
 Network discovery in Zabbix works by running a discovery rule (configured under
-**Data collection → Discovery**) that scans IP ranges using a variety of checks.
+`Data collection` | `Discovery`) that scans IP ranges using a variety of checks.
 When something is found, or when something previously found disappears, a discovery
 event is generated. Discovery actions respond to those events.
 

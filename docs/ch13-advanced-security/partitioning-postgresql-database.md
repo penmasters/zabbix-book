@@ -132,7 +132,7 @@ essential for efficient long term data storage and performance in larger environ
 
 ### Install TimescaleDB from package
 
-We will now install the TimescaleDB externsion using the package manager, either
+We will now install the TimescaleDB extension using the package manager, either
 from the official TimescaleDB repository for Red Hat and Ubuntu, or from the 
 SUSE PackageHub or SUSE Factory repository for SLES and openSUSE. 
 If you prefer to compile TimescaleDB from source, for example if you want the 

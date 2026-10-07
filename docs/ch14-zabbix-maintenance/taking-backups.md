@@ -15,7 +15,7 @@ consistent backup usually has performance implications, as all writes to the
 data files must be postponed for the duration of the backup. 
 A logical backup can only restore data to the point in time where the dump has
 been taken, while a physical backup can be recovered to any point in time using 
-the archived logs. For this reason, a physical backup is a more secure and and
+the archived logs. For this reason, a physical backup is a more secure and
 mature method of protecting the database when compared to a logical backup.
 However, since Zabbix does not handle financial transactions, but only observations, 
 alerts and similar, it is usually not a big deal, if the backups are done with
@@ -467,4 +467,3 @@ installation in production.
 - https://pgbackrest.org/
 - https://mariadb.com/docs/server/clients-and-utilities/backup-restore-and-import-clients/mariadb-dump
 - https://www.percona.com/mysql/software/percona-xtrabackup
-

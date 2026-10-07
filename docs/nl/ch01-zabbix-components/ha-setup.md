@@ -449,7 +449,7 @@ the VIP:
 ### Verify the correct working
 
 To verify that the setup is functioning correctly, access your Zabbix server
-using the Virtual IP (VIP). Navigate to Reports → System Information in the
+using the Virtual IP (VIP). Navigate to `Reports` | `System Information` in the
 menu. At the bottom of the page, you should see a list of servers, with at least
 one marked as active. The number of servers displayed will depend on the total
 configured in your HA setup.

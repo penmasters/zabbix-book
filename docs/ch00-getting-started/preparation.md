@@ -21,9 +21,9 @@ way.
 
 ## Disable SELinux on RHEL
 
-Another critical step at this stage if you use Red Hat based systems is disabling
-SELinux, which can interfere with the installation and operation of Zabbix.
-We will revisit SELinux at the end of this chapter once our installation is finished.
+When using a Red Hat-based system in a test or lab environment, you may (temporarily) disable SELinux to prevent it from interfering with the installation and initial configuration of Zabbix.
+
+Do not disable SELinux on production systems. For production deployments, SELinux should remain enabled and enforcing. Refer to the SELinux configuration section in a the Advanced Setup and Security chapter for instructions on configuring the required policies for Zabbix.
 
 To check the current status of SELinux, you can use the following command: `sestatus``
 
@@ -248,7 +248,7 @@ You can skip this section if you do not plan to run any Zabbix components as con
 ### Installing Podman
 
 To be able to run containers using Podman, we first need to install Podman and
-some additional tools that will help us manage containers with SystemD.
+some additional tools that will help us manage containers with Systemd.
 
 !!! info "Install podman and needed tools"
 
@@ -317,12 +317,12 @@ as defined by the previous `semanage` commands.
     ```
 
 This command enables “linger” for the user `podman`. Linger allows user services
-(such as containers managed by SystemD) to continue running even when the user
+(such as containers managed by Systemd) to continue running even when the user
 is not actively logged in. This is useful for running Podman containers in the
 background and ensures that containerized proxies or other services remain active
 after logout or system reboots.
 
-As the final step in creating the Podman setup we need to to tell SystemD where 
+As the final step in creating the Podman setup we need to tell Systemd where 
 the user-specific runtime files are stored:
 
 !!! info "Set XDG_RUNTIME_DIR environment variable for podman user"
@@ -366,11 +366,11 @@ Your system is now prepared for running Zabbix components as containers using Po
 
     Then you are hitting a known [problem with the Podman Quadlets](https://github.com/containers/podman/issues/24796). 
 
-    This is caused by the fact that the SystemD generated Quadlet service contains
+    This is caused by the fact that the Systemd generated Quadlet service contains
     a dependency to the system-wide special target `network-online.target` which
     normally indicates the system's network is fully up and running. However on
     certain Linux distributions or with specific networking configurations the
-    system network components may not correctly notify SystemD that the network is
+    system network components may not correctly notify Systemd that the network is
     "online", causing `network-online.target` to never get activated. This in turn
     makes that Podman will wait until it times out, thinking the network is not 
     yet available.

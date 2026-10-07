@@ -58,7 +58,7 @@ cornerstone for building analytics, SLA metrics, and higher-level abstractions.
 
 ## What Are Calculated Items?
 
-A **calculated item** is a an item whose value is produced entirely by the Zabbix
+A **calculated item** is an item whose value is produced entirely by the Zabbix
 server. Instead of collecting external data, it uses:
 
 - Other item values (`last()`, `avg()`, `max()`, etc.)
@@ -105,7 +105,7 @@ interval does. This means calculated items must be configured carefully to ensur
 
 To create a **calculated item**:
 
-1. Open **Data collection** → **Hosts** → <your host> → **Items**
+1. Open `Data collection` | `Hosts` | `your host` | `Items`
 2. Click **Create item**
 3. Set Type: **Calculated**
 4. Define:
@@ -306,7 +306,7 @@ _4.103 ch04.61-calculated-p99.png_
 _p99 graph_
 
 We now have a nice overview of the quality of our network thanks to our
-**calculated item**. Now that we have seen how to create **calculated items** lets have
+**calculated item**. Now that we have seen how to create **calculated items**, let's have
 a look at **aggregated items**.
 
 ---
@@ -549,4 +549,3 @@ concrete, measurable KPIs.
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/calculated](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/calculated)
 - [https://www.zabbix.com/documentation/current/en/manual/config/triggers/expression/aggregate](https://www.zabbix.com/documentation/current/en/manual/config/triggers/expression/aggregate)
-

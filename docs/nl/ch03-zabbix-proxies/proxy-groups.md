@@ -143,7 +143,7 @@ Deploying proxy groups effectively involves three main steps.
 
 In the Zabbix frontend:
 
-1.  Navigate to **Administration → Proxy groups**.
+1.  Navigate to `Administration` | `Proxy groups`.
 2.  Click **Create proxy group**.
 
 | Parameter                     | Description                                                                        | Recommendation                                                  |

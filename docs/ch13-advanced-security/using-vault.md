@@ -615,7 +615,7 @@ vault kv get zabbix/monitoring/snmp
 
 **Step 2 — Create the macro in Zabbix:**
 
-Navigate to **Administration → Macros** and create:
+Navigate to `Administration` | `Macros` and create:
 
 | Field | Value |
 |-------|-------|
@@ -748,7 +748,7 @@ section.
 The Zabbix frontend independently fetches secrets from Vault for display purposes.
 To verify it is working:
 
-1. Navigate to **Administration → Macros** (for a global macro) or open a host
+1. Navigate to `Administration` | `Macros` (for a global macro) or open a host
    and go to the **Macros** tab.
 2. Find a macro of type *Vault secret*, for example `{$SNMP_COMMUNITY}`.
 3. Click the **eye icon** next to the macro value.
@@ -775,7 +775,7 @@ in a real monitoring item.
 
 1. Create a simple SNMP item on a host (e.g., `sysDescr` OID `1.3.6.1.2.1.1.1.0`).
 2. Set the **SNMP community** field to `{$SNMP_COMMUNITY}`, which resolves from `zabbix/snmp:community`.
-3. Navigate to **Monitoring → Latest data** and filter for the host.
+3. Navigate to `Monitoring` | `Latest data` and filter for the host.
 4. If the item returns a value, the secret was successfully retrieved from Vault
    and used in the check.
 5. If the item shows an authentication error specifically, the macro likely did
@@ -786,7 +786,7 @@ in a real monitoring item.
 For quicker feedback without waiting for the poller:
 
 1. Open the item configuration.
-2. Click **Test** → **Get value**.
+2. Click `Test` | `Get value`.
 3. Check whether the item returns data or an authentication error.
 
 ### Confirm No Plaintext in the Zabbix Database
@@ -934,4 +934,3 @@ for day-to-day secret management to avoid using the root token for routine tasks
 - [Vault AppRole authentication](https://developer.hashicorp.com/vault/docs/auth/approle)
 - [Vault policies](https://developer.hashicorp.com/vault/docs/concepts/policies)
 - [HashiCorp Vault RHEL installation](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install)
-

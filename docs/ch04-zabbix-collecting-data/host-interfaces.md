@@ -180,9 +180,9 @@ All four interface types, also come with an icon that can turn <span style="colo
 <span style="color: grey;">Grey</span>. This color determines the interfaces'
 current availability and is shown in a few places in the Zabbix frontend:
 
-- On the host overview page (**Monitoring** → **Hosts**)
-- On the hosts configuration page (**Data Collection** → **Hosts**)
-- On the host configuration page when editing a host (**Data Collection** → **Hosts** → *[Host name]*)
+- On the host overview page (`Monitoring` | `Hosts`)
+- On the hosts configuration page (`Data Collection` | `Hosts`)
+- On the host configuration page when editing a host (`Data Collection` | `Hosts` | `[Host name]`)
 
 When you hover over, or click on one of the availability icons, you will get a 
 tooltip with the current status and possible error reason of each individual 

@@ -72,8 +72,8 @@ The structure has two clear levels:
 
 ### 1. Create the Master Item
 
-In the Zabbix frontend go to **Data collection → Hosts**, select your host, then
-**Items → Create item**.
+In the Zabbix frontend go to `Data collection` | `Hosts`, select your host, then
+`Items` | `Create item`.
 
 | Field | Value |
 |-------|-------|
@@ -108,7 +108,7 @@ On the **LLD macros** tab map:
 
 ### 3. Create an Item Prototype for Level 1
 
-Under the parent discovery rule go to **Item prototypes → Create item prototype**.
+Under the parent discovery rule go to `Item prototypes` | `Create item prototype`.
 
 | Field | Value |
 |-------|-------|
@@ -190,7 +190,7 @@ On the **LLD macros** tab of the discovery prototype:
 
 ### 4. Item Prototypes for the Nested Level
 
-Inside the discovery prototype go to **Item prototypes → Create item prototype**.
+Inside the discovery prototype go to `Item prototypes` | `Create item prototype`.
 
 | Field | Value |
 |-------|-------|
@@ -260,4 +260,3 @@ clusters → nodes → services, etc.).
 
 - [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/discovery_prototypes](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/discovery_prototypes)
 - [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/discovery_prototypes#nested-lld-rules-on-discovered-hosts](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/discovery_prototypes#nested-lld-rules-on-discovered-hosts)
-

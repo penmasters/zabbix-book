@@ -24,7 +24,7 @@ Let's get started
 ## Overview of the interface
 
 With Zabbix 7 the user interface after logging in is a bit changed. Our menu on
-the left side of the screen has has a small overhaul. Let's dive into it.
+the left side of the screen has a small overhaul. Let's dive into it.
 When we login into our Zabbix setup the first time with our Admin user we see a page
 
 like this where we have our `main window` in <font color='green'>green</font>

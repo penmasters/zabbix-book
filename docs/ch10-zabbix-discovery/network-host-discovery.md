@@ -73,7 +73,7 @@ Adding those checks will looks like this.
 
 Our Linux servers in the IP range 192.168.46.1-254 will only be discovered when these checks succeeds.
 
-We also need to configure an update interval, which determines how often Zabbix will scan all the IP addresses in the the configured IP range.
+We also need to configure an update interval, which determines how often Zabbix will scan all the IP addresses in the configured IP range.
 
 !!! note
 
