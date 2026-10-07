@@ -221,7 +221,7 @@ form a natural stepping stone toward the dashboard widgets we'll cover next.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/simple](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/simple)
-- [https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/adhoc](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/adhoc)
-- [https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/custom](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/custom)
-- [https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs)
+- [https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/simple](https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/simple)
+- [https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/adhoc](https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/adhoc)
+- [https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/custom](https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/custom)
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs)

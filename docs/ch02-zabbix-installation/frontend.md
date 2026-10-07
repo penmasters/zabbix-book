@@ -89,7 +89,7 @@ Shrink_
 ???+ note
 
     There are many other page parameters we can use. A full list can be found at
-    [https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters](https://www.zabbix.com/documentation/7.4/en/manual/web_interface/page_parameters)
+    [https://www.zabbix.com/documentation/current/en/manual/web_interface/page_parameters](https://www.zabbix.com/documentation/current/en/manual/web_interface/page_parameters)
     Zabbix also has a global search menu that we can use to find hosts, host groups,
     and templates.
 
@@ -142,7 +142,7 @@ for user access.
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Support       | This brings us to the technical support page that you can buy from Zabbix. Remember that your local partner is also able to sell these contracts and can help you in your own language. [Your local distributors](https://www.zabbix.com/distributors) |
 | Integrations  | The official zabbix [integration page](https://www.zabbix.com/integrations)                                                                                                                                                                            |
-| Help          | The link to the documentation of your [Zabbix version](https://www.zabbix.com/documentation/7.0/)                                                                                                                                                      |
+| Help          | The link to the documentation of your [Zabbix version](https://www.zabbix.com/documentation/current/en)                                                                                                                                                 |
 | User settings | The user profile settings.                                                                                                                                                                                                                             |
 | Sign out      | Log out of the current session.                                                                                                                                                                                                                        |
 
@@ -365,7 +365,7 @@ menu_
 
 ???+ info
 
-    More information can be found in the online Zabbix documentation [here](https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections)
+    More information can be found in the online Zabbix documentation [here](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections)
 
 ???+ tip Movable modal forms
 

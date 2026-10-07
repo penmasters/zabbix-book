@@ -497,4 +497,4 @@ your environment for long term growth and data retention.
 ## Useful URLs
 
 - [https://docs.timescale.com/self-hosted/latest/configuration/](https://docs.timescale.com/self-hosted/latest/configuration/)
-- [https://www.zabbix.com/documentation/7.2/en/manual/appendix/install/timescaledb?hl=TimescaleDB](https://www.zabbix.com/documentation/7.2/en/manual/appendix/install/timescaledb?hl=TimescaleDB)
+- [https://www.zabbix.com/documentation/current/en/manual/appendix/install/timescaledb?hl=TimescaleDB](https://www.zabbix.com/documentation/current/en/manual/appendix/install/timescaledb?hl=TimescaleDB)

@@ -223,7 +223,7 @@ problems and acknowledges them, but cannot alter configuration.
 2. Set:
     * **Role name:** `NOC Operator`
     * **Base role:** `User`
-3. **UI element permissions (7.4 menu)**
+3. **UI element permissions**
     * ✅ `Monitoring` | `Dashboards` / `Problems` / `Hosts` / `Latest data`
     * ✅ `Services` | `SLA report`
     * ✅ `Reports` | `Availability report` (if used)

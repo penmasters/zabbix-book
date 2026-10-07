@@ -187,7 +187,7 @@ _3.11 Zabbix proxy group architecture and failover_
 
 ## Important Considerations and Limitations
 
-* **Version Requirements:** All proxies must run Zabbix **7.0 or later** and match the server version.
+* **Version Requirements:** Proxy groups were introduced in Zabbix **7.0**, making it the minimum required version. The Zabbix server and all proxies must run matching versions.
 * **Firewall Requirements:** Agents must be able to communicate with **every proxy** in the group.
 * **SNMP Traps Not Supported:** Proxy groups **cannot process SNMP traps**. Traps must be routed to a dedicated, non-grouped proxy.
 * **External Dependencies Must Be Identical:** If proxies use external check scripts, ODBC configuration, or third-party integrations, ensure **all proxies have identical configurations**.

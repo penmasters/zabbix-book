@@ -829,5 +829,5 @@ data.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards/widgets_overview](https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards/widgets_overview)
-- [https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards](https://www.zabbix.com/documentation/devel/en/manual/web_interface/frontend_sections/dashboards)
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards/widgets_overview](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards/widgets_overview)
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/dashboards)
