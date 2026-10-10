@@ -145,6 +145,7 @@ Verify that the Web Service is running.
 
 ```bash
 systemctl status zabbix-web-service
+systemctl enable zabbix-web-service
 ```
 
 You can also test whether the Web Service is listening.
