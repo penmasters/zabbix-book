@@ -1,7 +1,7 @@
 ---
 description: |
     Learn how to partition a PostgreSQL database with TimescaleDB for Zabbix to
-    improve performance, automate retention and scale large deployments.
+    improve performance, automate retention, and scale large deployments.
 tags: [advanced]
 ---
 
@@ -132,7 +132,7 @@ essential for efficient long term data storage and performance in larger environ
 
 ### Install TimescaleDB from package
 
-We will now install the TimescaleDB externsion using the package manager, either
+We will now install the TimescaleDB extension using the package manager, either
 from the official TimescaleDB repository for Red Hat and Ubuntu, or from the 
 SUSE PackageHub or SUSE Factory repository for SLES and openSUSE. 
 If you prefer to compile TimescaleDB from source, for example if you want the 
@@ -497,4 +497,4 @@ your environment for long term growth and data retention.
 ## Useful URLs
 
 - [https://docs.timescale.com/self-hosted/latest/configuration/](https://docs.timescale.com/self-hosted/latest/configuration/)
-- [https://www.zabbix.com/documentation/7.2/en/manual/appendix/install/timescaledb?hl=TimescaleDB](https://www.zabbix.com/documentation/7.2/en/manual/appendix/install/timescaledb?hl=TimescaleDB)
+- [https://www.zabbix.com/documentation/current/en/manual/appendix/install/timescaledb?hl=TimescaleDB](https://www.zabbix.com/documentation/current/en/manual/appendix/install/timescaledb?hl=TimescaleDB)

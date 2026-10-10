@@ -112,7 +112,7 @@ $ZABBIX_URL
 !!! tip "Use case"
 
     Every time an email arrives
-    user would love to see all host groups the host belongs.
+    user would love to see all host groups the host belongs to.
 
 ---
 
@@ -124,7 +124,7 @@ $ZABBIX_URL
 
 ---
 
-An item type "HTTP agent" is fastest way to run a single Zabbix API call and
+An item type "HTTP agent" is the fastest way to run a single Zabbix API call and
 retrieve back result. This is possible since Zabbix 6.0 where configuring
 a static session token becomes possible.
 An upcoming solution is tested and works on version 7.0/7.4
@@ -501,7 +501,7 @@ All together
 _12.17
 Script item, host Visible name_
 
-The item will be sit at host level and serve a purpose of cronjob
+The item will sit at host level and serve a purpose of cronjob
 
 ![Script item ready](ch12.18-script-item-ready.png)
 
@@ -717,13 +717,13 @@ Zabbix agent autoregistration completed_
 !!! note "Popular solution 1 - logrt"
 
     Using "logrt" item key can be used to cover use case.
-    However in case hundreds of files in directory, the CPU will have impact.
+    However in case of hundreds of files in directory, the CPU will have impact.
 
 
 !!! note "Popular solution 2 - LLD rule"
 
     We Zabbix LLD rule to find the files in directory.
-    This method do not allow to store all data inside same itemid.
+    This method does not allow storing all data inside same itemid.
     When files are deleted from server, the items in Zabbix will get unsupported.
 
 
@@ -914,4 +914,3 @@ In case need to analyze a single summary where file size is less than 16 MB, the
 ```
 vfs.file.contents[/var/log/backup/summary_{$DATE:arg1.year}.{$DATE:arg2.month}.{$DATE:arg3.day}.txt]
 ```
-

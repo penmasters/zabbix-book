@@ -35,7 +35,7 @@ There are two main ways Zabbix can receive information from an SNMP-enabled devi
 - Traps (passive monitoring)
 
 To understand the differences between trapping and polling and understand the
-advantages and disadvantages lets have a quick overview:
+advantages and disadvantages, let's have a quick overview:
 
 ---
 
@@ -835,7 +835,7 @@ is to create a host in the Zabbix frontend so that we can link incoming traps to
 specific monitored device.
 
 In the Zabbix web interface, navigate to:
-**Data collection** → **Hosts**, and click **Create host**.
+`Data collection` | `Hosts`, and click **Create host**.
 
 - **Hostname :** `Network Switch 01`
 - **Host groups :** SNMP Devices
@@ -845,8 +845,7 @@ In the Zabbix web interface, navigate to:
 
 _4.37 ch04.35-snmp-host.png_
 
-In Zabbix, the macro `{$SNMP_COMMUNITY}` is often defined globally under **Administration**
-→ **Macros**. This *global* macro provides a default SNMP community string used by all
+In Zabbix, the macro `{$SNMP_COMMUNITY}` is often defined globally under `Administration` | `Macros`. This *global* macro provides a default SNMP community string used by all
 hosts that rely on SNMP for polling or trap-based communication.
 
 However, a better approach, especially in larger or more secure environments is
@@ -878,7 +877,7 @@ OID `1.3.6.1.6.3.1.1.5.3`.
 ### Verifying Trap Reception
 
 After sending the test trap, open the Zabbix frontend and navigate to:
-**Monitoring** → **Latest data**
+`Monitoring` | `Latest data`
 
 Select the host `Network Switch 01`.
 If everything is configured correctly, you should now see data populated in your
@@ -970,7 +969,7 @@ This item serves as the master collector for all incoming traps. Any dependent
 items you create later will use this as their source.
 
 In the Zabbix frontend, navigate to
-**Data collection** → **Hosts** → *Network Switch 01* → **Items**
+`Data collection` | `Hosts` | `Network Switch 01` | `Items`
 and click Create item.
 
 Configure the following parameters:

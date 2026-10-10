@@ -1,7 +1,7 @@
 ---
 description: |
     Configure SELinux securely for Zabbix using best practices for contexts,
-    policies, booleans, audit logs, custom modules and Enterprise Linux.
+    policies, booleans, audit logs, custom modules, and Enterprise Linux.
 tags:[advanced]
 ---
 
@@ -280,7 +280,7 @@ allow zabbix_t self:capability net_raw;
 
 ## Useful URLs
 
-- https://www.zabbix.com/documentation/7.2/en/manual/installation/install_from_packages/rhel?hl=SELinux#selinux-configuration
+- https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/rhel?hl=SELinux#selinux-configuration
 - https://www.systutorials.com/docs/linux/man/8-zabbix_selinux/
 - https://man.linuxreviews.org/man8/zabbix_agent_selinux.8.html
 - https://phoenixnap.com/kb/selinux

@@ -14,7 +14,7 @@ as the difference between sending a letter versus making a phone call: the
 message may be the same, but the channel is completely different, and each
 channel needs its own configuration.
 
-In Zabbix 8.0, media types live under **Alerts → Media types** in the menu on the
+In Zabbix 8.0, media types live under `Alerts` | `Media types` in the menu on the
 left. This is where you define *all* the delivery channels your installation will
 use, before any of them can be assigned to users or referenced in actions.
 
@@ -307,7 +307,7 @@ return response;
 
 To wire this up for testing:
 
-1. Go to Alerts → Media types and click Create media type.
+1. Go to `Alerts` | `Media types` and click Create media type.
 2. Set the Type to Webhook and paste the script above into the Script field.
 3. Under Parameters, add four entries:
 
@@ -333,11 +333,11 @@ substitute for a real end-to-end test. Testing end-to-end with webhook.site, to
 actually see a request land on webhook.site you need the full notification chain
 in place:
 
-Assign the media type to your user (go to Users → Users, open the user, Media tab,
+Assign the media type to your user (go to `Users` | `Users`, open the user, Media tab,
 click `Add`, select the webhook media type, enter anything in Send to since the
 script does not use it, and enable all severities).
 
-Make sure an action exists under `Alerts → Actions → Trigger actions` that sends
+Make sure an action exists under `Alerts` | `Actions` | `Trigger actions` that sends
 to your user. Trigger a real problem. The quickest way is to create a dummy trigger
 with an expression that is immediately true, such as `last(/your-host/system.uptime) > 0`.
 The moment that trigger fires, Zabbix runs the webhook script for real and the
@@ -373,7 +373,7 @@ is doing when a problem only appears in production and not during testing.
 
 Defining a media type is only the first step. To actually receive notifications,
 each user must have the media type assigned in their profile, along with their
-personal contact details for that channel. Navigate to **Users → Users**, click
+personal contact details for that channel. Navigate to `Users` | `Users`, click
 on a user, go to the **Media** tab, and click **Add**.
 
 **Type** selects which media type this assignment uses.
@@ -415,7 +415,7 @@ Let's walk through setting up a working email media type from scratch.
 
 ### Step 1 — Create a New Media Type
 
-In the Zabbix frontend, go to **Alerts → Media types** and click **Create media
+In the Zabbix frontend, go to `Alerts` | `Media types` and click **Create media
 type** in the top-right corner.
 
 Set the **Name** to something descriptive, such as `Email - Internal SMTP`, and
@@ -512,7 +512,7 @@ alerts in production.
 
 ### Step 6 — Assign to a User
 
-Go to **Users → Users**, open the user who should receive notifications, click
+Go to `Users` | `Users`, open the user who should receive notifications, click
 the **Media** tab, and click **Add**.
 
 - **Type**: `Email - Internal SMTP`
@@ -526,8 +526,7 @@ Click **Add** then **Update** to save the user profile.
 ### Step 7 — Verify in an Action
 
 A configured media type and a user media assignment are necessary but not sufficient
-on their own. You also need at least one enabled Action under **Alerts → Actions
-→ Trigger actions** that includes this user (or a group they belong to) as a recipient.
+on their own. You also need at least one enabled Action under `Alerts` | `Actions` | `Trigger actions` that includes this user (or a group they belong to) as a recipient.
 Without a matching action, no notification will ever be triggered. Actions are covered
 in the next section of this chapter.
 
@@ -538,14 +537,14 @@ in the next section of this chapter.
 When notifications are not arriving, work through the following checks in order.
 The first two alone resolve the majority of cases.
 
-**Check the Action log first.** Go to **Reports → Action log**. This shows every
+**Check the Action log first.** Go to `Reports` | `Action log`. This shows every
 delivery attempt Zabbix has made, its status (Sent, In progress, or Failed), and
 the full error message when something went wrong. Always start here — the error
 message usually tells you exactly what is broken.
 
 **Confirm the action exists and is enabled.** The most common reason notifications
 never appear in the Action log at all is that no action matches the event. Go to
-**Alerts → Actions → Trigger actions** and verify that at least one enabled action
+`Alerts` | `Actions` | `Trigger actions` and verify that at least one enabled action
 covers the problem conditions and targets the right user or group.
 
 **Verify the media type is enabled.** Open the media type and confirm the status
@@ -580,7 +579,7 @@ Media type configurations can be exported to XML and imported on another Zabbix
 instance, which is useful for promoting configurations between environments or
 keeping them in version control.
 
-To export, go to **Alerts → Media types**, check the box next to one or more media
+To export, go to `Alerts` | `Media types`, check the box next to one or more media
 types, and select **Export** from the action menu below the list. To import,
 click the **Import** button in the top-right corner of the same page and select
 the XML file. If a media type with the same name already exists, Zabbix will
@@ -591,7 +590,7 @@ ask whether to update it or skip it.
     are not included in the export. You will need to re-enter them after importing.
     User macro *references* like `{$SLACK_TOKEN}` are exported normally; only the
     underlying macro values are masked in the UI, and those are managed separately
-    under **Alerts → Macros**.
+    under `Alerts` | `Macros`.
 
 ---
 
@@ -599,7 +598,7 @@ ask whether to update it or skip it.
 
 **Store credentials in secret user macros.** Rather than typing SMTP passwords
 or API tokens directly into media type fields, create a Secret user macro under
-**Alerts → Macros** and reference it as `{$MACRO_NAME}` in the media type configuration.
+`Alerts` | `Macros` and reference it as `{$MACRO_NAME}` in the media type configuration.
 The value is masked in the UI, excluded from exports, and can be rotated in one
 place without editing every media type that uses it.
 
@@ -614,7 +613,7 @@ compared to discovering a broken SMTP configuration during an actual incident.
 
 **Watch for silent failures.** A media type can fail consistently for days without
 any visible indication unless you are actively monitoring the Action log. Periodic
-check **Reports → Action log**, filter by status Failed, this is a simple habit
+check `Reports` | `Action log`, filter by status Failed, this is a simple habit
 that catches problems early.
 
 **Keep configurations in version control.** Export your media type XML files and
@@ -658,5 +657,4 @@ decides when to notify, who to notify, and what to say.
 - [https://smstools3.kekekasvi.com/](https://smstools3.kekekasvi.com/)
 - [https://webhook.site/](https://webhook.site/)
 - [https://www.zabbix.com/documentation/current/en/manual/config/notifications/media](https://www.zabbix.com/documentation/current/en/manual/config/notifications/media)
-
 

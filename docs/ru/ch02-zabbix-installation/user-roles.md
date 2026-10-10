@@ -22,9 +22,8 @@ tags: [beginner]
 
 ## Доступ к меню по умолчанию в зависимости от типа пользователя
 
-`Роли пользователей` могут быть созданы в меню `Пользователи` → `Роли
-пользователей`. Или они могут быть установлены для каждого пользователя в меню
-`Пользователи` → `Пользователи` → "выбрать пользователя" → `Права доступа`.
+`Роли пользователей` могут быть созданы в меню `Пользователи` | `Роли пользователей`. Или они могут быть установлены для каждого пользователя в меню
+`Пользователи` | `Пользователи` | `выбрать пользователя` | `Права доступа`.
 
 В этой таблице показаны права доступа, предоставляемые пользователям по
 умолчанию на основе их первоначального **типа пользователя** до внесения
@@ -170,15 +169,15 @@ should not modify host configurations or system settings.
 
 **Configuration Steps:**
 
-1. **Administration → Users → User roles → Create role**
+1. `Administration` | `Users` | `User roles` | `Create role`
 2. **General**
     * **Role name:** `Template Maintainer`
     * **Base role:** `Admin`
     * **Frontend access:** ✅ Enabled
 3. **UI element permissions**
-    * ✅ **Data collection → Templates**
-    * ✅ **Data collection → Template Groups**
-    * ❌ **Data collection → Hosts**
+    * ✅ `Data collection` | `Templates`
+    * ✅ `Data collection` | `Template Groups`
+    * ❌ `Data collection` | `Hosts`
     * ❌ **Users** (entire section)
     * ❌ **Alerts** (entire section)
     * ❌ **Administration** (entire section)
@@ -194,7 +193,7 @@ should not modify host configurations or system settings.
 
 **Testing:**
 
-* Log in as the user: you should see **Data collection → Templates** only
+* Log in as the user: you should see `Data collection` | `Templates` only
   (within config areas), while **Hosts**, **Alerts**, **Users**, and
   **Administration** are hidden.
 * Direct URL access to hidden sections should return *Permission denied*.
@@ -225,14 +224,14 @@ problems and acknowledges them, but cannot alter configuration.
 
 **Configuration Steps:**
 
-1. Go to **Administration → User roles → Create role**
+1. Go to `Administration` | `User roles` | `Create role`
 2. Set:
     * **Role name:** `NOC Operator`
     * **Base role:** `User`
 3. **UI element permissions (7.4 menu)**
-    * ✅ **Monitoring → Dashboards / Problems / Hosts / Latest data**
-    * ✅ **Services → SLA report**
-    * ✅ **Reports → Availability report** (if used)
+    * ✅ `Monitoring` | `Dashboards` / `Problems` / `Hosts` / `Latest data`
+    * ✅ `Services` | `SLA report`
+    * ✅ `Reports` | `Availability report` (if used)
     * ❌ **Data collection** (entire section)
     * ❌ **Users** (entire section)
     * ❌ **Alerts** (entire section)

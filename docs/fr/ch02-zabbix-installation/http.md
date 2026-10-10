@@ -173,8 +173,7 @@ Do not forget to restart apache2 or httpd service after making this change.
 ## Configuration de Zabbix pour l'authentification HTTP
 
 Une fois le serveur WEB configuré avec l'authentification de base, il est temps
-de configurer le serveur Zabbix. Dans le menu Zabbix, sélectionnez `Users |
-Authentication | HTTP settings` et cochez la case `Enable HTTP authentication`.
+de configurer le serveur Zabbix. Dans le menu Zabbix, sélectionnez `Users` | `Authentication` | `HTTP settings` et cochez la case `Enable HTTP authentication`.
 Cliquez sur `Update` et confirmez les changements en cliquant sur `OK`.
 
 ![Authentification des utilisateurs HTTP](ch02.29-http-auth-settings.png){
@@ -250,7 +249,7 @@ des mesures de protection robustes.
   n'est-il pas pertinent dans ce cas ?
 
 - Quelles sont les options de configuration dans le frontend de Zabbix sous
-  "Administration → Authentification" pour l'authentification HTTP, et comment
+  `Administration` | `Authentification` pour l'authentification HTTP, et comment
   chacune d'entre elles peut-elle affecter le comportement de connexion ? Les
   exemples incluent l'activation/désactivation de la sensibilité à la casse, la
   suppression du domaine et le choix du formulaire de connexion.

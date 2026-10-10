@@ -78,7 +78,7 @@ werken.
     postgresql-setup --initdb --unit postgresql
     ```
 
-    On SUSE and Ubuntu the OS provided SystemD service will automatically initialize
+    On SUSE and Ubuntu the OS provided Systemd service will automatically initialize
     an empty database on first startup.
 
 Als de installatie voltooid is, kunt u verder gaan naar het gedeelte [_De

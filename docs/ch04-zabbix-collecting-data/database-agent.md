@@ -108,7 +108,7 @@ any attacker does not have a large vector of attack using the account.
     ```
 
 For the default setup with a Microsoft SQL server, things are fairly simple. 
-First, we go to **Data collection** → **Hosts** and create a new host for our 
+First, we go to `Data collection` | `Hosts` and create a new host for our
 Windows server.
 
 ![Host creation - Windows server SQL](ch04.85-host-creation-windows-server-sql.png){ align=center }
@@ -138,13 +138,13 @@ agent towards the Microsoft SQL server never leaves the server itself and we do
 not need to expose our SQL server port to the network for our Zabbix server or
 proxy. Combined with Zabbix agent active mode, a limited Microsoft SQL user and
 agent encryption, we can guarantee a secure setup that is ready for high-risk
-environments like banks, hospitals, air traffic and even military applications.
+environments like banks, hospitals, air traffic, and even military applications.
 This is the biggest advantage of using the Zabbix agent 2 database monitoring,
 compared to ODBC.
 
-Once we fill out the `{$MSSQL.USER}`, `{$MSSQL.PASSWORD}` and `{$MSSQL.URI}` 
+Once we fill out the `{$MSSQL.USER}`, `{$MSSQL.PASSWORD}`, and `{$MSSQL.URI}` 
 macros, the Zabbix agent should be able to connect to our SQL server. Navigating 
-to **Monitoring** → **Latest data** should now show us a bunch of data from the
+to `Monitoring` | `Latest data` should now show us a bunch of data from the
 SQL server marking the successful configuration of our monitoring.
 
 ![Microsoft SQL server data](ch04.87-windows-server-sql-data.png){ align=center }
@@ -154,7 +154,7 @@ SQL server marking the successful configuration of our monitoring.
 ???+ warning "Microsoft SQL server port configuration"
 
     Keep in mind that your Microsoft SQL server might be using a different port
-    for connecting the the SQL server. Make sure to specify the correct port 
+    for connecting to the SQL server. Make sure to specify the correct port 
     when setting up the `{$MSSQL.URI}` macro, you can find the port in the 
     SQL server configuration.
 
@@ -220,7 +220,7 @@ that path and let's create the following file in the new folder.
 With the edits made and the folders and file created, we can restart the 
 **Zabbix agent 2** service and navigate to the Zabbix frontend. Here we will 
 create a new item to monitor this `sleeping_sessions.sql` query we created. Navigate 
-to **Data collection** → **Hosts** and go to **Items**. Then click on **Create item**. 
+to `Data collection` | `Hosts` and go to **Items**. Then click on **Create item**.
 Preferably you would add the item to a template, but for now let's create it here.
 
 ![Microsoft SQL server custom query](ch04.88-windows-server-sql-custom-query.png){ align=center }
@@ -243,7 +243,7 @@ Don't forget to add a tag to the item.
 *4.90 Microsoft SQL server custom query tag*
 
 This item should now return a nice numeric value which you can see at 
-**Monitoring** → **Latest data**.
+`Monitoring` | `Latest data`.
 
 ---
 

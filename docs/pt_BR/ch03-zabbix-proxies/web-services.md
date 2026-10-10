@@ -185,7 +185,7 @@ service on a separate system than the Zabbix server or proxy:
 #### Starting the Zabbix web service
 
 Now that the Zabbix web service is installed and configured, we can start the
-service using the SystemD service manager.
+service using the Systemd service manager.
 
 !!! info "Start Zabbix web service"
 
@@ -277,7 +277,7 @@ With our configuration now complete, the final step is to reload the systemd
 user daemon so it recognizes the new Quadlet unit. This can be done using the
 following command:
 
-!!! info "Reload SystemD user daemon"
+!!! info "Reload Systemd user daemon"
 
     ``` bash
     systemctl --user daemon-reload
@@ -330,7 +330,7 @@ then retrieve the container's logs using:
     ```
     Where `bfedb5d16505` is the `CONTAINER ID` of your container
 
-    On some distributions, you can also view the logs directly through SystemD:
+    On some distributions, you can also view the logs directly through Systemd:
     ```bash
     journalctl --user -u zabbix-web-service.service
     ```
@@ -418,7 +418,7 @@ Finally, you have to tell Zabbix where to find the Zabbix Frontend so that it
 can generate the reports correctly. This is done in the Frontend itself by
 navigating to
 
-**Administration → General → Other**
+`Administration` | `General` | `Other`
 
 and setting the
 
@@ -455,4 +455,3 @@ Zabbix server can communicate with it.
 
 - [https://www.zabbix.com/documentation/current/en/manual/concepts/web_service](https://www.zabbix.com/documentation/current/en/manual/concepts/web_service)
 - [https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service](https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service)
-

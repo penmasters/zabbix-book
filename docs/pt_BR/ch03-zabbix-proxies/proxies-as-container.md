@@ -52,7 +52,7 @@ A próxima etapa é criar um arquivo de unidade `.container` para a nossa
 configuração do Quadlet. Esse arquivo deve ser colocado no diretório
 `~/.config/containers/systemd/`. Por exemplo, criaremos um arquivo chamado
 `zabbix-proxy-sqlite.container`, que definirá a configuração para executar o
-contêiner do proxy Zabbix no SystemD usando o Podman.
+contêiner do proxy Zabbix no Systemd usando o Podman.
 
 Verifique se você está conectado como usuário `podman`.
 
@@ -140,7 +140,7 @@ Com a nossa configuração concluída, a etapa final é recarregar o daemon do
 usuário systemd para que ele reconheça a nova unidade Quadlet. Isso pode ser
 feito usando o seguinte comando:
 
-!!! info "Recarregar o daemon do usuário SystemD"
+!!! info "Recarregar o daemon do usuário Systemd"
 
     ``` bash
     systemctl --user daemon-reload
@@ -192,7 +192,7 @@ possível recuperar os logs do contêiner usando:
     ```
     Where `b5716f8f379d` is the `CONTAINER ID` of your container
 
-    On some distributions, you can also view the logs directly through SystemD:
+    On some distributions, you can also view the logs directly through Systemd:
     ```bash
     journalctl --user -u zabbix-proxy-sqlite.service
     ```
@@ -390,11 +390,11 @@ Isso ativa um cronômetro do systemd que invoca periodicamente
 
 ## Conclusão
 
-Neste capítulo, implantamos um proxy ativo Zabbix usando Podman e SystemD
+Neste capítulo, implantamos um proxy ativo Zabbix usando Podman e Systemd
 Quadlets. Configuramos o SELinux, ativamos a permanência do usuário e criamos os
 arquivos `.container` e `.env` para definir o comportamento do proxy. O uso do
 Podman no modo sem raiz garante maior segurança e integração do sistema. O
-gerenciamento do SystemD torna o contêiner fácil de controlar e monitorar. Essa
+gerenciamento do Systemd torna o contêiner fácil de controlar e monitorar. Essa
 configuração oferece uma abordagem leve, flexível e segura para a implantação de
 proxies Zabbix. É ideal para ambientes modernos, especialmente quando se usa
 contêineres ou virtualização. Com o proxy em execução, você está pronto para
@@ -406,7 +406,7 @@ estender o monitoramento do Zabbix a locais remotos com eficiência.
 
 - Quais são as principais vantagens de usar o Podman em vez do Docker para
   executar contêineres em sistemas baseados no Red Hat?
-- Por que o comando `loginctl enable-linger` é importante ao usar o SystemD com
+- Por que o comando `loginctl enable-linger` é importante ao usar o Systemd com
   contêineres Podman sem raiz?
 - Qual é a finalidade do arquivo `.env` no contexto de um contêiner gerenciado
   pelo Quadlet?

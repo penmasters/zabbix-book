@@ -27,8 +27,7 @@ hosts in dashboards or maps.
 
 You can manage host groups by navigating to:
 
-**Menu → Data collection
-→ Host groups**
+`Menu` | `Data collection` | `Host groups`
 
 ![Host Groups Menu Screenshot](ch02.19-host-grouops.png)
 
@@ -68,14 +67,14 @@ There are two main ways to create host groups:
 
 When adding a new host:
 
-1. Go to **Data collection → Hosts**.
+1. Go to `Data collection` | `Hosts`.
 2. Click **Create host** (top right).
 3. In the **Host groups** field, select an existing group or type a new name to
    create one on the fly.
 
 ### 2. From the Host Groups Page
 
-1. Navigate to **Data collection → Host groups**.
+1. Navigate to `Data collection` | `Host groups`.
 2. Click **Create host group** in the top right.
 3. Enter a **Group name** and click **Add**.
 

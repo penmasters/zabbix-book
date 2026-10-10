@@ -29,7 +29,7 @@ sequence of commands. So it is highly related to one's ability to write those
 
 Main benefit of `UserParameter` is that logic behind data collection can be
 absolutely anything. You have total freedom, there is no dependency on specific
-technologies, programming languages or frameworks. There is basically one main
+technologies, programming languages, or frameworks. There is basically one main
 requirement – Zabbix agent should be able to execute whatever you provide for
 it as a command and it should produce some (hopefully meaningful) output.
 

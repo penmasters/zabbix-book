@@ -42,7 +42,7 @@ for creating some basic triggers.
 
 ## Trigger creation
 
-Let's now create two very common triggers in our Zabbix environment. Go to `Data collection | Hosts`
+Let's now create two very common triggers in our Zabbix environment. Go to `Data collection` | `Hosts`
 and navigate to either your Linux or Windows `zbx-agent-active-*` host and click
 on `Triggers`. In the top right corner you can now click on `Create trigger` to
 start.
@@ -51,7 +51,7 @@ start.
 
 _5.3 Empty trigger creation form_
 
-To start with the basics we can see the follow information at the top part of our
+To start with the basics we can see the following information at the top part of our
 trigger creation form.
 
 - **Name**
@@ -64,7 +64,7 @@ trigger creation form.
 ### Name
 
 The name of the trigger is important as it will be used for the name of our events
-and problems created from this trigger. For example if you would navigate to `Monitoring | Problems`,
+and problems created from this trigger. For example if you would navigate to `Monitoring` | `Problems`,
 the triggers you see here will probably have the same name as a trigger.
 
 It doesn't have to be unique, meaning we can have multiple triggers with the same
@@ -89,7 +89,7 @@ Let's leave this empty for now.
 
 Whenever we create a trigger, once the trigger goes into a problem state it will
 create a problem event in the background within Zabbix. This problem event in term
-then creates a `Problem` in Zabbix which we can find under `Monitoring | Problems`.
+then creates a `Problem` in Zabbix which we can find under `Monitoring` | `Problems`.
 It's important to keep in mind that event and problem names are always static. Even
 when the trigger name or trigger event name is updated later, existing event and
 problems will not get a new name until they resolve and go into problem state again.
@@ -112,7 +112,7 @@ For example, `Informational` is often used to indicate something we just want to
 log. Specifically, often `Informational` is something we do not necessarily want
 to see on our dashboards or receive external alerts from. `Disaster` on the other
 end however is often used to indicate something that requires immediate attention.
-The `Warning`, `Average` and `High` severities can be used to classify anything
+The `Warning`, `Average`, and `High` severities can be used to classify anything
 in between. My favourite basic setup usually looks like below.
 
 - **Informational: Just for logging and not showing on dashboards**
@@ -137,7 +137,7 @@ of ways. But the basis is simple.
 
 We collect values from an `Item` using a `Function` applied to a number of values
 or time period (namely `Last of (T) Count/Time`). To this collect set of values
-we set a operator and constant (namely `Result`) to indicate what we want the
+we set an operator and constant (namely `Result`) to indicate what we want the
 result of our expression to be. This is in the end a whole lot of words to say,
 more simply put, we select and item to collect values from and then state what
 we want those values to look like to show a problem in Zabbix.
@@ -277,4 +277,3 @@ trigger to make it more reliable?
 
 - [https://www.zabbix.com/documentation/current/en/manual/config/triggers](https://www.zabbix.com/documentation/current/en/manual/config/triggers)
 - [https://www.zabbix.com/documentation/current/en/manual/config/triggers/expression](https://www.zabbix.com/documentation/current/en/manual/config/triggers/expression)
-

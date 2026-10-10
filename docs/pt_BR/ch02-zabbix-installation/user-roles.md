@@ -22,9 +22,8 @@ permitido para a função.
 
 ## Acesso ao menu padrão por tipo de usuário
 
-`As funções de usuário` podem ser criadas no menu `Users` → `User roles`. Ou
-podem ser definidas por usuário no menu `Usuários` → `Usuários` → "algum
-usuário" → `Permissões`.
+`As funções de usuário` podem ser criadas no menu `Users` | `User roles`. Ou
+podem ser definidas por usuário no menu `Usuários` | `Usuários` | `algum usuário` | `Permissões`.
 
 Esta tabela ilustra os direitos de acesso padrão concedidos aos usuários com
 base no seu **tipo de usuário** inicial antes de serem feitos quaisquer ajustes
@@ -174,15 +173,15 @@ sistema.
 
 **Etapas de configuração:**
 
-1. **Administração → Usuários → Funções do usuário → Criar função**
+1. `Administração` | `Usuários` | `Funções do usuário` | `Criar função`
 2. **Geral**
     * **Nome da função:** `Mantenedor de modelos`
     * **Função básica:** `Admin`
     * **Acesso ao frontend:** ✅ Ativado
 3. **Permissões de elementos da interface do usuário**
-    * ✅ **Coleta de dados → Modelos**
-    * ✅ **Coleta de dados → Grupos de modelos**
-    * ❌ **Coleta de dados → Hosts**
+    * ✅ `Coleta de dados` | `Modelos`
+    * ✅ `Coleta de dados` | `Grupos de modelos`
+    * ❌ `Coleta de dados` | `Hosts`
     * ❌ **Usuários** (seção inteira)
     * ❌ **Alertas** (seção inteira)
     * ❌ **Administração** (seção inteira)
@@ -198,7 +197,7 @@ sistema.
 
 **Testes:**
 
-* Faça login como usuário: você deve ver **Data collection → Templates** somente
+* Faça login como usuário: você deve ver `Data collection` | `Templates` somente
   (dentro das áreas de configuração), enquanto **Hosts**, **Alerts**, **Users**
   e **Administration** estão ocultos.
 * O acesso direto ao URL para seções ocultas deve retornar *Permissão negada*.
@@ -230,14 +229,14 @@ pode alterar a configuração.
 
 **Etapas de configuração:**
 
-1. Acesse **Administration → Funções do usuário → Criar função**
+1. Acesse `Administration` | `Funções do usuário` | `Criar função`
 2. Definir:
     * **Nome da função:** `Operador de NOC`
     * **Função básica:** `Usuário`
 3. **Permissões de elementos da interface do usuário (menu 7.4)**
-    * ✅ **Monitoring → Painéis / Problemas / Hosts / Dados mais recentes**
-    * ✅ **Services → Relatório de SLA**
-    * ✅ **Relatórios → Relatório de disponibilidade** (se usado)
+    * ✅ `Monitoring` | `Painéis` / `Problemas` / `Hosts` / `Dados mais recentes`
+    * ✅ `Services` | `Relatório de SLA`
+    * ✅ `Relatórios` | `Relatório de disponibilidade` (se usado)
     * ❌ **Coleta de dados** (seção inteira)
     * ❌ **Usuários** (seção inteira)
     * ❌ **Alertas** (seção inteira)

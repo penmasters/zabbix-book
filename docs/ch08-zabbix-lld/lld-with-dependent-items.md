@@ -102,10 +102,10 @@ that will serve as the master item for our Low-Level Discovery (LLD) rule.
 
 ## Create a master item
 
-We are now ready to create an item in Zabbix to get the information in to our
+We are now ready to create an item in Zabbix to get the information into our
 master item. But first we need to create a host.
 
-Go to `Data collection | Hosts` and click `Create host`. Fill in the `Host name`
+Go to `Data collection` | `Hosts` and click `Create host`. Fill in the `Host name`
 and the `Host group` and create an `Agent interface`. Those are the only things
 we need for our host and press `Add`.
 
@@ -136,7 +136,7 @@ data we need.
 
 Press `Test` at the bottom of the page a popup will come and you can press at the
 bottom of the page `Get value and test` or `Get value` just above. Both should work
-and return you the information form the txt file.
+and return you the information from the txt file.
 
 ???+ note
     When you press `Get value` it
@@ -271,7 +271,7 @@ Before finalizing our configuration, we need to make an important adjustment.
 The current settings may negatively impact system performance due to an overly frequent
 update interval.
 
-Navigate to `Data collection`|`Hosts` and click on `Items`. Select the `RAW item`
+Navigate to `Data collection` | `Hosts` and click on `Items`. Select the `RAW item`
 that was created in the first step.
 
 By default, the update interval is set to `1 minute`. This means the item is
@@ -313,7 +313,7 @@ efficient while still capturing necessary status updates.
 
 ## Creating a Low-Level Discovery (LLD) Filter
 
-Now lets have some fun and use a script that generates the output of our text file
+Now let's have some fun and use a script that generates the output of our text file
 with random statuses so that we have a more close to real live environment.
 Create in the folder where your `printer-status.txt` file is a new file called
 `printer-demo.py` and paste following content in it.
@@ -380,10 +380,10 @@ for the item and a status will be processed.
 ???+ note
     Low Level will work in 2 steps first step is the detection of the new devices
     and second step is populating the items with the correct data. Remember that
-    we did an item interval of 1m so it can take up to 1m before our items gets a
+    we did an item interval of 1m so it can take up to 1m before our items get a
     new value.
 
-Lets see now how we can remove the device `this is not a printer` from our list
+Let's see now how we can remove the device `this is not a printer` from our list
 since we don't want to monitor this one.
 
 Let's go back to our LLD discovery rule this time to the tab Filters and add the

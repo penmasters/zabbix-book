@@ -15,14 +15,14 @@ control application functionality (what buttons a user can click).
 ## The role hierarchy
 
 Every User Role, whether default or custom, is fundamentally based on one of the
-classic User Types (Super Admin, Admin or User). This User Type serves as the maximum
+classic User Types (Super Admin, Admin, or User). This User Type serves as the maximum
 allowed privilege for the role.
 
 ## Default Menu Access by User Type
 
-`User Roles` can be created in the menu under the `Users` → `User roles` menu. Or they can be
+`User Roles` can be created in the menu under the `Users` | `User roles` menu. Or they can be
 set per user in
-the menu `Users` → `Users` → "some user" → `Permissions`.
+the menu `Users` | `Users` | `some user` | `Permissions`.
 
 This table illustrates the default access rights granted to users based on their
 initial **User Type** before any **Custom User Role** adjustments are made.
@@ -165,15 +165,15 @@ not modify host configurations or system settings.
 
 **Configuration Steps:**
 
-1. **Administration → Users → User roles → Create role**
+1. `Administration` | `Users` | `User roles` | `Create role`
 2. **General**
     * **Role name:** `Template Maintainer`
     * **Base role:** `Admin`
     * **Frontend access:** ✅ Enabled
 3. **UI element permissions**
-    * ✅ **Data collection → Templates**
-    * ✅ **Data collection → Template Groups**
-    * ❌ **Data collection → Hosts**
+    * ✅ `Data collection` | `Templates`
+    * ✅ `Data collection` | `Template Groups`
+    * ❌ `Data collection` | `Hosts`
     * ❌ **Users** (entire section)
     * ❌ **Alerts** (entire section)
     * ❌ **Administration** (entire section)
@@ -188,7 +188,7 @@ not modify host configurations or system settings.
 
 **Testing:**
 
-* Log in as the user: you should see **Data collection → Templates** only
+* Log in as the user: you should see `Data collection` | `Templates` only
   (within config areas), while **Hosts**, **Alerts**, **Users**, and
   **Administration** are hidden.
 * Direct URL access to hidden sections should return *Permission denied*.
@@ -219,14 +219,14 @@ problems and acknowledges them, but cannot alter configuration.
 
 **Configuration Steps:**
 
-1. Go to **Administration → User roles → Create role**
+1. Go to `Administration` | `User roles` | `Create role`
 2. Set:
     * **Role name:** `NOC Operator`
     * **Base role:** `User`
-3. **UI element permissions (7.4 menu)**
-    * ✅ **Monitoring → Dashboards / Problems / Hosts / Latest data**
-    * ✅ **Services → SLA report**
-    * ✅ **Reports → Availability report** (if used)
+3. **UI element permissions**
+    * ✅ `Monitoring` | `Dashboards` / `Problems` / `Hosts` / `Latest data`
+    * ✅ `Services` | `SLA report`
+    * ✅ `Reports` | `Availability report` (if used)
     * ❌ **Data collection** (entire section)
     * ❌ **Users** (entire section)
     * ❌ **Alerts** (entire section)

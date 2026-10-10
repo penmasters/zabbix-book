@@ -685,7 +685,7 @@ enabling you to set up, configure, and interact with your PostgreSQL database.
     postgresql-setup --initdb --unit postgresql
     ```
 
-    On SUSE and Ubuntu the OS provided SystemD service will automatically initialize
+    On SUSE and Ubuntu the OS provided Systemd service will automatically initialize
     an empty database on first startup.
 
 Once the installation is complete, you can proceed to the [_Starting the
@@ -2182,11 +2182,11 @@ default PHP-FPM is not allowed by SELinux on SUSE to
     suggestions on how to resolve them.
 
 Depending on your Linux distribution defaults, PHP-FPM may by default not be
-allowed by SystemD to write to the `/etc/zabbix/web` directory required for the
+allowed by Systemd to write to the `/etc/zabbix/web` directory required for the
 Zabbix frontend setup. To enable this we need to create a drop-in file to allow
 this:
 
-!!! info "SystemD: Allow PHP-FPM to write to /etc/zabbix/web"
+!!! info "Systemd: Allow PHP-FPM to write to /etc/zabbix/web"
 
     ```bash
     systemctl edit php-fpm
@@ -2202,20 +2202,20 @@ this:
     ReadWritePaths=/etc/zabbix/web
     ```
 
-    Then exit the editor and reload the SystemD configuration:
+    Then exit the editor and reload the Systemd configuration:
 
     ```bash
     systemctl daemon-reload
     ```
 
-???+ note "How is SystemD preventing PHP-FPM from writing to /etc/zabbix/web?"
+???+ note "How is Systemd preventing PHP-FPM from writing to /etc/zabbix/web?"
 
-    On many modern Linux distributions, SystemD employs a security feature known as
+    On many modern Linux distributions, Systemd employs a security feature known as
     sandboxing to restrict the capabilities of services. This is done to enhance
     security by limiting the access of services to only the resources they need to function.
     By default, PHP-FPM may be restricted from writing to certain directories,
     including `/etc/zabbix/web`, to prevent potential security vulnerabilities.
-    This is enforced through SystemD's `ProtectSystem` and `ReadWritePaths` directives, which
+    This is enforced through Systemd's `ProtectSystem` and `ReadWritePaths` directives, which
     control the file system access of services.
 
 ???+ tip

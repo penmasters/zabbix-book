@@ -52,7 +52,7 @@ generations, ensuring a familiar configuration experience for administrators.
 
 ### Group Creation and General Attributes
 
-1. Navigate to **Administration** →  **User groups**.
+1. Navigate to `Administration` | `User groups`.
 2. Click **Create user group** (or select an existing group to modify).
 3. The configuration form is divided into four critical tabs: **User group**,
    **Template permissions**, **Host permissions**, and **Problem tag filter**.
@@ -143,14 +143,14 @@ tags, the user will see it.
 
 ### Template Permissions — Frontend Behavior and Editing Limitations
 
-The behavior of the Data collection → Templates view and host configuration screens
+The behavior of the `Data collection` | `Templates` view and host configuration screens
 is strictly tied to the user’s permission level on template groups.
 Zabbix intentionally hides templates from users who have only Read-only access.
 This is by design, as described in [https://support.zabbix.com/browse/ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)
 
 | **Action or Screen Element**       | **Read-only**  | **Read-write**  | **Description / Impact**                                                                                                                                                                     |
 | ---------------------------------- | ------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| View *Data collection → Templates* | ❌             | ✅              | Users with Read-only access do **not see any templates**. Template groups are only visible to users with Read-write rights. ([ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)) |
+| View `Data collection` \| `Templates` | ❌             | ✅              | Users with Read-only access do **not see any templates**. Template groups are only visible to users with Read-write rights. ([ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)) |
 | Open template configuration        | ❌             | ✅              | Not available for Read-only users — templates are hidden entirely                                                                                                                            |
 
 ## The Rule of Precedence: Deny Always Wins
@@ -195,7 +195,7 @@ This precedence can be summarized by two core rules:
 
 ### Permissions in the "Update Problem" Dialog
 
-In Zabbix 8.0, the actions available in the **Monitoring** → **Problems**
+In Zabbix 8.0, the actions available in the `Monitoring` | `Problems`
 view (via the *Update problem* dialog) are controlled by two distinct mechanisms
 working in tandem:
 
@@ -268,12 +268,12 @@ Ensure the following Host Groups exist in your Zabbix environment:
 * HG_All_Linux_Servers (The wide scope of hosts)
 * HG_Critical_Databases (A subset of servers that is also within HG_All_Linux_Servers)
 
-You can create them under `Data collection` → `Host groups`.
+You can create them under `Data collection` | `Host groups`.
 
 #### Configuring the User Groups
 
 - Create Group A: 'Junior Monitoring'
-    - Navigate to Users → User groups.
+    - Navigate to `Users` | `User groups`.
     - Create a new group named 'Junior Monitoring'.
     - In the Host permissions tab, assign the following right:
     - HG_All_Linux_Servers: Read-only (Read)
@@ -295,7 +295,7 @@ _2.24 Critical exclusion_
 
 We will create the user first, then assign them to the groups.
 
-* Navigate to User Creation: Go to Users → Users in the Zabbix frontend.
+* Navigate to User Creation: Go to `Users` | `Users` in the Zabbix frontend.
 * Click Create user.
 * Details:
     * Username: test_junior
@@ -314,7 +314,7 @@ _2.25 test user_
 
 We will create 2 host a linux server and a db server.
 
-* Navigate to `Data collection` → `Hosts`.
+* Navigate to `Data collection` | `Hosts`.
 * Click on create  host.
 * Details:
     * Host name: Linux server
@@ -340,7 +340,7 @@ server with an agent.
 
 Logout as the `Super admin` user and log back in as user `test_junior`.
 
-When we now  navigate to `Monitoring` → `Hosts`, we see that only the `Linux server`
+When we now  navigate to `Monitoring` | `Hosts`, we see that only the `Linux server`
 is visible in the list of hosts. When we click on `Select` behind `Host groups`
 we will only be able to see the group `HG_All_Linux_Servers`.
 
@@ -364,7 +364,7 @@ of access control in Zabbix 8.0. They define *what* each user can see and config
 ## Questions
 
 - If a user only has Read-only permissions assigned to a Template Group, will they
-  be able to see those templates listed under Data collection → Templates?
+  be able to see those templates listed under `Data collection` | `Templates`?
 - Scenario: A user, Bob, is a member of two User Groups: 'NOC Viewers' (which
   has Read-only access to HG_Routers) and 'Tier 2 Techs' (which has Read-write
   access to the same HG_Routers). 

@@ -1,7 +1,7 @@
 ---
 description: |
     Learn how to partition the Zabbix database to improve performance, simplify
-    maintenance, optimize data retention and scale large environments.
+    maintenance, optimize data retention, and scale large environments.
 tags: [advanced]
 ---
 
@@ -101,7 +101,7 @@ the following tables:
 | history      | Stores numeric floating point values                                                |           |
 | history_uint | Stores numeric unsigned values                                                      |           |
 | history_str  | Stores text values up to 255 characters                                             |           |
-| history_text | Stores text values values up to 64kB                                                |           |
+| history_text | Stores text values up to 64kB                                                       |           |
 | history_log  | Stores text values up to 64kB with additional log related properties like timestamp |           |
 | history_bin  | Stores binary image data                                                            |           |
 | trends       | Stores the min/avg/max/count trends of numeric floating point data                  |           |
@@ -295,7 +295,7 @@ We define that in the following block.
 Keep in mind that `history` is defined by day here and `trends` are defined by month.
 
 We also need to change the timezone to match the timezone configured on our Zabbix
-database server. As this was written in the the Netherlands, I will use `Europe/Amsterdam`.
+database server. As this was written in the Netherlands, I will use `Europe/Amsterdam`.
 
 !!! info "Add correct timezone"
 

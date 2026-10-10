@@ -152,7 +152,7 @@ In this case we get an alert if the script returns 0.
 
 ## Example 2 - Public weather
 
-In this script we call Open-Meteo and ask for for information like temperature,
+In this script we call Open-Meteo and ask for information like temperature,
 windspeed, direction based on our longitude / latitude.
 
 ### Item setup
@@ -447,7 +447,7 @@ These skills let you integrate Zabbix with virtually any system.
     `value`.
 
     `value` is a JSON string that contains all item parameters you defined under
-    Parameters → Name / Value.
+    `Parameters` | `Name / Value`.
 
     Inside the script, you must parse it first:
 

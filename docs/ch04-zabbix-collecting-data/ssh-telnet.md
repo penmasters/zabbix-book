@@ -37,7 +37,7 @@ get data from devices that do not have SNMP or an API, but only expose certain d
 through the CLI. This gives you another option in gathering information you need 
 that the vendor might not have properly exposed.
 
-In our Zabbix frontend, let's navigate to **Monitoring** → **Hosts** and create 
+In our Zabbix frontend, let's navigate to `Monitoring` | `Hosts` and create
 a new host for SSH and Telnet monitoring. Let's call it `cli-monitoring` and 
 put it in the hostgroup XYZ.
 
@@ -151,8 +151,7 @@ Do not forget to add your tag.
 ![CLI Monitoring SSH item tag](ch04.63-cli-monitoring-ssh-item-tag.png){ align=left }
 *4.63 Zabbix CLI Monitoring SSH item tag*
 
-This should now work as expected and when you navigate to **Monitoring** → 
-**Latest data** you should now see a value for this host.
+This should now work as expected and when you navigate to `Monitoring` | `Latest data` you should now see a value for this host.
 
 ???+ note
 
@@ -218,8 +217,7 @@ Do not forget to add your tag.
 ![CLI Monitoring Telnet item tag](ch04.65-cli-monitoring-telnet-item-tag.png){ align=left }
 *4.65 Zabbix CLI Monitoring Telnet item tag*
 
-Then, if you had a Telnet user set up. You can go to **Monitoring** →
-**Latest data** to check if the value is coming in.
+Then, if you had a Telnet user set up. You can go to `Monitoring` | `Latest data` to check if the value is coming in.
 
 ---
 

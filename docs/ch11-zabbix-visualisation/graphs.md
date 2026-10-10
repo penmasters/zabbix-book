@@ -16,7 +16,7 @@ yourself for specific use cases.
 
 You'll learn the difference between simple graphs, ad-hoc graphs, and custom
 graphs, when to reach for each one, and how to view them from both
-**Monitoring → Latest data** and **Monitoring → Hosts**. By the end of this
+`Monitoring` | `Latest data` and `Monitoring` | `Hosts`. By the end of this
 chapter, you'll be comfortable building comparison graphs, combining multiple
 items on a single chart, and filtering graphs by tags to quickly find what
 you're looking for in a large environment.
@@ -50,7 +50,7 @@ item in Zabbix automatically has one.
 
 To view a simple graph:
 
-1. Go to **Monitoring → Latest data**.
+1. Go to `Monitoring` | `Latest data`.
 2. Find the item you're interested in.
 3. Click the **Graph** link next to it.
 
@@ -66,7 +66,7 @@ chapter, since it's shared behavior across all graph types.
 
 !!! tip
     If you only remember one shortcut from this chapter, make it this one:
-    **Latest data → Graph** is almost always the fastest way to sanity-check
+    `Latest data` | `Graph` is almost always the fastest way to sanity-check
     a single metric while troubleshooting, before you even think about
     building anything more elaborate.
 
@@ -79,7 +79,7 @@ exactly what ad-hoc graphs are for.
 
 To build an ad-hoc graph:
 
-1. Go to **Monitoring → Latest data**.
+1. Go to `Monitoring` | `Latest data`.
 2. Tick the checkboxes next to the items you want to compare.
 3. At the bottom of the page, open the action dropdown and choose **Display
    graph**.
@@ -113,7 +113,7 @@ that template inherits the graph).
 
 ### Creating a custom graph
 
-1. Navigate to **Data collection → Hosts** (or **Templates**, if you want the
+1. Navigate to `Data collection` | `Hosts` (or **Templates**, if you want the
    graph to be reusable across every host the template is linked to).
 2. Click **Graphs** for the relevant host or template.
 3. Click **Create graph** in the upper-right corner.
@@ -154,10 +154,10 @@ Choose the type based on the question you're trying to answer: *how did this
 change over time* points you toward normal or stacked, while *what's the
 current split* points you toward pie or exploded.
 
-## Viewing graphs from Monitoring → Hosts
+## Viewing graphs from `Monitoring` | `Hosts`
 
 So far we've looked at graphs starting from Latest data. There's a second,
-equally important entry point: **Monitoring → Hosts**, then clicking
+equally important entry point: `Monitoring` | `Hosts`, then clicking
 **Graphs** for the relevant host. This view shows you both the custom graphs
 configured for that host and its simple graphs, all in one place — useful
 when you don't remember which items have a custom graph and which don't.
@@ -191,7 +191,7 @@ A few habits that will save you time as your Zabbix instance grows:
   you've confirmed, via an ad-hoc comparison, that it's actually a
   combination you'll want again.
 - **Use tags on the underlying items**, not just on triggers. This is what
-  makes the subfilter on the Monitoring → Hosts → Graphs page genuinely
+  makes the subfilter on the `Monitoring` | `Hosts` | `Graphs` page genuinely
   useful, rather than just another dropdown to scroll through.
 
 ## Conclusion
@@ -201,7 +201,7 @@ the fastest path from "I want to see this metric" to an actual chart on your
 screen. Simple graphs need no setup at all, ad-hoc graphs let you compare
 items on the fly without saving anything, and custom graphs give you a
 reusable, configurable visualization once you know exactly what you need.
-Combined with tagging and the subfilter on the Monitoring → Hosts page,
+Combined with tagging and the subfilter on the `Monitoring` | `Hosts` page,
 these tools scale surprisingly well even in larger environments and they
 form a natural stepping stone toward the dashboard widgets we'll cover next.
 
@@ -214,14 +214,14 @@ form a natural stepping stone toward the dashboard widgets we'll cover next.
    type and draw style settings would you use?
 3. Why might you prefer to configure a custom graph on a template rather
    than directly on a host?
-4. How does the subfilter on the Monitoring → Hosts → Graphs page behave
+4. How does the subfilter on the `Monitoring` | `Hosts` | `Graphs` page behave
    when you click a second tag after already selecting one?
 5. Why do textual items show a History link instead of a Graph link on the
    Latest data page?
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/simple](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/simple)
-- [https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/adhoc](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/adhoc)
-- [https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/custom](https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/graphs/custom)
-- [https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs)
+- [https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/simple](https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/simple)
+- [https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/adhoc](https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/adhoc)
+- [https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/custom](https://www.zabbix.com/documentation/current/en/manual/config/visualization/graphs/custom)
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/monitoring/hosts/graphs)

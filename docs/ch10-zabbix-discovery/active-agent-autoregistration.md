@@ -104,7 +104,7 @@ HostMetadata=windows/production/mssql
 
 This allows us to create different autoregistration actions for different types
 of systems. Additionally if you combine this type of configuration with automatic
-installation of the Zabbix agent through Ansible, PDQ Deploy or other tools we
+installation of the Zabbix agent through Ansible, PDQ Deploy, or other tools we
 get a very versatile hands-off environment.
 
 After setting up your agent configuration, do not forget to restart the agent
@@ -230,7 +230,7 @@ autoregistration process is evaluated.
 
 This approach is especially useful in automated deployment environments where
 servers are provisioned from templates or configuration management systems
-such as Ansible, PDQ Deploy or other tools.
+such as Ansible, PDQ Deploy, or other tools.
 
 !!! note
 

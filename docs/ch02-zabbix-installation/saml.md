@@ -257,7 +257,7 @@ Microsoft Azure UI.
 
 ### Configure Entra ID
 
-First, navigate to the the Microsoft Entra admin center. You can type the name
+First, navigate to the Microsoft Entra admin center. You can type the name
 in the search bar and it should come right up.
 
 ![Microsoft Entra ID](ch02.48-ms-entra-id-app.png){ align=center }

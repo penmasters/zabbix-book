@@ -462,8 +462,7 @@ automaticamente na inicialização e comece a gerenciar o VIP:
 ### Verificar o funcionamento correto
 
 Para verificar se a configuração está funcionando corretamente, acesse o
-servidor Zabbix usando o IP virtual (VIP). Navegue até Reports → System
-Information (Relatórios → Informações do sistema) no menu. Na parte inferior da
+servidor Zabbix usando o IP virtual (VIP). Navegue até `Reports` | `System Information` (`Relatórios` | `Informações do sistema`) no menu. Na parte inferior da
 página, você deverá ver uma lista de servidores, com pelo menos um marcado como
 ativo. O número de servidores exibidos dependerá do total configurado em sua
 configuração de HA.

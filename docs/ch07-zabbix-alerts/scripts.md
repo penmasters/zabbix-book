@@ -30,7 +30,7 @@ When a notification is triggered, the Zabbix server:
    positional arguments.
 4. Waits for the script to exit.
 5. Treats exit code `0` as success and any non-zero exit code as failure.
-6. Logs the outcome in **Reports → Action log**.
+6. Logs the outcome in `Reports` | `Action log`.
 
 That is the entire contract between Zabbix and your script. Everything else,
 what language you write it in, what the script does with the data, whether it
@@ -279,7 +279,7 @@ log directory.
 
 ### Step 5 — Create the Media Type in Zabbix
 
-Go to **Alerts → Media types** and click **Create media type**.
+Go to `Alerts` | `Media types` and click **Create media type**.
 
 | Field | Value |
 |:--- |:--- |
@@ -346,7 +346,7 @@ Click **Add** to save the media type.
 
 ### Step 6 — Assign to a User
 
-Go to **Users → Users**, open your user, click the **Media** tab, and click **Add**.
+Go to `Users` | `Users`, open your user, click the **Media** tab, and click **Add**.
 
 | Field | Value |
 |:--- |:--- |
@@ -366,8 +366,7 @@ Click **Add** then **Update**.
 ### Step 7 - Verify an Action Is in Place
 
 The media type and user assignment are ready, but Zabbix will not call the script
-until an Action decides to send a notification. Go to `Alerts` → `Actions`
-→ `Trigger actions` and confirm that at least one enabled action exists that:
+until an Action decides to send a notification. Go to `Alerts` | `Actions` | `Trigger actions` and confirm that at least one enabled action exists that:
 
 - Has the Operation set to Send message
 - Targets the user you assigned the Alert Logger media type to (either directly
@@ -382,7 +381,7 @@ will never be called.
 ### Step 8 — Trigger a Test Alert
 
 The quickest way to produce a real notification is a dummy trigger. Go to
-**Data collection → Hosts**, choose any monitored host, open its **Triggers** tab,
+`Data collection` | `Hosts`, choose any monitored host, open its **Triggers** tab,
 and click **Create trigger**.
 
 | Field | Value |
@@ -397,7 +396,7 @@ live host, so the trigger fires immediately and stays in a problem state
 continuously, which is exactly what you want for a one-off test.
 
 Click **Add** to save. Within a few seconds the trigger should fire. Go to
-**Reports → Action log** and confirm an entry appears with status **Sent**.
+`Reports` | `Action log` and confirm an entry appears with status **Sent**.
 
 !!! note
 

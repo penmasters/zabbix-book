@@ -85,7 +85,7 @@ Let's add a user to this user group. In the menu select `Users` section and then
 
 _2.62 Create user_
 
-Fill in `Username`, `Password` and `Password (once again)` fields. Make sure you
+Fill in `Username`, `Password`, and `Password (once again)` fields. Make sure you
 select `test` user group in `Groups` field.
 
 ![MFA new user](ch02.63-mfa_new_user.png){ width=90% }

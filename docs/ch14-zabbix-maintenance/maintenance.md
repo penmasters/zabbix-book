@@ -23,8 +23,7 @@ tickets, etc.) are typically paused.
 
 ### 1. Maintenance Type
 
-The Maintenance section is located in the main menu under `Data collection`
-→ `Maintenance`. To create a new maintenance window, click Create maintenance.
+The Maintenance section is located in the main menu under `Data collection` | `Maintenance`. To create a new maintenance window, click Create maintenance.
 When doing so, Zabbix presents two available maintenance types, allowing you to
 choose the one that best fits your needs.
 
@@ -86,12 +85,12 @@ During maintenance, an orange wrench ![ch14.04-maintenance-wrench.png](ch14.04-m
 icon is displayed next to the host name in the following views:
 
 * **Dashboards**
-* **Monitoring → Problems**
-* **Inventory → Hosts → Host inventory details**
-* **Data collection → Hosts**
+* `Monitoring` | `Problems`
+* `Inventory` | `Hosts` | `Host inventory details`
+* `Data collection` | `Hosts`
 
 In addition, hosts in maintenance are highlighted with an orange background on
-**Monitoring → Maps**.
+`Monitoring` | `Maps`.
 
 By default, problems associated with hosts in maintenance are *suppressed* and
 therefore not shown in the frontend. However, Zabbix can be configured to display
@@ -100,8 +99,8 @@ these suppressed problems. This behavior can be enabled by selecting the
 
 * **Dashboards** – in the configuration of the *Problem hosts*, *Problems*,
   *Problems by severity*, and *Trigger overview* widgets
-* **Monitoring → Problems** – in the filter settings
-* **Monitoring → Maps** – in the map configuration
+* `Monitoring` | `Problems` – in the filter settings
+* `Monitoring` | `Maps` – in the map configuration
 * **Global notifications** – in the user profile configuration
 
 When suppressed problems are configured to be shown, a dedicated status icon is
@@ -422,7 +421,7 @@ To include all months, add them up:
 
 So `4095` means **every month**.
 
-Ok, let's verify what we just did. Go to `Data collection` → `Maintenance`. If
+Ok, let's verify what we just did. Go to `Data collection` | `Maintenance`. If
 all went well you should now see a new maintenance that was created by our
 script.
 

@@ -792,6 +792,6 @@ is the fix?
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks](https://www.zabbix.com/documentation/7.4/en/manual/config/items/itemtypes/odbc_checks)
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/odbc_checks](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/odbc_checks)
 - [https://blog.zabbix.com/database-odbc-monitoring-with-zabbix/8076/](https://blog.zabbix.com/database-odbc-monitoring-with-zabbix/8076/)
 - [https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker](https://www.zabbix.com/forum/zabbix-help/413055-installation-and-configuration-of-mssql-by-odbc-docker)

@@ -281,12 +281,12 @@ over time.
 Zabbix provides several ways to inspect internal checks, each serving a
 different purpose:
 
-- **Monitoring → Latest data → Host: Zabbix server**: Is the quickest way to view
+- `Monitoring` | `Latest data` | `Host: Zabbix server`: Is the quickest way to view
 live current values of every internal item. It is ideal for immediate troubleshooting,
 checking recent busy percentages or confirming the current queue size. Filters
 can be applied to focus on specific groups (like "Queue" or "Cache").
 
-- **Configuration → Hosts → Zabbix server → Items**: Allows you to inspect the
+- `Configuration` | `Hosts` | `Zabbix server` | `Items`: Allows you to inspect the
 item configuration itself. You can verify the exact syntax of an internal key
 (e.g., `zabbix[queue,10m]`), check the collection interval, and view the full
 history over long time periods — essential for diagnosing recurring or historical
