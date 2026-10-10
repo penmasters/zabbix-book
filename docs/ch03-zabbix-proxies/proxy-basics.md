@@ -1,6 +1,6 @@
 ---
 description: |
-    This chapter from The Zabbix Book, titled "Proxy Basics," introduces the role
+    This topic from The Zabbix Book, titled "Proxy Basics," introduces the role
     of proxies in a Zabbix environment. It explains how proxies collect monitoring
     data, forward it to the server, and help reduce load in distributed setups.
     The guide covers installation, configuration, and when to use proxies for
@@ -51,15 +51,15 @@ Although proxies are generally lightweight, since Zabbix 4.2 they can perform
 item value preprocessing which can be CPU-intensive.
 Therefore, the number of CPUs and memory you'll need depends on:
 
-- How many machines you'll be monitoring
-- How many preprocessing rules you'll implement on your hosts
+- How many hosts you'll be monitoring
+- How many preprocessing rules you'll implement on the items on those hosts
 
 ---
 
 ### Proxy configuration updates
 
 For a proxy to know what devices it has to monitor, it will receive configuration
-updates from the _Zabbix server_. They include:
+updates from the _Zabbix server_. These include:
 
 - New or modified monitoring items, triggers, or templates assigned to the proxy.
 - Changes to host configurations or data collection rules. 
@@ -67,13 +67,13 @@ updates from the _Zabbix server_. They include:
 Before Zabbix 7.0, a full configuration synchronization was performed by proxies
 every 3600 seconds (1 hour) by default. With the introduction of Zabbix 7.0, this
 behavior changed significantly. Now, configuration synchronization occurs much more
-frequently, every 10 seconds by default, but it's an incremental update. This means
-that instead of transferring the entire configuration, only the modified entities
-are synchronized, greatly improving efficiency and reducing network overhead.
+frequently, every 10 seconds by default. With this change, incremental configuration updates
+were introduced, meaning that instead of transferring the entire configuration, only
+the modified entities are synchronized, greatly improving efficiency and reducing network overhead.
 
-Upon initial proxy startup, a full configuration synchronization is still performed.
+Upon initial proxy startup, a full configuration synchronization is always performed.
 Subsequently, both the server and the proxy maintain a revision of the configuration.
-When a change is made on the server, only the differences, based on these revision
+When a change is made on the Zabbix server side, only the differences, based on these revision
 numbers, are applied to the proxy's configuration, rather than a complete replacement
 of the entire configuration as in older versions. This incremental approach allows
 for near real-time propagation of configuration changes while minimizing resource
@@ -101,22 +101,22 @@ consumption.
 
 ## Proxy throttling
 
-Imagine that you need to restart your Zabbix server and that all proxies start
-to push the data they have gathered during the downtime of the Zabbix server.
+Imagine you need to restart your Zabbix server and that all proxies immediately start
+to push the data they gathered during the downtime of the Zabbix server.
 
-This would create a huge amount of data being sent at once to the Zabbix server
-and possibly bring it to its knees in no time. Since version 6, Zabbix has added 
-protection for this kind of situations. When the Zabbix server history cache is 
+This would create a huge amount of data being sent to the Zabbix server at once 
+and possibly bring it to its knees in no time. Since Zabbix version 6, the developers have added 
+protection for these kind of situations. When the Zabbix server history cache is 
 full the history cache write access is being throttled:
 Zabbix server will stop accepting data from proxies when history cache usage 
 reaches 80%. Instead those proxies will be put on a throttling list. 
 This will continue until the cache usage falls down to 60%.
-Now the server will start accepting data from the proxies one by one, defined by the
+At that point, the server will start accepting data from the proxies one by one, as defined by the
 throttling list. This means the first proxy that attempted to upload data during
-the throttling period will be served first and until it's done the server will
-not accept data from other proxies.
+the throttling period will be served first and the server will
+not accept data from other proxies until it's done.
 
-This table gives you an overview of how and when throttling works in Zabbix.
+This table gives you an overview of how throttling works and when it starts.
 
 | History write cache usage | Zabbix server mode | Zabbix server action                                                                                             |
 | ------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------- |
@@ -124,9 +124,9 @@ This table gives you an overview of how and when throttling works in Zabbix.
 | Drops to 60%              | Throttled          | Starts processing throttling list, but still not accepting proxy data.                                           |
 | Drops to 20%              | Normal             | Drops the throttling list and starts accepting proxy data normally.                                              |
 
-This may cause delays in detection of problems, as you will have to wait for all
-relevant data to be received and processed by the Zabbix server; but you won't lose
-any historical data.
+Keep in mind that throttling may cause delays in the detection of problems, as you
+will have to wait for all relevant data to be received and processed
+by the Zabbix server; but you won't lose any historical data.
 
 ---
 
@@ -138,9 +138,9 @@ the proxy will initiate the connection by itself to the Zabbix Server. In
 version 1.8.3 _passive_ proxies where introduced. This allows the server to
 connect to the proxy instead of the other way around.
 
-As mentioned before Zabbix agents can be both active _and_ passive however proxies
-cannot be both so we have to choose the way of the communication when we configure
-a proxy. 
+As mentioned before Zabbix agents can simultaneously be in an active _and_ passive mode.
+However, proxies cannot be in both modes at the same time, meaning we have to
+choose the way of the communication when we configure a proxy. 
 
 ???+ note "Active/Passive agent on Active/Passive proxy ?"
 
@@ -162,10 +162,12 @@ parameters should be made directly within the proxy configuration files.
 
 These are the proxy configuration settings you will need to set in _active_ mode:
 
+Mandatory:
 - `ProxyMode`: `0` - Sets the proxy in 'Active' mode
 - `Server`: IP or DNS of the Zabbix server
 - `Hostname`: Proxy name - this needs to be exactly the same as configured in the
   frontend.
+Optional:
 - `ProxyOfflineBuffer`: How long we like to keep data in the DB (in hours) if
   we can't reach the _Zabbix server_.
 - `ProxyLocalBuffer`: How long we like to keep data in the DB (in hours) even when
@@ -178,8 +180,8 @@ When configuring resources for an _Active proxy_, it’s important to account fo
 its connection behavior with the _Zabbix server_. During operation, the proxy can 
 utilize up to two trapper processes on the server:
 
-- One trapper is dedicated to sending collected data to the server.
-- The other trapper is reserved for retrieving configuration updates.
+- One trapper is dedicated to receiving data from the proxy
+- The other trapper is reserved for accepting configuration requests and sending back configuration updates.
 
 ???+ tip
 
@@ -205,8 +207,10 @@ that controls when and how proxy data is requested by making use of pollers.
 
 The most important setting we can find back in the _proxy_ configuration file are:
 
+Mandatory:
 - `ProxyMode`: `1` - Sets the proxy in 'Passive' mode
 - `Server:` IP or DNS of the _Zabbix server_
+Optional:
 - `ProxyOfflineBuffer`: How long we like to keep data in the DB (in hours) if
   we can't reach the _Zabbix server_.
 - `ProxyLocalBuffer`: How long we like to keep data in the DB (in hours) even when
@@ -293,16 +297,15 @@ options available to use.
 
 ## Proxy firewall
 
-Our proxies work like small _Zabbix servers_ so when it comes to the ports to connect
-to agents, SNMP, ... nothing changes, all ports need to be configured the same as you
-would on a _Zabbix server_.
+Since proxies work like small _Zabbix servers_, when it comes to port connectivity
+for services like Zabbix agents, SNMP, and the others nothing changes, all ports
+need to be configured the same as you would on a _Zabbix server_.
 
 When it comes to port for the proxy it depends on our proxy being `active` or `passive`.
 
-- **Active Proxy:** Zabbix server needs to have port `10051/tcp` open so proxy can
+- **Active Proxy:** Zabbix server needs to accept connections on port `10051/tcp`, so the proxy can
   connect.
-- **Passive Proxy:** Needs to have port `10051/tcp` open on the proxy so that the
-  `server` can connect to the proxy.
+- **Passive Proxy:** Zabbix proxy needs to accept connections on port `10051/tcp`, so on the proxy so that the `server` can connect to the proxy.
 
 Do note that for an active _Zabbix Agent_ or _Zabbix Sender_ to communicate with your proxy, 
 whether it is an active or a passive one, this will require port `10051/tcp` to be

@@ -19,8 +19,8 @@ web service, a component required for scheduled PDF report generation.
 
 A Zabbix proxy is a process that collects monitoring data on behalf of the Zabbix
 server. From the perspective of the monitored hosts, a proxy behaves identically
-to the server: it accepts passive agent connections, initiates active checks, runs
-SNMP queries, executes external checks, and processes IPMI. The difference is in
+to the server: it connections to passive agents, received data from active checks, runs
+SNMP queries, executes external checks, processes IPMI and much more. The difference is in
 what happens to the data after collection. A proxy buffers the collected data
 locally in its own database and forwards it to the Zabbix server at regular
 intervals, rather than writing directly to the server's database.
@@ -41,9 +41,9 @@ opening firewall rules from the Zabbix server to every individual host is
 impractical. A proxy placed in that location needs only a single outbound or
 inbound connection to the server, and handles all local data collection internally.
 
-The second is network segmentation. In environments where monitored systems are in
-isolated network segments — a production OT network, a PCI-scoped environment, a
-DMZ — a proxy can be placed inside the segment with access to the monitored hosts
+The second is network segmentation. In many IT environments you'll find a need to monitor systems in
+isolated network segments like a production OT network, a PCI-scoped environment or a
+DMZ. A Zabbix proxy can be placed inside the segment with access to the monitored hosts
 while the Zabbix server remains outside. The proxy bridges the collection boundary
 without requiring the server to have direct access to sensitive network zones.
 
@@ -61,12 +61,11 @@ connection between the proxy and the server.
 In active mode the proxy initiates the connection to the Zabbix server. The proxy
 contacts the server to retrieve its configuration and to submit collected data. This
 mode is preferred in most deployments because it requires only outbound connectivity
-from the proxy, which is easier to permit through firewalls than inbound connections
-to the server.
+from the proxy towards the Zabbix server, which is usually easier to permit through
+firewalls.
 
-In passive mode the server initiates the connection to the proxy. The server contacts
-the proxy to request configuration synchronisation and data submission. This mode
-is less common and requires the Zabbix server to be able to reach the proxy directly.
+In passive mode the Zabbix server initiates the connection to the Zabbix proxy. The Zabbix server contacts the Zabbix proxy to request configuration synchronisation and data submission. This mode
+is less common and requires the Zabbix server to be able to reach the proxy directly over the network.
 
 ### Data buffering and resilience
 
@@ -74,8 +73,9 @@ Because a proxy stores collected data in its own local database before forwardin
 it to the server, monitoring continues uninterrupted during connectivity disruptions.
 When the connection to the server is restored, the proxy forwards all buffered data
 in sequence. The length of time data can be buffered is limited by the proxy's
-local database capacity and the `ProxyLocalBuffer` and `ProxyOfflineBuffer`
-configuration parameters, which control how long the proxy retains data locally.
+local memory and/or on-disk database capacity. We can also adjust the settings with
+the `ProxyLocalBuffer` and `ProxyOfflineBuffer` configuration parameters, which control
+how long the proxy retains data locally.
 
 This resilience property is particularly relevant for remote locations with
 unreliable WAN links. A proxy at a remote site will continue collecting data during

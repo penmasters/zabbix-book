@@ -7,7 +7,7 @@ tags: [advanced]
 # Web services
 
 This chapter explains what the Zabbix Web service component is why you may need
-or consider it, what the requirements are and finally how to install it..
+or consider it, what the requirements are and finally how to install it.
 
 ---
 
@@ -32,7 +32,7 @@ service overview_
 
 ## Zabbix web service requirements
 
-The Zabbix web service requires a linux-based operating system and a headless
+The Zabbix web service requires a linux-based operating system and headless
 Google Chrome or Chromium. 
 
 ???+ note "Google Chrome vs Chromium"
@@ -46,7 +46,7 @@ Google Chrome or Chromium.
 !!! warning "Known Chromium issue on Ubuntu 20-based distributions"
 
     There is a known issue on Ubuntu 20 where Zabbix web service will be unable 
-    to start Chronium because the Ubuntu-packaged version of Chromium is not
+    to start Chromium because the Ubuntu-packaged version of Chromium is not
     allowed to use home directories outside of `/home`. However, by default, the
     `zabbix`-user, configured by the Zabbix web service package, uses 
     `/var/lib/zabbix` as its home directory, which causes Chromium to fail to
@@ -228,7 +228,7 @@ Ensure you are logged in as user `podman`.
     Description=Zabbix Web Service Container
 
     [Container]
-    Image=docker.io/zabbix/zabbix-web-service:7.0-centos-latest
+    Image=docker.io/zabbix/zabbix-web-service:8.0-centos-latest
     ContainerName=ZabbixWebService-Quadlet
     AutoUpdate=registry
     EnvironmentFile=ZabbixWebService.env
@@ -242,7 +242,7 @@ Ensure you are logged in as user `podman`.
     ```
 
 The Zabbix web service container image is available on [Docker Hub](https://hub.docker.com/r/zabbix/zabbix-web-service).
-Specifically, we are using the image tagged `7.0-centos-latest` in this example,
+Specifically, we are using the image tagged `8.0-centos-latest` in this example,
 which is maintained by the Zabbix team and is based on CentOS.
 
 Next, we need to create an environment file that will be used to configure the
@@ -308,7 +308,7 @@ with:
     ```shell-session
     podman@localhost:~> podman ps
     CONTAINER ID  IMAGE                                                   COMMAND               CREATED       STATUS       PORTS                     NAMES
-    bfedb5d16505  docker.io/zabbix/zabbix-web-service:7.0-centos-latest    /usr/sbin/zabbix_...  12 minutes ago  Up 12 minutes  0.0.0.0:10053->10053/tcp  ZabbixWebService-Quadlet
+    bfedb5d16505  docker.io/zabbix/zabbix-web-service:8.0-centos-latest    /usr/sbin/zabbix_...  12 minutes ago  Up 12 minutes  0.0.0.0:10053->10053/tcp  ZabbixWebService-Quadlet
     ```
 
 Take note of the `CONTAINER ID`—in this example, it is `b5716f8f379d`. You can
