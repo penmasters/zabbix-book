@@ -581,3 +581,12 @@ journalctl
 ifdescr
 valuemap
 noc
+loadbalancer
+mb
+tablespace
+logouts
+recordset
+subfilter
+sys
+hugepages
+

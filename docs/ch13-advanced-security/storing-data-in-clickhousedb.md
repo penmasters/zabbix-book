@@ -118,7 +118,8 @@ Before starting ClickHouse, we need to tune the system for optimal performance.
    [always] madvise never
    ```
    The value in brackets indicates the current setting. If it is set to `always`,
-   you need to set it to `madvise` or to `never`.
+   you need to set it to `madvise` or to `never`. Clickhouse recommends to use
+   `madvise`.
 
    To disable it, edit `/etc/default/grub` and add the `transparent_hugepage=never`
    parameter at the end of the `GRUB_CMDLINE_LINUX_DEFAULT` variable:
