@@ -11,9 +11,9 @@ tags: [advanced]
 Zabbix Proxy Groups provide a robust foundation for **enterprise-grade distributed
 monitoring**, enabling automatic **High Availability (HA)** and **Load Balancing
 (LB)** across multiple proxies. Instead of binding a monitored host to a single
-proxy, the host is assigned to a **Proxy Group**. The Zabbix server then determines
+proxy, hosts are assigned to a **Proxy Group**. The Zabbix server then determines
 dynamically and continuously which proxy within the group is responsible for monitoring
-that host.
+a specific host.
 
 This approach ensures uninterrupted monitoring during proxy failures and maintains
 an even workload across the proxy infrastructure.
@@ -38,19 +38,7 @@ Monitoring continues with minimal disruption and without manual intervention.
 ### 2. Load Balancing Through Host Redistribution
 
 **Balancing Mechanism:**
-The Zabbix server evaluates the number of hosts assigned to each proxy. # Proxy groups
-
-## Zabbix Proxy Groups: High Availability and Load Balancing
-
-Zabbix Proxy Groups provide a robust foundation for **enterprise-grade distributed
-monitoring**, enabling automatic **High Availability (HA)** and **Load Balancing
-(LB)** across multiple proxies. Instead of binding a monitored host to a single
-proxy, the host is assigned to a **Proxy Group**. The Zabbix server then determines
-dynamically and continuously which proxy within the group is responsible for monitoring
-that host.
-                                                                                                                                                             
-This approach ensures uninterrupted monitoring during proxy failures and maintains
-an even workload across the proxy infrastructure.
+The Zabbix server evaluates the number of hosts assigned to each proxy.
 
 ---
 
@@ -106,7 +94,7 @@ A Zabbix agent in passive mode **must accept connections from all members of its
 * It is also possible to specify entire network segments if appropriate.
 
 #### Active Agents (`ServerActive=`)
-The active agent (v7.0+) will dynamically learn the optimal proxy. It is configured in one of two ways:
+The active Zabbix agent (starting from version 7.0) will dynamically learn the optimal proxy. It is configured in one of two ways:
 
 1.  **Specify Multiple Proxies:** Specify multiple proxy addresses using **semicolons**. Any proxy group member the agent connects to can redirect the agent to the currently assigned proxy.
 2.  **Specify Zabbix Server:** Specify the **Zabbix server address** instead of the proxy addresses. The Proxy Group Manager will redirect the agent to the assigned proxy. The active agent will then add all known proxies to its runtime `ServerActive` parameter.

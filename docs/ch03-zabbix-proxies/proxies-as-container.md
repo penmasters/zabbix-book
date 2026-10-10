@@ -39,8 +39,8 @@ to frontend_
 
 To keep the configuration straightforward, we will deploy an active Zabbix proxy.
 In this case, only two parameters need to be configured: the proxy's hostname
-(as defined in the Zabbix frontend) and the proxy’s IP address for communication
-with the Zabbix server.
+(as defined in the Zabbix frontend) and the Zabbix server's IP address for communication
+with the Zabbix server from the proxy.
 
 ---
 
@@ -71,7 +71,7 @@ Ensure you are logged in as user `podman`.
     Description=ZabbixProxy
 
     [Container]
-    Image=docker.io/zabbix/zabbix-proxy-sqlite3:7.0-centos-latest
+    Image=docker.io/zabbix/zabbix-proxy-sqlite3:8.0-centos-latest
     ContainerName=ZabbixProxySqlite-Quadlet
     AutoUpdate=registry
     EnvironmentFile=ZabbixProxy.env
@@ -85,7 +85,7 @@ Ensure you are logged in as user `podman`.
     ```
 
 The container image for the Zabbix proxy using SQLite can be sourced from Docker
-Hub. Specifically, we will use the image tagged 7.0-centos-latest, which is maintained
+Hub. Specifically, we will use the image tagged 8.0-centos-latest, which is maintained
 by the official Zabbix project. This image can be found at:
 
 [https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3/tags?name=centos](https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3/tags?name=centos)
@@ -95,7 +95,7 @@ system bases, is available on the image’s main page:
 
 [https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3](https://hub.docker.com/r/zabbix/zabbix-proxy-sqlite3)
 
-For our purposes, the 7.0-centos-latest tag provides a CentOS-based container image
+For our purposes, the 8.0-centos-latest tag provides a CentOS-based container image
 that is well-suited for LTS environments, and it includes all
 necessary components to run the Zabbix proxy with SQLite.
 
@@ -171,7 +171,7 @@ with:
     ```shell-session
     podman@localhost:~> podman ps
     CONTAINER ID  IMAGE                                                   COMMAND               CREATED       STATUS       PORTS                     NAMES
-    b5716f8f379d  docker.io/zabbix/zabbix-proxy-sqlite3:7.0-centos-latest /usr/sbin/zabbix_...  2 hours ago   Up 2 hours   0.0.0.0:10051->10051/tcp  ZabbixProxySqlite-Quadlet
+    b5716f8f379d  docker.io/zabbix/zabbix-proxy-sqlite3:8.0-centos-latest /usr/sbin/zabbix_...  2 hours ago   Up 2 hours   0.0.0.0:10051->10051/tcp  ZabbixProxySqlite-Quadlet
     ```
 
 Take note of the `CONTAINER ID`—in this example, it is `b5716f8f379d`. You can
@@ -201,12 +201,12 @@ At some point, you may be asking yourself: How do I upgrade my Zabbix containers
 Fortunately, container upgrades are a straightforward process that can be handled
 either manually or through automation, depending on your deployment strategy.
 
-Throughout this book, we've been using the image tag `7.0-centos-latest`, which always
-pulls the most up-to-date CentOS-based Zabbix 7.0 image available at the time.
+Throughout this book, we've been using the image tag `8.0-centos-latest`, which always
+pulls the most up-to-date CentOS-based Zabbix 8.0 image available at the time.
 This approach ensures you are running the latest fixes and improvements without
 specifying an exact version.
 
-Alternatively, you can opt for version specific tags such as `centos-7.0.13`, which
+Alternatively, you can opt for version specific tags such as `centos-8.0.13`, which
 allow you to maintain strict control over the version deployed. This can be helpful
 in environments where consistency and reproducibility are critical.
 
@@ -225,7 +225,7 @@ point to the most recent image available in the repository.
 
     ```bash
     # Pull the latest image using Podman.
-    podman pull zabbix/zabbix-proxy-sqlite3:7.0-centos-latest
+    podman pull zabbix/zabbix-proxy-sqlite3:8.0-centos-latest
     # Restart the systemd service associated with the container.
     systemctl --user restart zabbix-proxy-sqlite.service
     ```
@@ -241,7 +241,7 @@ consistent configuration management through systemd.
 
 ### Upgrading When Using a Fixed Image Tag
 
-If your container is configured to use a **fixed image tag** (e.g., `7.0.13-centos`)
+If your container is configured to use a **fixed image tag** (e.g., `8.0.0-centos`)
 rather than a floating tag like `:latest` or `:trunk`, the upgrade process involves
 one additional step: **manually updating the tag in your `.container` file**.
 
@@ -258,13 +258,13 @@ file is located at `~/.config/containers/systemd/zabbix-proxy-sqlite.container`:
     and update the `Image=` line. For instance, change:
 
     ```ini
-    Image=docker.io/zabbix/zabbix-proxy-sqlite3:7.0.13-centos
+    Image=docker.io/zabbix/zabbix-proxy-sqlite3:8.0.0-centos
     ```
 
     to:
 
     ```ini
-    Image=docker.io/zabbix/zabbix-proxy-sqlite3:7.0.14-centos
+    Image=docker.io/zabbix/zabbix-proxy-sqlite3:8.0.1-centos
     ```
 
     Once the file has been updated, apply the changes by running:

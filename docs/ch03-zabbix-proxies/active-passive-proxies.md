@@ -9,7 +9,7 @@ tags: [advanced]
 
 # Active and Passive proxies
 
-Whether you want to install an Active proxy or a Passive one, much of the installation
+Whether you want to install an Active or a Passive proxy, much of the installation
 and configuration steps are the same.
 
 ---
@@ -67,7 +67,7 @@ as Zabbix Proxy. Set up a new system or VM and make sure it meets the requiremen
 outlined in the [_Getting Started: Requirements_](../ch00-getting-started/Requirements.md) 
 chapter. 
 
-As the Zabbix proxy is actually a small _Zabbix server_, we also need to make sure
+As the Zabbix proxy is like a small _Zabbix server_, we also need to make sure
 the system is prepared for Zabbix as outlined in [_Preparing the server for Zabbix_](../ch00-getting-started/preparation.md).
 
 Now that your system is ready and knows where to find the Zabbix software packages, we can 
@@ -397,7 +397,7 @@ disk and hybrid storage, empowers administrators to finely tune resource utiliza
 and data persistence based on their specific needs and the volume of monitored data.
 
 Finally, we examined the critical advancements in configuration synchronization,
-particularly the significant improvements introduced with Zabbix 7.0. The shift
+particularly the significant improvements introduced with proxies receiving near-instant configuration. The shift
 towards more efficient and streamlined config sync processes, moving beyond the
 limitations of earlier versions, underscores Zabbix's continuous commitment to
 enhancing operational efficiency and simplifying large-scale deployments.
