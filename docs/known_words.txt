@@ -589,4 +589,9 @@ recordset
 subfilter
 sys
 hugepages
-
+ctrl
+lookback
+opentelemetry
+otlp
+querys
+tablespaces
