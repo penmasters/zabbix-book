@@ -19,7 +19,7 @@ web service, a component required for scheduled PDF report generation.
 
 A Zabbix proxy is a process that collects monitoring data on behalf of the Zabbix
 server. From the perspective of the monitored hosts, a proxy behaves identically
-to the server: it connections to passive agents, received data from active checks, runs
+to the server: it connects to passive agents, received data from active checks, runs
 SNMP queries, executes external checks, processes IPMI and much more. The difference is in
 what happens to the data after collection. A proxy buffers the collected data
 locally in its own database and forwards it to the Zabbix server at regular
