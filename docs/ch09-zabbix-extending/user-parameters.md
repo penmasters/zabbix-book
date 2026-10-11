@@ -334,6 +334,12 @@ One good example when you would like to enable it is if you want to pass
 regular expressions as parameters. Their syntax often contains symbols in this
 forbidden list.
 
+???+ note
+
+    Zabbix 8.0 adds a new character to the UnsafeUserParameters list. Starting
+    with zabbix 8.0 the `%` character has been added to the list for Zabbix agent
+    and Zabbix agent 2.
+
 ## Conclusion
 
 When setting up monitoring in whatever area, you will inevitably deal with a
