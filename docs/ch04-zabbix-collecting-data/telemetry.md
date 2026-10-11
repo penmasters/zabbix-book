@@ -1,10 +1,11 @@
 ---
 description: |
-    Telemetry
+    Set up Zabbix 8.0 APM with OpenTelemetry: configure the proxy collector and
+    ClickHouse, then alert on span latency with Telemetry query items.
 tags: [advanced]
 ---
 
-# Application Performance Monitoring in Zabbix 8.0
+# Application Performance Monitoring in Zabbix 8.0 with OpenTelemetry.
 
 Until Zabbix 8.0, the platform was mainly known for solid infrastructure monitoring.
 With version 8.0 it takes a clear step into application performance monitoring by
