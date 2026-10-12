@@ -151,28 +151,33 @@ Before starting ClickHouse, we need to tune the system for optimal performance.
 
 
 3. **Delay accounting**
-   ClickHouse requires Kernel delay accounting to be enabled. On SUSE, delay
-   accounting is disabled by default. You can check the current status with:
+   ClickHouse requires Kernel delay accounting to be enabled. You can check the
+   current status with:
 
    ```bash
    cat /sys/kernel/debug/delayacct
+   or
+   sysctl kernel.task_delayacct
    ```
    If it displays `0`, it is disabled and you need to enable it.
 
-   Create a new file `/etc/sysctl.conf.d/99-clickhouse.conf` and add the following line:
+   Create a new file `/etc/sysctl.d/99-clickhouse.conf` and add the following line:
 
-   ```ini
+    ```ini
     # Enable delay accounting
     kernel.task_delayacct = 1
     ```
     
-    Then apply the changes:
+    This applies all the changes at once :
     
     ```bash
-    sysctl -p /etc/sysctl.conf.d/99-clickhouse.conf
+    sudo tee /etc/sysctl.d/99-clickhouse.conf > /dev/null <<'EOF'
+    # Enable delay accounting
+    kernel.task_delayacct = 1
+    EOF
     ```
 
-4. **Number of threads**
+5. **Number of threads**
    ClickHouse is a multi-threaded application and requires a sufficient number
    of threads to be available. On SUSE, the default max. number of threads is 15574
    however, ClickHouse requires at least 30000.
