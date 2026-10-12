@@ -122,20 +122,35 @@ Before starting ClickHouse, we need to tune the system for optimal performance.
    `madvise`.
 
    To disable it, edit `/etc/default/grub` and add the `transparent_hugepage=never`
-   parameter at the end of the `GRUB_CMDLINE_LINUX_DEFAULT` variable:
+   parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
 
-   ```ini
-   GRUB_CMDLINE_LINUX_DEFAULT="... transparent_hugepage=never"
-   ```
+   !!! info "Adapt Grub config"
 
-   Then update the grub configuration and reboot the system:
+       Red Hat
+       ```bash
+       GRUB_CMDLINE_LINUX="rd.lvm.lv=rl/root rd.lvm.lv=rl/swap transparent_hugepage=madvise"
+       ```
 
-   ```bash
-   grub2-mkconfig -o /boot/grub2/grub.cfg
-   reboot
-   ```
+       Then update the grub configuration and reboot the system:
 
-2. **Delay accounting**
+       ```bash
+       grub2-mkconfig -o /boot/grub2/grub.cfg
+       reboot
+       ```
+    
+       Ubuntu
+       ```bash
+       GRUB_CMDLINE_LINUX_DEFAULT="quiet splash transparent_hugepage=madvise"
+       ```
+       Then update the grub configuration and reboot the system:
+
+       ```bash
+       sudo update-grub
+       reboot
+       ```
+
+
+3. **Delay accounting**
    ClickHouse requires Kernel delay accounting to be enabled. On SUSE, delay
    accounting is disabled by default. You can check the current status with:
 
@@ -157,7 +172,7 @@ Before starting ClickHouse, we need to tune the system for optimal performance.
     sysctl -p /etc/sysctl.conf.d/99-clickhouse.conf
     ```
 
-3. **Number of threads**
+4. **Number of threads**
    ClickHouse is a multi-threaded application and requires a sufficient number
    of threads to be available. On SUSE, the default max. number of threads is 15574
    however, ClickHouse requires at least 30000.
