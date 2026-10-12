@@ -104,95 +104,101 @@ Begin by installing the official ClickHouse repository and packages.
 Before starting ClickHouse, we need to tune the system for optimal performance.
 
 1. **Hugepages**
-   Clickhouse does not use hugepages and requires it to be disabled. 
-   On SUSE, transparent hugepages are enabled by default. 
    
-   You can check the current status with:
+Clickhouse does not use hugepages and requires it to be disabled. 
+On SUSE, transparent hugepages are enabled by default. 
+   
+You can check the current status with:
 
-   ```shell-session
-   cat /sys/kernel/mm/transparent_hugepage/enabled
-   ```
-   You will see something like:
+```shell-session
+cat /sys/kernel/mm/transparent_hugepage/enabled
+```
 
-   ```text
-   [always] madvise never
-   ```
-   The value in brackets indicates the current setting. If it is set to `always`,
-   you need to set it to `madvise` or to `never`. Clickhouse recommends to use
-   `madvise`.
+You will see something like:
 
-   To disable it, edit `/etc/default/grub` and add the `transparent_hugepage=never`
-   parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
+```text
+[always] madvise never
+```
 
-   !!! info "Adapt Grub config"
+The value in brackets indicates the current setting. If it is set to `always`,
+you need to set it to `madvise` or to `never`. Clickhouse recommends to use `madvise`.
 
-       Red Hat
-       ```bash
-       GRUB_CMDLINE_LINUX="rd.lvm.lv=rl/root rd.lvm.lv=rl/swap transparent_hugepage=madvise"
-       ```
+To disable it, edit `/etc/default/grub` and add the `transparent_hugepage=never`
+parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
 
-       Then update the grub configuration and reboot the system:
+!!! info "Adapt Grub config"
 
-       ```bash
-       grub2-mkconfig -o /boot/grub2/grub.cfg
-       reboot
-       ```
+    Red Hat
+    ```bash
+    GRUB_CMDLINE_LINUX="rd.lvm.lv=rl/root rd.lvm.lv=rl/swap transparent_hugepage=madvise"
+    ```
+
+    Then update the grub configuration and reboot the system:
+
+    ```bash
+    grub2-mkconfig -o /boot/grub2/grub.cfg
+    reboot
+    ```
     
-       Ubuntu
-       ```bash
-       GRUB_CMDLINE_LINUX_DEFAULT="quiet splash transparent_hugepage=madvise"
-       ```
-       Then update the grub configuration and reboot the system:
+    Ubuntu
+    ```bash
+    GRUB_CMDLINE_LINUX_DEFAULT="quiet splash transparent_hugepage=madvise"
+    ```
+    
+    Now lets update the grub configuration and reboot the system:
 
-       ```bash
-       sudo update-grub
-       reboot
-       ```
+    ```bash
+    sudo update-grub
+    reboot
+    ```
 
 
 3. **Delay accounting**
-   ClickHouse requires Kernel delay accounting to be enabled. You can check the
-   current status with:
+   
+ClickHouse requires Kernel delay accounting to be enabled. You can check the
+current status with:
 
-   ```bash
-   cat /sys/kernel/debug/delayacct
-   or
-   sysctl kernel.task_delayacct
-   ```
-   If it displays `0`, it is disabled and you need to enable it.
+```bash
+cat /sys/kernel/debug/delayacct
+or
+sysctl kernel.task_delayacct
+```
 
-   Create a new file `/etc/sysctl.d/99-clickhouse.conf` and add the following line:
+If it displays `0`, it is disabled and you need to enable it.
+Create a new file `/etc/sysctl.d/99-clickhouse.conf` and add the following line:
 
-    ```ini
-    # Enable delay accounting
-    kernel.task_delayacct = 1
-    ```
+```ini
+# Enable delay accounting
+kernel.task_delayacct = 1
+```
     
-    This applies all the changes at once :
+This applies all the changes at once :
     
-    ```bash
-    sudo tee /etc/sysctl.d/99-clickhouse.conf > /dev/null <<'EOF'
-    # Enable delay accounting
-    kernel.task_delayacct = 1
-    EOF
-    ```
+```bash
+sudo tee /etc/sysctl.d/99-clickhouse.conf > /dev/null <<'EOF'
+# Enable delay accounting
+kernel.task_delayacct = 1
+EOF
+```
 
 5. **Number of threads**
-   ClickHouse is a multi-threaded application and requires a sufficient number
-   of threads to be available. On SUSE, the default max. number of threads is 15574
-   however, ClickHouse requires at least 30000.
-   To ensure that the ClickHouse-server service has enough threads, create a 
-   new systemd override file:
 
-   ```bash
-   systemctl edit clickhouse-server
-   ```
-   and add the following lines:
+ClickHouse is a multi-threaded application and requires a sufficient number
+of threads to be available. On SUSE, the default max. number of threads is 15574
+however, ClickHouse requires at least 30000.
+To ensure that the ClickHouse-server service has enough threads, create a 
+new systemd override file:
 
-   ```ini
-   [Service]
-   LimitNPROC=30000
-   ```
+```bash
+systemctl edit clickhouse-server
+```
+   
+and add the following lines:
+
+```ini
+[Service]
+LimitNPROC=30000
+```
 
 Enable the ClickHouse service so it starts automatically at boot.
 
