@@ -466,7 +466,7 @@ TTL are recommended.
 
 Create the Zabbix server configuration file:
 
-`/etc/zabbix/zabbix_server.conf.d/clickhouse.conf`
+`/etc/zabbix/zabbix_server.d/clickhouse.conf` or edit the `/etc/zabbix/zabbix_server.conf` file.
 
 !!! info "Zabbix server configuration"
 
@@ -581,7 +581,7 @@ history backend is correctly configured.
 
 ## Frontend
 
-In our frontend file `zabbix.conf.php` we also need to make some changes so that
+In our frontend file `/etc/zabbix/web/zabbix.conf.php` we also need to make some changes so that
 the frontend knows where to find the history data.
 
 !!! warning "Restart PHP-FPM or Apache"
