@@ -185,7 +185,6 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
 
     The output should contain `transparent_hugepage=madvise`.
 
-
 2. **Delay accounting**
    
 ClickHouse requires Kernel delay accounting to be enabled. You can check the
@@ -545,7 +544,8 @@ Monitor the log:
     ```bash
     tail -f /var/log/zabbix/zabbix_server.log
     ```
-!!! note “SELinux considerations”
+
+!!! note "SELinux considerations"
 
     On RHEL-based systems, SELinux may block connections from the
     Zabbix server to ClickHouse (TCP port 8123).
@@ -561,12 +561,12 @@ Monitor the log:
 
     ```bash
     setsebool -P zabbix_can_network on
+    setsebool -P httpd_can_network_connect on
     ```
 
     The `-P` option makes the change persistent across reboots.
 
     **Note:** This boolean allows broader network access for Zabbix, not just connections to ClickHouse.
-
 
 A successful connection produces output similar to:
 
