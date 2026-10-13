@@ -545,6 +545,28 @@ Monitor the log:
     ```bash
     tail -f /var/log/zabbix/zabbix_server.log
     ```
+!!! note “SELinux considerations”
+
+    On RHEL-based systems, SELinux may block connections from the
+    Zabbix server to ClickHouse (TCP port 8123).
+
+    If you encounter connection errors, check for SELinux denials:
+
+    ```bash
+    ausearch -m AVC -ts recent
+    ```
+
+    To allow outbound network connections from the Zabbix server, enable
+    the following SELinux boolean:
+
+    ```bash
+    setsebool -P zabbix_can_network on
+    ```
+
+    The `-P` option makes the change persistent across reboots.
+
+    **Note:** This boolean allows broader network access for Zabbix, not just connections to ClickHouse.
+
 
 A successful connection produces output similar to:
 
