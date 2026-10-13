@@ -128,32 +128,65 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
 
 !!! info "Adapt Grub config"
 
-    Red Hat
+    To configure Transparent Huge Pages (THP) in `madvise` mode, the kernel boot
+    parameters must be updated. The procedure differs depending on your Linux distribution.
+    **Red Hat Enterprise Linux / Rocky Linux 9**
+    On RHEL-based systems, use `grubby` to update the kernel parameters. This is the
+    recommended approach for systems using Boot Loader Specification (BLS).
+
     ```bash
-    GRUB_CMDLINE_LINUX="rd.lvm.lv=rl/root rd.lvm.lv=rl/swap transparent_hugepage=madvise"
+    sudo grubby --update-kernel=ALL --args="transparent_hugepage=madvise"
     ```
 
-    Then update the grub configuration and reboot the system:
+    **Ubuntu**
 
-    ```bash
-    grub2-mkconfig -o /boot/grub2/grub.cfg
-    reboot
-    ```
-    
-    Ubuntu
+    On Ubuntu, edit `/etc/default/grub` and add `transparent_hugepage=madvise` to the
+    existing `GRUB_CMDLINE_LINUX_DEFAULT` parameter.
+
+    For example:
+
     ```bash
     GRUB_CMDLINE_LINUX_DEFAULT="quiet splash transparent_hugepage=madvise"
     ```
-    
-    Now lets update the grub configuration and reboot the system:
+
+    Apply the configuration:
 
     ```bash
     sudo update-grub
-    reboot
     ```
 
+    **Verify the configuration**
 
-3. **Delay accounting**
+    Reboot the system to activate the new kernel parameters:
+
+    ```bash
+    sudo reboot
+    ```
+
+    After rebooting, verify the active THP configuration:
+
+    ```bash
+    cat /sys/kernel/mm/transparent_hugepage/enabled
+    ```
+
+    Expected output:
+
+    ```text
+    always [madvise] never
+    ```
+
+    The value enclosed in square brackets indicates the currently active setting.
+
+    You can also verify that the kernel parameter was applied:
+
+    ```bash
+    cat /proc/cmdline
+    ```
+
+    The output should contain `transparent_hugepage=madvise`.
+
+
+2. **Delay accounting**
    
 ClickHouse requires Kernel delay accounting to be enabled. You can check the
 current status with:
@@ -181,7 +214,7 @@ kernel.task_delayacct = 1
 EOF
 ```
 
-5. **Number of threads**
+4. **Number of threads**
 
 ClickHouse is a multi-threaded application and requires a sufficient number
 of threads to be available. On SUSE, the default max. number of threads is 15574
