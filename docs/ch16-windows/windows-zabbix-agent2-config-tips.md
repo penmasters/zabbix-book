@@ -301,7 +301,7 @@ msiexec.exe /i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="
 If you are going full MSI + PowerShell 5.1 (Windows PowerShell) for installing the agent, creating the "Zabbix-ext" directory and applying a templated zabbix_agent2.conf go in the following order:
 
 1. Install the Agent via MSI normally
-    - Optional Edge Case: Have a PowerShell script overwrite `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` with the `Hostname=`,`Server=`,`ServerActive=` fields with your required values if you are unable to set them via the MSI switches for any reason. A small example on how to do this inline without overwriting the entire file was provided [earlier on this same page - click here to jump](windows-zabbix-agent2-config-tips.md##code--snippet)
+    - Optional Edge Case: Have a PowerShell script overwrite `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` with the `Hostname=`,`Server=`,`ServerActive=` fields with your required values if you are unable to set them via the MSI switches for any reason. A small example on how to do this inline without overwriting the entire file was provided [earlier on this same page - click here to jump](windows-zabbix-agent2-config-tips.md#code-snippet)
         #### Why?
 
         Some products like Ivanti Endpoint Manager/SCCM/PDQ Deploy have a native MSI install steps for deployment 
