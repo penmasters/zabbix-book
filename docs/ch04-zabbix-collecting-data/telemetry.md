@@ -302,6 +302,48 @@ and the proxy restarted
 
 ---
 
+!!! note "IMPORTANT BEFORE YOU START"
+
+    At the time of writing only RedHat 10 had support for APM in the proxy
+    packages and needed EPEL for the installation. Proxies where not able to
+    create the needed structure in the ClickHouse database and no SQL files where
+    provided by Zabbix.
+
+    This script should help you fix the ClickHouse database:
+
+    ```
+    cat otel_traces.sql
+    CREATE TABLE IF NOT EXISTS zabbix.otel_traces
+    (
+        Timestamp DateTime64(9),
+        TraceId String,
+        SpanId String,
+        ParentSpanId String,
+        TraceState String,
+        SpanName String,
+        SpanKind String,
+        ServiceName String,
+        ResourceAttributes Map(String,String),
+        ScopeName String,
+        ScopeVersion String,
+        SpanAttributes Map(String,String),
+        Duration Int64,
+        StatusCode String,
+        StatusMessage String,
+        `Events.Timestamp` Array(DateTime64(9)),
+        `Events.Name` Array(String),
+        `Events.Attributes` Array(Map(String,String)),
+        `Links.TraceId` Array(String),
+        `Links.SpanId` Array(String),
+        `Links.TraceState` Array(String),
+        `Links.Attributes` Array(Map(String,String))
+    )
+    ENGINE = MergeTree()
+    PARTITION BY toYYYYMM(Timestamp)
+    ORDER BY (ServiceName, Timestamp, TraceId, SpanId)
+    TTL toDateTime(Timestamp) + INTERVAL 30 DAY;
+    ```
+
 ### Step 1: Generate sustained baseline traces
 
 A practical way to produce traffic is the OpenTelemetry `telemetrygen` tool. Install
@@ -344,7 +386,16 @@ TLS on both the client and the proxy (`APMTLS*` parameters).
 
 ---
 
-### Step 2: Confirm data in the APM menu
+### Step 2: Add datasources in the Administration
+
+In the frontend go to **Data source** | **APM**
+
+- select "Enable global data source"
+- URL: Add the ClickHouse url Ex: http://127.0.0.1:8123
+
+---
+
+### Step 3: Confirm data in the APM menu
 
 In the frontend go to **APM → Traces**.
 
@@ -361,14 +412,14 @@ You should see traces and be able to open spans. If the list stays empty, check:
 
 ---
 
-### Step 3: Create a host for the item
+### Step 4: Create a host for the item
 
 Create a host, for example `otel-lab`, monitored by the server or proxy that should
 run the *Telemetry query*. No agent is required for this item type.
 
 ---
 
-### Step 4: Create the Telemetry query item
+### Step 5: Create the Telemetry query item
 
 On `otel-lab` create an item:
 
@@ -404,7 +455,7 @@ If you add a second condition (for example ResourceAttributes with Attribute key
 
 ---
 
-### Step 5: Create a trigger and raise latency
+### Step 6: Create a trigger and raise latency
 
 Prefer a short average over a single `last()` sample, and add a check for missing data:
 
@@ -438,7 +489,7 @@ Problems whether the item goes silent within the window you configured.
 
 ---
 
-### Step 6: Clean up
+### Step 7: Clean up
 
 Stop generating traffic. Disable or remove the lab host and items when you are
 finished. *Lookback limit* only defines how far back the first query (or a query
