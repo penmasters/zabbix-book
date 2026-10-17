@@ -34,7 +34,7 @@ list below.
 
 Tips/Index:
 - Take control of your config and look at it as a template
-- Keep your `Hostname=` field fully-qualified and lowercase, i.e. `hostname.domain.org`
+- Keep your `Hostname=` field fully-qualified and lowercase if you can, i.e. `hostname.domain.org`
 - Use PowerShell scripting to your advantage to automate the agent config to set the `Hostname=`
 - Use `ForceActiveChecksOnStart` and `RefreshActiveChecks` when utilizing Active templates (ServerActive)
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
@@ -59,17 +59,19 @@ persist through a full agent uninstall. If you have confidential data that needs
 entered such as `TLSPSKFile` or `TLSPSKIdentity` and you do not wish for this to be 
 present in the normal `C:\Program Files\Zabbix Agent 2` directory, you can move this to
 be under `%PROGRAMDATA` aka `C:\ProgramData\...` as this directory is hidden by default
-on most Windows OS installations from users.
+on most Windows OS installations from users. Note, the `%PROGRAMDATA%` directory should
+not be seen as a complete security boundary - but in most cases it is hidden and will
+keep operational data separate from the agent installation directory.
 
 Just note, that when you go to upgrade via MSI (with `NONMSICONFNAME` param), it will 
 merge your initial `zabbix_agent2.conf` file with the default; your parameter values will overwrite 
 the default values. Be warned, anything custom here may not carry over. Though, Server,ServerActive,Include 
-and a few other values will be safe
+and a few other values will be safe.
 
 Each time you change any config file whether it is the main one or included via the
 `Include` parameter, you must restart the Zabbix Agent 2 service to apply the changes.
 
-All in all, when it comes for fleet wide management for Windows, take time to read
+All in all, when it comes to fleet wide management for Windows, take time to read
 the base `zabbix_agent2.conf` - if you need anything further than the default
 parameters, use `Include=` to define it elsewhere.
 
@@ -113,10 +115,10 @@ get all three configs under the `C:\ProgramData\Zabbix-ext\conf.d` directory
 Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
 ```
 
-## Keep Your `Hostname=` parameter value lowercase
+## Keep Your `Hostname=` parameter value lowercase for consistency
 
 This is very important if you are using the `ServerActive` method. Your `Hostname=` value
-**must match** the `Host name` field for your host record and it is case-sensitive; or your
+**must match** the `Host name` field for your host record and it is case-sensitive, or your
 Active agent templates for Windows will not work.
 
 &#10006; This does not work for Active checks:
@@ -177,9 +179,9 @@ for time. A good value to start would be `RefreshActiveChecks=300`, which would
 be 5 minutes.
 
 If you make a change to a monitoring template or host specific macro override,
-this will ensure it is picked up. However, if it is a change that requires
-Low-Level Discovery (LLD) to run, you must wait for the next discovery cycle to
-run as specified in the template.
+this is how the agent checks for updated active-check configuration. However, 
+if it is a change that requires Low-Level Discovery (LLD) to run, you must wait 
+for the next discovery cycle to run as specified in the template.
 
 ## Metadata and Autoregistration
 
@@ -222,10 +224,11 @@ the author(s) of this page are heavily leaning towards Active based checks.
 
 There are scenarios for both and thankfully both can be used at the same time.
 
-From a design/architectural standard, Active checks should always be used. However,
-In some cases, you may not be able to send data from a DMZ subnet back to internal,
-but the company policy states connections that originate from the internal WAN/LAN
-enterprise network may communicate out to the DMZ.
+From a design/architectural standard, Active checks should be preferred whenever practical. 
+However, you may not be able to send data from a DMZ subnet back to an internal network but 
+the company policy states connections that originate from the internal WAN/LAN enterprise 
+network may communicate out to the DMZ. Active checks may not always be possible and that is 
+where Passive checks can come into play.
 
 By default, in your agent config you should be prepared for both scenarios by
 setting `Server=` (Passive) and `ServerActive=` (Active) by default.
@@ -243,7 +246,9 @@ querying `perfmon` can be slow during high CPU loads or disk I/O contention.
 
 This can be tricky but a specific scenario came up where one organization needed
 to monitor the status of a Microsoft SQL Always-On Availability group. The problem
-is that consists of multiple hosts that already exist in Zabbix and are sending information. 
+is that the Availability Group consists of multiple hosts that already exist in Zabbix 
+and are sending information. 
+
 A cluster can be healthy overall, but a specific node may become unhealthy and potentially 
 be down. So if you are monitoring the cluster from only a single node and not all of them... 
 you could miss an alert. On the other hand, if you apply a template to all three hosts 
@@ -316,7 +321,7 @@ If you are going full MSI + PowerShell 5.1 (Windows PowerShell) for installing t
         the MSI switch: `/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"+'.domain.com'`
         
         In this case, the org needs to put an additional step in PowerShell to edit the `zabbix_agent2.conf` in-place
-        after the the initial MSI install to correct it to their liking.
+        after the initial MSI install to correct it to their liking.
 2. Have a PowerShell Script create the "Zabbix-ext" directory under `%PROGRAMDATA%` with the `.conf` files
 3. Have a PowerShell Script insert `Include=` fields at the bottom the `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` file or create a new file as such `C:\Program Files\Zabbix Agent 2\zabbix_agent.d\plugins.d\custom_includes.conf`
 4. Have a PowerShell Script restart the agent to apply all changes
