@@ -34,12 +34,12 @@ list below.
 
 Tips:
 - Write your own config and use it as a template across the environment
-- Keep your `Hostname=` field FQDN and lowercase, i.e. `hostname.domain.org`
+- Keep your `Hostname=` field fully-qualified and lowercase, i.e. `hostname.domain.org`
 - Use PowerShell scripting to your advantage to automate the agent config to set the `Hostname=`
 - For your `Server=` and/or `ServerActive=` param values, use FQDN/DNS names.
 - Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
-- Metadata and Autoregistration
+- Metadata strings should be defined and are highly considered for Autoregistration
 - Prioritize using `Active` templates over `Passive` where possible
 - Use the MSI installer package for deployment
 
@@ -47,7 +47,7 @@ Examples of the configuration files and PowerShell scripts are provided at the b
 
 ## Writing your own config
 
-You do not need to use the default `zabbix_agent2.conf` file provided by the installer.
+You do not need to use the entire default `zabbix_agent2.conf` file provided by the installer.
 Quite honestly, it's a bit overwhelming. You can trim down the default config file for the 
 initial install to make it a bit easier to understand for yourself. 
 
@@ -72,7 +72,7 @@ Active agent templates for Windows will not work.
 
 When you write your intial config for `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
 do so in the context of a template so you can use PowerShell later on to replace the
-`Hostname=` value with the current FQDN host name.
+`Hostname=` value with the current FQDN host name during the installation process.
 
 Code snippit:
 ```PowerShell
@@ -94,7 +94,8 @@ continue monitoring..... However, you have much bigger fish to fry if DNS querie
 timing out.
 
 As a Monitoring System Janitor/Sysadmin/SRE this can be a key design decision you make
-for the business but I would heavily lean for DNS regardless to prevent future headache
+for the business but I would heavily lean for DNS/FQDN values instead of IPs for these params
+regardless to prevent future headache
 
 ## Utilizing `ForceActiveChecksOnStart` and `RefreshActiveChecks`
 
@@ -127,7 +128,7 @@ to trigger.
 
 In the event of the Zabbix Agent 2 upgrade process, via MSI commandline execution, you 
 will find that it will do its best to merge the old `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
-file into the newly generated file.
+file into the newly generated zabbix_agent2.conf file.
 
 When this happens, it is important to note even with the `NONMSICONFNAME` param provided
 it will not merge/carry-over all the parameters that are set as of 7.0 LTS. In fact, consider the 
@@ -200,7 +201,7 @@ There are scenarios for both and thankfully both can be used at the same time.
 
 From a design/architectural standard, Active checks should always be used. However,
 In some cases, you may not be able to send data from a DMZ subnet back to internal,
-but the policy states connections that originate from internal the internal WAN/LAN
+but the company policy states connections that originate from internal the internal WAN/LAN
 enterprise network may communicate out to the DMZ.
 
 By default, in your agent config you should be prepared for both scenarios by
@@ -221,7 +222,7 @@ This can be tricky but a specific scenario came up where one organization needed
 to monitor the status of a Microsoft SQL Always-On Availability group. The problem
 with this is, that consists of multiple hosts that already exist in Zabbix and are
 sending information. A cluster can be healthy overall, but a specific node can
-be not healthy. How do you monitor the cluster health and the node health?
+be not healthy. How do you monitor the cluster health as a single entity?
 
 **The solution:**
 The organization created a separate Passive Template to query the Microsoft SQL
@@ -252,7 +253,7 @@ MSI meets those requirements easily especially with detecting whether it's insta
 msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1.domain.com,zabbixnode2.domain.com" SERVERACTIVE="zabbixnode1.domain.com,zabbixnode2.domain.com" /qn /silent
 ```
 
-### Example Upgrade Command (You'd use this for upgrades):
+### Example Upgrade Command (You'd use this for upgrades if following the configs posted at the end of the page):
 ```
 msiexec.exe /i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent
 ```
