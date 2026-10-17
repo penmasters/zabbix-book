@@ -232,12 +232,13 @@ server/zabbix agent.
 This goes without saying too much so we won't spend too much time here.
 
 When it comes to deployment of the Zabbix Agent 2, you need an installation package
-that can perform the installation & upgrade with a few requirements in mind:
+that can perform the installation & upgrade with a few requirements in mind for Windows:
 - Standardized Silent Installations
-- Easier Management via PDQ Deploy/Ivanti Endpoint Manager/SCCM/Group Policy/Intune
 - Standard Switches for install options
+- Standard switch for repair/installing more agent plugins
+- Easier Management via PDQ Deploy/Ivanti Endpoint Manager/SCCM/Group Policy/Intune
 
-MSI meets those requirements easily.
+MSI meets those requirements easily especially with detecting whether it's installed already.
 
 ### Example Install Command (General):
 ```
