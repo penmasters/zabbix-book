@@ -75,7 +75,7 @@ do so in the context of a template so you can use PowerShell later on to replace
 `Hostname=` value with the current FQDN host name.
 
 Code snippit:
-```
+```PowerShell
 $file="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf"
 $FQDNHostName = [System.Net.Dns]::GetHostEntry($env:COMPUTERNAME).HostName
 $FQDNHostNameToLower = $FQDNHostName.ToLower()
@@ -153,7 +153,7 @@ C:\ProgramData\Zabbix-ext
 
 Include one-liner for your `C:\Program Files\Zabbix Agnet 2\zabbix_agent2.conf` that will get
 all three configs under the `conf.d` directory
-```
+```ini
 Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
 ```
 
@@ -177,17 +177,17 @@ will never execute again after executing for the first time.
 Of course, you still must configure auto-registration actions via the Zabbix Server.
 
 Example 1:
-```
+```ini
 HostMetadata=WindowsServer
 ```
 
 Example 2:
-```
+```ini
 HostMetadata=WindowsServer_DomainController
 ```
 
 Example 3:
-```
+```ini
 HostMetadata=WindowsServer_MSSQLServer
 ```
 
@@ -279,7 +279,7 @@ This includes the standard configuration in the default location in addition to 
 You would use a Powershell command to first copy/overwrite zabbix_agent2.conf and then use PowerShell to overrite `Hostname=` matching on `Hostname=REPLACEMEBUTLOWERCASE.domain.com`
 
 ### C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
-```
+```ini
 # C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
 # Place this into C:\Program Files\Zabbix Agent 2
 # and then start/restart your agent
@@ -325,13 +325,13 @@ C:\ProgramData\Zabbix-ext
 ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
-```
+```ini
 # This file shall be placed as such C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
 HostMetadata=WindowsServer
 ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
-```
+```ini
 # To be used with the deployment package, this file is intended to be changed
 # per server or fleet wide if all agents must have it changed.
 # I.E. WindowsServer_ActiveDirectoryServers ---> Autoregistration Action puts it into Host group
@@ -345,7 +345,7 @@ RefreshActiveChecks=300
 ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\custom_checks.conf
-```
+```ini
 # You can put custom UserParameters here or split them out per .conf file
 UserParameter=powershell.ps_dcdiag_checks,powershell -ExecutionPolicy Bypass -File "C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1"
 ```
