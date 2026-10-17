@@ -3,7 +3,7 @@ description: |
     If you plan on installing Zabbix Agent2 in a Windows environment, this article is for you!
     Learn from past mistakes to make agent installations seamless and upgrades even easier for
     a Windows OS fleet.
-tags: [beginner]
+tags: [advanced]
 ---
 
 # Preface
@@ -17,7 +17,8 @@ deploying the agent with initial settings you likely will need or want.
 This page assumes you are a Sysadmin of some type and have a means of deploying an
 MSI package with PowerShell scripts in steps. Examples of a product that would do this
 would be PDQ Deploy or Ivanti Endpoint Manager (formerly Landesk). Though, there is nothing
-holding you back if you are a small shop with 20 servers if you are lacking these tools.
+holding you back if you are a small shop with 20 servers if you are lacking these tools and
+need to log in and run some of these steps manually.
 
 It is with the highest intentions that this will prevent uneeded overhead when it comes Use includes 
 time for agent upgrades, or even auto-registration of new/current servers. **Real world
