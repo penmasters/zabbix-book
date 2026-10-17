@@ -31,9 +31,13 @@ agent fleet wide, assuming you are using the Microsoft Installer package (MSI)
 Tips:
 - Write your own config and use it as a template across the environment
 - For your `Server=` and/or `ServerActive=` param values, use FQDN/DNS names and all lowercase
+- Use PowerShell scripting to your advantage to automate the agent config to set the `Hostname=`
+- Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
 - Use the MSI installer package for deployment
-- Use PowerShell scripting to your advantage to automate the agent config based on the
+- Prioritize using `ServerActive` templates over `Server` where possible
+- Metadata and Autoregistration
+
 
 Examples of the configuration files and PowerShell scripts are provided if you scroll further.
 
@@ -45,9 +49,31 @@ initial install to make it a bit easier to understand for yourself.
 
 Just note, that when you go to upgrade via MSI (with `NONMSICONFNAME` param), it will 
 merge your initial config file with the default; your parameter values will overwrite 
-the default values. By then though,  you will not have to worry about the wall of 
-text in the config file as you will know which params to look for if you have to change 
-them.
+the default values. By then though, you will not have to worry about the wall of text
+in the config file as you will know which params to look for if you have to change them.
+
+Feel free to use the config provided further down this page as a start, but I implore
+you to continue reading the next few sections before you do.
+
+## Keep Your `Hostname=` all lowercase
+
+This is mainly important if you are using the `ServerActive` method. Your `Hostname=` value
+**must match** the hostname field for your host record.
+
+## Use PowerShell Scripting To Your Advantage
+
+When you write your intial config for `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
+do so in the context of a template so you can use PowerShell later on to replace the
+`Hostname=` value with the current FQDN host name.
+
+Code snippit:
+```
+$file="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf"
+$FQDNHostName = [System.Net.Dns]::GetHostEntry($env:COMPUTERNAME).HostName
+$FQDNHostNameToLower = $FQDNHostName.ToLower()
+$FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase
+(Get-Content $file) -replace "Hostname=REPLACEME","Hostname=$FQDNHostNameToLower" | Set-Content $file
+```
 
 ## Real-World Example Config - Single HA Zabbix Environment
 
@@ -65,7 +91,7 @@ ServerActive=zabbixnode1.domain.org;zabbixnode2.domain.org
 
 # Preferably, you should fully qualify your hostname and make it lowercase
 # For ServerActive configurations, this field is REQUIRED and is case sensitive! 
-Hostname=hostnameoftheserverlowercase.domain.com
+Hostname=REPLACEMEBUTLOWERCASE.domain.com
 
 # Include any extra config directories
 Include=C:\\Program Files\\Zabbix Agent 2\\zabbix_agent2.d\\
