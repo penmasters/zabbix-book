@@ -33,10 +33,10 @@ This section is a tl;dr but also an index. The page will go in the order of the
 list below.
 
 Tips:
-- Write your own config and use it as a template across the environment
+- Take your control of your config and use it as a template
 - Keep your `Hostname=` field fully-qualified and lowercase, i.e. `hostname.domain.org`
 - Use PowerShell scripting to your advantage to automate the agent config to set the `Hostname=`
-- For your `Server=` and/or `ServerActive=` param values, use FQDN/DNS names.
+~~- For your `Server=` and/or `ServerActive=` param values, use FQDN/DNS names.~~ **TO DO**
 - Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
 - Metadata strings should be defined and are highly considered for Autoregistration
@@ -45,22 +45,71 @@ Tips:
 
 Examples of the configuration files and PowerShell scripts are provided at the bottom
 
-## Writing your own config
+## Taking control of your config file
 
-You do not need to use the entire default `zabbix_agent2.conf` file provided by the installer.
-Quite honestly, it's a bit overwhelming. You can trim down the default config file for the 
-initial install to make it a bit easier to understand for yourself. 
+The `zabbix_agent2.conf` file should be treated with care. Removing default lines here can 
+cause issues when it is time to upgrade. It is ok to add lines at the bottom of the file
+but best to use the `Include=` parameter and point it to a new file that you compose in
+a different directory.
+
+The whole idea of engineering your Zabbix config file(s) correctly is so future Zabbix Agent
+2 upgrades are seamless when running the MSI again in the future.
+
+The `.\zabbix_agent2.d\plugins.d` directory can be used to add more configuration and will
+persist through a full agent uninstall. If you have confidential data that needs to be
+entered such as `TLSPSKFile` or `TLSPSKIdentity` and you do not wish for this to be 
+present in the normal `C:\Program Files\Zabbix Agent 2` directory, you can move this to
+be under `%PROGRAMDATA` aka `C:\ProgramData\...` as this directory is hidden by default
+on most Windows OS installations from users.
 
 Just note, that when you go to upgrade via MSI (with `NONMSICONFNAME` param), it will 
-merge your initial config file with the default; your parameter values will overwrite 
-the default values. By then though, you will not have to worry about the wall of text
-in the config file as you will know which params to look for if you have to change them.
+merge your initial `zabbix_agent2.conf` file with the default; your parameter values will overwrite 
+the default values. (Server,ServerActive,Include and a few other values will be safe)
 
-Each time you change any config file whether it is the main one of pointed to via the
+Each time you change any config file whether it is the main one or included to via the
 `Include` parameter, you must restart the Zabbix Agent 2 service to apply the changes.
 
-Feel free to use the config provided at the bottom this page as a start, but I implore
-you to continue reading the next few sections before you do.
+All in all, when it comes for fleet wide management for Windows, take time to read
+the base `zabbix_agent2.conf` - if you need anything further than the default
+parameters, use `Include=` to define it elsewhere.
+
+Feel free to use the config snippit provided at the bottom this page as a start, 
+but I implore you to continue reading the next few sections before you do.
+
+## Using the `Include=` param to your advantage
+
+In the event of the Zabbix Agent 2 upgrade process, via MSI commandline execution, you 
+will find that it will do its best to merge the old `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
+file into the newly generated zabbix_agent2.conf file.
+
+When this happens, it is important to note even with the `NONMSICONFNAME` MSI param provided
+it will not merge/carry-over all the parameters that are set as of 7.0 LTS. In fact, consider the 
+`C:\Program Files\Zabbix Agent 2\` directory a "no-go" zone besides what is needed initially 
+for the MSI to perform the install. (Server,ServerActive,ControlSock,Hostname will be saved)
+
+Params such as `ForceActiveChecksOnStart` and `RefreshActiveChecks` are not brought over. The 
+solution to this is to use `%PROGRAMDATA%` or `C:\Program Files\Zabbix Agent 2\zabbix_agent2.d\plugins.d` 
+directory to our advantage. Put your custom conf files in either of these directories so they 
+persist even through a full normal agent uninstall.
+
+### Solution: Split Custom Configurations To Be Under %PROGRAMDATA%
+
+Directory Structure:
+```
+C:\ProgramData\Zabbix-ext
+├── conf.d
+│   ├── active_agent.conf
+│   ├── custom_config.conf
+│   └── metadata.conf
+└── scripts
+    └── Invoke-ActiveDirectoryChecks.ps1
+```
+
+An Include one-liner for your `C:\Program Files\Zabbix Agnet 2\zabbix_agent2.conf` that will
+get all three configs under the `C:\ProgramData\Zabbix-ext\conf.d` directory
+```ini
+Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
+```
 
 ## Keep Your `Hostname=` parameter value lowercase
 
@@ -70,11 +119,11 @@ Active agent templates for Windows will not work.
 
 ## Use PowerShell Scripting To Your Advantage
 
-When you write your intial config for `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
+When you plan your intial config for `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
 do so in the context of a template so you can use PowerShell later on to replace the
 `Hostname=` value with the current FQDN host name during the installation process.
 
-Code snippit:
+#### Code snippet:
 ```PowerShell
 $file="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf"
 $FQDNHostName = [System.Net.Dns]::GetHostEntry($env:COMPUTERNAME).HostName
@@ -83,6 +132,7 @@ $FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase
 (Get-Content $file) -replace "Hostname=REPLACEME","Hostname=$FQDNHostNameToLower" | Set-Content $file
 ```
 
+<!-- Remove
 ## Use DNS for `Server=` and `ServerActive=`
 
 This will future proof yourself if you ever run into a situation where the IP address of your
@@ -96,6 +146,7 @@ timing out.
 As a Monitoring System Janitor/Sysadmin/SRE this can be a key design decision you make
 for the business but I would heavily lean for DNS/FQDN values instead of IPs for these params
 regardless to prevent future headache
+-->
 
 ## Utilizing `ForceActiveChecksOnStart` and `RefreshActiveChecks`
 
@@ -123,40 +174,6 @@ If you make a change to a monitoring template or host specific macro override,
 this will ensure it is picked up. However, if it is a change that requires
 Low-Level Discovery (LLD) to run, you must wait for that LLD's threshold
 to trigger.
-
-## Using the `Include=` param to your advantage
-
-In the event of the Zabbix Agent 2 upgrade process, via MSI commandline execution, you 
-will find that it will do its best to merge the old `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
-file into the newly generated zabbix_agent2.conf file.
-
-When this happens, it is important to note even with the `NONMSICONFNAME` param provided
-it will not merge/carry-over all the parameters that are set as of 7.0 LTS. In fact, consider the 
-`C:\Program Files\Zabbix Agent 2\` directory a "no-go" zone besides what is needed initially 
-for the MSI to perform the install. (Server,ServerActive,ControlSock,Hostname will be saved)
-
-Params such as `ForceActiveChecksOnStart` and `RefreshActiveChecks` are not brought over. The 
-solution to this is to use `%PROGRAMDATA%` directory to our advantage. Put your custom conf
-files in a "Zabbix Extended" directory so they persist even through a full agent uninstall.
-
-### Solution: Split Custom Configurations To Be Under %PROGRAMDATA%
-
-Directory Structure:
-```
-C:\ProgramData\Zabbix-ext
-├── conf.d
-│   ├── active_agent.conf
-│   ├── custom_config.conf
-│   └── metadata.conf
-└── scripts
-    └── Invoke-ActiveDirectoryChecks.ps1
-```
-
-Include one-liner for your `C:\Program Files\Zabbix Agnet 2\zabbix_agent2.conf` that will get
-all three configs under the `conf.d` directory
-```ini
-Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
-```
 
 ## Metadata and Autoregistration
 
@@ -260,7 +277,7 @@ MSI meets those requirements easily especially with detecting whether it's insta
 
 ### Example Install Command (General):
 ```
-msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1.domain.com,zabbixnode2.domain.com" SERVERACTIVE="zabbixnode1.domain.com;zabbixnode2.domain.com" /qn /silent
+msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent
 ```
 
 ### Example Upgrade Command (You'd use this for upgrades if following the configs posted at the end of the page):
@@ -270,56 +287,87 @@ msiexec.exe /i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="
 
 ### Order for MSI/Script Install
 
-If you are going full PowerShell 5.1 (Windows Powershell) for installing the agent, creating the "Zabbix-ext" directory and applying a templated zabbix_agent2.conf go in the following order:
+If you are going full MSI + PowerShell 5.1 (Windows Powershell) for installing the agent, creating the "Zabbix-ext" directory and applying a templated zabbix_agent2.conf go in the following order:
 
-1. Install the Agent via MSI normally, even with fake values to start.
-2. Have a Powershell Script create the "Zabbix-ext" directory under `%PROGRAMDATA%` with the `.conf` files
-3. Have a final PowerShell script overwrite `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` with your template + replace the `Hostname=` field
-4. Restart the agent to apply all changes
-5. Tell Windows to attempt to restart the Zabbix Agent 2 service if it fails
+1. Install the Agent via MSI normally
+    - Optional Edge Case: Have a PowerShell script overwrite `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` with the `Hostname=`,`Server=`,`ServerActive=` fields with your required values if you are unable to set them via the MSI switches for any reason. A small example on how to do this inline without overwriting the entire file was provided [earlier on this same page - click here to jump](windows-zabbix-agent2-config-tips.md##code--snippet)
+        #### Why?
 
-```
-# PowerShell One Liner Set service to restart itself if it fails to start.
-& "$env:SystemRoot\System32\sc.exe" failure "Zabbix Agent 2" actions= "restart/60000/restart/60000/restart/60000" reset= 86400
-```
+        Some products like Ivanti Endpoint Manager/SCCM/PDQ Deploy have a native MSI install steps for deployment 
+        tasks so you don't need to write a PowerShell or Batch script to perform the install. The deployment tool
+        will call it natively in `cmd.exe` with the `msiexec /i....` command
+        #### Great. What's the catch? 
+    
+        In the case of some deployment tools - the "MSI native" method doesn't exactly make it easy to insert 
+        the params of the current machine you are targeting in a deployment for the command switches 
+        themselves as variables without causing a 'hacky way' to go about it.
+
+        I.e. An organization's deployment tool does not allow something like this for the MSI switches: `/HOSTNAME="{{TARGET_SERVER_NAME}}"`
+        or the tool lacks adding a string like this in line for the MSI switch: `/HOSTNAME="{{TARGET_SERVER_NAME}}"+'.domain.com'`
+        
+        In this case, the org needs to put an additional step in PowerShell to edit the `zabbix_agent2.conf` after the the initial MSI install to correct it to their liking.
+3. Have a PowerShell Script create the "Zabbix-ext" directory under `%PROGRAMDATA%` with the `.conf` files
+4. Have a PowerShell Script insert `Include=` fields at the bottom the `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` file or create a new file as such `C:\Program Files\Zabbix Agent 2\zabbix_agent.d\plugins.d\custom_includes.conf`
+5. Have a PowerShell Script restart the agent to apply all changes
+6. Have a PowerShell Script command Windows to attempt to restart the Zabbix Agent 2 service if it fails via `sc.exe`
+
+    ```
+    # PowerShell One Liner Set service to restart itself if it fails to start.
+    & "$env:SystemRoot\System32\sc.exe" failure "Zabbix Agent 2" actions= "restart/60000/restart/60000/restart/60000" reset= 86400
+    ```
 
 ## Real-World Example Configs - Single Highly-Available Zabbix Environment
 
-This includes the standard configuration in the default location in addition to adding the "Zabbix Extended" directory that persists through agent uninstalls
+This includes the standard configuration in the default location in addition to adding the "Zabbix Extended" directory under `%PROGRAMDATA%` instead of the `zabbix_agent2.d`
 
-You would use a Powershell command to first copy/overwrite zabbix_agent2.conf and then use PowerShell to overrite `Hostname=` matching on `Hostname=REPLACEMEBUTLOWERCASE.domain.com`
+You can use a Powershell command to overrite `Hostname=` matching on `Hostname=REPLACEMEBUTLOWERCASE.domain.com`
 
 ### C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
 ```ini
-# C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
-# Place this into C:\Program Files\Zabbix Agent 2
-# and then start/restart your agent
-
-# Server Passive Config (Zabbix server/proxy polls this endpoint)
-Server=zabbixnode1.somedomain.org,zabbixnode2.somedomain.org
-
-# Server Active Config (Endpoint sends telemetry to Zabbix server/proxy) - Note server active HA nodes of the same env are split via semi-colons ;
-ServerActive=zabbixnode1.domain.org;zabbixnode2.domain.org
-
-# Preferably, you should fully qualify your hostname and make it lowercase
-# For ServerActive configurations, this field is REQUIRED and is case sensitive! 
-Hostname=REPLACEMEBUTLOWERCASE.domain.com
-
-# Include any extra config directories
-Include=C:\\Program Files\\Zabbix Agent 2\\zabbix_agent2.d\\
-Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
-
-# Required to be in agent conf
-ControlSocket=\\.\pipe\agent.sock
-
-# Include configuration files for plugins
-Include=.\zabbix_agent2.d\plugins.d\*.conf
+# C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf (Snippet with author comments)
+# This is a snippit of the main conf file with author comments
+# Remember to not remove the default params/lines from here, but you can change the Server and ServerActive values and add Include= at the bottom.
+# Just don't customize this base file any further than those param values.
 
 # Log File Config
+# This is set by default by the agent at install/upgrade in the base file
 LogFile=C:\Program Files\Zabbix Agent 2\zabbix_agent2.log
 
-# Log File Size
-LogFileSize=1024
+#...file continues...
+
+# Server Passive Config (Zabbix server/proxy polls this endpoint)
+# This is set by the user via MSI installer at the time of install
+Server=10.0.1.24,10.0.1.25
+
+#...file continues...
+
+# Server Active Config (Endpoint sends telemetry to Zabbix server/proxy)
+# Note server active HA nodes of the same env are split via semi-colons ; 
+# --- this pre-formatted text makes it look like an ini file comment.
+# This is set by the user via MSI installer at the time of install
+ServerActive=10.0.1.24;10.0.1.25
+
+#...file continues...
+
+# Preferably, you should fully qualify your hostname and make it lowercase
+# For ServerActive configurations, this field is REQUIRED and is case sensitive!
+# This is set by the user via MSI installer at the time of install
+Hostname=REPLACEMEBUTLOWERCASE.domain.com
+
+#...file continues...
+
+# Include configuration files for plugins.. you can also do a literal path here if needed
+# Include=C:\\Program Files\\Zabbix Agent 2\\zabbix_agent2.d\\
+# This is set by default by the agent at install/upgrade in the base file
+Include=.\zabbix_agent2.d\plugins.d\*.conf
+
+#...file continues...
+
+# Include any extra config directories at the bottom of your config file
+# This is a custom one that was added by the System Administrator in order
+# to place the custom configs in the %PROGRAMDATA% directory so it is hidden
+# from Non-Administrators.
+Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
 ```
 
 ### The "Zabbix-ext" Directory / Config Files / Custom Scripts
@@ -330,7 +378,9 @@ C:\ProgramData\Zabbix-ext
 ├── conf.d
 │   ├── active_agent.conf
 │   ├── custom_config.conf
-│   └── metadata.conf
+│   ├── metadata.conf
+│   ├── key.psk
+│   └── psk_options.conf
 └── scripts
     └── Invoke-ActiveDirectoryChecks.ps1
 ```
@@ -359,4 +409,71 @@ RefreshActiveChecks=300
 ```ini
 # You can put custom UserParameters here or split them out per .conf file
 UserParameter=powershell.ps_dcdiag_checks,powershell -ExecutionPolicy Bypass -File "C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1"
+```
+
+#### C:\ProgramData\Zabbix-ext\conf.d\psk_options.conf
+```ini
+# PSK Config
+# openssl rand -hex 32, store it into key.psk
+TLSConnect=psk
+TLSAccept=psk
+TLSPSKFile=C:\\ProgramData\\Zabbix-ext\\conf.d\\key.psk
+TLSPSKIdentity=PSK-001
+```
+
+#### C:\ProgramData\Zabbix-ext\conf.d\key.psk
+
+_Dont worry this is not a real key used anywhere, purely as an example of what is in the file_
+
+```txt
+c63e00000c9999999926fd58e24cdhotdogs7f54burgers627932efries87e79
+```
+
+#### C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1
+```PowerShell
+# This script is meant to be ran on a Windows Domain controller to perform some basic health checks
+# It will return a JSON payload that can be later used in a template
+# Add more tests here if you need
+$tests = "services","replications","advertising","fsmocheck","ridmanager","machineaccount","connectivity","FRSSysvol"
+
+# Runs dcdiag /test:INPUTSTRINGHERE - Looks for "passed test", returns PSCustomObject as @{INPUTSTRINGHERE: INTEGER}
+function Invoke-DcDiagTest {
+    param (
+        [Parameter(Mandatory=$true)][string]$TestName
+    )
+
+    $ReturnPSCustomObject = [PSCustomObject]@{}
+
+    $result = dcdiag /test:$TestName | Select-String "failed"
+    If ($result) {
+        $ReturnPSCustomObject | Add-Member -MemberType NoteProperty -Name $TestName -Value 0 # means bad!
+    } else {
+        $ReturnPSCustomObject | Add-Member -MemberType NoteProperty -Name $TestName -Value 1 # 1 means good!
+    }
+
+    return $ReturnPSCustomObject
+}
+
+$GlobalAllTestsOK = 1 # Preset true unless test fails
+$OutputOfTests = [PSCustomObject]@{} # Return PSCustomObject we will convert to a JSON
+
+ForEach ($TestToRun in $tests) {
+    $SingularTest = Invoke-DcDiagTest -TestName $TestToRun
+    $OutputOfTests | Add-Member -MemberType NoteProperty -Name $TestToRun -Value $SingularTest.$TestToRun
+    If ($SingularTest.$TestToRun -eq 0) {
+        $GlobalAllTestsOK = 0 # If any of the tests fail set GlobalAllTestsOK flag to 0 (false)
+    }
+}
+
+
+$OutputOfTests | Add-Member -MemberType NoteProperty -Name "AllTestsPassed" -Value $GlobalAllTestsOK
+
+# TEST OVERRIDE FOR TESTING
+# $OutputOfTests.services = 0 # DEBUG
+# $OutputOfTests.AllTestsPassed = 0 # DEBUG 
+
+# Convert to JSON so Zabbix template can read it
+$JSONOutput = $OutputOfTests | ConvertTo-JSON 
+
+return $JSONOutput
 ```
