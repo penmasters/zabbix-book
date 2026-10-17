@@ -83,21 +83,6 @@ $FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase
 (Get-Content $file) -replace "Hostname=REPLACEME","Hostname=$FQDNHostNameToLower" | Set-Content $file
 ```
 
-### Order for MSI/Script Install
-
-If you are going full PowerShell 5.1 (Windows Powershell) for installing the agent, creating the "Zabbix-ext" directory and applying a templated zabbix_agent2.conf go in the following order:
-
-1. Install the Agent via MSI normally, even with fake values to start.
-2. Have a Powershell Script create the "Zabbix-ext" directory under `%PROGRAMDATA%` with the `.conf` files
-3. Have a final PowerShell script overwrite `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` with your template + replace the `Hostname=` field
-4. Restart the agent to apply all changes
-5. Tell Windows to attempt to restart the Zabbix Agent 2 service if it fails
-
-```
-# PowerShell One Liner Set service to restart itself if it fails to start.
-& "$env:SystemRoot\System32\sc.exe" failure "Zabbix Agent 2" actions= "restart/60000/restart/60000/restart/60000" reset= 86400
-```
-
 ## Use DNS for `Server=` and `ServerActive=`
 
 This will future proof yourself if you ever run into a situation where the IP address of your
@@ -270,6 +255,21 @@ msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME
 ### Example Upgrade Command (You'd use this for upgrades):
 ```
 msiexec.exe /i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent
+```
+
+### Order for MSI/Script Install
+
+If you are going full PowerShell 5.1 (Windows Powershell) for installing the agent, creating the "Zabbix-ext" directory and applying a templated zabbix_agent2.conf go in the following order:
+
+1. Install the Agent via MSI normally, even with fake values to start.
+2. Have a Powershell Script create the "Zabbix-ext" directory under `%PROGRAMDATA%` with the `.conf` files
+3. Have a final PowerShell script overwrite `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` with your template + replace the `Hostname=` field
+4. Restart the agent to apply all changes
+5. Tell Windows to attempt to restart the Zabbix Agent 2 service if it fails
+
+```
+# PowerShell One Liner Set service to restart itself if it fails to start.
+& "$env:SystemRoot\System32\sc.exe" failure "Zabbix Agent 2" actions= "restart/60000/restart/60000/restart/60000" reset= 86400
 ```
 
 ## Real-World Example Configs - Single Highly-Available Zabbix Environment
