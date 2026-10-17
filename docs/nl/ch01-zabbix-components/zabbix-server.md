@@ -1,13 +1,10 @@
 ---
 description: |
-    Dit gedeelte uit The Zabbix Book met de titel "De Zabbix server installeren" leidt je door de installatie en configuratie van de Zabbix server. 
-    leidt je door de installatie en configuratie van de Zabbix server 
-    op verschillende Linux distributies. Het behandelt de installatie van het Zabbix 
-    serverpakket, de configuratie van de verbindingsinstellingen voor de database en het instellen 
-    van de firewall om inkomende verbindingen naar de Zabbix server toe te staan. 
-    Daarnaast geeft het instructies voor het starten en inschakelen van de Zabbix 
-    server service te starten en in te schakelen, de configuratie te valideren en het logbestand van de server
-    logbestand van de server te controleren op eventuele problemen. 
+    Dit gedeelte uit The Zabbix Book, "De Zabbix server installeren", begeleidt je bij de installatie
+    en configuratie van de Zabbix server op verschillende Linux-distributies. We behandelen
+    de installatie van het Zabbix serverpakket, de databaseverbindingsinstellingen en de firewall.
+    Daarnaast leer je de Zabbix server service te starten en in te schakelen, de configuratie
+    te valideren en het serverlogbestand op eventuele problemen te controleren.
 tags: [beginner]
 ---
 
@@ -25,25 +22,25 @@ Voer het volgende commando uit om de Zabbix servercomponenten te installeren:
 
     Red Hat
     ``` bash
-    # For MySQL/MariaDB backend:
+    # Voor MySQL/MariaDB backend:
     dnf install zabbix-server-mysql
-    # For PostgreSQL backend:
+    # Voor PostgreSQL backend:
     dnf install zabbix-server-pgsql
     ```
 
     SUSE
     ``` bash
-    # For MySQL/MariaDB backend:
+    # Voor MySQL/MariaDB backend:
     zypper install zabbix-server-mysql
-    # For PostgreSQL backend:
+    # Voor PostgreSQL backend:
     zypper install zabbix-server-pgsql
-    ``` 
+    ```
 
     Ubuntu
     ``` bash
-    # For MySQL/MariaDB backend:
+    # Voor MySQL/MariaDB backend:
     sudo apt install zabbix-server-mysql
-    # For PostgreSQL backend:
+    # Voor PostgreSQL backend:
     sudo apt install zabbix-server-pgsql
     ```
 
@@ -61,8 +58,7 @@ onaangeroerd blijft, wat vooral handig is bij het uitvoeren van upgrades of het
 beheren van configuraties met tools zoals Ansible, Puppet of SaltStack.
 
 Op SUSE 16 en later is deze functie al standaard ingeschakeld en geconfigureerd.
-(zie ook [SUSE
-documentatie](https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)).
+(zie ook [https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)](https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)).
 Op SUSE-systemen bevindt het Zabbix serverconfiguratiebestand zich daarom in
 `/usr/etc/zabbix/zabbix_server.conf`, en het is zo ingesteld dat het alle
 `.conf` bestanden uit de `/etc/zabbix_server/zabbix_server.d/` directory bevat.
@@ -93,10 +89,10 @@ verbindingsinstellingen zal bevatten:
     vi /etc/zabbix/zabbix_server.d/database.conf
     ```
 
-    Add the following lines in the configuration file to match your database setup:
+    Voeg de volgende regels toe aan het configuratiebestand en pas ze aan je databaseconfiguratie aan:
 
     ```ini
-    # Zabbix database configuration
+    # Zabbix databaseconfiguratie
     DBHost=<database-host>
     DBName=<database-name>
     DBSchema=<database-schema>  # Only for PostgreSQL
@@ -105,8 +101,8 @@ verbindingsinstellingen zal bevatten:
     DBPort=<database-port>
     ```
 
-Vervang `<database-host>`, `<database-naam>`, `<database-schema>`,
-`<database-user>`, `<database-paswoord>`, en `<database-port>` door de juiste
+Vervang `<database-host>`, `<database-name>`, `<database-schema>`,
+`<database-user>`, `<database-password>`, en `<database-port>` door de juiste
 waarden voor jouw setup. Dit zorgt ervoor dat de Zabbix server kan communiceren
 met je database.
 
@@ -118,11 +114,11 @@ Zabbix de waarde van de laatste regel.
 
 Voor onze opstelling ziet de configuratie er als volgt uit:
 
-!!! example "Voorbeeld database.conf".
+!!! info "Voorbeeld database.conf"
 
     MariaDB/MySQL:
     ```ini
-    # MariaDB database configuration
+    # MariaDB databaseconfiguratie
     DBHost=<ip or dns of your MariaDB server>
     DBName=zabbix
     DBUser=zabbix-srv
@@ -132,7 +128,7 @@ Voor onze opstelling ziet de configuratie er als volgt uit:
 
     PostgreSQL:
     ```ini
-    # PostgreSQL database configuration
+    # PostgreSQL databaseconfiguratie
     DBHost=<ip or dns of your PostgreSQL server>
     DBName=zabbix
     DBSchema=zabbix_server
@@ -141,39 +137,38 @@ Voor onze opstelling ziet de configuratie er als volgt uit:
     DBPort=5432
     ```
 
-!!! note "For PostgreSQL in HA"
+!!! note "PostgreSQL in HA"
 
-    With Zabbix 8.0 it is now possible to add more then 1 IP for DBHost. This way
-    it is possible to setup a HA DB setup with PostgreSQL without the need to
-    use a loadbalancer. Zabbix will detect the active DB himself. Ex:
+    Vanaf Zabbix 8.0 kun je meerdere IP-adressen opgeven voor `DBHost`.
+    Hierdoor kun je een PostgreSQL HA-opstelling gebruiken zonder loadbalancer.
+    Zabbix detecteert zelf welke database actief is. Bijvoorbeeld:
     DBHost=192.168.10.2:5432,192.168.10.3:5432
 
-In this example:
+In dit voorbeeld:
 
 - DBHost verwijst naar de host waar je database draait (gebruik localhost als
   het op dezelfde machine is).
-- DBName is the name of the Zabbix database.
-- DBSchema is the schema name used in PostgreSQL (only needed for PostgreSQL).
-- DBUser is the database user.
-- DBPassword is the password for the database user.
-- DBPort is the port number on which your database server is listening (default
-  for MySQL/MariaDB is 3306 and PostgreSQL is 5432).
+- `DBName` is de naam van de Zabbix database.
+- `DBSchema` is de schemanaam die PostgreSQL gebruikt (alleen nodig voor PostgreSQL).
+- `DBUser` is de databasegebruiker.
+- `DBPassword` is het wachtwoord van de databasegebruiker.
+- `DBPort` is de poort waarop de databaseserver luistert (standaard `3306` voor
+  MySQL/MariaDB en `5432` voor PostgreSQL).
 
-Make sure the settings reflect your environment's database configuration.
+Controleer of deze instellingen overeenkomen met de databaseconfiguratie van je omgeving.
 
 ---
 
-## Configure firewall to allow Zabbix trapper connections
+## Firewall configureren voor Zabbix trapper-verbindingen
 
-Back on your Zabbix server machine, we need to ensure that the firewall is
-configured to allow incoming connections to the Zabbix server.
+Op de machine waarop de Zabbix server draait, moeten we ervoor zorgen dat de
+firewall inkomende verbindingen naar de Zabbix server toestaat.
 
-Your Zabbix server needs to accept incoming connections from Zabbix agents,
-senders, and proxies. By default, Zabbix uses port `10051/tcp` for these
-connections. To allow these connections, you need to open this port in your
-firewall.
+De Zabbix server moet inkomende verbindingen van Zabbix agents, Zabbix senders
+en Zabbix proxies accepteren. Standaard gebruikt Zabbix hiervoor poort
+`10051/tcp`. Open deze poort in de firewall om de verbindingen toe te staan.
 
-!!! info "Open firewall for zabbix-trapper"
+!!! info "Firewall openen voor zabbix-trapper"
 
     Red Hat / SUSE
     ``` bash
@@ -186,10 +181,10 @@ firewall.
     sudo ufw allow 10051/tcp
     ```
 
-If the service is not recognized using `firewall-cmd --add-service`, you can
-manually specify the port:
+Als de service niet wordt herkend door `firewall-cmd --add-service`, kun je
+de poort handmatig opgeven:
 
-!!! info "Add port instead of the service name"
+!!! info "Poort toevoegen in plaats van de servicenaam"
 
     ```bash
     firewall-cmd --add-port=10051/tcp --permanent
@@ -197,40 +192,39 @@ manually specify the port:
 
 ---
 
-## Starting the Zabbix server
+## De Zabbix server starten
 
-With the Zabbix server configuration updated to connect to your database, you
-can now start and enable the Zabbix server service. Run the following command to
-enable the Zabbix server and ensure it starts automatically on boot:
+Nu de Zabbix server is geconfigureerd om verbinding te maken met de database,
+kunnen we de Zabbix server service starten en inschakelen. Voer het volgende
+commando uit om ervoor te zorgen dat de service automatisch start bij het opstarten van het systeem:
 
 ???+ note
 
-    Before restarting the Zabbix server after modifying its configuration, it is
-    considered best practice to validate the configuration to prevent potential
-    issues. Running a configuration check ensures that any errors are detected
-    beforehand, avoiding downtime caused by an invalid configuration. This can
-    be accomplished using the following command: `zabbix-server -T`
+    Het is een goede gewoonte om de configuratie te valideren voordat je de
+    Zabbix server opnieuw start na een wijziging. Zo kun je configuratiefouten
+    vooraf opsporen en downtime door een ongeldige configuratie voorkomen.
+    Gebruik hiervoor het commando `zabbix-server -T`.
 
-!!! info "Enable and start zabbix-server service"
+!!! info "De zabbix-server service inschakelen en starten"
 
-    Red Hat, SUSE and Ubuntu
+    Red Hat, SUSE en Ubuntu
     ``` bash
     sudo systemctl enable zabbix-server --now
     ```
 
-This command will start the Zabbix server service immediately and configure it
-to launch on system startup. To verify that the Zabbix server is running
-correctly, check the log file for any messages. You can view the latest entries
-in the `Zabbix server` log file using:
+Dit commando start de Zabbix server service onmiddellijk en zorgt ervoor dat
+ze bij het opstarten van het systeem automatisch wordt gestart. Controleer
+het logbestand om na te gaan of de Zabbix server correct draait. Je kunt de
+laatste regels van het logbestand bekijken met:
 
-!!! info "Check the log file"
+!!! info "Het logbestand controleren"
 
     ```bash
     tail /var/log/zabbix/zabbix_server.log
     ```
 
-Look for messages indicating that the server has started successfully. If there
-are any issues, the log file will provide details to help with troubleshooting.
+Zoek naar berichten die aangeven dat de server succesvol is gestart.
+Bij problemen bevat het logbestand informatie die kan helpen bij troubleshooting.
 
 !!! example "Voorbeeld uitvoer"
 
@@ -263,10 +257,10 @@ are any issues, the log file will provide details to help with troubleshooting.
     12083:20250225:145333.719 server #8 started [lld manager #1]
     ```
 
-If there was an error and the server was not able to connect to the database you
-would see something like this in the server log file :
+Als er een fout optreedt en de server geen verbinding kan maken met de database,
+kun je bijvoorbeeld de volgende meldingen in het serverlogbestand zien:
 
-!!! example "Example log with errors"
+!!! example "Voorbeeld van een logbestand met fouten"
 
     ```
     12068:20250225:145309.018 Starting Zabbix Server. Zabbix 7.2.4 (revision c34078a4563).
@@ -285,23 +279,26 @@ would see something like this in the server log file :
     12068:20250225:145309.027 [Z3005] query failed: [1146] Table 'zabbix.users' doesn't exist [select userid from users limit 1]
     12068:20250225:145309.027 cannot use database "zabbix": database is not a Zabbix database
     ```
-If that is the case, double-check your database connection settings in the
-`/etc/zabbix/zabbix_server.d/database.conf` file and ensure that the database is
-properly populated as described in the previous steps. Also check firewall rules
-and when using PostgreSQL make sure that `pg_hba.conf` is correctly configured
-to allow connections from the Zabbix server.
+Controleer in dat geval de databaseverbindingsinstellingen in
+`/etc/zabbix/zabbix_server.d/database.conf` en ga na of de database correct
+is gevuld, zoals beschreven in de vorige stappen. Controleer ook de firewallregels.
+Als je PostgreSQL gebruikt, moet `pg_hba.conf` correct geconfigureerd zijn
+om verbindingen vanaf de Zabbix server toe te staan.
 
-Let's check the Zabbix server service to see if it's enabled so that it survives
-a reboot
+Controleer vervolgens of de Zabbix server service is ingeschakeld, zodat
+ze na een reboot automatisch opnieuw wordt gestart.
 
-!!! info "check status of zabbix-server service"
+!!! info "Status van de zabbix-server service controleren"
 
     ```bash
     sudo systemctl status zabbix-server
     ```
 
-???+ example "Example output" ```shell-session localhost:~> sudo systemctl
-status zabbix-server
+???+ example "Voorbeelduitvoer" 
+
+    ``` ini
+    shell-session localhost:~> sudo systemctl
+    status zabbix-server
 
     ● zabbix-server.service - Zabbix Server
          Loaded: loaded (/usr/lib/systemd/system/zabbix-server.service; enabled; preset: disabled)
@@ -337,31 +334,30 @@ status zabbix-server
                  ├─12097 "/usr/sbin/zabbix_server: self-monitoring [processed data in 0.000068 sec, idle 1 sec]"
     ```
 
-This concludes our chapter on installing and configuring the Zabbix server.
+Hiermee sluiten we het hoofdstuk over de installatie en configuratie van de Zabbix server af.
 
 ---
 
 ## Conclusie
 
-With the successful installation and configuration of the Zabbix server, you
-have now established the core component of your monitoring system. We've covered
-the installation of the Zabbix server package, configuration of the database
-connection settings, and setup of the firewall to allow incoming connections to
-the Zabbix server. Additionally, we've started the Zabbix server service and
-verified its operation.
+Met de succesvolle installatie en configuratie van de Zabbix server staat
+nu de centrale component van je monitoringomgeving klaar. We hebben het Zabbix
+serverpakket geïnstalleerd, de databaseverbinding geconfigureerd en de firewall
+ingesteld om inkomende verbindingen naar de Zabbix server toe te staan.
+Daarnaast hebben we de Zabbix server service gestart en gecontroleerd of ze correct werkt.
 
-Your Zabbix server is now ready to communicate with Zabbix agents, senders, and
-proxies. The next step is to install and configure the Zabbix frontend, which
-will provide the user interface for interacting with your monitoring system.
+Je Zabbix server is nu klaar om te communiceren met Zabbix agents, Zabbix senders
+en Zabbix proxies. De volgende stap is het installeren en configureren van de
+Zabbix frontend, die de gebruikersinterface van je monitoringomgeving vormt.
 
-Let's proceed to the next chapter to set up the Zabbix frontend.
+In het volgende hoofdstuk installeren en configureren we de Zabbix frontend.
 
 ---
 
 ## Vragen
 
-1. What version of Zabbix should I install for compatibility and stability?
-2. What Zabbix logs should I check for troubleshooting common issues?
+1. Welke Zabbix-versie kan ik het beste installeren voor compatibiliteit en stabiliteit?
+2. Welke Zabbix-logbestanden moet ik controleren bij het oplossen van veelvoorkomende problemen?
 
 ---
 
