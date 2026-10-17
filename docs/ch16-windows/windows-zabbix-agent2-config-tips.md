@@ -23,26 +23,35 @@ It is with the highest intentions that this will prevent uneeded overhead when i
 time for agent upgrades, or even auto-registration of new/current servers. **Real world
 examples will be provided.**
 
-# Tips For Configuring Your Zabbix Agent fleet
+# Tips For Configuring Your Zabbix Agent 2 fleet
 
 Performing this config initially will save you loads of time when upgrading the
 agent fleet wide, assuming you are using the Microsoft Installer package (MSI)
 
-- Use the MSI installer package
+Tips:
 - Write your own config and use it as a template across the environment
+- For your `Server=` and/or `ServerActive=` param values, use FQDN/DNS names and all lowercase
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
+- Use the MSI installer package for deployment
 - Use PowerShell scripting to your advantage to automate the agent config based on the
+
+Examples of the configuration files and PowerShell scripts are provided if you scroll further.
 
 ## Writing your own config
 
 You do not need to use the default `zabbix_agent2.conf` file provided by the installer.
 Quite honestly, it's a bit overwhelming. You can trim down the default config file for the 
-initial install to make it a bit easier to understand for yourself. Just note, that when
-you go to upgrade via MSI, it will repopulate the config file again with all the comments.
-By then though, you will not have to worry about it much.
+initial install to make it a bit easier to understand for yourself. 
 
-### Real-World Example Config - Single HA Zabbix Environment
+Just note, that when you go to upgrade via MSI (with `NONMSICONFNAME` param), it will 
+merge your initial config file with the default; your parameter values will overwrite 
+the default values. By then though,  you will not have to worry about the wall of 
+text in the config file as you will know which params to look for if you have to change 
+them.
 
+## Real-World Example Config - Single HA Zabbix Environment
+
+### C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
 ```
 # C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
 # Place this into C:\Program Files\Zabbix Agent 2
@@ -54,7 +63,8 @@ Server=zabbixnode1.somedomain.org,zabbixnode2.somedomain.org
 # Server Active Config (Endpoint sends telemetry to Zabbix server/proxy)
 ServerActive=zabbixnode1.domain.org;zabbixnode2.domain.org
 
-# Preferably, you should fully qualify your hostname, but that is a personal preference of the author
+# Preferably, you should fully qualify your hostname and make it lowercase
+# For ServerActive configurations, this field is REQUIRED and is case sensitive! 
 Hostname=hostnameoftheserverlowercase.domain.com
 
 # Include any extra config directories
@@ -74,6 +84,7 @@ LogFile=C:\Program Files\Zabbix Agent 2\zabbix_agent2.log
 LogFileSize=1024
 ```
 
+### C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
 ```
 # Forces the agent to get its config on start immediately
 ForceActiveChecksOnStart=1
