@@ -227,6 +227,28 @@ server/zabbix agent.
 
 `To do: Put a picture here of the solution to help the readers picture the scenario`
 
+## Using the MSI Installer is Preferred
+
+This goes without saying too much so we won't spend too much time here.
+
+When it comes to deployment of the Zabbix Agent 2, you need an installation package
+that can perform the installation & upgrade with a few requirements in mind:
+- Standardized Silent Installations
+- Easier Management via PDQ Deploy/Ivanti Endpoint Manager/SCCM/Group Policy/Intune
+- Standard Switches for install options
+
+MSI meets those requirements easily.
+
+### Example Install Command (General):
+```
+msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1.domain.com,zabbixnode2.domain.com" SERVERACTIVE="zabbixnode1.domain.com,zabbixnode2.domain.com" /qn /silent
+```
+
+### Example Upgrade Command (You'd use this for upgrades):
+```
+msiexec.exe /i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent
+```
+
 ## Real-World Example Config - Single Highly-Available Zabbix Environment
 
 ### C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
@@ -260,6 +282,12 @@ LogFile=C:\Program Files\Zabbix Agent 2\zabbix_agent2.log
 
 # Log File Size
 LogFileSize=1024
+```
+
+### C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
+```
+# This file shall be placed as such C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
+HostMetadata=WindowsServer
 ```
 
 ### C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
