@@ -38,7 +38,7 @@ Tips:
 - Use PowerShell scripting to your advantage to automate the agent config to set the `Hostname=`
 - Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
-- Metadata strings should be defined and are highly considered for Autoregistration
+- Metadata strings should be defined and should be considered for Autoregistration
 - Prioritize using `Active` templates over `Passive` where possible
 - Use the MSI installer package for deployment
 
@@ -386,18 +386,12 @@ Directory Structure of Zabbix-ext under `%PROGRAMDATA%`:
 C:\ProgramData\Zabbix-ext
 ├── conf.d
 │   ├── active_agent.conf
-│   ├── custom_config.conf
+│   ├── custom_checks.conf
 │   ├── metadata.conf
 │   ├── key.psk
 │   └── psk_options.conf
 └── scripts
     └── Invoke-ActiveDirectoryChecks.ps1
-```
-
-#### C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
-```ini
-# This file shall be placed as such C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
-HostMetadata=WindowsServer
 ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
@@ -420,14 +414,10 @@ RefreshActiveChecks=300
 UserParameter=powershell.ps_dcdiag_checks,powershell -ExecutionPolicy Bypass -File "C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1"
 ```
 
-#### C:\ProgramData\Zabbix-ext\conf.d\psk_options.conf
+#### C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
 ```ini
-# PSK Config
-# openssl rand -hex 32, store it into key.psk
-TLSConnect=psk
-TLSAccept=psk
-TLSPSKFile=C:\\ProgramData\\Zabbix-ext\\conf.d\\key.psk
-TLSPSKIdentity=PSK-001
+# This file shall be placed as such C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
+HostMetadata=WindowsServer
 ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\key.psk
@@ -436,6 +426,16 @@ _Dont worry this is not a real key used anywhere, purely as an example of what i
 
 ```txt
 c63e00000c9999999926fd58e24cdhotdogs7f54burgers627932efries87e79
+```
+
+#### C:\ProgramData\Zabbix-ext\conf.d\psk_options.conf
+```ini
+# PSK Config
+# openssl rand -hex 32, store it into key.psk
+TLSConnect=psk
+TLSAccept=psk
+TLSPSKFile=C:\\ProgramData\\Zabbix-ext\\conf.d\\key.psk
+TLSPSKIdentity=PSK-001
 ```
 
 #### C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1
