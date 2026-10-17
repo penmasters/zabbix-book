@@ -150,6 +150,40 @@ all three configs under the `conf.d` directory
 Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
 ```
 
+## Metadata and Autoregistration
+
+If you are considering using Metadata strings, these should also be split out (via `Include=`)
+especially if you are allowing agent auto-registration.
+
+Metadata can help you control and direct auto-registration actions to apply different templates
+based on whatever you put in `HostMetadata`
+
+Some organizations will just use a single string and call it a day. Other organizations may
+choose to set their metadata string based on server role. If you are splitting by role,
+obviously this will be set per server install or changed after the install.
+
+Please note, if the `HostMetadata` value is ever changed, upon the agent restarting, the
+Zabbix Server will kick off an auto-registration action if one is defined for it. If the
+`HostMetadata` value never changes for the agent/endpoint's life time, auto-registration
+will never execute again.
+
+Of course, you still must configure auto-registration actions via the Zabbix Server.
+
+Example 1:
+```
+HostMetadata=WindowsServer
+```
+
+Example 2:
+```
+HostMetadata=WindowsServer_DomainController
+```
+
+Example 3:
+```
+HostMetadata=WindowsServer_MSSQLServer
+```
+
 ## Real-World Example Config - Single Highly-Available Zabbix Environment
 
 ### C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
