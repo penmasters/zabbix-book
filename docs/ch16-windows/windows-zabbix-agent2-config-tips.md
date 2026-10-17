@@ -116,6 +116,40 @@ this will ensure it is picked up. However, if it is a change that requires
 Low-Level Discovery (LLD) to run, you must wait for that LLD's threshold
 to trigger.
 
+## Using the `Include=` param to your advantage
+
+In the event of the Zabbix Agent 2 upgrade process, via MSI commandline execution, you 
+will find that it will do its best to merge the old `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
+file into the newly generated file.
+
+When this happens, it is important to note even with the `NONMSICONFNAME` param provided
+it will not merge/carry-over all the parameters that are set as of 7.0 LTS. In fact, consider the 
+`C:\Program Files\Zabbix Agent 2\` directory a "no-go" zone besides what is needed initially 
+for the MSI to perform the install. (Server,ServerActive,ControlSock,Hostname will be saved)
+
+Params such as `ForceActiveChecksOnStart` and `RefreshActiveChecks` are not brought over. The 
+solution to this is to use `%PROGRAMDATA%` directory to our advantage. Put your custom conf
+files in a "Zabbix Extended" directory so they persist even through a full agent uninstall.
+
+### Solution: Split Custom Configurations To Be Under %PROGRAMDATA%
+
+Directory Structure:
+```
+C:\ProgramData\Zabbix-ext
+├── conf.d
+│   ├── active_agent.conf
+│   ├── custom_config.conf
+│   └── metadata.conf
+└── scripts
+    └── Invoke-ActiveDirectoryChecks.ps1
+```
+
+Include one-liner for your `C:\Program Files\Zabbix Agnet 2\zabbix_agent2.conf` that will get
+all three configs under the `conf.d` directory
+```
+Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
+```
+
 ## Real-World Example Config - Single Highly-Available Zabbix Environment
 
 ### C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
