@@ -287,7 +287,7 @@ You would use a Powershell command to first copy/overwrite zabbix_agent2.conf an
 # Server Passive Config (Zabbix server/proxy polls this endpoint)
 Server=zabbixnode1.somedomain.org,zabbixnode2.somedomain.org
 
-# Server Active Config (Endpoint sends telemetry to Zabbix server/proxy)
+# Server Active Config (Endpoint sends telemetry to Zabbix server/proxy) - Note server active HA nodes of the same env are split via semi-colons ;
 ServerActive=zabbixnode1.domain.org;zabbixnode2.domain.org
 
 # Preferably, you should fully qualify your hostname and make it lowercase
