@@ -598,3 +598,4 @@ tablespaces
 datasources
 basesystem
 sles
+grayed
