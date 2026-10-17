@@ -416,6 +416,12 @@ process of setting up the Zabbix server, database, and frontend.
 
 ## Questions
 
+- Why is it important to use the official Zabbix repository instead of
+  relying on the packages provided by your Linux distribution?
+
+- Why should SELinux remain enabled in production environments, and
+  what are the implications of switching it to permissive mode?
+
 ---
 
 ## Useful URLs

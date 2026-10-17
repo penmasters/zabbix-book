@@ -1,7 +1,8 @@
 ---
-beschrijving: |
-    Lees meer over de systeemvereisten van Zabbix: ondersteunde OS, database-opties, hardware
-    specificaties, firewallpoorten en tijdsynchronisatie die nodig zijn voor een soepele installatie.
+description: |
+    Lees meer over de systeemvereisten van Zabbix: ondersteunde OS, database-opties, 
+    hardwarespecificaties, firewallpoorten en tijdsynchronisatie die nodig zijn voor
+    een soepele installatie.
 tags: [beginner]
 ---
 
@@ -13,14 +14,14 @@ Zabbix heeft specifieke hardware- en softwarevereisten waaraan voldaan moet
 worden, en deze vereisten kunnen na verloop van tijd veranderen. Ze zijn ook
 afhankelijk van de grootte van je installatie en de softwarestack die je kiest.
 Voordat je hardware aanschaft of een databaseversie installeert, is het
-essentieel om de Zabbix documentatie te raadplegen voor de meest recente
+essentieel om de Zabbix-documentatie te raadplegen voor de meest recente
 vereisten voor de versie die je van plan bent te installeren. Je kunt de meest
 recente vereisten vinden
 [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements).
 Zorg ervoor dat je de juiste Zabbix-versie uit de lijst selecteert.
 
 Voor kleinere of testopstellingen kan Zabbix gemakkelijk draaien op een systeem
-met 2 CPU's en 8 GB RAM. Echter, de grootte van je setup, het aantal items dat
+met 2 CPU-cores en 8 GB RAM. Echter, de grootte van je setup, het aantal items dat
 je monitort, de triggers die je aanmaakt en hoe lang je van plan bent gegevens
 te bewaren, zullen invloed hebben op de benodigde bronnen. In de
 gevirtualiseerde omgevingen van vandaag is mijn advies om klein te beginnen en
@@ -38,24 +39,24 @@ servergegevens:
 
 ???+ tip
 
-    Zabbix package names often use dashes (`-`) in their names, such as `zabbix-get`
-    or `zabbix-sender`, but the binaries themselves may use underscores (`_`),
-    like `zabbix_sender` or `zabbix_server`. This naming discrepancy can sometimes
-    be confusing, particularly if you are using packages from non-official Zabbix
-    repositories.
+    Zabbix-pakketnamen bevatten vaak koppeltekens (`-`), zoals `zabbix-get`
+    of `zabbix-sender`, terwijl de uitvoerbare bestanden underscores (`_`) kunnen
+    gebruiken, zoals `zabbix_sender` of `zabbix_server`. Dit verschil kan verwarrend
+    zijn, vooral wanneer je pakketten uit niet-officiële Zabbix-repositories gebruikt.
 
-    Always check if a binary uses a dash or an underscore when troubleshooting.
+    Controleer bij troubleshooting altijd of de naam van het uitvoerbare bestand
+    een koppelteken of een underscore bevat.
 
 ???+ warning
 
-    Starting from Zabbix 7.2, only MySQL (including its forks) and PostgreSQL are
-    supported as back-end databases. Earlier versions of Zabbix also included support
-    for Oracle Database; however, this support was discontinued with Zabbix 7.0 LTS,
-    making it the last LTS version to officially support Oracle DB.
+    Vanaf Zabbix 7.2 worden alleen MySQL (inclusief forks) en PostgreSQL
+    ondersteund als backend-databases. Eerdere Zabbix-versies ondersteunden ook
+    Oracle Database. Die ondersteuning is stopgezet na Zabbix 7.0 LTS,
+    de laatste LTS-versie met officiële ondersteuning voor Oracle DB.
 
 ---
 
-## Basis OS-configuratie
+## Basisconfiguratie van het OS
 
 Besturingssystemen, zoveel keuzes, elk met zijn eigen voordelen en trouwe
 gebruikers. Hoewel Zabbix op een groot aantal platformen geïnstalleerd kan
@@ -76,21 +77,21 @@ dit boek gebruiken we Rocky Linux 9.x, openSUSE Leap 16 en Ubuntu LTS 24.04.x.
 
 ???+ note
 
-    OS installation steps are outside the scope of this book, but a default or even a
-    minimal installation of your preferred OS should be sufficient. Please refrain from
-    installing graphical user interfaces (GUIs) or desktop environments, as they are
-    unnecessary for server setups and consume valuable resources.
+    De installatie van het besturingssysteem valt buiten het bereik van dit boek.
+    Een standaardinstallatie of zelfs een minimale installatie van je gekozen OS
+    volstaat. Installeer bij voorkeur geen grafische gebruikersinterface (GUI)
+    of desktopomgeving: die is voor servers niet nodig en verbruikt extra resources.
 
 Zodra je het OS van je voorkeur hebt geïnstalleerd, zijn er een paar essentiële
 configuraties die je moet uitvoeren voordat je verder gaat met de installatie
-van Zabbix. Voer de volgende stappen uit op **alle** de servers die Zabbix
+van Zabbix. Voer de volgende stappen uit op **alle** servers die Zabbix
 componenten zullen hosten (d.w.z., Zabbix server, database server en webserver).
 
 ---
 
 ### Het systeem bijwerken
 
-Voordat je de Zabbix componenten of andere nieuwe software installeert, is het
+Voordat je de Zabbix-componenten of andere nieuwe software installeert, is het
 verstandig om ervoor te zorgen dat je besturingssysteem up-to-date is met de
 laatste patches en beveiligingsfixes. Dit zal helpen om de stabiliteit van het
 systeem en de compatibiliteit met de software die je gaat installeren te
@@ -101,7 +102,7 @@ hebt.
 Om je systeem bij te werken, voer je de volgende opdracht uit op basis van je
 OS:
 
-Info "Werk uw systeem bij
+!!! info "Werk je systeem bij"
 
     Red Hat
     ```bash
@@ -121,21 +122,21 @@ Info "Werk uw systeem bij
     ```
 ???+ note "Wat is apt, dnf of zypper?"
 
-    - DNF (Dandified YUM) is a package manager used in recent Red Hat-based systems (invoked as `dnf`).
-    - ZYpp (Zen / YaST Packages Patches Patterns Products) is the package manager 
-    used on SUSE-based systems (invoked as `zypper`) and 
-    - APT (Advanced Package Tool) is the package manager used on Debian/Ubuntu-based systems (invoked as `apt`). 
+    - DNF (Dandified YUM) is een package manager voor recente Red Hat-gebaseerde systemen (commando `dnf`).
+    - ZYpp (Zen / YaST Packages Patches Patterns Products) is de package manager
+    voor SUSE-gebaseerde systemen (commando `zypper`).
+    - APT (Advanced Package Tool) is de package manager voor Debian- en Ubuntu-gebaseerde systemen (commando `apt`).
 
-    If you're using another distribution, replace `dnf`/`zypper`/`apt` with your appropriate 
-    package manager, such as `yum`, `pacman`, `emerge`, `apk` or ... .
+    Gebruik je een andere distributie, vervang `dnf`/`zypper`/`apt` dan door de
+    bijbehorende package manager, zoals `yum`, `pacman`, `emerge` of `apk`.
 
-    Do note that package names may also vary from distribution to distribution.
+    Houd er rekening mee dat pakketnamen per distributie kunnen verschillen.
 
 ???+ tip
 
-    Regularly updating your system is crucial for security and performance.
-    Consider setting up automatic updates or scheduling regular maintenance windows
-    to keep your systems current.
+    Regelmatige systeemupdates zijn belangrijk voor de beveiliging en prestaties.
+    Overweeg automatische updates of plan vaste onderhoudsvensters om je systemen
+    up-to-date te houden.
 
 ---
 
@@ -152,17 +153,16 @@ Meestal is `sudo` al aanwezig op de meeste systemen, maar wanneer je een
 minimale installatie van je OS hebt uitgevoerd, kan het ontbreken. Daarom moeten
 we ervoor zorgen dat het geïnstalleerd is.
 
-Dit zal de Zabbix gebruiker ook toelaten om specifieke geconfigureerde
+Dit zal de Zabbix-gebruiker ook toelaten om specifieke geconfigureerde
 commando's uit te voeren met verhoogde rechten zonder volledig te moeten
-overschakelen naar de root gebruiker.
+overschakelen naar de root-gebruiker.
 
-!!! info "Wat is sudo"
+!!! info "Wat is sudo?"
 
-    `sudo` (short for "superuser do") is a command-line utility that allows
-    permitted users to execute commands with the security privileges of another
-    user, typically the superuser (root). It is commonly used in Unix-like
-    operating systems to perform administrative tasks without needing to log in
-    as the root user.
+    `sudo` (afkorting van "superuser do") is een command-line tool waarmee
+    bevoegde gebruikers commando's kunnen uitvoeren met de rechten van een andere
+    gebruiker, meestal de superuser (`root`). Op Unix-achtige systemen wordt
+    `sudo` vaak gebruikt om beheertaken uit te voeren zonder als `root` in te loggen.
 
 Om `sudo` te installeren, voer het volgende commando uit op basis van je OS:
 
@@ -180,8 +180,8 @@ Om `sudo` te installeren, voer het volgende commando uit op basis van je OS:
 
     Ubuntu
 
-    On Ubuntu, `sudo` is normally installed by default. Root access is managed
-    through `sudo` for the initial user created during installation.
+    Op Ubuntu is `sudo` normaal gesproken standaard geïnstalleerd. De gebruiker
+    die tijdens de installatie wordt aangemaakt, beheert root-toegang via `sudo`.
 
 Als `sudo` al geïnstalleerd is, zullen deze commando's je informeren dat de
 laatste versie al aanwezig is en dat er geen verdere actie nodig is. Zo niet,
@@ -219,14 +219,14 @@ Voer het volgende commando uit om de firewall te installeren en in te schakelen:
     ```
 ???+ note "Wat is firewalld / ufw?"
 
-    Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
-    changes to take effect immediately without needing to restart the service.
-    If your distribution does not use [Firewalld](https://www.firewalld.org),
-    refer to your OS documentation for the appropriate firewall configuration steps.
-    Ubuntu makes use of UFW which is merely a frontend for iptables.
+    Firewalld wordt op RHEL- en SUSE-gebaseerde systemen gebruikt voor het beheren
+    van firewallregels en laat wijzigingen direct ingaan zonder de service opnieuw
+    te starten. Als je distributie geen [Firewalld](https://www.firewalld.org)
+    gebruikt, raadpleeg dan de documentatie van je OS. Ubuntu gebruikt UFW,
+    een gebruiksvriendelijke interface voor firewallbeheer.
 
-Tijdens de Zabbix installatie in de volgende hoofdstukken moeten we specifieke
-poorten openen in de firewall om communicatie tussen Zabbix componenten mogelijk
+Tijdens de Zabbix-installatie in de volgende hoofdstukken moeten we specifieke
+poorten openen in de firewall om communicatie tussen Zabbix-componenten mogelijk
 te maken.
 
 In plaats van alleen poorten te openen, zoals we in de volgende hoofdstukken
@@ -255,31 +255,31 @@ Het gebruik van zones in firewalld om firewallregels te configureren biedt
 verschillende voordelen op het gebied van veiligheid, flexibiliteit en
 beheergemak. Hier wordt uitgelegd waarom zones nuttig zijn:
 
-- **Granulaire toegangscontrole :**
+- **Granulaire toegangscontrole:**
 
-:firewalld zones staan verschillende vertrouwensniveaus toe voor verschillende
-netwerkinterfaces en IP bereiken. Je kunt definiëren welke systemen verbinding
+  firewalld-zones staan verschillende vertrouwensniveaus toe voor verschillende
+netwerkinterfaces en IP-bereiken. Je kunt definiëren welke systemen verbinding
 mogen maken met PostgreSQL op basis van hun vertrouwensniveau.
 
 - **Vereenvoudigd regelbeheer:**
 
-:In plaats van het handmatig definiëren van complexe iptable regels, bieden
-zones een georganiseerde manier om firewall regels te groeperen en te beheren op
+  In plaats van het handmatig definiëren van complexe iptables-regels, bieden
+zones een georganiseerde manier om firewallregels te groeperen en te beheren op
 basis van gebruiksscenario's.
 
 - **Verbeterde beveiliging:**
 
-: Door de toegang tot applicaties te beperken tot een specifieke zone, voorkom
+  Door de toegang tot applicaties te beperken tot een specifieke zone, voorkom
 je ongeoorloofde verbindingen vanaf andere interfaces of netwerken.
 
 - **Dynamische configuratie:**
 
-: Firewalld ondersteunt runtime en permanente regelconfiguraties, waardoor
+  Firewalld ondersteunt runtime en permanente regelconfiguraties, waardoor
 veranderingen mogelijk zijn zonder bestaande verbindingen te verstoren.
 
 - **Ondersteuning voor meerdere interfaces:**
 
-: Als de server meerdere netwerkinterfaces heeft, staan zones een verschillend
+  Als de server meerdere netwerkinterfaces heeft, staan zones een verschillend
 beveiligingsbeleid toe voor elke interface.
 
 Om alles samen te voegen en een zone toe te voegen voor, in dit voorbeeld,
@@ -294,7 +294,7 @@ PostgreSQL zou het er als volgt uitzien:
     firewall-cmd --reload
     ```
 
-Waarbij het `bron IP` het enige adres is dat een verbinding met de database tot
+Waarbij het `bron-IP-adres` het enige adres is dat een verbinding met de database tot
 stand mag brengen.
 
 Als je zones wilt gebruiken wanneer je firewalld gebruikt, zorg er dan voor dat
@@ -302,7 +302,7 @@ je de instructies in de volgende hoofdstukken dienovereenkomstig aanpast.
 
 ---
 
-### Tijdserver
+### Tijdsynchronisatie
 
 Een andere cruciale stap is het configureren van de tijdserver en het
 synchroniseren van de Zabbix server met behulp van een NTP client. Nauwkeurige
@@ -342,15 +342,14 @@ te controleren met het volgende commando:
     systemctl status chronyd
     ```
 
-???+ note "Wat is Chrony"
+???+ note "Wat is Chrony?"
 
-    Chrony is a modern replacement for `ntpd`, offering faster and
-    more accurate time synchronization. If your OS does not support
-    [Chrony](https://chrony-project.org/), consider using
-    `ntpd` instead.
+    Chrony is een modern alternatief voor `ntpd` en biedt snelle en nauwkeurige
+    tijdsynchronisatie. Ondersteunt je OS [Chrony](https://chrony-project.org/)
+    niet, overweeg dan `ntpd`.
 
 Zodra Chrony geïnstalleerd is, is de volgende stap ervoor te zorgen dat de
-juiste tijdzone ingesteld is. U kan uw huidige tijdsconfiguratie bekijken met
+juiste tijdzone ingesteld is. Je kunt je huidige tijdsconfiguratie bekijken met
 het commando `timedatectl`:
 
 !!! example "Controleer de tijdconfiguratie"
@@ -366,11 +365,11 @@ het commando `timedatectl`:
               RTC in local TZ: no
     ```
 
-Zorg ervoor dat de Chrony service actief is (raadpleeg indien nodig de vorige
-stappen). Om de juiste tijdzone in te stellen, kunt u eerst alle beschikbare
+Zorg ervoor dat de Chrony-service actief is (raadpleeg indien nodig de vorige
+stappen). Om de juiste tijdzone in te stellen, kun je eerst alle beschikbare
 tijdzones oplijsten met het volgende commando:
 
-!!! info "lijst de tijdzones"
+!!! info "Beschikbare tijdzones weergeven"
 
     ```bash
     timedatectl list-timezones
@@ -419,20 +418,20 @@ juist is ingesteld:
 
 ???+ note
 
-    Some administrators prefer installing all servers in the UTC time zone to
-    ensure that server logs across global deployments are synchronized.
-    Zabbix supports user-based time zone settings, which allows the server to
-    remain in UTC while individual users can adjust the time zone via the
-    interface if needed.
+    Sommige beheerders gebruiken op alle servers de tijdzone UTC, zodat logs
+    in omgevingen met meerdere locaties eenvoudig te vergelijken zijn.
+    Zabbix ondersteunt tijdzone-instellingen per gebruiker. Daardoor kan de
+    server op UTC blijven staan, terwijl gebruikers hun eigen tijdzone
+    instellen via de interface.
 
 ---
 
 #### Chrony-synchronisatie controleren
 
-Om ervoor te zorgen dat Chrony met de juiste tijdservers synchroniseert, kunt u
+Om ervoor te zorgen dat Chrony met de juiste tijdservers synchroniseert, kun je
 het volgende commando uitvoeren:
 
-!!! info "chrony verifiëren"
+!!! info "Chrony controleren"
 
     ```bash
     chronyc
@@ -440,7 +439,7 @@ het volgende commando uitvoeren:
 
 De uitvoer moet lijken op:
 
-!!! example "Controleer uw chrony-uitvoer"
+!!! example "Controleer je Chrony-uitvoer"
 
     ``` shell-session
     localhost:~ # chronyc
@@ -458,7 +457,7 @@ controleren:
 
 Voorbeelduitvoer:
 
-!!! example "Controleer uw tijdserver bronnen"
+!!! example "Controleer je tijdserver bronnen"
 
     ```shell-session
     chronyc> sources
@@ -472,16 +471,16 @@ Voorbeelduitvoer:
 
 In dit voorbeeld bevinden de gebruikte NTP-servers zich buiten je lokale regio.
 Het wordt aanbevolen om over te schakelen naar tijdservers in je eigen land of,
-indien beschikbaar, naar een speciale bedrijfstijdserver. U kunt lokale
+indien beschikbaar, naar een speciale bedrijfstijdserver. Je kunt lokale
 NTP-servers hier vinden: [www.ntppool.org](https://www.ntppool.org/).
 
 ---
 
-#### Tijdservers bijwerken
+#### Tijdsynchronisaties bijwerken
 
-Wijzig het Chrony configuratiebestand om de tijdservers bij te werken:
+Wijzig het Chrony-configuratiebestand om de tijdservers bij te werken:
 
-!!! info "Bewerk chrony config bestand"
+!!! info "Chrony-configuratiebestand bewerken"
 
     Red Hat
     ```bash
@@ -492,10 +491,10 @@ Wijzig het Chrony configuratiebestand om de tijdservers bij te werken:
     ```bash
     vi /etc/chrony.d/pool.conf
     ```
-    On SUSE, the pool configuration is located in a separate file. You can
-    edit that file directly or add a new configuration file in the same directory.
-    In the latter case, ensure to disable or remove the existing pool configuration
-    to avoid conflicts.
+    Op SUSE staat de poolconfiguratie in een apart bestand. Je kunt dit
+    rechtstreeks bewerken of een nieuw configuratiebestand in dezelfde directory
+    toevoegen. Schakel in dat laatste geval de bestaande poolconfiguratie uit
+    of verwijder die om conflicten te voorkomen.
 
     Ubuntu
     ```bash
@@ -507,7 +506,7 @@ ligt.
 
 Voorbeeld van de huidige configuratie:
 
-!!! example "Voorbeeld ntp pool configuratie"
+!!! example "Voorbeeld van een NTP-poolconfiguratie"
 
     ```
     # Use public servers from the pool.ntp.org project.
@@ -517,7 +516,7 @@ Voorbeeld van de huidige configuratie:
 
 Wijzig de gewenste pools naar een lokale tijdserver:
 
-!!! info "ntp-poolconfiguratie wijzigen"
+!!! info "NTP-poolconfiguratie wijzigen"
 
     ```
     # Use public servers from the pool.ntp.org project.
@@ -525,7 +524,7 @@ Wijzig de gewenste pools naar een lokale tijdserver:
     pool be.pool.ntp.org iburst
     ```
 
-Herstart de Chrony service na deze wijziging om de nieuwe configuratie toe te
+Herstart de Chrony-service na deze wijziging om de nieuwe configuratie toe te
 passen:
 
 !!! info "De chrony service opnieuw starten"
@@ -539,7 +538,7 @@ passen:
 Controleer de tijdbronnen opnieuw om er zeker van te zijn dat de nieuwe lokale
 servers in gebruik zijn:
 
-!!! info "Controleer chrony bronnen"
+!!! info "Chrony-bronnen controleren"
 
     ```
     chronyc> sources
@@ -563,7 +562,7 @@ Dit bevestigt dat het systeem nu lokale tijdservers gebruikt.
 
 ## Conclusie
 
-Zoals we gezien hebben, moet er, voordat er over de Zabbix pakketten wordt
+Zoals we gezien hebben, moet er, voordat er over de Zabbix-pakketten wordt
 nagedacht, aandacht worden besteed aan de omgeving waarin het zich zal bevinden.
 Een goed geconfigureerd besturingssysteem, een open pad door de firewall en
 nauwkeurige tijdregistratie zijn niet slechts suggesties, maar essentiële
@@ -576,7 +575,7 @@ is op de taak.
 - Waarom denk je dat nauwkeurige tijdsynchronisatie zo cruciaal is voor een
   monitoringsysteem als Zabbix?
 - Nu de basis is gelegd, wat is volgens jullie de eerste stap in het
-  daadwerkelijke Zabbix installatieproces?
+  daadwerkelijke Zabbix-installatieproces?
 - Als we Zabbix gaan installeren, laten we dan eens nadenken over
   netwerkcommunicatie. Welke belangrijke poorten moet je door de firewall
   toestaan zodat de Zabbix server en agents effectief met elkaar kunnen
