@@ -20,7 +20,7 @@ would be PDQ Deploy or Ivanti Endpoint Manager (formerly Landesk). Though, there
 holding you back if you are a small shop with 20 servers if you are lacking these tools and
 need to log in and run some of these steps manually.
 
-It is with the highest intentions that this will prevent uneeded overhead when it comes Use includes 
+It is with the highest intentions that this will prevent uneeded overhead when it comes 
 time for agent upgrades, or even auto-registration of new/current servers. **Real world
 examples will be provided.**
 
