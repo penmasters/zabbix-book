@@ -32,8 +32,8 @@ agent fleet wide, assuming you are using the Microsoft Installer package (MSI).
 This section is a tl;dr but also an index. The page will go in the order of the
 list below.
 
-Tips:
-- Take your control of your config and use it as a template
+Tips/Index:
+- Take your control of your config and look at it as a template
 - Keep your `Hostname=` field fully-qualified and lowercase, i.e. `hostname.domain.org`
 - Use PowerShell scripting to your advantage to automate the agent config to set the `Hostname=`
 - Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
