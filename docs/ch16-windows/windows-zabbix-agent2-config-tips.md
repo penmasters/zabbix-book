@@ -20,7 +20,7 @@ would be PDQ Deploy or Ivanti Endpoint Manager (formerly Landesk). Though, there
 holding you back if you are a small shop with 20 servers if you are lacking these tools and
 need to log in and run some of these steps manually.
 
-It is with the highest intentions that this will prevent uneeded overhead when it comes 
+It is with the highest intentions that this will prevent unneeded overhead when it comes 
 time for agent upgrades, or even auto-registration of new/current servers. **Real world
 examples will be provided.**
 
@@ -78,7 +78,7 @@ but I implore you to continue reading the next few sections before you do.
 
 ## Using the `Include=` param to your advantage
 
-In the event of the Zabbix Agent 2 upgrade process, via MSI commandline execution, you 
+In the event of the Zabbix Agent 2 upgrade process, via MSI command-line execution, you 
 will find that it will do its best to merge the old `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
 file into the newly generated zabbix_agent2.conf file.
 
@@ -107,7 +107,7 @@ C:\ProgramData\Zabbix-ext
     └── Invoke-ActiveDirectoryChecks.ps1
 ```
 
-Include one-liner for your `C:\Program Files\Zabbix Agnet 2\zabbix_agent2.conf` that will
+Include one-liner for your `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` that will
 get all three configs under the `C:\ProgramData\Zabbix-ext\conf.d` directory
 ```ini
 Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
@@ -139,7 +139,7 @@ targeted endpoint server's hostname.
 This section provides a simple example of a "post-install step" in PowerShell you can run to work
 around that limitation but still get the result you need/want.
 
-When you plan your intial config for `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
+When you plan your initial config for `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
 do so in the context of a template so you can use PowerShell later on to replace the
 `Hostname=` value with the current FQDN host name during the installation process if
 your deployment method does not allow for variables to be inserted into the MSI
@@ -195,7 +195,7 @@ obviously this will be set per server install or changed after the install.
 
 Please note, if the `HostMetadata` value is ever changed, upon the agent restarting, the
 Zabbix Server will kick off an auto-registration action if one is defined for it. If the
-`HostMetadata` value never changes for the agent/endpoint's life time, auto-registration
+`HostMetadata` value never changes for the agent/endpoint's lifetime, auto-registration
 will never execute again after executing for the first time.
 
 Of course, you still must configure auto-registration actions via the Zabbix Server.
@@ -293,7 +293,7 @@ msiexec.exe /i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="
 
 ### Order for MSI/Script Install
 
-If you are going full MSI + PowerShell 5.1 (Windows Powershell) for installing the agent, creating the "Zabbix-ext" directory and applying a templated zabbix_agent2.conf go in the following order:
+If you are going full MSI + PowerShell 5.1 (Windows PowerShell) for installing the agent, creating the "Zabbix-ext" directory and applying a templated zabbix_agent2.conf go in the following order:
 
 1. Install the Agent via MSI normally
     - Optional Edge Case: Have a PowerShell script overwrite `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` with the `Hostname=`,`Server=`,`ServerActive=` fields with your required values if you are unable to set them via the MSI switches for any reason. A small example on how to do this inline without overwriting the entire file was provided [earlier on this same page - click here to jump](windows-zabbix-agent2-config-tips.md##code--snippet)
@@ -331,12 +331,12 @@ If you are going full MSI + PowerShell 5.1 (Windows Powershell) for installing t
 
 This includes the standard configuration in the default location in addition to adding the "Zabbix Extended" directory under `%PROGRAMDATA%` instead of the `zabbix_agent2.d`
 
-You can use a Powershell command to overrite `Hostname=` matching on `Hostname=REPLACEMEBUTLOWERCASE.domain.com`
+You can use a PowerShell command to overwrite `Hostname=` matching on `Hostname=REPLACEMEBUTLOWERCASE.domain.com`
 
 ### C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
 ```ini
 # C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf (Snippet with author comments)
-# This is a snippit of the main conf file with author comments
+# This is a snippet of the main conf file with author comments
 # Remember to not remove the default params/lines from here, but you can change the Server and ServerActive values and add Include= at the bottom.
 # Just don't customize this base file any further than those param values.
 
@@ -413,7 +413,7 @@ RefreshActiveChecks=300
 #### C:\ProgramData\Zabbix-ext\conf.d\custom_checks.conf
 ```ini
 # You can put custom UserParameters here or split them out per .conf file
-UserParameter=powershell.ps_dcdiag_checks,powershell -ExecutionPolicy Bypass -File "C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1"
+UserParameter=PowerShell.ps_dcdiag_checks,PowerShell -ExecutionPolicy Bypass -File "C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1"
 ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
@@ -424,7 +424,7 @@ HostMetadata=WindowsServer
 
 #### C:\ProgramData\Zabbix-ext\conf.d\key.psk
 
-_Dont worry this is not a real key used anywhere, purely as an example of what is in the file_
+_Don't worry this is not a real key used anywhere, purely as an example of what is in the file_
 
 ```txt
 c63e00000c9999999926fd58e24cdhotdogs7f54burgers627932efries87e79
