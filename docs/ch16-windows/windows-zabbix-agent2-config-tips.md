@@ -36,8 +36,8 @@ Tips:
 - Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
 - Metadata and Autoregistration
+- Prioritize using `Active` templates over `Passive` where possible
 - Use the MSI installer package for deployment
-- Prioritize using `ServerActive` templates over `Server` where possible
 
 Examples of the configuration files and PowerShell scripts are provided if you scroll further.
 
@@ -183,6 +183,49 @@ Example 3:
 ```
 HostMetadata=WindowsServer_MSSQLServer
 ```
+
+## Active vs Passive Monitoring Templates
+
+If you have made it this far, you are probably under the impression that
+the author(s) of this page are heavily leaning towards Active based checks.
+
+There are scenarios for both and thankfully both can be used at the same time.
+
+From a design/architectural standard, Active checks should always be used. However,
+In some cases, you may not be able to send data from a DMZ subnet back to internal,
+but the policy states connections that originate from internal the internal WAN/LAN
+enterprise network may communicate out to the DMZ.
+
+By default, in your agent config you should be prepared for both scenarios by
+setting `Server=` (Passive) and `ServerActive=` (Active) by default.
+
+### When to use Active Templates
+
+Anything that requires LLD for discovering disks (C:\\...D:\\ etc...) or Windows
+Services, CPU, RAM... all your basic monitoring needs should be placed onto the
+agent to collect to take the load off of your Zabbix Server/Proxy.
+
+Active Checks are heavily preferred especially in Windows environments where
+querying `perfmon` can be slow during high CPU loads or disk I/O contention.
+
+### When to use Passive Templates
+
+This can be tricky but a specific scenario came up where one organization needed
+to monitor the status of a Microsoft SQL Always-On Availability group. The problem
+with this is, that consists of multiple hosts that already exist in Zabbix and are
+sending information. A cluster can be healthy overall, but a specific node can
+be not healthy. How do you monitor the cluster health and the node health?
+
+**The solution:**
+The organization created a separate Passive Template to query the Microsoft SQL
+Always-On Listeners specifically (which is a Virtual IP that migrates between 
+the hosts). They then created new hosts in Zabbix for each listener and used
+a Passive check against the Always-On Listener IP. If the Availability group
+failed over to a new node, the Zabbix Server/Proxy still is querying the same
+IP, even though it's now gathering information about the cluster from a different
+server/zabbix agent.
+
+`To do: Put a picture here of the solution to help the readers picture the scenario`
 
 ## Real-World Example Config - Single Highly-Available Zabbix Environment
 
