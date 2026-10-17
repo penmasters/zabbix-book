@@ -26,7 +26,7 @@ examples will be provided.**
 
 # Tips For Configuring Your Zabbix Agent 2 fleet
 
-Performing this config initially will save you loads of time when upgrading the
+Performing this method of config initially will save you loads of time when upgrading the
 agent fleet wide, assuming you are using the Microsoft Installer package (MSI).
 
 This section is a tl;dr but also an index. The page will go in the order of the
