@@ -1,3 +1,10 @@
+---
+description: |
+    Learn how to create Zabbix network maps, visualize infrastructure,
+    configure link indicators, and monitor network connections in real time.
+tags: [beginner]
+---
+
 # Creating Maps for better overviews
 
 Network maps give you a graphical view of your environment. Hosts, host groups,
