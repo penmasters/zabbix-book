@@ -35,8 +35,8 @@ Tips:
 - For your `Server=` and/or `ServerActive=` param values, use FQDN/DNS names.
 - Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
-- Use the MSI installer package for deployment
 - Metadata and Autoregistration
+- Use the MSI installer package for deployment
 - Prioritize using `ServerActive` templates over `Server` where possible
 
 Examples of the configuration files and PowerShell scripts are provided if you scroll further.
