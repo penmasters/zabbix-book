@@ -36,8 +36,6 @@ Tips:
 - Take your control of your config and use it as a template
 - Keep your `Hostname=` field fully-qualified and lowercase, i.e. `hostname.domain.org`
 - Use PowerShell scripting to your advantage to automate the agent config to set the `Hostname=`
-
-~~- For your `Server=` and/or `ServerActive=` param values, use FQDN/DNS names.~~ **TO DO**
 - Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
 - Metadata strings should be defined and are highly considered for Autoregistration
@@ -143,22 +141,6 @@ $FQDNHostNameToLower = $FQDNHostName.ToLower()
 $FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase
 (Get-Content $file) -replace "Hostname=REPLACEME","Hostname=$FQDNHostNameToLower" | Set-Content $file
 ```
-
-<!-- Remove
-## Use DNS for `Server=` and `ServerActive=`
-
-This will future proof yourself if you ever run into a situation where the IP address of your
-Zabbix server/proxy must change. If you have it set to a FQDN/DNS name, you won't have to
-worry about updating your agent configs fleet wide.
-
-There may be an argument to continue monitoring if you wish to withstand a DNS outage and 
-continue monitoring..... However, you have much bigger fish to fry if DNS queries are
-timing out.
-
-As a Monitoring System Janitor/Sysadmin/SRE this can be a key design decision you make
-for the business but I would heavily lean for DNS/FQDN values instead of IPs for these params
-regardless to prevent future headache
--->
 
 ## Utilizing `ForceActiveChecksOnStart` and `RefreshActiveChecks`
 
