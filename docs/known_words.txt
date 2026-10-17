@@ -595,3 +595,6 @@ opentelemetry
 otlp
 querys
 tablespaces
+datasources
+basesystem
+sles
