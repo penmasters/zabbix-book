@@ -237,7 +237,9 @@ failed over to a new node, the Zabbix Server/Proxy still is querying the same
 IP, even though it's now gathering information about the cluster from a different
 server/zabbix agent.
 
-`To do: Put a picture here of the solution to help the readers picture the scenario`
+![Normal Operations](ch16-msaosql_normal.png)
+
+![Failover of VIP To Healthy Node](ch16-msaosql_failover.png)
 
 ## Using the MSI Installer is Preferred
 
