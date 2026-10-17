@@ -222,7 +222,11 @@ This can be tricky but a specific scenario came up where one organization needed
 to monitor the status of a Microsoft SQL Always-On Availability group. The problem
 with this is, that consists of multiple hosts that already exist in Zabbix and are
 sending information. A cluster can be healthy overall, but a specific node can
-be not healthy. How do you monitor the cluster health as a single entity?
+be not healthy and potentially be down. So if you are monitoring the cluster from
+only a single node and not all of them... you could miss an alert. On the other end,
+if you apply a template to all three hosts you have duplicate data.
+
+The question becomes: How do you monitor the cluster health as a single entity?
 
 **The solution:**
 The organization created a separate Passive Template to query the Microsoft SQL
@@ -250,7 +254,7 @@ MSI meets those requirements easily especially with detecting whether it's insta
 
 ### Example Install Command (General):
 ```
-msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1.domain.com,zabbixnode2.domain.com" SERVERACTIVE="zabbixnode1.domain.com,zabbixnode2.domain.com" /qn /silent
+msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1.domain.com,zabbixnode2.domain.com" SERVERACTIVE="zabbixnode1.domain.com;zabbixnode2.domain.com" /qn /silent
 ```
 
 ### Example Upgrade Command (You'd use this for upgrades if following the configs posted at the end of the page):
