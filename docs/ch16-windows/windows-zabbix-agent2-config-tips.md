@@ -165,7 +165,7 @@ obviously this will be set per server install or changed after the install.
 Please note, if the `HostMetadata` value is ever changed, upon the agent restarting, the
 Zabbix Server will kick off an auto-registration action if one is defined for it. If the
 `HostMetadata` value never changes for the agent/endpoint's life time, auto-registration
-will never execute again.
+will never execute again after executing for the first time.
 
 Of course, you still must configure auto-registration actions via the Zabbix Server.
 
