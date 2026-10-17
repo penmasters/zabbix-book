@@ -43,7 +43,7 @@ Tips:
 - Prioritize using `Active` templates over `Passive` where possible
 - Use the MSI installer package for deployment
 
-Examples of the configuration files and PowerShell scripts are provided if you scroll further.
+Examples of the configuration files and PowerShell scripts are provided at the bottom
 
 ## Writing your own config
 
