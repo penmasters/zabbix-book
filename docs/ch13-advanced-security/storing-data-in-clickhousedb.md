@@ -104,75 +104,133 @@ Begin by installing the official ClickHouse repository and packages.
 Before starting ClickHouse, we need to tune the system for optimal performance.
 
 1. **Hugepages**
-   Clickhouse does not use hugepages and requires it to be disabled. 
-   On SUSE, transparent hugepages are enabled by default. 
    
-   You can check the current status with:
+Clickhouse does not use hugepages and requires it to be disabled. 
+On SUSE, transparent hugepages are enabled by default. 
+   
+You can check the current status with:
 
-   ```shell-session
-   cat /sys/kernel/mm/transparent_hugepage/enabled
-   ```
-   You will see something like:
+```shell-session
+cat /sys/kernel/mm/transparent_hugepage/enabled
+```
 
-   ```text
-   [always] madvise never
-   ```
-   The value in brackets indicates the current setting. If it is set to `always`,
-   you need to set it to `madvise` or to `never`. Clickhouse recommends to use
-   `madvise`.
+You will see something like:
 
-   To disable it, edit `/etc/default/grub` and add the `transparent_hugepage=never`
-   parameter at the end of the `GRUB_CMDLINE_LINUX_DEFAULT` variable:
+```text
+[always] madvise never
+```
 
-   ```ini
-   GRUB_CMDLINE_LINUX_DEFAULT="... transparent_hugepage=never"
-   ```
+The value in brackets indicates the current setting. If it is set to `always`,
+you need to set it to `madvise` or to `never`. Clickhouse recommends to use `madvise`.
 
-   Then update the grub configuration and reboot the system:
+To disable it, edit `/etc/default/grub` and add the `transparent_hugepage=never`
+parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
 
-   ```bash
-   grub2-mkconfig -o /boot/grub2/grub.cfg
-   reboot
-   ```
+!!! info "Adapt Grub config"
+
+    To configure Transparent Huge Pages (THP) in `madvise` mode, the kernel boot
+    parameters must be updated. The procedure differs depending on your Linux distribution.
+    **Red Hat Enterprise Linux / Rocky Linux 9**
+    On RHEL-based systems, use `grubby` to update the kernel parameters. This is the
+    recommended approach for systems using Boot Loader Specification (BLS).
+
+    ```bash
+    sudo grubby --update-kernel=ALL --args="transparent_hugepage=madvise"
+    ```
+
+    **Ubuntu**
+
+    On Ubuntu, edit `/etc/default/grub` and add `transparent_hugepage=madvise` to the
+    existing `GRUB_CMDLINE_LINUX_DEFAULT` parameter.
+
+    For example:
+
+    ```bash
+    GRUB_CMDLINE_LINUX_DEFAULT="quiet splash transparent_hugepage=madvise"
+    ```
+
+    Apply the configuration:
+
+    ```bash
+    sudo update-grub
+    ```
+
+    **Verify the configuration**
+
+    Reboot the system to activate the new kernel parameters:
+
+    ```bash
+    sudo reboot
+    ```
+
+    After rebooting, verify the active THP configuration:
+
+    ```bash
+    cat /sys/kernel/mm/transparent_hugepage/enabled
+    ```
+
+    Expected output:
+
+    ```text
+    always [madvise] never
+    ```
+
+    The value enclosed in square brackets indicates the currently active setting.
+
+    You can also verify that the kernel parameter was applied:
+
+    ```bash
+    cat /proc/cmdline
+    ```
+
+    The output should contain `transparent_hugepage=madvise`.
 
 2. **Delay accounting**
-   ClickHouse requires Kernel delay accounting to be enabled. On SUSE, delay
-   accounting is disabled by default. You can check the current status with:
+   
+ClickHouse requires Kernel delay accounting to be enabled. You can check the
+current status with:
 
-   ```bash
-   cat /sys/kernel/debug/delayacct
-   ```
-   If it displays `0`, it is disabled and you need to enable it.
+```bash
+cat /sys/kernel/debug/delayacct
+or
+sysctl kernel.task_delayacct
+```
 
-   Create a new file `/etc/sysctl.conf.d/99-clickhouse.conf` and add the following line:
+If it displays `0`, it is disabled and you need to enable it.
+Create a new file `/etc/sysctl.d/99-clickhouse.conf` and add the following line:
 
-   ```ini
-    # Enable delay accounting
-    kernel.task_delayacct = 1
-    ```
+```ini
+# Enable delay accounting
+kernel.task_delayacct = 1
+```
     
-    Then apply the changes:
+This applies all the changes at once :
     
-    ```bash
-    sysctl -p /etc/sysctl.conf.d/99-clickhouse.conf
-    ```
+```bash
+sudo tee /etc/sysctl.d/99-clickhouse.conf > /dev/null <<'EOF'
+# Enable delay accounting
+kernel.task_delayacct = 1
+EOF
+```
 
-3. **Number of threads**
-   ClickHouse is a multi-threaded application and requires a sufficient number
-   of threads to be available. On SUSE, the default max. number of threads is 15574
-   however, ClickHouse requires at least 30000.
-   To ensure that the ClickHouse-server service has enough threads, create a 
-   new systemd override file:
+4. **Number of threads**
 
-   ```bash
-   systemctl edit clickhouse-server
-   ```
-   and add the following lines:
+ClickHouse is a multi-threaded application and requires a sufficient number
+of threads to be available. On SUSE, the default max. number of threads is 15574
+however, ClickHouse requires at least 30000.
+To ensure that the ClickHouse-server service has enough threads, create a 
+new systemd override file:
 
-   ```ini
-   [Service]
-   LimitNPROC=30000
-   ```
+```bash
+systemctl edit clickhouse-server
+```
+   
+and add the following lines:
+
+```ini
+[Service]
+LimitNPROC=30000
+```
 
 Enable the ClickHouse service so it starts automatically at boot.
 
@@ -440,7 +498,7 @@ TTL are recommended.
 
 Create the Zabbix server configuration file:
 
-`/etc/zabbix/zabbix_server.conf.d/clickhouse.conf`
+`/etc/zabbix/zabbix_server.d/clickhouse.conf` or edit the `/etc/zabbix/zabbix_server.conf` file.
 
 !!! info "Zabbix server configuration"
 
@@ -486,6 +544,29 @@ Monitor the log:
     ```bash
     tail -f /var/log/zabbix/zabbix_server.log
     ```
+
+!!! note "SELinux considerations"
+
+    On RHEL-based systems, SELinux may block connections from the
+    Zabbix server to ClickHouse (TCP port 8123).
+
+    If you encounter connection errors, check for SELinux denials:
+
+    ```bash
+    ausearch -m AVC -ts recent
+    ```
+
+    To allow outbound network connections from the Zabbix server, enable
+    the following SELinux boolean:
+
+    ```bash
+    setsebool -P zabbix_can_network on
+    setsebool -P httpd_can_network_connect on
+    ```
+
+    The `-P` option makes the change persistent across reboots.
+
+    **Note:** This boolean allows broader network access for Zabbix, not just connections to ClickHouse.
 
 A successful connection produces output similar to:
 
@@ -555,7 +636,7 @@ history backend is correctly configured.
 
 ## Frontend
 
-In our frontend file `zabbix.conf.php` we also need to make some changes so that
+In our frontend file `/etc/zabbix/web/zabbix.conf.php` we also need to make some changes so that
 the frontend knows where to find the history data.
 
 !!! warning "Restart PHP-FPM or Apache"
