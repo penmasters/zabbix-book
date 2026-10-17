@@ -1,0 +1,3 @@
+{# Wrap Material's pt-BR language module and re-export its `t()` macro #}
+{% import "partials/languages/pt-BR.html" as L %}
+{% macro t(key) %}{{ L.t(key) }}{% endmacro %}

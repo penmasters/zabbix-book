@@ -1,0 +1,1853 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Set up Zabbix 8.0 APM with OpenTelemetry: configure the proxy collector and
+ClickHouse, then alert on span latency with Telemetry query items.
+" name="description"/>
+<meta content="The Monitoring Penmasters" name="author"/>
+<link href="https://thezabbixbook.com/pt_BR/ch04-zabbix-collecting-data/telemetry/" rel="canonical">
+<link href="../calculated/" rel="prev"/>
+<link href="../../ch05-zabbix-triggers/chapter/" rel="next"/>
+<link href="../../../fr/ch04-zabbix-collecting-data/telemetry/" hreflang="fr" rel="alternate"/>
+<link href="../../../nl/ch04-zabbix-collecting-data/telemetry/" hreflang="nl" rel="alternate"/>
+<link href="./" hreflang="pt_BR" rel="alternate"/>
+<link href="../../../ru/ch04-zabbix-collecting-data/telemetry/" hreflang="ru" rel="alternate"/>
+<link href="../../../ch04-zabbix-collecting-data/telemetry/" hreflang="en" rel="alternate"/>
+<link href="../../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator"/>
+<title>APM - Zabbix Book</title>
+<link href="../../../assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+
+<link href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css" rel="stylesheet">
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../../../stylesheets/extra.css?v=73101464b7b330f81fba5e8da2de00c7e382435b" rel="stylesheet"/>
+<link href="../../../stylesheets/linewrap.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<meta content="APM" property="og:title"/>
+<meta content="Set up Zabbix 8.0 APM with OpenTelemetry: configure the proxy collector and ClickHouse, then alert on span latency with Telemetry query items." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://thezabbixbook.com/pt_BR/ch04-zabbix-collecting-data/telemetry/" property="og:url"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="APM" name="twitter:title"/>
+<meta content="Set up Zabbix 8.0 APM with OpenTelemetry: configure the proxy collector and ClickHouse, then alert on span latency with Telemetry query items." name="twitter:description"/>
+<meta content="https://www.thezabbixbook.com/assets/social-card.jpg" name="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="627" property="og:image:height"/>
+</head>
+<body data-md-color-accent="blue" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#application-performance-monitoring-in-zabbix-80-with-opentelemetry">
+          Pular para conteúdo
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<div class="gmc-announce">
+            Esta página ainda não foi traduzida para o português. Portanto, está sendo exibida em inglês.
+            <a href="/gmc/pt_BR/contribute/#translations">Ajude-nos a traduzir!</a>
+</div>
+<script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+</div>
+</aside>
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Cabeçalho" class="md-header__inner md-grid">
+<a aria-label="Zabbix Book" class="md-header__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Zabbix Book
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              APM
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="blue" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-blue" data-md-color-media="" data-md-color-primary="light-blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<div class="md-header__option">
+<div class="md-select">
+<button aria-label="Selecione o idioma" class="md-header__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"></path></svg>
+</button>
+<div class="md-select__inner">
+<ul class="md-select__list">
+<li class="md-select__item">
+<a class="md-select__link" href="../../../fr/ch04-zabbix-collecting-data/telemetry/" hreflang="fr">
+              Français
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../nl/ch04-zabbix-collecting-data/telemetry/" hreflang="nl">
+              Nederlands
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="./" hreflang="pt_BR">
+              Brazilian Portuguese
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ru/ch04-zabbix-collecting-data/telemetry/" hreflang="ru">
+              Russian
+            </a>
+</li>
+<li class="md-select__item">
+<a class="md-select__link" href="../../../ch04-zabbix-collecting-data/telemetry/" hreflang="en">
+              English
+            </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Buscar" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Buscar" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Pesquisar" class="md-search__options">
+<a aria-label="Compartilhar" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Compartilhar">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Limpar" class="md-search__icon md-icon" tabindex="-1" title="Limpar" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navegação" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Zabbix Book" class="md-nav__button md-logo" data-md-component="logo" href="../../" title="Zabbix Book">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Zabbix Book
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/penmasters/zabbix-book" title="Ir para repositório">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../">
+<span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Guidelines/">
+<span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../tags/">
+<span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../Supporters-Contributors/">
+<span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch00-getting-started/initial-steps/">
+<span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch01-zabbix-components/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch02-zabbix-installation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch03-zabbix-proxies/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 04 : Collecting data 
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../chapter/">
+<span class="md-ellipsis">
+    
+  
+    Collecting data with your Zabbix environment
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dataflow/">
+<span class="md-ellipsis">
+    
+  
+    Dataflow
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../hosts/">
+<span class="md-ellipsis">
+    
+  
+    Hosts
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../simple-checks/">
+<span class="md-ellipsis">
+    
+  
+    Simple checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../host-interfaces/">
+<span class="md-ellipsis">
+    
+  
+    Host Interfaces
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-passive/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent installation and Passive monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-agent-active/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix Agent Active monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-polling/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Polling
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../snmp-trapping/">
+<span class="md-ellipsis">
+    
+  
+    SNMP Trapping
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../http/">
+<span class="md-ellipsis">
+    
+  
+    HTTP Items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../preprocessing/">
+<span class="md-ellipsis">
+    
+  
+    Preprocessing
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../dependent/">
+<span class="md-ellipsis">
+    
+  
+    Dependent items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ssh-telnet/">
+<span class="md-ellipsis">
+    
+  
+    SSH / Telnet
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../script/">
+<span class="md-ellipsis">
+    
+  
+    Script item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../jmx/">
+<span class="md-ellipsis">
+    
+  
+    Monitoring Java Applications with JMX
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ipmi/">
+<span class="md-ellipsis">
+    
+  
+    IPMI Monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../database-odbc/">
+<span class="md-ellipsis">
+    
+  
+    Database Monitoring via ODBC
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../database-agent/">
+<span class="md-ellipsis">
+    
+  
+    Database checks via Zabbix agent 2
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../zabbix-trapper/">
+<span class="md-ellipsis">
+    
+  
+    Zabbix trapper
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../external-checks/">
+<span class="md-ellipsis">
+    
+  
+    External checks
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../browser/">
+<span class="md-ellipsis">
+    
+  
+    Browser item
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../calculated/">
+<span class="md-ellipsis">
+    
+  
+    Calculated items
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    APM
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    APM
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-apm-works-in-zabbix">
+<span class="md-ellipsis">
+      
+        How APM works in Zabbix
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architecture-considerations-for-distributed-environments">
+<span class="md-ellipsis">
+      
+        Architecture considerations for distributed environments
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#setting-up-the-zabbix-side">
+<span class="md-ellipsis">
+      
+        Setting up the Zabbix side
+      
+    </span>
+</a>
+<nav aria-label="Setting up the Zabbix side" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-proxy-configuration-for-collecting-otlp-data">
+<span class="md-ellipsis">
+      
+        1. Proxy configuration (for collecting OTLP data)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-global-data-source">
+<span class="md-ellipsis">
+      
+        2. Global data source
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-telemetry-query-on-server-or-proxy">
+<span class="md-ellipsis">
+      
+        3. Telemetry query on server or proxy
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#telemetry-query-items-in-brief">
+<span class="md-ellipsis">
+      
+        Telemetry query items in brief
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lab-generate-traces-and-alert-on-span-latency">
+<span class="md-ellipsis">
+      
+        Lab: generate traces and alert on span latency
+      
+    </span>
+</a>
+<nav aria-label="Lab: generate traces and alert on span latency" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-1-generate-sustained-baseline-traces">
+<span class="md-ellipsis">
+      
+        Step 1: Generate sustained baseline traces
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-2-add-datasources-in-the-administration">
+<span class="md-ellipsis">
+      
+        Step 2: Add datasources in the Administration
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-3-confirm-data-in-the-apm-menu">
+<span class="md-ellipsis">
+      
+        Step 3: Confirm data in the APM menu
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-4-create-a-host-for-the-item">
+<span class="md-ellipsis">
+      
+        Step 4: Create a host for the item
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-5-create-the-telemetry-query-item">
+<span class="md-ellipsis">
+      
+        Step 5: Create the Telemetry query item
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-6-create-a-trigger-and-raise-latency">
+<span class="md-ellipsis">
+      
+        Step 6: Create a trigger and raise latency
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-7-clean-up">
+<span class="md-ellipsis">
+      
+        Step 7: Clean up
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-this-lab-proves">
+<span class="md-ellipsis">
+      
+        What this lab proves
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#closing-thoughts">
+<span class="md-ellipsis">
+      
+        Closing thoughts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch05-zabbix-triggers/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch06-zabbix-templates/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch07-zabbix-alerts/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch08-zabbix-lld/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch09-zabbix-extending/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch10-zabbix-discovery/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch11-zabbix-visualisation/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch12-zabbix-api/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch13-advanced-security/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch14-zabbix-maintenance/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch15-zabbix-real-world-examples/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ch16-windows/chapter/">
+<span class="md-ellipsis">
+    
+  
+    Chapter 16 : Windows monitoring
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../subject-index/">
+<span class="md-ellipsis">
+    
+  
+    Subject index
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../print_page/">
+<span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Índice" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#how-apm-works-in-zabbix">
+<span class="md-ellipsis">
+      
+        How APM works in Zabbix
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architecture-considerations-for-distributed-environments">
+<span class="md-ellipsis">
+      
+        Architecture considerations for distributed environments
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#setting-up-the-zabbix-side">
+<span class="md-ellipsis">
+      
+        Setting up the Zabbix side
+      
+    </span>
+</a>
+<nav aria-label="Setting up the Zabbix side" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-proxy-configuration-for-collecting-otlp-data">
+<span class="md-ellipsis">
+      
+        1. Proxy configuration (for collecting OTLP data)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-global-data-source">
+<span class="md-ellipsis">
+      
+        2. Global data source
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-telemetry-query-on-server-or-proxy">
+<span class="md-ellipsis">
+      
+        3. Telemetry query on server or proxy
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#telemetry-query-items-in-brief">
+<span class="md-ellipsis">
+      
+        Telemetry query items in brief
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lab-generate-traces-and-alert-on-span-latency">
+<span class="md-ellipsis">
+      
+        Lab: generate traces and alert on span latency
+      
+    </span>
+</a>
+<nav aria-label="Lab: generate traces and alert on span latency" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prerequisites">
+<span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-1-generate-sustained-baseline-traces">
+<span class="md-ellipsis">
+      
+        Step 1: Generate sustained baseline traces
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-2-add-datasources-in-the-administration">
+<span class="md-ellipsis">
+      
+        Step 2: Add datasources in the Administration
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-3-confirm-data-in-the-apm-menu">
+<span class="md-ellipsis">
+      
+        Step 3: Confirm data in the APM menu
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-4-create-a-host-for-the-item">
+<span class="md-ellipsis">
+      
+        Step 4: Create a host for the item
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-5-create-the-telemetry-query-item">
+<span class="md-ellipsis">
+      
+        Step 5: Create the Telemetry query item
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-6-create-a-trigger-and-raise-latency">
+<span class="md-ellipsis">
+      
+        Step 6: Create a trigger and raise latency
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-7-clean-up">
+<span class="md-ellipsis">
+      
+        Step 7: Clean up
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-this-lab-proves">
+<span class="md-ellipsis">
+      
+        What this lab proves
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#closing-thoughts">
+<span class="md-ellipsis">
+      
+        Closing thoughts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#questions">
+<span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#useful-urls">
+<span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="Navegação" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../../">
+<span class="md-ellipsis">
+    Welcome
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="../chapter/">
+<span class="md-ellipsis">
+    Chapter 04 : Collecting data 
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="../../../print_page/" title="Print Site">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"></path></svg>
+</a>
+<nav class="md-tags">
+<span class="md-tag md-tag-icon" data-tag="advanced">
+      Avançado
+    </span>
+</nav>
+<a class="md-content__button md-icon" href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch04-zabbix-collecting-data/telemetry.md" title="Exibir fonte desta página">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="application-performance-monitoring-in-zabbix-80-with-opentelemetry">Application Performance Monitoring in Zabbix 8.0 with OpenTelemetry.</h1>
+<p>Until Zabbix 8.0, the platform was mainly known for solid infrastructure monitoring.
+With version 8.0 it takes a clear step into application performance monitoring by
+adding native support for OpenTelemetry. This chapter explains how that works,
+what you need to configure on the Zabbix side, and walks through a lab you can
+run yourself.</p>
+<p>We assume you already have a working ClickHouse instance available. Setting up
+ClickHouse itself is covered in Chapter 13, Advanced setup and security. For the
+official item reference, see the Zabbix documentation page <em>Telemetry query</em>.</p>
+<hr/>
+<h2 id="how-apm-works-in-zabbix">How APM works in Zabbix</h2>
+<p>OpenTelemetry is an open standard that lets applications and services export three
+kinds of telemetry data:</p>
+<ul>
+<li>Traces: the path a request takes through your services</li>
+<li>Metrics: measurements such as request duration or error counts</li>
+<li>Logs: structured log records</li>
+</ul>
+<p>Zabbix 8.0 can receive this data and turn it into something you can view, graph
+and alert on.</p>
+<p>The data flow differs from classic Zabbix checks.</p>
+<p>In the Zabbix proxy ingestion path, applications or an OpenTelemetry Collector send
+OTLP/gRPC data to a Zabbix proxy. Its APM collector writes that data directly to
+the telemetry data source (ClickHouse). An OpenTelemetry Collector may also write
+telemetry to the data source without using the Zabbix proxy APM collector, provided
+it is configured with a compatible exporter and schema. This alternative is mentioned
+in the official APM documentation; its deployment is outside this lab. The Zabbix
+server has no OTLP collector of its own:
+its configuration has no APM listen parameters. The frontend reads from the telemetry
+data source and shows the data under a new top-level menu called APM, with separate
+views for Traces, Metrics and Logs.</p>
+<p>If you want to create triggers or graphs from this data, you use a new item type
+called <em>Telemetry query</em>. The component that monitors the host (Zabbix server or
+Zabbix proxy) runs the query against the telemetry data source and stores the
+result as a normal item value. From that point on you can use the full Zabbix
+toolbox: triggers, actions, dashboards and escalations.</p>
+<p>In short:</p>
+<pre class="mermaid"><code>flowchart TB
+    APP["Applications"]
+    PROXY["Zabbix Proxy<br/>APM Collector"]
+    SERVER["Zabbix Server"]
+    PG["PostgreSQL / TimescaleDB"]
+    CH["ClickHouse"]
+    UI["Zabbix Frontend"]
+
+    APP --&gt;|"OpenTelemetry (OTLP)"| PROXY
+    PROXY --&gt;|"Monitoring data (TCP 10051)"| SERVER
+    PROXY --&gt;|"Telemetry data (HTTP/S)"| CH
+    SERVER --&gt; PG
+    UI --&gt;|"APM queries"| CH
+    UI --&gt;|"Monitoring data"| SERVER
+
+    classDef app fill:#e3f2fd,stroke:#1976d2,color:#0d47a1
+    classDef zabbix fill:#e8f5e9,stroke:#388e3c,color:#1b5e20
+    classDef database fill:#fff3e0,stroke:#f57c00,color:#e65100
+
+    class APP app
+    class PROXY,SERVER,UI zabbix
+    class PG,CH database
+</code></pre>
+<p>Two roles are worth keeping separate:</p>
+<ul>
+<li><strong>Receiving OTLP in Zabbix</strong> is supported by the proxy APM collector, not the
+  Zabbix server. An external OpenTelemetry Collector can also populate the store.</li>
+<li><strong>Querying</strong> stored telemetry with <em>Telemetry query</em> items is done by the server
+  or by a proxy, depending on which one monitors the host.</li>
+</ul>
+<p>If you already use ClickHouse for item history (Chapter 13), keep the two settings
+apart. <strong>HistoryProvider</strong> is about classic item history. <strong>TelemetryProvider</strong>
+is about OpenTelemetry traces, metrics and logs for APM. Same database product
+is fine; the roles in the config are different.</p>
+<hr/>
+<h2 id="architecture-considerations-for-distributed-environments">Architecture considerations for distributed environments</h2>
+<p>APM introduces a separate data path from ordinary proxy monitoring. In the
+traditional setup, an active Zabbix proxy sends collected monitoring values to
+the Zabbix server over the proxy-server connection (typically TCP 10051). With
+APM enabled, the proxy's APM collector instead writes telemetry <strong>directly to
+its configured ClickHouse data source</strong>. Raw traces, metrics and logs are not
+forwarded through the ordinary proxy-server protocol. A <em>Telemetry query</em> item
+is different: its resulting item value follows the normal Zabbix monitoring path.</p>
+<p><pre class="mermaid"><code>flowchart TB
+    subgraph Traditional["Traditional Zabbix Monitoring"]
+        direction TB
+        SPACE1[" "]
+        P1["Customer Proxy"]
+        S["Zabbix Server"]
+        DB["History Storage"]
+
+        P1 --&gt;|"TCP 10051"| S
+        S --&gt; DB
+    end
+
+    subgraph APM["Application Performance Monitoring"]
+        direction TB
+        APP["Application"]
+        P2["Customer Proxy<br/>APM Collector"]
+        CH["ClickHouse<br/>Telemetry Store"]
+        UI["Zabbix Frontend"]
+        Q["Telemetry Query Poller"]
+
+        APP --&gt;|"OTLP/gRPC (4317)"| P2
+        P2 --&gt;|"ClickHouse HTTP(S)"| CH
+        UI --&gt;|"HTTP(S)"| CH
+        Q --&gt;|"HTTP(S)"| CH
+    end
+
+    Traditional ~~~ APM
+
+    classDef proxy fill:#e8f5e9,stroke:#388e3c,color:#1b5e20
+    classDef storage fill:#fff3e0,stroke:#f57c00,color:#e65100
+    classDef server fill:#e3f2fd,stroke:#1976d2,color:#0d47a1
+
+    class P1,P2 proxy
+    class DB,CH storage
+    class S,UI,Q server
+</code></pre>
+The ClickHouse endpoint can be remote or local to the proxy: the documented
+<code>TelemetryProvider</code> configuration accepts an HTTP(S) URL, including <code>localhost</code>.
+For a central APM deployment, each proxy that ingests telemetry must therefore
+be able to reach the selected ClickHouse endpoint. This matters for MSPs and
+other environments where proxies run behind customer firewalls: the usual
+proxy-server connection alone is not sufficient for APM ingestion.</p>
+<p>A local ClickHouse instance avoids the proxy-to-central-ClickHouse write path,
+but it does <strong>not</strong> automatically replicate raw telemetry to a central store.
+The central frontend or query component would need access to the relevant data
+source, or an independently designed replication/forwarding solution. Running
+ClickHouse locally is not a replacement for the proxy's ordinary database:
+Zabbix explicitly does not support ClickHouse for proxy history storage.</p>
+<p>An external OpenTelemetry Collector can write to the telemetry data source
+instead of the Zabbix proxy. This can centralize ingestion, but the application
+or customer-side collector still needs a network path to that ingestion service.
+It does not turn OTLP traffic into the existing Zabbix proxy-server protocol.</p>
+<p>Plan TLS, access control, retention, availability and network reachability for
+this separate pipeline. The Zabbix documentation also notes that the Zabbix
+housekeeper does not remove ClickHouse data; configure retention in ClickHouse.</p>
+<hr/>
+<h2 id="setting-up-the-zabbix-side">Setting up the Zabbix side</h2>
+<h3 id="1-proxy-configuration-for-collecting-otlp-data">1. Proxy configuration (for collecting OTLP data)</h3>
+<p>On the proxy that will receive OpenTelemetry traffic, edit <code>zabbix_proxy.conf</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>StartAPMCollectors=1
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>APMListenPort=4317
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>TelemetryProvider=clickhouse;url=http://clickhouse.example.com:8123,db=zabbix,username=zabbix,password=your_password
+</span></code></pre></div>
+<ul>
+<li><code>StartAPMCollectors=1</code> starts the APM collector. The range is 0–1; the default
+  is 0, so collection is off until you set this.</li>
+<li><code>APMListenPort</code> is the port the collector listens on. <code>4317</code> is the usual OpenTelemetry
+  OTLP/gRPC port. If you omit <code>APMListenIP</code>, the collector listens on all interfaces
+  (default <code>0.0.0.0</code>). Set <code>APMListenIP</code> only when you want to bind to specific addresses.</li>
+<li><code>TelemetryProvider</code> is a single parameter in the form <code>clickhouse;</code> plus
+  comma-separated options (<code>url</code>, <code>db</code>, <code>username</code>, <code>password</code>, and optional TLS
+  options). On the proxy it is both the destination for the APM collector and the
+  source for any <em>Telemetry query</em> items that this proxy executes.</li>
+</ul>
+<p>Restart the proxy after the change.</p>
+<p>For incoming OTLP over TLS, use the proxy parameters <code>APMTLSCAFile</code>, <code>APMTLSCertFile</code>
+and <code>APMTLSKeyFile</code> as described in the official proxy parameter list.</p>
+<p>For a TLS connection from the proxy to ClickHouse, use the <code>ssl_*</code> options on the
+<code>TelemetryProvider</code> line, together with the global SSL location parameters
+(<code>SSLCertLocation</code>, <code>SSLKeyLocation</code>, <code>SSLCALocation</code>) where your package expects
+them.</p>
+<p>To store credentials in Vault instead of the config file, set <code>vault_path</code> on the
+provider line. That path replaces <strong>both</strong> <code>username</code> and <code>password</code>. It only works
+if the Vault-related parameters on that same component are configured.</p>
+<p>In the frontend, open <strong>Administration → Proxies</strong>, select the proxy and use the
+<strong>APM</strong> tab to enable data collection. Depending on your version, this tab may
+also expose rate limits and resource attributes (for example <code>environment=lab</code>).
+Resource attributes attached here are useful later in <em>Telemetry query</em> conditions.</p>
+<hr/>
+<h3 id="2-global-data-source">2. Global data source</h3>
+<p>Go to <strong>Administration → Data source</strong> and enable the global telemetry data source.
+Point it at ClickHouse. The frontend uses this for the APM views (Traces, Metrics,
+Logs). Configure it so that what you see in the UI matches the store your proxy
+writes to.</p>
+<hr/>
+<h3 id="3-telemetry-query-on-server-or-proxy">3. Telemetry query on server or proxy</h3>
+<p><em>Telemetry query</em> items are executed by the component that monitors the host.</p>
+<p><code>StartTelemetryQueryPollers</code> defaults to <strong>1</strong> on both server and proxy. Items
+are therefore polled without an extra change in a normal install. Raise the
+value only if you run many <em>Telemetry query</em> items and need more parallel workers.
+Check that it is not set to <code>0</code> if queries never run.</p>
+<p>On the <strong>Zabbix server</strong>, there is no APM collector. For <em>Telemetry query</em> items
+monitored by the server, configure <code>TelemetryProvider</code> in <code>zabbix_server.conf</code>
+so the server can read from ClickHouse:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>TelemetryProvider=clickhouse;url=http://clickhouse.example.com:8123,db=zabbix,username=zabbix,password=your_password
+</span></code></pre></div>
+<p>On a <strong>proxy</strong> that both collects OTLP and monitors hosts with <em>Telemetry query</em>
+items, the same <code>TelemetryProvider</code> line already covers write (collector) and
+read (query pollers).</p>
+<hr/>
+<h2 id="telemetry-query-items-in-brief">Telemetry query items in brief</h2>
+<p>A <em>Telemetry query</em> item asks the telemetry data source for a slice of data and
+returns the result as a normal item value.</p>
+<p>Important parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Category</strong></td>
+<td>Traces, Metrics or Logs</td>
+</tr>
+<tr>
+<td><strong>Metric points</strong></td>
+<td>Only for Metrics: Sum, Gauge, Histogram or Exponential histogram</td>
+</tr>
+<tr>
+<td><strong>Columns</strong></td>
+<td>Raw columns to include in the result as-is</td>
+</tr>
+<tr>
+<td><strong>Aggregated columns</strong></td>
+<td>Calculate a value with min, max, avg, count, sum or percentile. For percentile, set <strong>Percentage</strong>. Set an <strong>Alias</strong> for each calculated value. <strong>count</strong> does not need a column</td>
+</tr>
+<tr>
+<td><strong>Conditions</strong></td>
+<td>Filter records. Operators such as Equals are case-sensitive. For key-value columns, set <strong>Attribute key</strong> as well</td>
+</tr>
+<tr>
+<td><strong>Type of calculation</strong></td>
+<td>And/Or, And, Or, or a custom expression when you have two or more conditions</td>
+</tr>
+<tr>
+<td><strong>Granularity</strong></td>
+<td>Length of each piece the full time range is split into (for example <code>1m</code>)</td>
+</tr>
+<tr>
+<td><strong>Time shift</strong></td>
+<td>How far before “now” the query’s time range ends (for example <code>2m</code>). That is why the first value often appears only after one or two minutes</td>
+</tr>
+<tr>
+<td><strong>Lookback limit</strong></td>
+<td>How far back to look when there is no previous query (first run) or when the previous query is older than the update interval. It is not a window that keeps returning values after traffic stops. A large lookback on a busy data source (for example more than a million records per hour) can hurt performance</td>
+</tr>
+</tbody>
+</table>
+<p>For <strong>Traces</strong>, columns you will use often include:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Columns</th>
+<th>Aggregated columns</th>
+<th>Conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Duration</td>
+<td>✓</td>
+<td>✓</td>
+<td>–</td>
+</tr>
+<tr>
+<td>ServiceName</td>
+<td>✓</td>
+<td>–</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>SpanName</td>
+<td>✓</td>
+<td>–</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>StatusCode</td>
+<td>✓</td>
+<td>–</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>SpanAttributes</td>
+<td>✓</td>
+<td>–</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>ResourceAttributes</td>
+<td>✓</td>
+<td>–</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>ParentSpanId</td>
+<td>✓</td>
+<td>–</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>TraceId / SpanId</td>
+<td>✓</td>
+<td>–</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Timestamp</td>
+<td>✓</td>
+<td>✓</td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<p>Similar sets exist for Metrics and Logs. They follow the OpenTelemetry ClickHouse
+exporter schema. Full lists are in the official <em>Telemetry query</em> documentation.</p>
+<p><strong>Type of information</strong> is the type of the value after preprocessing. If you keep
+the raw JSON, use Text. If you extract a number with JSONPath (and optionally
+a multiplier), set Numeric (float) directly.</p>
+<p>When a host moves to another proxy (for example in a proxy group), the item may
+no longer know where the previous query ended. That can produce duplicate values.
+Be aware of this in highly available proxy setups.</p>
+<hr/>
+<h2 id="lab-generate-traces-and-alert-on-span-latency">Lab: generate traces and alert on span latency</h2>
+<p>This lab is meant to be followed end to end. You do not need a real application.
+You generate sustained OpenTelemetry traffic, confirm it in Zabbix, build one
+<em>Telemetry query</em> item, and add a trigger.</p>
+<hr/>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>Proxy with <code>StartAPMCollectors=1</code>, <code>APMListenPort</code> and <code>TelemetryProvider</code> set,
+and the proxy restarted</li>
+<li>Global data source configured for the frontend APM views</li>
+<li>Host monitored by a server or proxy that has <code>TelemetryProvider</code> set for queries
+(and <code>StartTelemetryQueryPollers</code> not set to 0)</li>
+<li>Network access to the proxy's APM listen port and from the proxy to ClickHouse</li>
+</ul>
+<hr/>
+<div class="admonition note">
+<p class="admonition-title">IMPORTANT BEFORE YOU START</p>
+<p>At the time of writing only RedHat 10 had support for APM in the proxy
+packages and needed EPEL for the installation. Proxies where not able to
+create the needed structure in the ClickHouse database and no SQL files where
+provided by Zabbix.</p>
+<p>This script should help you fix the ClickHouse database:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>cat otel_traces.sql
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>CREATE TABLE IF NOT EXISTS zabbix.otel_traces
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>(
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>    Timestamp DateTime64(9),
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>    TraceId String,
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>    SpanId String,
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>    ParentSpanId String,
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>    TraceState String,
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a>    SpanName String,
+</span><span id="__span-2-10"><a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a>    SpanKind String,
+</span><span id="__span-2-11"><a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a>    ServiceName String,
+</span><span id="__span-2-12"><a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a>    ResourceAttributes Map(String,String),
+</span><span id="__span-2-13"><a href="#__codelineno-2-13" id="__codelineno-2-13" name="__codelineno-2-13"></a>    ScopeName String,
+</span><span id="__span-2-14"><a href="#__codelineno-2-14" id="__codelineno-2-14" name="__codelineno-2-14"></a>    ScopeVersion String,
+</span><span id="__span-2-15"><a href="#__codelineno-2-15" id="__codelineno-2-15" name="__codelineno-2-15"></a>    SpanAttributes Map(String,String),
+</span><span id="__span-2-16"><a href="#__codelineno-2-16" id="__codelineno-2-16" name="__codelineno-2-16"></a>    Duration Int64,
+</span><span id="__span-2-17"><a href="#__codelineno-2-17" id="__codelineno-2-17" name="__codelineno-2-17"></a>    StatusCode String,
+</span><span id="__span-2-18"><a href="#__codelineno-2-18" id="__codelineno-2-18" name="__codelineno-2-18"></a>    StatusMessage String,
+</span><span id="__span-2-19"><a href="#__codelineno-2-19" id="__codelineno-2-19" name="__codelineno-2-19"></a>    `Events.Timestamp` Array(DateTime64(9)),
+</span><span id="__span-2-20"><a href="#__codelineno-2-20" id="__codelineno-2-20" name="__codelineno-2-20"></a>    `Events.Name` Array(String),
+</span><span id="__span-2-21"><a href="#__codelineno-2-21" id="__codelineno-2-21" name="__codelineno-2-21"></a>    `Events.Attributes` Array(Map(String,String)),
+</span><span id="__span-2-22"><a href="#__codelineno-2-22" id="__codelineno-2-22" name="__codelineno-2-22"></a>    `Links.TraceId` Array(String),
+</span><span id="__span-2-23"><a href="#__codelineno-2-23" id="__codelineno-2-23" name="__codelineno-2-23"></a>    `Links.SpanId` Array(String),
+</span><span id="__span-2-24"><a href="#__codelineno-2-24" id="__codelineno-2-24" name="__codelineno-2-24"></a>    `Links.TraceState` Array(String),
+</span><span id="__span-2-25"><a href="#__codelineno-2-25" id="__codelineno-2-25" name="__codelineno-2-25"></a>    `Links.Attributes` Array(Map(String,String))
+</span><span id="__span-2-26"><a href="#__codelineno-2-26" id="__codelineno-2-26" name="__codelineno-2-26"></a>)
+</span><span id="__span-2-27"><a href="#__codelineno-2-27" id="__codelineno-2-27" name="__codelineno-2-27"></a>ENGINE = MergeTree()
+</span><span id="__span-2-28"><a href="#__codelineno-2-28" id="__codelineno-2-28" name="__codelineno-2-28"></a>PARTITION BY toYYYYMM(Timestamp)
+</span><span id="__span-2-29"><a href="#__codelineno-2-29" id="__codelineno-2-29" name="__codelineno-2-29"></a>ORDER BY (ServiceName, Timestamp, TraceId, SpanId)
+</span><span id="__span-2-30"><a href="#__codelineno-2-30" id="__codelineno-2-30" name="__codelineno-2-30"></a>TTL toDateTime(Timestamp) + INTERVAL 30 DAY;
+</span></code></pre></div>
+</div>
+<h3 id="step-1-generate-sustained-baseline-traces">Step 1: Generate sustained baseline traces</h3>
+<p>A practical way to produce traffic is the OpenTelemetry <code>telemetrygen</code> tool. Install
+with Go, or run a container image if you prefer not to install Go on the lab machine.</p>
+<p>Pin the version you have actually tested in your environment, for example:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>go<span class="w"> </span>install<span class="w"> </span>github.com/open-telemetry/opentelemetry-collector-contrib/cmd/telemetrygen@v0.120.0
+</span></code></pre></div>
+<p>Container alternative (tag to the same version you trust):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:0.120.0<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span>traces<span class="w"> </span>--help
+</span></code></pre></div>
+<p>A short burst is not enough for stable buckets or for an <code>avg(...,3m)</code> trigger.
+Use <code>--rate</code> and <code>--duration</code>.</p>
+<p>Baseline (about 200 ms per span), several minutes:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a>telemetrygen<span class="w"> </span>traces<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">  </span>--otlp-endpoint<span class="w"> </span>zabbix-proxy.example.com:4317<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">  </span>--otlp-insecure<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">  </span>--service<span class="w"> </span>checkout<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">  </span>--rate<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">  </span>--duration<span class="w"> </span>5m<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">  </span>--child-spans<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">  </span>--span-duration<span class="w"> </span>200ms
+</span></code></pre></div>
+<p>Each trace has a root span plus child spans. <strong>Duration is measured per span</strong>,
+not per whole trace.</p>
+<p><code>--otlp-insecure</code> is for a closed lab only. In production, drop it and configure
+TLS on both the client and the proxy (<code>APMTLS*</code> parameters).</p>
+<hr/>
+<h3 id="step-2-add-datasources-in-the-administration">Step 2: Add datasources in the Administration</h3>
+<p>In the frontend go to <strong>Data source</strong> | <strong>APM</strong></p>
+<ul>
+<li>select "Enable global data source"</li>
+<li>URL: Add the ClickHouse url Ex: http://127.0.0.1:8123</li>
+</ul>
+<hr/>
+<h3 id="step-3-confirm-data-in-the-apm-menu">Step 3: Confirm data in the APM menu</h3>
+<p>In the frontend go to <strong>APM → Traces</strong>.</p>
+<ul>
+<li>Set the time period to the last 15 or 30 minutes</li>
+<li>Filter on ServiceName = <code>checkout</code></li>
+</ul>
+<p>You should see traces and be able to open spans. If the list stays empty, check:</p>
+<ul>
+<li>Proxy log for APM collector messages</li>
+<li>That <code>StartAPMCollectors=1</code> is set and the proxy was restarted</li>
+<li>That <code>TelemetryProvider</code> on the proxy points at the ClickHouse instance you expect</li>
+<li>That <strong>Administration → Data source</strong> points the frontend at the same store</li>
+<li>Firewall and connectivity to the APM listen port</li>
+</ul>
+<hr/>
+<h3 id="step-4-create-a-host-for-the-item">Step 4: Create a host for the item</h3>
+<p>Create a host, for example <code>otel-lab</code>, monitored by the server or proxy that should
+run the <em>Telemetry query</em>. No agent is required for this item type.</p>
+<hr/>
+<h3 id="step-5-create-the-telemetry-query-item">Step 5: Create the Telemetry query item</h3>
+<p>On <code>otel-lab</code> create an item:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Checkout span p95 duration</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Telemetry query</td>
+</tr>
+<tr>
+<td>Key</td>
+<td><code>telemetry.checkout.p95</code></td>
+</tr>
+<tr>
+<td>Category</td>
+<td>Traces</td>
+</tr>
+<tr>
+<td>Aggregated columns</td>
+<td>percentile of Duration, Percentage 95, Alias <code>p95</code><br/>avg of Duration, Alias <code>avg</code><br/>count, Alias <code>cnt</code></td>
+</tr>
+<tr>
+<td>Conditions</td>
+<td>Type <code>ServiceName</code>, Operator Equals, Attribute value <code>checkout</code></td>
+</tr>
+<tr>
+<td>Granularity</td>
+<td>1m</td>
+</tr>
+<tr>
+<td>Time shift</td>
+<td>2m</td>
+</tr>
+<tr>
+<td>Lookback limit</td>
+<td>15m (keep this modest)</td>
+</tr>
+<tr>
+<td>Update interval</td>
+<td>1m</td>
+</tr>
+<tr>
+<td>Type of information</td>
+<td>Numeric (float), after preprocessing</td>
+</tr>
+<tr>
+<td>Units</td>
+<td>ms</td>
+</tr>
+</tbody>
+</table>
+<p>Open the item, use <strong>Test → Get value</strong>, and copy the real JSON you receive. Build
+JSONPath preprocessing from that payload (for example extract the <code>p95</code> field).
+If Duration is in nanoseconds, add a multiplier such as <code>0.000001</code> to store milliseconds.</p>
+<p>With the baseline still running, wait for <strong>Time shift</strong> and <strong>Granularity</strong>. After
+one or two minutes you should see values around the baseline span duration. That
+gives the item history before you raise latency.</p>
+<p>Optional: one master <em>Telemetry query</em> item that returns the full JSON, plus
+<strong>dependent items</strong> with JSONPath for <code>p95</code>, <code>avg</code> and <code>cnt</code>, so ClickHouse is
+queried once per interval.</p>
+<p>If you add a second condition (for example ResourceAttributes with Attribute key
+<code>environment</code>), set <strong>Type of calculation</strong> to And/Or or a custom expression.</p>
+<hr/>
+<h3 id="step-6-create-a-trigger-and-raise-latency">Step 6: Create a trigger and raise latency</h3>
+<p>Prefer a short average over a single <code>last()</code> sample, and add a check for missing data:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a>avg(/otel-lab/telemetry.checkout.p95,3m)&gt;500
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a>nodata(/otel-lab/telemetry.checkout.p95,10m)=1
+</span></code></pre></div>
+<p>When the baseline run finishes, or after you stop it with Ctrl-C, start a slower
+sustained run. Keep it long enough to fill several 1m buckets under <strong>Time shift</strong>
+(at least about 10 minutes is a practical target):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>telemetrygen<span class="w"> </span>traces<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="w">  </span>--otlp-endpoint<span class="w"> </span>zabbix-proxy.example.com:4317<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="w">  </span>--otlp-insecure<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-4"><a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">  </span>--service<span class="w"> </span>checkout<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-5"><a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="w">  </span>--rate<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-6"><a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="w">  </span>--duration<span class="w"> </span>10m<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-7"><a href="#__codelineno-8-7" id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="w">  </span>--child-spans<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-8"><a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="w">  </span>--span-duration<span class="w"> </span>600ms
+</span></code></pre></div>
+<p>Do not mix baseline and slow traffic in the same minutes if you want a clean rise
+above 500 ms. After enough slow buckets, the 3m average should be able to cross
+the threshold. For the <code>nodata()</code> trigger, stop all generators and confirm in
+Problems whether the item goes silent within the window you configured.</p>
+<hr/>
+<h3 id="step-7-clean-up">Step 7: Clean up</h3>
+<p>Stop generating traffic. Disable or remove the lab host and items when you are
+finished. <em>Lookback limit</em> only defines how far back the first query (or a query
+after a long gap) may read; it does not keep inventing values after traffic stops.</p>
+<hr/>
+<h3 id="what-this-lab-proves">What this lab proves</h3>
+<ul>
+<li>The proxy APM collector accepts OTLP traffic and stores it via <code>TelemetryProvider</code></li>
+<li>Traces are visible under APM → Traces</li>
+<li>A <em>Telemetry query</em> item can aggregate span Duration filtered by ServiceName</li>
+<li>Triggers can use that item when traffic is sustained long enough to fill several buckets</li>
+</ul>
+<p>From here you can point a real application or an OpenTelemetry Collector at the
+same proxy endpoint and reuse the same pattern with your own service names, span
+names and resource attributes.</p>
+<hr/>
+<h2 id="closing-thoughts">Closing thoughts</h2>
+<p>APM in Zabbix 8.0 is not a full replacement for every specialised commercial
+platform, but it provides a way to combine infrastructure monitoring with application
+telemetry. The proxy collector, ClickHouse-backed telemetry data source and
+<em>Telemetry query</em> item provide a path from OpenTelemetry data to alerts and dashboards.
+Unlike traditional proxy monitoring, however, raw telemetry uses a separate ingestion
+and storage path. In distributed environments, especially MSP deployments, verify
+network access to the telemetry store or collector before adopting this design.</p>
+<hr/>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>
+<p>What is the role of OpenTelemetry in Zabbix 8.0, and which types of telemetry
+data does it support?</p>
+</li>
+<li>
+<p>Why is a Zabbix proxy required to receive OpenTelemetry data, and can the Zabbix
+server receive it directly?</p>
+</li>
+<li>
+<p>What additional network requirements should be considered when enabling APM on
+proxies deployed at remote sites?</p>
+</li>
+<li>
+<p>What is the purpose of a Telemetry query item, and how can its results be used
+in triggers and dashboards?</p>
+</li>
+</ul>
+<hr/>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/telemetry_query">https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/telemetry_query</a></li>
+<li><a href="https://www.zabbix.com/documentation/8.0/en/manual/config/templates_out_of_the_box/otlp">https://www.zabbix.com/documentation/8.0/en/manual/config/templates_out_of_the_box/otlp</a></li>
+<li><a href="https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup">https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup</a></li>
+<li><a href="https://opentelemetry.io/docs/specs/otlp/">https://opentelemetry.io/docs/specs/otlp/</a></li>
+<li><a href="https://opentelemetry.io/docs/what-is-opentelemetry/">https://opentelemetry.io/docs/what-is-opentelemetry/</a></li>
+<li><a href="https://opentelemetry.io/docs/collector/">https://opentelemetry.io/docs/collector/</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Voltar para o topo
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+<script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../js/print-site.js"></script>
+<script src="../../../javascripts/mathjax.js"></script>
+<script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../../../javascripts/tags-data-attr.js?v=73101464b7b330f81fba5e8da2de00c7e382435b"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>
