@@ -141,7 +141,9 @@ around that limitation but still get the result you need/want.
 
 When you plan your intial config for `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
 do so in the context of a template so you can use PowerShell later on to replace the
-`Hostname=` value with the current FQDN host name during the installation process.
+`Hostname=` value with the current FQDN host name during the installation process if
+your deployment method does not allow for variables to be inserted into the MSI
+switches.
 
 #### Code snippet:
 ```PowerShell
