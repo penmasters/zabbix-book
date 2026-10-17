@@ -305,15 +305,20 @@ If you are going full MSI + PowerShell 5.1 (Windows Powershell) for installing t
         In the case of some deployment tools - the "MSI native" method doesn't exactly make it easy to insert 
         the params of the current machine you are targeting in a deployment for the command switches 
         themselves as variables without causing a 'hacky way' to go about it.
-
-        I.e. An organization's deployment tool does not allow something like this for the MSI switches: `/HOSTNAME="{{TARGET_SERVER_NAME}}"`
-        or the tool lacks adding a string like this in line for the MSI switch: `/HOSTNAME="{{TARGET_SERVER_NAME}}"+'.domain.com'`
         
-        In this case, the org needs to put an additional step in PowerShell to edit the `zabbix_agent2.conf` after the the initial MSI install to correct it to their liking.
-3. Have a PowerShell Script create the "Zabbix-ext" directory under `%PROGRAMDATA%` with the `.conf` files
-4. Have a PowerShell Script insert `Include=` fields at the bottom the `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` file or create a new file as such `C:\Program Files\Zabbix Agent 2\zabbix_agent.d\plugins.d\custom_includes.conf`
-5. Have a PowerShell Script restart the agent to apply all changes
-6. Have a PowerShell Script command Windows to attempt to restart the Zabbix Agent 2 service if it fails via `sc.exe`
+        As an example, a specific deployment tool does not allow this: `/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"`
+        and must be inline string literals only - the deployment tool does not allow a variable to be passed via the deployment 
+        package for the MSI Method switches. 
+        
+        Or, In other hyper specific cases, the tool lacks adding a string or general string manipulation like this in line for 
+        the MSI switch: `/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"+'.domain.com'`
+        
+        In this case, the org needs to put an additional step in PowerShell to edit the `zabbix_agent2.conf` in-place
+        after the the initial MSI install to correct it to their liking.
+2. Have a PowerShell Script create the "Zabbix-ext" directory under `%PROGRAMDATA%` with the `.conf` files
+3. Have a PowerShell Script insert `Include=` fields at the bottom the `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` file or create a new file as such `C:\Program Files\Zabbix Agent 2\zabbix_agent.d\plugins.d\custom_includes.conf`
+4. Have a PowerShell Script restart the agent to apply all changes
+5. Have a PowerShell Script command Windows to attempt to restart the Zabbix Agent 2 service if it fails via `sc.exe`
 
     ```
     # PowerShell One Liner Set service to restart itself if it fails to start.
