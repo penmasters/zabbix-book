@@ -30,14 +30,14 @@ agent fleet wide, assuming you are using the Microsoft Installer package (MSI)
 
 Tips:
 - Write your own config and use it as a template across the environment
-- For your `Server=` and/or `ServerActive=` param values, use FQDN/DNS names and all lowercase
+- Keep your `Hostname=` field FQDN and lowercase, i.e. `hostname.domain.org`
 - Use PowerShell scripting to your advantage to automate the agent config to set the `Hostname=`
+- For your `Server=` and/or `ServerActive=` param values, use FQDN/DNS names.
 - Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
 - Use the MSI installer package for deployment
 - Prioritize using `ServerActive` templates over `Server` where possible
 - Metadata and Autoregistration
-
 
 Examples of the configuration files and PowerShell scripts are provided if you scroll further.
 
@@ -55,10 +55,11 @@ in the config file as you will know which params to look for if you have to chan
 Feel free to use the config provided further down this page as a start, but I implore
 you to continue reading the next few sections before you do.
 
-## Keep Your `Hostname=` all lowercase
+## Keep Your `Hostname=` parameter value lowercase
 
 This is mainly important if you are using the `ServerActive` method. Your `Hostname=` value
-**must match** the hostname field for your host record.
+**must match** the hostname field for your host record and it is case sensitive or your
+Active agent templates for Windows will not work.
 
 ## Use PowerShell Scripting To Your Advantage
 
@@ -75,7 +76,47 @@ $FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase
 (Get-Content $file) -replace "Hostname=REPLACEME","Hostname=$FQDNHostNameToLower" | Set-Content $file
 ```
 
-## Real-World Example Config - Single HA Zabbix Environment
+## Use DNS for `Server=` and `ServerActive=`
+
+This will future proof yourself if you ever run into a situation where the IP address of your
+Zabbix server/proxy must change. If you have it set to a FQDN/DNS name, you won't have to
+worry about updating your agent configs fleet wide.
+
+There may be an argument to continue monitoring if you wish to withstand a DNS outage and 
+continue monitoring..... However, you have much bigger fish to fry if DNS queries are
+timing out.
+
+As a Monitoring System Janitor/Sysadmin/SRE this can be a key design decision you make
+for the business but I would heavily lean for DNS regardless to prevent future headache
+
+## Utilizing `ForceActiveChecksOnStart` and `RefreshActiveChecks`
+
+These parameters are important for you to understand from a `ServerActive` based
+monitoring perspective and are absolutely essential to be in your agent config.
+
+#### ForceActiveChecksOnStart
+
+This param when set to `1` will immediately query the Zabbix server (or Zabbix Proxy)
+to check if it has any changes to the configured monitoring templates when the agent
+service is started or restarted.
+
+This will also trigger an immediate Low-Level Discovery (LLD) if configured on the
+template.
+
+#### RefreshActiveChecks
+
+Similarly to `ForceActiveChecksOnStart`, this parameter is for you to configure
+how often the Zabbix Agent2 checks in with a Zabbix Server (or Zabbix Proxy) for
+new/updated Active Monitoring templates. This param value is defined in `seconds`
+for time. A good value to start would be `RefreshActiveChecks=300`, which would
+be 5 minutes.
+
+If you make a change to a monitoring template or host specific macro override,
+this will ensure it is picked up. However, if it is a change that requires
+Low-Level Discovery (LLD) to run, you must wait for that LLD's threshold
+to trigger.
+
+## Real-World Example Config - Single Highly-Available Zabbix Environment
 
 ### C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
 ```
