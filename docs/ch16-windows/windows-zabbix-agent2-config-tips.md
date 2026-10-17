@@ -84,17 +84,17 @@ file into the newly generated zabbix_agent2.conf file.
 
 When this happens, it is important to note even with the `NONMSICONFNAME` MSI param provided
 it will not merge/carry-over all the parameters that are set as of 7.0 LTS. In fact, consider the 
-`C:\Program Files\Zabbix Agent 2\` directory a "no-go" zone besides what is needed initially 
+`C:\Program Files\Zabbix Agent 2\` root directory a "no-go" zone besides what is needed initially 
 for the MSI to perform the install. (Server,ServerActive,Hostname,Include will be saved/carried over)
 
 Params such as `ForceActiveChecksOnStart` and `RefreshActiveChecks` are not brought over. The 
 solution to this is to use `C:\Program Files\Zabbix Agent 2\zabbix_agent2.d\plugins.d` 
-directory or a custom one built under `%PROGRAMDATA%` to our advantage. 
+directory or a custom directory structure built under `%PROGRAMDATA%` to our advantage. 
 
-All in all, Put your custom conf files in other directories using `Include=` so they persist through 
-a full uninstall of the agent and are not lost during an agent upgrade.
+All in all, put your custom conf files in other directories and utilize `Include=` in the `zabbix_agent2.conf` file
+so they persist through a full uninstall of the agent and are not lost during an agent upgrade.
 
-### Custom Solution: Split Custom Configurations To Be Under %PROGRAMDATA%
+### Custom Solution: Split Custom Configurations To Be Under `%PROGRAMDATA%`
 
 Directory Structure:
 ```
@@ -107,7 +107,7 @@ C:\ProgramData\Zabbix-ext
     └── Invoke-ActiveDirectoryChecks.ps1
 ```
 
-An Include one-liner for your `C:\Program Files\Zabbix Agnet 2\zabbix_agent2.conf` that will
+Include one-liner for your `C:\Program Files\Zabbix Agnet 2\zabbix_agent2.conf` that will
 get all three configs under the `C:\ProgramData\Zabbix-ext\conf.d` directory
 ```ini
 Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
@@ -129,6 +129,16 @@ Active agent templates for Windows will not work.
 
 ## Use PowerShell Scripting To Your Advantage
 
+Some deployment tools offer a native "MSI Install" step, but lack some customization
+on what strings can be passed into the MSI switches. This scenario may not apply
+to every reader but it's a good thing to mention.
+
+This can be a problem if you need to set the `Hostname=` a specific way... such as the
+targeted endpoint server's hostname.
+
+This section provides a simple example of a "post-install step" in PowerShell you can run to work
+around that limitation but still get the result you need/want.
+
 When you plan your intial config for `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
 do so in the context of a template so you can use PowerShell later on to replace the
 `Hostname=` value with the current FQDN host name during the installation process.
@@ -138,7 +148,7 @@ do so in the context of a template so you can use PowerShell later on to replace
 $file="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf"
 $FQDNHostName = [System.Net.Dns]::GetHostEntry($env:COMPUTERNAME).HostName
 $FQDNHostNameToLower = $FQDNHostName.ToLower()
-$FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase
+$FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase if needed
 (Get-Content $file) -replace "Hostname=REPLACEME","Hostname=$FQDNHostNameToLower" | Set-Content $file
 ```
 
