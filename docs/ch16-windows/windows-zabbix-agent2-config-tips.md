@@ -15,9 +15,9 @@ configuration file structure of the agent you install on any Windows OS, in addi
 deploying the agent with initial settings you likely will need or want. 
 
 This page assumes you are a Sysadmin of some type and have a means of deploying an
-MSI package with PowerShell scripts in steps. Examples of a product that would do this
+MSI package with PowerShell scripts in steps. Examples of a product that can do this
 would be PDQ Deploy or Ivanti Endpoint Manager (formerly Landesk). Though, there is nothing
-holding you back if you are a small shop with 20 servers if you are lacking these tools and
+holding you back if you are a small shop with 20 servers and lack these tools and
 need to log in and run some of these steps manually.
 
 It is with the highest intentions that this will prevent unneeded overhead when it comes 
@@ -33,10 +33,10 @@ This section is a tl;dr but also an index. The page will go in the order of the
 list below.
 
 Tips/Index:
-- Take your control of your config and look at it as a template
+- Take control of your config and look at it as a template
 - Keep your `Hostname=` field fully-qualified and lowercase, i.e. `hostname.domain.org`
 - Use PowerShell scripting to your advantage to automate the agent config to set the `Hostname=`
-- Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
+- Use `ForceActiveChecksOnStart` and `RefreshActiveChecks` when utilizing Active templates (ServerActive)
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
 - Metadata strings should be defined and should be considered for Autoregistration
 - Prioritize using `Active` templates over `Passive` where possible
@@ -52,7 +52,7 @@ but best to use the `Include=` parameter and point it to a new file that you com
 a different directory.
 
 The whole idea of engineering your Zabbix config file(s) correctly is so future Zabbix Agent
-2 upgrades are seamless when running the MSI again in the future.
+2 upgrades are seamless when running the MSI again.
 
 The `.\zabbix_agent2.d\plugins.d` directory can be used to add more configuration and will
 persist through a full agent uninstall. If you have confidential data that needs to be
@@ -73,7 +73,7 @@ All in all, when it comes for fleet wide management for Windows, take time to re
 the base `zabbix_agent2.conf` - if you need anything further than the default
 parameters, use `Include=` to define it elsewhere.
 
-Feel free to use the config snippets provided at the bottom this page as a start, 
+Feel free to use the config snippets provided at the bottom of this page as a start, 
 but I implore you to continue reading the next few sections before you do.
 
 ## Using the `Include=` param to your advantage
@@ -116,7 +116,7 @@ Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
 ## Keep Your `Hostname=` parameter value lowercase
 
 This is very important if you are using the `ServerActive` method. Your `Hostname=` value
-**must match** the `Host name` field for your host record and it is case sensitive; or your
+**must match** the `Host name` field for your host record and it is case-sensitive; or your
 Active agent templates for Windows will not work.
 
 &#10006; This does not work for Active checks:
@@ -133,7 +133,7 @@ Some deployment tools offer a native "MSI Install" step, but lack some customiza
 on what strings can be passed into the MSI switches. This scenario may not apply
 to every reader but it's a good thing to mention.
 
-This can be a problem if you need to set the `Hostname=` a specific way... such as the
+This can be a problem if you need to set the `Hostname=` value in a specific way... such as the
 targeted endpoint server's hostname.
 
 This section provides a simple example of a "post-install step" in PowerShell you can run to work
@@ -171,15 +171,15 @@ template. It is highly recommended to set this to `1`.
 #### RefreshActiveChecks
 
 Similarly to `ForceActiveChecksOnStart`, this parameter is for you to configure
-how often the Zabbix Agent2 checks in with a Zabbix Server (or Zabbix Proxy) for
+how often the Zabbix Agent 2 checks in with a Zabbix Server (or Zabbix Proxy) for
 new/updated Active Monitoring templates. This param value is defined in `seconds`
 for time. A good value to start would be `RefreshActiveChecks=300`, which would
 be 5 minutes.
 
 If you make a change to a monitoring template or host specific macro override,
 this will ensure it is picked up. However, if it is a change that requires
-Low-Level Discovery (LLD) to run, you must wait for that LLD's threshold
-to trigger.
+Low-Level Discovery (LLD) to run, you must wait for the next discovery cycle to
+run as specified in the template.
 
 ## Metadata and Autoregistration
 
@@ -187,7 +187,7 @@ If you are considering using Metadata strings, these should also be split out (v
 especially if you are allowing agent auto-registration.
 
 Metadata can help you control and direct auto-registration actions to apply different templates
-based on whatever you put in `HostMetadata`
+based on the value assigned to `HostMetadata`
 
 Some organizations will just use a single string and call it a day. Other organizations may
 choose to set their metadata string based on server role. If you are splitting by role,
@@ -224,7 +224,7 @@ There are scenarios for both and thankfully both can be used at the same time.
 
 From a design/architectural standard, Active checks should always be used. However,
 In some cases, you may not be able to send data from a DMZ subnet back to internal,
-but the company policy states connections that originate from internal the internal WAN/LAN
+but the company policy states connections that originate from the internal WAN/LAN
 enterprise network may communicate out to the DMZ.
 
 By default, in your agent config you should be prepared for both scenarios by
@@ -233,8 +233,8 @@ setting `Server=` (Passive) and `ServerActive=` (Active) by default.
 ### When to use Active Templates
 
 Anything that requires LLD for discovering disks (C:\\...D:\\ etc...) or Windows
-Services, CPU, RAM... all your basic monitoring needs should be placed onto the
-agent to collect to take the load off of your Zabbix Server/Proxy.
+Services, CPU, RAM... all your basic monitoring needs should be collected by the
+agent(s) to reduce load on your Zabbix Server/Proxy.
 
 Active Checks are heavily preferred especially in Windows environments where
 querying `perfmon` can be slow during high CPU loads or disk I/O contention.
@@ -243,11 +243,11 @@ querying `perfmon` can be slow during high CPU loads or disk I/O contention.
 
 This can be tricky but a specific scenario came up where one organization needed
 to monitor the status of a Microsoft SQL Always-On Availability group. The problem
-with this is, that consists of multiple hosts that already exist in Zabbix and are
-sending information. A cluster can be healthy overall, but a specific node can
-be not healthy and potentially be down. So if you are monitoring the cluster from
-only a single node and not all of them... you could miss an alert. On the other end,
-if you apply a template to all three hosts you have duplicate data.
+is that consists of multiple hosts that already exist in Zabbix and are sending information. 
+A cluster can be healthy overall, but a specific node may become unhealthy and potentially 
+be down. So if you are monitoring the cluster from only a single node and not all of them... 
+you could miss an alert. On the other hand, if you apply a template to all three hosts 
+you have duplicate data.
 
 The question becomes: How do you monitor the cluster health as a single entity?
 
@@ -329,7 +329,7 @@ If you are going full MSI + PowerShell 5.1 (Windows PowerShell) for installing t
 
 ## Real-World Example Configs - Single Highly-Available Zabbix Environment
 
-This includes the standard configuration in the default location in addition to adding the "Zabbix Extended" directory under `%PROGRAMDATA%` instead of the `zabbix_agent2.d`
+This includes the standard configuration in the default location in addition to creating the "Zabbix Extended" directory under `%PROGRAMDATA%` instead of the `zabbix_agent2.d`
 
 You can use a PowerShell command to overwrite `Hostname=` matching on `Hostname=REPLACEMEBUTLOWERCASE.domain.com`
 
@@ -361,7 +361,7 @@ ServerActive=10.0.1.24;10.0.1.25
 #...file continues...
 
 # Preferably, you should fully qualify your hostname and make it lowercase
-# For ServerActive configurations, this field is REQUIRED and is case sensitive!
+# For ServerActive configurations, this field is REQUIRED and is case-sensitive!
 # This is set by the user via MSI installer at the time of install
 Hostname=REPLACEMEBUTLOWERCASE.domain.com
 
