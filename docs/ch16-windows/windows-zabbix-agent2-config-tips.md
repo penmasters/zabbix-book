@@ -239,7 +239,11 @@ server/zabbix agent.
 
 ![Normal Operations](diagrams/ch16-msaosql_normal.png)
 
+_Normal Operations_
+
 ![Failover of VIP To Healthy Node](diagrams/ch16-msaosql_failover.png)
+
+_Microsoft Always On Listener Failover_
 
 ## Using the MSI Installer is Preferred
 
