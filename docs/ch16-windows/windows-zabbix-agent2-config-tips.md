@@ -36,6 +36,7 @@ Tips:
 - Take your control of your config and use it as a template
 - Keep your `Hostname=` field fully-qualified and lowercase, i.e. `hostname.domain.org`
 - Use PowerShell scripting to your advantage to automate the agent config to set the `Hostname=`
+
 ~~- For your `Server=` and/or `ServerActive=` param values, use FQDN/DNS names.~~ **TO DO**
 - Use `ForceActiveChecks` and `RefreshActiveChecks` for if utilizing ServerActive
 - Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default configuration file
@@ -64,16 +65,17 @@ on most Windows OS installations from users.
 
 Just note, that when you go to upgrade via MSI (with `NONMSICONFNAME` param), it will 
 merge your initial `zabbix_agent2.conf` file with the default; your parameter values will overwrite 
-the default values. (Server,ServerActive,Include and a few other values will be safe)
+the default values. Be warned, anything custom here may not carry over. Though, Server,ServerActive,Include 
+and a few other values will be safe
 
-Each time you change any config file whether it is the main one or included to via the
+Each time you change any config file whether it is the main one or included via the
 `Include` parameter, you must restart the Zabbix Agent 2 service to apply the changes.
 
 All in all, when it comes for fleet wide management for Windows, take time to read
 the base `zabbix_agent2.conf` - if you need anything further than the default
 parameters, use `Include=` to define it elsewhere.
 
-Feel free to use the config snippit provided at the bottom this page as a start, 
+Feel free to use the config snippets provided at the bottom this page as a start, 
 but I implore you to continue reading the next few sections before you do.
 
 ## Using the `Include=` param to your advantage
@@ -85,14 +87,16 @@ file into the newly generated zabbix_agent2.conf file.
 When this happens, it is important to note even with the `NONMSICONFNAME` MSI param provided
 it will not merge/carry-over all the parameters that are set as of 7.0 LTS. In fact, consider the 
 `C:\Program Files\Zabbix Agent 2\` directory a "no-go" zone besides what is needed initially 
-for the MSI to perform the install. (Server,ServerActive,ControlSock,Hostname will be saved)
+for the MSI to perform the install. (Server,ServerActive,Hostname,Include will be saved/carried over)
 
 Params such as `ForceActiveChecksOnStart` and `RefreshActiveChecks` are not brought over. The 
-solution to this is to use `%PROGRAMDATA%` or `C:\Program Files\Zabbix Agent 2\zabbix_agent2.d\plugins.d` 
-directory to our advantage. Put your custom conf files in either of these directories so they 
-persist even through a full normal agent uninstall.
+solution to this is to use `C:\Program Files\Zabbix Agent 2\zabbix_agent2.d\plugins.d` 
+directory or a custom one built under `%PROGRAMDATA%` to our advantage. 
 
-### Solution: Split Custom Configurations To Be Under %PROGRAMDATA%
+All in all, Put your custom conf files in other directories using `Include=` so they persist through 
+a full uninstall of the agent and are not lost during an agent upgrade.
+
+### Custom Solution: Split Custom Configurations To Be Under %PROGRAMDATA%
 
 Directory Structure:
 ```
@@ -113,9 +117,17 @@ Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
 
 ## Keep Your `Hostname=` parameter value lowercase
 
-This is mainly important if you are using the `ServerActive` method. Your `Hostname=` value
-**must match** the hostname field for your host record and it is case sensitive or your
+This is very important if you are using the `ServerActive` method. Your `Hostname=` value
+**must match** the `Host name` field for your host record and it is case sensitive; or your
 Active agent templates for Windows will not work.
+
+&#10006; This does not work for Active checks:
+- Config File: `Hostname=SOMEserver.domain.com`
+- Zabbix Host Record - `Host name` field: `someserver.domain.com`
+
+&#10003; This will work for Active checks:
+- Config File: `Hostname=someserver.domain.com`
+- Zabbix Host Record - `Host name` field: `someserver.domain.com`
 
 ## Use PowerShell Scripting To Your Advantage
 
