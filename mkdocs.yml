@@ -207,6 +207,7 @@ plugins:
         - fr
         - nl
         - ru
+        - de
         - pt_BR
         - en
   - tags
@@ -260,9 +261,9 @@ plugins:
         - locale: fr
           name: Français
           build: true
-        #        - locale: de
-        #          name: German
-        #          build: true
+        - locale: de
+          name: German
+          build: true
         #        - locale: it
         #          name: Italian
         #          build: true
@@ -273,7 +274,6 @@ plugins:
           name: Brazilian Portuguese
           build: true
         #          theme: # override Material options for this locale
-        #            language: pt-BR
         #        - locale: es
         #          name: Spanish
         #          build: true
