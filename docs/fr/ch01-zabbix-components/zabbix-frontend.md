@@ -1,31 +1,20 @@
 ---
 description: |
-    This section from The Zabbix Book titled "Installing the frontend" provides
-    step-by-step instructions for installing the Zabbix frontend with NGINX on
-    various Linux distributions. It covers the installation of necessary packages,
-    configuration of SELinux and Systemd for PHP-FPM, and modification of the
-    NGINX configuration to serve the Zabbix frontend on port 80. Additionally, 
-    it guides users through the initial setup of the Zabbix frontend, including
-    database connection configuration and basic settings such as instance name,
-    timezone, and time format.
-tags: [beginner]
+    Cette section du livre The Zabbix Book intitulée "Installation de l'interface utilisateur" fournit des instructions étape par étape pour installer l'interface utilisateur Zabbix avec NGINX sur diverses distributions Linux. Elle couvre l'installation des paquets nécessaires, la configuration d'SELinux et Systemd pour PHP-FPM, ainsi que la modification de la configuration NGINX afin de servir l'interface utilisateur Zabbix sur le port 80. De plus, elle guide les utilisateurs à travers la première configuration de l'interface utilisateur Zabbix, y compris la configuration de la connexion à la base de données et des paramètres de base tels que le nom d'instance, le fuseau horaire et le format de temps.
+tags: [débutant]
 ---
 
-# Installation du frontend
+# Installation de l'interface utilisateur
 
-Avant de configurer le frontend Zabbix, assurez-vous que le système répond aux
-exigences et qu'il est préparé comme indiqué dans le chapitre précédent :
-[_Démarrage_](../ch00-getting-started/Requirements.md). Ce serveur peut être le
-même que celui sur lequel le serveur Zabbix a été précédemment installés, ou il
-peut s'agir d'une machine séparée.
+Avant de configurer l'interface utilisateur Zabbix, assurez-vous que le système répond aux exigences et est prêt comme indiqué dans le chapitre précédent : [_Débuter_](../ch00-getting-started/Requirements.md). Ce serveur peut être le même où les paquets du serveur Zabbix ont été précédemment installés, ou il peut s'agir d'une machine distincte.
 
-Effectuez toutes les étapes suivantes sur le serveur désigné pour le frontend.
+Effectuez toutes les étapes suivantes sur le serveur désigné pour l'interface utilisateur.
 
 ---
 
-## Installer le frontend avec NGINX
+## Installation de l'interface utilisateur avec NGINX
 
-!!! info "installer les paquets frontend"
+!!! info "installer les paquets de l'interface utilisateur"
 
     Red Hat
     ```bash
@@ -37,6 +26,7 @@ Effectuez toutes les étapes suivantes sur le serveur désigné pour le frontend
     # or when using PostgreSQL
     dnf install zabbix-nginx-conf zabbix-web-pgsql
     ```
+
     SUSE
     ```bash
     # When using MySQL/MariaDB
@@ -44,20 +34,21 @@ Effectuez toutes les étapes suivantes sur le serveur désigné pour le frontend
     # or when using PostgreSQL
     zypper install zabbix-nginx-conf zabbix-web-pgsql php8-openssl php8-xmlreader php8-xmlwriter
     ```
+
     ???+ note "Suse Linux Enterprise Server"
 
-        On SUSE Linux Enterprise Server (SLES), ensure you are subscribed to the
-        "SUSE Linux Enterprise Module Web and Scripting" repository to access
-        the necessary PHP 8 packages required for the Zabbix frontend installation:
-        (on SLES versions < 16, the command is "`SUSEConnect`" instead of "`suseconnect`")
+        Sur SUSE Linux Enterprise Server (SLES), assurez-vous d'être abonné au dépôt "SUSE Linux Enterprise Module Web and Scripting" pour accéder aux paquets PHP 8 nécessaires à l'installation de l'interface utilisateur Zabbix : (sur les versions SLES < 16, la commande est "`SUSEConnect`" au lieu de "`suseconnect`")
 
         ```bash
         suseconnect -p sle-module-web-scripting/16/x86_64
         ```
-        The actual URL for web scripting module may be different depending on particular service pack. Use the following command to determine the right one.
+
+        L'URL réelle pour le module web scripting peut varier en fonction du service pack particulier. Utilisez la commande suivante pour déterminer celle qui convient.
+
         ```bash
         suseconnect --list-extensions
         ```
+
 
     Ubuntu
     ```bash
@@ -67,87 +58,76 @@ Effectuez toutes les étapes suivantes sur le serveur désigné pour le frontend
     sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
-Cette commande installera les paquets front-end ainsi que les dépendances
-requises pour Nginx.
 
-A partir de SUSE 16, SELinux est le module de sécurité par défaut à la place
-d'AppArmor. Par défaut, PHP-FPM n'est pas autorisé par SELinux sur SUSE non plus
-- "map exec memory" est requit pour la compilation JIT de PHP,
+Cette commande installera les paquets de l'interface utilisateur ainsi que les dépendances requises pour NGINX. 
+
+À partir de SUSE 16, SELinux est le module de sécurité par défaut au lieu d'AppArmor.
+Par défaut, PHP-FPM n'est pas autorisé par SELinux sur SUSE à :
+- mapper la mémoire exécutable nécessaire à la compilation JIT PHP,
 - se connecter au serveur Zabbix ou
-- connect to the database server over TCP. We need to tell SELinux to allow all
-  this:
+- se connecter au serveur de base de données via TCP.
+Nous devons informer SELinux d'autoriser tout cela :
 
-!!! info "SELinux: Allow PHP-FPM to map exec memory"
+!!! info "SELinux : Autoriser PHP-FPM à mapper la mémoire exécutable"
 
     ```bash
     setsebool -P httpd_execmem 1
     setsebool -P httpd_can_connect_zabbix 1
     setsebool -P httpd_can_network_connect_db 1
     ```
+
 ???+ tip
 
-    To troubleshoot SELinux issues, it is recommended to install the `setroubleshoot`
-    package which will log any SELinux denials in the system log and provide
-    suggestions on how to resolve them.
+    Pour dépanner les problèmes de SELinux, il est recommandé d'installer le paquet `setroubleshoot` qui enregistrera toute dénégation SELinux dans le journal système et fournira des suggestions sur la façon de résoudre ces problèmes.
 
-Depending on your Linux distribution defaults, PHP-FPM may by default not be
-allowed by Systemd to write to the `/etc/zabbix/web` directory required for the
-Zabbix frontend setup. To enable this we need to create a drop-in file to allow
-this:
+Selon les paramètres par défaut de votre distribution Linux, PHP-FPM peut ne pas être autorisé par Systemd à écrire dans le répertoire `/etc/zabbix/web` requis pour la configuration de l'interface utilisateur Zabbix. Pour activer cela, nous devons créer un fichier drop-in :
 
-!!! info "Systemd: Allow PHP-FPM to write to /etc/zabbix/web"
+!!! info "Systemd : Autoriser PHP-FPM à écrire dans /etc/zabbix/web"
 
     ```bash
     systemctl edit php-fpm
     ```
 
-    This will open an editor to create a drop-in file `/etc/systemd/system/php-fpm.service.d/override.conf`
-    which will override or extend the existing service file.
+    
+    Ceci ouvrira un éditeur pour créer le fichier drop-in `/etc/systemd/system/php-fpm.service.d/override.conf` qui surchargera ou étendra le fichier de service existant.
 
-    Add the following lines to the file:
+    Ajoutez les lignes suivantes au fichier :
 
     ```ini
     [Service]
     ReadWritePaths=/etc/zabbix/web
     ```
 
-    Then exit the editor and reload the Systemd configuration:
+
+    Puis quittez l'éditeur et rechargez la configuration Systemd :
 
     ```bash
     systemctl daemon-reload
     ```
 
-???+ note "How is Systemd preventing PHP-FPM from writing to /etc/zabbix/web?"
 
-    On many modern Linux distributions, Systemd employs a security feature known as
-    sandboxing to restrict the capabilities of services. This is done to enhance
-    security by limiting the access of services to only the resources they need to function.
-    By default, PHP-FPM may be restricted from writing to certain directories,
-    including `/etc/zabbix/web`, to prevent potential security vulnerabilities.
-    This is enforced through Systemd's `ProtectSystem` and `ReadWritePaths` directives, which
-    control the file system access of services.
+???+ note "Comment Systemd empêche PHP-FPM d'écrire dans /etc/zabbix/web ?"
+
+    Sur de nombreuses distributions Linux modernes, Systemd utilise une fonctionnalité de sécurité appelée sandboxing pour restreindre les capacités des services. Cela est fait pour améliorer la sécurité en limitant l'accès des services à seulement les ressources dont ils ont besoin pour fonctionner.
+    Par défaut, PHP-FPM peut être restreint d'écrire dans certains répertoires, y compris `/etc/zabbix/web`, afin de prévenir les vulnérabilités potentielles en matière de sécurité. Cela est imposé par les directives Systemd `ProtectSystem` et `ReadWritePaths` qui contrôlent l'accès au système de fichiers des services.
 
 ???+ tip
 
-    Normally write access to `/etc/zabbix/web` is only needed during the initial setup
-    of the Zabbix frontend. After the setup is complete you can remove the drop-in
-    file again to further harden the security of your system.
+    Généralement, l'accès en écriture à `/etc/zabbix/web` est nécessaire uniquement lors de la configuration initiale de l'interface utilisateur Zabbix. Une fois cette configuration terminée, vous pouvez supprimer le fichier drop-in pour renforcer davantage la sécurité de votre système.
 
-First thing we have to do is alter the Nginx configuration file so that we don't
-use the standard config and serve the Zabbix frontend on port 80.
+La première chose que nous devons faire est d'ajuster le fichier de configuration NGINX afin qu'il ne utilise pas la configuration standard et serve l'interface utilisateur Zabbix sur le port 80.
 
-!!! info "Edit nginx config for Red Hat"
+!!! info "Modifier la configuration nginx pour Red Hat"
 
     ```bash
     vi /etc/nginx/nginx.conf
     ```
-If you are on Ubuntu no need to edit `nginx.conf` just run `sudo unlink
-/etc/nginx/sites-enabled/default`
 
-In this configuration file look for the following block that starts with `server
-{`:
+Si vous êtes sous Ubuntu, il n'est pas nécessaire d'éditer `nginx.conf` ; exécutez simplement `sudo unlink /etc/nginx/sites-enabled/default`
 
-!!! example "Original config"
+Dans ce fichier de configuration, recherchez le bloc suivant qui commence par `server {` :
+
+!!! example "Configuration originale"
 
     ```nginx
     server {
@@ -156,16 +136,14 @@ In this configuration file look for the following block that starts with `server
         server_name *;
     ...
     ```
+
     ???+ tip
 
-        This block may be different depending on your distribution and Nginx version.
+        Ce bloc peut varier en fonction de votre distribution et de la version NGINX.
 
+Ensuite, commentez les directives `listen` et `server_name` pour désactiver la configuration par défaut du serveur HTTP. Vous pouvez le faire en ajoutant un `#` au début de chaque ligne, comme dans l'exemple ci-dessous :
 
-Then, comment out the any `listen` and `server_name` directives to disable the
-default http server configuration. You can do this by adding a `#` at the
-beginning of each line, like in the example below:
-
-!!! example "Config after edit"
+!!! example "Configuration après modification"
 
     ```nginx
     server {
@@ -175,18 +153,20 @@ beginning of each line, like in the example below:
     ...
     ```
 
-The Zabbix configuration file must now be modified to take over the default
-service on port 80 we just disabled. Open the following file for editing:
 
-!!! info "Edit Zabbix config for nginx"
+Le fichier de configuration Zabbix doit maintenant être modifié pour prendre en charge le service par défaut sur le port 80 que nous venons de désactiver.
+Ouvrez le fichier suivant pour l'édition :
+
+!!! info "Modifier la configuration Zabbix pour NGINX"
 
     ```bash
     sudo vi /etc/nginx/conf.d/zabbix.conf
     ```
 
-And alter the following lines:
 
-!!! example "Original config"
+Et modifiez les lignes suivantes :
+
+!!! example "Configuration originale"
 
     ```nginx
     server {
@@ -199,15 +179,14 @@ And alter the following lines:
     ...
     ```
 
-Remove the `#` in front of the first 2 lines and modify them with the correct
-port and domain for your front-end.
 
-???+ tip
+Supprimez le `#` devant les deux premières lignes et modifiez-les avec le port et le domaine corrects pour votre interface utilisateur.
 
-    In case you don't have a domain you can replace `servername` with `_` 
-    like in the example below:
+???+ tip 
 
-!!! example "Config after the edit"
+    Si vous n'avez pas de domaine, vous pouvez remplacer `servername` par `_` comme dans l'exemple ci-dessous :
+
+!!! example "Configuration après modification"
 
     ```nginx
     server {
@@ -219,30 +198,32 @@ port and domain for your front-end.
              index   index.php;
     ```
 
-The web server and PHP-FPM service are now ready for activation and persistent
-startup. Execute the following commands to enable and start them immediately:
 
-!!! info "Restart the front-end services"
+Le serveur web et le service PHP-FPM sont maintenant prêts pour la mise en route et le démarrage persistant. Exécutez les commandes suivantes pour activer et démarrer immédiatement ces services :
+
+!!! info "Redémarrer les services de l'interface utilisateur"
 
     Red Hat / SUSE
     ```bash
     systemctl enable nginx php-fpm --now
     ```
 
+
     Ubuntu
     ```bash
     sudo systemctl enable nginx php8.3-fpm --now
     ```
 
-Let's verify if the service is properly started and enabled so that it survives
-our reboot next time.
 
-!!! info "Check if the service is running"
+Vérifions maintenant si le service est correctement démarré et configuré pour un démarrage automatique lors du prochain redémarrage.
+
+!!! info "Vérifier que le service fonctionne"
 
     ```bash
     sudo systemctl status nginx
     ```
-???+ example "Example output"
+
+???+ example "Sortie d'exemple"
 
     ```shell-session
     localhost:~> sudo systemctl status nginx
@@ -265,11 +246,10 @@ our reboot next time.
     Nov 20 11:42:18 zabbix-srv systemd[1]: Started The nginx HTTP and reverse proxy server.
     ```
 
-With the service operational and configured for automatic startup, the final
-preparatory step involves adjusting the firewall to permit inbound HTTP traffic.
-Execute the following commands:
 
-!!! info "Configure the firewall"
+Avec le service opérationnel et configuré pour un démarrage automatique, l'étape préparatoire finale consiste à ajuster le pare-feu afin de permettre les connexions entrantes HTTP. Exécutez les commandes suivantes :
+
+!!! info "Configurer le pare-feu"
 
     Red Hat / SUSE
     ```bash
@@ -277,22 +257,23 @@ Execute the following commands:
     firewall-cmd --reload
     ```
 
+
     Ubuntu
     ```bash
     sudo ufw allow 80/tcp
     ```
 
-Open your browser and go to the url or ip of your front-end :
 
-!!! info "Front-end configuration"
+Ouvrez votre navigateur et accédez à l'URL ou à l'adresse IP de votre interface utilisateur :
+
+!!! info "Configuration de l'interface utilisateur"
 
     ```
     http://<ip or dns of the zabbix frontend server>/
     ```
 
-If all goes well you should be greeted with a Zabbix welcome page. In case you
-have an error check the configuration again or have a look at the nginx log file
-`/var/log/nginx/error.log` or run the following command :
+
+Si tout se passe bien, vous devriez être accueilli par une page d'accueil Zabbix. En cas d'erreur, vérifiez la configuration à nouveau ou consultez le fichier journal NGINX `/var/log/nginx/error.log` ou exécutez la commande suivante :
 
 !!! info ""
 
@@ -300,46 +281,53 @@ have an error check the configuration again or have a look at the nginx log file
     journalctl -xeu nginx
     ```
 
-This should help you in locating the errors you made.
 
-Upon accessing the appropriate URL, a page resembling the one illustrated below
-should appear:
+Cela devrait vous aider à localiser les erreurs que vous avez commises.
 
-![overview](ch01.2-basic-installation-setup.png){ align=left }
+À l'ouverture de l'URL appropriée, une page ressemblant à celle illustrée ci-dessous doit apparaître :
 
-_1.2 Zabbix welcome_
+![aperçu](ch01.2-basic-installation-setup.png){ align=left }
 
-The Zabbix frontend presents a limited array of available localizations, as
-shown.
+_1.2 Zabbix
+accueil_
 
-![overview language](ch01.3-basic-installation-setuplanguage.png){ align=left }
+!!! tip "Choisissez la localisation anglaise appropriée"
 
-_1.3 Zabbix welcome language choice_
+    La localisation `en_US` utilise une notation de date américaine et un horloge à 12 heures, tandis que `en_GB` utilise une notation de date internationale et une horloge à 24 heures.
 
-What if we want to install Chinese as language or another language from the
-list? Run the next command to get a list of all locales available for your OS.
+L'interface utilisateur Zabbix présente un ensemble limité de localisations disponibles, comme illustré ci-dessous.
 
-!!! info "Install language packs"
+![aperçu langue](ch01.3-basic-installation-setuplanguage.png){ align=left }
+
+_1.3 Choix de la langue
+d'accueil Zabbix_
+
+Que se passe-t-il si nous voulons installer le chinois ou une autre langue de cette liste ?
+Exécutez la commande suivante pour obtenir la liste des localisations disponibles pour votre système d'exploitation.
+
+!!! info "Installer les paquets linguistiques"
 
     Red Hat
     ```bash
     dnf list glibc-langpack-*
     ```
 
+
     SUSE
     ```bash
     localectl list-locales
     ```
+
 
     Ubuntu
     ```bash
     apt-cache search language-pack
     ```
 
-Users on Ubuntu will probably notice following error `"Locale for language
-"en_US" is not found on the web server."``
 
-!!! info "This can be solved easy with the following commands."
+Les utilisateurs d'Ubuntu remarqueront probablement l'erreur suivante : `"Locale for language "en_US" is not found on the web server."```
+
+!!! info "Cela peut être résolu facilement avec les commandes suivantes."
 
     ```bash
     sudo locale-gen en_US.UTF-8
@@ -347,9 +335,10 @@ Users on Ubuntu will probably notice following error `"Locale for language
     sudo systemctl restart nginx php8.3-fpm
     ```
 
-This will give you a list like:
 
-???+ example "Example output"
+Cela vous donnera une liste comme celle-ci :
+
+???+ example "Sortie d'exemple"
 
     Red Hat
     ```
@@ -360,6 +349,7 @@ This will give you a list like:
     ---
     glibc-langpack-zu.x86_64
     ```
+
 
     SUSE
     ```
@@ -372,6 +362,7 @@ This will give you a list like:
     zh_TW.UTF-8
     zu_ZA.UTF-8
     ```
+
 
     Ubuntu
     ```
@@ -387,10 +378,10 @@ This will give you a list like:
     language-pack-lt - translation updates for language Lithuanian
     ```
 
-Let's search for our Chinese locale to see if it is available. As you can see
-the code starts with zh.
 
-!!! info "search for language pack"
+Recherchons maintenant notre localisation chinoise pour voir si elle est disponible. Comme vous pouvez le voir, le code commence par zh.
+
+!!! info "recherche de paquet linguistique"
 
     Red Hat
     ```shell-session
@@ -398,6 +389,7 @@ the code starts with zh.
     glibc-langpack-zh.x86_64
     glibc-langpack-lzh.x86_64
     ```
+
 
     SUSE
     ```shell-session
@@ -408,18 +400,17 @@ the code starts with zh.
     zh_TW.UTF-8
     ```
 
+
     Ubuntu
     ```bash
     sudo apt-cache search language-pack | grep -i zh
     ```
 
-On RedHat and Ubuntu, the command outputs two lines; however, given the
-identified language code, 'zh_CN,' only the first package requires installation.
-on SUSE either only locales `C.UTF-8` and `en_US.UTF-8` are install or all
-available locales are installed, depending on whether the package `glibc-locale`
-is installed or not.
 
-!!! info "Install the locale package"
+Sur RedHat et Ubuntu, la commande retourne deux lignes ; cependant, étant donné le code de langue identifié, 'zh_CN', seul le premier paquet nécessite l'installation.
+sur SUSE, soit seuls les locaux `C.UTF-8` et `en_US.UTF-8` sont installés ou tous les locaux disponibles sont installés, en fonction de la présence du paquet `glibc-locale`.
+
+!!! info "Installer le paquet local"
 
     Red Hat
     ```bash
@@ -427,11 +418,13 @@ is installed or not.
     sudo systemctl restart nginx php-fpm
     ```
 
+
     SUSE
     ```bash
     zypper install glibc-locale
     sudo systemctl restart nginx php-fpm
     ```
+
 
     Ubuntu
     ```bash
@@ -439,145 +432,99 @@ is installed or not.
     sudo systemctl restart nginx php8.3-fpm
     ```
 
-When we return now to our front-end we are able to select the Chinese language,
-after a reload of our browser.
 
-![select language](ch01.4-basic-installation-selectlanguage.png){ align=left }
+Lorsque nous revenons maintenant à notre interface utilisateur, nous sommes en mesure de sélectionner la langue chinoise après un rechargement du navigateur.
 
-_1.4 Zabbix select language_
+![sélection de langue](ch01.4-basic-installation-selectlanguage.png){ align=left }
 
-???+ note
-
-    If your preferred language is not available in the Zabbix front-end, don't
-    worry, it simply means that the translation is either incomplete or not yet
-    available. Zabbix is an open-source project that relies on community contributions
-    for translations, so you can help improve it by contributing your own translations.
-
-Visit the translation page at
-[https://translate.zabbix.com/](https://translate.zabbix.com/) to assist with
-the translation efforts. Once your translation is complete and reviewed, it will
-be included in the next minor patch version of Zabbix. Your contributions help
-make Zabbix more accessible and improve the overall user experience for
-everyone.
-
-When you're satisfied with the available translations, click `Next`. You will
-then be taken to a screen to verify that all prerequisites are satisfied. If any
-prerequisites are not fulfilled, address those issues first. However, if
-everything is in order, you should be able to proceed by clicking `Next`.
-
-![pre-requisites](ch01.5-basic-installation-prerequisites.png){ align=left }
-
-_1.5 Zabbix pre-requisites_
-
-On the next page, you'll configure the database connection parameters:
-
-1. `Select the Database Type`: Choose either MySQL or PostgreSQL depending on
-   your setup.
-2. `Enter the Database Host`: Provide the IP address or DNS name of your
-   database server. Use port 3306 for MariaDB/MySQL or 5432 for PostgreSQL.
-3. `Enter the Database Name`: Specify the name of your database. In our case, it
-   is zabbix. If you are using PostgreSQL, you will also need to provide the
-   schema name, which is zabbix_server in our case.
-4. `Enther the Database Schema`: Only for PostgreSQL users, enter the schema
-   name created for Zabbix server, which is `zabbix_server` in our case.
-4. `Enter the Database User`: Input the database user created for the web
-   front-end, remember in our basic installation guide we created 2 users
-   `zabbix-web` and `zabbix-srv`. One for the frontend and the other one for our
-   zabbix server so here we will use the user `zabbix-web`. Enter the
-   corresponding password for this user.
-
-Ensure that the `Database TLS encryption` option is not selected, and then click
-`Next step` to proceed.
-
-![dbconnection](ch01.6-basic-installation-dbconnection.png){ align=left }
-
-_1.6 Zabbix connections_
-
-You're almost finished with the setup! The final steps involve:
-
-1. `Assigning an Instance Name`: Choose a descriptive name for your Zabbix
-   instance.
-2. `Selecting the Timezone`: Choose the timezone that matches your location or
-   your preferred time zone for the Zabbix interface.
-3. `Setting the Default Time Format`: Select the default time format you prefer
-   to use.
-4. **Encrypt connections from Web interface**: I marked this box but you should
-   not. This box is to encrypt communications between Zabbix frontend and your
-   browser. We will cover this later. Once these settings are configured, you
-   can complete the setup and proceed with any final configuration steps as
-   needed.
+_1.4 Zabbix sélection
+de langue_
 
 ???+ note
 
-    It's a good practice to set your Zabbix server to the UTC timezone, especially
-    when managing systems across multiple timezones. Using UTC helps ensure consistency
-    in time-sensitive actions and events, as the server’s timezone is often used for
-    calculating and displaying time-related information.
+    Si votre langue préférée n'est pas disponible dans l'interface utilisateur Zabbix, ne vous inquiétez pas, cela signifie simplement que la traduction est soit incomplète, soit non encore disponible. Zabbix est un projet open-source qui repose sur les contributions de la communauté pour les traductions, donc vous pouvez aider à améliorer en contribuant vos propres traductions.
 
-![settings](ch01.7-basic-installation-settings.png){ align=left }
+Visitez la page de traduction à [https://translate.zabbix.com/](https://translate.zabbix.com/)
+pour participer aux efforts de traduction. Une fois votre traduction terminée et revue, elle sera incluse dans le prochain correctif mineur de Zabbix.
+Vos contributions aident à rendre Zabbix plus accessible et améliorent l'expérience utilisateur globale pour tous.Quand vous êtes satisfait des traductions disponibles, cliquez sur `Next`. Vous serez alors dirigé vers une page pour vérifier que tous les prérequis sont satisfaits. Si certains prérequis ne sont pas remplis, résolvez ces problèmes en premier lieu. Cependant, si tout est en ordre, vous devriez pouvoir continuer en cliquant sur `Next`.
 
-_1.7 Zabbix summary_
+![pré-requis](ch01.5-basic-installation-prerequisites.png){ align=left }
 
-After clicking `Next step` again, you'll be taken to a page confirming that the
-configuration was successful. Click `Finish` to complete the setup process.
+_1.5 Pré-requis Zabbix_
 
-![settings](ch01.8-basic-installation-final.png){ align=left }
+Sur la page suivante, vous configurerez les paramètres de connexion à la base de données :
 
-_1.8 Zabbix install_
+1. `Select the Database Type` : Choisissez soit MySQL ou PostgreSQL selon votre configuration.
+2. `Enter the Database Host` : Fournissez l'adresse IP ou le nom DNS du serveur de base de données. Utilisez le port 3306 pour MariaDB/MySQL ou 5432 pour PostgreSQL.
+3. `Enter the Database Name` : Spécifiez le nom de votre base de données. Dans notre cas, c'est zabbix. Si vous utilisez PostgreSQL, vous devrez également fournir le nom du schéma qui est zabbix_server dans notre cas.
+4. `Enther the Database Schema` : Seulement pour les utilisateurs de PostgreSQL, entrez le nom du schéma créé pour le serveur Zabbix, qui est `zabbix_server` dans notre cas.
+4. `Enter the Database User` : Entrez l'utilisateur de la base de données créé pour l'interface web front-end, rappelez-vous que dans notre guide d’installation de base nous avons créé 2 utilisateurs `zabbix-web` et `zabbix-srv`. Un pour le frontend et l'autre pour notre serveur Zabbix donc ici nous utiliserons l'utilisateur `zabbix-web`. Entrez le mot de passe correspondant à cet utilisateur.
 
-We are now ready to login :
+Assurez-vous que l'option `Database TLS encryption` n'est pas sélectionnée, puis cliquez sur `Next step` pour continuer.
 
-![settings](ch01.9-basic-installation-login.png)
+![connexionbase](ch01.6-basic-installation-dbconnection.png){ align=left }
 
-_1.9 Zabbix login_
+_1.6 Connexions Zabbix_
 
-- Login : Admin
-- Password : zabbix
+Vous êtes presque terminé avec la configuration ! Les étapes finales impliquent :
 
-This concludes our topic on setting up the Zabbix server. If you're interested
-in securing your front-end, I recommend checking out the topic Securing Zabbix
-for additional guidance and best practices.
+1. `Assigning an Instance Name` : Choisissez un nom descriptif pour votre instance Zabbix.
+2. `Selecting the Timezone` : Choisissez le fuseau horaire qui correspond à votre localisation ou au fuseau horaire préféré pour l'interface Zabbix.
+3. `Setting the Default Time Format` : Sélectionnez le format de temps par défaut que vous préférez utiliser.
+4. **Chiffrer les connexions depuis l’interface web** : J'ai coché cette case mais vous ne devriez pas. Cette case est pour chiffrer la communication entre Zabbix frontend et votre navigateur. Nous aborderons cela plus tard.
+   Une fois ces paramètres configurés, vous pouvez finaliser la configuration et poursuivre avec les étapes de configuration finales si nécessaire.
 
-???+ tip
+???+ note
 
-    If you are not able to save your configuration at the end, make sure you
-    executed the SELinux related instructions or have SELinux disabled.
-    Also check if the `/etc/zabbix/web` directory is writable by the webservice
-    user (usually `wwwrun` or `www`)
+    Il est une bonne pratique de définir le serveur Zabbix sur le fuseau horaire UTC, surtout lorsque vous gérez des systèmes dans plusieurs fuseaux horaires. L'utilisation du UTC aide à garantir la cohérence pour les actions et événements sensibles au temps, car le fuseau horaire du serveur est souvent utilisé pour calculer et afficher l'information liée au temps.
+
+![paramètres](ch01.7-basic-installation-settings.png){ align=left }
+
+_1.7 Résumé Zabbix_
+
+Après avoir cliqué à nouveau sur `Next step`, vous serez dirigé vers une page confirmant que la configuration a été réussie. Cliquez sur `Finish` pour finaliser le processus de configuration.
+
+![paramètres](ch01.8-basic-installation-final.png){ align=left }
+
+_1.8 Installation Zabbix_
+
+Nous sommes maintenant prêts à nous connecter :
+
+![paramètres](ch01.9-basic-installation-login.png)
+
+_1.9 Connexion Zabbix_
+
+- Identifiant : Admin
+- Mot de passe : zabbix
+
+Cela conclut notre sujet sur la configuration du serveur Zabbix. Si vous êtes intéressé par la sécurisation de votre front-end, je recommande de consulter le sujet Securing Zabbix pour obtenir des conseils et les meilleures pratiques supplémentaires.
+
+???+ conseil
+
+    Si vous ne pouvez pas sauvegarder votre configuration à la fin, assurez-vous d'avoir exécuté les instructions liées à SELinux ou d'avoir désactivé SELinux. Vérifiez également si le répertoire `/etc/zabbix/web` est accessible en écriture par l'utilisateur du service web (généralement `wwwrun` ou `www`)
 
 ---
 
 ## Conclusion
 
-With the installation and configuration of the Zabbix frontend now complete, you
-have successfully set up the user interface for your Zabbix monitoring system.
-This process included installing the necessary packages, configuring a web
-server and PHP engine, setting up the database connection, and customizing the
-frontend settings.
+Avec l'installation et la configuration de l’interface frontale Zabbix maintenant terminées, vous avez réussi à mettre en place l'interface utilisateur pour votre système de surveillance Zabbix. Ce processus a inclus l'installation des paquets nécessaires, la configuration d'un serveur web et un moteur PHP, la mise en place de la connexion à la base de données et la personnalisation des paramètres frontaux.
 
-At this stage, your Zabbix instance is operational, providing the foundation for
-advanced monitoring and alerting. In the upcoming chapters, we will delve into
-fine-tuning Zabbix, optimizing performance, and exploring key features that
-transform it into a powerful observability platform.
+À ce stade, votre instance Zabbix est opérationnelle, fournissant une base pour la surveillance avancée et l'alerte. Dans les chapitres suivants, nous allons explorer le fine-tuning de Zabbix, l’optimisation des performances et les fonctionnalités clés qui transforment cela en un puissant outil d'observabilité.
 
-Now that your Zabbix environment is up and running, let’s take it to the next
-level.
+Maintenant que votre environnement Zabbix est opérationnel, passons à la prochaine étape.
 
 ---
 
 ## Questions
 
-- Why is it necessary to comment out the default listen 80 block in nginx.conf
-  before editing zabbix.conf?
-- Which web server and PHP process manager services need to be enabled and
-  started after adjusting the configurations?
-- During the frontend database setup wizard, why should you enter the zabbix-web
-  database user instead of zabbix-srv?
-- When connecting a PostgreSQL database in the Zabbix setup wizard, what
-  additional parameter must be supplied compared to MySQL/MariaDB?
+- Pourquoi est-il nécessaire de commenter le bloc par défaut listen 80 dans nginx.conf avant d’éditer zabbix.conf ?
+- Quels services serveur web et gestionnaire PHP doivent être activés et démarrés après avoir ajusté les configurations ?
+- Lors de la configuration du front-end de base de données, pourquoi devez-vous entrer l'utilisateur de la base de données zabbix-web au lieu de zabbix-srv ?
+- Au moment de connecter une base de données PostgreSQL dans le wizard de configuration Zabbix, quel paramètre supplémentaire doit être fourni par rapport à MySQL/MariaDB ?
+
 ---
 
-## Useful URLs
+## Liens utiles
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)
