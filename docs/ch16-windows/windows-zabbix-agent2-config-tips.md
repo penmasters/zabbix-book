@@ -39,12 +39,12 @@ Tips/Index:
 - Take control of your config and look at it as a template
 - Keep your `Hostname=` field fully-qualified and lowercase if you can, i.e.
   `hostname.domain.org`
+- Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default
+  configuration file
 - Use PowerShell scripting to your advantage to automate the agent config to set
   the `Hostname=`
 - Use `ForceActiveChecksOnStart` and `RefreshActiveChecks` when utilizing Active
   templates (ServerActive)
-- Use `Include=C:\\some\\path\\*.conf` to move customizations out of the default
-  configuration file
 - Metadata strings should be defined and should be considered for
   Autoregistration
 - Prioritize using `Active` templates over `Passive` where possible
@@ -91,6 +91,20 @@ Feel free to use the config snippets provided at the bottom of this page as a
 start, but I implore you to continue reading the next few sections before you
 do.
 
+## Keep Your `Hostname=` parameter value lowercase for consistency
+
+This is very important if you are using the `ServerActive` method. Your
+`Hostname=` value **must match** the `Host name` field for your host record and
+it is case-sensitive, or your Active agent templates for Windows will not work.
+
+&#10006; This does not work for Active checks:
+- Config File: `Hostname=SOMEserver.domain.com`
+- Zabbix Host Record - `Host name` field: `someserver.domain.com`
+
+&#10003; This will work for Active checks:
+- Config File: `Hostname=someserver.domain.com`
+- Zabbix Host Record - `Host name` field: `someserver.domain.com`
+
 ## Using the `Include=` param to your advantage
 
 In the event of the Zabbix Agent 2 upgrade process, via MSI command-line
@@ -132,20 +146,6 @@ directory
 ```ini
 Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
 ```
-
-## Keep Your `Hostname=` parameter value lowercase for consistency
-
-This is very important if you are using the `ServerActive` method. Your
-`Hostname=` value **must match** the `Host name` field for your host record and
-it is case-sensitive, or your Active agent templates for Windows will not work.
-
-&#10006; This does not work for Active checks:
-- Config File: `Hostname=SOMEserver.domain.com`
-- Zabbix Host Record - `Host name` field: `someserver.domain.com`
-
-&#10003; This will work for Active checks:
-- Config File: `Hostname=someserver.domain.com`
-- Zabbix Host Record - `Host name` field: `someserver.domain.com`
 
 ## Use PowerShell Scripting To Your Advantage
 
