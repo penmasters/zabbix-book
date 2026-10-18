@@ -1,7 +1,8 @@
 ---
-descrição: |
-    Conheça os requisitos de sistema do Zabbix: sistema operacional suportado, opções de banco de dados, especificações de hardware
-    especificações de hardware, portas de firewall e sincronização de tempo necessários para uma instalação tranquila.
+description: |
+    Conheça os requisitos de sistema do Zabbix: sistemas operacionais
+    compatíveis, opções de banco de dados, especificações de hardware, portas
+    de firewall e sincronização de horário para uma instalação tranquila.
 tags: [beginner]
 ---
 
@@ -35,17 +36,17 @@ simplificar, anote os detalhes do servidor:
 | Servidor de banco de dados |             |
 | Servidor Web               |             |
 
-???+ dica
+???+ tip
 
-    Zabbix package names often use dashes (`-`) in their names, such as `zabbix-get`
-    or `zabbix-sender`, but the binaries themselves may use underscores (`_`),
-    like `zabbix_sender` or `zabbix_server`. This naming discrepancy can sometimes
-    be confusing, particularly if you are using packages from non-official Zabbix
-    repositories.
+    Os nomes dos pacotes do Zabbix costumam usar hífens (`-`), como `zabbix-get`
+    ou `zabbix-sender`, enquanto os próprios binários podem usar sublinhados
+    (`_`), como `zabbix_sender` ou `zabbix_server`. Essa diferença pode causar
+    confusão, especialmente ao usar pacotes de repositórios não oficiais do Zabbix.
 
-    Always check if a binary uses a dash or an underscore when troubleshooting.
+    Durante a solução de problemas, sempre verifique se o nome do binário usa
+    hífen ou sublinhado.
 
-???+ aviso
+???+ warning
 
     A partir do Zabbix 7.2, apenas o MySQL (incluindo seus forks) e o PostgreSQL são
     suportados como bancos de dados back-end. Versões anteriores do Zabbix também incluíam suporte
@@ -60,8 +61,8 @@ Sistemas operacionais, tantas opções, cada uma com suas próprias vantagens e
 base de usuários fiéis. Embora o Zabbix possa ser instalado em uma ampla gama de
 plataformas, documentar o processo para cada sistema operacional disponível
 seria impraticável. Para manter este livro focado e eficiente, optamos por
-abordar apenas as opções mais usadas: As distribuições baseadas no Ubuntu e no
-Red Hat.
+abordar apenas as opções mais usadas: Ubuntu e as distribuições baseadas em
+Red Hat e SUSE.
 
 Como nem todo mundo tem acesso a uma assinatura do Red Hat Enterprise Linux
 (RHEL) ou do SUSE Linux Enterprise Server (SLES), mesmo que uma conta de
@@ -73,7 +74,7 @@ Rocky Linux 9.x, o openSUSE Leap 16 e o Ubuntu LTS 24.04.x.
 - <https://opensuse.org/>
 - <https://ubuntu.com/>
 
-???+ nota
+???+ note
 
     As etapas de instalação do sistema operacional estão fora do escopo deste livro, mas uma instalação padrão ou mesmo
     mínima do seu sistema operacional preferido deve ser suficiente. Evite
@@ -119,19 +120,21 @@ operacional:
     sudo apt update
     sudo apt upgrade
     ```
-???+ nota "O que é apt, dnf ou zypper"?
+???+ note "O que são apt, dnf e zypper?"
 
-    - DNF (Dandified YUM) is a package manager used in recent Red Hat-based systems (invoked as `dnf`).
-    - ZYpp (Zen / YaST Packages Patches Patterns Products) is the package manager 
-    used on SUSE-based systems (invoked as `zypper`) and 
-    - APT (Advanced Package Tool) is the package manager used on Debian/Ubuntu-based systems (invoked as `apt`). 
+    - DNF (Dandified YUM) é o gerenciador de pacotes usado nos sistemas recentes
+      baseados em Red Hat e é executado com `dnf`.
+    - ZYpp (Zen / YaST Packages Patches Patterns Products) é o gerenciador de
+      pacotes dos sistemas baseados em SUSE e é executado com `zypper`.
+    - APT (Advanced Package Tool) é o gerenciador de pacotes dos sistemas
+      baseados em Debian e Ubuntu e é executado com `apt`.
 
-    If you're using another distribution, replace `dnf`/`zypper`/`apt` with your appropriate 
-    package manager, such as `yum`, `pacman`, `emerge`, `apk` or ... .
+    Se estiver usando outra distribuição, substitua `dnf`/`zypper`/`apt` pelo
+    gerenciador adequado, como `yum`, `pacman`, `emerge` ou `apk`.
 
-    Do note that package names may also vary from distribution to distribution.
+    Os nomes dos pacotes também podem variar entre as distribuições.
 
-???+ dica
+???+ tip
 
     Atualizar regularmente seu sistema é fundamental para a segurança e o desempenho.
     Considere configurar atualizações automáticas ou agendar janelas de manutenção regulares
@@ -158,7 +161,7 @@ o usuário root.
 
 !!! info "O que é sudo"
 
-    `O sudo` (abreviação de “superuser do”) é um utilitário de linha de comando que permite
+    `sudo` (abreviação de “superuser do”) é um utilitário de linha de comando que permite
     que usuários autorizados executem comandos com os privilégios de segurança de outro
     usuário, normalmente o superusuário (root). É comumente usado em sistemas operacionais do tipo Unix
     para realizar tarefas administrativas sem a necessidade de fazer login
@@ -181,8 +184,8 @@ operacional:
 
     Ubuntu
 
-    On Ubuntu, `sudo` is normally installed by default. Root access is managed
-    through `sudo` for the initial user created during installation.
+    No Ubuntu, o `sudo` normalmente é instalado por padrão. O acesso root do
+    primeiro usuário criado durante a instalação é gerenciado pelo `sudo`.
 
 Se o `sudo` já estiver instalado, esses comandos informarão que a versão mais
 recente já está presente e que nenhuma ação adicional é necessária. Caso
@@ -217,7 +220,7 @@ Para instalar e ativar o firewall, execute o seguinte comando:
     sudo apt install ufw
     sudo ufw enable
     ```
-???+ nota "O que é firewalld / ufw"
+???+ note "O que são firewalld e ufw?"
 
     O Firewalld é o substituto do iptables em sistemas baseados no RHEL e no SUSE e permite que
     as alterações entrem em vigor imediatamente, sem a necessidade de reiniciar o serviço.
@@ -234,7 +237,7 @@ pode optar por definir zonas de firewall dedicadas para casos de uso
 específicos. Essa abordagem aumenta a segurança ao isolar serviços e restringir
 o acesso com base em níveis de confiança. Por exemplo...
 
-!!! exemplo "Criar uma zona firewalld para acesso ao banco de dados"
+!!! example "Criar uma zona firewalld para acesso ao banco de dados"
 
     ```bash
     firewall-cmd --new-zone=db_zone --permanent
@@ -242,7 +245,7 @@ o acesso com base em níveis de confiança. Por exemplo...
 
 Você pode confirmar a criação da zona executando o seguinte comando:
 
-!!! exemplo "Verificar a criação da zona"
+!!! example "Verificar a criação da zona"
 
     ```shell-session
     localhost:~ # firewall-cmd --get-zones
@@ -255,36 +258,35 @@ Veja a seguir por que as zonas são vantajosas:
 
 - **Controle de acesso granular :**
 
-As zonas firewalld permitem diferentes níveis de confiança para diferentes
-interfaces de rede e intervalos de IP. Você pode definir quais sistemas têm
-permissão para se conectar ao PostgreSQL com base em seu nível de confiança.
+:   As zonas firewalld permitem diferentes níveis de confiança para diferentes
+    interfaces de rede e intervalos de IP. Você pode definir quais sistemas têm
+    permissão para se conectar ao PostgreSQL com base em seu nível de confiança.
 
 - **Gerenciamento simplificado de regras:**
 
-Em vez de definir manualmente regras complexas do iptables, as zonas oferecem
-uma maneira organizada de agrupar e gerenciar regras de firewall com base em
-cenários de uso.
+:   Em vez de definir manualmente regras complexas do iptables, as zonas oferecem
+    uma maneira organizada de agrupar e gerenciar regras de firewall com base em
+    cenários de uso.
 
 - **Segurança aprimorada:**
 
-: Ao restringir o acesso de aplicativos a uma zona específica, você evita
-conexões não autorizadas de outras interfaces ou redes.
+:   Ao restringir o acesso de aplicativos a uma zona específica, você evita
+    conexões não autorizadas de outras interfaces ou redes.
 
 - **Configuração dinâmica:**
 
-O firewalld suporta configurações de regras permanentes e em tempo de execução,
-permitindo alterações sem interromper as conexões existentes.
+:   O firewalld suporta configurações de regras permanentes e em tempo de
+    execução, permitindo alterações sem interromper as conexões existentes.
 
 - **Suporte a várias interfaces:**
 
-: Se o servidor tiver várias interfaces de rede, as zonas permitirão políticas
-de segurança diferentes para cada interface.
+:   Se o servidor tiver várias interfaces de rede, as zonas permitirão políticas
+    de segurança diferentes para cada interface.
 
 Juntando tudo para adicionar uma zona para, neste exemplo, o PostgreSQL, ficaria
 assim:
 
-!!! exemplo "Firewalld com configuração de zona para acesso ao banco de dados
-PostgreSQL"
+!!! example "Zona firewalld para acesso ao banco de dados PostgreSQL"
 
     ```bash
     firewall-cmd --new-zone=db_zone --permanent
@@ -340,7 +342,7 @@ seu status com o seguinte comando:
     systemctl status chronyd
     ```
 
-???+ nota "O que é Chrony"
+???+ note "O que é Chrony?"
 
     O Chrony é um substituto moderno para o `ntpd`, oferecendo sincronização de hora mais rápida e
     mais precisa. Se o seu sistema operacional não for compatível com
@@ -351,17 +353,17 @@ Depois que o Chrony estiver instalado, a próxima etapa é garantir que o fuso
 horário correto esteja definido. Você pode ver a configuração do horário atual
 usando o comando `timedatectl`:
 
-!!! exemplo "Verifique a configuração da hora"
+!!! example "Verificar a configuração de horário"
 
-    ```sessão do shell
+    ```shell-session
     localhost:~ # timedatectl
-                   Hora local: qui 16/11/2023 15:09:14 UTC
-               Hora universal: qui 16/11/2023 15:09:14 UTC
-                     Hora do RTC: Qui 16/11/2023 15:09:15
-                    Fuso horário: UTC (UTC, +0000)
-    Relógio do sistema sincronizado: sim
-                  Serviço NTP: ativo
-              RTC no fuso horário local: não
+                   Local time: Thu 2023-11-16 15:09:14 UTC
+               Universal time: Thu 2023-11-16 15:09:14 UTC
+                     RTC time: Thu 2023-11-16 15:09:15
+                    Time zone: UTC (UTC, +0000)
+    System clock synchronized: yes
+                  NTP service: active
+              RTC in local TZ: no
     ```
 
 Certifique-se de que o serviço Chrony esteja ativo (consulte as etapas
@@ -377,7 +379,7 @@ pode listar todos os fusos horários disponíveis com o seguinte comando:
 Esse comando exibirá uma lista de fusos horários disponíveis, permitindo que
 você selecione o mais próximo de sua localização. Por exemplo:
 
-!!! exemplo "Lista de todos os fusos horários disponíveis"
+!!! example "Lista de todos os fusos horários disponíveis"
 
     ```shell-session
     localhost:~ # timedatectl list-timezones
@@ -401,7 +403,7 @@ Depois de identificar seu fuso horário, configure-o usando o seguinte comando:
 Para verificar se o fuso horário foi configurado corretamente, use novamente o
 comando `timedatectl`:
 
-!!! exemplo "Verifique a hora e o fuso horário"
+!!! example "Verificar a hora e o fuso horário"
 
     ```shell-session
     localhost:~ # timedatectl
@@ -414,7 +416,7 @@ comando `timedatectl`:
               RTC in local TZ: no
     ```
 
-???+ nota
+???+ note
 
     Alguns administradores preferem instalar todos os servidores no fuso horário UTC para
     garantir que os logs dos servidores em implantações globais fiquem sincronizados.
@@ -437,7 +439,7 @@ corretos, você pode executar o seguinte comando:
 
 O resultado deve ser semelhante:
 
-!!! exemplo "Verifique sua saída de crônica"
+!!! example "Verificar a saída do Chrony"
 
     ``` shell-session
     localhost:~ # chronyc
@@ -455,7 +457,7 @@ tempo usadas:
 
 Exemplo de saída:
 
-!!! exemplo "Verifique as fontes do seu servidor de horário"
+!!! example "Verificar as fontes dos servidores de horário"
 
     ```shell-session
     chronyc> sources
@@ -490,10 +492,10 @@ Chrony:
     ```bash
     vi /etc/chrony.d/pool.conf
     ```
-    On SUSE, the pool configuration is located in a separate file. You can
-    edit that file directly or add a new configuration file in the same directory.
-    In the latter case, ensure to disable or remove the existing pool configuration
-    to avoid conflicts.
+    No SUSE, a configuração do pool fica em um arquivo separado. Você pode editar
+    esse arquivo diretamente ou adicionar outro arquivo de configuração no mesmo
+    diretório. Nesse último caso, desative ou remova a configuração de pool
+    existente para evitar conflitos.
 
     Ubuntu
     ```bash
@@ -505,11 +507,11 @@ localização.
 
 Exemplo da configuração atual:
 
-!!! example "Exemplo de configuração de pool ntp"
+!!! example "Exemplo de configuração de pool NTP"
 
     ```
-    # Use servidores públicos do projeto pool.ntp.org.
-    # Considere participar do pool (http://www.pool.ntp.org/join.html).
+    # Use public servers from the pool.ntp.org project.
+    # Please consider joining the pool (http://www.pool.ntp.org/join.html).
     pool 2.centos.pool.ntp.org iburst
     ```
 
@@ -518,15 +520,15 @@ Altere os pools desejados para um servidor de horário local:
 !!! info "Alterar a configuração do pool ntp"
 
     ```
-    # Use servidores públicos do projeto pool.ntp.org.
-    # Considere participar do pool (http://www.pool.ntp.org/join.html).
+    # Use public servers from the pool.ntp.org project.
+    # Please consider joining the pool (http://www.pool.ntp.org/join.html).
     pool be.pool.ntp.org iburst
     ```
 
 Depois de fazer essa alteração, reinicie o serviço Chrony para aplicar a nova
 configuração:
 
-!!! info "reinicie o serviço chrony"
+!!! info "Reiniciar o serviço Chrony"
 
     ```bash
     systemctl restart chronyd
@@ -537,10 +539,10 @@ configuração:
 Verifique novamente as fontes de horário para garantir que os novos servidores
 locais estejam em uso:
 
-!!! info "Verificar as fontes do chrony "
+!!! info "Verificar as fontes do Chrony"
 
     ```
-    chronyc> fontes
+    chronyc> sources
     ```
 
 Exemplo de saída esperada com servidores locais:
