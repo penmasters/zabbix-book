@@ -461,9 +461,6 @@ C:\ProgramData\Zabbix-ext
 
 #### C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
 ```ini
-# To be used with the deployment package, this file is intended to be changed
-# per server or fleet wide if all agents must have it changed.
-# I.E. WindowsServer_ActiveDirectoryServers ---> Autoregistration Action puts it into Host group
 # This file shall be placed as such C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
 
 # Forces the agent to get its config on start immediately
@@ -481,6 +478,9 @@ UserParameter=PowerShell.ps_dcdiag_checks,PowerShell -ExecutionPolicy Bypass -Fi
 
 #### C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
 ```ini
+# To be used with the deployment package, this file is intended to be changed
+# per server or fleet wide if all agents must have it changed.
+# I.E. WindowsServer_ActiveDirectoryServers ---> Autoregistration Action puts it into Host group
 # This file shall be placed as such C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
 HostMetadata=WindowsServer
 ```
