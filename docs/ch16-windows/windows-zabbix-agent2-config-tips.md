@@ -8,7 +8,7 @@ tags: [advanced]
 
 # Preface
 
-As the previous chapter has stated, the Zabbix Agent 2 service is the
+As the previous section has stated, the Zabbix Agent 2 service is the
 recommended install for your fleet of Windows Operating Systems. Whether it is a
 fleet of Windows Servers, Windows Desktops or both, this article will apply.
 This page will mainly focus around the configuration file structure of the agent
@@ -67,7 +67,7 @@ configuration and will persist through a full agent uninstall. If you have
 confidential data that needs to be entered such as `TLSPSKFile` or
 `TLSPSKIdentity` and you do not wish for this to be present in the normal
 `C:\Program Files\Zabbix Agent 2` directory, you can move this to be under
-`%PROGRAMDATA` aka `C:\ProgramData\...` as this directory is hidden by default
+`%PROGRAMDATA%` aka `C:\ProgramData\...` as this directory is hidden by default
 on most Windows OS installations from users. Note, the `%PROGRAMDATA%` directory
 should not be seen as a complete security boundary - but in most cases it is
 hidden and will keep operational data separate from the agent installation
