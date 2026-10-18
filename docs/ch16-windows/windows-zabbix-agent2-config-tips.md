@@ -63,8 +63,8 @@ The whole idea of engineering your Zabbix config file(s) correctly is so future
 Zabbix Agent 2 upgrades are seamless when running the MSI again.
 
 The `.\zabbix_agent2.d\plugins.d` directory can be used to add more
-configuration and will persist through a full agent uninstall. If you have
-confidential data that needs to be entered such as `TLSPSKFile` or
+configuration and is typically preserved during a standard agent uninstall. If
+you have confidential data that needs to be entered such as `TLSPSKFile` or
 `TLSPSKIdentity` and you do not wish for this to be present in the normal
 `C:\Program Files\Zabbix Agent 2` directory, you can move this to be under
 `%PROGRAMDATA%` aka `C:\ProgramData\...` as this directory is hidden by default
