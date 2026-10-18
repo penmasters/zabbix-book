@@ -250,7 +250,7 @@ Si le fichier contient du contenu existant, il doit être effacé et remplacé p
 
 ???+ warning
 
-    Remplacez `enp0s1` par le nom de l'interface de votre machine et remplacez le `password` par quelque chose de sécurisé. Pour le `virtual_ipaddress` utilisez une IP libre de votre réseau. Cela sera utilisé comme notre VIP.Nous pouvons maintenant effectuer la même modification sur notre deuxième serveur Zabbix ou sur tout autre serveur ultérieur. 
+    Remplacez `enp0s1` par le nom de l'interface de votre machine et remplacez le `password` par quelque chose de sécurisé. Pour le `virtual_ipaddress` utilisez une IP libre de votre réseau. Cela sera utilisé comme notre VIP.Nous pouvons maintenant effectuer la même modification sur notre deuxième serveur Zabbix ou sur tout autre serveur ultérieur.
 Supprimez à nouveau tout le contenu du fichier `/etc/keepalived/keepalived.conf` comme nous l'avons fait auparavant et remplacez-le par les lignes suivantes :
 
 !!!info ""

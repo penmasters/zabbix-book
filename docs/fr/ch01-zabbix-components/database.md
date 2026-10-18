@@ -1,7 +1,7 @@
 ---
 description: |
   Cette section du livre Zabbix intitulée "Choix de la base de données" vous aide à sélectionner le backend et les packages de base de données appropriés pour votre installation Zabbix.
-tags: [débutant]
+tags: [beginner]
 ---
 
 # Choix de la base de données
@@ -23,7 +23,7 @@ Dans les environnements à grande échelle avec une collecte de données haute f
 ???+ tip "Installation de TimescaleDB"
 
     Étant donné sa nature avancée, TimescaleDB n'est pas essentielle pour la plupart des utilisateurs Zabbix.
-    Par conséquent, son installation est en dehors du cadre de ce chapitre. Si vous prévoyez d'utiliser TimescaleDB, reportez-vous à [Partitioning PostgreSQL with TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md) pour des instructions détaillées après l'installation de PostgreSQL.
+    Par conséquent, son installation est en dehors du cadre de ce chapitre. Si vous prévoyez d'utiliser TimescaleDB, reportez-vous à [Partitionnement de PostgreSQL avec TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md) pour des instructions détaillées après l'installation de PostgreSQL.
 
 ---
 
@@ -38,7 +38,7 @@ Lors de l'installation de MariaDB ou PostgreSQL, vous devez déterminer la sourc
 :   Ces paquets sont inclus dans les dépôts logiciels des distributions Linux et sont maintenus par le vendeur de la distribution.
 
     **Avantages :**
-    
+
     - **Installation simplifiée :** Les paquets sont facilement disponibles via le gestionnaire de paquets de la distribution.
     - **Support du fournisseur :** Pour les distributions d'entreprise (par exemple, RHEL, SLES), des abonnements actifs incluent un support officiel.
     - **Compatibilité :** Intégration garantie avec d'autres paquets système et dépendances.
@@ -46,7 +46,7 @@ Lors de l'installation de MariaDB ou PostgreSQL, vous devez déterminer la sourc
       - **Maintenance à long terme :** Les correctifs de sécurité et les corrections de bogues sont rétroportés par le vendeur pour toute la durée du cycle de vie de support de la distribution.
 
     **Inconvénients :**
-    
+
       - **Verrouillage sur la version :** Les mises à niveau importantes des distributions peuvent introduire automatiquement de nouvelles versions de base de données, potentiellement nécessitant des vérifications de compatibilité avec Zabbix.
       - **Modifications du fournisseur :** Les configurations par défaut, les répertoires de journalisation et les chemins de données peuvent être modifiés pour se conformer aux normes spécifiques à la distribution.
 
@@ -55,12 +55,12 @@ Lors de l'installation de MariaDB ou PostgreSQL, vous devez déterminer la sourc
 :   Ces dépôts fournissent des paquets directement depuis MariaDB/PostgreSQL et offrent l'accès aux dernières versions stables.
 
     **Avantages :**
-    
+
     - **Versions à jour :** Accès immédiat aux fonctionnalités les plus récentes, correctifs de sécurité et corrections de bogues. Cependant, assurez-vous que Zabbix est compatible avec la version choisie.
     - **Support d'entreprise :** Option pour acheter MariaDB Enterprise ou Enterprise DB respectivement, qui inclut un support professionnel et des fonctionnalités supplémentaires.
 
     **Inconvénients :**
-    
+
     - **Gestion manuelle de la version :** Les utilisateurs doivent surveiller activement et mettre à jour vers les nouvelles versions majeures pour garantir une couverture continue en matière de sécurité et de corrections de bogues.
 
 ???+ warning "Compatibilité des versions de base de données"

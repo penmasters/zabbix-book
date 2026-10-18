@@ -1,20 +1,20 @@
 ---
 description: |
-    Cette section du livre Zabbix intitulée "Installation du serveur Zabbix" 
-    vous guide tout au long de l'installation et de la configuration du serveur 
-    Zabbix sur diverses distributions Linux. Elle couvre l'installation du paquet 
-    du serveur Zabbix, la configuration des paramètres de connexion à la base de 
-    données et la mise en place du pare-feu pour autoriser les connexions entrantes 
-    vers le serveur Zabbix. De plus, elle fournit des instructions pour démarrer 
-    et activer le service du serveur Zabbix, valider la configuration et vérifier 
+    Cette section du livre Zabbix intitulée "Installation du serveur Zabbix"
+    vous guide tout au long de l'installation et de la configuration du serveur
+    Zabbix sur diverses distributions Linux. Elle couvre l'installation du paquet
+    du serveur Zabbix, la configuration des paramètres de connexion à la base de
+    données et la mise en place du pare-feu pour autoriser les connexions entrantes
+    vers le serveur Zabbix. De plus, elle fournit des instructions pour démarrer
+    et activer le service du serveur Zabbix, valider la configuration et vérifier
     le fichier de journal du serveur pour tout problème.
-tags: [débutant]
+tags: [beginner]
 ---
 
 # Installation du serveur Zabbix
 
 Maintenant que nous avons ajouté le dépôt Zabbix avec les logiciels nécessaires,
-nous sommes prêts à installer à la fois le serveur Zabbix et le serveur web. 
+nous sommes prêts à installer à la fois le serveur Zabbix et le serveur web.
 Il est important de noter que le serveur web n'a pas besoin d'être installé sur
 la même machine que le serveur Zabbix ; ils peuvent être hébergés sur des systèmes
 différents si nécessaire.
@@ -38,7 +38,7 @@ Pour installer les composants du serveur Zabbix, exécutez la commande suivante 
     zypper install zabbix-server-mysql
     # For PostgreSQL backend:
     zypper install zabbix-server-pgsql
-    ``` 
+    ```
 
 
     Ubuntu
@@ -50,23 +50,23 @@ Pour installer les composants du serveur Zabbix, exécutez la commande suivante 
     ```
 
 
-Après une installation réussie du paquet serveur Zabbix, nous devons configurer 
-le serveur Zabbix pour qu'il se connecte à la base de données. Cela nécessite la 
+Après une installation réussie du paquet serveur Zabbix, nous devons configurer
+le serveur Zabbix pour qu'il se connecte à la base de données. Cela nécessite la
 modification du fichier de configuration du serveur Zabbix.
 
 Le fichier de configuration du serveur Zabbix offre l'option d'inclure des fichiers
 de configuration supplémentaires pour les paramètres personnalisés. Pour un environnement
-en production, il est souvent préférable d'éviter la modification directe du fichier 
-de configuration original. Au lieu de cela, vous pouvez créer et inclure des fichiers 
-de configuration séparés pour tout paramètre supplémentaire ou modifié. Cette approche 
+en production, il est souvent préférable d'éviter la modification directe du fichier
+de configuration original. Au lieu de cela, vous pouvez créer et inclure des fichiers
+de configuration séparés pour tout paramètre supplémentaire ou modifié. Cette approche
 assure que votre fichier de configuration original reste inchangé, ce qui est particulièrement
-utile lors des mises à niveau ou de la gestion des configurations avec des outils tels 
+utile lors des mises à niveau ou de la gestion des configurations avec des outils tels
 qu'Ansible, Puppet ou SaltStack.
 
-Sur SUSE 16 et versions ultérieures, cette fonctionnalité est déjà activée et configurée 
+Sur SUSE 16 et versions ultérieures, cette fonctionnalité est déjà activée et configurée
 par défaut. (voir aussi [https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc](https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)).
 Par conséquent, sur les systèmes SUSE, le fichier de configuration du serveur Zabbix se
-trouve à `/usr/etc/zabbix/zabbix_server.conf` et est configuré pour inclure tous les fichiers 
+trouve à `/usr/etc/zabbix/zabbix_server.conf` et est configuré pour inclure tous les fichiers
 `.conf` du répertoire `/etc/zabbix_server/zabbix_server.d/`.
 
 Sur d'autres distributions, vous devrez peut-être l'activer manuellement :
@@ -85,7 +85,7 @@ commentée (avec un `#` devant) dans `/etc/zabbix/zabbix_server.conf`:
 Le chemin `/etc/zabbix/zabbix_server.d/` devrait déjà avoir été créé par le
 paquet installé, mais assurez-vous qu'il existe réellement.
 
-Nous allons maintenant créer un fichier de configuration personnalisé `database.conf` dans 
+Nous allons maintenant créer un fichier de configuration personnalisé `database.conf` dans
 le répertoire `/etc/zabbix/zabbix_server.d/` qui contiendra nos paramètres de connexion à la base de données :
 
 !!! info "Ajoutez les paramètres de connexion à la base de données Zabbix"
@@ -95,7 +95,7 @@ le répertoire `/etc/zabbix/zabbix_server.d/` qui contiendra nos paramètres de 
     ```
 
 
-    Ajoutez les lignes suivantes dans le fichier de configuration pour correspondre 
+    Ajoutez les lignes suivantes dans le fichier de configuration pour correspondre
     à votre configuration de base de données :
 
     ```ini
@@ -109,14 +109,14 @@ le répertoire `/etc/zabbix/zabbix_server.d/` qui contiendra nos paramètres de 
     ```
 
 
-Remplacez `<database-host>`, `<database-name>`, `<database-schema>`, 
+Remplacez `<database-host>`, `<database-name>`, `<database-schema>`,
 `<database-user>`, `<database-password>` et `<database-port>` par les valeurs appropriées pour votre
 configuration. Cela garantit que le serveur Zabbix peut communiquer avec votre base de données.
 
-Assurez-vous qu'il n'y a pas de `#` (symbole de commentaire) devant les paramètres 
+Assurez-vous qu'il n'y a pas de `#` (symbole de commentaire) devant les paramètres
 de configuration, car Zabbix traitera les lignes commençant par `#` comme des commentaires,
 les ignorant lors de l'exécution. De plus, vérifiez attentivement pour éviter toute duplication
-des lignes de configuration ; si plusieurs lignes ont le même paramètre, Zabbix utilisera la valeur 
+des lignes de configuration ; si plusieurs lignes ont le même paramètre, Zabbix utilisera la valeur
 de la dernière occurrence.
 
 Pour notre configuration, la configuration ressemblera à ceci :
@@ -148,21 +148,21 @@ Pour notre configuration, la configuration ressemblera à ceci :
 
 !!! note "Pour PostgreSQL en haute disponibilité (HA)"
 
-    Avec Zabbix 8.0, il est maintenant possible d'ajouter plus d'un IP pour DBHost. De cette 
+    Avec Zabbix 8.0, il est maintenant possible d'ajouter plus d'un IP pour DBHost. De cette
     manière, il est possible de configurer un ensemble de base de données en haute disponibilité
-    avec PostgreSQL sans avoir besoin d'utiliser un équilibreur de charge. Zabbix détectera la 
+    avec PostgreSQL sans avoir besoin d'utiliser un équilibreur de charge. Zabbix détectera la
     base de données active lui-même. Exemple :
     DBHost=192.168.10.2:5432,192.168.10.3:5432
 
 Dans cet exemple :
 
-- `DBHost` fait référence à l'hôte où votre base de données est en cours d'exécution (utilisez 
+- `DBHost` fait référence à l'hôte où votre base de données est en cours d'exécution (utilisez
   localhost si elle se trouve sur la même machine).
 - `DBName` est le nom de la base de données Zabbix.
 - `DBSchema` est le nom du schéma utilisé dans PostgreSQL (nécessaire uniquement pour PostgreSQL).
 - `DBUser` est l'utilisateur de la base de données.
 - `DBPassword` est le mot de passe pour l'utilisateur de la base de données.
-- `DBPort` est le numéro de port sur lequel votre serveur de base de données écoute (par défaut 
+- `DBPort` est le numéro de port sur lequel votre serveur de base de données écoute (par défaut
   pour MySQL/MariaDB c'est 3306 et PostgreSQL c'est 5432).
 
 Assurez-vous que les paramètres reflètent la configuration de votre environnement de base de données.
@@ -174,8 +174,8 @@ Assurez-vous que les paramètres reflètent la configuration de votre environnem
 Sur votre machine serveur Zabbix, nous devons nous assurer que le pare-feu est configuré
 pour autoriser les connexions entrantes vers le serveur Zabbix.
 
-Votre serveur Zabbix doit accepter des connexions entrantes à partir des agents, 
-des envois et des proxys Zabbix. Par défaut, Zabbix utilise le port `10051/tcp` pour ces 
+Votre serveur Zabbix doit accepter des connexions entrantes à partir des agents,
+des envois et des proxys Zabbix. Par défaut, Zabbix utilise le port `10051/tcp` pour ces
 connexions. Pour autoriser ces connexions, vous devez ouvrir ce port dans votre pare-feu.
 
 !!! info "Ouvrez le pare-feu pour zabbix-trapper"
@@ -193,7 +193,7 @@ connexions. Pour autoriser ces connexions, vous devez ouvrir ce port dans votre 
     ```
 
 
-Si le service n'est pas reconnu en utilisant `firewall-cmd --add-service`, vous pouvez 
+Si le service n'est pas reconnu en utilisant `firewall-cmd --add-service`, vous pouvez
 spécifier manuellement le port :
 
 !!! info "Ajoutez le port au lieu du nom de service"
@@ -207,17 +207,17 @@ spécifier manuellement le port :
 
 ## Démarrer le serveur Zabbix
 
-Avec la configuration mise à jour du serveur Zabbix pour se connecter à votre base 
-de données, vous pouvez maintenant démarrer et activer le service du serveur Zabbix. 
+Avec la configuration mise à jour du serveur Zabbix pour se connecter à votre base
+de données, vous pouvez maintenant démarrer et activer le service du serveur Zabbix.
 Exécutez la commande suivante pour activer le service du serveur Zabbix et configurer
 son lancement automatique au démarrage :
 
 ???+ note
 
     Avant de redémarrer le serveur Zabbix après avoir modifié sa configuration, il est
-    considéré comme une bonne pratique de valider la configuration pour éviter les problèmes 
+    considéré comme une bonne pratique de valider la configuration pour éviter les problèmes
     potentiels. Lancer un contrôle de configuration permet de détecter tout problème avant,
-    évitant ainsi toute interruption causée par une configuration invalide. Cela peut être 
+    évitant ainsi toute interruption causée par une configuration invalide. Cela peut être
     accompli en utilisant la commande suivante : `zabbix-server -T`
 
 !!! info "Activez et démarrez le service zabbix-server"
@@ -228,7 +228,7 @@ son lancement automatique au démarrage :
     ```
 
 
-Cette commande démarrera immédiatement le service du serveur Zabbix et le configurera 
+Cette commande démarrera immédiatement le service du serveur Zabbix et le configurera
 pour qu'il se lance au démarrage du système. Pour vérifier que le serveur Zabbix fonctionne correctement,
 consultez le fichier de journal pour tout message. Vous pouvez afficher les dernières entrées dans
 le fichier de journal `Zabbix server` en utilisant :
@@ -240,7 +240,7 @@ le fichier de journal `Zabbix server` en utilisant :
     ```
 
 
-Recherchez des messages indiquant que le serveur a démarré avec succès. Si des problèmes 
+Recherchez des messages indiquant que le serveur a démarré avec succès. Si des problèmes
 existent, le fichier de journal fournira des détails pour aider à la résolution des problèmes.
 
 !!! example "Exemple d'output"
@@ -299,7 +299,7 @@ Si une erreur est survenue et que le serveur n'a pas pu se connecter à la base 
 
 
 Dans ce cas, vérifiez vos paramètres de connexion à la base de données dans le fichier
-`/etc/zabbix/zabbix_server.d/database.conf` et assurez-vous que la base de données est correctement peuplée comme décrit 
+`/etc/zabbix/zabbix_server.d/database.conf` et assurez-vous que la base de données est correctement peuplée comme décrit
 dans les étapes précédentes. Vérifiez également les règles du pare-feu et, lorsque vous utilisez PostgreSQL,
 assurez-vous que `pg_hba.conf` est configuré correctement pour autoriser les connexions
 du serveur Zabbix.
@@ -359,12 +359,12 @@ Cela conclut notre chapitre sur l'installation et la configuration du serveur Za
 ## Conclusion
 
 Avec une installation et une configuration réussies du serveur Zabbix, vous avez maintenant
-établi le composant central de votre système de surveillance. Nous avons couvert l'installation 
-du paquet du serveur Zabbix, la configuration des paramètres de connexion à la base de données 
+établi le composant central de votre système de surveillance. Nous avons couvert l'installation
+du paquet du serveur Zabbix, la configuration des paramètres de connexion à la base de données
 et la mise en place du pare-feu pour autoriser les connexions entrantes vers le serveur Zabbix.
 De plus, nous avons démarré et vérifié le service du serveur Zabbix.
 
-Votre serveur Zabbix est maintenant prêt à communiquer avec les agents, les envois et les proxys 
+Votre serveur Zabbix est maintenant prêt à communiquer avec les agents, les envois et les proxys
 Zabbix. Le prochain pas consiste à installer et configurer l'interface web Zabbix qui fournira
 l'interface utilisateur pour interagir avec votre système de surveillance.
 
@@ -382,5 +382,5 @@ Passons au chapitre suivant pour mettre en place l'interface web Zabbix.
 ## Liens utiles
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
-- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)
+- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)

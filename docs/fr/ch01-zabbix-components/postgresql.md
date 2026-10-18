@@ -2,18 +2,18 @@
 description: |
     Cette section du livre The Zabbix Book intitulée "Installation d'une base de données PostgreSQL"
     vous guide à travers l'installation de PostgreSQL en tant que backend de base de données alternatif
-    pour Zabbix. Elle couvre les méthodes d'installation utilisant des paquets fournis par le gestionnaire 
+    pour Zabbix. Elle couvre les méthodes d'installation utilisant des paquets fournis par le gestionnaire
     d'opérateur système ou les dépôts officiels PostgreSQL, avec des commandes spécifiques pour Red Hat,
     SUSE et Ubuntu. La section comprend également les étapes pour démarrer et sécuriser le serveur
-    PostgreSQL, créer la base de données Zabbix et les utilisateurs, ainsi que configurer les règles du pare-feu 
+    PostgreSQL, créer la base de données Zabbix et les utilisateurs, ainsi que configurer les règles du pare-feu
     si nécessaire.
-tags: [débutant]
+tags: [beginner]
 ---
 
 # Installation d'une base de données PostgreSQL
 
 À la place de MariaDB/MySQL, vous pouvez choisir d'utiliser PostgreSQL comme backend de base de données pour Zabbix.
-Similaire à MariaDB, PostgreSQL peut être installé en utilisant soit les paquets fournis par le gestionnaire 
+Similaire à MariaDB, PostgreSQL peut être installé en utilisant soit les paquets fournis par le gestionnaire
 d'opérateur système ou les dépôts officiels PostgreSQL.
 
 Si vous avez déjà installé MariaDB dans la section précédente, vous pouvez sauter cette section.
@@ -24,18 +24,18 @@ il est une bonne idée d'utiliser la dernière version prise en charge par Zabbi
 
 ???+ tip "Extension TimescaleDB"
 
-    Zabbix prend également en charge l'extension TimescaleDB mais, en raison de sa nature avancée, 
+    Zabbix prend également en charge l'extension TimescaleDB mais, en raison de sa nature avancée,
     nous ne couvrirons pas ce sujet dans ce chapitre. Consultez [_Partitioning PostgreSQL with TimescaleDB_](../ch13-advanced-security/partitioning-postgresql-database.md)
     pour des instructions détaillées sur ce sujet.
 
     Notez que si vous souhaitez utiliser les paquets RPM de TimescaleDB fournis
     par Timescale, vous devrez installer PostgreSQL à partir des dépôts officiels
     PostgreSQL au lieu des paquets fournis par le gestionnaire d'opérateur système.
-    Si vous choisissez d'installer PostgreSQL à partir des paquets fournis par le gestionnaire 
+    Si vous choisissez d'installer PostgreSQL à partir des paquets fournis par le gestionnaire
     d'opérateur système, vous devrez compiler et installer l'extension TimescaleDB à partir de sources.
 
     Note supplémentaire : TimescaleDB ne fournit pas de paquets pour SUSE Linux Enterprise
-    Server (SLES) ou openSUSE Leap. Au lieu de cela, Suse fournit l'extension TimescaleDB 
+    Server (SLES) ou openSUSE Leap. Au lieu de cela, Suse fournit l'extension TimescaleDB
     dans leurs propres dépôts. Mais pour que cela fonctionne, vous devrez installer PostgreSQL à partir des
     paquets fournis par le gestionnaire d'opérateur système au lieu des dépôts officiels
     PostgreSQL.
@@ -44,7 +44,7 @@ il est une bonne idée d'utiliser la dernière version prise en charge par Zabbi
 
 ## Installation du serveur et du client PostgreSQL à partir de paquets fournis par le gestionnaire d'opérateur système
 
-Pour installer le serveur PostgreSQL par défaut de la distribution, exécutez les 
+Pour installer le serveur PostgreSQL par défaut de la distribution, exécutez les
 commandes suivantes :
 
 !!! info "Installation du serveur Postgres"
@@ -82,17 +82,17 @@ configurer et interagir avec votre base de données PostgreSQL.
     ```
 
 
-    Sur SUSE et Ubuntu, le service Systemd fourni par l'OS initiera automatiquement 
+    Sur SUSE et Ubuntu, le service Systemd fourni par l'OS initiera automatiquement
     une base de données vide lors du premier démarrage.
 
-Une fois l'installation terminée, vous pouvez passer à la section [_Démarrer la base de données PostgreSQL_](#starting-the-postgresql-database).
+Une fois l'installation terminée, vous pouvez passer à la section [_Démarrer la base de données PostgreSQL_](#démarrage-de-la-base-de-données-postgresql).
 
 ---
 
 ## Installation de PostgreSQL à partir des dépôts officiels PostgreSQL
 
 Si vous préférez installer PostgreSQL à partir des dépôts officiels PostgreSQL au lieu
-des paquets fournis par le gestionnaire d'opérateur système, la première étape est d'ajouter 
+des paquets fournis par le gestionnaire d'opérateur système, la première étape est d'ajouter
 le dépôt PostgreSQL à votre système.
 
 ---
@@ -130,10 +130,10 @@ pour plus d'informations.
 
 
     !!! warning "openSUSE Leap"
-    
-        Comme les paquets officiels de PostgreSQL sont spécifiquement construits pour être utilisés sur 
+
+        Comme les paquets officiels de PostgreSQL sont spécifiquement construits pour être utilisés sur
         SUSE Linux Enterprise Server (SLES), vous obtiendrez une erreur en essayant d'installer le
-        dépôt sur openSUSE Leap. Nous pouvons néanmoins ignorer ce problème en choisissant de "briser le paquet en ignorant certaines de ses dépendances" 
+        dépôt sur openSUSE Leap. Nous pouvons néanmoins ignorer ce problème en choisissant de "briser le paquet en ignorant certaines de ses dépendances"
         tant que vous correspondez à la version SLES avec votre version openSUSE :
 
         ```
@@ -148,7 +148,7 @@ pour plus d'informations.
     ???+ note "Suse Linux Enterprise Server"
 
         Sur SUSE Linux Enterprise Server (SLES), assurez-vous d'être abonné au
-        dépôt "SUSE Package Hub extension" pour accéder aux paquets dépendances nécessaires à l'installation officielle de PostgreSQL. 
+        dépôt "SUSE Package Hub extension" pour accéder aux paquets dépendances nécessaires à l'installation officielle de PostgreSQL.
         Sur SLES 15 vous aurez également besoin du module "Desktop Applications":
 
         ```bash
@@ -180,7 +180,7 @@ pour plus d'informations.
 
 ### Installation du serveur et du client PostgreSQL
 
-Avec les dépôts PostgreSQL configurés, vous êtes maintenant prêt à installer le serveur 
+Avec les dépôts PostgreSQL configurés, vous êtes maintenant prêt à installer le serveur
 et les paquets clients PostgreSQL. Cela fournira les composants nécessaires pour exécuter
 et gérer votre base de données.
 
@@ -218,7 +218,7 @@ base de données vide :
     ```
 
 
-Une fois l'installation terminée, vous pouvez passer à la section [Démarrage de la base de données PostgreSQL](#starting-the-postgresql-database).
+Une fois l'installation terminée, vous pouvez passer à la section [Démarrage de la base de données PostgreSQL](#démarrage-de-la-base-de-données-postgresql).
 
 ---
 
@@ -385,7 +385,7 @@ Le fichier pg_hba résultant devrait ressembler à ceci :
 !!! warning "Assurez-vous de conserver l'ordre des entrées"
 
     L'ordre des entrées dans le fichier `pg_hba.conf` est crucial, car PostgreSQL
-    traite ces règles séquentiellement. Assurez-vous que les règles spécifiques pour les utilisateurs 
+    traite ces règles séquentiellement. Assurez-vous que les règles spécifiques pour les utilisateurs
     `zabbix-srv` et `zabbix-web` sont placées avant toute règle plus large comme la règle par défaut
     `all` qui pourrait potentiellement les annuler.
 
@@ -464,7 +464,7 @@ Après avoir effectué ce changement, redémarrez le service PostgreSQL pour app
 
 ## Création de l'instance de base de données Zabbix
 
-Avec les paquets nécessaires installés, vous êtes maintenant prêt à créer la base de données 
+Avec les paquets nécessaires installés, vous êtes maintenant prêt à créer la base de données
 et les utilisateurs pour le serveur et l'interface frontale Zabbix.Les packages PostgreSQL créent automatiquement un utilisateur par défaut `postgres` lors de l'installation, qui dispose des privilèges administratifs sur l'instance PostgreSQL. Pour administrer la base de données, vous devrez exécuter les commandes en tant que l'utilisateur `postgres`.
 
 Tout d'abord, créez l'utilisateur du serveur Zabbix (aussi appelé "rôle" dans PostgreSQL) :
@@ -645,7 +645,7 @@ le serveur de la base de données. Par défaut, PostgreSQL écoute sur le port 5
 
 ## Remplir la base de données Zabbix
 
-Au cours de l'installation du logiciel de base de données précédemment, nous avons créé les 
+Au cours de l'installation du logiciel de base de données précédemment, nous avons créé les
 utilisateurs nécessaires, la base de données et le schéma pour Zabbix, cependant, Zabbix attend certaines tables,
 schémas, images et autres éléments présents dans la base de données.
 Pour configurer correctement la base de données, nous devons la remplir avec les schémas requis.
@@ -707,7 +707,7 @@ Maintenant, nous allons exécuter le fichier SQL pour remplir la base de donnée
 
 ???+ warning "Assurez-vous que le chemin de recherche correct est défini"
 
-    Assurez-vous d'avoir suivi les étapes précédentes comme indiqué dans [Créer une instance Zabbix avec PostgreSQL](postgresql.md#creating-the-zabbix-database-instance)
+    Assurez-vous d'avoir suivi les étapes précédentes comme indiqué dans [Créer une instance Zabbix avec PostgreSQL](postgresql.md#création-de-linstance-de-base-de-données-zabbix)
     soigneusement pour avoir défini le chemin de recherche correct `search_path`.
 
     Si vous n'avez pas défini le chemin de recherche par défaut `search_path` pour l'utilisateur `zabbix-srv`,
@@ -884,7 +884,7 @@ Votre environnement Zabbix est maintenant prêt pour les prochaines étapes d'in
 
 ## Liens utiles
 
-- [https://yum.postgresql.org](ttps://yum.postgresql.org)
+- [https://yum.postgresql.org](https://yum.postgresql.org)
 - [https://zypp.postgresql.org/howtozypp/](https://zypp.postgresql.org/howtozypp/)
 - [https://wiki.postgresql.org/wiki/Apt](https://wiki.postgresql.org/wiki/Apt)
 - [https://en.opensuse.org/SDB:PostgreSQL](https://en.opensuse.org/SDB:PostgreSQL)

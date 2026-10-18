@@ -6,7 +6,7 @@ description: |
     d'OS ou les dépôts officiels MariaDB. La section comprend les étapes pour démarrer et sécuriser
     le serveur MariaDB, créer une base de données Zabbix avec des utilisateurs appropriés,
     et configurer les règles du pare-feu si nécessaire.
-tags: [débutant]
+tags: [beginner]
 ---
 
 # Installation d'une base de données MariaDB
@@ -19,7 +19,7 @@ vous pouvez sauter cette section et passer à la section [_Installation de la ba
 
 ???+ tip "MySQL/Percona"
     Si vous préférez utiliser MySQL ou Percona au lieu de MariaDB, les étapes
-    d'installation et de configuration sont très similaires. Généralement, vous remplacerez 
+    d'installation et de configuration sont très similaires. Généralement, vous remplacerez
     `mariadb` par `mysql` dans les noms des paquets et commandes.
 
 ## Installation du serveur MariaDB et du client à partir de paquets fournis par le vendeur d'OS
@@ -48,7 +48,7 @@ la commande suivante :
 
 
 Cette commande téléchargera et installera les paquets serveur et client, vous permettant de configurer,
-gérer et interagir avec votre base de données MariaDB. Une fois l'installation terminée, vous pouvez passer à la section [_Démarrage de la base de données MariaDB_](#starting-the-mariadb-database).
+gérer et interagir avec votre base de données MariaDB. Une fois l'installation terminée, vous pouvez passer à la section [_Démarrage de la base de données MariaDB_](#démarrage-de-la-base-de-données-mariadb).
 
 ---
 
@@ -176,7 +176,7 @@ Pour installer le serveur et le client MariaDB, exécutez la commande suivante :
 
 
 Cette commande téléchargera et installera les paquets serveur et client, vous permettant de configurer,
-gérer et interagir avec votre base de données MariaDB. Une fois l'installation terminée, vous pouvez passer à la section [_Démarrage de la base de données MariaDB_](#starting-the-mariadb-database).
+gérer et interagir avec votre base de données MariaDB. Une fois l'installation terminée, vous pouvez passer à la section [_Démarrage de la base de données MariaDB_](#démarrage-de-la-base-de-données-mariadb).
 
 ---
 
@@ -452,7 +452,7 @@ machine serveur de base de données. Par défaut, MariaDB écoute sur le port 33
 
 ## Remplissage de la base de données Zabbix
 
-Au cours de l'installation des logiciels de base de données précédemment, nous avons créé les 
+Au cours de l'installation des logiciels de base de données précédemment, nous avons créé les
 utilisateurs et la base de données nécessaires pour Zabbix, cependant, Zabbix attend certaines tables,
 schémas, images et autres éléments dans la base de données.
 Pour configurer correctement la base de données, il faut la remplir avec le schéma requis.
@@ -481,7 +481,7 @@ Tout d'abord, nous devons installer les scripts SQL Zabbix qui contiennent les s
 
 ???+ warning
 
-    Lors de l'utilisation d'une version récente de MySQL ou MariaDB en tant que backend de base de données pour 
+    Lors de l'utilisation d'une version récente de MySQL ou MariaDB en tant que backend de base de données pour
     Zabbix, vous pouvez rencontrer des problèmes liés à la création de déclencheurs lors du processus
     d'importation du schéma. Cela est particulièrement pertinent si le journalisation binaire est activée sur votre serveur de base de données.
     (La journalisation binaire est souvent activée par défaut)
@@ -491,8 +491,9 @@ Tout d'abord, nous devons installer les scripts SQL Zabbix qui contiennent les s
     les privilèges `SUPER`, qui sont restreints lorsque la journalisation binaire est activée.
 
     Généralement, nous n'aurons pas besoin de ce paramètre après l'import initial du schéma Zabbix,
-    donc nous le désactiverons à nouveau une fois l'importation terminée.```markdown
-!!! info "Activer temporairement des privilèges supplémentaires pour les utilisateurs non root"
+    donc nous le désactiverons à nouveau une fois l'importation terminée.
+
+    !!! info "Activer temporairement des privilèges supplémentaires pour les utilisateurs non root"
 
         ```bash
         mariadb -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 1;"
@@ -501,7 +502,7 @@ Tout d'abord, nous devons installer les scripts SQL Zabbix qui contiennent les s
 
 Maintenant, chargeons les données de zabbix (structure de la base de données,
 images, utilisateur, etc.) dans notre base de données. Pour cela, nous utilisons
-l'utilisateur `zabbix-srv` et nous l'importons tout dans notre DB 
+l'utilisateur `zabbix-srv` et nous l'importons tout dans notre DB
 `zabbix`.
 
 !!! info "Populer la base de données"
@@ -522,16 +523,16 @@ l'utilisateur `zabbix-srv` et nous l'importons tout dans notre DB
 
 ???+ note
 
-    Zabbix semble aimer changer les emplacements des scripts pour populer la base 
-    de données à chaque version ou même entre versions. Si vous rencontrez une 
-    erreur, consultez la documentation Zabbix ; il y a de fortes chances que 
+    Zabbix semble aimer changer les emplacements des scripts pour populer la base
+    de données à chaque version ou même entre versions. Si vous rencontrez une
+    erreur, consultez la documentation Zabbix ; il y a de fortes chances que
     certains emplacements aient été modifiés.
 
 Une fois l'importation du schéma Zabbix terminée, vous n'aurez plus besoin du
 paramètre global `log_bin_trust_function_creators`. Il est une bonne pratique de le supprimer
 pour des raisons de sécurité.
 
-Pour rétablir le paramètre global à 0, utilisez la commande suivante dans l'invite 
+Pour rétablir le paramètre global à 0, utilisez la commande suivante dans l'invite
 de commandes MySQL/MariaDB :
 
 !!! info "Désactiver la fonction log_bin_trust à nouveau"
@@ -544,7 +545,7 @@ de commandes MySQL/MariaDB :
 Cette commande désactive cette configuration, assurant que le positionnement de
 sécurité des serveurs reste robuste.
 
-Cela conclut notre installation de MariaDB. Vous pouvez maintenant passer à la 
+Cela conclut notre installation de MariaDB. Vous pouvez maintenant passer à la
 préparation du serveur Zabbix [Préparation du serveur Zabbix](preparation.md).
 
 ---
@@ -552,14 +553,14 @@ préparation du serveur Zabbix [Préparation du serveur Zabbix](preparation.md).
 ## Conclusion
 
 Avec l'installation et la configuration réussies de MariaDB en tant que backend
-de base de données pour Zabbix, vous disposez maintenant d'une fondation solide 
-pour votre solution de supervision. Nous avons couvert l'installation de MariaDB 
-à partir des paquets fournis par le fournisseur et des dépôts officiels, la 
+de base de données pour Zabbix, vous disposez maintenant d'une fondation solide
+pour votre solution de supervision. Nous avons couvert l'installation de MariaDB
+à partir des paquets fournis par le fournisseur et des dépôts officiels, la
 sécurisation de la base de données, la création des bases de données et utilisateurs
-nécessaires Zabbix, ainsi que la population de la base de données avec le schéma 
+nécessaires Zabbix, ainsi que la population de la base de données avec le schéma
 et les données initiales requis.
 
-Votre environnement Zabbix est maintenant prêt pour les prochaines étapes de 
+Votre environnement Zabbix est maintenant prêt pour les prochaines étapes de
 configuration et d'installation.
 
 ---
@@ -576,5 +577,3 @@ configuration et d'installation.
 
 - [https://mariadb.org/download/](https://mariadb.org/download/)
 - [https://mariadb.com/docs/server/server-usage/stored-routines/binary-logging-of-stored-routines](https://mariadb.com/docs/server/server-usage/stored-routines/binary-logging-of-stored-routines)
-
-```

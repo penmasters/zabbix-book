@@ -1,7 +1,7 @@
 ---
 description: |
     Cette section du livre The Zabbix Book intitulée "Installation de l'interface utilisateur" fournit des instructions étape par étape pour installer l'interface utilisateur Zabbix avec NGINX sur diverses distributions Linux. Elle couvre l'installation des paquets nécessaires, la configuration d'SELinux et Systemd pour PHP-FPM, ainsi que la modification de la configuration NGINX afin de servir l'interface utilisateur Zabbix sur le port 80. De plus, elle guide les utilisateurs à travers la première configuration de l'interface utilisateur Zabbix, y compris la configuration de la connexion à la base de données et des paramètres de base tels que le nom d'instance, le fuseau horaire et le format de temps.
-tags: [débutant]
+tags: [beginner]
 ---
 
 # Installation de l'interface utilisateur
@@ -59,7 +59,7 @@ Effectuez toutes les étapes suivantes sur le serveur désigné pour l'interface
     ```
 
 
-Cette commande installera les paquets de l'interface utilisateur ainsi que les dépendances requises pour NGINX. 
+Cette commande installera les paquets de l'interface utilisateur ainsi que les dépendances requises pour NGINX.
 
 À partir de SUSE 16, SELinux est le module de sécurité par défaut au lieu d'AppArmor.
 Par défaut, PHP-FPM n'est pas autorisé par SELinux sur SUSE à :
@@ -88,7 +88,7 @@ Selon les paramètres par défaut de votre distribution Linux, PHP-FPM peut ne p
     systemctl edit php-fpm
     ```
 
-    
+
     Ceci ouvrira un éditeur pour créer le fichier drop-in `/etc/systemd/system/php-fpm.service.d/override.conf` qui surchargera ou étendra le fichier de service existant.
 
     Ajoutez les lignes suivantes au fichier :
@@ -182,7 +182,7 @@ Et modifiez les lignes suivantes :
 
 Supprimez le `#` devant les deux premières lignes et modifiez-les avec le port et le domaine corrects pour votre interface utilisateur.
 
-???+ tip 
+???+ tip
 
     Si vous n'avez pas de domaine, vous pouvez remplacer `servername` par `_` comme dans l'exemple ci-dessous :
 
@@ -499,7 +499,7 @@ _1.9 Connexion Zabbix_
 
 Cela conclut notre sujet sur la configuration du serveur Zabbix. Si vous êtes intéressé par la sécurisation de votre front-end, je recommande de consulter le sujet Securing Zabbix pour obtenir des conseils et les meilleures pratiques supplémentaires.
 
-???+ conseil
+???+ tip
 
     Si vous ne pouvez pas sauvegarder votre configuration à la fin, assurez-vous d'avoir exécuté les instructions liées à SELinux ou d'avoir désactivé SELinux. Vérifiez également si le répertoire `/etc/zabbix/web` est accessible en écriture par l'utilisateur du service web (généralement `wwwrun` ou `www`)
 
@@ -527,5 +527,5 @@ Maintenant que votre environnement Zabbix est opérationnel, passons à la proch
 ## Liens utiles
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
-- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)
+- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)
