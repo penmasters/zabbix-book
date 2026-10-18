@@ -599,3 +599,13 @@ datasources
 basesystem
 sles
 grayed
+creativecommons
+readme
+sa
+uitwix
+fedoraproject
+packagehub
+approle
+hashicorp
+kv
+
