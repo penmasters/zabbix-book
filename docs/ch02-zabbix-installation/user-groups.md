@@ -150,7 +150,7 @@ This is by design, as described in [https://support.zabbix.com/browse/ZBXNEXT-10
 
 | **Action or Screen Element**       | **Read-only**  | **Read-write**  | **Description / Impact**                                                                                                                                                                     |
 | ---------------------------------- | ------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| View `Data collection` \| `Templates` | ❌             | ✅              | Users with Read-only access do **not see any templates**. Template groups are only visible to users with Read-write rights. ([ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)) |
+| View `Data collection` \| `Templates` | ❌             | ✅              | Users with Read-only access do **not see any templates**. Template groups are only visible to users with Read-write rights. ([https://support.zabbix.com/browse/ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)) |
 | Open template configuration        | ❌             | ✅              | Not available for Read-only users — templates are hidden entirely                                                                                                                            |
 
 ## The Rule of Precedence: Deny Always Wins

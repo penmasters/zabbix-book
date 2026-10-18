@@ -123,7 +123,7 @@ you can install it using the package manager of your operating system.
 !!! info "Install Chromium browser"
 
     To be able to install Chromium on Red Hat-based systems, you may need to 
-    install and enable the [EPEL repository](https://docs.fedoraproject.org/en-US/epel/) 
+    install and enable the EPEL repository [https://docs.fedoraproject.org/en-US/epel/](https://docs.fedoraproject.org/en-US/epel/)
     first. This is not required for Fedora.
 
     Red Hat
@@ -132,7 +132,7 @@ you can install it using the package manager of your operating system.
     ```
 
     To be able to install Chromium on SLES-based systems, you may need to 
-    install and enable the [SUSE Package Hub](https://packagehub.suse.com/)
+    install and enable the SUSE Package Hub [https://packagehub.suse.com/](https://packagehub.suse.com/)
     repository first. This is not required for openSUSE.
 
     SUSE
@@ -146,7 +146,7 @@ you can install it using the package manager of your operating system.
     ```
 
 Alternatively, you can also install Google Chrome by downloading the package
-from the [Google Chrome website](https://www.google.com/chrome/) and installing
+from the Google Chrome website: [https://www.google.com/chrome/](https://www.google.com/chrome/) and installing
 it using the package manager of your operating system.
 
 #### Configuring the Zabbix web service
@@ -241,7 +241,7 @@ Ensure you are logged in as user `podman`.
     WantedBy=default.target
     ```
 
-The Zabbix web service container image is available on [Docker Hub](https://hub.docker.com/r/zabbix/zabbix-web-service).
+The Zabbix web service container image is available on [https://hub.docker.com/r/zabbix/zabbix-web-service](https://hub.docker.com/r/zabbix/zabbix-web-service).
 Specifically, we are using the image tagged `8.0-centos-latest` in this example,
 which is maintained by the Zabbix team and is based on CentOS.
 

@@ -220,7 +220,7 @@ Zabbix, сервер базы данных и веб-сервер).
 
     Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
     changes to take effect immediately without needing to restart the service.
-    If your distribution does not use [Firewalld](https://www.firewalld.org),
+    If your distribution does not use [https://www.firewalld.org](https://www.firewalld.org),
     refer to your OS documentation for the appropriate firewall configuration steps.
     Ubuntu makes use of UFW which is merely a frontend for iptables.
 
@@ -343,7 +343,7 @@ Zabbix.
 
     Chrony is a modern replacement for `ntpd`, offering faster and
     more accurate time synchronization. If your OS does not support
-    [Chrony](https://chrony-project.org/), consider using
+    [https://chrony-project.org/](https://chrony-project.org/), consider using
     `ntpd` instead.
 
 После установки Chrony необходимо убедиться, что установлен правильный часовой
@@ -469,7 +469,7 @@ Zabbix.
 В этом примере используемые серверы NTP расположены за пределами вашего региона.
 Рекомендуется переключиться на серверы времени в вашей стране или, если это
 возможно, на выделенный сервер времени компании. Найти местные NTP-серверы можно
-здесь: [www.ntppool.org](https://www.ntppool.org/).
+здесь: [https://www.ntppool.org/](https://www.ntppool.org/).
 
 ---
 

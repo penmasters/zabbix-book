@@ -128,7 +128,7 @@ already, you can install it using the package manager of your operating system.
 !!! info "Install Chromium browser"
 
     To be able to install Chromium on Red Hat-based systems, you may need to 
-    install and enable the [EPEL repository](https://docs.fedoraproject.org/en-US/epel/) 
+    install and enable the [https://docs.fedoraproject.org/en-US/epel/](https://docs.fedoraproject.org/en-US/epel/)
     first. This is not required for Fedora.
 
     Red Hat
@@ -137,7 +137,7 @@ already, you can install it using the package manager of your operating system.
     ```
 
     To be able to install Chromium on SLES-based systems, you may need to 
-    install and enable the [SUSE Package Hub](https://packagehub.suse.com/)
+    install and enable the [https://packagehub.suse.com/](https://packagehub.suse.com/)
     repository first. This is not required for openSUSE.
 
     SUSE
@@ -151,7 +151,7 @@ already, you can install it using the package manager of your operating system.
     ```
 
 Alternatively, you can also install Google Chrome by downloading the package
-from the [Google Chrome website](https://www.google.com/chrome/) and installing
+from the [https://www.google.com/chrome/](https://www.google.com/chrome/) and installing
 it using the package manager of your operating system.
 
 #### Configuring the Zabbix web service

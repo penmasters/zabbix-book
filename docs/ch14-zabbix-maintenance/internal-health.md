@@ -453,5 +453,5 @@ do you infer its health?
 
 ## Useful Resources
 
-- [Zabbix Internal Items Documentation](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/internal)
-- [Zabbix Server Health Template (GitHub)](https://github.com/zabbix/zabbix/tree/master/templates/app/zabbix_server)
+- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/internal](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/internal)
+- [https://github.com/zabbix/zabbix/tree/master/templates/app/zabbix_server](https://github.com/zabbix/zabbix/tree/master/templates/app/zabbix_server)

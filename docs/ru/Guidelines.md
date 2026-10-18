@@ -29,5 +29,5 @@
 - Создайте pull request (запрос на внесение изменений в код), чтобы мы могли
   объединить его :)
 - Следуйте этим
-  [рекомендациям](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
+  [https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
   при написании темы.

@@ -143,9 +143,9 @@ d'hyperliens utiles pour les utilisateurs.
 
 | Nom du menu                 | Détails                                                                                                                                                                                                                                                                                  |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Support                     | Ceci nous amène à la page de support technique que vous pouvez acheter chez Zabbix. N'oubliez pas que votre partenaire local est également en mesure de vendre ces contrats et peut vous aider dans votre propre langue. [Vos distributeurs locaux](https://www.zabbix.com/distributors) |
+| Support                     | Ceci nous amène à la page de support technique que vous pouvez acheter chez Zabbix. N'oubliez pas que votre partenaire local est également en mesure de vendre ces contrats et peut vous aider dans votre propre langue. [https://www.zabbix.com/distributors](https://www.zabbix.com/distributors) |
 | Intégrations                | La [page d'intégration] officielle de zabbix (https://www.zabbix.com/integrations)                                                                                                                                                                                                       |
-| Aide                        | Le lien vers la documentation de votre [version Zabbix](https://www.zabbix.com/documentation/7.0/)                                                                                                                                                                                       |
+| Aide                        | Le lien vers la documentation de votre [https://www.zabbix.com/documentation/7.0/](https://www.zabbix.com/documentation/7.0/)                                                                                                                                                                                       |
 | Paramètres de l'utilisateur | Les paramètres du profil de l'utilisateur.                                                                                                                                                                                                                                               |
 | Déconnexion                 | Déconnexion de la session en cours.                                                                                                                                                                                                                                                      |
 
@@ -378,12 +378,12 @@ _2.18 Administration menu_
 
 ???+ info
 
-    More information can be found in the online Zabbix documentation [here](https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections)
+    More information can be found in the online Zabbix documentation [https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections](https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections)
 
 ???+ tip Movable modal forms
 
     You will see that Zabbix is using modal forms in the frontend on many places.
-    The problem is that they are not movable. [This](https://github.com/gr8b/zabbix-module-uitwix/)
+    The problem is that they are not movable. [https://github.com/gr8b/zabbix-module-uitwix/](https://github.com/gr8b/zabbix-module-uitwix/)
     module created by one of the Zabbix developers `UI Twix` will solve this problem
     for you.
 

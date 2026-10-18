@@ -221,7 +221,7 @@ Para instalar e ativar o firewall, execute o seguinte comando:
 
     O Firewalld é o substituto do iptables em sistemas baseados no RHEL e no SUSE e permite que
     as alterações entrem em vigor imediatamente, sem a necessidade de reiniciar o serviço.
-    Se a sua distribuição não utilizar o [Firewalld](https://www.firewalld.org),
+    Se a sua distribuição não utilizar o [https://www.firewalld.org](https://www.firewalld.org),
     consulte a documentação do seu sistema operacional para obter as etapas adequadas de configuração do firewall.
     O Ubuntu utiliza o UFW, que é apenas uma interface para o iptables.
 
@@ -344,7 +344,7 @@ seu status com o seguinte comando:
 
     O Chrony é um substituto moderno para o `ntpd`, oferecendo sincronização de hora mais rápida e
     mais precisa. Se o seu sistema operacional não for compatível com
-    [Chrony](https://chrony-project.org/), considere usar
+    [https://chrony-project.org/](https://chrony-project.org/), considere usar
     `ntpd` em vez disso.
 
 Depois que o Chrony estiver instalado, a próxima etapa é garantir que o fuso
@@ -470,7 +470,7 @@ Exemplo de saída:
 Neste exemplo, os servidores NTP em uso estão localizados fora de sua região
 local. Recomenda-se mudar para servidores de horário em seu país ou, se
 disponível, para um servidor de horário dedicado da empresa. Você pode encontrar
-servidores NTP locais aqui: [www.ntppool.org](https://www.ntppool.org/).
+servidores NTP locais aqui: [https://www.ntppool.org/](https://www.ntppool.org/).
 
 ---
 

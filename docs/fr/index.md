@@ -28,7 +28,7 @@ référence.
 
 Avant de commencer, merci de consulter notre licence d'utilisation la plus
 récente :
-[License](https://github.com/penmasters/zabbix-book/blob/main/readme.md) sur
+[https://github.com/penmasters/zabbix-book/blob/main/readme.md](https://github.com/penmasters/zabbix-book/blob/main/readme.md) sur
 Github.
 
 *The Zabbix Book* est une ressource librement accessible conçue pour aider les

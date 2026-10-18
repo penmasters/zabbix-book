@@ -364,7 +364,7 @@ Your system is now prepared for running Zabbix components as containers using Po
     systemd[1601]: Failed to start Wait for system level network-online.target as user..
     ```
 
-    Then you are hitting a known [problem with the Podman Quadlets](https://github.com/containers/podman/issues/24796). 
+    Then you are hitting a known problem with Quadlet [https://github.com/containers/podman/issues/24796](https://github.com/containers/podman/issues/24796).
 
     This is caused by the fact that the Systemd generated Quadlet service contains
     a dependency to the system-wide special target `network-online.target` which

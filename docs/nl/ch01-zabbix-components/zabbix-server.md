@@ -58,7 +58,7 @@ onaangeroerd blijft, wat vooral handig is bij het uitvoeren van upgrades of het
 beheren van configuraties met tools zoals Ansible, Puppet of SaltStack.
 
 Op SUSE 16 en later is deze functie al standaard ingeschakeld en geconfigureerd.
-(zie ook [https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)](https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)).
+(zie ook [https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc](https://documentation.suse.com/sles/16.0/html/SLE-differences-faq/index.html#sle16-differences-faq-basesystem-etc)).
 Op SUSE-systemen bevindt het Zabbix serverconfiguratiebestand zich daarom in
 `/usr/etc/zabbix/zabbix_server.conf`, en het is zo ingesteld dat het alle
 `.conf` bestanden uit de `/etc/zabbix_server/zabbix_server.d/` directory bevat.

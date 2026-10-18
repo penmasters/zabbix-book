@@ -140,9 +140,9 @@ for user access.
 
 | Menu name     | Details                                                                                                                                                                                                                                                |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Support       | This brings us to the technical support page that you can buy from Zabbix. Remember that your local partner is also able to sell these contracts and can help you in your own language. [Your local distributors](https://www.zabbix.com/distributors) |
-| Integrations  | The official zabbix [integration page](https://www.zabbix.com/integrations)                                                                                                                                                                            |
-| Help          | The link to the documentation of your [Zabbix version](https://www.zabbix.com/documentation/current/en)                                                                                                                                                 |
+| Support       | This brings us to the technical support page that you can buy from Zabbix. Remember that your local partner is also able to sell these contracts and can help you in your own language. [https://www.zabbix.com/distributors](https://www.zabbix.com/distributors) |
+| Integrations  | The official zabbix [https://www.zabbix.com/integrations](https://www.zabbix.com/integrations)                                                                                                                                                                            |
+| Help          | The link to the documentation of your [https://www.zabbix.com/documentation/current/en](https://www.zabbix.com/documentation/current/en)                                                                                                                                                 |
 | User settings | The user profile settings.                                                                                                                                                                                                                             |
 | Sign out      | Log out of the current session.                                                                                                                                                                                                                        |
 
@@ -365,12 +365,12 @@ menu_
 
 ???+ info
 
-    More information can be found in the online Zabbix documentation [here](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections)
+    More information can be found in the online Zabbix documentation [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections)
 
 ???+ tip Movable modal forms
 
     You will see that Zabbix is using modal forms in the frontend on many places.
-    The problem is that they are not movable. [This](https://github.com/gr8b/zabbix-module-uitwix/)
+    The problem is that they are not movable. [https://github.com/gr8b/zabbix-module-uitwix/](https://github.com/gr8b/zabbix-module-uitwix/)
     module created by one of the Zabbix developers `UI Twix` will solve this problem
     for you.
 
