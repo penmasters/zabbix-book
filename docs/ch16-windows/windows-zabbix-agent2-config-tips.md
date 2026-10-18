@@ -177,12 +177,13 @@ $FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase if n
 
 #### Why do I need to consider PowerShell?
 
-Some products like Ivanti Endpoint Manager/SCCM/PDQ Deploy have a native
-MSI install steps for deployment tasks so you don't need to write a
-PowerShell or Batch script to perform the install. The deployment tool
-will call it natively in `cmd.exe` with the `msiexec /i....` command
+Some products like Ivanti Endpoint Manager/SCCM/PDQ Deploy have a native MSI
+install steps for deployment tasks so you don't need to write a PowerShell or
+Batch script to perform the install. The deployment tool will call it natively
+in `cmd.exe` with the `msiexec /i...` command. This sounds great but may not
+deliver exactly what you would want the tool to do all the time.
 
-#### Great. What's the catch? 
+##### Great. What's the catch? 
 
 In the case of some deployment tools - the "MSI native" method doesn't
 exactly make it easy to insert the params of the current machine you are
