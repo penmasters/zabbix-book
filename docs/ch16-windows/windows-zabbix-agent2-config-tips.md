@@ -342,17 +342,23 @@ MSI meets those requirements easily especially with detecting whether it's
 installed already.
 
 ### Example Install Command (General):
+
+_Command Prompt_
+
 ```shell
 msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent
 ```
+_PowerShell_
 ```PowerShell
 Start-Process msiexec.exe -ArgumentList '/i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent' -Wait
 ```
 
 ### Example Upgrade Command (You'd use this for upgrades if following the configs posted at the end of the page):
+_Command Prompt_
 ```shell
 msiexec.exe /i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent
 ```
+_PowerShell_
 ```PowerShell
 Start-Process msiexec.exe -ArgumentList '/i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent' -Wait
 ```
