@@ -2,7 +2,7 @@
 description: |
     Этот раздел из книги "The Zabbix Book", названный "Установка интерфейса",
     предоставляет пошаговые инструкции для установки интерфейса Zabbix с NGINX на различных дистрибутивах Linux. Он охватывает установку необходимых пакетов, конфигурацию SELinux и Systemd для PHP-FPM, а также изменение конфигурации NGINX для обслуживания интерфейса Zabbix на порту 80. Кроме того, он руководит пользователями через начальную настройку интерфейса Zabbix, включая настройку подключения к базе данных и базовых параметров, таких как имя экземпляра, часовой пояс и формат времени.
-tags: [начинающий]
+tags: [beginner]
 ---
 
 # Установка интерфейса
@@ -64,7 +64,7 @@ tags: [начинающий]
     ```
 
 
-Эта команда установит пакеты интерфейса вместе с необходимыми зависимостями для NGINX. 
+Эта команда установит пакеты интерфейса вместе с необходимыми зависимостями для NGINX.
 
 С версии SUSE 16 SELinux является по умолчанию модулем безопасности вместо AppArmor.
 По умолчанию PHP-FPM не разрешен SELinux на SUSE для
@@ -96,7 +96,7 @@ tags: [начинающий]
     systemctl edit php-fpm
     ```
 
-    
+
     Это откроет редактор для создания файла drop-in `/etc/systemd/system/php-fpm.service.d/override.conf`
     который будет переопределять или расширять существующий файл службы.
 
@@ -202,9 +202,9 @@ tags: [начинающий]
 Удалите `#` перед первыми двумя строками и измените их с правильным
 портом и доменом для вашего интерфейса.
 
-???+ tip 
+???+ tip
 
-    Если у вас нет домена, вы можете заменить `servername` на `_` 
+    Если у вас нет домена, вы можете заменить `servername` на `_`
     как показано ниже:
 
 !!! example "Конфигурация после редактирования"
@@ -562,5 +562,5 @@ _1.9 Вход в Zabbix_
 ## Полезные ссылки
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
-- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)
+- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)
