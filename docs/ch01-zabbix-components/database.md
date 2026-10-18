@@ -103,7 +103,7 @@ available:
     Whether you plan to use the OS vendor-provided packages or the official 
     database-vendor packages, ensure that the database version is supported
     by your Zabbix version to avoid potential integration issues. 
-    Check the [Zabbix documentation](https://www.zabbix.com/documentation/current/en/manual/installation/requirements#required-software)
+    Check the [https://www.zabbix.com/documentation/current/en/manual/installation/requirements#required-software](https://www.zabbix.com/documentation/current/en/manual/installation/requirements#required-software)
     for the latest supported versions.
 
 Before installing the database software, ensure that the server

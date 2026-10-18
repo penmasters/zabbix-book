@@ -171,7 +171,7 @@ novamente pelo procedimento de registro.
 
 A Duo é uma plataforma de segurança muito famosa que oferece muitos
 recursos/produtos relacionados à segurança. Para saber mais, visite
-[Duo](https://duo.com/). Aqui falaremos sobre a Duo apenas com relação ao Zabbix
+[https://duo.com/](https://duo.com/). Aqui falaremos sobre a Duo apenas com relação ao Zabbix
 MFA.
 
 ???+ Aviso

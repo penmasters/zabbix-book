@@ -266,7 +266,7 @@ options available to use.
     like `configuration syncer`, `housekeeper`, `icmp pinger`, by type and number
     like `poller,3` or by PID). This is useful for debugging or troubleshooting, 
     as it provides more detailed log output for the specified target. For a full 
-    list of available targets, check the [man-page of `zabbix_proxy`](https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy).
+    list of available targets, check the man-page [https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy](https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy).
     *Example*: `log_level_increase="http poller"` would make http poller-related
     logs more verbose.
 

@@ -28,5 +28,5 @@
     - git branch -d "<nome da sua branch\>"
 - Crie um pull request para que possamos mesclá-lo :)
 - Siga estas
-  [diretrizes](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
+  [https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
   ao escrever um tópico.

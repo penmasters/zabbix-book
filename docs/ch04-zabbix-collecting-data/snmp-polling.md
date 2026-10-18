@@ -937,7 +937,7 @@ but can become inefficient in large environments.
   single request to optimize performance. However, this still operates within 
   the synchronous framework, meaning Zabbix will wait for the combined response
   before moving on to the next check.
-  For more details about combined processing, refer to the [Zabbix documentation: Internal workings of combined processing.](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing)
+  For more details about combined processing, refer to the [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing)
 
 **Characteristics**:
 

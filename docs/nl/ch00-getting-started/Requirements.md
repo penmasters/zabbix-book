@@ -221,7 +221,7 @@ Voer het volgende commando uit om de firewall te installeren en in te schakelen:
 
     Firewalld wordt op RHEL- en SUSE-gebaseerde systemen gebruikt voor het beheren
     van firewallregels en laat wijzigingen direct ingaan zonder de service opnieuw
-    te starten. Als je distributie geen [Firewalld](https://www.firewalld.org)
+    te starten. Als je distributie geen [https://www.firewalld.org](https://www.firewalld.org)
     gebruikt, raadpleeg dan de documentatie van je OS. Ubuntu gebruikt UFW,
     een gebruiksvriendelijke interface voor firewallbeheer.
 
@@ -345,7 +345,7 @@ te controleren met het volgende commando:
 ???+ note "Wat is Chrony?"
 
     Chrony is een modern alternatief voor `ntpd` en biedt snelle en nauwkeurige
-    tijdsynchronisatie. Ondersteunt je OS [Chrony](https://chrony-project.org/)
+    tijdsynchronisatie. Ondersteunt je OS [https://chrony-project.org/](https://chrony-project.org/)
     niet, overweeg dan `ntpd`.
 
 Zodra Chrony geïnstalleerd is, is de volgende stap ervoor te zorgen dat de
@@ -472,7 +472,7 @@ Voorbeelduitvoer:
 In dit voorbeeld bevinden de gebruikte NTP-servers zich buiten je lokale regio.
 Het wordt aanbevolen om over te schakelen naar tijdservers in je eigen land of,
 indien beschikbaar, naar een speciale bedrijfstijdserver. Je kunt lokale
-NTP-servers hier vinden: [www.ntppool.org](https://www.ntppool.org/).
+NTP-servers hier vinden: [https://www.ntppool.org/](https://www.ntppool.org/).
 
 ---
 

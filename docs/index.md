@@ -22,7 +22,7 @@ Translations are provided for convenience, but this version is considered the
 most accurate.
 
 
-Please before you start take a look at our most updated license : [License](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
+Please before you start take a look at our most updated license : [https://github.com/penmasters/zabbix-book/blob/main/readme.md](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
 on Github.
 
 *The Zabbix Book* is a freely accessible resource designed to help users understand
@@ -51,7 +51,7 @@ resource for the entire community!
 
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
-[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
+[http://creativecommons.org/licenses/by-nc-sa/4.0/](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
 

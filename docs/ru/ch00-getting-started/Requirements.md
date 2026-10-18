@@ -39,20 +39,21 @@ tags: [beginner]
 
 ???+ tip
 
-    Zabbix package names often use dashes (`-`) in their names, such as `zabbix-get`
-    or `zabbix-sender`, but the binaries themselves may use underscores (`_`),
-    like `zabbix_sender` or `zabbix_server`. This naming discrepancy can sometimes
-    be confusing, particularly if you are using packages from non-official Zabbix
-    repositories.
+    В именах пакетов Zabbix часто используются дефисы (`-`), например
+    `zabbix-get` или `zabbix-sender`, тогда как в именах самих исполняемых файлов
+    могут использоваться символы подчеркивания (`_`), например `zabbix_sender`
+    или `zabbix_server`. Это различие может вызвать путаницу, особенно при
+    использовании пакетов из неофициальных репозиториев Zabbix.
 
-    Always check if a binary uses a dash or an underscore when troubleshooting.
+    При устранении неполадок всегда проверяйте, используется ли в имени
+    исполняемого файла дефис или символ подчеркивания.
 
 ???+ warning
 
-    Starting from Zabbix 7.2, only MySQL (including its forks) and PostgreSQL are
-    supported as back-end databases. Earlier versions of Zabbix also included support
-    for Oracle Database; however, this support was discontinued with Zabbix 7.0 LTS,
-    making it the last LTS version to officially support Oracle DB.
+    Начиная с Zabbix 7.2, в качестве серверных СУБД поддерживаются только MySQL
+    (включая его форки) и PostgreSQL. Более ранние версии Zabbix также
+    поддерживали Oracle Database, однако эта поддержка была прекращена после
+    Zabbix 7.0 LTS — последней версии LTS с официальной поддержкой Oracle DB.
 
 ---
 
@@ -77,10 +78,10 @@ Linux 9.x, openSUSE Leap 16 и Ubuntu LTS 24.04.x.
 
 ???+ note
 
-    OS installation steps are outside the scope of this book, but a default or even a
-    minimal installation of your preferred OS should be sufficient. Please refrain from
-    installing graphical user interfaces (GUIs) or desktop environments, as they are
-    unnecessary for server setups and consume valuable resources.
+    Установка операционной системы выходит за рамки этой книги, однако стандартной
+    или даже минимальной установки выбранной ОС будет достаточно. Не устанавливайте
+    графический интерфейс или окружение рабочего стола: они не нужны на сервере
+    и потребляют ценные ресурсы.
 
 После установки выбранной вами ОС необходимо выполнить несколько важных
 настроек, прежде чем приступать к установке Zabbix. Выполните следующие действия
@@ -121,21 +122,24 @@ Zabbix, сервер базы данных и веб-сервер).
     ```
 ???+ note "Что такое apt, dnf или zypper"
 
-    - DNF (Dandified YUM) is a package manager used in recent Red Hat-based systems (invoked as `dnf`).
-    - ZYpp (Zen / YaST Packages Patches Patterns Products) is the package manager 
-    used on SUSE-based systems (invoked as `zypper`) and 
-    - APT (Advanced Package Tool) is the package manager used on Debian/Ubuntu-based systems (invoked as `apt`). 
+    - DNF (Dandified YUM) — менеджер пакетов современных систем на базе Red Hat;
+      запускается командой `dnf`.
+    - ZYpp (Zen / YaST Packages Patches Patterns Products) — менеджер пакетов
+      систем на базе SUSE; запускается командой `zypper`.
+    - APT (Advanced Package Tool) — менеджер пакетов систем на базе Debian и
+      Ubuntu; запускается командой `apt`.
 
-    If you're using another distribution, replace `dnf`/`zypper`/`apt` with your appropriate 
-    package manager, such as `yum`, `pacman`, `emerge`, `apk` or ... .
+    Если вы используете другой дистрибутив, замените `dnf`/`zypper`/`apt`
+    соответствующим менеджером пакетов, например `yum`, `pacman`, `emerge` или
+    `apk`.
 
-    Do note that package names may also vary from distribution to distribution.
+    Названия пакетов также могут различаться в разных дистрибутивах.
 
 ???+ tip
 
-    Regularly updating your system is crucial for security and performance.
-    Consider setting up automatic updates or scheduling regular maintenance windows
-    to keep your systems current.
+    Регулярное обновление системы имеет решающее значение для безопасности и
+    производительности. Настройте автоматические обновления или запланируйте
+    регулярные окна обслуживания, чтобы поддерживать системы в актуальном состоянии.
 
 ---
 
@@ -158,11 +162,10 @@ Zabbix, сервер базы данных и веб-сервер).
 
 !!! info "Что такое sudo"
 
-    `sudo` (short for "superuser do") is a command-line utility that allows
-    permitted users to execute commands with the security privileges of another
-    user, typically the superuser (root). It is commonly used in Unix-like
-    operating systems to perform administrative tasks without needing to log in
-    as the root user.
+    `sudo` (сокращение от «superuser do») — утилита командной строки, позволяющая
+    авторизованным пользователям выполнять команды с правами другого пользователя,
+    обычно суперпользователя root. Она широко применяется в Unix-подобных системах
+    для выполнения административных задач без входа в систему под учетной записью root.
 
 Чтобы установить `sudo` выполните следующую команду в зависимости от вашей ОС:
 
@@ -180,8 +183,8 @@ Zabbix, сервер базы данных и веб-сервер).
 
     Ubuntu
 
-    On Ubuntu, `sudo` is normally installed by default. Root access is managed
-    through `sudo` for the initial user created during installation.
+    В Ubuntu `sudo` обычно устанавливается по умолчанию. Доступ root для первого
+    пользователя, созданного во время установки, предоставляется через `sudo`.
 
 Если `sudo` уже установлена, эти команды сообщат вам, что последняя версия уже
 присутствует и никаких дополнительных действий не требуется. Если же нет, то
@@ -218,11 +221,11 @@ Zabbix, сервер базы данных и веб-сервер).
     ```
 ???+ note "Что такое firewalld / ufw"
 
-    Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
-    changes to take effect immediately without needing to restart the service.
-    If your distribution does not use [Firewalld](https://www.firewalld.org),
-    refer to your OS documentation for the appropriate firewall configuration steps.
-    Ubuntu makes use of UFW which is merely a frontend for iptables.
+    Firewalld заменяет iptables в системах на базе RHEL и SUSE и позволяет
+    применять изменения немедленно, без перезапуска службы. Если ваш дистрибутив
+    не использует [https://www.firewalld.org](https://www.firewalld.org),
+    обратитесь к документации своей ОС за инструкциями по настройке брандмауэра.
+    В Ubuntu используется UFW — интерфейс для iptables.
 
 Во время установки Zabbix в следующих главах нам нужно будет открыть
 определенные порты в брандмауэре для обеспечения связи между компонентами
@@ -341,10 +344,10 @@ Zabbix.
 
 ???+ note "что такое Chrony"
 
-    Chrony is a modern replacement for `ntpd`, offering faster and
-    more accurate time synchronization. If your OS does not support
-    [Chrony](https://chrony-project.org/), consider using
-    `ntpd` instead.
+    Chrony — современная замена `ntpd`, обеспечивающая более быструю и точную
+    синхронизацию времени. Если ваша ОС не поддерживает
+    [https://chrony-project.org/](https://chrony-project.org/), используйте
+    вместо него `ntpd`.
 
 После установки Chrony необходимо убедиться, что установлен правильный часовой
 пояс. Просмотреть текущую конфигурацию времени можно с помощью команды
@@ -415,11 +418,11 @@ Zabbix.
 
 ???+ note
 
-    Some administrators prefer installing all servers in the UTC time zone to
-    ensure that server logs across global deployments are synchronized.
-    Zabbix supports user-based time zone settings, which allows the server to
-    remain in UTC while individual users can adjust the time zone via the
-    interface if needed.
+    Некоторые администраторы предпочитают настраивать все серверы в часовом поясе
+    UTC, чтобы синхронизировать журналы серверов в глобальной инфраструктуре.
+    Zabbix поддерживает настройку часового пояса для каждого пользователя:
+    сервер может оставаться в UTC, а пользователи при необходимости выбирают
+    свой часовой пояс в интерфейсе.
 
 ---
 
@@ -469,7 +472,7 @@ Zabbix.
 В этом примере используемые серверы NTP расположены за пределами вашего региона.
 Рекомендуется переключиться на серверы времени в вашей стране или, если это
 возможно, на выделенный сервер времени компании. Найти местные NTP-серверы можно
-здесь: [www.ntppool.org](https://www.ntppool.org/).
+здесь: [https://www.ntppool.org/](https://www.ntppool.org/).
 
 ---
 
@@ -488,10 +491,10 @@ Zabbix.
     ```bash
     vi /etc/chrony.d/pool.conf
     ```
-    On SUSE, the pool configuration is located in a separate file. You can
-    edit that file directly or add a new configuration file in the same directory.
-    In the latter case, ensure to disable or remove the existing pool configuration
-    to avoid conflicts.
+    В SUSE конфигурация пула находится в отдельном файле. Его можно изменить
+    напрямую или добавить новый файл конфигурации в тот же каталог. Во втором
+    случае отключите или удалите существующую конфигурацию пула, чтобы избежать
+    конфликтов.
 
     Ubuntu
     ```bash

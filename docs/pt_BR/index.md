@@ -24,7 +24,7 @@ são fornecidas por conveniência, mas esta versão é considerada a mais precis
 
 
 Antes de começar, dê uma olhada na nossa licença mais atualizada:
-[License](https://github.com/penmasters/zabbix-book/blob/main/readme.md) no
+[https://github.com/penmasters/zabbix-book/blob/main/readme.md](https://github.com/penmasters/zabbix-book/blob/main/readme.md) no
 Github.
 
 *O Livro do Zabbix* é um recurso de acesso livre projetado para ajudar os

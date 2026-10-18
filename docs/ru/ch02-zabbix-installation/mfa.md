@@ -163,7 +163,7 @@ procedure again.
 ## Duo MFA provider
 
 Duo is a very famous security platform that provides a lot of security related
-features/products. To read more please visit [Duo](https://duo.com/). Here we'll
+features/products. To read more please visit [https://duo.com/](https://duo.com/). Here we'll
 talk about Duo only in regards to Zabbix MFA.
 
 ???+ warning

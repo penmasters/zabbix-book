@@ -63,7 +63,7 @@ Open-source thrives on collaboration, and even the smallest contributions help
 make a difference. Whether it was reporting a typo, suggesting an improvement,
 opening an issue, or simply sharing feedback, we appreciate everyone who took
 the time to help refine and improve this book. Your efforts, no matter how small,
-are a valuable part of this project. Check out [Everyone who created an issue](https://github.com/penmasters/zabbix-book/issues?q=is%3Aissue%20).
+are a valuable part of this project. Check out [https://github.com/penmasters/zabbix-book/issues?q=is%3Aissue%20](https://github.com/penmasters/zabbix-book/issues?q=is%3Aissue%20).
 
 ---
 

@@ -139,9 +139,9 @@ pertinentes para acesso do usuário.
 
 | Nome do menu             | Detalhes                                                                                                                                                                                                                                              |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Apoio                    | Isso nos leva à página de suporte técnico que você pode comprar da Zabbix. Lembre-se de que seu parceiro local também pode vender esses contratos e ajudá-lo em seu próprio idioma. [Seus distribuidores locais](https://www.zabbix.com/distributors) |
-| Integrações              | A página oficial do zabbix [página de integração](https://www.zabbix.com/integrations)                                                                                                                                                                |
-| Ajuda                    | O link para a documentação de sua [versão do Zabbix](https://www.zabbix.com/documentation/7.0/)                                                                                                                                                       |
+| Apoio                    | Isso nos leva à página de suporte técnico que você pode comprar da Zabbix. Lembre-se de que seu parceiro local também pode vender esses contratos e ajudá-lo em seu próprio idioma. [https://www.zabbix.com/distributors](https://www.zabbix.com/distributors) |
+| Integrações              | A página oficial do zabbix [https://www.zabbix.com/integrations](https://www.zabbix.com/integrations)                                                                                                                                                                |
+| Ajuda                    | O link para a documentação de sua [https://www.zabbix.com/documentation/7.0/](https://www.zabbix.com/documentation/7.0/)                                                                                                                                                       |
 | Configurações do usuário | As configurações do perfil do usuário.                                                                                                                                                                                                                |
 | Sair                     | Sair da sessão atual.                                                                                                                                                                                                                                 |
 
@@ -384,12 +384,12 @@ _2.18 Menu de administração_
 
 ???+ info
 
-    More information can be found in the online Zabbix documentation [here](https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections)
+    More information can be found in the online Zabbix documentation [https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections](https://www.zabbix.com/documentation/7.0/en/manual/web_interface/frontend_sections)
 
 ???+ tip Movable modal forms
 
     You will see that Zabbix is using modal forms in the frontend on many places.
-    The problem is that they are not movable. [This](https://github.com/gr8b/zabbix-module-uitwix/)
+    The problem is that they are not movable. [https://github.com/gr8b/zabbix-module-uitwix/](https://github.com/gr8b/zabbix-module-uitwix/)
     module created by one of the Zabbix developers `UI Twix` will solve this problem
     for you.
 

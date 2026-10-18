@@ -106,7 +106,7 @@ instelling in het configuratiebestand op `permissive` staan.
 
 ## De Zabbix repository installeren
 
-Ga naar de [Zabbix Download-pagina](https://www.zabbix.com/download) en kies
+Ga naar de [https://www.zabbix.com/download](https://www.zabbix.com/download) en kies
 de Zabbix-versie die je wilt installeren. In dit boek gebruiken we Zabbix
 8.0 LTS. Selecteer ook de juiste Linux-distributie. Voor onze voorbeelden
 zijn dat Rocky Linux 9, openSUSE Leap 16 en Ubuntu 24.04.
@@ -380,7 +380,7 @@ Podman uit te voeren.
     ```
 
     Dan heb je mogelijk te maken met een
-    [bekend probleem met Podman Quadlets](https://github.com/containers/podman/issues/24796).
+    [https://github.com/containers/podman/issues/24796](https://github.com/containers/podman/issues/24796).
 
     Dit probleem ontstaat doordat de door systemd gegenereerde Quadlet
     service afhankelijk is van het systeembrede target

@@ -162,11 +162,11 @@ Triggers and Graphs and click on `Create discovery rule`.
 *8.15 Create a discovery rule*
 
 Before configuring our Low-Level Discovery (LLD) rule, we can test our JSON queries
-using tools like [JSON Query Tool](https://www.jsonquerytool.com/). If we apply the
+using tools like [https://www.jsonquerytool.com/](https://www.jsonquerytool.com/). If we apply the
 query `$..name`, it extracts all printer names, while `$..status` retrieves
 their statuses.
 
-However, referring to the [Zabbix documentation](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery),
+However, referring to the [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery),
 we see that starting from **Zabbix 4.2**, the expected JSON format for LLD has changed.
 The `data` object is no longer required; instead, LLD now supports a direct JSON
 array. This update enables features like **item value preprocessing** and

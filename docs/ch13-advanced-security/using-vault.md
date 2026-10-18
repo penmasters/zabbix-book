@@ -926,11 +926,11 @@ for day-to-day secret management to avoid using the root token for routine tasks
 
 ## Useful URLs
 
-- [Zabbix 8.0 — HashiCorp Vault integration](https://www.zabbix.com/documentation/latest/en/manual/config/secrets/hashicorp)
-- [Zabbix 8.0 — Secrets management overview](https://www.zabbix.com/documentation/latest/en/manual/config/secrets)
-- [HashiCorp Vault documentation](https://developer.hashicorp.com/vault/docs)
-- [Vault KV v2 secrets engine](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2)
-- [Vault token authentication](https://developer.hashicorp.com/vault/docs/auth/token)
-- [Vault AppRole authentication](https://developer.hashicorp.com/vault/docs/auth/approle)
-- [Vault policies](https://developer.hashicorp.com/vault/docs/concepts/policies)
-- [HashiCorp Vault RHEL installation](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install)
+- [https://www.zabbix.com/documentation/latest/en/manual/config/secrets/hashicorp](https://www.zabbix.com/documentation/latest/en/manual/config/secrets/hashicorp)
+- [https://www.zabbix.com/documentation/latest/en/manual/config/secrets](https://www.zabbix.com/documentation/latest/en/manual/config/secrets)
+- [https://developer.hashicorp.com/vault/docs](https://developer.hashicorp.com/vault/docs)
+- [https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2)
+- [https://developer.hashicorp.com/vault/docs/auth/token](https://developer.hashicorp.com/vault/docs/auth/token)
+- [https://developer.hashicorp.com/vault/docs/auth/approle](https://developer.hashicorp.com/vault/docs/auth/approle)
+- [https://developer.hashicorp.com/vault/docs/concepts/policies](https://developer.hashicorp.com/vault/docs/concepts/policies)
+- [https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install)

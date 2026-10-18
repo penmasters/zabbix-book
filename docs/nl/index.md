@@ -25,7 +25,7 @@ het gemak gegeven, maar deze versie wordt als de meest nauwkeurige beschouwd.
 
 
 Bekijk voordat je begint onze meest bijgewerkte licentie:
-[Licentie](https://github.com/penmasters/zabbix-book/blob/main/readme.md) op
+[https://github.com/penmasters/zabbix-book/blob/main/readme.md](https://github.com/penmasters/zabbix-book/blob/main/readme.md) op
 Github.
 
 *Het Zabbix Boek* is een vrij toegankelijke bron ontworpen om gebruikers te
