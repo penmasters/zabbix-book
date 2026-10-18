@@ -175,6 +175,34 @@ $FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase if n
 (Get-Content $file) -replace "Hostname=REPLACEME","Hostname=$FQDNHostNameToLower" | Set-Content $file
 ```
 
+#### Why do I need to consider PowerShell?
+
+Some products like Ivanti Endpoint Manager/SCCM/PDQ Deploy have a native
+MSI install steps for deployment tasks so you don't need to write a
+PowerShell or Batch script to perform the install. The deployment tool
+will call it natively in `cmd.exe` with the `msiexec /i....` command
+
+#### Great. What's the catch? 
+
+In the case of some deployment tools - the "MSI native" method doesn't
+exactly make it easy to insert the params of the current machine you are
+targeting in a deployment for the command switches themselves as
+variables without causing a 'hacky way' to go about it.
+
+As an example, a specific deployment tool does not allow this:
+`/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"` and must be
+inline string literals only - the deployment tool does not allow a
+variable to be passed via the deployment package for the MSI Method
+switches. 
+
+Or, In other hyper specific cases, the tool lacks adding a string or
+general string manipulation like this in line for the MSI switch:
+`/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"+'.domain.com'`
+
+In this case, the org needs to put an additional step in PowerShell to
+edit the `zabbix_agent2.conf` in-place after the initial MSI install to
+correct it to their liking.
+
 ## Utilizing `ForceActiveChecksOnStart` and `RefreshActiveChecks`
 
 These parameters are important for you to understand from a `ServerActive` based
@@ -342,32 +370,7 @@ zabbix_agent2.conf go in the following order:
       example on how to do this inline without overwriting the entire file was
       provided [earlier on this same page - click here to
       jump](windows-zabbix-agent2-config-tips.md#code-snippet)
-        #### Why?
 
-        Some products like Ivanti Endpoint Manager/SCCM/PDQ Deploy have a native
-        MSI install steps for deployment tasks so you don't need to write a
-        PowerShell or Batch script to perform the install. The deployment tool
-        will call it natively in `cmd.exe` with the `msiexec /i....` command
-        #### Great. What's the catch? 
-    
-        In the case of some deployment tools - the "MSI native" method doesn't
-        exactly make it easy to insert the params of the current machine you are
-        targeting in a deployment for the command switches themselves as
-        variables without causing a 'hacky way' to go about it.
-        
-        As an example, a specific deployment tool does not allow this:
-        `/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"` and must be
-        inline string literals only - the deployment tool does not allow a
-        variable to be passed via the deployment package for the MSI Method
-        switches. 
-        
-        Or, In other hyper specific cases, the tool lacks adding a string or
-        general string manipulation like this in line for the MSI switch:
-        `/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"+'.domain.com'`
-        
-        In this case, the org needs to put an additional step in PowerShell to
-        edit the `zabbix_agent2.conf` in-place after the initial MSI install to
-        correct it to their liking.
 2. Have a PowerShell Script create the "Zabbix-ext" directory under
    `%PROGRAMDATA%` with the `.conf` files
 3. Have a PowerShell Script insert `Include=` fields at the bottom the
