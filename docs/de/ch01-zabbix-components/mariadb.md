@@ -46,7 +46,7 @@ Um das vom Betriebssystem bereitgestellte Standard-MariaDB-Datenbanksystem zu in
 
 Dieser Befehl lädt und installiert sowohl den Server- als auch den Client-Paket, sodass Sie das MariaDB-Datenbanksystem einrichten,
 konfigurieren und nutzen können. Sobald die Installation abgeschlossen ist, können Sie mit dem
-[_Starten des MariaDB-Datenbanksystems_](#starting-the-mariadb-database) Abschnitt fortfahren.
+[_Starten des MariaDB-Datenbanksystems_](#starten-des-mariadb-datenbanksystems) Abschnitt fortfahren.
 
 ---
 
@@ -176,7 +176,7 @@ Um den MariaDB-Server und -Client zu installieren, führen Sie folgenden Befehl 
 
 Dieser Befehl lädt und installiert sowohl den Server- als auch den Client-Paket, sodass Sie das MariaDB-Datenbanksystem einrichten,
 konfigurieren und nutzen können. Sobald die Installation abgeschlossen ist, können Sie mit dem
-[_Starten des MariaDB-Datenbanksystems_](#starting-the-mariadb-database) Abschnitt fortfahren.
+[_Starten des MariaDB-Datenbanksystems_](#starten-des-mariadb-datenbanksystems) Abschnitt fortfahren.
 
 ---
 
@@ -484,7 +484,9 @@ Zuerst müssen wir das Zabbix-SQL-Script installieren, das die notwendigen Impor
     `SUPER` Berechtigungen zu benötigen, die eingeschränkt sind, wenn Binärprotokollierung aktiviert ist.
 
     Normalerweise werden wir diese Einstellung nach dem ersten Import des Zabbix-Schemas nicht mehr benötigen,
-    so dass wir sie danach wieder deaktivieren.    !!! info "Aktivieren Sie temporär zusätzliche Berechtigungen für nicht root-Benutzer"
+    so dass wir sie danach wieder deaktivieren.
+
+    !!! info "Aktivieren Sie temporär zusätzliche Berechtigungen für nicht root-Benutzer"
 
         ```bash
         mariadb -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 1;"
@@ -504,25 +506,25 @@ laden alles in unsere DB `zabbix`.
 
 !!! warning
 
-    Abhängig von der Geschwindigkeit Ihrer Hardware oder des virtuellen 
-    Computers kann der Prozess einige Sekunden bis zu mehreren Minuten dauern, 
+    Abhängig von der Geschwindigkeit Ihrer Hardware oder des virtuellen
+    Computers kann der Prozess einige Sekunden bis zu mehreren Minuten dauern,
     ohne visuelle Rückmeldung nach Eingabe des root-Passworts.
 
-    Bitte haben Sie Geduld und vermeiden Sie es, die Operation abzubrechen; 
+    Bitte haben Sie Geduld und vermeiden Sie es, die Operation abzubrechen;
     warten Sie einfach darauf, dass das Linux-Prompt wieder erscheint.
 
 ???+ note
 
     Zabbix scheint es zu mögen, die Positionen der Skripte zur Füllung der DB
-    in jeder Version oder sogar innerhalb von Versionen zu ändern. Wenn Sie einen 
-    Fehler erhalten, schauen Sie sich die Zabbix-Dokumentation an; es besteht eine 
+    in jeder Version oder sogar innerhalb von Versionen zu ändern. Wenn Sie einen
+    Fehler erhalten, schauen Sie sich die Zabbix-Dokumentation an; es besteht eine
     gute Chance, dass einige Positionen geändert wurden.
 
 Nachdem das Importieren des Zabbix-Schemas abgeschlossen ist, sollten Sie den
-`log_bin_trust_function_creators` globalen Parameter nicht mehr benötigen. Es ist eine gute 
+`log_bin_trust_function_creators` globalen Parameter nicht mehr benötigen. Es ist eine gute
 Praxis, ihn aus Sicherheitsgründen zu entfernen.
 
-Um den globalen Parameter wieder auf 0 zurückzusetzen, verwenden Sie den folgenden 
+Um den globalen Parameter wieder auf 0 zurückzusetzen, verwenden Sie den folgenden
 Befehl im MySQL/MariaDB-Shell:
 
 !!! info "Deaktivieren Sie die Funktion log_bin_trust erneut"
@@ -532,7 +534,7 @@ Befehl im MySQL/MariaDB-Shell:
     ```
 
 
-Dieser Befehl deaktiviert die Einstellung und sorgt dafür, dass sich das 
+Dieser Befehl deaktiviert die Einstellung und sorgt dafür, dass sich das
 Sicherheitsniveau der Server robust hält.
 
 Mit dieser Installation von MariaDB ist unsere Arbeit abgeschlossen. Sie können
@@ -544,19 +546,19 @@ jetzt mit [Vorbereitung des Zabbix-Servers](preparation.md) fortfahren.
 
 Mit erfolgreicher Installation und Konfiguration von MariaDB als Datenbank-
 Backend für Zabbix haben Sie eine robuste Grundlage für Ihre Überwachungs-Lösung.
-Wir haben die Installation von MariaDB aus bereitgestellten Paketen der 
+Wir haben die Installation von MariaDB aus bereitgestellten Paketen der
 Anbieter sowie offiziellen Repositories abgedeckt, die Sicherheit der Datenbank,
 die Erstellung der notwendigen Zabbix-Datenbank und Benutzer sowie das Füllen
 der Datenbank mit den erforderlichen Schema und Initialdaten.
 
-Ihr Zabbix-Umfeld ist nun bereit für die nächsten Stufen der Einrichtung und 
+Ihr Zabbix-Umfeld ist nun bereit für die nächsten Stufen der Einrichtung und
 Konfiguration.
 
 ---
 
 ## Fragen
 
-1. Welche Version von MariaDB sollte ich installieren, um Kompatibilität und 
+1. Welche Version von MariaDB sollte ich installieren, um Kompatibilität und
 Stabilität zu gewährleisten?
 2. Welcher Port verwendet meine DB?
 3. Welche Datenbank-Benutzer habe ich erstellt und warum?

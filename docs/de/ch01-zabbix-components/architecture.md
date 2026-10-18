@@ -24,7 +24,7 @@ die wir im Detail besprechen werden.
 
 !!! abstract "Erstellung von DB-Benutzern"
 
-    In unserer Einrichtung werden wir 2 DB-Benutzer `zabbix-web` und `zabbix-srv` erstellen. 
+    In unserer Einrichtung werden wir 2 DB-Benutzer `zabbix-web` und `zabbix-srv` erstellen.
     Der zabbix-web-Benutzer wird für die Frontend-Verbindung zu unserer Zabbix-Datenbank verwendet.
     Der zabbix-srv-Benutzer wird von unserem Zabbix-Server zur Datenbankverbindung genutzt.
     Dies ermöglicht es uns, die Berechtigungen für jeden Benutzer auf das zu beschränken,

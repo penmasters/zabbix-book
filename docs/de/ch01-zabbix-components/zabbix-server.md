@@ -3,7 +3,7 @@ description: |
     Diese Abschnitt aus dem Buch "The Zabbix Book" mit dem Titel "Installation des Zabbix-Servers"
     führt Sie durch die Installation und Konfiguration des Zabbix-Servers auf verschiedenen Linux-Distributionen.
     Es behandelt die Installation des Zabbix-Server-Pakets, die Konfiguration der Datenbankverbindungsparameter
-    und die Einrichtung eines Firewalls, um eingehende Verbindungen zum Zabbix-Server zuzulassen. 
+    und die Einrichtung eines Firewalls, um eingehende Verbindungen zum Zabbix-Server zuzulassen.
     Darüber hinaus bietet es Anweisungen zur Starteinstellung des Zabbix-Servers-Dienstes,
     zur Validierung der Konfiguration und zum Überprüfen der Serverprotokolle auf Probleme.
 tags: [beginner]
@@ -35,7 +35,7 @@ Um die Komponenten des Zabbix-Servers zu installieren, führen Sie den folgenden
     zypper install zabbix-server-mysql
     # For PostgreSQL backend:
     zypper install zabbix-server-pgsql
-    ``` 
+    ```
 
 
     Ubuntu
@@ -370,5 +370,5 @@ Lassen Sie uns zum nächsten Kapitel übergehen, um den Zabbix-Frontend einzuric
 ## Nützliche URLs
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
-- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)
+- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)

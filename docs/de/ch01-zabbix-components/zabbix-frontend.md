@@ -12,7 +12,7 @@ tags: [beginner]
 
 Bevor Sie das Zabbix-Frontend konfigurieren, stellen Sie sicher, dass das System die Anforderungen erfüllt
 und entsprechend vorbereitet ist, wie im vorherigen Kapitel beschrieben: [_Getting started_](../ch00-getting-started/Requirements.md). Dieser Server kann der gleiche sein, auf dem zuvor Zabbix-Server-Pakete installiert wurden, oder es kann sich um einen separaten
-Rechner handeln. 
+Rechner handeln.
 
 Führen Sie alle nachfolgenden Schritte auf dem für das Frontend vorgesehenen Server aus.
 
@@ -70,7 +70,7 @@ Führen Sie alle nachfolgenden Schritte auf dem für das Frontend vorgesehenen S
 Dieser Befehl installiert die Frontend-Pakete sowie die erforderlichen Abhängigkeiten für NGINX.
 
 Ab SUSE 16 ist SELinux nun das Standard-Sicherheitsmodul anstelle von AppArmor.
-Standardmäßig erlaubt SELinux auf SUSE PHP-FPM nicht, 
+Standardmäßig erlaubt SELinux auf SUSE PHP-FPM nicht,
 - Ausführungs-Memorystecker zu mappen, die für die JIT-Kompilierung von PHP erforderlich sind,
 - eine Verbindung zum Zabbix-Server herzustellen oder
 - eine Verbindung zur Datenbank über TCP.
@@ -98,7 +98,7 @@ erlaubt, durch Systemd in das Verzeichnis zu schreiben `/etc/zabbix/web`, welche
     systemctl edit php-fpm
     ```
 
-    
+
     Dies öffnet einen Editor zur Erstellung einer Drop-In-Datei `/etc/systemd/system/php-fpm.service.d/override.conf`
     die die bestehende Dienstdatei überschreibt oder erweitert.
 
@@ -204,9 +204,9 @@ Und ändern Sie die folgenden Zeilen:
 Entfernen Sie das `#` vor den ersten beiden Zeilen und passen Sie sie an, um die korrekten
 Port und Domain für Ihr Frontend zu verwenden.
 
-???+ tip 
+???+ tip
 
-    Falls Sie keine Domain haben können Sie `servername` mit `_` ersetzen 
+    Falls Sie keine Domain haben können Sie `servername` mit `_` ersetzen
     wie im folgenden Beispiel gezeigt:
 
 !!! example "Config nach der Bearbeitung"
@@ -440,7 +440,7 @@ Auf RedHat und Ubuntu gibt der Befehl zwei Zeilen aus; jedoch, gegeben dem ident
 'zh_CN', muss nur das erste Paket installiert werden.
 auf SUSE entweder nur die Locale `C.UTF-8` und `en_US.UTF-8` sind zu installieren oder alle
 verfügbaren Lokalisierungen, abhängig davon, ob das Paket `glibc-locale`
-installiert ist oder nicht. 
+installiert ist oder nicht.
 
 !!! info "Installiere die Locale-Pakete"
 
@@ -591,5 +591,5 @@ weitere Parameter müssen im Vergleich zu MySQL/MariaDB bereitgestellt werden?
 ## Nützliche URLs
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
-- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)
+- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)

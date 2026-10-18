@@ -77,7 +77,7 @@ konfigurieren und interagieren können.
 
     Auf SUSE und Ubuntu wird durch das OS bereitgestellte Systemd-Service automatisch eine leere Datenbank beim ersten Start initialisieren.
 
-Nach der Installation können Sie mit der [_PostgreSQL-Datenbank starten_](#starting-the-postgresql-database) Abschnitt fortfahren.
+Nach der Installation können Sie mit der [_PostgreSQL-Datenbank starten_](#postgresql-datenbank-starten) Abschnitt fortfahren.
 
 ---
 
@@ -120,8 +120,8 @@ Weitere Informationen finden Sie unter [https://www.postgresql.org/download/linu
 
 
     !!! warning "openSUSE Leap"
-    
-        Da die offiziellen PostgreSQL-Pakete speziell für den Einsatz auf 
+
+        Da die offiziellen PostgreSQL-Pakete speziell für den Einsatz auf
         SUSE Linux Enterprise Server (SLES) erstellt wurden, erhalten Sie einen Fehler,
         wenn Sie versuchen, das Repository auf openSUSE Leap zu installieren. Wir können
         dieses Problem jedoch sicher ignorieren, indem wir "das Paket durch Ignorieren einiger seiner Abhängigkeiten brechen" wählen,
@@ -208,7 +208,7 @@ Bevor wir den PostgreSQL-Server starten können, müssen wir eine neue leere Dat
     ```
 
 
-Nach der Installation können Sie mit dem [PostgreSQL-Datenbank starten](#starting-the-postgresql-database) Abschnitt fortfahren.
+Nach der Installation können Sie mit dem [PostgreSQL-Datenbank starten](#postgresql-datenbank-starten) Abschnitt fortfahren.
 
 ---
 
@@ -705,7 +705,7 @@ Nun werden wir den SQL-Datei ausführen, um die Datenbank zu füllen. Öffne ein
 
 ???+ warning "Stelle sicher, dass der korrekte Suchpfad gesetzt ist"
 
-    Stelle sicher, dass du die vorherigen Schritte wie in [Erstellen des Zabbix-Datenbank-Instanz mit PostgreSQL](postgresql.md#creating-the-zabbix-database-instance)
+    Stelle sicher, dass du die vorherigen Schritte wie in [Erstellen des Zabbix-Datenbank-Instanz mit PostgreSQL](postgresql.md#erstellen-der-zabbix-datenbank-instanz)
     sorgfältig durchgeführt hast, um den korrekten `search_path` zu setzen.
 
     Wenn du keinen Standard-`search_path` für den `zabbix-srv`-Benutzer gesetzt hast,
@@ -883,7 +883,7 @@ Ihr Zabbix-Umfeld ist nun bereit für die nächsten Schritte in Richtung Einrich
 
 ## Nützliche URLs
 
-- [https://yum.postgresql.org](ttps://yum.postgresql.org)
+- [https://yum.postgresql.org](https://yum.postgresql.org)
 - [https://zypp.postgresql.org/howtozypp/](https://zypp.postgresql.org/howtozypp/)
 - [https://wiki.postgresql.org/wiki/Apt](https://wiki.postgresql.org/wiki/Apt)
 - [https://en.opensuse.org/SDB:PostgreSQL](https://en.opensuse.org/SDB:PostgreSQL)
