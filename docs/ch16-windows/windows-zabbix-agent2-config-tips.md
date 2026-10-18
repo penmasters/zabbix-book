@@ -493,3 +493,15 @@ $JSONOutput = $OutputOfTests | ConvertTo-JSON
 
 return $JSONOutput
 ```
+
+## Questions
+- Why is it recommended to keep custom configurations outside of the default `zabbix_agent2.conf` file?
+- What is the purpose of the `Include` parameter?
+- Why might an organization use `HostMetadata`?
+- What scenario would a Passive check be used instead of an Active check?
+
+## Useful URLs
+- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi)
+- [https://www.zabbix.com/documentation/7.0/en/manual/appendix/config/zabbix_agent2_win](https://www.zabbix.com/documentation/7.0/en/manual/appendix/config/zabbix_agent2_win)
+- [https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec)
+- [https://github.com/zabbix/zabbix/blob/master/src/go/conf/zabbix_agent2.win.conf](https://github.com/zabbix/zabbix/blob/master/src/go/conf/zabbix_agent2.win.conf)
