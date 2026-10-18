@@ -1,74 +1,71 @@
 ---
 description: |
-    This section from The Zabbix Book titled "Zabbix architecture" explains the 
-    modular structure of a Zabbix setup. It highlights the roles of each component
-    and their interdependencies, while providing an introduction to how we will 
-    perform the installation of the components in next sections.
+    Cette section du livre The Zabbix Book intitulée "Architecture de Zabbix" explique la
+    structure modulaire d'une installation Zabbix. Elle met en lumière les rôles de chaque composant
+    et leurs interdépendances, tout en fournissant une introduction à la façon dont nous allons
+    effectuer l'installation des composants dans les sections suivantes.
 tags: [beginner]
 ---
 
 # Architecture de Zabbix
 
-Dans ce chapitre, nous allons suivre le processus d'installation du serveur
-Zabbix. Il existe de nombreuses façons de configurer un serveur Zabbix. Nous
-couvrirons les configurations les plus courantes avec MariaDB et PostgreSQL sur
-les distributions basées sur RHEL et SLES et Ubuntu.
+Dans ce chapitre, nous allons parcourir le processus d'installation du serveur Zabbix.
+Il existe de nombreuses façons différentes de configurer un serveur Zabbix. Nous couvrirons les
+configurations les plus courantes avec MariaDB et PostgreSQL sur des distributions basées sur RHEL,
+SLES et Ubuntu.
 
 Avant de commencer l'installation, il est important de comprendre l'architecture
-de Zabbix. Le serveur Zabbix est structuré de manière modulaire et se compose de
-trois éléments principaux, que nous allons examiner en détail.
+de Zabbix.
+Le serveur Zabbix est structuré de manière modulaire, composé de trois principaux composants,
+que nous examinerons en détail.
 
 - Le serveur Zabbix
-- Le serveur web Zabbix (frontend)
+- Le serveur web Zabbix
 - La base de données Zabbix
 
-!!! abstract "Création des utilisateurs de la base de données"
+!!! abstract "Création des utilisateurs DB"
 
-    In our setup we will create 2 DB users `zabbix-web` and `zabbix-srv`. The 
-    zabbix-web user will be used for the frontend to connect to our zabbix database.
-    The zabbix-srv user will be used by our zabbix server to connect to the database.
-    This allows us to limit the permissions for every user to only what is strictly
-    needed.
+    Dans notre configuration, nous allons créer 2 utilisateurs DB `zabbix-web` et `zabbix-srv`.
+    L'utilisateur zabbix-web sera utilisé pour le front-end pour se connecter à notre base de données Zabbix.
+    L'utilisateur zabbix-srv sera utilisé par notre serveur Zabbix pour se connecter à la base de données.
+    Cela nous permet de limiter les permissions pour chaque utilisateur uniquement aux éléments strictement
+    nécessaires.
 
 
-![overview](ch01.1-basic-installation-zabbixserver.png){ align=left }
+![aperçu](ch01.1-basic-installation-zabbixserver.png){ align=left }
 
-_1.1 Installation Zabbix de base_
+_1.1 Installation de base de Zabbix
+en plusieurs étapes_
 
-All of these components can either be installed on a single server or
-distributed across three separate servers. The core of the system is the Zabbix
-server, often referred to as the "brain." This component is responsible for
-processing trigger calculations and sending alerts. The database serves as the
-storage for the Zabbix server's configuration and all the data it collects. The
-web server provides the user interface (front-end) for interacting with the
-system. It is important to note that the Zabbix API is part of the front-end
-component, not the Zabbix server itself.
+Tous ces composants peuvent être installés sur un seul serveur ou répartis
+sur trois serveurs distincts. Le cœur du système est le serveur Zabbix, souvent
+référencé comme le "cerveau". Ce composant est responsable des calculs de déclencheurs et de l'envoi d'alertes.
+La base de données sert de stockage pour la configuration du serveur Zabbix et toutes les données qu'il collecte.
+Le serveur web fournit l'interface utilisateur (front-end) pour interagir avec le système. Il est important de noter
+que l'API Zabbix fait partie du composant front-end, pas du serveur Zabbix lui-même.
 
-These components must function together seamlessly, as illustrated in the
-diagram above. The Zabbix server must read configurations and store monitoring
-data in the database, while the front-end needs access to read and write
-configuration data. Furthermore, the front-end must be able to check the status
-of the Zabbix server and retrieve additional necessary information to ensure
-smooth operation.
+Ces composants doivent fonctionner ensemble en parfaite harmonie, comme illustré dans le diagramme ci-dessus.
+Le serveur Zabbix doit lire les configurations et stocker les données de surveillance dans la base de données,
+tandis que le front-end a besoin d'accès pour lire et écrire des données de configuration. De plus, le front-end
+doit être en mesure de vérifier l'état du serveur Zabbix et récupérer des informations supplémentaires nécessaires
+pour assurer un fonctionnement fluide.
 
-For our setup, we will be using two virtual machines (VMs): one VM will host
-both the Zabbix server and the Zabbix web front-end, while the second VM will
-host the Zabbix database.
+Pour notre configuration, nous utiliserons deux machines virtuelles (VM) : une VM hébergera à la fois le serveur Zabbix
+et le front-end web Zabbix, tandis que la deuxième VM hébergera la base de données Zabbix.
 
 ???+ note
 
-    It is perfectly possible to install all components on one single VM or every component
-    on a separate VM.
-    The reason why we split the DB in our example is because the database will probably be
-    the first component giving you performance headaches. It is also the component
-    that needs some extra attention when we split it from the other components,
-    so for this reason we have chosen in this example to split the database 
-    from the rest of the setup.
+    Il est tout à fait possible d'installer tous les composants sur une seule VM ou chaque composant
+    sur une VM distincte.
+    La raison pour laquelle nous séparons la base de données dans notre exemple est parce que celle-ci sera probablement
+    le premier composant qui vous causera des problèmes de performance. C'est également le composant
+    qui nécessite un peu plus d'attention lorsque nous le séparons des autres composants,
+    c'est pourquoi nous avons choisi dans cet exemple de séparer la base de données
+    du reste de la configuration.
 
-We will cover the following topics:
+Nous couvrirons les sujets suivants :
 
-- Install our Database based on MariaDB.
-- Install our Database based on PostgreSQL.
-- Installing the Zabbix server.
-- Install the frontend.
-
+- Installer notre base de données basée sur MariaDB.
+- Installer notre base de données basée sur PostgreSQL.
+- Installer le serveur Zabbix.
+- Installer le front-end.

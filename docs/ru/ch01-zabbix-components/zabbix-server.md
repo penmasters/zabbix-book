@@ -6,12 +6,12 @@ description: |
     и настройку брандмауэра для разрешения входящих соединений с сервером Zabbix.
     Кроме того, он предоставляет инструкции по запуску и включению службы сервера Zabbix,
     проверке конфигурации и проверке файла журнала сервера на наличие проблем.
-tags: [начинающий]
+tags: [beginner]
 ---
 
 # Установка сервера Zabbix
 
-Теперь, когда мы добавили репозиторий Zabbix с необходимым программным обеспечением, 
+Теперь, когда мы добавили репозиторий Zabbix с необходимым программным обеспечением,
 мы готовы установить как сам сервер Zabbix, так и веб-сервер. Помните, что
 веб-сервер не обязательно должен быть установлен на том же компьютере, что и сервер Zabbix;
 они могут находиться на отдельных системах по желанию.
@@ -35,7 +35,7 @@ tags: [начинающий]
     zypper install zabbix-server-mysql
     # For PostgreSQL backend:
     zypper install zabbix-server-pgsql
-    ``` 
+    ```
 
 
     Ubuntu
@@ -366,5 +366,5 @@ tags: [начинающий]
 ## Полезные ссылки
 
 - [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
-- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](ttps://www.zabbix.com/documentation/current/en/manual/installation/requirements)
+- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements)
 - [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)

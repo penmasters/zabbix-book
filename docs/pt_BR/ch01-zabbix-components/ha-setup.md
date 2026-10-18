@@ -1,181 +1,168 @@
 ---
-descrição: |
-    Configure o Zabbix High Availability com servidores em cluster, banco de dados compartilhado e Keepalived
-    para failover VIP, garantindo monitoramento sem tempo de inatividade.
+description: |
+    Configure Zabbix High Availability com servidores em cluster, banco de dados compartilhado e Keepalived para failover do VIP—garantindo monitoramento sem interrupções.
 tags: [expert]
 ---
 
-# Configuração do HA
+# Configuração HA
 
-Nesta seção, definiremos o Zabbix em uma configuração de alta disponibilidade
-(HA). Esse recurso nativo, introduzido no Zabbix 6, é um aprimoramento crucial
-que garante o monitoramento contínuo mesmo se um servidor Zabbix falhar. Com a
-HA, quando um servidor Zabbix fica inativo, outro pode assumir o controle sem
-problemas.
+Nesta seção, configuraremos o Zabbix em uma configuração de Alta Disponibilidade (HA).
+Esta funcionalidade nativa, introduzida no Zabbix 6, é uma importante melhoria que garante a continuidade do monitoramento mesmo se um servidor Zabbix falhar. Com HA, quando um servidor Zabbix cai,
+outro pode assumir o controle de forma transparente.
 
-Para este guia, usaremos dois servidores Zabbix e um banco de dados, mas a
-configuração permite adicionar mais servidores Zabbix, se necessário.
+Para esta guia, usaremos dois servidores Zabbix e um banco de dados, mas a configuração permite
+a adição de mais servidores Zabbix se necessário.
 
-![Configuração-HA](./ha-setup/ch01.10-HA-setup.png)
+![HA-Setup](./ha-setup/ch01.10-HA-setup.png)
 
-_1.10 HA Setup_
+_1.10 Configuração HA_
 
-É importante observar que a configuração do Zabbix HA é simples, fornecendo
-redundância sem recursos complexos como balanceamento de carga. Apenas um nó
-será um nó ativo, todos os outros nós estarão em standby. Todos os servidores
-Zabbix em standby no cluster HA monitorarão o nó ativo por meio de heartbeats
-usando o banco de dados compartilhado. Não é necessário nenhum software de
-cluster adicional ou mesmo portas de firewall para o próprio servidor Zabbix. No
-entanto, para o front-end, usaremos o Keepalived para fornecer um IP virtual
-(VIP) para fins de failover.
+É importante notar que a configuração HA do Zabbix é simples, fornecendo redundância
+sem recursos complexos como balanceamento de carga. Apenas um nó será o nó ativo,
+todos os outros nós estarão em modo standby. Todos os servidores Zabbix em standby no cluster HA monitorarão o nó ativo através de batidas cardíacas usando o banco de dados compartilhado. Não é necessário
+nenhum software adicional de clustering ou até mesmo portas de firewall para o servidor
+Zabbix. No entanto, para a interface frontal, usaremos Keepalived para fornecer um
+IP Virtual (VIP) para fins de failover.
 
-Assim como em nossa configuração básica, documentaremos os principais detalhes
-dos servidores nessa configuração de HA. Abaixo está a lista de servidores e um
-local para adicionar seus respectivos endereços IP para sua conveniência:
+Assim como em nossa configuração básica, documentaremos detalhes importantes para os servidores
+nesta configuração HA. Abaixo está a lista de servidores e alguns lugares para adicionar seus
+endereços IP respectivos para sua conveniência:
 
 | Servidor          | Endereço IP |
-| ----------------- | ----------- |
-| Servidor Zabbix 1 |             |
-| Servidor Zabbix 2 |             |
-| Banco de dados    |             |
-| IP virtual        |             |
+| :-------------- | :--------- |
+| Zabbix Server 1 |            |
+| Zabbix Server 2 |            |
+| Banco de Dados   |            |
+| IP Virtual       |            |
 
-???+ nota
+???+ note
 
-    Our database (DB) in this setup is not configured for HA. Since it's not a
-    Zabbix component, you will need to implement your own solution for database
-    HA, such as a HA SAN or a database cluster setup. A DB cluster configuration
-    is out of the scope of this guide and unrelated to Zabbix, so it will not be
-    covered here.
-
----
-
-## Instalação do banco de dados
-
-Consulte o capítulo [_Zabbix components: Database_](database.md) para obter
-instruções detalhadas sobre a configuração do banco de dados. Esse capítulo
-fornece orientações passo a passo sobre a instalação de um banco de dados
-PostgreSQL ou MariaDB em um nó dedicado executando Ubuntu, SUSE ou Rocky Linux.
-As mesmas etapas de instalação se aplicam ao configurar o banco de dados para
-essa instalação.
+    Nosso banco de dados (DB) nesta configuração não está configurado para HA. Como ele não é
+    um componente do Zabbix, você precisará implementar sua própria solução para HA de banco de dados,
+    como uma SAN HA ou uma configuração de cluster de banco de dados. A configuração de cluster de banco de dados
+    está fora do escopo desta guia e não relacionada ao Zabbix, então ela não será abordada aqui.
 
 ---
 
-## Instalando o cluster no Zabbix
+## Instalando o Banco de Dados
 
-A configuração de um cluster no Zabbix envolve a configuração de vários
-servidores Zabbix para trabalharem juntos, proporcionando alta disponibilidade.
-Embora o processo seja semelhante à configuração de um único servidor Zabbix, há
-etapas adicionais de configuração necessárias para ativar a HA (High
-Availability).
-
-Comece preparando os sistemas e instalando o Zabbix Server em todos os sistemas,
-seguindo as etapas das seções [_Preparando o servidor para o
-Zabbix_](preparation.md) e [_Instalando o Zabbix Server_](zabbix-server.md) do
-capítulo _Componentes do Zabbix_.
-
-Observe que:
-
-- você precisa ignorar a etapa de população do banco de dados em todos os
-  servidores Zabbix, exceto no primeiro, pois o banco de dados é compartilhado
-  entre todos os servidores Zabbix.
-- você precisa ignorar a ativação e a inicialização do serviço zabbix-server em
-  todos os servidores, pois o iniciaremos mais tarde, depois que a configuração
-  de HA estiver concluída.
-- certifique-se de que todos os servidores Zabbix possam se conectar ao servidor
-  de banco de dados. Por exemplo, se você estiver usando o PostgreSQL,
-  certifique-se de que o arquivo `pg_hba.conf` esteja configurado para permitir
-  conexões de todos os servidores Zabbix.
-- todos os servidores Zabbix devem usar o mesmo nome de banco de dados, usuário
-  e senha para se conectar ao banco de dados.
-- todos os servidores Zabbix devem ter a mesma versão principal.
-
-Quando todos os servidores Zabbix estiverem instalados e configurados para
-acessar o banco de dados, poderemos prosseguir com a configuração do HA.
+Consulte a seção [_Componentes do Zabbix: Banco de Dados_](database.md) para instruções detalhadas
+sobre como configurar o banco de dados. Essa seção fornece orientações passo a passo sobre como instalar um banco de dados PostgreSQL ou MariaDB em um nó dedicado executando
+Ubuntu, SUSE ou Rocky Linux. Os mesmos procedimentos de instalação aplicam-se quando configurando o
+banco de dados para esta configuração.
 
 ---
 
-### Configuração do Zabbix Server 1
+## Instalando o cluster Zabbix
 
-Adicione um novo arquivo de configuração para a configuração de HA no primeiro
-servidor Zabbix:
+Configurar um cluster Zabbix envolve configurar vários servidores Zabbix para trabalhar juntos,
+providenciando alta disponibilidade. Embora o processo seja semelhante à configuração de um único servidor Zabbix, existem etapas adicionais de configuração necessárias para
+ativar HA (Alta Disponibilidade).
 
-!!! info "Adicionar configuração do servidor Zabbix de alta disponibilidade"
+Comece preparando os sistemas e instalando o servidor Zabbix em todos os sistemas conforme descrito nas seções [_Preparando o servidor para o Zabbix_](preparation.md) e
+[_Instalando o servidor Zabbix_](zabbix-server.md) do capítulo _Componentes do Zabbix_.
+
+Tenha em mente que:
+
+- você precisa pular a etapa de população do banco de dados em todos os servidores, exceto no primeiro servidor Zabbix, pois
+  o banco de dados é compartilhado entre todos os servidores Zabbix.
+- você precisa pular a ativação e inicialização do serviço zabbix-server em todos os servidores,
+  como iniciaremos mais tarde após a configuração HA ser concluída.
+- certifique-se de que todos os servidores Zabbix podem se conectar ao servidor de banco de dados.
+  Por exemplo, se você estiver usando PostgreSQL, assegure-se de que o arquivo `pg_hba.conf`
+  esteja configurado para permitir conexões de todos os servidores Zabbix.
+- todos os servidores Zabbix devem usar o mesmo nome do banco de dados, usuário e senha
+  para se conectar ao banco de dados.
+- todos os servidores Zabbix devem ser da mesma versão principal.
+
+Quando todos os servidores Zabbix estiverem instalados e configurados para acessar o servidor de banco de dados,
+podemos prosseguir com a configuração HA.
+
+---
+
+### Configurando o Servidor Zabbix 1
+
+Adicione um novo arquivo de configuração para a configuração HA no primeiro servidor Zabbix:
+
+!!! info "Adicionar configuração do servidor Zabbix HA"
 
     ``` bash
     sudo vi /etc/zabbix/zabbix_server.d/high-availability.conf
     ```
 
-    Insert the following line into the configuration file to enable HA mode.
+
+    Insira a seguinte linha no arquivo de configuração para habilitar o modo HA.
 
     ```ini
     HANodeName=zabbix1  # or choose a name you prefer
     ```
 
-    Specify the frontend node address for failover scenarios:
+
+    Especifique o endereço do nó frontend para cenários de failover:
 
     ```ini
     NodeAddress=<Zabbix server 1 ip>:10051
     ```
 
-???+ Aviso
 
-    The `NodeAddress` must match the IP or FQDN name of the Zabbix server node.
-    Without this parameter the Zabbix front-end is unable to connect to the active
-    node. The result will be that the frontend is unable to display the status
-    the queue and other information.
+???+ warning
+
+    O `NodeAddress` deve corresponder ao IP ou nome FQDN do nó servidor Zabbix.
+    Sem este parâmetro, o front-end Zabbix não será capaz de se conectar ao nó ativo.
+    Como resultado, o front-end não poderá exibir o status da fila e outras informações.
 
 
 ---
 
-### Configuração do Zabbix Server 2
+### Configurando o Servidor Zabbix 2
 
-Repita as etapas de configuração para o segundo servidor Zabbix. Ajuste o
-`HANodeName` e o `NodeAddress` conforme necessário para esse servidor.
+Repita as etapas de configuração para o segundo servidor Zabbix. Ajuste os `HANodeName`
+e `NodeAddress` conforme necessário para este servidor.
 
-???+ exemplo "Configuração do Zabbix Server 2 HA high-availability.conf"
+???+ example "Configuração HA do servidor Zabbix 2 high-availability.conf"
 
     ```ini
     HANodeName=zabbix2  # or choose a name you prefer
     NodeAddress=<Zabbix server 2 ip>:10051
     ```
 
-Você pode adicionar mais servidores repetindo as mesmas etapas, assegurando que
-cada servidor tenha um único `HANodeName` e o conjunto correto `NodeAddress`.
+
+Você pode adicionar mais servidores repetindo as mesmas etapas, garantindo que cada servidor tenha um `HANodeName` único
+e o correto `NodeAddress` configurado.
 
 ---
 
-### Iniciando o Zabbix Server
+### Iniciando o Servidor Zabbix
 
-Depois de configurar os dois servidores, ative e inicie o serviço zabbix-server
-em cada um deles:
+Após a configuração de ambos os servidores, habilite e inicie o serviço zabbix-server em cada um:
 
-!!! info "ativar e iniciar o serviço zabbix-server"
+!!! info "Habilitar e iniciar o serviço zabbix-server"
 
     ```
     sudo systemctl enable zabbix-server --now
     ```
 
+
 ---
 
-### Verificação da configuração
+### Verificando a Configuração
 
-Verifique os arquivos de registro em ambos os servidores para garantir que eles
-tenham sido iniciados corretamente e estejam operando em seus respectivos modos
-HA.
+Verifique os arquivos de log em ambos os servidores para garantir que eles tenham iniciado corretamente e
+estejam operando nos respectivos modos HA.
 
 No primeiro servidor:
 
-!!! info "verifique se há mensagens de HA nos registros"
+!!! info "Verificar logs por mensagens HA"
 
     ``` bash
     sudo grep HA /var/log/zabbix/zabbix_server.log
     ```
 
-Nos logs do sistema, observe as seguintes entradas, indicando a inicialização do
-gerenciador de alta disponibilidade (HA):
 
-???+ exemplo "Mensagens de registro de HA no nó ativo"
+Nos logs do sistema, você deve observar as seguintes entradas, indicando a inicialização
+do Gerenciador de Alta Disponibilidade (HA):
+
+???+ example "Mensagens de log HA no nó ativo"
 
     ```shell-session
     localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
@@ -183,15 +170,14 @@ gerenciador de alta disponibilidade (HA):
     22597:20240309:155230.362 HA manager started in active mode
     ```
 
-Essas mensagens de registro confirmam que o processo do gerenciador de HA foi
-iniciado e assumiu a função ativa. Isso significa que a instância do Zabbix é
-agora o nó primário no cluster de HA, lidando com todas as operações de
-monitoramento. Se ocorrer um evento de failover, outro nó de espera assumirá o
-controle com base na estratégia de HA configurada.
 
-Executar o mesmo comando no segundo servidor (e em quaisquer nós adicionais):
+Essas mensagens de log confirmam que o processo do gerenciador HA foi iniciado e assumiu
+o papel ativo. Isso significa que a instância Zabbix agora é o nó principal no cluster HA, lidando com todas as operações de monitoramento. Se um evento de failover ocorrer,
+outro nó standby assumirá baseado na estratégia HA configurada.
 
-???+ exemplo "Mensagens de registro de HA no nó em espera"
+Executando o mesmo comando no segundo servidor (e em quaisquer nós adicionais):
+
+???+ example "Mensagens de log HA no nó standby"
 
     ```shell-session
     localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
@@ -199,107 +185,95 @@ Executar o mesmo comando no segundo servidor (e em quaisquer nós adicionais):
     22304:20240309:155331.174 HA manager started in standby mode
     ```
 
-Essas mensagens confirmam que o processo do gerenciador de HA foi invocado e
-iniciado com sucesso no modo de espera. Isso sugere que o nó está operacional,
-mas não está atuando no momento como a instância de HA ativa, aguardando outras
-transições de estado com base na estratégia de HA configurada.
 
-Nesta etapa, seu cluster do Zabbix está configurado com sucesso para alta
-disponibilidade (HA). Os registros do sistema confirmam que o gerenciador de HA
-foi inicializado e está sendo executado no modo de espera, indicando que os
-mecanismos de failover estão em vigor. Essa configuração garante o monitoramento
-ininterrupto, mesmo no caso de falha do servidor, permitindo transições
-automáticas de função com base na configuração de HA.
+Essas mensagens confirmam que o processo do gerenciador HA foi invocado e
+lançado com sucesso no modo standby. Isso sugere que o nó está operacional,
+mas não atuando como a instância HA ativa, aguardando transições de estado adicionais
+baseadas na estratégia HA configurada.
+
+Nesta etapa, seu cluster Zabbix foi bem configurado para Alta Disponibilidade (HA). Os logs do sistema confirmam que o gerenciador HA foi inicializado e está em execução no modo standby,
+indicando que as mecânicas de failover estão em vigor. Esta configuração garante monitoramento ininterrupto, mesmo em caso de falha do servidor, permitindo transições automáticas de papel
+baseadas na configuração HA.
 
 ---
 
-## Instalando o front-end
+## Instalando o frontend
 
-Antes de prosseguir com a instalação e a configuração do servidor Web, é
-essencial instalar algum tipo de software de clustering ou usar um balanceador
-de carga na frente dos front-ends do Zabbix para poder ter um IP virtual (VIP)
-compartilhado.
+Antes de prosseguir com a instalação e configuração do servidor web, é essencial instalar algum tipo de software de clustering ou usar um balanceador de carga
+na frente dos frontends Zabbix para poder ter um IP Virtual compartilhado (VIP).
 
-Observação Há várias opções disponíveis para software de clustering e
-balanceadores de carga, incluindo Pacemaker, Corosync, HAProxy, F5 Big-Ip,
-Citrix NetScaler e vários balanceadores de carga em nuvem. Cada uma dessas
-soluções oferece uma gama de recursos e capacidades que vão além do simples
-fornecimento de um VIP para fins de failover. Mas, para os fins deste guia,
-vamos nos concentrar em uma abordagem minimalista para obter alta
-disponibilidade para o frontend do Zabbix usando o Keepalived.
+???+ note
+    Existem várias opções disponíveis para software de clustering e balanceadores de carga,
+    incluindo Pacemaker, Corosync, HAProxy, F5 Big-Ip, Citrix NetScaler e vários balanceadores de carga em nuvem.
+    Cada uma dessas soluções oferece um conjunto variado de recursos e capacidades além de fornecer apenas um VIP para failover.
+    Mas para o propósito desta guia, nos concentraremos em uma abordagem minimalista para alcançar alta disponibilidade para o frontend Zabbix usando Keepalived.
 
-O Keepalived é como um auxiliar que garante que um computador assuma o controle
-se outro parar de funcionar. Ele fornece a eles um endereço IP mágico
-compartilhado para que os usuários não percebam quando um servidor falha. Se o
-principal falhar, o backup entra em ação imediatamente, assumindo o controle do
-IP.
+Keepalived é como um auxiliar que garante que um computador assuma se outro parar de funcionar. Ele dá a eles um IP mágico compartilhado
+para que os usuários não percebam quando um servidor falha. Se o principal falhar, o backup entra em ação imediatamente ao assumir o IP.
 
-O Keepalived é um tipo mínimo de software de clustering que permite o uso de um
-(VIP) para serviços de front-end, garantindo um failover perfeito e a
-continuidade do serviço.
+Keepalived é um tipo minimalista de software de clustering que permite o uso de
+um (VIP) para serviços front-end, garantindo failover transparente e continuidade do serviço.
 
-!!! aviso "Alta disponibilidade no SUSE Linux Enterprise Server (SLES)"
+!!! warning "Alta Disponibilidade no SUSE Linux Enterprise Server (SLES)"
 
-    On SUSE Linux Enterprise Server (SLES), Keepalived is not included in the
-    default subscription hence unavailable in the default repositories.
+    No SUSE Linux Enterprise Server (SLES), Keepalived não está incluído na
+    assinatura padrão, portanto, não disponível nos repositórios padrão.
 
-    To be able to install and use Keepalived on SLES in a supported way, you
-    will need to obtain the additional 'SUSE Linux Enterprise High Availability
-    Extension' subscription (SLE HA). This subscription provides access to the necessary
-    packages and updates required for Keepalived and other high availability
-    components.
-    After obtaining the subscription, you can enable the appropriate
-    repositories and proceed with the installation of Keepalived as outlined
-    in this guide:
+    Para ser capaz de instalar e usar o Keepalived no SLES de forma suportada,
+    você precisará obter a assinatura adicional 'SUSE Linux Enterprise High Availability
+    Extension' (SLE HA). Esta assinatura fornece acesso aos pacotes necessários e atualizações
+    para Keepalived e outros componentes de alta disponibilidade.
+    Após obter a assinatura, você pode habilitar os repositórios apropriados e prosseguir com a instalação do Keepalived conforme descrito nesta guia:
 
     ```bash
     SUSEConnect -p sle-ha/16/x86_64 -r ADDITIONAL_REGCODE
     ```
-    Where `ADDITIONAL_REGCODE` is the registration code provided with your
-    'SUSE Linux Enterprise High Availability Extension' subscription.
+
+    Onde `ADDITIONAL_REGCODE` é o código de registro fornecido com sua
+    'SUSE Linux Enterprise High Availability Extension' assinatura.
 
 ---
 
-### Configuração do keepalived
+### Configurando keepalived
 
-Em todos os servidores que hospedarão o Zabbix fronted, temos que instalar o
-keepalived. Como mencionado anteriormente, isso pode ser feito em servidores
-separados para dividir as funções de servidor e front-end, mas neste guia
-instalaremos o keepalived em ambos os servidores Zabbix para garantir a alta
-disponibilidade do front-end e do servidor.
+Em todos os servidores que hospedarão o frontend Zabbix, precisamos instalar o Keepalived.
+Como mencionado anteriormente, isso pode ser feito em servidores separados para dividir as funções do servidor
+e do front-end, mas nesta guia instalaremos o Keepalived nos dois servidores Zabbix para garantir alta disponibilidade tanto do frontend quanto do servidor.
 
-!!! info "instalar keepalived"
+!!! info "Instalar keepalived"
 
     Red Hat
     ```bash
     dnf install keepalived
     ```
 
+
     SUSE
     ```bash
     zypper install keepalived
     ```
+
 
     Ubuntu
     ```bash
     sudo apt install keepalived
     ```
 
-Em seguida, precisamos modificar a configuração do Keepalived em todos os
-servidores. Embora as configurações sejam semelhantes, cada servidor requer
-pequenos ajustes. Começaremos com o Servidor 1. Para editar o arquivo de
-configuração do Keepalived, use o seguinte comando:
 
-!!! info "editar a configuração do keepalived"
+Em seguida, precisamos modificar a configuração do Keepalived em todos os servidores. Embora as
+configurações sejam semelhantes, cada servidor requer ajustes sutis. Começaremos com o Servidor 1. Para editar o arquivo de configuração do Keepalived, use o seguinte comando:
+
+!!! info "Editar a configuração keepalived"
 
     ```bash
     sudo vi /etc/keepalived/keepalived.conf
     ```
 
-Se o arquivo contiver algum conteúdo existente, ele deverá ser limpo e
-substituído pelas seguintes linhas:
 
-!!!info ""
+Se o arquivo contiver conteúdo existente, ele deve ser limpo e substituído
+pelos seguintes parágrafos:
+
+!!! info ""
 
     ```
     vrrp_track_process track_nginx {
@@ -326,16 +300,13 @@ substituído pelas seguintes linhas:
     }
     ```
 
-???+ Aviso
 
-    Replace `enp0s1` with the interface name of your machine and replace the `password`
-    with something secure. For the `virtual_ipaddress` use a free IP from your network.
-    This will be used as our VIP.
+???+ warning
 
-Agora podemos fazer a mesma modificação em nosso segundo servidor Zabbix ou em
-qualquer outro subsequente. Exclua novamente tudo o que estiver no arquivo
-`/etc/keepalived/keepalived.conf` como fizemos anteriormente e substitua-o pelas
-seguintes linhas:
+    Substitua `enp0s1` pelo nome da interface de sua máquina e substitua o `password`
+    por algo seguro. Para o `virtual_ipaddress`, use um IP livre da sua rede.
+    Este será usado como nosso VIP.Nós podemos agora fazer a mesma modificação no nosso segundo ou qualquer servidor Zabbix subsequente.
+Apague novamente tudo no arquivo `/etc/keepalived/keepalived.conf` como fizemos antes e substitua por linhas seguintes:
 
 !!!info ""
 
@@ -364,16 +335,12 @@ seguintes linhas:
     }
     ```
 
-Assim como em nosso primeiro servidor Zabbix, substitua `enp0s1` pelo nome da
-interface de sua máquina e substitua `password` por sua senha e preencha
-`virtual_ipaddress` como feito anteriormente.
 
-Certifique-se de que o firewall permita o tráfego Keepalived em todos os
-servidores. O protocolo VRRP é diferente do protocolo IP padrão e usa o endereço
-multicast `224.0.0.18`. Portanto, precisamos permitir explicitamente esse
-tráfego pelo firewall. Execute os seguintes comandos em todos os servidores:
+Assim como com o 1º servidor Zabbix, substitua `enp0s1` pelo nome da interface da sua máquina e substitua o `password` pela sua senha e preencha o `virtual_ipaddress` conforme feito antes.
 
-!!! info "Permitir tráfego keepalived através do firewall"
+Certifique-se de que o firewall permite o tráfego do Keepalived em todos os servidores. O protocolo VRRP é diferente do padrão IP e usa o endereço multicast `224.0.0.18`. Portanto, precisamos explicitamente permitir esse tráfego através do firewall. Execute os seguintes comandos em todos os servidores:
+
+!!! info "Permita o tráfego do keepalived pelo firewall"
 
     Red Hat / SUSE
     ```yaml
@@ -381,48 +348,40 @@ tráfego pelo firewall. Execute os seguintes comandos em todos os servidores:
     firewall-cmd --reload
     ```
 
+
     Ubuntu
     ```yaml
     sudo ufw allow to 224.0.0.18 comment ‘keepalived multicast’
     ```
 
-Isso encerra a configuração do keepalived. Agora podemos continuar adaptando o
-frontend.
+
+Isso finaliza a configuração do Keepalived. Podemos agora continuar adaptando o frontend.
 
 ---
 
-### Instalar e configurar o front-end
+### Instalar e configurar o frontend
 
-Instale o front-end do Zabbix em todos os servidores Zabbix, parte do cluster,
-seguindo as etapas descritas na seção [_Instalando o
-front-end_](zabbix-frontend.md).
+Instale o frontend Zabbix em todos os servidores Zabbix, parte da cluster seguindo as etapas descritas na seção [_Installing the frontend_](zabbix-frontend.md).
 
-???+ Aviso
+???+ warning
 
-    Ubuntu users need to use the VIP in the setup of Nginx, together with the local
-    IP in the listen directive of the config.
+    Usuários do Ubuntu precisam usar o VIP na configuração do Nginx, junto com o IP local no diretivo listen da configuração.
 
-???+ nota
+???+ note
 
-    Don't forget to configure both front-ends. Also this is a new setup. Keep in
-    mind that with an existing setup we need to comment out the lines  `$ZBX_SERVER`
-    and `$ZBX_SERVER_PORT` in `/etc/zabbix/web/zabbix.conf.php`. Our frontend 
-    will check what node is active by reading the node table in the database.
+    Não se esqueça de configurar ambos os front-ends. Além disso, esta é uma nova configuração. Lembre-se que em uma configuração existente precisamos comentar as linhas `$ZBX_SERVER` e `$ZBX_SERVER_PORT` no arquivo `/etc/zabbix/web/zabbix.conf.php`. Nosso frontend verificará qual nó está ativo lendo a tabela de nós no banco de dados.
 
+Você pode verificar qual nó está ativo consultando a tabela `ha_node` no banco de dados Zabbix. Esta tabela contém informações sobre todos os nós na cluster HA, incluindo seu status. Para verificar o status dos nós, você pode executar a seguinte consulta SQL:
 
-Você pode verificar qual nó está ativo consultando a tabela `ha_node` no banco
-de dados do Zabbix. Essa tabela contém informações sobre todos os nós do cluster
-de HA, inclusive o status deles. Para verificar o status dos nós, você pode
-executar a seguinte consulta SQL:
-
-!!!info ""
+!!! info ""
 
     ```sql
     select * from ha_node;
 
     ```
 
-Exemplo "Verifique a tabela ha_node em um banco de dados PostgreSQL"
+
+???+ example "Verifique a tabela ha_node em um banco de dados PostgreSQL"
 
     ```psql
     zabbix=> select * from ha_node;
@@ -433,129 +392,101 @@ Exemplo "Verifique a tabela ha_node em um banco de dados PostgreSQL"
     (2 rows)
     ```
 
-Nesse caso, o nó `zabbix2` é identificado como o nó ativo, conforme indicado por
-seu valor de status `3`, que designa um estado ativo. Os valores de status
-possíveis são os seguintes:
 
-- `0` - Vários nós podem permanecer em modo de espera.
-- `1` - Um nó detectado anteriormente foi desligado.
-- `2` - Um nó foi detectado anteriormente, mas ficou indisponível sem um
-  desligamento adequado.
-- `3` - O nó está ativo no momento.
+Neste caso, o nó `zabbix2` é identificado como o nó ativo, conforme indicado pelo seu valor de status `3`, que designa um estado ativo. Os possíveis valores de status são os seguintes:
 
-Essa classificação permite o monitoramento eficaz e o gerenciamento de estado
-dentro do cluster.
+- `0` – Múltiplos nós podem permanecer em modo standby.
+- `1` – Um nó anteriormente detectado foi desligado.
+- `2` – Um nó foi anteriormente detectado, mas ficou indisponível sem um desligamento adequado.
+- `3` – O nó está atualmente ativo.
 
-Depois que o front-end estiver instalado em todos os servidores, precisaremos
-iniciar e ativar o serviço Keepalived para garantir que ele seja iniciado
-automaticamente na inicialização e comece a gerenciar o VIP:
+Esta classificação permite a monitoração e gerenciamento de estado efetivos dentro da cluster.
 
-!!! info "iniciar e ativar o keepalived"
+Uma vez que o frontend é instalado em todos os servidores, precisamos iniciar e habilitar o serviço Keepalived para garantir que ele inicie automaticamente no boot e comece a gerenciar o VIP:
+
+!!! info "Iniciar e habilitar keepalived"
 
     ```yaml
     sudo systemctl enable keepalived nginx --now
     ```
 
 
+
 ---
 
 ### Verificar o funcionamento correto
 
-Para verificar se a configuração está funcionando corretamente, acesse o
-servidor Zabbix usando o IP virtual (VIP). Navegue até `Reports` | `System Information` (`Relatórios` | `Informações do sistema`) no menu. Na parte inferior da
-página, você deverá ver uma lista de servidores, com pelo menos um marcado como
-ativo. O número de servidores exibidos dependerá do total configurado em sua
-configuração de HA.
+Para verificar se a configuração está funcionando corretamente, acesse seu servidor Zabbix usando o IP Virtual (VIP). Navegue até `Reports` | `System Information` no menu. No final da página, você deve ver uma lista de servidores, com pelo menos um marcado como ativo. O número de servidores exibidos dependerá do total configurado em sua configuração HA.
 
-![1º frontend ativo](ha-setup/ch01.11-HA-check1.png)
+![1ª frente ativa](ha-setup/ch01.11-HA-check1.png)
 
-_1.11 verify HA_
+_1.11 verificar
+HA_
 
-Desligue ou reinicie o servidor de front-end ativo e observe que o `Zabbix
-front-end ` permanece acessível. Ao recarregar a página, você notará que o outro
-servidor de front-end `` assumiu o papel de instância ativa, garantindo um
-failover quase perfeito e alta disponibilidade.
+Desligue ou reinicie o servidor frontend ativo e observe que o Zabbix frontend permanece acessível. Ao recarregar a página, você notará que outro frontend tomou conta como instância ativa, garantindo um failover quase imperceptível e alta disponibilidade.
 
-![2st ativar frontend](ha-setup/ch01.12-HA-check2.png)
+![2ª frente ativa](ha-setup/ch01.12-HA-check2.png)
 
-_1.12 verify HA_
+_1.12 verificar
+HA_
 
-Além de monitorar o status dos nós de HA, o Zabbix fornece vários comandos de
-tempo de execução que permitem aos administradores gerenciar as configurações de
-failover e remover dinamicamente os nós inativos.
+Além de monitorar o status dos nós HA, o Zabbix fornece vários comandos em tempo real que permitem aos administradores gerenciar configurações de failover e remover dinamicamente nós inativos.
 
 Um desses comandos é:
 
-!!!info ""
+!!! info ""
 
     ```bash
     zabbix_server -R ha_set_failover_delay=10m
     ```
 
-Esse comando ajusta o atraso do failover, que define quanto tempo o Zabbix
-espera antes de promover um nó em espera para o status ativo. O atraso pode ser
-definido em um intervalo de **10 segundos** a **15 minutos**.
 
-Para remover um nó que seja **stopped** ou **unreachable**, o seguinte comando
-de tempo de execução deve ser usado:
+Este comando ajusta o atraso do failover, que define quanto tempo o Zabbix espera antes de promover um nó standby para status ativo. O atraso pode ser configurado dentro de uma faixa de **10 segundos** a **15 minutos**.
 
-!!!info ""
+Para remover um nó que está ou seja **parado** ou **inacessível**, deve-se usar o seguinte comando em tempo real:
+
+!!! info ""
 
     ```bash
     sudo zabbix_server -R ha_remove_node=`zabbix1`
     ```
 
-A execução desse comando remove o nó do cluster de HA. Após a remoção
-bem-sucedida, a saída confirma a ação:
 
-!!! exemplo "Remoção de um nó"
+A execução deste comando remove o nó da cluster HA. Após a remoção bem-sucedida, a saída confirma a ação:
+
+!!! example "Remoção de um nó"
 
     ```shell-session
     localhost:~ # zabbix_server -R ha_remove_node=`zabbix1`
     Removed node "zabbix1" with ID "cm8agwr2b0001h6kzzsv19ng6"
     ```
 
-Se o nó removido ficar disponível novamente, ele poderá ser adicionado
-automaticamente quando se reconectar ao cluster. Esses comandos de tempo de
-execução oferecem flexibilidade para gerenciar a alta disponibilidade no Zabbix
-sem exigir a reinicialização completa do processo `zabbix_server`.
+
+Se o nó removido se tornar disponível novamente, ele pode ser adicionado automaticamente quando reconectar à cluster. Esses comandos em tempo real fornecem flexibilidade para gerenciar alta disponibilidade no Zabbix sem exigir um reinício completo do processo `zabbix_server`.
 
 ---
 
 ## Conclusão
 
-Neste capítulo, configuramos com sucesso um ambiente Zabbix de alta
-disponibilidade (HA), configurando o servidor Zabbix e o frontend para
-redundância. Primeiro, estabelecemos a HA para o servidor Zabbix, garantindo que
-os serviços de monitoramento permaneçam disponíveis mesmo em caso de falha. Em
-seguida, nos concentramos no front-end, implementando um IP virtual (VIP) com o
-Keepalived para fornecer failover perfeito e acessibilidade contínua.
+Nesta seção, configuramos com sucesso um ambiente de alta disponibilidade (HA) Zabbix ao configurar tanto o servidor quanto o frontend Zabbix para redundância. Primeiro, estabelecemos HA para o servidor Zabbix, garantindo que os serviços de monitoramento permaneçam disponíveis mesmo em caso de falha. Em seguida, focamos no frontend, implementando um IP Virtual (VIP) com Keepalived para fornecer failover sem interrupção e acesso contínuo.
 
-Além disso, configuramos o firewall para permitir o tráfego do Keepalived e
-garantimos que o serviço seja iniciado automaticamente após uma reinicialização.
-Com essa configuração, o front-end do Zabbix pode alternar dinamicamente entre
-os servidores, minimizando o tempo de inatividade e aumentando a confiabilidade.
+Além disso, configuramos o firewall para permitir o tráfego do Keepalived e garantimos que o serviço inicie automaticamente após uma reinicialização. Com essa configuração, o frontend Zabbix pode alternar dinamicamente entre servidores, minimizando o tempo de inatividade e melhorando a confiabilidade.
 
-Embora a HA do banco de dados seja uma consideração importante, ela está fora do
-escopo desta configuração. No entanto, essa base fornece um ponto de partida
-robusto para a criação de uma infraestrutura de monitoramento resiliente que
-pode ser aprimorada conforme necessário.
+Embora a alta disponibilidade do banco de dados seja uma consideração importante, ela está fora do escopo desta configuração. No entanto, essa base fornece um ponto de partida robusto para construir uma infraestrutura de monitoramento resiliente que pode ser aprimorada conforme necessário.
 
 ---
 
 ## Perguntas
 
-1. O que é o Zabbix High Availability (HA) e por que ele é importante?
-2. Como o Zabbix determina qual nó está ativo em uma configuração de HA?
-3. Vários nós do Zabbix podem estar ativos simultaneamente em um cluster HA? Por
-   que sim ou por que não?
-4. Que arquivo(s) de configuração é(são) necessário(s) para ativar o HA no
-   Zabbix?
+1. O que é Zabbix High Availability (HA) e por que é importante?
+2. Como o Zabbix determina qual nó está ativo em uma configuração HA?
+3. É possível ter múltiplos nós do Zabbix simultaneamente ativos em um cluster HA? Por quê ou por que não?
+4. Quais arquivos de configuração são necessários para habilitar HA no Zabbix?
 
 ---
 
-## URLs úteis
+## URLs Úteis
 
 - <https://www.redhat.com/sysadmin/advanced-keepalived>
 - <https://keepalived.readthedocs.io/en/latest/introduction.html>
-- <https://www.zabbix.com/documentation/7.2/en/manual/concepts/server/ha>
+- <https://www.zabbix.com/documentation/current/en/manual/concepts/server/ha>

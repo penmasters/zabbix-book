@@ -1,81 +1,81 @@
 ---
 description: |
-    This section from The Zabbix Book titled "Installing a MariaDB Database"
-    guides you through installing MariaDB as the database backend for Zabbix.
-    It covers two installation methods: using OS vendor-provided packages or the
-    official MariaDB repositories. The section includes steps to start and 
-    secure the MariaDB server, create a Zabbix database with appropriate users,
-    and configure firewall rules if necessary. 
+    Cette section du livre The Zabbix Book intitulée "Installation d'une base de données MariaDB"
+    vous guide à travers l'installation de MariaDB en tant que backend de base de données pour Zabbix.
+    Elle couvre deux méthodes d'installation : l'utilisation des paquets fournis par le vendeur
+    d'OS ou les dépôts officiels MariaDB. La section comprend les étapes pour démarrer et sécuriser
+    le serveur MariaDB, créer une base de données Zabbix avec des utilisateurs appropriés,
+    et configurer les règles du pare-feu si nécessaire.
 tags: [beginner]
 ---
 
 # Installation d'une base de données MariaDB
 
-Dans cette section, nous allons installer les paquets MariaDB serveur et client.
-Cela fournira les composants nécessaires pour exécuter et gérer MariaDB en tant
-que base de données Zabbix.
+Dans cette section, nous allons installer les paquets server et client MariaDB. Cela vous
+permettra d'exécuter et de gérer MariaDB comme backend de base de données pour Zabbix.
 
-Si vous préférez utiliser PostgreSQL comme base de données, vous pouvez sauter
-cette section et passer à la section [_Installation de la base de données
-PostgreSQL_](postgresql.md).
+Si vous préférez utiliser PostgreSQL en tant que backend de base de données,
+vous pouvez sauter cette section et passer à la section [_Installation de la base de données PostgreSQL_](postgresql.md).
 
-???+ tip "MySQL/Percona" Si vous préférez utiliser MySQL ou Percona au lieu de
-MariaDB, les étapes d'installation et de configuration sont très similaires. En
-général, vous remplacerez `mariadb` par `mysql` dans les noms de paquets et les
-commandes.
+???+ tip "MySQL/Percona"
+    Si vous préférez utiliser MySQL ou Percona au lieu de MariaDB, les étapes
+    d'installation et de configuration sont très similaires. Généralement, vous remplacerez
+    `mariadb` par `mysql` dans les noms des paquets et commandes.
 
-## Installer le serveur et le client MariaDB à partir des paquets fournis par l'éditeur du système d'exploitation
+## Installation du serveur MariaDB et du client à partir de paquets fournis par le vendeur d'OS
 
-Pour installer le serveur et le client MariaDB par défaut de la distribution,
-exécutez la commande suivante :
+Pour installer la version par défaut du distributeur MariaDB server et client, exécutez
+la commande suivante :
 
-!!! info "Installer la version de distribution de Mariadb"
+!!! info "Installation de la version distribuée de Mariadb"
 
     Red Hat
     ```bash
     dnf install mariadb-server
     ```
 
+
     SUSE
     ``` bash
     zypper install mariadb mariadb-client
     ```
+
 
     Ubuntu
     ```bash
     sudo apt install mariadb-server
     ```
 
-Cette commande télécharge et installe les paquets serveur et client, ce qui vous
-permet de configurer et d'interagir avec votre base de données MariaDB. Une fois
-l'installation terminée, vous pouvez passer à la section [_Démarrer la base de
-données MariaDB_](#starting-the-mariadb-database).
+
+Cette commande téléchargera et installera les paquets serveur et client, vous permettant de configurer,
+gérer et interagir avec votre base de données MariaDB. Une fois l'installation terminée, vous pouvez passer à la section [_Démarrage de la base de données MariaDB_](#démarrage-de-la-base-de-données-mariadb).
 
 ---
 
-## Installer le serveur et le client MariaDB à partir des dépôts officiels de MariaDB
+## Installation du serveur MariaDB et du client à partir des dépôts officiels MariaDB
 
-If you prefer to install MariaDB from the official MariaDB repositories instead
-of the OS vendor-provided packages, the first step is to add the MariaDB
-repository to your system.
+Si vous préférez installer MariaDB à partir des dépôts officiels MariaDB au lieu
+des paquets fournis par le vendeur d'OS, la première étape consiste à ajouter le dépôt MariaDB
+à votre système.
 
 ---
 
-### Adding the MariaDB Repository
-To create the MariaDB repository file, execute the following command in your
-terminal:
+### Ajout du dépôt MariaDB
+Pour créer le fichier de dépôt MariaDB, exécutez la commande suivante dans votre terminal :
 
-!!! info "Define the MariaDB repository"
+!!! info "Définition du dépôt MariaDB"
 
     Red Hat
     ``` bash
     vi /etc/yum.repos.d/mariadb.repo
     ```
 
+
     SUSE
     ``` bash
     sudo vi /etc/zypp/repos.d/mariadb.repo
     ```
+
 
     Ubuntu
     ``` bash
@@ -86,16 +86,15 @@ terminal:
     sudo vi /etc/apt/sources.list.d/mariadb.sources
     ```
 
-This will open a text editor where you can input the repository configuration
-details. Once the repository is configured, you can proceed with the
-installation of MariaDB using your package manager.
 
-The latest config can be found here:
-[https://mariadb.org/download/?t=repo-config](https://mariadb.org/download/?t=repo-config)
+Cela ouvrira un éditeur de texte où vous pouvez entrer les détails de configuration du dépôt.
+Une fois le dépôt configuré, vous pouvez procéder à l'installation de MariaDB en utilisant votre gestionnaire de paquets.
 
-Here's an example configuration for MariaDB 11.4 repositories:
+La dernière configuration peut être trouvée ici : [https://mariadb.org/download/?t=repo-config](https://mariadb.org/download/?t=repo-config)
 
-!!! example "Mariadb repository configuration"
+Voici un exemple de configuration pour les dépôts MariaDB 11.4 :
+
+!!! example "Configuration du dépôt MariaDB"
 
     Red Hat
     ```ini
@@ -110,6 +109,7 @@ Here's an example configuration for MariaDB 11.4 repositories:
     gpgkey = https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
     gpgcheck = 1
     ```
+
 
     SUSE
     ```ini
@@ -126,6 +126,7 @@ Here's an example configuration for MariaDB 11.4 repositories:
     gpgcheck = 1
     ```
 
+
     Ubuntu
     ```  yaml
     # MariaDB 11.4 repository list - created 2025-02-21 11:42 UTC
@@ -140,26 +141,25 @@ Here's an example configuration for MariaDB 11.4 repositories:
     Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
     ```
 
-After saving the file, ensure that everything is properly set up and that your
-preferred MariaDB version is compatible with your Zabbix version to avoid
-potential integration issues.
+
+Après avoir enregistré le fichier, assurez-vous que tout est correctement configuré et que votre version préférée de MariaDB est compatible avec la version Zabbix pour éviter les problèmes d'intégration potentiels.
 
 ---
 
-### Installing MariaDB Server and Client
+### Installation du serveur MariaDB et du client
 
-With the MariaDB repository configured, you are now ready to install the MariaDB
-server and client packages. This will provide the necessary components to run
-and manage your database.
+Avec le dépôt MariaDB configuré, vous êtes maintenant prêt à installer les paquets server et client MariaDB.
+Cela fournira les composants nécessaires pour exécuter et gérer votre base de données.
 
-To install the MariaDB server and client, execute the following command:
+Pour installer le serveur et le client MariaDB, exécutez la commande suivante :
 
-!!! info "Install MariaDB from official repository"
+!!! info "Installation de MariaDB depuis le dépôt officiel"
 
     Red Hat
     ```bash
     dnf install MariaDB-server
     ```
+
 
     SUSE
     ```bash
@@ -168,64 +168,64 @@ To install the MariaDB server and client, execute the following command:
     ```
 
 
+
     Ubuntu
     ```bash
     sudo apt install mariadb-server
     ```
 
-Cette commande télécharge et installe les paquets serveur et client, ce qui vous
-permet de configurer et d'interagir avec votre base de données MariaDB. Une fois
-l'installation terminée, vous pouvez passer à la section [_Démarrer la base de
-données MariaDB_](#starting-the-mariadb-database).
+
+Cette commande téléchargera et installera les paquets serveur et client, vous permettant de configurer,
+gérer et interagir avec votre base de données MariaDB. Une fois l'installation terminée, vous pouvez passer à la section [_Démarrage de la base de données MariaDB_](#démarrage-de-la-base-de-données-mariadb).
 
 ---
 
-## Starting the MariaDB Database
+## Démarrage de la base de données MariaDB
 
-Now that MariaDB is installed, we need to enable the service to start
-automatically upon boot and start it immediately. Use the following command to
-accomplish this:
+Maintenant que MariaDB est installé, nous devons activer le service pour qu'il démarre automatiquement
+au démarrage et le démarrer immédiatement. Utilisez la commande suivante pour accomplir cela :
 
-!!! info "Enable MariaDB service"
+!!! info "Activation du service MariaDB"
 
     ```bash
     sudo systemctl enable mariadb --now
     ```
 
-This command will both enable and start the MariaDB service and since this will
-be the first time the service is started, it will initialize the database
-directory. With the MariaDB service now up and running, you can verify that the
-installation was successful by checking the version of MariaDB using the
-following command:
 
-!!! info "Check Mariadb version"
+Cette commande activera et démarrera le service MariaDB, et puisque c'est la première fois que le service est démarré,
+il initialisera le répertoire de base de données. Avec le service MariaDB maintenant en cours d'exécution, vous pouvez vérifier
+le succès de l'installation en consultant la version de MariaDB à l'aide de la commande suivante :
+
+!!! info "Vérification de la version de Mariadb"
 
     ```bash
     mariadb -V
     ```
 
-The expected output should resemble this:
 
-???+ example "MariaDB version example"
+La sortie attendue ressemblera à ceci :
+
+???+ example "Exemple de version MariaDB"
 
     ```shell-session
     localhost:~ $ mariadb -V
-    mariadb  Ver 15.1 Distrib 10.11.14-MariaDB, for Linux (x86_64) using  EditLine wrapper
+    mariadb from 11.4.13-MariaDB, client 15.2 for Linux (aarch64) using  EditLine wrapper
     ```
 
-To ensure that the MariaDB service is running properly, you can check its status
-with the following command:
 
-!!! info "Get mariadb status"
+Pour vous assurer que le service MariaDB fonctionne correctement, vous pouvez vérifier son statut
+avec la commande suivante :
+
+!!! info "Vérification du statut mariadb"
 
     ```bash
     sudo systemctl status mariadb
     ```
 
-You should see an output similar to this, indicating that the MariaDB service is
-active and running:
 
-???+ example "Mariadb service status example"
+Vous devriez voir une sortie similaire à celle-ci, indiquant que le service MariaDB est actif et en cours d'exécution :
+
+???+ example "Exemple de statut du service Mariadb"
 
     ```shell-session
     localhost:~ $ sudo systemctl status mariadb
@@ -247,42 +247,42 @@ active and running:
     Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
     Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] Server socket created on IP: '127.0.0.1', port: '3306'.
     Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] /usr/sbin/mysqld: ready for connections.
-    Dec 03 00:16:04 localhost.localdomain systemd[1]: Version: '10.11.14-MariaDB'  socket: '/run/mysql/mysql.sock'  port: 3306  MariaDB package
+    Dec 03 00:16:04 localhost.localdomain systemd[1]: Version: '11.4.13-MariaDB'  socket: '/run/mysql/mysql.sock'  port: 3306  MariaDB package
     Dec 03 00:16:04 localhost.localdomain systemd[1]: [Note] InnoDB: Buffer pool(s) load completed at 251203  0:16:04
     Dec 03 00:16:04 localhost.localdomain systemd[1]: Started MariaDB database server.
     ```
 
-This confirms that your MariaDB server is up and running, ready for further
-configuration.
+
+Cela confirme que votre serveur MariaDB est opérationnel et prêt pour une configuration supplémentaire.
 
 ---
 
-## Securing the MariaDB Database
+## Sécurisation de la base de données MariaDB
 
-To enhance the security of your MariaDB server, it's essential to remove
-unnecessary test databases, anonymous users, and set a root password. This can
-be done using the mariadb-secure-installation script, which provides a
-step-by-step guide to securing your database.
+Pour renforcer la sécurité de votre serveur MariaDB, il est essentiel d'éliminer les bases de données test inutiles,
+les utilisateurs anonymes et de définir un mot de passe root. Cela peut être fait en utilisant le script mariadb-secure-installation,
+qui fournit une procédure guidée pour sécuriser votre base de données.
 
-Run the following command:
+Exécutez la commande suivante :
 
-!!! info "Secure Mariadb setup"
+!!! info "Sécurisation de l'installation Mariadb"
 
     ```bash
     sudo mariadb-secure-installation
     ```
 
-The mariadb-secure-installation script will guide you through several key steps:
 
-1. Set a root password if one isn't already set.
-2. Remove anonymous users.
-3. Disallow remote root logins.
-4. Remove the test database.
-5. Reload the privilege tables to ensure the changes take effect.
+Le script mariadb-secure-installation vous guidera à travers plusieurs étapes clés :
 
-Once complete, your MariaDB instance will be significantly more secure.
+1. Définir un mot de passe root si aucun n'est déjà défini.
+2. Éliminer les utilisateurs anonymes.
+3. Interdire les connexions root à distance.
+4. Éliminer la base de données test.
+5. Recharger les tables d'autorisations pour garantir que les modifications prennent effet.
 
-!!! example "mariadb-secure-installation example output"
+Une fois terminé, votre instance MariaDB sera significativement plus sécurisée.
+
+!!! example "Exemple de sortie du script mariadb-secure-installation"
 
     ```shell-session
     localhost:~ $ sudo mariadb-secure-installation
@@ -353,51 +353,53 @@ Once complete, your MariaDB instance will be significantly more secure.
     Thanks for using MariaDB!
     ```
 
-You are now ready to configure the database for Zabbix.
+
+Vous êtes maintenant prêt à configurer la base de données pour Zabbix.
 
 ---
 
-## Creating the Zabbix database instance
+## Création de l'instance de base de données Zabbix
 
-With MariaDB now set up and secured, we can move on to creating the database for
-Zabbix. This database will store all the necessary data related to your Zabbix
-server, including configuration information and monitoring data.
+Avec MariaDB maintenant configurée et sécurisée, nous pouvons passer à la création de la base de données
+pour Zabbix. Cette base de données stockera toutes les informations nécessaires liées au serveur Zabbix,
+y compris des informations de configuration et des données de supervision.
 
-Follow these steps to create the Zabbix database:
+Suivez ces étapes pour créer la base de données Zabbix :
 
-Log in to the MariaDB shell as the root user: You'll be prompted to enter the
-root password that you set during the mariadb-secure-installation process.
+Connectez-vous à l'interface shell MariaDB en tant qu'utilisateur root :
+Vous serez invité à entrer le mot de passe root que vous avez défini lors du processus mariadb-secure-installation.
 
-!!! info "Enter Mariadb as user root"
+!!! info "Connexion à Mariadb en tant qu'utilisateur root"
 
     ```bash
     mariadb -uroot -p
     ```
 
-Once you're logged into the MariaDB shell, run the following command to create a
-database for Zabbix:
 
-!!! info "Create the database"
+Une fois connecté à l'interface shell MariaDB, exécutez la commande suivante pour créer une
+base de données Zabbix :
+
+!!! info "Création de la base de données"
 
     ```mysql
     MariaDB [(none)]> CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
     ```
 
-???+ note "What is utf8mb4"
 
-    utf8mb4 is a proper implementation of UTF-8 in MySQL/MariaDB, supporting all
-     Unicode characters, including emojis. The older utf8 charset in MySQL/MariaDB
-     only supports up to three bytes per character and is not a true UTF-8 implementation,
-     which is why utf8mb4 is recommended.
+???+ note "Qu'est-ce que utf8mb4"
 
-This command creates a new database named `zabbix` with the UTF-8 character set,
-which is required for Zabbix.
+     utf8mb4 est une mise en œuvre correcte de UTF-8 dans MySQL/MariaDB, supportant tous
+     les caractères Unicode, y compris les emojis. L'ancien jeu de caractères utf8 dans MySQL/MariaDB
+     ne prend en charge que jusqu'à trois octets par caractère et n'est pas une véritable mise en œuvre UTF-8,
+     c'est pourquoi utf8mb4 est recommandé.
 
-Create a dedicated user for Zabbix and grant the necessary privileges: Next, you
-need to create a user that Zabbix will use to access the database. Replace
-`<password>` with a strong password of your choice.
+Cette commande crée une nouvelle base de données nommée `zabbix` avec le jeu de caractères UTF-8,
+ce qui est requis pour Zabbix.
 
-!!! info "Create users and grant privileges"
+Créez un utilisateur dédié pour Zabbix et accordez les privilèges nécessaires : Ensuite, vous devez créer
+un utilisateur que Zabbix utilisera pour accéder à la base de données. Remplacez `<password>` par un mot de passe fort de votre choix.
+
+!!! info "Création des utilisateurs et attribution des privilèges"
 
     ```mysql
     MariaDB [(none)]> CREATE USER 'zabbix-web'@'<zabbix frontend ip>' IDENTIFIED BY '<password>';
@@ -407,31 +409,31 @@ need to create a user that Zabbix will use to access the database. Replace
     MariaDB [(none)]> FLUSH PRIVILEGES;
     ```
 
-    - Replace `<zabbix server ip>` with the actual IP address of your server
-      where the Zabbix server  will be installed.
-    - Replace `<zabbix frontend ip>` with the actual IP address of your server
-      where the Zabbix frontend will be installed.
 
-    If both components are installed on the same server, use the same IP address.
+    - Remplacez `<zabbix server ip>` par l'adresse IP réelle du serveur
+      où le serveur Zabbix sera installé.
+    - Remplacez `<zabbix frontend ip>` par l'adresse IP réelle du serveur
+      où la partie frontale de Zabbix sera installée.
+
+    Si les deux composants sont installés sur le même serveur, utilisez la même adresse IP.
 
     ???+ tip
 
-        If your Zabbix server, frontend and database are on the same machine, you can replace
-        `<zabbix server ip>` and `<zabbix frontend ip>` with `localhost` or `127.0.0.1`.
+        Si votre serveur Zabbix, frontend et base de données sont sur la même machine,
+        vous pouvez remplacer `<zabbix server ip>` et `<zabbix frontend ip>` par `localhost` ou `127.0.0.1`.
 
-This creates new users `zabbix-web` and `zabbix-srv`, grants them access to the
-Zabbix database, and ensures that the privileges are applied immediately.
+Cela crée de nouveaux utilisateurs `zabbix-web` et `zabbix-srv`, leur accorde l'accès à la
+base de données Zabbix et garantit que les privilèges sont appliqués immédiatement.
 
-At this point, your Zabbix database is ready, but before it can actually be used
-by Zabbix, we still need to populate the database with the necessary tables and
-initial data, but that will be covered in the next section when we install the
-Zabbix server.
+À ce stade, votre base de données Zabbix est prête, mais avant qu'elle ne puisse être réellement utilisée par
+Zabbix, nous devons encore remplir la base de données avec les tables et les données initiales nécessaires,
+mais cela sera couvert dans la section suivante lors de l'installation du serveur Zabbix.
 
-If you intent to install Zabbix server on a different machine than the one
-hosting the database you will need to open the host firewall to allow incoming
-connections to the database server. By default, MariaDB listens on port 3306.
+Si vous prévoyez d'installer le serveur Zabbix sur une machine différente que celle hébergeant
+la base de données, vous devrez ouvrir le pare-feu hôte pour permettre les connexions entrantes à la
+machine serveur de base de données. Par défaut, MariaDB écoute sur le port 3306.
 
-!!! info "Add firewall rules"
+!!! info "Ajout des règles du pare-feu"
 
     Red Hat / SUSE
     ``` bash
@@ -439,129 +441,139 @@ connections to the database server. By default, MariaDB listens on port 3306.
     firewall-cmd --reload
     ```
 
+
     Ubuntu
     ``` bash
     sudo ufw allow 3306/tcp
     ```
 
+
 ---
 
-## Populate the Zabbix database
+## Remplissage de la base de données Zabbix
 
-During the installation of the database software earlier, we created the
-necessary users and database for Zabbix, however, Zabbix expects certain tables,
-schemas, images, and other elements to be present in the database. To set up the
-database correctly, we need to populate it with the required schema.
+Au cours de l'installation des logiciels de base de données précédemment, nous avons créé les
+utilisateurs et la base de données nécessaires pour Zabbix, cependant, Zabbix attend certaines tables,
+schémas, images et autres éléments dans la base de données.
+Pour configurer correctement la base de données, il faut la remplir avec le schéma requis.
 
-First we need to install the Zabbix SQL scripts that contain the required import
-scripts for the database.
+Tout d'abord, nous devons installer les scripts SQL Zabbix qui contiennent les scripts d'import nécessaires pour la base de données.
 
-!!! info "Install SQL scripts"
+!!! info "Installation des scripts SQL"
 
     Red Hat
     ``` bash
     dnf install zabbix-sql-scripts
     ```
 
+
     SUSE
     ``` bash
     zypper install zabbix-sql-scripts
     ```
+
 
     Ubuntu
     ``` bash
     sudo apt install zabbix-sql-scripts
     ```
 
+
 ???+ warning
 
-    When using a recent version of MySQL or MariaDB as the database backend for 
-    Zabbix, you may encounter issues related to the creation of triggers during
-    the schema import process. This is particularly relevant if binary logging
-    is enabled on your database server. (Binary logging is often enabled by default)
-    To address this, you need to set the `log_bin_trust_function_creators` option to `1`
-    in the MySQL/MariaDB configuration file or temporarily at runtime.
-    This allows non-root users to create stored functions and triggers without requiring
-    `SUPER` privileges, which are restricted when binary logging is enabled.
+    Lors de l'utilisation d'une version récente de MySQL ou MariaDB en tant que backend de base de données pour
+    Zabbix, vous pouvez rencontrer des problèmes liés à la création de déclencheurs lors du processus
+    d'importation du schéma. Cela est particulièrement pertinent si le journalisation binaire est activée sur votre serveur de base de données.
+    (La journalisation binaire est souvent activée par défaut)
+    Pour résoudre ce problème, vous devez définir l'option `log_bin_trust_function_creators` à `1`
+    dans le fichier de configuration MySQL/MariaDB ou temporairement en temps réel.
+    Cela permet aux utilisateurs non root de créer des fonctions stockées et des déclencheurs sans nécessiter
+    les privilèges `SUPER`, qui sont restreints lorsque la journalisation binaire est activée.
 
-    Normally we won't need the setting after the initial import of the Zabbix schema is done,
-    so we will disable it again after the import is complete.
+    Généralement, nous n'aurons pas besoin de ce paramètre après l'import initial du schéma Zabbix,
+    donc nous le désactiverons à nouveau une fois l'importation terminée.
 
-    !!! info "Activate temporarily extra privileges for non root users"
+    !!! info "Activer temporairement des privilèges supplémentaires pour les utilisateurs non root"
 
         ```bash
         mariadb -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 1;"
         ```
 
-Now lets upload the data from zabbix (db structure, images, user, ... ) for this
-we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
 
-!!! info "Populate the database"
+Maintenant, chargeons les données de zabbix (structure de la base de données,
+images, utilisateur, etc.) dans notre base de données. Pour cela, nous utilisons
+l'utilisateur `zabbix-srv` et nous l'importons tout dans notre DB
+`zabbix`.
+
+!!! info "Populer la base de données"
 
     ``` bash
     sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
     ```
 
+
 !!! warning
 
-    Depending on the speed of your hardware or virtual machine, the process may
-    take anywhere from a few seconds to several minutes without any visual feedback
-    after entering the root password.
+    Selon les performances de votre matériel ou de votre machine virtuelle, le
+    processus peut prendre quelques secondes à plusieurs minutes sans aucun retour
+    visuel après l'entrée du mot de passe root.
 
-    Please be patient and avoid cancelling the operation; just wait for the linux 
-    prompt to reappear.
+    Veuillez être patient et évitez d'annuler l'opération ; attendez simplement que
+    la ligne de commande Linux réapparaisse.
 
 ???+ note
 
-    Zabbix seems to like to change the locations of the script to populate the
-    DB every version or even in between versions. If you encounter an error take a
-    look at the Zabbix documentation, there is a good chance that some location was
-    changed.
+    Zabbix semble aimer changer les emplacements des scripts pour populer la base
+    de données à chaque version ou même entre versions. Si vous rencontrez une
+    erreur, consultez la documentation Zabbix ; il y a de fortes chances que
+    certains emplacements aient été modifiés.
 
-Once the import of the Zabbix schema is complete, you should no longer need the
-`log_bin_trust_function_creators` global parameter. It is a good practice to
-remove it for security reasons.
+Une fois l'importation du schéma Zabbix terminée, vous n'aurez plus besoin du
+paramètre global `log_bin_trust_function_creators`. Il est une bonne pratique de le supprimer
+pour des raisons de sécurité.
 
-To revert the global parameter back to 0, use the following command in the
-MySQL/MariaDB shell:
+Pour rétablir le paramètre global à 0, utilisez la commande suivante dans l'invite
+de commandes MySQL/MariaDB :
 
-!!! info "Disable function log_bin_trust again"
+!!! info "Désactiver la fonction log_bin_trust à nouveau"
 
     ```bash
     mariadb -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 0;"
     ```
 
-This command will disable the setting, ensuring that the servers security
-posture remains robust.
 
-This concludes our installation of the MariaDB. You can now proceed to
-[Preparing the Zabbix server](preparation.md).
+Cette commande désactive cette configuration, assurant que le positionnement de
+sécurité des serveurs reste robuste.
+
+Cela conclut notre installation de MariaDB. Vous pouvez maintenant passer à la
+préparation du serveur Zabbix [Préparation du serveur Zabbix](preparation.md).
 
 ---
 
 ## Conclusion
 
-With the successful installation and configuration of MariaDB as the database
-backend for Zabbix, you now have a robust foundation for your monitoring
-solution. We've covered the installation of MariaDB from both vendor-provided
-packages and official repositories, securing the database, creating the
-necessary Zabbix database and users, and populating the database with the
-required schema and initial data.
+Avec l'installation et la configuration réussies de MariaDB en tant que backend
+de base de données pour Zabbix, vous disposez maintenant d'une fondation solide
+pour votre solution de supervision. Nous avons couvert l'installation de MariaDB
+à partir des paquets fournis par le fournisseur et des dépôts officiels, la
+sécurisation de la base de données, la création des bases de données et utilisateurs
+nécessaires Zabbix, ainsi que la population de la base de données avec le schéma
+et les données initiales requis.
 
-Your Zabbix environment is now ready for the next stages of setup and
-configuration.
+Votre environnement Zabbix est maintenant prêt pour les prochaines étapes de
+configuration et d'installation.
 
 ---
 
 ## Questions
 
-1. What version of MariaDB should I install for compatibility and stability?
-2. What port does my DB use ?
-3. Which database users did I create and why?
+1. Quelle version de MariaDB dois-je installer pour la compatibilité et la stabilité ?
+2. Sur quel port ma base de données fonctionne-t-elle ?
+3. Quels utilisateurs de base de données ai-je créés et pourquoi ?
 
 ---
 
-## Useful URLs
+## Liens utiles
 
 - [https://mariadb.org/download/](https://mariadb.org/download/)
 - [https://mariadb.com/docs/server/server-usage/stored-routines/binary-logging-of-stored-routines](https://mariadb.com/docs/server/server-usage/stored-routines/binary-logging-of-stored-routines)

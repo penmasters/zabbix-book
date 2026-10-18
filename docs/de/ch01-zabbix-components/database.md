@@ -24,7 +24,7 @@ In umfangreichen Umgebungen mit hoher Datensammlungsfrequenz kann TimescaleDB er
 ???+ tip "TimescaleDB-Installation"
 
     Aufgrund seiner fortschrittlichen Natur ist TimescaleDB nicht unbedingt für die meisten Zabbix-Nutzer essentiell.
-    Daher liegt seine Installation außerhalb des Rahmens dieses Kapitels. Wenn Sie TimescaleDB verwenden möchten, beziehen Sie sich auf [Partitioning PostgreSQL with TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md) nach der Installation von PostgreSQL für detaillierte Anweisungen.
+    Daher liegt seine Installation außerhalb des Rahmens dieses Kapitels. Wenn Sie TimescaleDB verwenden möchten, beziehen Sie sich auf [PostgreSQL-Partitionierung mit TimescaleDB](../ch13-advanced-security/partitioning-postgresql-database.md) nach der Installation von PostgreSQL für detaillierte Anweisungen.
 
 ---
 

@@ -887,7 +887,7 @@ configuration.
 
 ## Nuttige URL's
 
-- [https://yum.postgresql.org](ttps://yum.postgresql.org)
+- [https://yum.postgresql.org](https://yum.postgresql.org)
 - [https://zypp.postgresql.org/howtozypp/](https://zypp.postgresql.org/howtozypp/)
 - [https://wiki.postgresql.org/wiki/Apt](https://wiki.postgresql.org/wiki/Apt)
 - [https://en.opensuse.org/SDB:PostgreSQL](https://en.opensuse.org/SDB:PostgreSQL)

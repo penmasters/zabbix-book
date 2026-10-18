@@ -1,48 +1,43 @@
-# Composants de Zabbix, fonctions de base et installation
+# Composants Zabbix, fonctions de base et installation
 
-Dans ce chapitre, nous développons les connaissances de base de la section "Pour
-commencer" afin de fournir un guide complet aux personnes qui installent Zabbix
-pour la première fois et les utilisateurs avancés qui cherchent à optimiser leur
-installation. Nous ne nous contenterons pas de couvrir les étapes essentielles
-d'une installation de base, mais nous nous pencherons également sur les détails
-les plus fins de l'architecture, des composants et des meilleures pratiques
-concernant Zabbix.
+Dans ce chapitre, nous approfondissons les connaissances fondamentales acquises dans
+la section « Prise en main » afin de proposer un guide complet, tant aux débutants
+qui installent Zabbix pour la première fois qu'aux utilisateurs avancés souhaitant
+optimiser leur configuration. Nous aborderons non seulement les étapes essentielles
+d'une installation de base, mais aussi les détails de l'architecture Zabbix, de ses
+composants et des bonnes pratiques.
 
-Nous commencerons par passer en revue le processus d'installation, en nous
-assurant que vous disposez d'une base solide pour continuer. Ensuite, nous
-aborderons les composants principaux de Zabbix, ce que chacun fait, comment ils
-interagissent et pourquoi ils sont cruciaux pour votre solution de surveillance.
-Vous découvrirez les sous-processus, leurs rôles et la manière dont ils
-contribuent à l'efficacité et à la fiabilité de Zabbix.
+Nous commencerons par parcourir le processus d'installation afin de vous fournir une
+base solide. Nous examinerons ensuite les principaux composants de Zabbix, leur rôle,
+leurs interactions et les raisons pour lesquelles ils sont essentiels à votre solution
+de supervision. Vous découvrirez les sous-processus, leurs fonctions et leur contribution
+à l'efficacité et à la fiabilité de Zabbix.
 
-En outre, nous explorerons les bons choix architecturaux qui peuvent faire ou
-endommager votre installation de monitoring. Que vous gériez un petit réseau ou
-une infrastructure à grande échelle, prendre les bonnes décisions de conception
-dès le départ vous permettra d'obtenir des avantages en termes d'évolutivité, de
-performances et de maintenance.
+Nous étudierons également les bons choix d'architecture, qui peuvent faire toute la
+différence dans une configuration de supervision. Que vous gériez un petit réseau ou
+une infrastructure à grande échelle, prendre les bonnes décisions de conception dès
+le départ sera bénéfique en matière d'évolutivité, de performances et de maintenance.
 
-Ce chapitre est conçu pour répondre aux besoins d'un large éventail de lecteurs.
-Si vous cherchez simplement à mettre Zabbix en place et à le faire fonctionner,
-vous trouverez des instructions claires, étape par étape. Pour ceux qui
-souhaitent aller plus loin, nous fournirons des informations détaillées sur la
-façon dont Zabbix fonctionne, afin de vous aider à faire des choix éclairés qui
-correspondent à vos besoins et à vos plans de croissance futurs.
+Ce chapitre s'adresse à un large éventail de lecteurs. Si vous souhaitez simplement
+mettre Zabbix en service, vous y trouverez des instructions claires et progressives.
+Pour ceux qui veulent aller plus loin, nous expliquerons en détail le fonctionnement
+interne de Zabbix afin de vous aider à faire des choix éclairés, adaptés à vos besoins
+et à vos projets de croissance.
 
-À la fin de ce chapitre, vous aurez non seulement une installation fonctionnelle
-de Zabbix, mais aussi une compréhension approfondie de ses composants et de son
-architecture, ce qui vous permettra d'exploiter pleinement le potentiel de
-Zabbix, quelle que soit la complexité de votre environnement.
+À la fin de ce chapitre, vous disposerez non seulement d'une installation Zabbix
+opérationnelle, mais aussi d'une compréhension approfondie de ses composants et de
+son architecture. Vous pourrez ainsi exploiter pleinement Zabbix, quelle que soit
+la complexité de votre environnement.
 
-Embarquons pour ce voyage dans les entrailles de Zabbix et abreuvons-nous des
-connaissances nécessaires pour démarrer et optimiser une solution de monitoring
-puissante.
+Commençons ce parcours détaillé dans Zabbix et acquérons les connaissances nécessaires
+pour mettre en place et optimiser une puissante solution de supervision.
 
 ???+ note
 
-    "Starting with version 7.0, Zabbix transitioned its licensing from GPLv2 to AGPLv3.
-    This is a significant shift for users and contributors to keep in mind. The adoption
-    of the AGPLv3 is designed to close the 'cloud loophole,' ensuring that any entity
-    offering Zabbix as a hosted service must contribute their modifications back to the
-    community. While this protects the project’s integrity and ensures long-term 
-    sustainability, it is a change that organizations should review to ensure compliance
-    with their internal open-source policies."
+    « À partir de la version 7.0, Zabbix a remplacé sa licence GPLv2 par la licence
+    AGPLv3. Il s'agit d'un changement important dont les utilisateurs et les contributeurs
+    doivent tenir compte. L'adoption de l'AGPLv3 vise à combler la “faille du cloud” en
+    garantissant que toute entité proposant Zabbix en tant que service hébergé restitue
+    ses modifications à la communauté. Bien que cela protège l'intégrité du projet et
+    assure sa pérennité, les organisations doivent examiner ce changement afin de
+    garantir sa conformité avec leurs politiques internes relatives aux logiciels libres. »

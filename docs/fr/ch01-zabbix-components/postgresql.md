@@ -1,105 +1,110 @@
 ---
 description: |
-    This section from The Zabbix Book titled "Installing a PostgreSQL database"
-    guides you through installing PostgreSQL as an alternative database backend
-    for Zabbix. It covers installation methods using OS vendor-provided packages
-    or official PostgreSQL repositories, with specific commands for Red Hat, SUSE,
-    and Ubuntu systems. The section also includes steps to start and secure the
-    PostgreSQL server, create the Zabbix database and users, and configure
-    firewall rules if necessary.
+    Cette section du livre The Zabbix Book intitulée "Installation d'une base de données PostgreSQL"
+    vous guide à travers l'installation de PostgreSQL en tant que backend de base de données alternatif
+    pour Zabbix. Elle couvre les méthodes d'installation utilisant des paquets fournis par le gestionnaire
+    d'opérateur système ou les dépôts officiels PostgreSQL, avec des commandes spécifiques pour Red Hat,
+    SUSE et Ubuntu. La section comprend également les étapes pour démarrer et sécuriser le serveur
+    PostgreSQL, créer la base de données Zabbix et les utilisateurs, ainsi que configurer les règles du pare-feu
+    si nécessaire.
 tags: [beginner]
 ---
 
 # Installation d'une base de données PostgreSQL
 
-En alternative à MariaDB/MySQL, vous pouvez choisir d'utiliser PostgreSQL comme
-base de données pour Zabbix. Comme pour MariaDB, PostgreSQL peut être installé
-en utilisant soit les paquets fournis par le fournisseur du système
-d'exploitation, soit les dépôts officiels de PostgreSQL.
+À la place de MariaDB/MySQL, vous pouvez choisir d'utiliser PostgreSQL comme backend de base de données pour Zabbix.
+Similaire à MariaDB, PostgreSQL peut être installé en utilisant soit les paquets fournis par le gestionnaire
+d'opérateur système ou les dépôts officiels PostgreSQL.
 
-Si vous avez déjà installé MariaDB dans la section précédente, vous pouvez
-sauter cette section.
+Si vous avez déjà installé MariaDB dans la section précédente, vous pouvez sauter cette section.
 
-A ce jour, PostgreSQL 13-18 est supporté par Zabbix. Consultez la documentation
-de Zabbix pour une liste à jour des versions supportées pour votre version de
-Zabbix. En général, c'est une bonne idée d'utiliser la dernière version
-supportée par Zabbix.
+À ce jour, PostgreSQL 13-18 est pris en charge par Zabbix. Vérifiez la documentation de Zabbix
+pour obtenir une liste à jour des versions prises en charge pour votre version de Zabbix. Généralement,
+il est une bonne idée d'utiliser la dernière version prise en charge par Zabbix.
 
-???+ tip "Extension de TimescaleDB"
+???+ tip "Extension TimescaleDB"
 
-    Zabbix also supports the extension TimescaleDB but due to its advanced nature, 
-    we won't cover it in this chapter. Refer to [_Partitioning PostgreSQL with TimescaleDB_](../ch13-advanced-security/partitioning-postgresql-database.md)
-    for detailed instructions on that topic. 
+    Zabbix prend également en charge l'extension TimescaleDB mais, en raison de sa nature avancée,
+    nous ne couvrirons pas ce sujet dans ce chapitre. Consultez [_Partitioning PostgreSQL with TimescaleDB_](../ch13-advanced-security/partitioning-postgresql-database.md)
+    pour des instructions détaillées sur ce sujet.
 
-    Do note that if you want to use TimescaleDB RPM packages provided
-    by Timescale, you will need to install PostgreSQL from the official
-    PostgreSQL repositories instead of the OS vendor-provided packages.
-    If you choose to install PostgreSQL from the OS vendor-provided packages,
-    you will need to compile and install the TimescaleDB extension from source.
+    Notez que si vous souhaitez utiliser les paquets RPM de TimescaleDB fournis
+    par Timescale, vous devrez installer PostgreSQL à partir des dépôts officiels
+    PostgreSQL au lieu des paquets fournis par le gestionnaire d'opérateur système.
+    Si vous choisissez d'installer PostgreSQL à partir des paquets fournis par le gestionnaire
+    d'opérateur système, vous devrez compiler et installer l'extension TimescaleDB à partir de sources.
+
+    Note supplémentaire : TimescaleDB ne fournit pas de paquets pour SUSE Linux Enterprise
+    Server (SLES) ou openSUSE Leap. Au lieu de cela, Suse fournit l'extension TimescaleDB
+    dans leurs propres dépôts. Mais pour que cela fonctionne, vous devrez installer PostgreSQL à partir des
+    paquets fournis par le gestionnaire d'opérateur système au lieu des dépôts officiels
+    PostgreSQL.
 
 ---
 
-## Installation du serveur et du client PostgreSQL à partir des paquets fournis par l'éditeur du système d'exploitation
+## Installation du serveur et du client PostgreSQL à partir de paquets fournis par le gestionnaire d'opérateur système
 
 Pour installer le serveur PostgreSQL par défaut de la distribution, exécutez les
 commandes suivantes :
 
-!!! info "Installer le serveur PostgreSQL"
+!!! info "Installation du serveur Postgres"
 
     Red Hat
     ``` bash
     dnf install postgresql-server postgresql-client	postgresql-contrib
     ```
 
+
     SUSE
     ``` bash
     zypper install postgresql-server postgresql postgresql-contrib
     ```
+
 
     Ubuntu
     ``` bash
     sudo apt install postgresql postgresql-client postgresql-contrib
     ```
 
-Cette commande téléchargera et installera les paquets serveur et client, vous
-permettant de configurer et d'interagir avec votre base de données PostgreSQL.
 
-!!! warning "Database initialization required on Red Hat"
+Cette commande téléchargera et installera à la fois les paquets serveur et client, vous permettant de configurer,
+configurer et interagir avec votre base de données PostgreSQL.
 
-    Due to policies for Red Hat family distributions, the PostgreSQL service
-    does not initialize an empty database required for PostgreSQL to function.
-    So for Red Hat we need to initialize an empty database before continuing:
+!!! warning "Initialisation de la base de données requise sur Red Hat"
+
+    En raison des politiques pour les distributions familiales Red Hat, le service
+    PostgreSQL ne initialise pas une base de données vide nécessaire au bon fonctionnement de PostgreSQL.
+    Donc pour Red Hat, nous devons initialiser une base de données vide avant de continuer :
 
     Red Hat
     ```bash
     postgresql-setup --initdb --unit postgresql
     ```
 
-    On SUSE and Ubuntu the OS provided Systemd service will automatically initialize
-    an empty database on first startup.
 
-Once the installation is complete, you can proceed to the [_Starting the
-PostgreSQL Database_](#starting-the-postgresql-database) section.
+    Sur SUSE et Ubuntu, le service Systemd fourni par l'OS initiera automatiquement
+    une base de données vide lors du premier démarrage.
 
----
-
-## Installing PostgreSQL from Official PostgreSQL Repositories
-
-If you prefer to install PostgreSQL from the official PostgreSQL repositories
-instead of the OS vendor-provided packages, the first step is to add the
-PostgreSQL repository to your system.
+Une fois l'installation terminée, vous pouvez passer à la section [_Démarrer la base de données PostgreSQL_](#démarrage-de-la-base-de-données-postgresql).
 
 ---
 
-### Adding the PostgreSQL Repository
+## Installation de PostgreSQL à partir des dépôts officiels PostgreSQL
 
-Set up the PostgreSQL repository with the following commands:
+Si vous préférez installer PostgreSQL à partir des dépôts officiels PostgreSQL au lieu
+des paquets fournis par le gestionnaire d'opérateur système, la première étape est d'ajouter
+le dépôt PostgreSQL à votre système.
 
-Check
-[https://www.postgresql.org/download/linux/](https://www.postgresql.org/download/linux/)
-for more information.
+---
 
-!!! info "Add PostgreSQL repo"
+### Ajout du dépôt PostgreSQL
+
+Configurez le dépôt PostgreSQL avec les commandes suivantes :
+
+Consultez [https://www.postgresql.org/download/linux/](https://www.postgresql.org/download/linux/)
+pour plus d'informations.
+
+!!! info "Ajouter le dépôt PostgreSQL"
 
     Red Hat
     ```bash
@@ -109,6 +114,7 @@ for more information.
     # Disable the built-in PostgreSQL module:
     dnf -qy module disable postgresql
     ```
+
 
     SUSE
     ```bash
@@ -122,13 +128,13 @@ for more information.
     zypper refresh
     ```
 
+
     !!! warning "openSUSE Leap"
 
-        Since the official PostgreSQL packages are specifically built for use on 
-        SUSE Linux Enterprise Server (SLES), you will get an error trying to install the
-        repository on openSUSE Leap. We can however safely ignore this problem by
-        choosing to "break the package by ignoring some of its dependencies" as
-        long as you match the SLES version with your openSUSE version:
+        Comme les paquets officiels de PostgreSQL sont spécifiquement construits pour être utilisés sur
+        SUSE Linux Enterprise Server (SLES), vous obtiendrez une erreur en essayant d'installer le
+        dépôt sur openSUSE Leap. Nous pouvons néanmoins ignorer ce problème en choisissant de "briser le paquet en ignorant certaines de ses dépendances"
+        tant que vous correspondez à la version SLES avec votre version openSUSE :
 
         ```
         Problem: 1: nothing provides 'sles-release' needed by the to be installed pgdg-suse-repo-42.0-48PGDG.noarch
@@ -138,12 +144,12 @@ for more information.
         Choose from above solutions by number or cancel [1/2/c/d/?] (c): 2
         ```
 
+
     ???+ note "Suse Linux Enterprise Server"
 
-        On SUSE Linux Enterprise Server (SLES), ensure you are subscribed to the
-        "SUSE Package Hub extension" repository to access necessary dependency
-        packages required for the Official PostgreSQL installation. On SLES 15
-        you will also need the "Desktop Applications Module":
+        Sur SUSE Linux Enterprise Server (SLES), assurez-vous d'être abonné au
+        dépôt "SUSE Package Hub extension" pour accéder aux paquets dépendances nécessaires à l'installation officielle de PostgreSQL.
+        Sur SLES 15 vous aurez également besoin du module "Desktop Applications":
 
         ```bash
         # On SLES 16
@@ -153,6 +159,7 @@ for more information.
         SUSEConnect -p sle-module-desktop-applications/15.7/x86_64
         SUSEConnect -p PackageHub/15.7/x86_64
         ```
+
 
     Ubuntu
     ```bash
@@ -168,15 +175,16 @@ for more information.
     sudo apt update
     ```
 
+
 ---
 
-### Installing the PostgreSQL Server and Client
+### Installation du serveur et du client PostgreSQL
 
-With the PostgreSQL repositories configured, you are now ready to install the
-PostgreSQL server and client packages. This will provide the necessary
-components to run and manage your database.
+Avec les dépôts PostgreSQL configurés, vous êtes maintenant prêt à installer le serveur
+et les paquets clients PostgreSQL. Cela fournira les composants nécessaires pour exécuter
+et gérer votre base de données.
 
-!!! info "Install PostgreSQL from official repositories"
+!!! info "Installation de PostgreSQL depuis les dépôts officiels"
 
     Red Hat
     ```bash
@@ -184,89 +192,96 @@ components to run and manage your database.
     dnf install postgresql17 postgresql17-server postgresql17-contrib
     ```
 
+
     SUSE
     ```bash
     zypper install postgresql17 postgresql17-server postgresql17-contrib
     ```
+
 
     Ubuntu
     ```bash
     sudo apt install postgresql-17 postgresql-client-17
     ```
 
-Cette commande téléchargera et installera les paquets serveur et client, vous
-permettant de configurer et d'interagir avec votre base de données PostgreSQL.
 
-Next, before we can start the PostgreSQL server we need to initialize a new
-empty database:
+Cette commande téléchargera et installera à la fois les paquets serveur et client, vous permettant de configurer,
+configurer et interagir avec votre base de données PostgreSQL.
 
-!!! info "Initialize empty PostgreSQL database"
+Ensuite, avant que nous puissions démarrer le serveur PostgreSQL, nous devons initialiser une nouvelle
+base de données vide :
+
+!!! info "Initialisation d'une base de données PostgreSQL vide"
 
     ```
     sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
     ```
 
-Once the installation is complete, you can proceed to the [Starting the
-PostgreSQL Database](#starting-the-postgresql-database) section.
+
+Une fois l'installation terminée, vous pouvez passer à la section [Démarrage de la base de données PostgreSQL](#démarrage-de-la-base-de-données-postgresql).
 
 ---
 
-## Starting the PostgreSQL Database
+## Démarrage de la base de données PostgreSQL
 
-Now that PostgreSQL is installed, we need to enable the service to start
-automatically upon boot as well as start it immediately. Use the following
-command to accomplish this:
+Maintenant que PostgreSQL est installé, nous devons activer le service pour qu'il démarre automatiquement
+au démarrage du système ainsi que lancer immédiatement. Utilisez la commande suivante pour accomplir cela :
 
-!!! info "Enable and start PostgreSQL service"
+!!! info "Activation et démarrage du service PostgreSQL"
 
-    for OS-provided packages
+    Pour les paquets fournis par le gestionnaire d'opérateur système
     ```bash
     sudo systemctl enable postgresql --now
     ```
 
-    for official PostgreSQL packages:
+
+    Pour les paquets officiels de PostgreSQL :
     ```bash
     sudo systemctl enable postgresql-17 --now
     ```
 
-This command will both enable and start the PostgreSQL service. With the service
-now up and running, you can verify that the installation was successful by
-checking the version of PostgreSQL using the following command:
 
-!!! info "Check PostgreSQL version"
+Cette commande activera et démarrera le service PostgreSQL.
+Avec le service maintenant en cours d'exécution, vous pouvez vérifier que l'installation
+a été réussie en vérifiant la version de PostgreSQL à l'aide de la commande suivante :
+
+!!! info "Vérification de la version de PostgreSQL"
 
     ```bash
     psql -V
     ```
 
-The expected output should resemble this:
 
-???+ example "PostgreSQL version example"
+La sortie attendue ressemblera à ceci :
+
+???+ example "Exemple de version PostgreSQL"
 
     ```shell-session
     localhost:~ $ psql -V
     psql (PostgreSQL) 17.7
     ```
 
-To ensure that the PostgreSQL service is running properly, you can check its
-status with the following command:
 
-!!! info "Get PostgreSQL status"
+Pour vous assurer que le service PostgreSQL fonctionne correctement, vous pouvez vérifier son statut
+avec la commande suivante :
 
-    for OS-provided packages
+!!! info "Obtention du statut du service PostgreSQL"
+
+    Pour les paquets fournis par le gestionnaire d'opérateur système
     ```bash
     sudo systemctl status postgresql
     ```
 
-    for official PostgreSQL packages:
+
+    Pour les paquets officiels de PostgreSQL :
     ```bash
     sudo systemctl status postgresql-17
     ```
 
-You should see an output similar to this, indicating that the PostgreSQL service
-is active and running:
 
-???+ example "PostgreSQL service status example"
+Vous devriez voir une sortie similaire à celle-ci, indiquant que le service PostgreSQL est actif et en cours d'exécution :
+
+???+ example "Exemple du statut du service PostgreSQL"
 
     ```shell-session
     localhost:~ $ sudo systemctl status postgresql-17
@@ -294,28 +309,28 @@ is active and running:
     Dec 29 17:24:07 localhost.localdomain systemd[1]: Started PostgreSQL 17 database server.
     ```
 
-This confirms that your PostgreSQL server is up and running, ready for further
-configuration.
+
+Cela confirme que votre serveur PostgreSQL est opérationnel et prêt pour une configuration supplémentaire.
 
 ---
 
-## Securing the PostgreSQL database
+## Sécurisation de la base de données PostgreSQL
 
-PostgreSQL handles access permissions differently from MySQL and MariaDB.
-PostgreSQL relies on a file called `pg_hba.conf` to manage who can access the
-database, from where, and what encryption method is allowed for authentication.
+PostgreSQL gère les permissions d'accès différemment des MySQL et MariaDB.
+PostgreSQL se fie à un fichier appelé `pg_hba.conf` pour gérer qui peut accéder à la base de données,
+d'où, et quelle méthode de chiffrement est autorisée pour l'authentification.
 
-???+ note "About pg_hba.conf"
+???+ note "À propos du fichier pg_hba.conf"
 
-    Client authentication in PostgreSQL is configured through the `pg_hba.conf`
-    file, where "HBA" stands for Host-Based Authentication. This file specifies
-    which users can access the database, from which hosts, and how they are authenticated.
-    For further details, you can refer to the official PostgreSQL documentation."
+    L'authentification des clients dans PostgreSQL est configurée via le fichier `pg_hba.conf`
+    où "HBA" signifie Host-Based Authentication. Ce fichier spécifie qui peut accéder à la base de données,
+    d'où, et comment ils sont authentifiés.
+    Pour plus de détails, vous pouvez consulter la documentation officielle PostgreSQL."
     [https://www.postgresql.org/docs/current/auth-pg-hba-conf.html](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
 
-Add the following lines, the order here is important.
+Ajoutez les lignes suivantes, l'ordre ici est important.
 
-!!! info "Edit the pg_hba file"
+!!! info "Modification du fichier pg_hba"
 
     Red Hat / SUSE
     ``` bash
@@ -326,6 +341,7 @@ Add the following lines, the order here is important.
     vi /var/lib/pgsql/17/data/pg_hba.conf
     ```
 
+
     Ubuntu
     ``` bash
     # for OS-provided packages
@@ -335,19 +351,21 @@ Add the following lines, the order here is important.
     sudo vi /etc/postgresql/17/main/pg_hba.conf
     ```
 
-!!! warning "Location of pg_hba file"
 
-    If you don't find the `pg_hba.conf` and `postgres.conf` files in the above 
-    mentioned location you can ask PostgreSQL itself for the location using
-    this command (provided that PostgreSQL is currently running):
+!!! warning "Emplacement du fichier pg_hba"
+
+    Si vous ne trouvez pas les fichiers `pg_hba.conf` et `postgres.conf` à l'emplacement mentionné ci-dessus,
+    vous pouvez demander à PostgreSQL lui-même de fournir l'emplacement en utilisant
+    la commande suivante (à condition que PostgreSQL soit actuellement en cours d'exécution) :
 
     ```bash
     sudo -u postgres psql -t -c 'show hba_file';
     ```
 
-The resulting pg_hba file should look like :
 
-!!! example "Pg_hba example"
+Le fichier pg_hba résultant devrait ressembler à ceci :
+
+!!! example "Exemple de pg_hba"
 
     ```
     # "local" is for Unix domain socket connections only
@@ -363,20 +381,19 @@ The resulting pg_hba file should look like :
     host    all             all             ::1/128                 ident
     ```
 
-!!! warning "Ensure to keep the order of the entries"
 
-    The order of the entries in the `pg_hba.conf` file is crucial, as PostgreSQL
-    processes these rules sequentially. Ensure that the specific rules for the
-    `zabbix-srv` and `zabbix-web` users are placed before any broader rules like
-    the default `all` user rules that could potentially override them.
+!!! warning "Assurez-vous de conserver l'ordre des entrées"
 
-After we changed the `pg_hba.conf` file don't forget to restart postgres
-otherwise the settings will not be applied. But before we restart, let us also
-edit the file `postgresql.conf` and allow our database to listen on our network
-interface for incoming connections from the Zabbix server. PostgreSQL will by
-default only allow connections from a unix socket.
+    L'ordre des entrées dans le fichier `pg_hba.conf` est crucial, car PostgreSQL
+    traite ces règles séquentiellement. Assurez-vous que les règles spécifiques pour les utilisateurs
+    `zabbix-srv` et `zabbix-web` sont placées avant toute règle plus large comme la règle par défaut
+    `all` qui pourrait potentiellement les annuler.
 
-!!! info "Edit postgresql.conf file"
+Après avoir modifié le fichier `pg_hba.conf`, n'oubliez pas de redémarrer PostgreSQL sinon les paramètres ne seront pas appliqués. Mais avant de redémarrer,
+modifions également le fichier `postgresql.conf` et permettons à notre base de données d'écouter sur l'interface réseau pour accepter des connexions
+du serveur Zabbix. PostgreSQL ne permet par défaut que les connexions depuis un socket Unix.
+
+!!! info "Modification du fichier postgresql.conf"
 
     Red Hat / SUSE
     ```bash
@@ -387,6 +404,7 @@ default only allow connections from a unix socket.
     vi /var/lib/pgsql/17/data/postgresql.conf
     ```
 
+
     Ubuntu
     ``` bash
     # for OS-provided packages
@@ -396,7 +414,8 @@ default only allow connections from a unix socket.
     sudo vi /etc/postgresql/17/main/postgresql.conf
     ```
 
-Locate the following line:
+
+Localisez la ligne suivante :
 
 !!! info ""
 
@@ -404,7 +423,8 @@ Locate the following line:
     #listen_addresses = 'localhost'
     ```
 
-and replace it with:
+
+et remplacez-la par :
 
 !!! info ""
 
@@ -412,48 +432,44 @@ and replace it with:
     listen_addresses = '*'
     ```
 
+
 ???+ note
 
-    This will enable PostgreSQL to accept connections from any network interface,
-    not just the local machine. In production it's probably a good idea to limit
-    who can connect to the DB.
+    Cela permettra à PostgreSQL d'accepter des connexions depuis n'importe quelle interface réseau,
+    pas seulement la machine locale. En production, il est probablement une bonne idée de limiter
+    qui peut se connecter à la base de données.
 
-After making this change, restart the PostgreSQL service to apply the new
-settings:
+Après avoir effectué ce changement, redémarrez le service PostgreSQL pour appliquer les nouvelles configurations :
 
-!!! info "Restart the DB server"
+!!! info "Redémarrage du serveur de base de données"
 
-    for OS-provided packages
+    Pour les paquets fournis par le gestionnaire d'opérateur système
     ``` bash
     sudo systemctl restart postgresql
     ```
 
-    for official packages
+
+    Pour les paquets officiels
     ```bash
     sudo systemctl restart postgresql-17
     ```
 
+
 ???+ tip
 
-    If the service fails to restart, review the `pg_hba.conf` file for any syntax errors,
-    as incorrect entries here may prevent PostgreSQL from starting.
+    Si le service ne redémarre pas, vérifiez le fichier `pg_hba.conf` pour toute erreur de syntaxe,
+    car des entrées incorrectes ici peuvent empêcher PostgreSQL de démarrer.
 
 ---
 
-## Creating the Zabbix database instance
+## Création de l'instance de base de données Zabbix
 
-With the necessary packages installed, you are now ready to create the Zabbix
-database and users for both the server and frontend.
+Avec les paquets nécessaires installés, vous êtes maintenant prêt à créer la base de données
+et les utilisateurs pour le serveur et l'interface frontale Zabbix.Les packages PostgreSQL créent automatiquement un utilisateur par défaut `postgres` lors de l'installation, qui dispose des privilèges administratifs sur l'instance PostgreSQL. Pour administrer la base de données, vous devrez exécuter les commandes en tant que l'utilisateur `postgres`.
 
-The PostgreSQL packages automatically create a default `postgres` linux-user
-during installation which has administrative privileges on the PostgreSQL
-instance. To administer the database, you will need to execute commands as the
-`postgres` user.
+Tout d'abord, créez l'utilisateur du serveur Zabbix (aussi appelé "rôle" dans PostgreSQL) :
 
-First, create the Zabbix server database user (also referred to as a "role" in
-PostgreSQL):
-
-!!! info "Create server users"
+!!! info "Créer les utilisateurs du serveur"
 
     ```bash
     sudo -u postgres createuser --pwprompt zabbix-srv
@@ -461,10 +477,10 @@ PostgreSQL):
     Enter it again: <server-password>
     ```
 
-Next, create the Zabbix frontend user, which will be used to connect to the
-database:
 
-!!! info "Create front-end user"
+Ensuite, créez l'utilisateur de la console frontale qui sera utilisé pour se connecter à la base de données :
+
+!!! info "Créer l'utilisateur de la console frontale"
 
     ```bash
     sudo -u postgres createuser --pwprompt zabbix-web
@@ -472,38 +488,36 @@ database:
     Enter it again: <frontend-password>
     ```
 
-Now with the users created, the next step is to create the Zabbix database.
-Execute the following command to create the database `zabbix` with the owner set
-to `zabbix-srv` and the character encoding set to `Unicode` as required by
-Zabbix:
 
-!!! info "Create DB"
+Maintenant que les utilisateurs ont été créés, le prochain pas est de créer la base de données Zabbix. Exécutez la commande suivante pour créer la base de données `zabbix` avec le propriétaire défini sur
+`zabbix-srv` et l'encodage des caractères défini sur `Unicode` comme requis par Zabbix :
+
+!!! info "Créer la base de données"
 
     ``` bash
     sudo -u postgres createdb -E Unicode -T template0 -O zabbix-srv zabbix
     ```
 
-???+ note "What is this 'template0'?"
 
-    In PostgreSQL, `template0` is a default database template that serves as a pristine
-    copy of the database system. When creating a new database using `template0`,
-    it ensures that the new database starts with a clean slate, without any
-    pre-existing objects or configurations that might be present in other templates.
-    This is particularly useful when you want to create a database with specific
-    settings or extensions without inheriting any unwanted elements from other templates.
+???+ note "Qu'est-ce que ce 'template0'?"
 
-Once the database is created, you should verify the connection and ensure that
-the correct user session is active. To do this, log into the zabbix database
-using the `zabbix-srv` user:
+    Dans PostgreSQL, `template0` est un modèle de base de données par défaut qui sert de copie vierge du système de base de données. Lors de la création d'une nouvelle base de données en utilisant `template0`,
+    cela garantit que la nouvelle base de données commence avec une feuille blanche, sans aucun
+    objet ou configuration préexistants qui pourraient être présents dans d'autres modèles.
+    Cela est particulièrement utile lorsque vous souhaitez créer une base de données avec des paramètres spécifiques ou des extensions sans hériter d'éléments indésirables provenant d'autres modèles.
 
-!!! info "Login as user zabbix-srv"
+Une fois la base de données créée, vous devriez vérifier la connexion et vous assurer que
+la session utilisateur correcte est active. Pour cela, connectez-vous à la base de données zabbix en utilisant l'utilisateur `zabbix-srv` :
+
+!!! info "Se connecter en tant qu'utilisateur zabbix-srv"
 
     ```bash
     psql -d zabbix -U zabbix-srv
     ```
 
-After logging in, run the following SQL query to confirm that both the
-`session_user` and `current_user` are set to `zabbix-srv`:
+
+Après la connexion, exécutez la requête SQL suivante pour confirmer que les paramètres `session_user`
+et `current_user` sont définis sur `zabbix-srv` :
 
 !!! info ""
 
@@ -515,70 +529,63 @@ After logging in, run the following SQL query to confirm that both the
     (1 row)
     ```
 
-If the output matches, you are successfully connected to the database with the
-correct user.
 
-PostgreSQL differs significantly from MySQL or MariaDB in several aspects, and
-one of the key features that sets it apart is its use of schemas. Unlike MySQL,
-where databases are more standalone, PostgreSQL's schema system provides a
-structured, multi-user environment within a single database.
+Si la sortie correspond, vous êtes connecté à la base de données avec l'utilisateur correct.
 
-Schemas act as logical containers within a database, enabling multiple users or
-applications to access and manage data independently without conflicts. This
-feature is especially valuable in environments where several users or
-applications need to interact with the same database server concurrently. Each
-user or application can have its own schema, preventing accidental interference
-with each other's data.
+PostgreSQL diffère considérablement de MySQL ou MariaDB dans plusieurs aspects,
+et l'un des principaux éléments qui le distingue est son utilisation des schémas. Contrairement à MySQL,
+où les bases de données sont plus autonomes, le système de schémas de PostgreSQL fournit un environnement structuré et multi-utilisateurs au sein d'une seule base de données.
+
+Les schémas agissent comme des conteneurs logiques au sein d'une base de données, permettant à plusieurs utilisateurs ou
+applications d'accéder et de gérer les données indépendamment sans conflits. Cette fonctionnalité est particulièrement précieuse dans les environnements où plusieurs utilisateurs ou applications doivent interagir avec le même serveur de base de données simultanément. Chaque utilisateur ou application peut avoir son propre schéma, prévenant toute interférence accidentelle entre leurs données.
 
 ???+ note
 
-    PostgreSQL comes with a default schema, typically called `public`, but in
-    general, it's a best practice to create custom schemas to better organize and separate
-    database objects, especially in complex or multi-user environments.
+    PostgreSQL vient avec un schéma par défaut, généralement appelé `public`, mais en
+    général, il est une bonne pratique de créer des schémas personnalisés pour mieux organiser et séparer les objets de la base de données, surtout dans des environnements complexes ou multi-utilisateurs.
 
-    For more in-depth information, I recommend checking out the detailed guide at
-    this URI, [https://hevodata.com/learn/postgresql-schema/#schema](https://hevodata.com/learn/postgresql-schema/#schema)
-    which explains the benefits and use cases for schemas in PostgreSQL.
+    Pour plus d'informations détaillées, je recommande de consulter le guide approfondi à cette URI, [https://hevodata.com/learn/postgresql-schema/#schema](https://hevodata.com/learn/postgresql-schema/#schema)
+    qui explique les avantages et les cas d'utilisation des schémas dans PostgreSQL.
 
-To finalize the initial database setup for Zabbix, we need to configure schema
-permissions for both the `zabbix-srv` and `zabbix-web` users.
+Pour finaliser la configuration initiale de la base de données pour Zabbix, nous devons configurer les permissions du schéma pour les utilisateurs `zabbix-srv` et `zabbix-web`.
 
-First, we create a custom schema named `zabbix_server` and assign ownership to
-the `zabbix-srv` user:
+Tout d'abord, nous créons un schéma personnalisé nommé `zabbix_server` et attribuons la propriété à
+l'utilisateur `zabbix-srv` :
 
-!!! info "Create the db schema"
+!!! info "Créer le schéma de la base de données"
 
     ```psql
     zabbix=> CREATE SCHEMA zabbix_server AUTHORIZATION "zabbix-srv";
     ```
 
-Next, we set the `search path` to `zabbix_server` schema so that it's the
-default for the current session:
 
-!!! info "Set search path"
+Ensuite, nous définissons le `search path` sur `zabbix_server` pour qu'il soit par défaut
+pour la session actuelle :
+
+!!! info "Définir le chemin de recherche"
 
     ```psql
     zabbix=> SET search_path TO "zabbix_server";
     ```
 
+
 ???+ tip
 
-    If you prefer not to set the search path manually each time you log in as the
-    `zabbix-srv` user, you can configure PostgreSQL to automatically use the desired
-    search path. Run the following SQL command to set the default search path for
-    the `zabbix-srv` role:
+    Si vous préférez ne pas définir manuellement le chemin de recherche chaque fois que vous vous connectez en tant qu'utilisateur `zabbix-srv`,
+    vous pouvez configurer PostgreSQL pour utiliser automatiquement le chemin de recherche souhaité. Exécutez la commande SQL suivante pour définir le chemin de recherche par défaut pour
+    le rôle `zabbix-srv` :
 
     ```sql
     zabbix=> ALTER ROLE "zabbix-srv" SET search_path = zabbix_server;
     ```
 
-    This command ensures that every time the `zabbix-srv` user connects to the
-    database, the `search_path` is automatically set to `zabbix_server`.
 
+    Cette commande garantit que chaque fois que l'utilisateur `zabbix-srv` se connecte à la base de données,
+    le `search_path` est automatiquement défini sur `zabbix_server`.
 
-To confirm the schema setup, you can list the existing schemas:
+Pour confirmer la configuration du schéma, vous pouvez lister les schémas existants :
 
-!!! example "Verify schema access"
+!!! example "Vérifier l'accès au schéma"
 
     ```psql
     zabbix=> \dn
@@ -590,38 +597,37 @@ To confirm the schema setup, you can list the existing schemas:
     (2 rows)
     ```
 
-At this point, the `zabbix-srv` user has full access to the schema, but the
-`zabbix-web` user still needs appropriate permissions to connect and interact
-with the database. First, we grant `USAGE` privileges on the schema to allow
-`zabbix-web` to connect:
 
-!!! info "Grant access to schema for user zabbix-web"
+À ce stade, l'utilisateur `zabbix-srv` a un accès complet au schéma, mais l'utilisateur `zabbix-web`
+a toujours besoin de permissions appropriées pour se connecter et interagir avec la base de données. Tout d'abord, nous accordons des privilèges `USAGE` sur le schéma afin que l'utilisateur `zabbix-web` puisse se connecter :
+
+!!! info "Accorder un accès au schéma pour l'utilisateur zabbix-web"
 
     ```psql
     zabbix=> GRANT USAGE ON SCHEMA zabbix_server TO "zabbix-web";
     ```
 
-Now, the `zabbix-web` user has appropriate access to interact with the schema
-while maintaining security by limiting permissions to essential operations.
 
-If you are ready you can exit the database and return to your linux shell.
+Maintenant, l'utilisateur `zabbix-web` a les permissions appropriées pour interagir avec le schéma
+tout en maintenant la sécurité en limitant les permissions aux opérations essentielles.
 
-!!! info "Exit the database shell"
+Si vous êtes prêt, vous pouvez quitter la base de données et revenir à votre shell Linux.
+
+!!! info "Quitter l'invite de commande de la base de données"
 
     ```psql
     zabbix=> \q
     ```
 
-At this point, your Zabbix database is ready, but before it can actually be used
-by Zabbix, we still need to populate the database with the necessary tables and
-initial data, but that will be covered in the next section when we install the
-Zabbix server.
 
-If you intent to install Zabbix server on a different machine than the one
-hosting the database you will need to open the host firewall to allow incoming
-connections to the database server. By default, PostgreSQL listens on port 5432.
+À ce stade, votre base de données Zabbix est prête, mais avant qu'elle ne puisse être utilisée par
+Zabbix, nous devons encore la remplir avec les tables et les données initiales nécessaires, mais cela sera couvert dans la section suivante lors de l'installation du serveur Zabbix.
 
-!!! info "Add firewall rules"
+Si vous prévoyez d'installer le serveur Zabbix sur une machine différente que celle hébergeant
+la base de données, vous devrez ouvrir le pare-feu hôte pour permettre les connexions entrantes à
+le serveur de la base de données. Par défaut, PostgreSQL écoute sur le port 5432.
+
+!!! info "Ajouter des règles au pare-feu"
 
     Red Hat / SUSE
     ``` bash
@@ -629,99 +635,105 @@ connections to the database server. By default, PostgreSQL listens on port 5432.
     firewall-cmd --reload
     ```
 
+
     Ubuntu
     ``` bash
     sudo ufw allow 5432/tcp
     ```
+
 ---
 
-## Populate the Zabbix database
+## Remplir la base de données Zabbix
 
-During the installation of the database software earlier, we created the
-necessary users, database and schema for Zabbix, however, Zabbix expects certain
-tables, schemas, images, and other elements to be present in the database. To
-set up the database correctly, we need to populate it with the required schema.
+Au cours de l'installation du logiciel de base de données précédemment, nous avons créé les
+utilisateurs nécessaires, la base de données et le schéma pour Zabbix, cependant, Zabbix attend certaines tables,
+schémas, images et autres éléments présents dans la base de données.
+Pour configurer correctement la base de données, nous devons la remplir avec les schémas requis.
 
-First we need to install the Zabbix SQL scripts that contain the required import
-scripts for the database.
+Tout d'abord, nous avons besoin d'installer les scripts SQL Zabbix qui contiennent les scripts d'import nécessaires pour la base de données.
 
-!!! info "Install SQL scripts"
+!!! info "Installer les scripts SQL"
 
     Red Hat
     ``` bash
     dnf install zabbix-sql-scripts
     ```
 
+
     SUSE
     ``` bash
     zypper install zabbix-sql-scripts
     ```
+
 
     Ubuntu
     ``` bash
     sudo apt install zabbix-sql-scripts
     ```
 
-Next you need to prepare the database schema: unzip the necessary schema files
-by running the following command:
 
-!!! info "Unzip the DB patch"
+Ensuite, vous devez préparer le schéma de la base de données : décompressez les fichiers de schéma nécessaires en exécutant la commande suivante :
+
+!!! info "Décompresser le correctif DB"
 
     Red Hat / SUSE
     ``` bash
     gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
     ```
 
+
     Ubuntu
     ``` bash
     sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
     ```
 
+
 ???+ note
 
-    Zabbix seems to like to change the locations of the script to populate the
-    DB every version or even in between versions. If you encounter an error take a
-    look at the Zabbix documentation, there is a good chance that some location was
-    changed.
+    Zabbix semble aimer changer les emplacements des scripts pour remplir la base de données
+    à chaque version ou même entre versions. Si vous rencontrez une erreur, consultez la documentation Zabbix,
+    il y a de fortes chances que certains emplacements aient été modifiés.
 
-This will extract the database schema required for the Zabbix server.
+Cela extrait le schéma de base de données requis pour le serveur Zabbix.
 
-Now we will execute the SQL file to populate the database. Open a `psql` shell:
+Maintenant, nous allons exécuter le fichier SQL pour remplir la base de données. Ouvrez une `psql` shell :
 
-!!! info "Open psql shell"
+!!! info "Ouvrir l'invite psql"
 
     ``` bash
     psql -d zabbix -U zabbix-srv
     ```
 
-???+ warning "Ensure correct search_path is set"
 
-    Make sure you performed previous steps as outlined in [Creating the Zabbix database instance with PostgreSQL](postgresql.md#creating-the-zabbix-database-instance)
-    carefully so that you have set the correct `search_path`.
+???+ warning "Assurez-vous que le chemin de recherche correct est défini"
 
-    If you did not set the default `search_path` for the `zabbix-srv` user,
-    ensure you set it manually in the current session before proceeding:
+    Assurez-vous d'avoir suivi les étapes précédentes comme indiqué dans [Créer une instance Zabbix avec PostgreSQL](postgresql.md#création-de-linstance-de-base-de-données-zabbix)
+    soigneusement pour avoir défini le chemin de recherche correct `search_path`.
+
+    Si vous n'avez pas défini le chemin de recherche par défaut `search_path` pour l'utilisateur `zabbix-srv`,
+    assurez-vous de le définir manuellement dans la session actuelle avant de continuer :
     ```psql
     zabbix=> SET search_path TO "zabbix_server";
     ```
 
-Upload the DB schema to the database using the following commands:
 
-!!! info "Upload the DB schema to db zabbix"
+Chargez le schéma de base de données dans la base de données en utilisant les commandes suivantes :
+
+!!! info "Charger le schéma de base de données dans db zabbix"
 
     ```psql
     zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
     ```
 
+
 ???+ warning
 
-    Depending on your hardware or VM performance, this process can take anywhere
-    from a few seconds to several minutes. Please be patient and avoid cancelling
-    the operation.
+    Selon votre matériel ou la performance de votre machine virtuelle, ce processus peut prendre entre quelques secondes et plusieurs minutes. Veuillez être patient et évitez d'annuler
+    l'opération.
 
-Monitor the progress as the script runs. You will see output similar to:
+Surveillez le progrès pendant que le script s'exécute. Vous verrez un affichage similaire à :
 
-!!! example "Output example"
+!!! example "Exemple de sortie"
 
     ```psql
     zabbix=> \i /usr/share/zabbix/sql-scripts/postgresql/server.sql
@@ -738,18 +750,19 @@ Monitor the progress as the script runs. You will see output similar to:
     COMMIT
     ```
 
-Once the script completes and you return to the `zabbix=>` prompt, the database
-should be successfully populated with all the required tables, schemas, images,
-and other elements needed for Zabbix.
 
-However, `zabbix-web` still cannot perform any operations on the tables or
-sequences. To allow basic data interaction without giving too many privileges,
-grant the following permissions:
+Une fois que le script est terminé et que vous revenez au `zabbix=>` prompt, la base de données
+devrait être remplie avec toutes les tables, schémas,
+images et autres éléments nécessaires pour Zabbix.
 
-- For tables: SELECT, INSERT, UPDATE, and DELETE.
-- For sequences: SELECT and UPDATE.
+Cependant, `zabbix-web` ne peut toujours pas effectuer d'opérations sur les tables ou les séquences.
+Pour permettre une interaction de base avec les données sans donner trop de privilèges, accordez les
+privilèges suivants :
 
-!!! info "Grant rights on the schema to user zabbix-web"
+- Pour les tables : SELECT, INSERT, UPDATE et DELETE.
+- Pour les séquences : SELECT et UPDATE.
+
+!!! info "Accorder des droits sur le schéma à l'utilisateur zabbix-web"
 
     ```psql
     zabbix=> GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA zabbix_server
@@ -757,9 +770,10 @@ grant the following permissions:
     zabbix=> GRANT SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA zabbix_server TO "zabbix-web";
     ```
 
-Verify if the rights are correct on the schema :
 
-!!! example "Example schema rights"
+Vérifiez si les droits sont corrects sur le schéma :
+
+!!! example "Exemple de droits du schéma"
 
     ```psql
     zabbix=> \dn+
@@ -772,33 +786,29 @@ Verify if the rights are correct on the schema :
                    |                   | "zabbix-web"=U/"zabbix-srv"            |
     ```
 
+
 ???+ note
 
-    If you encounter the following error during the SQL import:
+    Si vous rencontrez l'erreur suivante lors de l'importation SQL :
     `vbnet psql:/usr/share/zabbix/sql-scripts/postgresql/server.sql:7: ERROR: no
-        schema has been selected to create in` It indicates that the `search_path` setting
-    might not have been correctly applied. This setting is crucial because it specifies
-    the schema where the tables and other objects should be created. By correctly
-    setting the search path, you ensure that the SQL script will create tables
-    and other objects in the intended schema.
+        schéma a été sélectionné pour la création dans` It indicates that the `chemin de recherche` peut ne pas avoir été correctement appliqué. Ce paramètre est crucial car il spécifie le schéma où les tables et autres objets doivent être créés. En définissant correctement le chemin de recherche, vous assurez que le script SQL créera des tables
+    et d'autres objets dans le schéma prévu.
 
-To ensure that the Zabbix tables were created successfully and have the correct
-permissions, you can verify the table list and their ownership using the `psql`
-command:
+Pour vous assurer que les tables Zabbix ont été créées avec succès et disposent des permissions correctes, vous pouvez vérifier la liste des tables et leur propriétaire en utilisant la commande `psql` :
 
-- List the Tables: Use the following command to list all tables in the
-  `zabbix_server` schema:
+- Liste des Tables : Utilisez la commande suivante pour lister toutes les tables dans le schéma `zabbix_server` :
 
-!!! info "List tables"
+!!! info "Liste des tables"
 
     ```psql
     zabbix=# \dt
     ```
 
-You should see a list of tables with their schema, name, type, and owner. For
-example:
 
-???+ example "List table with relations"
+Vous devriez voir une liste de tables avec leur schéma, nom, type et propriétaire.
+Par exemple :
+
+???+ example "Liste des tables avec relations"
 
     ```psql
     zabbix=> \dt
@@ -822,17 +832,17 @@ example:
     (203 rows)
     ```
 
-- Verify Permissions: Confirm that the zabbix-srv user owns the tables and has
-  the necessary permissions. You can check permissions for specific tables using
-  the \dp command:
 
-!!! info "Verify table permissions"
+- Vérifier les Permissions : Confirmez que l'utilisateur zabbix-srv possède les tables et dispose des permissions nécessaires. Vous pouvez vérifier les permissions pour des tables spécifiques en utilisant la commande \dp :
+
+!!! info "Vérifier les permissions de table"
 
     ```psql
     zabbix=> \dp zabbix_server.*
     ```
 
-???+ example "Example output"
+
+???+ example "Exemple d'affichage"
 
     ```psql
     zabbix=> \dp zabbix_server.*
@@ -848,42 +858,33 @@ example:
      zabbix_server | auditlog                   | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
     ```
 
-This will display the access privileges for all tables in the `zabbix_server`
-schema. Ensure that `zabbix-srv` has the required privileges.
 
-If everything looks correct, your tables are properly created and the
-`zabbix-srv` user has the appropriate ownership and permissions. If you need to
-adjust any permissions, you can do so using the GRANT commands as needed.
+Cela affichera les privilèges d'accès pour toutes les tables dans le schéma `zabbix_server`.
+Assurez-vous que `zabbix-srv` dispose des privilèges requis.Si tout semble correct, vos tables sont créées correctement et l'utilisateur `zabbix-srv` a les droits d'ownership et de permissions appropriés. Si vous devez ajuster des permissions, vous pouvez le faire en utilisant les commandes GRANT selon vos besoins.
 
-This concludes our installation of the PostgreSQL database.
+Cela conclut notre installation de la base de données PostgreSQL.
 
 ---
 
 ## Conclusion
 
-With the installation and configuration of PostgreSQL as the database backend
-for Zabbix complete, you now have a powerful and efficient database system ready
-for your monitoring needs. We've covered the installation of PostgreSQL from
-both vendor-provided packages and official repositories, securing the database,
-creating the necessary Zabbix database and users, and populating the database
-with the required schema and initial data.
+Avec l'installation et la configuration de PostgreSQL comme système de gestion de base de données pour Zabbix, vous disposez maintenant d'un système puissant et efficace prêt à répondre à vos besoins en matière de supervision. Nous avons couvert l'installation de PostgreSQL à partir des paquets fournis par le fournisseur et des dépôts officiels, la sécurisation de la base de données, la création de la base de données Zabbix et des utilisateurs nécessaires, ainsi que la population de la base de données avec le schéma et les données initiales requis.
 
-Your Zabbix environment is now ready for the next stages of setup and
-configuration.
+Votre environnement Zabbix est maintenant prêt pour les prochaines étapes d'installation et de configuration.
 
 ---
 
 ## Questions
 
-1. What version of PostgreSQL should I install for compatibility and stability?
-2. What port does my DB use ?
-3. Which database users did I create and why?
+1. Quelle version de PostgreSQL dois-je installer pour la compatibilité et la stabilité ?
+2. Sur quel port ma base de données utilise-t-elle ?
+3. Quels utilisateurs de base de données ai-je créés et pourquoi ?
 
 ---
 
-## Useful URLs
+## Liens utiles
 
-- [https://yum.postgresql.org](ttps://yum.postgresql.org)
+- [https://yum.postgresql.org](https://yum.postgresql.org)
 - [https://zypp.postgresql.org/howtozypp/](https://zypp.postgresql.org/howtozypp/)
 - [https://wiki.postgresql.org/wiki/Apt](https://wiki.postgresql.org/wiki/Apt)
 - [https://en.opensuse.org/SDB:PostgreSQL](https://en.opensuse.org/SDB:PostgreSQL)
