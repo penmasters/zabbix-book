@@ -559,7 +559,7 @@ return $JSONOutput
 - What scenario would a Passive check be used instead of an Active check?
 
 ## Useful URLs
-- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi)
-- [https://www.zabbix.com/documentation/7.0/en/manual/appendix/config/zabbix_agent2_win](https://www.zabbix.com/documentation/7.0/en/manual/appendix/config/zabbix_agent2_win)
-- [https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec)
-- [https://github.com/zabbix/zabbix/blob/master/src/go/conf/zabbix_agent2.win.conf](https://github.com/zabbix/zabbix/blob/master/src/go/conf/zabbix_agent2.win.conf)
+- [Zabbix Agent 2 MSI Installation Documentation](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi)
+- [Zabbix Agent 2 Windows Configuration Parameters](https://www.zabbix.com/documentation/7.0/en/manual/appendix/config/zabbix_agent2_win)
+- [Microsoft Documentation on MSI](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec)
+- [The zabbix_agent2.conf from the Official Zabbix Repository](https://github.com/zabbix/zabbix/blob/master/src/go/conf/zabbix_agent2.win.conf)
