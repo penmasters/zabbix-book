@@ -24,7 +24,7 @@ versions:
     language: en
     path: 8.0/en/
     status: maintenance
-    website: true
+    website: false
     base:
       type: branch
       ref: main
@@ -35,7 +35,7 @@ versions:
     language: de
     path: 8.0/de/
     status: development
-    website: true
+    website: false
     base:
       type: tag
       ref: v8.0-1
