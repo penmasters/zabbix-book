@@ -1,0 +1,3142 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Configuring and deploying Zabbix Agent 2 across a Windows fleet. Learn how
+to structure the agent configuration so that installations are consistent
+and upgrades are painless.
+">
+      
+      
+        <meta name="author" content="The Monitoring Penmasters">
+      
+      
+        <link rel="canonical" href="https://thezabbixbook.com/pt_BR/ch16-windows/windows-zabbix-agent2-config-tips/">
+      
+      
+        <link rel="prev" href="../windows/">
+      
+      
+        <link rel="next" href="../../subject-index/">
+      
+      
+        
+          <link rel="alternate" href="../../../fr/ch16-windows/windows-zabbix-agent2-config-tips/" hreflang="fr">
+        
+          <link rel="alternate" href="../../../de/ch16-windows/windows-zabbix-agent2-config-tips/" hreflang="de">
+        
+          <link rel="alternate" href="../../../nl/ch16-windows/windows-zabbix-agent2-config-tips/" hreflang="nl">
+        
+          <link rel="alternate" href="./" hreflang="pt_BR">
+        
+          <link rel="alternate" href="../../../ru/ch16-windows/windows-zabbix-agent2-config-tips/" hreflang="ru">
+        
+          <link rel="alternate" href="../../../ch16-windows/windows-zabbix-agent2-config-tips/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Zabbix Agent2 Config Tips For Windows - Zabbix Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.49ea35f2.css">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css?v=105cde40ff710f3c21b6c2945cd804e688710772">
+    
+      <link rel="stylesheet" href="../../../stylesheets/linewrap.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Zabbix Agent2 Config Tips For Windows">
+    <meta property="og:description" content="Configuring and deploying Zabbix Agent 2 across a Windows fleet. Learn how to structure the agent configuration so that installations are consistent and upgrades are painless.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thezabbixbook.com/pt_BR/ch16-windows/windows-zabbix-agent2-config-tips/">
+    <meta property="og:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Zabbix Agent2 Config Tips For Windows">
+    <meta name="twitter:description" content="Configuring and deploying Zabbix Agent 2 across a Windows fleet. Learn how to structure the agent configuration so that installations are consistent and upgrades are painless.">
+    <meta name="twitter:image" content="https://www.thezabbixbook.com/assets/social-card.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#configuring-zabbix-agent-2-on-a-windows-fleet" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    
+    
+    
+        <div class="gmc-announce">
+            Esta página ainda não foi traduzida para o português. Portanto, está sendo exibida em inglês.
+            <a href="/gmc/pt_BR/contribute/#translations">Ajude-nos a traduzir!</a>
+        </div>
+    
+    
+    <script>
+        const gGMC_SELECT_VERSION = "Selecione a versão";
+        const gGMC_TRANSLATE_CTA = "Ajude-nos a traduzir!";
+        const gGMC_PAGE_LOCALE = "pt_BR";
+        const gGMC_FILE_LOCALE = "en";
+        const gGMC_TRANSLATE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2 0 .37-.03.73-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.59 0 1.16-.06 1.72-.16A5.9 5.9 0 0 1 13 19c0-.29.03-.57.07-.85-.32.63-.67 1.24-1.07 1.81-.83-1.2-1.5-2.53-1.91-3.96h3.72a5.95 5.95 0 0 1 2.59-2.4c.06-.53.1-1.06.1-1.6M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m6.34 6H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2m.25-9.56c1.84.63 3.37 1.9 4.33 3.56h-2.95a15.7 15.7 0 0 0-1.38-3.56M23 18v2h-3v3h-2v-3h-3v-2h3v-3h2v3z"/></svg>';
+    </script>
+    
+    
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../" title="Zabbix Book" class="md-header__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zabbix Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Zabbix Agent2 Config Tips For Windows
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="light-blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../fr/ch16-windows/windows-zabbix-agent2-config-tips/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../de/ch16-windows/windows-zabbix-agent2-config-tips/" hreflang="de" class="md-select__link">
+              German
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../nl/ch16-windows/windows-zabbix-agent2-config-tips/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt_BR" class="md-select__link">
+              Brazilian Portuguese
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ru/ch16-windows/windows-zabbix-agent2-config-tips/" hreflang="ru" class="md-select__link">
+              Russian
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../ch16-windows/windows-zabbix-agent2-config-tips/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartilhar" aria-label="Compartilhar" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Zabbix Book" class="md-nav__button md-logo" aria-label="Zabbix Book" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zabbix Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/penmasters/zabbix-book" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    penmasters
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guidelines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Book Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Supporters-Contributors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supporters and contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch00-getting-started/initial-steps/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch01-zabbix-components/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 01 : Zabbix components and installation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch02-zabbix-installation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 02 : Zabbix Frontend
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch03-zabbix-proxies/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 03 : Proxies and Webcomponents
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch04-zabbix-collecting-data/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 04 : Collecting data 
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch05-zabbix-triggers/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 05 : Triggers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch06-zabbix-templates/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 06 : Templates
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch07-zabbix-alerts/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 07 : Alerting
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch08-zabbix-lld/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 08 : LLD
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch09-zabbix-extending/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 09 : Extending Zabbix
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch10-zabbix-discovery/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 : Discovery
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch11-zabbix-visualisation/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 : Visualisation
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch12-zabbix-api/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 : Zabbix API
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch13-advanced-security/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 : Advanced set up and security
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch14-zabbix-maintenance/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 : Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ch15-zabbix-real-world-examples/chapter/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 : Real world examples
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 16 : Windows monitoring
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 16 : Windows monitoring
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitoring Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix Agent2 Config Tips For Windows
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zabbix Agent2 Config Tips For Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taking-control-of-your-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taking Control of Your Configuration File
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keeping-hostname-lowercase-for-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keeping Hostname= Lowercase for Consistency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-include-parameter-to-your-advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the Include= Parameter to Your Advantage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the Include= Parameter to Your Advantage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-solution-splitting-custom-configuration-under-programdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Solution: Splitting Custom Configuration Under %PROGRAMDATA%
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-powershell-scripting-to-your-advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using PowerShell Scripting to Your Advantage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using PowerShell Scripting to Your Advantage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-consider-powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Consider PowerShell?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-limitation-of-native-msi-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Limitation of Native MSI Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-forceactivechecksonstart-and-refreshactivechecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using ForceActiveChecksOnStart and RefreshActiveChecks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using ForceActiveChecksOnStart and RefreshActiveChecks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#forceactivechecksonstart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ForceActiveChecksOnStart
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refreshactivechecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RefreshActiveChecks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metadata-and-autoregistration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata and Autoregistration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#active-vs-passive-monitoring-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Active vs Passive Monitoring Templates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Active vs Passive Monitoring Templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-active-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use Active Templates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-passive-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use Passive Templates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-msi-installer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the MSI Installer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the MSI Installer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-install-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Install Command
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-upgrade-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Upgrade Command
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#order-of-the-msi-and-script-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Order of the MSI and Script Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-example-configurations-a-single-highly-available-zabbix-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-World Example Configurations: A Single Highly Available Zabbix Environment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real-World Example Configurations: A Single Highly Available Zabbix Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cprogram-fileszabbix-agent-2zabbix_agent2conf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-zabbix-ext-directory-configuration-files-and-custom-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Zabbix-ext Directory, Configuration Files and Custom Scripts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Zabbix-ext Directory, Configuration Files and Custom Scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extconfdactive_agentconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extconfdcustom_checksconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\conf.d\custom_checks.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extconfdmetadataconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extconfdkeypsk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\conf.d\key.psk
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extconfdpsk_optionsconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\conf.d\psk_options.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extscriptsinvoke-activedirectorychecksps1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subject-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subject index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Print Site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taking-control-of-your-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taking Control of Your Configuration File
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keeping-hostname-lowercase-for-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keeping Hostname= Lowercase for Consistency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-include-parameter-to-your-advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the Include= Parameter to Your Advantage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the Include= Parameter to Your Advantage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-solution-splitting-custom-configuration-under-programdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Solution: Splitting Custom Configuration Under %PROGRAMDATA%
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-powershell-scripting-to-your-advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using PowerShell Scripting to Your Advantage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using PowerShell Scripting to Your Advantage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-consider-powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Consider PowerShell?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-limitation-of-native-msi-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Limitation of Native MSI Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-forceactivechecksonstart-and-refreshactivechecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using ForceActiveChecksOnStart and RefreshActiveChecks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using ForceActiveChecksOnStart and RefreshActiveChecks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#forceactivechecksonstart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ForceActiveChecksOnStart
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refreshactivechecks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RefreshActiveChecks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metadata-and-autoregistration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata and Autoregistration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#active-vs-passive-monitoring-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Active vs Passive Monitoring Templates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Active vs Passive Monitoring Templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-active-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use Active Templates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-passive-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use Passive Templates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-msi-installer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the MSI Installer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the MSI Installer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-install-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Install Command
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-upgrade-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Upgrade Command
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#order-of-the-msi-and-script-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Order of the MSI and Script Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-example-configurations-a-single-highly-available-zabbix-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-World Example Configurations: A Single Highly Available Zabbix Environment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real-World Example Configurations: A Single Highly Available Zabbix Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cprogram-fileszabbix-agent-2zabbix_agent2conf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-zabbix-ext-directory-configuration-files-and-custom-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Zabbix-ext Directory, Configuration Files and Custom Scripts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Zabbix-ext Directory, Configuration Files and Custom Scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extconfdactive_agentconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extconfdcustom_checksconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\conf.d\custom_checks.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extconfdmetadataconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extconfdkeypsk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\conf.d\key.psk
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extconfdpsk_optionsconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\conf.d\psk_options.conf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cprogramdatazabbix-extscriptsinvoke-activedirectorychecksps1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navegação" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../" class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../chapter/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Chapter 16 : Windows monitoring
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+
+
+    <a href="../../../print_page/" title="Print Site" class="md-content__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3"/></svg>
+    </a>
+
+
+
+                  
+
+
+
+
+
+
+
+<nav class="md-tags">
+  
+    
+    <span class="md-tag md-tag-icon" data-tag="advanced">
+      Avançado
+    </span>
+  
+</nav>
+
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/penmasters/zabbix-book/raw/main/docs/ch16-windows/windows-zabbix-agent2-config-tips.md" title="Exibir fonte desta página" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="configuring-zabbix-agent-2-on-a-windows-fleet">Configuring Zabbix Agent 2 on a Windows Fleet</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Zabbix Agent 2 is the recommended agent for Windows environments, particularly
+if you need any of its plugins. This chapter applies equally to Windows Servers,
+Windows Desktops, or a mix of both. It covers the structure of the agent
+configuration file and shows how to deploy the agent with the initial settings
+most environments need.</p>
+<p>It assumes you are a sysadmin with a way to deploy an MSI package followed by
+PowerShell scripts, for example PDQ Deploy or Ivanti Endpoint Manager (formerly
+Landesk). If you manage a small environment without such tools, every step can
+also be performed manually.</p>
+<p>A consistent deployment up front reduces overhead later, whether you are
+upgrading agents or auto-registering new and existing hosts. Examples of the
+configuration files and PowerShell scripts are provided at the end of this
+chapter.</p>
+<h2 id="summary">Summary</h2>
+<p>Configuring the agent correctly from the start saves a great deal of time when
+upgrading the agent fleet wide, assuming you use the Microsoft Installer (MSI)
+package. The recommendations below are covered in the order listed.</p>
+<ol>
+<li>Take control of your configuration and treat it as a template.</li>
+<li>Keep the <code>Hostname=</code> field fully qualified and lowercase if you can, for
+   example <code>hostname.domain.org</code>.</li>
+<li>Use <code>Include=C:\\some\\path\\*.conf</code> to move customizations out of the
+   default configuration file.</li>
+<li>Use PowerShell scripting to set <code>Hostname=</code> automatically.</li>
+<li>Use <code>ForceActiveChecksOnStart</code> and <code>RefreshActiveChecks</code> when using active
+   templates (<code>ServerActive</code>).</li>
+<li>Define metadata strings and consider them for autoregistration.</li>
+<li>Prioritize active templates over passive ones where possible.</li>
+<li>Use the MSI installer package for deployment.</li>
+</ol>
+<h2 id="taking-control-of-your-configuration-file">Taking Control of Your Configuration File</h2>
+<p>Treat the <code>zabbix_agent2.conf</code> file with care. Removing default lines can cause
+issues when it is time to upgrade. Adding lines at the bottom of the file is
+acceptable, but it is better to use the <code>Include=</code> parameter and point it to a
+new file that you maintain in a different directory.</p>
+<p>The goal of structuring your Zabbix configuration files correctly is to make
+future Zabbix Agent 2 upgrades seamless when you run the MSI again.</p>
+<p>The <code>.\zabbix_agent2.d\plugins.d</code> directory can be used to add more
+configuration and is typically preserved during a standard agent uninstall. If
+you need to store confidential data such as <code>TLSPSKFile</code> or <code>TLSPSKIdentity</code> and
+do not want it in the regular <code>C:\Program Files\Zabbix Agent 2</code> directory, you
+can place it under <code>%PROGRAMDATA%</code> (<code>C:\ProgramData\...</code>). This directory is
+hidden by default for users on most Windows installations. Note that
+<code>%PROGRAMDATA%</code> should not be seen as a complete security boundary, but in most
+cases it is hidden and keeps operational data separate from the agent
+installation directory.</p>
+<p>When you upgrade via MSI (with the <code>NONMSICONFNAME</code> parameter), the installer
+merges your initial <code>zabbix_agent2.conf</code> file with the default one; your
+parameter values overwrite the default values. Be aware that custom content may
+not carry over. <code>Server</code>, <code>ServerActive</code>, <code>Include</code> and a few other values are
+safe.</p>
+<p>Each time you change a configuration file, whether it is the main one or one
+included via the <code>Include</code> parameter, you must restart the Zabbix Agent 2
+service to apply the changes.</p>
+<p>In short, for fleet-wide management on Windows, take the time to read the base
+<code>zabbix_agent2.conf</code>. If you need anything beyond the default parameters, use
+<code>Include=</code> to define it elsewhere.</p>
+<p>You can use the configuration snippets at the end of this chapter as a starting
+point, but read the next few sections before you do.</p>
+<h2 id="keeping-hostname-lowercase-for-consistency">Keeping <code>Hostname=</code> Lowercase for Consistency</h2>
+<p>This is very important if you use <code>ServerActive</code>. The <code>Hostname=</code> value <strong>must
+match</strong> the <code>Host name</code> field of the host record and is case-sensitive,
+otherwise your active agent templates for Windows will not work.</p>
+<p>&#10006; This does not work for active checks:</p>
+<ul>
+<li>Configuration file: <code>Hostname=SOMEserver.domain.com</code></li>
+<li>Zabbix host record, <code>Host name</code> field: <code>someserver.domain.com</code></li>
+</ul>
+<p>&#10003; This works for active checks:</p>
+<ul>
+<li>Configuration file: <code>Hostname=someserver.domain.com</code></li>
+<li>Zabbix host record, <code>Host name</code> field: <code>someserver.domain.com</code></li>
+</ul>
+<h2 id="using-the-include-parameter-to-your-advantage">Using the <code>Include=</code> Parameter to Your Advantage</h2>
+<p>During an agent upgrade through the MSI command line, the installer does its
+best to merge the old <code>C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf</code> file
+into the newly generated <code>zabbix_agent2.conf</code>.</p>
+<p>Even with the <code>NONMSICONFNAME</code> MSI parameter, not all parameters are merged or
+carried over (as of 7.0 LTS). <code>Server</code>, <code>ServerActive</code>, <code>Hostname</code> and
+<code>Include</code> are preserved. Consider the <code>C:\Program Files\Zabbix Agent 2\</code> root
+directory a "no-go" zone, apart from what the MSI needs for the initial
+installation.</p>
+<p>Parameters such as <code>ForceActiveChecksOnStart</code> and <code>RefreshActiveChecks</code> are not
+brought over. The solution is to use the
+<code>C:\Program Files\Zabbix Agent 2\zabbix_agent2.d\plugins.d</code> directory, or a
+custom directory structure under <code>%PROGRAMDATA%</code>.</p>
+<p>In short, put your custom configuration files in other directories and use
+<code>Include=</code> in <code>zabbix_agent2.conf</code>, so that they persist through a full
+uninstall of the agent and are not lost during an upgrade.</p>
+<h3 id="custom-solution-splitting-custom-configuration-under-programdata">Custom Solution: Splitting Custom Configuration Under <code>%PROGRAMDATA%</code></h3>
+<p>Directory structure:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>C:\ProgramData\Zabbix-ext
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── conf.d
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── active_agent.conf
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   ├── custom_config.conf
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   └── metadata.conf
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└── scripts
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    └── Invoke-ActiveDirectoryChecks.ps1
+</span></code></pre></div>
+<p>The following one-liner in
+<code>C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf</code> includes all three
+configuration files in the <code>C:\ProgramData\Zabbix-ext\conf.d</code> directory:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="na">Include</span><span class="o">=</span><span class="s">C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf</span>
+</span></code></pre></div>
+<h2 id="using-powershell-scripting-to-your-advantage">Using PowerShell Scripting to Your Advantage</h2>
+<p>Some deployment tools offer a native "MSI Install" step but limit which strings
+can be passed to the MSI switches. This may not apply to every reader, but it is
+worth mentioning.</p>
+<p>This becomes a problem if you need to set <code>Hostname=</code> in a specific way, such as
+the hostname of the targeted endpoint.</p>
+<p>This section provides a simple example of a post-install PowerShell step that
+works around that limitation.</p>
+<p>When you plan your initial configuration for
+<code>C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf</code>, do so in the context of a
+template. PowerShell can then replace the <code>Hostname=</code> value with the current
+FQDN during installation, if your deployment method does not allow variables in
+the MSI switches.</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nv">$file</span><span class="p">=</span><span class="s2">"C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf"</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">$FQDNHostName</span> <span class="p">=</span> <span class="no">[System.Net.Dns]</span><span class="p">::</span><span class="n">GetHostEntry</span><span class="p">(</span><span class="nv">$env:COMPUTERNAME</span><span class="p">).</span><span class="n">HostName</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nv">$FQDNHostNameToLower</span> <span class="p">=</span> <span class="nv">$FQDNHostName</span><span class="p">.</span><span class="n">ToLower</span><span class="p">()</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nv">$FQDNHostNameToLower</span> <span class="p">+=</span> <span class="s2">".domain.org"</span> <span class="c"># Your domain name but also lowercase if needed</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">(</span><span class="nb">Get-Content</span> <span class="nv">$file</span><span class="p">)</span> <span class="o">-replace</span> <span class="s2">"Hostname=REPLACEME"</span><span class="p">,</span><span class="s2">"Hostname=$FQDNHostNameToLower"</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="nv">$file</span>
+</span></code></pre></div>
+<h3 id="why-consider-powershell">Why Consider PowerShell?</h3>
+<p>Products such as Ivanti Endpoint Manager, SCCM and PDQ Deploy have native MSI
+install steps for deployment tasks, so you do not need to write a PowerShell or
+batch script to perform the installation. The deployment tool calls it natively
+in <code>cmd.exe</code> with the <code>msiexec /i...</code> command. This sounds convenient, but it
+may not always deliver exactly what you need.</p>
+<h3 id="the-limitation-of-native-msi-steps">The Limitation of Native MSI Steps</h3>
+<p>With some deployment tools, the native MSI method does not make it easy to
+insert properties of the targeted machine into the command switches as
+variables, without resorting to workarounds.</p>
+<p>For example, a specific deployment tool does not allow the following and
+accepts only inline string literals. It does not allow a variable to be passed
+to the MSI method switches:</p>
+<p><code>/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"</code></p>
+<p>In other cases, the tool lacks basic string manipulation, such as appending a
+domain to the variable inline in an MSI switch:</p>
+<p><code>/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"+'.domain.com'</code></p>
+<p>In these cases, the organization needs an additional PowerShell step that edits
+<code>zabbix_agent2.conf</code> in place after the initial MSI installation.</p>
+<h2 id="using-forceactivechecksonstart-and-refreshactivechecks">Using <code>ForceActiveChecksOnStart</code> and <code>RefreshActiveChecks</code></h2>
+<p>These parameters are important to understand from a <code>ServerActive</code> monitoring
+perspective, and they are essential to have in your agent configuration.</p>
+<h3 id="forceactivechecksonstart">ForceActiveChecksOnStart</h3>
+<p>When set to <code>1</code>, the agent immediately queries the Zabbix server (or Zabbix
+proxy) for changes to the configured monitoring templates when the agent
+service is started or restarted.</p>
+<p>This also triggers an immediate low-level discovery (LLD) if one is configured
+in the template. Setting this parameter to <code>1</code> is highly recommended.</p>
+<h3 id="refreshactivechecks">RefreshActiveChecks</h3>
+<p>Similar to <code>ForceActiveChecksOnStart</code>, this parameter configures how often
+Zabbix Agent 2 checks in with a Zabbix server (or Zabbix proxy) for new or
+updated active monitoring templates. The value is defined in seconds. A good
+starting value is <code>RefreshActiveChecks=300</code>, which equals 5 minutes.</p>
+<p>If you change a monitoring template or a host-specific macro override, this is
+how the agent picks up the updated active-check configuration. If the change
+requires LLD to run, you must wait for the next discovery cycle as specified in
+the template.</p>
+<h2 id="metadata-and-autoregistration">Metadata and Autoregistration</h2>
+<p>If you plan to use metadata strings, split them out via <code>Include=</code>, especially
+if you allow agent autoregistration.</p>
+<p>Metadata lets you control and direct autoregistration actions, for example to
+apply different templates based on the value assigned to <code>HostMetadata</code>.</p>
+<p>Some organizations use a single string for all hosts. Others set the metadata
+string based on server role. If you split by role, the value is set per server
+at installation time or changed afterwards.</p>
+<p>Note that if the <code>HostMetadata</code> value is changed, the Zabbix server starts an
+autoregistration action (if one is defined) when the agent restarts. If the
+<code>HostMetadata</code> value never changes during the lifetime of the agent or
+endpoint, autoregistration does not run again after the first time.</p>
+<p>You still need to configure the autoregistration actions on the Zabbix server.</p>
+<p>Example 1:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="na">HostMetadata</span><span class="o">=</span><span class="s">WindowsServer</span>
+</span></code></pre></div>
+<p>Example 2:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="na">HostMetadata</span><span class="o">=</span><span class="s">WindowsServer_DomainController</span>
+</span></code></pre></div>
+<p>Example 3:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="na">HostMetadata</span><span class="o">=</span><span class="s">WindowsServer_MSSQLServer</span>
+</span></code></pre></div>
+<h2 id="active-vs-passive-monitoring-templates">Active vs Passive Monitoring Templates</h2>
+<p>If you have read this far, you will have noticed that this chapter leans
+towards active checks. There are scenarios for both, and both can be used at
+the same time.</p>
+<p>From a design and architecture standpoint, active checks should be preferred
+whenever practical. However, you may not be able to send data from a DMZ subnet
+back to an internal network, for example when company policy only allows
+connections that originate from the internal network to reach the DMZ. In such
+cases active checks are not possible, and passive checks come into play.</p>
+<p>By default, prepare your agent configuration for both scenarios by setting
+<code>Server=</code> (passive) and <code>ServerActive=</code> (active).</p>
+<h3 id="when-to-use-active-templates">When to Use Active Templates</h3>
+<p>Anything that requires LLD, such as discovering disks (<code>C:\</code>, <code>D:\</code>, and so on)
+or Windows services, as well as CPU, RAM and all other basic monitoring needs,
+should be collected by the agent to reduce the load on your Zabbix server or
+proxy.</p>
+<p>Active checks are strongly preferred in Windows environments, where querying
+<code>perfmon</code> can be slow during high CPU load or disk I/O contention.</p>
+<h3 id="when-to-use-passive-templates">When to Use Passive Templates</h3>
+<p>This can be tricky, but one organization needed to monitor the status of a
+Microsoft SQL Server Always On availability group. The availability group
+consists of multiple hosts that already exist in Zabbix and are sending data.</p>
+<p>A cluster can be healthy overall while a specific node is unhealthy or down. If
+you monitor the cluster from only a single node, you could miss an alert. If
+you apply a template to all three hosts, you get duplicate data.</p>
+<p>The question becomes: how do you monitor the cluster health as a single entity?</p>
+<p><strong>The solution:</strong> the organization created a separate passive template to query
+the Microsoft SQL Server Always On listeners, which are virtual IPs that
+migrate between the hosts. They then created new hosts in Zabbix for each
+listener and used a passive check against the listener IP. If the availability
+group fails over to a new node, the Zabbix server or proxy still queries the
+same IP, even though the data now comes from a different server and Zabbix
+agent.</p>
+<p><img alt="Normal Operations" src="../../../ch16-windows/diagrams/ch16-msaosql_normal.png" /></p>
+<p><em>Normal operations</em></p>
+<p><img alt="Failover of VIP To Healthy Node" src="../../../ch16-windows/diagrams/ch16-msaosql_failover.png" /></p>
+<p><em>Microsoft Always On listener failover</em></p>
+<h2 id="using-the-msi-installer">Using the MSI Installer</h2>
+<p>This is largely self-evident, so we keep it short.</p>
+<p>For deploying Zabbix Agent 2 on Windows, you need an installation package that
+can handle both installation and upgrade, and that meets a few requirements:</p>
+<ul>
+<li>Standardized silent installations</li>
+<li>Standard switches for installation options</li>
+<li>A standard switch for repairing or installing additional agent plugins</li>
+<li>Easy management via PDQ Deploy, Ivanti Endpoint Manager, SCCM, Group Policy or
+  Intune</li>
+</ul>
+<p>The MSI meets these requirements, including detection of an existing
+installation.</p>
+<h3 id="example-install-command">Example Install Command</h3>
+<p>Command Prompt:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>msiexec.exe<span class="w"> </span>/i<span class="w"> </span><span class="s2">"C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi"</span><span class="w"> </span><span class="nv">HOSTNAME</span><span class="o">=</span><span class="s2">"someendpoint.domain.com"</span><span class="w"> </span><span class="nv">SERVER</span><span class="o">=</span><span class="s2">"zabbixnode1ipaddress,zabbixnode2ipaddress"</span><span class="w"> </span><span class="nv">SERVERACTIVE</span><span class="o">=</span><span class="s2">"zabbixnode1ipaddress;zabbixnode2ipaddress"</span><span class="w"> </span>/qn<span class="w"> </span>/silent
+</span></code></pre></div>
+<p>PowerShell:</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">Start-Process</span> <span class="n">msiexec</span><span class="p">.</span><span class="n">exe</span> <span class="n">-ArgumentList</span> <span class="s1">'/i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent'</span> <span class="n">-Wait</span>
+</span></code></pre></div>
+<h3 id="example-upgrade-command">Example Upgrade Command</h3>
+<p>Use this command for upgrades if you follow the configuration shown at the end
+of this chapter.</p>
+<p>Command Prompt:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>msiexec.exe<span class="w"> </span>/i<span class="w"> </span><span class="s2">"zabbix_agent2-7.0.31-windows-amd64-openssl.msi"</span><span class="w"> </span><span class="nv">NONMSICONFNAME</span><span class="o">=</span><span class="s2">"C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf"</span><span class="w"> </span>/qn<span class="w"> </span>/silent
+</span></code></pre></div>
+<p>PowerShell:</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">Start-Process</span> <span class="n">msiexec</span><span class="p">.</span><span class="n">exe</span> <span class="n">-ArgumentList</span> <span class="s1">'/i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent'</span> <span class="n">-Wait</span>
+</span></code></pre></div>
+<h3 id="order-of-the-msi-and-script-installation">Order of the MSI and Script Installation</h3>
+<p>If you use MSI and PowerShell 5.1 (Windows PowerShell) to install the agent,
+create the <code>Zabbix-ext</code> directory and apply a templated <code>zabbix_agent2.conf</code>,
+follow this order:</p>
+<ol>
+<li>Install the agent via MSI as usual.<ul>
+<li>Optional edge case: if you cannot set <code>Hostname=</code>, <code>Server=</code> and
+  <code>ServerActive=</code> through the MSI switches, have a PowerShell script
+  overwrite these fields in
+  <code>C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf</code>. A small example that
+  does this inline, without overwriting the entire file, is shown in
+  <a href="#using-powershell-scripting-to-your-advantage">Using PowerShell Scripting to Your Advantage</a>.</li>
+</ul>
+</li>
+<li>Have a PowerShell script create the <code>Zabbix-ext</code> directory under
+   <code>%PROGRAMDATA%</code> with the <code>.conf</code> files.</li>
+<li>Have a PowerShell script add the <code>Include=</code> fields at the bottom of
+   <code>C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf</code>, or create a new file
+   such as
+   <code>C:\Program Files\Zabbix Agent 2\zabbix_agent2.d\plugins.d\custom_includes.conf</code>.</li>
+<li>Have a PowerShell script restart the agent to apply all changes.</li>
+<li>
+<p>Have a PowerShell script configure Windows via <code>sc.exe</code> to restart the
+   Zabbix Agent 2 service if it fails:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c"># Set the service to restart itself if it fails</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="p">&amp;</span> <span class="s2">"$env:SystemRoot\System32\sc.exe"</span> <span class="n">failure</span> <span class="s2">"Zabbix Agent 2"</span> <span class="n">actions</span><span class="p">=</span> <span class="s2">"restart/60000/restart/60000/restart/60000"</span> <span class="n">reset</span><span class="p">=</span> <span class="n">86400</span>
+</span></code></pre></div>
+</li>
+</ol>
+<h2 id="real-world-example-configurations-a-single-highly-available-zabbix-environment">Real-World Example Configurations: A Single Highly Available Zabbix Environment</h2>
+<p>This example contains the standard configuration in the default location, plus
+a <code>Zabbix-ext</code> directory under <code>%PROGRAMDATA%</code> instead of <code>zabbix_agent2.d</code>.</p>
+<p>You can use a PowerShell command to overwrite <code>Hostname=</code>, matching on
+<code>Hostname=REPLACEMEBUTLOWERCASE.domain.com</code>.</p>
+<h3 id="cprogram-fileszabbix-agent-2zabbix_agent2conf">C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf</h3>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf (snippet with author comments)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="c1"># This is a snippet of the main configuration file with author comments.</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="c1"># Do not remove the default parameters or lines from this file. You may change</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># the Server and ServerActive values and add Include= at the bottom.</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1"># Do not customize this base file any further than those parameter values.</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># Log file configuration</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="c1"># Set by default by the agent at install/upgrade in the base file</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="na">LogFile</span><span class="o">=</span><span class="s">C:\Program Files\Zabbix Agent 2\zabbix_agent2.log</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="c1">#...file continues...</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="c1"># Server, passive configuration (the Zabbix server/proxy polls this endpoint)</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="c1"># Set by the user via the MSI installer at install time</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="na">Server</span><span class="o">=</span><span class="s">10.0.1.24,10.0.1.25</span>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="c1">#...file continues...</span>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="c1"># ServerActive, active configuration (the endpoint sends data to the Zabbix</span>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="c1"># server/proxy)</span>
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="c1"># HA nodes of the same environment are separated by semicolons</span>
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="c1"># Set by the user via the MSI installer at install time</span>
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="na">ServerActive</span><span class="o">=</span><span class="s">10.0.1.24</span><span class="c1">;10.0.1.25</span>
+</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>
+</span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="c1">#...file continues...</span>
+</span><span id="__span-11-26"><a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>
+</span><span id="__span-11-27"><a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a><span class="c1"># Preferably, fully qualify your hostname and make it lowercase.</span>
+</span><span id="__span-11-28"><a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a><span class="c1"># For ServerActive configurations this field is REQUIRED and case-sensitive!</span>
+</span><span id="__span-11-29"><a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a><span class="c1"># Set by the user via the MSI installer at install time</span>
+</span><span id="__span-11-30"><a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a><span class="na">Hostname</span><span class="o">=</span><span class="s">REPLACEMEBUTLOWERCASE.domain.com</span>
+</span><span id="__span-11-31"><a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>
+</span><span id="__span-11-32"><a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a><span class="c1">#...file continues...</span>
+</span><span id="__span-11-33"><a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a>
+</span><span id="__span-11-34"><a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a><span class="c1"># Include configuration files for plugins. You can also use a literal path.</span>
+</span><span id="__span-11-35"><a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a><span class="c1"># Include=C:\\Program Files\\Zabbix Agent 2\\zabbix_agent2.d\\</span>
+</span><span id="__span-11-36"><a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a><span class="c1"># Set by default by the agent at install/upgrade in the base file</span>
+</span><span id="__span-11-37"><a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a><span class="na">Include</span><span class="o">=</span><span class="s">.\zabbix_agent2.d\plugins.d\*.conf</span>
+</span><span id="__span-11-38"><a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>
+</span><span id="__span-11-39"><a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a><span class="c1">#...file continues...</span>
+</span><span id="__span-11-40"><a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>
+</span><span id="__span-11-41"><a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a><span class="c1"># Include any extra configuration directories at the bottom of the file.</span>
+</span><span id="__span-11-42"><a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a><span class="c1"># This one was added by the system administrator to place custom configuration</span>
+</span><span id="__span-11-43"><a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a><span class="c1"># in the %PROGRAMDATA% directory, so that it is hidden from non-administrators.</span>
+</span><span id="__span-11-44"><a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a><span class="na">Include</span><span class="o">=</span><span class="s">C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf</span>
+</span></code></pre></div>
+<h3 id="the-zabbix-ext-directory-configuration-files-and-custom-scripts">The Zabbix-ext Directory, Configuration Files and Custom Scripts</h3>
+<p>Directory structure of <code>Zabbix-ext</code> under <code>%PROGRAMDATA%</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>C:\ProgramData\Zabbix-ext
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>├── conf.d
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>│   ├── active_agent.conf
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>│   ├── custom_checks.conf
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>│   ├── metadata.conf
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>│   ├── key.psk
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>│   └── psk_options.conf
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>└── scripts
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>    └── Invoke-ActiveDirectoryChecks.ps1
+</span></code></pre></div>
+<h4 id="cprogramdatazabbix-extconfdactive_agentconf">C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf</h4>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Place this file at C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1"># Forces the agent to fetch its configuration immediately on start</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="na">ForceActiveChecksOnStart</span><span class="o">=</span><span class="s">1</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="c1"># How often the list of active checks is refreshed, in seconds</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="na">RefreshActiveChecks</span><span class="o">=</span><span class="s">300</span>
+</span></code></pre></div>
+<h4 id="cprogramdatazabbix-extconfdcustom_checksconf">C:\ProgramData\Zabbix-ext\conf.d\custom_checks.conf</h4>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Put custom UserParameters here, or split them out per .conf file</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="na">UserParameter</span><span class="o">=</span><span class="s">PowerShell.ps_dcdiag_checks,PowerShell -ExecutionPolicy Bypass -File "C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1"</span>
+</span></code></pre></div>
+<h4 id="cprogramdatazabbix-extconfdmetadataconf">C:\ProgramData\Zabbix-ext\conf.d\metadata.conf</h4>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># To be used with the deployment package. This file is intended to be changed</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1"># per server, or fleet-wide if all agents need the same change.</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="c1"># For example: WindowsServer_ActiveDirectoryServers ---&gt; an autoregistration</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># action places the host in a host group.</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="c1"># Place this file at C:\ProgramData\Zabbix-ext\conf.d\metadata.conf</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="na">HostMetadata</span><span class="o">=</span><span class="s">WindowsServer</span>
+</span></code></pre></div>
+<h4 id="cprogramdatazabbix-extconfdkeypsk">C:\ProgramData\Zabbix-ext\conf.d\key.psk</h4>
+<p>This is not a real key and is not used anywhere. It only illustrates what the
+file contains.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>c63e00000c9999999926fd58e24cdhotdogs7f54burgers627932efries87e79
+</span></code></pre></div>
+<h4 id="cprogramdatazabbix-extconfdpsk_optionsconf">C:\ProgramData\Zabbix-ext\conf.d\psk_options.conf</h4>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># PSK configuration</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># Generate a key with: openssl rand -hex 32, and store it in key.psk</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="na">TLSConnect</span><span class="o">=</span><span class="s">psk</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="na">TLSAccept</span><span class="o">=</span><span class="s">psk</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="na">TLSPSKFile</span><span class="o">=</span><span class="s">C:\\ProgramData\\Zabbix-ext\\conf.d\\key.psk</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="na">TLSPSKIdentity</span><span class="o">=</span><span class="s">PSK-001</span>
+</span></code></pre></div>
+<h4 id="cprogramdatazabbix-extscriptsinvoke-activedirectorychecksps1">C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1</h4>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c"># This script is meant to run on a Windows domain controller to perform some</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c"># basic health checks. It returns a JSON payload that can be used in a template.</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c"># Add more tests here if you need them.</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nv">$tests</span> <span class="p">=</span> <span class="s2">"services"</span><span class="p">,</span><span class="s2">"replications"</span><span class="p">,</span><span class="s2">"advertising"</span><span class="p">,</span><span class="s2">"fsmocheck"</span><span class="p">,</span><span class="s2">"ridmanager"</span><span class="p">,</span><span class="s2">"machineaccount"</span><span class="p">,</span><span class="s2">"connectivity"</span><span class="p">,</span><span class="s2">"FRSSysvol"</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="c"># Runs dcdiag /test:INPUTSTRINGHERE and looks for "failed".</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="c"># Returns a PSCustomObject as @{INPUTSTRINGHERE: INTEGER}</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="k">function</span> <span class="nb">Invoke-DcDiagTest</span> <span class="p">{</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>    <span class="k">param</span> <span class="p">(</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span><span class="p">=</span><span class="nv">$true</span><span class="p">)]</span><span class="no">[string]</span><span class="nv">$TestName</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>    <span class="p">)</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>    <span class="nv">$ReturnPSCustomObject</span> <span class="p">=</span> <span class="no">[PSCustomObject]</span><span class="p">@{}</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>    <span class="nv">$result</span> <span class="p">=</span> <span class="n">dcdiag</span> <span class="p">/</span><span class="n">test</span><span class="p">:</span><span class="nv">$TestName</span> <span class="p">|</span> <span class="nb">Select-String</span> <span class="s2">"failed"</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>    <span class="k">If</span> <span class="p">(</span><span class="nv">$result</span><span class="p">)</span> <span class="p">{</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>        <span class="nv">$ReturnPSCustomObject</span> <span class="p">|</span> <span class="nb">Add-Member</span> <span class="n">-MemberType</span> <span class="n">NoteProperty</span> <span class="n">-Name</span> <span class="nv">$TestName</span> <span class="n">-Value</span> <span class="n">0</span> <span class="c"># 0 means bad</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>        <span class="nv">$ReturnPSCustomObject</span> <span class="p">|</span> <span class="nb">Add-Member</span> <span class="n">-MemberType</span> <span class="n">NoteProperty</span> <span class="n">-Name</span> <span class="nv">$TestName</span> <span class="n">-Value</span> <span class="n">1</span> <span class="c"># 1 means good</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a>    <span class="p">}</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a>    <span class="k">return</span> <span class="nv">$ReturnPSCustomObject</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="p">}</span>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="nv">$GlobalAllTestsOK</span> <span class="p">=</span> <span class="n">1</span> <span class="c"># Preset to true unless a test fails</span>
+</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="nv">$OutputOfTests</span> <span class="p">=</span> <span class="no">[PSCustomObject]</span><span class="p">@{}</span> <span class="c"># Return object that we convert to JSON</span>
+</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a>
+</span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="k">ForEach</span> <span class="p">(</span><span class="nv">$TestToRun</span> <span class="k">in</span> <span class="nv">$tests</span><span class="p">)</span> <span class="p">{</span>
+</span><span id="__span-18-29"><a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a>    <span class="nv">$SingularTest</span> <span class="p">=</span> <span class="nb">Invoke-DcDiagTest</span> <span class="n">-TestName</span> <span class="nv">$TestToRun</span>
+</span><span id="__span-18-30"><a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a>    <span class="nv">$OutputOfTests</span> <span class="p">|</span> <span class="nb">Add-Member</span> <span class="n">-MemberType</span> <span class="n">NoteProperty</span> <span class="n">-Name</span> <span class="nv">$TestToRun</span> <span class="n">-Value</span> <span class="nv">$SingularTest</span><span class="p">.</span><span class="nv">$TestToRun</span>
+</span><span id="__span-18-31"><a id="__codelineno-18-31" name="__codelineno-18-31" href="#__codelineno-18-31"></a>    <span class="k">If</span> <span class="p">(</span><span class="nv">$SingularTest</span><span class="p">.</span><span class="nv">$TestToRun</span> <span class="o">-eq</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span id="__span-18-32"><a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a>        <span class="nv">$GlobalAllTestsOK</span> <span class="p">=</span> <span class="n">0</span> <span class="c"># If any test fails, set the flag to 0 (false)</span>
+</span><span id="__span-18-33"><a id="__codelineno-18-33" name="__codelineno-18-33" href="#__codelineno-18-33"></a>    <span class="p">}</span>
+</span><span id="__span-18-34"><a id="__codelineno-18-34" name="__codelineno-18-34" href="#__codelineno-18-34"></a><span class="p">}</span>
+</span><span id="__span-18-35"><a id="__codelineno-18-35" name="__codelineno-18-35" href="#__codelineno-18-35"></a>
+</span><span id="__span-18-36"><a id="__codelineno-18-36" name="__codelineno-18-36" href="#__codelineno-18-36"></a><span class="nv">$OutputOfTests</span> <span class="p">|</span> <span class="nb">Add-Member</span> <span class="n">-MemberType</span> <span class="n">NoteProperty</span> <span class="n">-Name</span> <span class="s2">"AllTestsPassed"</span> <span class="n">-Value</span> <span class="nv">$GlobalAllTestsOK</span>
+</span><span id="__span-18-37"><a id="__codelineno-18-37" name="__codelineno-18-37" href="#__codelineno-18-37"></a>
+</span><span id="__span-18-38"><a id="__codelineno-18-38" name="__codelineno-18-38" href="#__codelineno-18-38"></a><span class="c"># Test overrides for debugging</span>
+</span><span id="__span-18-39"><a id="__codelineno-18-39" name="__codelineno-18-39" href="#__codelineno-18-39"></a><span class="c"># $OutputOfTests.services = 0</span>
+</span><span id="__span-18-40"><a id="__codelineno-18-40" name="__codelineno-18-40" href="#__codelineno-18-40"></a><span class="c"># $OutputOfTests.AllTestsPassed = 0</span>
+</span><span id="__span-18-41"><a id="__codelineno-18-41" name="__codelineno-18-41" href="#__codelineno-18-41"></a>
+</span><span id="__span-18-42"><a id="__codelineno-18-42" name="__codelineno-18-42" href="#__codelineno-18-42"></a><span class="c"># Convert to JSON so the Zabbix template can read it</span>
+</span><span id="__span-18-43"><a id="__codelineno-18-43" name="__codelineno-18-43" href="#__codelineno-18-43"></a><span class="nv">$JSONOutput</span> <span class="p">=</span> <span class="nv">$OutputOfTests</span> <span class="p">|</span> <span class="nb">ConvertTo-JSON</span>
+</span><span id="__span-18-44"><a id="__codelineno-18-44" name="__codelineno-18-44" href="#__codelineno-18-44"></a>
+</span><span id="__span-18-45"><a id="__codelineno-18-45" name="__codelineno-18-45" href="#__codelineno-18-45"></a><span class="k">return</span> <span class="nv">$JSONOutput</span>
+</span></code></pre></div>
+<h2 id="questions">Questions</h2>
+<ol>
+<li>Why is it recommended to keep custom configuration outside of the default
+   <code>zabbix_agent2.conf</code> file?</li>
+<li>What is the purpose of the <code>Include</code> parameter?</li>
+<li>Why might an organization use <code>HostMetadata</code>?</li>
+<li>In which scenario would a passive check be used instead of an active check?</li>
+</ol>
+<h2 id="useful-urls">Useful URLs</h2>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi">https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi</a></li>
+<li><a href="https://www.zabbix.com/documentation/7.0/en/manual/appendix/config/zabbix_agent2_win">https://www.zabbix.com/documentation/7.0/en/manual/appendix/config/zabbix_agent2_win</a></li>
+<li><a href="https://www.zabbix.com/documentation/7.0/en/manual/discovery/auto_registration">https://www.zabbix.com/documentation/7.0/en/manual/discovery/auto_registration</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec">https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec</a></li>
+<li><a href="https://github.com/zabbix/zabbix/blob/master/src/go/conf/zabbix_agent2.win.conf">https://github.com/zabbix/zabbix/blob/master/src/go/conf/zabbix_agent2.win.conf</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Stichting The Monitoring Penmasters
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.tags", "navigation.expand", "navigation.prune", "navigation.path", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.action.view", "content.tags"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"index": "tags.md"}, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../js/print-site.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="../../../assets/external/cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/tags-data-attr.js?v=105cde40ff710f3c21b6c2945cd804e688710772"></script>
+      
+    
+    
+        
+		
+		
+    
+
+  </body>
+</html>
