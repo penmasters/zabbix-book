@@ -84,6 +84,7 @@ nav:
       - ch07-zabbix-alerts/chapter.md
       - ch07-zabbix-alerts/media-types.md
       - ch07-zabbix-alerts/scripts.md
+      - ch07-zabbix-alerts/cep.md
       - ch07-zabbix-alerts/actions.md
   - "Chapter 08 : LLD":
       - ch08-zabbix-lld/chapter.md
@@ -132,6 +133,7 @@ nav:
   - "Chapter 16 : Windows monitoring":
       - ch16-windows/chapter.md
       - Windows: ch16-windows/windows.md
+      - Zabbix Agent2 Config Tips For Windows: ch16-windows/windows-zabbix-agent2-config-tips.md
   - Subject index: subject-index.md
 
 theme:

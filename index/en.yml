@@ -93,6 +93,15 @@ entries:
       - label: storing Zabbix data
         start: ch13-advanced-security/storing-data-in-clickhousedb.md
 
+  - term: complex event processing
+    targets:
+      - label: configuring CEP rules
+        start: ch07-zabbix-alerts/cep.md
+        end: ch07-zabbix-alerts/cep.md#conclusion
+    see_also:
+      - alerting
+      - triggers
+
   - term: database
     subterms:
       - term: choosing
