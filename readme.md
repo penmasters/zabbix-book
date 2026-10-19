@@ -1,8 +1,55 @@
 # The Zabbix Book
 
-Please note: The english version is the primary source document.
-Translations are provided for convenience, but this version is considered the
-most accurate.
+English is the source language. Choose the branch for your change before opening
+a pull request:
+
+| Change | Pull request target |
+|---|---|
+| New English content and general development | `main` |
+| Corrections and errata for English 8.0 | `release/8.0` |
+| Translation work for 8.0 | `translation/8.0/<locale>` |
+
+`<locale>` matches the translation directory, for example `de`, `fr`, or
+`pt_BR`. Do not send new English features to `release/8.0`, and do not edit the
+English source on a translation branch.
+
+## Branch and publication model
+
+```text
+main (English development)                              [DEV]
+|
+`-- release/8.0 (English maintenance and errata)        [MAINTENANCE]
+    |
+    `-- v8.0-1 (English edition 1)                      [IMMUTABLE TAG]
+        |
+        |-- translation/8.0/de (German development)     [DEV]
+        |   `-- v8.0-1-de.1 (German edition 1)          [IMMUTABLE TAG]
+        |
+        |-- translation/8.0/fr (French development)     [DEV]
+        |   `-- v8.0-1-fr.1 (French edition 1)          [IMMUTABLE TAG]
+        |
+        `-- translation/8.0/<locale>                    [DEV]
+            `-- v8.0-1-<locale>.1                       [IMMUTABLE TAG]
+```
+
+Each translation branch starts from the finalized English `v8.0-1` tag. The
+current translation locales are `de`, `es`, `fr`, `it`, `nl`, `pt_BR`, `ru`,
+`th`, and `zh`; each receives its own `translation/8.0/<locale>` branch.
+
+Branches accept reviewed changes. Published edition tags are frozen snapshots:
+never move, recreate, or force-update `v8.0-1`,
+`v8.0-1-<locale>.1`, or any later publication tag.
+
+A translation branch does not automatically appear on the website. Set
+`website: true` for its entry in `.github/docs-versions.yml` only after the
+language is ready. The selector, builder, validator, deployment workflow, and
+branch helper all use that metadata; the branch helper also sees entries with
+`website: false`.
+
+See [VERSIONING-MIGRATION.md](VERSIONING-MIGRATION.md) for the release,
+deployment, rollback, and production-reuse procedure.
+Website versions are declared once in `.github/docs-versions.yml`; the builder,
+selector, validator, deployment workflow, and branch helper all read that file.
 
 Please before you start take a look at our most updated license : [License](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
 on Github.

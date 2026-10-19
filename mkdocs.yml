@@ -1,6 +1,6 @@
 # Project information
 site_name: Zabbix Book
-site_url: https://thezabbixbook.com/
+site_url: !ENV [ZABBIX_BOOK_SITE_URL, "https://thezabbixbook.com/main/"]
 site_author: The Monitoring Penmasters
 site_description: "A free, community driven online resource to master Zabbix: built to give back, sustain the community, and help you become truly empowered with monitoring."
 copyright: Copyright &copy; 2025 Stichting The Monitoring Penmasters
@@ -8,8 +8,8 @@ copyright: Copyright &copy; 2025 Stichting The Monitoring Penmasters
 # Repository
 repo_name: penmasters
 repo_url: https://github.com/penmasters/zabbix-book
-edit_uri: edit/main/docs
-docs_dir: docs
+edit_uri: !ENV [ZABBIX_BOOK_EDIT_URI, "edit/main/docs/"]
+docs_dir: !ENV [ZABBIX_BOOK_DOCS_DIR, ".build/docs"]
 
 # Navigation
 nav:
@@ -137,7 +137,7 @@ nav:
   - Subject index: subject-index.md
 
 theme:
-  language: en
+  language: !ENV [ZABBIX_BOOK_THEME_LANGUAGE, "en"]
   name: material
   custom_dir: docs/overrides
   font:
@@ -180,6 +180,7 @@ extra_css:
   - stylesheets/linewrap.css
 
 extra:
+  version_manifest: !ENV [ZABBIX_BOOK_VERSION_MANIFEST, "https://thezabbixbook.com/versions.json"]
   tags:
     index: tags.md
   tag_labels:
@@ -255,43 +256,6 @@ plugins:
       # whether to only check in strict mode
       strict_only: no
 
-  - i18n:
-      reconfigure_material: true
-      fallback_to_default: true
-      docs_structure: folder
-      languages:
-        - locale: fr
-          name: Français
-          build: true
-        - locale: de
-          name: German
-          build: true
-        #        - locale: it
-        #          name: Italian
-        #          build: true
-        - locale: nl
-          name: Nederlands
-          build: true
-        - locale: pt_BR
-          name: Brazilian Portuguese
-          build: true
-        #          theme: # override Material options for this locale
-        #        - locale: es
-        #          name: Spanish
-        #          build: true
-        #        - locale: th
-        #          name: ภาษาไทย
-        #          build: true
-        #        - locale: zh
-        #          name: 中国人
-        #          build: true
-        - locale: ru
-          name: Russian
-          build: true
-        - locale: en
-          default: true
-          name: English
-          build: true
   - print-site:
       add_to_navigation: true
       add_full_urls: false

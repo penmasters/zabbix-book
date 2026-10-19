@@ -1,5 +1,18 @@
 # Some guidelines when writing chapters
 
+## Choose the correct branch
+
+- Target `main` for new English content and general development.
+- Target `release/8.0` only for English 8.0 corrections and errata.
+- Target `translation/8.0/<locale>` for 8.0 translation work, where `<locale>`
+  matches the translation directory, such as `de`, `fr`, or `pt_BR`. Do not
+  change the English source on a translation branch.
+- A translation branch may exist before that language is ready for the website.
+  Website publication is controlled separately in `.github/docs-versions.yml`.
+
+Published edition tags are immutable. Never base a pull request on an attempt to
+rewrite or move `v8.0-1`, `v8.0-1-<locale>.1`, or any later publication tag.
+
 ## What data formats do we accept ?
 
 - We prefer you clone the project and deliver us your text in markdown.
