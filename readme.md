@@ -43,13 +43,13 @@ never move, recreate, or force-update `v8.0-1`,
 A translation branch does not automatically appear on the website. Set
 `website: true` for its entry in `.github/docs-versions.yml` only after the
 language is ready. The selector, builder, validator, deployment workflow, and
-branch helper all use that metadata; the branch helper also sees entries with
-`website: false`.
+release documentation all use that metadata. Entries with `website: false`
+declare a branch without publishing it.
 
-See [VERSIONING-MIGRATION.md](VERSIONING-MIGRATION.md) for the release,
-deployment, rollback, and production-reuse procedure.
+See [VERSIONING.md](VERSIONING.md) for the branch, release, deployment, and
+rollback procedure.
 Website versions are declared once in `.github/docs-versions.yml`; the builder,
-selector, validator, deployment workflow, and branch helper all read that file.
+selector, validator, and deployment workflow all read that file.
 
 Please before you start take a look at our most updated license : [License](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
 on Github.

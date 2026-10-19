@@ -27,15 +27,6 @@ pip3 install --upgrade pip3
 python3 -m pip install -r requirements-docs.txt
 ```
 
-## Preview one language
-
-```bash
-python3 tools/prepare_version_docs.py --language en
-python3 -m mkdocs serve
-```
-
-Use `--language de` to preview German with English fallback pages.
-
 ## Build and validate the complete selector locally
 
 ```bash

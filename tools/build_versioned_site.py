@@ -7,6 +7,7 @@ import argparse
 import html
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -14,6 +15,65 @@ import tarfile
 from pathlib import Path, PurePosixPath
 
 import yaml
+
+
+LOCALE_DIRECTORY = re.compile(r"^[a-z]{2}(?:_[A-Z]{2})?$")
+
+
+def translation_dirs(source: Path) -> set[str]:
+    return {
+        path.name
+        for path in source.iterdir()
+        if path.is_dir() and LOCALE_DIRECTORY.fullmatch(path.name)
+    }
+
+
+def copy_tree(
+    source: Path,
+    target: Path,
+    *,
+    excluded_directories: set[str] | None = None,
+) -> None:
+    excluded_directories = excluded_directories or set()
+    for path in source.rglob("*"):
+        relative = path.relative_to(source)
+        if relative.parts[0] in excluded_directories or relative == Path("CNAME"):
+            continue
+        destination = target / relative
+        if path.is_dir():
+            destination.mkdir(parents=True, exist_ok=True)
+        elif path.is_file():
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(path, destination)
+
+
+def prepare_docs(repository: Path, language: str) -> None:
+    source = repository / "docs"
+    target = repository / ".build" / "docs"
+    if not source.is_dir():
+        raise SystemExit(f"documentation directory not found: {source}")
+
+    shutil.rmtree(target, ignore_errors=True)
+    target.mkdir(parents=True)
+    excluded = translation_dirs(source) | {"overrides"}
+    copy_tree(source, target, excluded_directories=excluded)
+
+    translated = 0
+    if language != "en":
+        language_source = source / language
+        if not language_source.is_dir():
+            raise SystemExit(f"translation directory not found: {language_source}")
+        translated = sum(1 for path in language_source.rglob("*.md") if path.is_file())
+        copy_tree(language_source, target)
+
+    total = sum(1 for path in target.rglob("*.md") if path.is_file())
+    fallback = total - translated if language != "en" else 0
+    details = (
+        f" ({translated} {language} translations, {fallback} English fallback)"
+        if language != "en"
+        else ""
+    )
+    print(f"Prepared {language}: {total} Markdown files{details}")
 
 
 def safe_relative(value: str, field: str) -> str:
@@ -113,7 +173,6 @@ def materialize(repository: Path, branch: str, destination: Path) -> Path:
 
 
 def build(
-    controller: Path,
     source: Path,
     version: dict,
     destination: Path,
@@ -124,18 +183,7 @@ def build(
     subject_index = source / "tools" / "build_subject_index.py"
     if subject_index.is_file():
         subprocess.run([sys.executable, str(subject_index), "--check"], check=True, cwd=source)
-    subprocess.run(
-        [
-            sys.executable,
-            str(controller / "tools" / "prepare_version_docs.py"),
-            "--repository",
-            str(source),
-            "--language",
-            str(version["language"]),
-        ],
-        check=True,
-        cwd=source,
-    )
+    prepare_docs(source, str(version["language"]))
     environment = os.environ.copy()
     environment.update(
         {
@@ -201,7 +249,7 @@ def main() -> int:
             if args.use_current_checkout
             else materialize(repository, str(version["branch"]), source_root / str(version["id"]))
         )
-        build(controller=repository, source=source, version=version, destination=output / version["path"], base_url=base_url)
+        build(source=source, version=version, destination=output / version["path"], base_url=base_url)
         manifest.append(
             {
                 "version": str(version["id"]),
