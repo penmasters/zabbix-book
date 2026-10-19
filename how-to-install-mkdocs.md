@@ -27,7 +27,29 @@ pip3 install --upgrade pip3
 python3 -m pip install -r requirements-docs.txt
 ```
 
-## Build and validate the complete selector locally
+
+## Building and previewing the documentation the easy way
+
+The repository includes a Makefile to simplify local development,
+building, and validation of the documentation.
+
+All commands must be executed from the root of the repository.
+
+| Command | Description |
+|---|---|
+| `make serve` | Start a local development server with live reload. |
+| `make build` | Build the complete versioned documentation website. |
+| `make validate` | Validate the generated website and version selector. |
+| `make preview` | Build and serve the complete website locally. |
+
+### Local development
+
+When writing or updating documentation, run:
+
+```bash
+make serve
+
+## Build and validate the complete selector locally the hard way
 
 ```bash
 python3 tools/build_versioned_site.py \

@@ -51,6 +51,10 @@ rollback procedure.
 Website versions are declared once in `.github/docs-versions.yml`; the builder,
 selector, validator, and deployment workflow all read that file.
 
+Translation branches can compare their pages with the English release without
+switching branches. See [TRANSLATION_STATUS.md](TRANSLATION_STATUS.md) for the
+read-only report and the explicit review command.
+
 Please before you start take a look at our most updated license : [License](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
 on Github.
 
