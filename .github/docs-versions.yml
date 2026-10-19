@@ -1,11 +1,10 @@
-# Single source of truth for release and translation branches. The branch helper
-# reads every entry. The builder, selector, and validator use only entries with
-# website: true, so a translation branch can exist before it is ready to publish.
+# Single source of truth for release and translation branches. The builder,
+# selector, validator, and release documentation use entries with website: true.
+# Entries with website: false remain declared without being published.
 default_path: main/
 
 redirects:
   en/: main/
-  de/: 8.0/de/
 
 versions:
   - id: main
