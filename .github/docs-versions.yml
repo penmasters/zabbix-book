@@ -1,0 +1,135 @@
+# Single source of truth for release and translation branches. The branch helper
+# reads every entry. The builder, selector, and validator use only entries with
+# website: true, so a translation branch can exist before it is ready to publish.
+default_path: main/
+
+redirects:
+  en/: main/
+  de/: 8.0/de/
+
+versions:
+  - id: main
+    label: Main (Development)
+    branch: main
+    language: en
+    path: main/
+    status: development
+    website: true
+    base:
+      type: branch
+      ref: main
+  - id: release-8.0
+    label: 8.0 — English
+    branch: release/8.0
+    language: en
+    path: 8.0/en/
+    status: maintenance
+    website: true
+    base:
+      type: branch
+      ref: main
+    published_tag: v8.0-1
+  - id: german-8.0
+    label: 8.0 — German
+    branch: translation/8.0/de
+    language: de
+    path: 8.0/de/
+    status: development
+    website: true
+    base:
+      type: tag
+      ref: v8.0-1
+    published_tag: v8.0-1-de.1
+  - id: spanish-8.0
+    label: 8.0 — Spanish
+    branch: translation/8.0/es
+    language: es
+    path: 8.0/es/
+    status: development
+    website: false
+    base:
+      type: tag
+      ref: v8.0-1
+    published_tag: v8.0-1-es.1
+  - id: french-8.0
+    label: 8.0 — French
+    branch: translation/8.0/fr
+    language: fr
+    path: 8.0/fr/
+    status: development
+    website: false
+    base:
+      type: tag
+      ref: v8.0-1
+    published_tag: v8.0-1-fr.1
+  - id: italian-8.0
+    label: 8.0 — Italian
+    branch: translation/8.0/it
+    language: it
+    path: 8.0/it/
+    status: development
+    website: false
+    base:
+      type: tag
+      ref: v8.0-1
+    published_tag: v8.0-1-it.1
+  - id: dutch-8.0
+    label: 8.0 — Dutch
+    branch: translation/8.0/nl
+    language: nl
+    path: 8.0/nl/
+    status: development
+    website: false
+    base:
+      type: tag
+      ref: v8.0-1
+    published_tag: v8.0-1-nl.1
+  - id: portuguese-brazil-8.0
+    label: 8.0 — Portuguese (Brazil)
+    branch: translation/8.0/pt_BR
+    language: pt_BR
+    path: 8.0/pt_BR/
+    status: development
+    website: false
+    base:
+      type: tag
+      ref: v8.0-1
+    published_tag: v8.0-1-pt_BR.1
+  - id: russian-8.0
+    label: 8.0 — Russian
+    branch: translation/8.0/ru
+    language: ru
+    path: 8.0/ru/
+    status: development
+    website: false
+    base:
+      type: tag
+      ref: v8.0-1
+    published_tag: v8.0-1-ru.1
+  - id: thai-8.0
+    label: 8.0 — Thai
+    branch: translation/8.0/th
+    language: th
+    path: 8.0/th/
+    status: development
+    website: false
+    base:
+      type: tag
+      ref: v8.0-1
+    published_tag: v8.0-1-th.1
+  - id: chinese-8.0
+    label: 8.0 — Chinese
+    branch: translation/8.0/zh
+    language: zh
+    path: 8.0/zh/
+    status: development
+    website: false
+    base:
+      type: tag
+      ref: v8.0-1
+    published_tag: v8.0-1-zh.1
+
+tag_policy:
+  immutable: true
+  annotated_tags_required: true
+  force_updates_forbidden: true
