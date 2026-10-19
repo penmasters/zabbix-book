@@ -62,6 +62,9 @@ print edition, locators are rendered as page numbers.
     - *See also* [items](#index-items)
 - <span id="index-clickhouse"></span>**ClickHouse**
     - [storing Zabbix data](ch13-advanced-security/storing-data-in-clickhousedb.md){ .index-target }
+- <span id="index-complex-event-processing"></span>**complex event processing**
+    - [configuring CEP rules](ch07-zabbix-alerts/cep.md){ .index-target }[](ch07-zabbix-alerts/cep.md#conclusion){ .index-range-end }
+    - *See also* [alerting](#index-alerting), [triggers](#index-triggers)
 
 ## D {#index-letter-d}
 
