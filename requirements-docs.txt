@@ -1,0 +1,7 @@
+idna>=3,<4
+PyYAML>=6,<7
+mkdocs-material>=9.6,<10
+mkdocs-print-site-plugin>=2.6,<3
+mkdocs-spellcheck[all]>=1.1,<2
+mkdocs-autolinks-plugin>=0.7,<1
+mkdocs-mermaid2-plugin>=1.2,<2

@@ -47,51 +47,8 @@
 		{# Let It Snow by updating the dict/mapping pair #}
 		{% set _ = page.meta.update({"ᴴₒᴴₒᴴₒ": True}) %}
     {% endif %}
-{% endblock %}
-
-{% block announce %}
-    {%
-        set announcement = {
-            "en": "This page has not yet been translated into LANGUAGE, therefore it is displayed in English.",
-            "fr": "Cette page n'a pas encore été traduite en Français, elle est donc affichée en anglais.",
-            "de": "Diese Seite wurde noch nicht ins Deutsche übersetzt, daher wird sie auf Englisch angezeigt.",
-            "it": "Questa pagina non è stata ancora tradotta in italiano, pertanto viene visualizzata in inglese.",
-            "nl": "Deze pagina is nog niet in het Nederlands vertaald en wordt daarom in het Engels weergegeven.",
-            "pt_BR": "Esta página ainda não foi traduzida para o português. Portanto, está sendo exibida em inglês.",
-            "es": "Esta página aún no ha sido traducida al español, por lo tanto se muestra en inglés.",
-            "th": "หน้านี้ยังไม่ได้แปลเป็นภาษาไทย ดังนั้นจึงแสดงเป็นภาษาอังกฤษ",
-            "zh": "该页面尚未翻译成中文，因此以英文显示",
-            "ru": "Эта страница еще не переведена на ЯЗЫК, поэтому она отображается на английском языке.",
-        }
-    %}
-    {%
-        set call_to_action = {
-            "en": "Support us and translate!",
-            "fr": "Soutenez-nous et traduisez !",
-            "de": "Unterstütze uns und übersetze!",
-            "it": "Sostienici e traduci!",
-            "nl": "Help ons en vertaal deze pagina!",
-            "pt_BR": "Ajude-nos a traduzir!",
-            "es": "¡Apóyanos y traduce!",
-            "th": "สนับสนุนเราและแปล!",
-            "zh": "支持我们并翻译！",
-            "ru": "Поддержите нас и переведите!"
-        }
-    %}
-    {% if i18n_page_locale != "en" and i18n_file_locale != i18n_page_locale %}
-        <div class="gmc-announce">
-            {{ announcement[i18n_page_locale] }}
-            <a href="/gmc/{{ i18n_page_locale }}/contribute/#translations">{{ call_to_action[i18n_page_locale] }}</a>
-        </div>
-    {% endif %}
-    {# Add script with additional localization for use in extra.js #}
-    <script>
-        const gGMC_SELECT_VERSION = "{{ lang.t('select.version') }}";
-        const gGMC_TRANSLATE_CTA = "{{ call_to_action[i18n_page_locale] }}";
-        const gGMC_PAGE_LOCALE = "{{ i18n_page_locale }}";
-        const gGMC_FILE_LOCALE = "{{ i18n_file_locale }}";
-        const gGMC_TRANSLATE_SVG = '{% include ".icons/material/web-plus.svg" %}';
+    <script
+        src="{{ 'javascripts/version-selector.js' | url }}"
+        data-version-manifest="{{ config.extra.version_manifest | e }}">
     </script>
-    {# Include original content after the additions #}
-    {{ super() }}
 {% endblock %}

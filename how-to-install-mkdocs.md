@@ -24,31 +24,26 @@ pip3 install --upgrade pip3
 ## Install MkDocs and extensions
 
 ```bash
-pip3 install mkdocs
-pip3 install mkdocs-material
-pip3 install mkdocs-print-site-plugin
-pip3 install mkdocs-static-i18n
-pip3 install 'mkdocs-spellcheck[all]'
-pip3 install mkdocs-autolinks-plugin
-pip3 install mkdocs-mermaid2-plugin
+python3 -m pip install -r requirements-docs.txt
 ```
 
-## Install extra pip3 packages
+## Build and validate the complete selector locally
 
-```
-pip3 install idna
+```bash
+python3 tools/build_versioned_site.py \
+  --repository . \
+  --metadata .github/docs-versions.yml \
+  --use-current-checkout \
+  --output .build/site \
+  --base-url http://localhost:8000/
+python3 tools/validate_versioned_site.py \
+  .build/site --metadata .github/docs-versions.yml
+python3 -m http.server --directory .build/site 8000
 ```
 
-```
-
-```
-
-## Build your site local and test it
-
-```
-python3 -m mkdocs serve
-python3 -m mkdocs build
-```
+Open `http://localhost:8000/` and verify all three selector entries. This local
+command uses the current checkout for every metadata entry; CI reads the same
+file and builds the real branches.
 
 ## Some guidelines
 
