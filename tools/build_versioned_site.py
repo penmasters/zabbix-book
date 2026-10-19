@@ -90,6 +90,7 @@ def load_metadata(path: Path) -> dict:
         raise SystemExit("metadata must declare at least one version")
 
     seen: dict[str, set[str]] = {key: set() for key in ("id", "label", "branch", "path")}
+    aliases: set[str] = set()
     required = ("id", "label", "branch", "language", "path", "status", "base")
     for version in versions:
         missing = [key for key in required if key not in version]
@@ -106,6 +107,17 @@ def load_metadata(path: Path) -> dict:
         if not isinstance(website, bool):
             raise SystemExit(f"{version['id']}.website must be true or false")
 
+        raw_aliases = version.get("aliases", [])
+        if not isinstance(raw_aliases, list):
+            raise SystemExit(f"{version['id']}.aliases must be a list")
+        version["aliases"] = []
+        for raw_alias in raw_aliases:
+            alias = safe_relative(str(raw_alias), f"{version['id']}.aliases")
+            if alias in aliases:
+                raise SystemExit(f"duplicate alias: {alias}")
+            aliases.add(alias)
+            version["aliases"].append(alias)
+
     data["default_path"] = safe_relative(str(data["default_path"]), "default_path")
     website_paths = {
         str(version["path"])
@@ -116,10 +128,9 @@ def load_metadata(path: Path) -> dict:
         raise SystemExit("metadata must declare at least one website version")
     if data["default_path"] not in website_paths:
         raise SystemExit("default_path must match a website-enabled version path")
-    data["redirects"] = {
-        safe_relative(str(source), "redirect source"): safe_relative(str(destination), "redirect destination")
-        for source, destination in data.get("redirects", {}).items()
-    }
+    collisions = aliases & seen["path"]
+    if collisions:
+        raise SystemExit(f"aliases collide with version paths: {', '.join(sorted(collisions))}")
     return data
 
 
@@ -254,7 +265,7 @@ def main() -> int:
             {
                 "version": str(version["id"]),
                 "title": str(version["label"]),
-                "aliases": [],
+                "aliases": version["aliases"],
                 "url": version["path"],
             }
         )
@@ -263,11 +274,14 @@ def main() -> int:
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     (output / "index.html").write_text(redirect(metadata["default_path"]), encoding="utf-8")
-    for source, destination in metadata["redirects"].items():
-        redirect_dir = output / source
-        redirect_dir.mkdir(parents=True, exist_ok=True)
-        relative = os.path.relpath(output / destination, redirect_dir).replace(os.sep, "/") + "/"
-        (redirect_dir / "index.html").write_text(redirect(relative), encoding="utf-8")
+    for version in metadata["versions"]:
+        if not version.get("website", True):
+            continue
+        for alias in version["aliases"]:
+            redirect_dir = output / alias
+            redirect_dir.mkdir(parents=True, exist_ok=True)
+            relative = os.path.relpath(output / version["path"], redirect_dir).replace(os.sep, "/") + "/"
+            (redirect_dir / "index.html").write_text(redirect(relative), encoding="utf-8")
     return 0
 
 

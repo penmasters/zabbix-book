@@ -3,15 +3,14 @@
 # Entries with website: false remain declared without being published.
 default_path: main/
 
-redirects:
-  en/: main/
-
 versions:
   - id: main
     label: Main (Development)
     branch: main
     language: en
     path: main/
+    aliases:
+      - en/
     status: development
     website: true
     base:
@@ -33,6 +32,8 @@ versions:
     branch: translation/8.0/de
     language: de
     path: 8.0/de/
+    aliases:
+      - de/
     status: development
     website: false
     base:
@@ -44,6 +45,8 @@ versions:
     branch: translation/8.0/es
     language: es
     path: 8.0/es/
+    aliases:
+      - es/
     status: development
     website: false
     base:
@@ -55,6 +58,8 @@ versions:
     branch: translation/8.0/fr
     language: fr
     path: 8.0/fr/
+    aliases:
+      - fr/
     status: development
     website: false
     base:
@@ -66,6 +71,8 @@ versions:
     branch: translation/8.0/it
     language: it
     path: 8.0/it/
+    aliases:
+      - it/
     status: development
     website: false
     base:
@@ -77,6 +84,8 @@ versions:
     branch: translation/8.0/nl
     language: nl
     path: 8.0/nl/
+    aliases:
+      - nl/
     status: development
     website: false
     base:
@@ -88,6 +97,8 @@ versions:
     branch: translation/8.0/pt_BR
     language: pt_BR
     path: 8.0/pt_BR/
+    aliases:
+      - pt_BR/
     status: development
     website: false
     base:
@@ -99,6 +110,8 @@ versions:
     branch: translation/8.0/ru
     language: ru
     path: 8.0/ru/
+    aliases:
+      - ru/
     status: development
     website: false
     base:
@@ -110,6 +123,8 @@ versions:
     branch: translation/8.0/th
     language: th
     path: 8.0/th/
+    aliases:
+      - th/
     status: development
     website: false
     base:
@@ -121,6 +136,8 @@ versions:
     branch: translation/8.0/zh
     language: zh
     path: 8.0/zh/
+    aliases:
+      - zh/
     status: development
     website: false
     base:

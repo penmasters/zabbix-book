@@ -49,17 +49,25 @@ def main() -> int:
 
     metadata = yaml.safe_load(args.metadata.read_text(encoding="utf-8"))
     expected = [
-        (str(item["id"]), str(item["label"]), str(item["path"]).strip("/") + "/")
+        (
+            str(item["id"]),
+            str(item["label"]),
+            str(item["path"]).strip("/") + "/",
+            [str(alias).strip("/") + "/" for alias in item.get("aliases", [])],
+        )
         for item in metadata["versions"]
         if item.get("website", True)
     ]
     manifest = json.loads((site / "versions.json").read_text(encoding="utf-8"))
-    actual = [(item["version"], item["title"], item["url"]) for item in manifest]
+    actual = [
+        (item["version"], item["title"], item["url"], item.get("aliases", []))
+        for item in manifest
+    ]
     if actual != expected:
         raise SystemExit(f"selector does not match metadata: {actual!r}")
 
     problems: list[str] = []
-    for _version, _title, url in expected:
+    for _version, _title, url, aliases in expected:
         root = site / url
         for required in ("index.html", "search/search_index.json", "assets"):
             if not (root / required).exists():
@@ -69,6 +77,9 @@ def main() -> int:
             encoding="utf-8", errors="replace"
         ):
             problems.append(f"missing version selector hook in {url}index.html")
+        for alias in aliases:
+            if not (site / alias / "index.html").is_file():
+                problems.append(f"missing alias redirect {alias}index.html")
 
     pages = list(site.rglob("*.html"))
     for page in pages:
