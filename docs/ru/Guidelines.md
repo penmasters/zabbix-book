@@ -2,32 +2,28 @@
 
 ## Как внести свой вклад
 
-- Подписывать [акт
-  передачи](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf)
-  предпочтительно в электронном виде
-- Клонируйте этот проект в свой аккаунт Github
+- Подпишите, желательно в электронном виде,
+  [https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf)
+- Клонируйте этот проект в свою учётную запись GitHub
 - Клонируйте репозиторий на свой компьютер
 
-- Установите необходимое программное обеспечение для работы Mkdocs, проверьте
-  файл how-to-install-mkdocs.md в корневом каталоге
+- Установите программное обеспечение, необходимое для работы MkDocs.
+  Дополнительные сведения см. в файле how-to-install-mkdocs.md в корневом каталоге
   - Создайте новую ветку для внесения изменений
-    - git branch "<имя_вашей_ветви\>"
-    - git checkout "<имя_вашей_ветви\>"
-  - Внесите нужные изменения и закоммитьте их
-    - git add "ваш_измененный_файл"
-    - git commit -m "добавьте полезную информацию по коммиту"
-  - Вернуться в основную ветку
+    - git branch "<your branch name\>"
+    - git checkout "<your branch name\>"
+  - Внесите нужные изменения и создайте коммит
+    - git add "files you changed"
+    - git commit -m "add useful commit info"
+  - Вернитесь в ветку main
     - git checkout main
-  - Убедитесь, что у вас есть последние изменения, слитые из основной ветки
-    (main)
+  - Убедитесь, что получили последние изменения из ветки main
     - git pull origin main
-  - Объедините вашу ветку с основной
-    - git merge "<имя_вашей_ветки\>"
+  - Объедините свою ветку с веткой main
+    - git merge "<your branch name\>"
     - git push
-  - очистка ветки
-    - git branch -d "<имя_вашей_ветки\>"
-- Создайте pull request (запрос на внесение изменений в код), чтобы мы могли
-  объединить его :)
-- Следуйте этим
+  - Удалите больше не нужную ветку
+    - git branch -d "<your branch name\>"
+- Создайте pull request, чтобы мы могли объединить ваши изменения :)
+- При написании материала следуйте этим правилам:
   [https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
-  при написании темы.

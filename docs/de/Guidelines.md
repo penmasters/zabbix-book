@@ -1,31 +1,29 @@
-# Guidelines
+# Richtlinien
 
-## How to contribute
+## So können Sie mitwirken
 
-- Sign the [deed of
-  transfer](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf)
-  preferable electronically
-- Clone this project to your Github account
-- Clone the repository to you pc
+- Unterzeichnen Sie vorzugsweise elektronisch
+  [https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf)
+- Klonen Sie dieses Projekt in Ihr GitHub-Konto
+- Klonen Sie das Repository auf Ihren PC
 
-- Install the needed software for Mkdocs to work, check the file in the root
-  folder how-to-install-mkdocs.md
-  - Create a new branch to make your changes
+- Installieren Sie die für MkDocs benötigte Software. Weitere Informationen finden
+  Sie in der Datei how-to-install-mkdocs.md im Stammverzeichnis
+  - Erstellen Sie einen neuen Branch für Ihre Änderungen
     - git branch "<your branch name\>"
     - git checkout "<your branch name\>"
-  - Make the changes you want and commit them
+  - Nehmen Sie die gewünschten Änderungen vor und committen Sie diese
     - git add "files you changed"
     - git commit -m "add useful commit info"
-  - Return back to the main branch
+  - Wechseln Sie zurück zum main-Branch
     - git checkout main
-  - Make sure you have the latest changes merged from main
+  - Stellen Sie sicher, dass die neuesten Änderungen aus main zusammengeführt wurden
     - git pull origin main
-  - Merge your branch into the main branch
+  - Führen Sie Ihren Branch mit dem main-Branch zusammen
     - git merge "<your branch name\>"
     - git push
-  - cleanup your branch
+  - Räumen Sie Ihren Branch auf
     - git branch -d "<your branch name\>"
-- Create a pull requests so that we can merge it :)
-- Follow these
+- Erstellen Sie einen Pull Request, damit wir Ihre Änderungen zusammenführen können :)
+- Befolgen Sie beim Verfassen eines Themas diese Richtlinien:
   [https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md)
-  when you write a topic.
