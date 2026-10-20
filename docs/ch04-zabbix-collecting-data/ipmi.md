@@ -951,6 +951,33 @@ reason about and troubleshoot.
 For many organizations, the most realistic approach is coexistence: IPMI for
 legacy systems, Redfish for new deployments.
 
+!!! warning "Real hardware is not the simulator"
+
+    The Redfish Mockup Server is a clean, fully open implementation of the
+    standard. Real BMCs are not. Redfish itself is a solid standard, but how
+    much of it a vendor implements, and how, differs between vendors, between
+    hardware models and sometimes even between firmware versions of the same
+    BMC.
+
+    Expect to run into differences such as:
+
+    - Authentication: real devices require credentials or session tokens,
+      and usually use self-signed certificates.
+    - Licensing: some vendors only expose the basic endpoints on their
+      standard BMC license and return an error (often HTTP 403) for deeper
+      ones until a higher license is activated.
+    - Structure: data you want, such as drives, power and thermal, is often
+      behind links in the chassis or system resources. It cannot be reached
+      with the single discovery step used in this chapter and typically needs
+      multiple requests, which is why the official Zabbix Redfish templates
+      rely on scripting.
+
+    So when a Redfish template that works on one server fails on another, the
+    cause is usually the vendor's implementation, not Redfish itself. Treat the
+    example in this chapter as a pattern for learning HTTP agent items,
+    dependent items and LLD, and always test against your own hardware before
+    rolling it out.
+
 ---
 
 ## Questions
