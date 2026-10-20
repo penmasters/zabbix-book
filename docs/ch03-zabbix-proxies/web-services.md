@@ -149,6 +149,13 @@ Alternatively, you can also install Google Chrome by downloading the package
 from the Google Chrome website: [https://www.google.com/chrome/](https://www.google.com/chrome/) and installing
 it using the package manager of your operating system.
 
+!!! warning "Unsupported Google Chrome versions"
+
+    The Zabbix web service is only tested with the official Google Chrome browser
+    and may not work correctly with other Chromium-based browsers, such as the
+    Ubuntu Snap package of Chromium. If you choose to install Google Chrome, ensure
+    that you download and install the official package from the Google Chrome website.
+
 #### Configuring the Zabbix web service
 
 Now that the Zabbix web service package and a headless browser are installed, we
