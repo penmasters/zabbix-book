@@ -498,7 +498,7 @@ TTL are recommended.
 
 Create the Zabbix server configuration file:
 
-`/etc/zabbix/zabbix_server.d/clickhouse.conf` or edit the `/etc/zabbix/zabbix_server.conf` file.
+`/etc/zabbix/zabbix_server.d/clickhouse.conf`
 
 !!! info "Zabbix server configuration"
 

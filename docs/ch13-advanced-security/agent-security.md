@@ -33,7 +33,7 @@ Let's login to the CLI of a host with the Zabbix agent installed. We are going t
 
     Linux CLI
     ```bash
-    vim /etc/zabbix/zabbix_agent2.conf
+    vi /etc/zabbix/zabbix_agent2.d/encryption.conf
     ```
 
 In the configuration file there are 4 parameters we need to edit. By default they aren't set, but we will set them as specified below.

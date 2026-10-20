@@ -167,7 +167,7 @@ housekeeper does not remove ClickHouse data; configure retention in ClickHouse.
 
 ### 1. Proxy configuration (for collecting OTLP data)
 
-On the proxy that will receive OpenTelemetry traffic, edit `zabbix_proxy.conf`:
+On the proxy that will receive OpenTelemetry traffic, create `/etc/zabbix/zabbix_proxy.d/telemetry.conf`:
 
 ```conf
 StartAPMCollectors=1
