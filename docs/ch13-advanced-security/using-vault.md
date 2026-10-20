@@ -81,87 +81,164 @@ a scoped token which is then passed to Zabbix.
 This section covers a minimal production-ready Vault installation on Red Hat
 Enterprise Linux 8/9/10 (or compatible distributions such as AlmaLinux, Rocky Linux).
 
-### Add the HashiCorp Repository
+For SUSE based distributions, since HashiCorp does not provide packages, we will
+install OpenBao, which is a community-supported drop-in fork of Vault available
+in the SUSE package repositories for openSUSE Leap and in the PackageHub module
+for SLES.
 
-```bash
-sudo dnf install -y dnf-plugins-core
-sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-sudo dnf install -y vault
-```
+### Install Vault
+
+!!! info "Installing Vault on RHEL"
+
+    HashiCorp provides an official YUM repository for RHEL-based distributions. To
+    install Vault, run the following commands:
+
+    RHEL
+    ```bash
+    dnf install -y dnf-plugins-core
+    dnf config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+    dnf install -y vault
+    ```
+
+!!! info "Installing OpenBao on SUSE"
+
+    To install OpenBao on SUSE, run the following commands:
+
+    SUSE
+    ```bash
+    zypper install openbao openbao-server
+    ```
+    For SLES, enable the PackageHub module first.
+
+!!! warning "Bug in current openSUSE openbao-server package (2.0.2-bp160.1.13)"
+
+    The current OpenBao package, at least in openSuse Leap 16, has a bug where 
+    the service calls `/usr/bin/bao` instead of `/usr/bin/openbao` (https://bugzilla.opensuse.org/show_bug.cgi?id=1286353). 
+    If you encounter this issue, the workaround is to create a symlink:
+
+    ```bash
+    ln -s /usr/bin/openbao /usr/bin/bao
+    ```
+
+!!! warning "OpenBao is Vault-compatible but not Vault itself"
+
+    OpenBao is a fork of HashiCorp Vault. It is compatible with the Vault
+    API and CLI, but it is not the official HashiCorp Vault distribution. The commands
+    are the same, but the CLI name is `openbao` instead of `vault`. So when using
+    OpenBao, replace `vault` with `openbao` in any of the commands below.
+
+    Also Zabbix officially supports HashiCorp Vault, although OpenBao should
+    work fine as it is currently a drop-in fork of Vault. In the future, if 
+    OpenBao diverges from Vault, Zabbix may not support it anymore.
 
 ### Configure Vault
 
-Create or edit `/etc/vault.d/vault.hcl`. The example below uses a file-based storage
-backend and enables TLS:
+Create or edit `/etc/vault.d/vault.hcl` or `/etc/openbao/openbao.hcl`. The example 
+below uses a file-based storage backend and enables TLS:
 
-```hcl
-ui = true
+!!! example "Vault configuration file"
 
-storage "file" {
-  path = "/opt/vault/data"
-}
+    ```hcl
+    ui = true
 
-listener "tcp" {
-  address       = "0.0.0.0:8200"
-  tls_cert_file = "/etc/vault.d/tls/vault.crt"
-  tls_key_file  = "/etc/vault.d/tls/vault.key"
-}
+    storage "file" {
+      path = "/opt/vault/data"
+    }
 
-api_addr     = "https://vault.example.com:8200"
-cluster_addr = "https://vault.example.com:8201"
-```
+    listener "tcp" {
+      address       = "0.0.0.0:8200"
+      tls_cert_file = "/etc/vault.d/tls/vault.crt"    # or /etc/openbao/tls/vault.crt for OpenBao
+      tls_key_file  = "/etc/vault.d/tls/vault.key"    # or /etc/openbao/tls/vault.key for OpenBao
+    }
+
+    api_addr     = "https://vault.example.com:8200"
+    cluster_addr = "https://vault.example.com:8201"
+    ```
 
 !!! note
 
     For a development or lab environment, set `tls_disable = 1` inside the `listener
     "tcp"` block and use `http://` addresses. Never disable TLS in production.
 
-```hcl
-listener "tcp" {
-  address     = "0.0.0.0:8200"
-  tls_disable = 1
-}
-```
+    ```hcl
+    listener "tcp" {
+      address     = "0.0.0.0:8200"
+      tls_disable = 1
+    }
+    ```
 
 ### Create the Data Directory and Set Permissions
 
-```bash
-sudo mkdir -p /opt/vault/data
-sudo chown -R vault:vault /opt/vault
-sudo chmod 750 /opt/vault/data
-```
+Create the data directory for Vault and set the correct ownership and permissions.
+
+!!! info "Creating the Vault data directory"
+
+    ```bash
+    sudo mkdir -p /opt/vault/data
+    sudo chown -R vault:vault /opt/vault   # for HashiCorp Vault
+    sudo chown -R openbao:openbao /opt/vault   # for OpenBao
+    sudo chmod 750 /opt/vault/data
+    ```
 
 ### Enable and Start the Vault Service
 
-```bash
-sudo systemctl enable vault
-sudo systemctl start vault
-```
+!!! info "Enabling and starting the Vault service"
+
+    HashiCorp Vault
+    ```bash
+    sudo systemctl enable vault
+    sudo systemctl start vault
+    ```
+
+    OpenBao
+    ```bash
+    sudo systemctl enable openbao
+    sudo systemctl start openbao
+    ```
 
 ### Initialise Vault
 
 Vault must be initialised once. This generates unseal keys and an initial root
 token.
 
-```bash
-export VAULT_ADDR='https://vault.example.com:8200'
-vault operator init -key-shares=5 -key-threshold=3
-```
+!!! note "OpenBao users"
+
+    OpenBao is a drop-in fork of HashiCorp Vault. The commands are the same, but
+    the CLI name is `openbao` instead of `vault`. So when using OpenBao, replace
+    `vault` with `openbao` in any of the commands below.
+
+!!! info "Initialising Vault"
+
+    ```bash
+    export VAULT_ADDR='https://vault.example.com:8200'
+    vault operator init -key-shares=5 -key-threshold=3
+    ```
 
 Save the **5 unseal keys** and the **initial root token** securely. You need at
 least 3 keys to unseal Vault after every restart.
 
 ### Unseal Vault
 
-```bash
-vault operator unseal   # repeat 3 times with different unseal keys
-```
+After initialisation, Vault is sealed. You must unseal it before it can be used.
+Use 3 of the 5 unseal keys generated during initialisation:
+
+!!! info "Unsealing Vault"
+
+    Repeat the following command 3 times, each time using a different unseal key:
+
+    ```bash
+    vault operator unseal
+    ```
 
 ### Authenticate as Root
 
-```bash
-vault login <initial-root-token>
-```
+Use the initial root token generated during initialisation to log in:
+
+!!! info "Logging in with the initial root token"
+
+    ```bash
+    vault login <initial-root-token>
+    ```
 
 ---
 
@@ -171,37 +248,42 @@ vault login <initial-root-token>
 
 Enable the KV v2 secrets engine on the `zabbix/` mount point:
 
-```bash
-vault secrets enable -path=zabbix kv-v2
-```
+!!! info "Enabling KV v2 secrets engine"
 
-> **Note:** If you previously enabled a KV v1 engine on this path, disable it first.
-This permanently deletes all secrets stored under that mount:
+    ```bash
+    vault secrets enable -path=zabbix kv-v2
+    ```
 
-```bash
-vault secrets disable zabbix/
-vault secrets enable -path=zabbix kv-v2
-```
+!!! note "Remove old KV v1 engine"
+
+    If you previously enabled a KV v1 engine on this path, disable it first.
+    This permanently deletes all secrets stored under that mount:
+
+    ```bash
+    vault secrets disable zabbix/
+    vault secrets enable -path=zabbix kv-v2
+    ```
 
 ### Store Zabbix Secrets
 
 Create separate secrets for the Zabbix frontend and the Zabbix server database
 connections:
 
-```bash
-# Credentials for the Zabbix frontend database connection
-vault kv put zabbix/frontend username=<db_user> password=<db_password>
+!!! info "Storing Zabbix secrets"
 
-# Credentials for the Zabbix server database connection
-vault kv put zabbix/server username=<db_user> password=<db_password>
-```
+    Credentials for the Zabbix frontend database connection
 
-Verify the secrets were stored correctly:
+    ```bash
+    vault kv put zabbix/frontend username=<db_user> password=<db_password>
+    vault kv put zabbix/server username=<db_user> password=<db_password>
+    ```
 
-```bash
-vault kv get zabbix/frontend
-vault kv get zabbix/server
-```
+    Verify the secrets were stored correctly:
+
+    ```bash
+    vault kv get zabbix/frontend
+    vault kv get zabbix/server
+    ```
 
 ### Create Vault Policies
 
@@ -221,61 +303,82 @@ Recommended secret structure:
 
 First create the policies directory:
 
-```bash
-sudo mkdir -p /etc/vault.d/policies
-```
+!!! info "Creating the policies directory"
 
-**Server policy** — create `/etc/vault.d/policies/zabbix-server-policy.hcl`:
+    Hashicorp Vault
+    ```bash
+    sudo mkdir -p /etc/vault.d/policies
+    ```
 
-```hcl
-# Zabbix server database credentials
-path "zabbix/data/server" {
-  capabilities = ["read", "list"]
-}
+    OpenBao
+    ```bash
+    sudo mkdir -p /etc/openbao/policies
+    ```
 
-# All monitoring secrets — covers any secret added under zabbix/monitoring/
-path "zabbix/data/monitoring/*" {
-  capabilities = ["read", "list"]
-}
+**Server policy** — create `policies/zabbix-server-policy.hcl`:
 
-# Allow listing the mount point so secrets are visible in the Vault UI
-path "zabbix/metadata/" {
-  capabilities = ["list"]
-}
+!!! info "Zabbix server policy"
 
-path "zabbix/metadata/server" {
-  capabilities = ["read", "list"]
-}
+    ```hcl
+    # Zabbix server database credentials
+    path "zabbix/data/server" {
+      capabilities = ["read", "list"]
+    }
 
-path "zabbix/metadata/monitoring/*" {
-  capabilities = ["read", "list"]
-}
-```
+    # All monitoring secrets — covers any secret added under zabbix/monitoring/
+    path "zabbix/data/monitoring/*" {
+      capabilities = ["read", "list"]
+    }
 
-**Frontend policy** — create `/etc/vault.d/policies/zabbix-frontend-policy.hcl`:
+    # Allow listing the mount point so secrets are visible in the Vault UI
+    path "zabbix/metadata/" {
+      capabilities = ["list"]
+    }
 
-```hcl
-# Zabbix frontend database credentials only
-path "zabbix/data/frontend" {
-  capabilities = ["read", "list"]
-}
+    path "zabbix/metadata/server" {
+      capabilities = ["read", "list"]
+    }
 
-# Allow listing the mount point so the secret is visible in the Vault UI
-path "zabbix/metadata/" {
-  capabilities = ["list"]
-}
+    path "zabbix/metadata/monitoring/*" {
+      capabilities = ["read", "list"]
+    }
+    ```
 
-path "zabbix/metadata/frontend" {
-  capabilities = ["read", "list"]
-}
-```
+**Frontend policy** — create `policies/zabbix-frontend-policy.hcl`:
+
+!!! info "Zabbix frontend policy"
+
+    ```hcl
+    # Zabbix frontend database credentials only
+    path "zabbix/data/frontend" {
+      capabilities = ["read", "list"]
+    }
+
+    # Allow listing the mount point so the secret is visible in the Vault UI
+    path "zabbix/metadata/" {
+      capabilities = ["list"]
+    }
+
+    path "zabbix/metadata/frontend" {
+      capabilities = ["read", "list"]
+    }
+    ```
 
 Write both policies to Vault:
 
-```bash
-vault policy write zabbix-server /etc/vault.d/policies/zabbix-server-policy.hcl
-vault policy write zabbix-frontend /etc/vault.d/policies/zabbix-frontend-policy.hcl
-```
+!!! info "Writing policies to Vault"
+
+    Hashicorp Vault
+    ```bash
+    vault policy write zabbix-server /etc/vault.d/policies/zabbix-server-policy.hcl
+    vault policy write zabbix-frontend /etc/vault.d/policies/zabbix-frontend-policy.hcl
+    ```
+
+    OpenBao
+    ```bash
+    openbao policy write zabbix-server /etc/openbao/policies/zabbix-server-policy.hcl
+    openbao policy write zabbix-frontend /etc/openbao/policies/zabbix-frontend-policy.hcl
+    ```
 
 !!! note "Vault and Zabbix Proxies"
 
@@ -326,11 +429,13 @@ _13.10 Resolve secret vault macro by_
 Create a token role that allows tokens to be renewed for up to 30 days (720 hours).
 This role covers both the frontend and server policies:
 
-```bash
-vault write auth/token/roles/zabbix \
-    allowed_policies="zabbix-frontend,zabbix-server" \
-    period="720h"
-```
+!!! info "Creating a token role for Zabbix"
+
+    ```bash
+    vault write auth/token/roles/zabbix \
+        allowed_policies="zabbix-frontend,zabbix-server" \
+        period="720h"
+    ```
 
 ### Create Tokens for Frontend and Server
 
@@ -352,21 +457,27 @@ vault write auth/token/roles/zabbix \
 Create a separate token for each component using the role created in previous section The
 `-type=service` flag explicitly creates a renewable service token:
 
-```bash
-# Token for the Zabbix frontend
-vault token create \
-    -policy=zabbix-frontend \
-    -role=zabbix \
-    -type=service \
-    -display-name="zabbix-frontend"
- 
-# Token for the Zabbix server
-vault token create \
-    -policy=zabbix-server \
-    -role=zabbix \
-    -type=service \
-    -display-name="zabbix-server"
-```
+!!! info "Creating tokens for Zabbix frontend and server"
+
+    Token for the Zabbix frontend
+
+    ```bash
+    vault token create \
+        -policy=zabbix-frontend \
+        -role=zabbix \
+        -type=service \
+        -display-name="zabbix-frontend"
+    ```
+    
+    Token for the Zabbix server
+
+    ```bash
+    vault token create \
+        -policy=zabbix-server \
+        -role=zabbix \
+        -type=service \
+        -display-name="zabbix-server"
+    ```
 
 The output includes a `token_renewable true` field confirming the token can be renewed.
 
@@ -377,46 +488,65 @@ The output includes a `token_renewable true` field confirming the token can be r
 
 Verify each token can access its respective secret:
 
-```bash
-# Test the frontend token
-VAULT_TOKEN=<frontend-token> vault kv get zabbix/frontend
+!!! info "Verifying Vault tokens"
 
-# Test the server token
-VAULT_TOKEN=<server-token> vault kv get zabbix/server
-```
+    Use the `VAULT_TOKEN` environment variable to test each token. Replace `<frontend-token>`
+    and `<server-token>` with the actual token values generated in the previous step.
+
+    Test the frontend token
+
+    ```bash
+    VAULT_TOKEN=<frontend-token> vault kv get zabbix/frontend
+    ```
+
+    Test the server token
+
+    ```bash
+    VAULT_TOKEN=<server-token> vault kv get zabbix/server
+    ```
 
 ### Open the Firewall
 
 Allow the Zabbix server and frontend host to reach Vault on port 8200:
 
-```bash
-firewall-cmd --permanent --zone=internal --add-port=8200/tcp
-firewall-cmd --reload
-```
+!!! info "Opening the firewall for Vault"
+
+    ```bash
+    firewall-cmd --permanent --zone=internal --add-port=8200/tcp
+    firewall-cmd --reload
+    ```
 
 ### Allow SELinux Network Connections
 
 If SELinux is enforcing, allow the web server to make outbound network connections
 so the frontend can reach Vault:
 
-```bash
-setsebool -P httpd_can_network_connect on
-```
+!!! info "Allowing SELinux network connections"
+
+    ```bash
+    setsebool -P httpd_can_network_connect on
+    ```
 
 ### Verify Connectivity with curl
 
 Before configuring Zabbix, confirm that the Vault API is reachable and the tokens
 work as expected:
 
-```bash
-# Verify frontend token
-curl -H "X-Vault-Token: <frontend-token>" \
-     https://vault.example.com:8200/v1/zabbix/data/frontend
+!!! info "Verifying Vault tokens"
 
-# Verify server token
-curl -H "X-Vault-Token: <server-token>" \
-     https://vault.example.com:8200/v1/zabbix/data/server
-```
+    Verify frontend token
+
+    ```bash
+    curl -H "X-Vault-Token: <frontend-token>" \
+         https://vault.example.com:8200/v1/zabbix/data/frontend
+    ```
+
+    Verify server token
+
+    ```bash
+    curl -H "X-Vault-Token: <server-token>" \
+        https://vault.example.com:8200/v1/zabbix/data/server
+    ```
 
 A successful response returns a JSON object containing the `username` and `password`
 fields under `data.data`.
@@ -427,7 +557,8 @@ fields under `data.data`.
 
 ### Understanding VaultDBPath and VaultPrefix
 
-Two parameters in `zabbix_server.conf` control how the server interacts with Vault:
+Two parameters in the Zabbix server configuration files control how the server
+interacts with Vault:
 
 > **`VaultDBPath`**: Used exclusively for retrieving the **Zabbix database credentials**
 > (`DBUser` and `DBPassword`). Zabbix reads exactly two hardcoded keys from this
@@ -451,30 +582,29 @@ Two parameters in `zabbix_server.conf` control how the server interacts with Vau
     of whether you use KV v1 or KV v2. So `/v1/zabbix/data/server` is correct even
     though we enabled KV v2.
 
-### Edit `zabbix_server.conf`
+### Edit Zabbix server configuration
 
-Open `/etc/zabbix/zabbix_server.conf`. Remove the existing `DBUser` and `DBPassword`
-parameters and add the Vault configuration:
+Ensure the `DBUser` and `DBPassword` parameters are **removed** from the configuration
+file `/etc/zabbix/zabbix_server.conf` and any configuration file in `/etc/zabbix/zabbix_server.d/`.
+Next, edit or create `/etc/zabbix/zabbix_server.d/vault.conf` and add the Vault configuration:
 
-```ini
-# Remove these lines:
-# DBUser=<db_user>
-# DBPassword=<db_password>
+!!! example "Zabbix server Vault configuration"
 
-### HashiCorp Vault configuration ###
+    ```ini
+    ### HashiCorp Vault configuration ###
 
-# Vault server URL
-VaultURL=https://vault.example.com:8200
+    # Vault server URL
+    VaultURL=https://vault.example.com:8200
 
-# Path to the secret containing the Zabbix database credentials.
-# Zabbix reads the 'username' and 'password' keys from this path.
-# The full path including the mount point is required.
-# This resolves to: /v1/zabbix/data/server
-VaultDBPath=zabbix/server
+    # Path to the secret containing the Zabbix database credentials.
+    # Zabbix reads the 'username' and 'password' keys from this path.
+    # The full path including the mount point is required.
+    # This resolves to: /v1/zabbix/data/server
+    VaultDBPath=zabbix/server
 
-# Vault token for the Zabbix server
-VaultToken=<zabbix-server token>
-```
+    # Vault token for the Zabbix server
+    VaultToken=<zabbix-server token>
+    ```
 
 !!! note
 
@@ -487,18 +617,22 @@ VaultToken=<zabbix-server token>
 If Vault uses a certificate signed by an internal CA, configure the Zabbix server
 to trust it:
 
-```ini
-VaultTLSCAFile=/etc/zabbix/ssl/vault-ca.pem
-```
+!!! example "Zabbix server Vault TLS configuration"
+
+    ```ini
+    VaultTLSCAFile=/etc/zabbix/ssl/vault-ca.pem
+    ```
 
 If Vault uses a publicly trusted certificate, this parameter is not required.
 
 ### Restart the Zabbix Server
 
-```bash
-sudo systemctl restart zabbix-server
-sudo journalctl -u zabbix-server -f
-```
+!!! info "Restarting the Zabbix server"
+
+    ```bash
+    sudo systemctl restart zabbix-server
+    sudo journalctl -u zabbix-server -f
+    ```
 
 Check the log for a successful start. If the Vault token or path is incorrect,
 the server will log an error and fail to start.
@@ -512,20 +646,22 @@ the server will log an error and fail to start.
 Open `/etc/zabbix/web/zabbix.conf.php`. Remove the existing `$DB['USER']` and
 `$DB['PASSWORD']` parameters and add the Vault configuration:
 
-```php
-// Remove these lines:
-// $DB['USER'] = '<db_user>';
-// $DB['PASSWORD'] = '<db_password>';
+!!! example "Zabbix frontend Vault configuration"
 
-// Vault configuration
-$DB['VAULT']       = 'HashiCorp';
-$DB['VAULT_URL']   = 'https://vault.example.com:8200';
-$DB['VAULT_DB_PATH'] = 'zabbix/frontend';
-$DB['VAULT_TOKEN'] = '<zabbix-frontend token>';
+    ```php
+    // Remove these lines:
+    // $DB['USER'] = '<db_user>';
+    // $DB['PASSWORD'] = '<db_password>';
 
-// TLS — only required if using a custom CA
-// $DB['VAULT_CACERT'] = '/etc/zabbix/ssl/vault-ca.pem';
-```
+    // Vault configuration
+    $DB['VAULT']       = 'HashiCorp';
+    $DB['VAULT_URL']   = 'https://vault.example.com:8200';
+    $DB['VAULT_DB_PATH'] = 'zabbix/frontend';
+    $DB['VAULT_TOKEN'] = '<zabbix-frontend token>';
+
+    // TLS — only required if using a custom CA
+    // $DB['VAULT_CACERT'] = '/etc/zabbix/ssl/vault-ca.pem';
+    ```
 
 !!! note
 
@@ -538,10 +674,25 @@ $DB['VAULT_TOKEN'] = '<zabbix-frontend token>';
 The `zabbix.conf.php` file now contains a Vault token. Ensure it is only readable
 by the web server process:
 
-```bash
-sudo chown apache:apache /etc/zabbix/web/zabbix.conf.php
-sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
-```
+!!! info "Securing zabbix.conf.php"
+
+    RHEL - Apache
+    ```bash
+    sudo chown apache:apache /etc/zabbix/web/zabbix.conf.php
+    sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
+    ```
+
+    SUSE - Apache
+    ```bash
+    sudo chown wwwrun:www /etc/zabbix/web/zabbix.conf.php
+    sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
+    ```
+
+    Nginx:
+    ```bash
+    sudo chown nginx:nginx /etc/zabbix/web/zabbix.conf.php
+    sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
+    ```
 
 !!! note
 
@@ -593,20 +744,22 @@ create the macro.
 Writing secrets requires the root token. Switch to root, write the secret, then
 switch back:
 
-```bash
-# Switch to root token to write the secret
-vault login <root-token>
-vault kv put zabbix/monitoring/snmp community="public_prod_string"
+!!! example "Storing SNMP community string in Vault"
 
-# Verify the secret was written
-vault kv get zabbix/monitoring/snmp
+    ```bash
+    # Switch to root token to write the secret
+    vault login <root-token>
+    vault kv put zabbix/monitoring/snmp community="public_prod_string"
 
-# Switch back to the zabbix-server token
-vault login <zabbix-server-token>
+    # Verify the secret was written
+    vault kv get zabbix/monitoring/snmp
 
-# Verify the server token can read it
-vault kv get zabbix/monitoring/snmp
-```
+    # Switch back to the zabbix-server token
+    vault login <zabbix-server-token>
+
+    # Verify the server token can read it
+    vault kv get zabbix/monitoring/snmp
+    ```
 
 !!! note
 
@@ -626,9 +779,14 @@ Navigate to `Administration` | `Macros` and create:
 
 **Step 3 — Reload secrets:**
 
-```bash
-zabbix_server -R secrets_reload
-```
+!!! info "Reloading secrets in Zabbix server"
+
+    After adding a new *Vault secret* macro, reload the secrets in the running
+    Zabbix server process:
+
+    ```bash
+    zabbix_server -R secrets_reload
+    ```
 
 Check the log to confirm the secret was retrieved successfully. Any new secret
 added under `zabbix/monitoring/` follows the same process, no policy updates required.
@@ -658,17 +816,25 @@ For production use, all communication between Zabbix and Vault must be TLS-encry
 
 ###  Using a Custom CA Certificate
 
-If your Vault instance uses a certificate signed by an internal Certificate Authority:
+If your Vault instance uses a certificate signed by an internal Certificate Authority
+(CA), you must configure Zabbix to trust that CA. Copy the CA certificate to
+the Zabbix server host and configure the following parameters:
 
-**Zabbix Server (`zabbix_server.conf`):**
-```ini
-VaultTLSCAFile=/etc/zabbix/ssl/vault-ca.pem
-```
+**Zabbix Server (`zabbix_server.d/vault.conf`)**
+
+!!! example "Zabbix server Vault TLS configuration"
+
+    ```ini
+    VaultTLSCAFile=/etc/zabbix/ssl/vault-ca.pem
+    ```
 
 **Zabbix Frontend (`zabbix.conf.php`):**
-```php
-$DB['VAULT_CACERT'] = '/etc/zabbix/ssl/vault-ca.pem';
-```
+
+!!! example "Zabbix frontend Vault TLS configuration"
+
+    ```php
+    $DB['VAULT_CACERT'] = '/etc/zabbix/ssl/vault-ca.pem';
+    ```
 
 ### Client Certificate Authentication (mTLS)
 
@@ -680,22 +846,24 @@ mutual authentication.
 
 Test Vault connectivity from the Zabbix server host before restarting the service:
 
-```bash
-curl --cacert /etc/zabbix/ssl/vault-ca.pem \
-     -H "X-Vault-Token: <your-token>" \
-     https://vault.example.com:8200/v1/zabbix/data/monitoring/snmp
-```
+!!! example "Verifying Vault connectivity with curl"
 
-A successful response looks like:
+    ```bash
+    curl --cacert /etc/zabbix/ssl/vault-ca.pem \
+        -H "X-Vault-Token: <your-token>" \
+        https://vault.example.com:8200/v1/zabbix/data/monitoring/snmp
+    ```
 
-```json
-{
-  "request_id": "abc123...",
-  "data": {
-    "community": "public_prod_string"
-  }
-}
-```
+    A successful response looks like:
+
+    ```json
+    {
+      "request_id": "abc123...",
+      "data": {
+        "community": "public_prod_string"
+      }
+    }
+    ```
 
 ---
 
@@ -711,9 +879,11 @@ The Zabbix server caches secret values after startup. When you add or update a
 secret in Vault, you can force the server to reload all secrets without a full
 restart using the runtime control option:
 
-```bash
-zabbix_server -R secrets_reload
-```
+!!! info "Reloading secrets in Zabbix server"
+
+    ```bash
+    zabbix_server -R secrets_reload
+    ```
 
 This sends a signal to the running Zabbix server process instructing it to re-fetch
 all macros that reference Vault. Use this command whenever you:
@@ -727,18 +897,20 @@ all macros that reference Vault. Use this command whenever you:
 Immediately after running `secrets_reload`, tail the Zabbix server log and look
 for confirmation or errors:
 
-```bash
-tail -f /var/log/zabbix/zabbix_server.log | grep -i vault
-```
+!!! info "Tailing the Zabbix server log for Vault messages"
 
-A successful reload produces output similar to:
+    ```bash
+    tail -f /var/log/zabbix/zabbix_server.log | grep -i vault
+    ```
 
-```
-zabbix_server [12345]: DEBUG: vault secrets reload started
-zabbix_server [12345]: DEBUG: successfully retrieved secret: zabbix/monitoring/snmp
-zabbix_server [12345]: DEBUG: successfully retrieved secret: zabbix/monitoring/ssh
-zabbix_server [12345]: DEBUG: vault secrets reload completed
-```
+    A successful reload produces output similar to:
+
+    ```
+    zabbix_server [12345]: DEBUG: vault secrets reload started
+    zabbix_server [12345]: DEBUG: successfully retrieved secret: zabbix/monitoring/snmp
+    zabbix_server [12345]: DEBUG: successfully retrieved secret: zabbix/monitoring/ssh
+    zabbix_server [12345]: DEBUG: vault secrets reload completed
+    ```
 
 If you see `failed to retrieve secret` or `403 Forbidden`, refer to the Troubleshooting
 section.
@@ -758,13 +930,22 @@ To verify it is working:
 If the eye icon shows an error or the value does not resolve, check the web server
 error log:
 
-```bash
-# Apache
-sudo tail -f /var/log/httpd/error_log | grep -i vault
+!!! info "Tailing the web server error log for Vault messages"
 
-# Nginx
-sudo tail -f /var/log/nginx/error.log | grep -i vault
-```
+    RHEL - Apache
+    ```bash
+    sudo tail -f /var/log/httpd/error_log | grep -i vault
+    ```
+
+    SUSE - Apache
+    ```bash
+    sudo tail -f /var/log/apache2/error_log | grep -i vault
+    ```
+
+    Nginx
+    ```bash
+    sudo tail -f /var/log/nginx/error.log | grep -i vault
+    ```
 
 ### Verify a Secret Reaches an Actual Check
 
@@ -794,21 +975,23 @@ For quicker feedback without waiting for the poller:
 To confirm that Vault-backed macro values are stored as references and not as
 plaintext secrets, query the database directly:
 
-```sql
--- Check global macros
-SELECT macro, value FROM globalmacro WHERE type=2;
+!!! example "Querying the Zabbix database for Vault macros"
 
--- Check host macros
-SELECT macro, value FROM hostmacro WHERE type=2;
-```
+    ```sql
+    -- Check global macros
+    SELECT macro, value FROM globalmacro WHERE type=2;
 
-```sql
-zabbix=# SELECT * from globalmacro;
- globalmacroid |       macro        |         value         |           description            | type
----------------+--------------------+-----------------------+----------------------------------+------
-             2 | {$SNMP_COMMUNITY}  | zabbix/snmp:community | SNMP community string from Vault |    2
-             3 | {$SNMP_COMMUNITY1} | test                  | test plain                       |    0
-```
+    -- Check host macros
+    SELECT macro, value FROM hostmacro WHERE type=2;
+    ```
+
+    ```sql
+    zabbix=# SELECT * from globalmacro;
+    globalmacroid |       macro        |         value         |           description            | type
+    ---------------+--------------------+-----------------------+----------------------------------+------
+                2 | {$SNMP_COMMUNITY}  | zabbix/snmp:community | SNMP community string from Vault |    2
+                3 | {$SNMP_COMMUNITY1} | test                  | test plain                       |    0
+    ```
 
 All rows should show the `<path>:<key>` reference string, never the resolved
 secret value. This confirms that the plaintext credential never touches the Zabbix database.
@@ -821,9 +1004,11 @@ secret value. This confirms that the plaintext credential never touches the Zabb
 
 Check the Zabbix server log for errors:
 
-```bash
-grep -i vault /var/log/zabbix/zabbix_server.log
-```
+!!! info "Checking the Zabbix server log for Vault errors"
+
+    ```bash
+    grep -i vault /var/log/zabbix/zabbix_server.log
+    ```
 
 Common errors and resolutions:
 
@@ -839,27 +1024,35 @@ Common errors and resolutions:
 
 From the Zabbix server host, test with the same credentials Zabbix uses:
 
-```bash
-# Switch to root token to verify secrets exist
-vault login <root-token>
-vault kv get zabbix/monitoring/snmp
+!!! example "Testing secret accessibility"
 
-# Switch to zabbix-server token to verify policy access
-vault login <zabbix-server-token>
-vault kv get zabbix/monitoring/snmp
-```
+    Switch to root token to verify secrets exist
+    ```bash
+    vault login <root-token>
+    vault kv get zabbix/monitoring/snmp
+    ```
+
+    Switch to zabbix-server token to verify policy access
+    ```bash
+    vault login <zabbix-server-token>
+    vault kv get zabbix/monitoring/snmp
+    ```
 
 ### Check Vault Audit Log
 
 If Vault's audit backend is enabled, you can trace exactly what Zabbix is requesting:
 
-```bash
-# Enable file audit log (if not already enabled)
-vault audit enable file file_path=/var/log/vault/audit.log
+!!! info "Checking the Vault audit log"
 
-# Tail the audit log
-sudo tail -f /var/log/vault/audit.log | jq '.request.path'
-```
+    Enable file audit log (if not already enabled)
+    ```bash
+    vault audit enable file file_path=/var/log/vault/audit.log
+    ```
+
+    Tail the audit log
+    ```bash
+    sudo tail -f /var/log/vault/audit.log | jq '.request.path'
+    ```
 ## Vault GUI
 
 All configuration and verification tasks described in this chapter can also be
@@ -878,9 +1071,11 @@ The GUI is particularly useful for day-to-day secret management such as rotating
 credentials, log in with the root token, navigate to the secret, and update the
 value. Then trigger a reload on the Zabbix server:
 
-```bash
-zabbix_server -R secrets_reload
-```
+!!! info "Reloading secrets in Zabbix server from GUI"
+
+    ```bash
+    zabbix_server -R secrets_reload
+    ```
 ![ch13_vault_login.png](ch13.11-vault_login.png)
 
 _13.11 vault login_
