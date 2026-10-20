@@ -105,7 +105,7 @@ is different: its resulting item value follows the normal Zabbix monitoring path
 flowchart TB
     subgraph Traditional["Traditional Zabbix Monitoring"]
         direction TB
-        SPACE1[" "]
+        SPACE1[" "]:::spacer
         P1["Customer Proxy"]
         S["Zabbix Server"]
         DB["History Storage"]
@@ -130,6 +130,7 @@ flowchart TB
 
     Traditional ~~~ APM
 
+    classDef spacer fill:transparent,stroke:transparent,color:transparent,stroke-width:0px
     classDef proxy fill:#e8f5e9,stroke:#388e3c,color:#1b5e20
     classDef storage fill:#fff3e0,stroke:#f57c00,color:#e65100
     classDef server fill:#e3f2fd,stroke:#1976d2,color:#0d47a1
