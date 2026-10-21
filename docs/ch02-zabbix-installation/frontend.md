@@ -23,7 +23,7 @@ Let's get started
 
 ## Overview of the interface
 
-With Zabbix 7 the user interface after logging in is a bit changed. Our menu on
+Since Zabbix 7 the user interface after logging in is a bit changed. Our menu on
 the left side of the screen has a small overhaul. Let's dive into it.
 When we login into our Zabbix setup the first time with our Admin user we see a page
 
@@ -122,6 +122,7 @@ of nine distinct sections:
 | --------------- | ------------------------------------------------------------------------------------------------- |
 | Dashboards      | Contains an overview of all the dashboards we have access to.                                     |
 | Monitoring      | Shows us the hosts, problems, latest data, maps, ...                                              |
+| APM             | This page gives an overview of our Telemetry data.                                                |
 | Services        | An overview of all the Services and SLA settings.                                                 |
 | Inventory       | An overview of our collected inventory data.                                                      |
 | Reports         | Shows us the system information, scheduled reports, audit logs, action logs, etc .                |
@@ -194,10 +195,11 @@ Information_
 
 ???+ note "Enabling Global script execution"
 
-    `Global script` execution on Zabbix server can be enabled by setting 
-    `EnableGlobalScripts=1` in the Zabbix server configuration at `/etc/zabbix/zabbix_server.d/`.
-    For new installations, since Zabbix 7.0, global script execution is
-    disabled by default.
+    `Global script` execution on the Zabbix server can be enabled by setting
+    `EnableGlobalScripts=1` in `/etc/zabbix/zabbix_server.conf`, or by adding
+    it to a separate file such as `/etc/zabbix/zabbix_server.d/custom.conf`.
+    For new installations, since Zabbix 7.0, global script execution is disabled
+    by default. Restart the Zabbix server afterwards to apply the change.
 
 ???+ tip
 
@@ -254,9 +256,19 @@ menu_
 
 ---
 
-![Services menu](ch02.12-services-menu.png){ width="20%" }
+![APM Menu](ch02.12-apm-menu.png){ width="20%" }
 
-_2.12 Services
+_2.12 APM menu_
+
+- **Traces:** Traces section displays traces collected from your applications and services.
+- **Metrics:** Metrics section displays metric data points collected from your applications and services.
+- **Logs:** Logs section displays log records collected from your applications and services.
+
+---
+
+![Services menu](ch02.13-services-menu.png){ width="20%" }
+
+_2.13 Services
 menu_
 
 - **Services**: This page will give us a high level overview of all services
@@ -266,9 +278,9 @@ menu_
 
 ---
 
-![Inventory menu](ch02.13-inventory-menu.png){ width="20%" }
+![Inventory menu](ch02.14-inventory-menu.png){ width="20%" }
 
-_2.13 Inventory
+_2.14 Inventory
 menu_
 
 - **Overview**: A place where we can watch all our inventory data that
@@ -278,9 +290,9 @@ menu_
 
 ---
 
-![Reports menu](ch02.14-reports-menu.png){ width="20%" }
+![Reports menu](ch02.15-reports-menu.png){ width="20%" }
 
-_2.14 Inventory
+_2.15 Inventory
 menu_
 
 - **System information**: System information is a summary of key Zabbix server
@@ -300,9 +312,9 @@ menu_
 
 ---
 
-![Data collection](ch02.15-datacollection-menu.png){ width="20%" }
+![Data collection](ch02.16-datacollection-menu.png){ width="20%" }
 
-_2.15 Data
+_2.16 Data
 collection_
 
 - **Template groups**: A place to logical group all templates together in different
@@ -321,9 +333,9 @@ collection_
 
 ---
 
-![Alerts menu](ch02.16-alerts-menu.png){ width="20%" }
+![Alerts menu](ch02.17-alerts-menu.png){ width="20%" }
 
-_2.16 Alerts
+_2.17 Alerts
 menu_
 
 - **Actions**: This menu allows us to configure actions based on `events` in
@@ -336,9 +348,9 @@ menu_
 
 ---
 
-![Users menu](ch02.17-users-menu.png){ width="20%" }
+![Users menu](ch02.18-users-menu.png){ width="20%" }
 
-_2.17 Users
+_2.18 Users
 menu_
 
 - **User groups**: The `User groups` menu section enables the creation and management of user groupings for streamlined access and permission control.
@@ -349,9 +361,9 @@ menu_
 
 ---
 
-![Administration menu](ch02.18-administration-menu.png){ width="20%" }
+![Administration menu](ch02.19-administration-menu.png){ width="20%" }
 
-_2.18 Administration
+_2.19 Administration
 menu_
 
 - **General**: The `General` menu section within administration allows configuration of core system-wide settings and parameters.
