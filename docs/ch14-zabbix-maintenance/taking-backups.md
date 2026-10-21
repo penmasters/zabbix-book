@@ -78,13 +78,17 @@ CLI with the command below.
     mariadb-dump --version
     ```
 
-If your get no result, try to install the MariaDB client.
+If you get no result, try to install the MariaDB client.
 
 !!! info "Install MariaDB client"
 
     Red Hat
     ```bash
     dnf install mariadb
+    ```
+    SUSE
+    ```bash
+    zypper install mariadb-client
     ```
 
     Ubuntu
@@ -145,6 +149,11 @@ storing it to disk. To do this, we can install a compression tool like `lz4`.
     Red Hat
     ```bash
     dnf install lz4
+    ```
+
+    Suse
+    ```bash
+    zypper install lz4
     ```
 
     Ubuntu
@@ -407,11 +416,18 @@ Lastly, it is also recommended to create a backup of your webserver configuratio
     cp /etc/httpd/conf.d/zabbix.conf  /opt/zabbix-backup/
     ```
 
+    SUSE Apache2
+    ```bash
+    cp -R /etc/apache2/ /opt/zabbix-backup/
+    cp -R /srv/www/htdocs/ /opt/zabbix-backup/
+    cp /etc/apache2/conf.d/zabbix.conf  /opt/zabbix-backup/
+    ```
+
     Ubuntu Apache2
     ```bash
     cp -R /etc/apache2/ /opt/zabbix-backup/
     cp -R /var/www/ /opt/zabbix-backup/
-    cp /etc/httpd/conf.d/zabbix.conf  /opt/zabbix-backup/
+    cp /etc/apache2/conf.d/zabbix.conf  /opt/zabbix-backup/
     ```
 
     NGINX

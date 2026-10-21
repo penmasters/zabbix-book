@@ -91,7 +91,7 @@ decides how to use it.
 ## The AlertScriptsPath Directory
 
 All scripts must live inside the directory defined by `AlertScriptsPath` in
-`/etc/zabbix/zabbix_server.conf`. Usually the default value is:
+the Zabbix server configuration. Usually the default value is:
 
 ``` bash
 AlertScriptsPath=/usr/lib/zabbix/alertscripts
@@ -100,10 +100,10 @@ AlertScriptsPath=/usr/lib/zabbix/alertscripts
 You can verify the value on your system with:
 
 ```bash
-grep AlertScriptsPath /etc/zabbix/zabbix_server.conf
+grep -R AlertScriptsPath /etc/zabbix/
 ```
 
-If the line is commented out, the default above applies. Zabbix will refuse to
+If the line is commented out or not found, the default above applies. Zabbix will refuse to
 execute any script located outside this directory, even if you supply a full path.
 This is a deliberate security boundary.
 

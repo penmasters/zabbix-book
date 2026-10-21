@@ -164,7 +164,7 @@ The process responsible for calculating and initiating maintenance periods is th
      Only the first timer process handles host maintenance updates. Problem
      suppression updates are shared between all the timers.
 
-### Key Zabbix Server Configuration (`zabbix_server.conf`)
+### Key Zabbix Server Configuration
 
 The overall efficiency of maintenance logic depends on these parameters:
 

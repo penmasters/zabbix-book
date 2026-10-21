@@ -149,6 +149,13 @@ Alternatively, you can also install Google Chrome by downloading the package
 from the Google Chrome website: [https://www.google.com/chrome/](https://www.google.com/chrome/) and installing
 it using the package manager of your operating system.
 
+!!! warning "Unsupported Google Chrome versions"
+
+    The Zabbix web service is only tested with the official Google Chrome browser
+    and may not work correctly with other Chromium-based browsers, such as the
+    Ubuntu Snap package of Chromium. If you choose to install Google Chrome, ensure
+    that you download and install the official package from the Google Chrome website.
+
 #### Configuring the Zabbix web service
 
 Now that the Zabbix web service package and a headless browser are installed, we
@@ -162,7 +169,7 @@ configuration file.
     file is located at `/usr/etc/zabbix/zabbix_web_service.conf` and should not be edited
     as it will be overwritten when the package is updated. 
     Alternatively, you need to create an additional configuration file in the 
-    `/etc/zabbix/zabbix_web_service.conf.d/` directory and include your custom 
+    `/etc/zabbix/zabbix_web_service.d/` directory and include your custom 
     configuration there. This way you can keep the original configuration file 
     intact and only add your custom settings in the new file.
 

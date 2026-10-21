@@ -9,150 +9,96 @@ tags: [beginner]
 Scheduled PDF reports allow Zabbix to automatically generate dashboards as PDF
 documents and distribute them by email. This feature requires the **Zabbix Web Service**,
 which uses a headless Google Chrome browser to render dashboards before converting
-them to PDF.
-
-## Installing the Zabbix Web Service
-
-Install the required package.
-
-!!! info "Install the Zabbix Web Service"
-
-    Red Hat
-    ```bash
-    sudo dnf install zabbix-web-service
-    ```
-
-    Ubuntu
-    ```bash
-    sudo apt update
-    sudo apt install zabbix-web-service
-    ```
-
----
-
-## Installing Google Chrome
-
-The Zabbix Web Service requires the official **Google Chrome** browser.
-Although Chromium is available on several Linux distributions, unsupported
-versions (such as the Ubuntu Snap package) can prevent PDF generation from
-working correctly.
-
-!!! info "Install Google Chrome"
-
-    Red Hat
-    ```bash
-    cat <<'EOF' | sudo tee /etc/yum.repos.d/google-chrome.repo
-    [google-chrome]
-    name=Google Chrome
-    baseurl=https://dl.google.com/linux/chrome/rpm/stable/x86_64
-    enabled=1
-    gpgcheck=1
-    gpgkey=https://dl.google.com/linux/linux_signing_key.pub
-    EOF
-
-    sudo dnf install google-chrome-stable
-    ```
-
-    Ubuntu
-    ```bash
-    cd /tmp
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo apt install ./google-chrome-stable_current_amd64.deb
-    ```
-
-Verify that Google Chrome has been installed successfully.
-
-```bash
-which google-chrome
-```
-
-Example output:
-
-```text
-/usr/bin/google-chrome
-```
-
-If Chromium was previously installed as a Snap package on Ubuntu, remove it.
-
-```bash
-sudo snap remove chromium
-```
+them to PDF. Refer to [Chapter 3: Web Services](../ch03-zabbix-proxies/web-services.md)
+for detailed instructions on installing and configuring the Zabbix Web Service.
 
 ---
 
 ## Home Directory Issue
 
-On both Ubuntu and Red Hat the **zabbix-web-service** package does not automatically
+The **zabbix-web-service** package does not automatically
 create the home directory for the **zabbix** user. Without this directory, Google
 Chrome cannot start and PDF generation will fail.
 
-Create the directory manually.
+!!! info "Creating the Zabbix home directory"
 
-```bash
-sudo install -d -o zabbix -g zabbix -m 0750 /var/lib/zabbix
-```
+    Create the directory manually.
 
-Create the directories required by Google Chrome.
+    ```bash
+    sudo install -d -o zabbix -g zabbix -m 0750 /var/lib/zabbix
+    ```
 
-```bash
-sudo -u zabbix mkdir -p \
+    Create the directories required by Google Chrome.
+
+    ```bash
+    sudo -u zabbix mkdir -p \
     /var/lib/zabbix/.config \
     /var/lib/zabbix/.cache \
     /var/lib/zabbix/.local/share/applications
-```
+    ```
 
-Verify that the **zabbix** user can write to its home directory.
+    Verify that the **zabbix** user can write to its home directory.
 
-```bash
-sudo -u zabbix touch /var/lib/zabbix/test
-sudo -u zabbix rm /var/lib/zabbix/test
-```
+    ```bash
+    sudo -u zabbix touch /var/lib/zabbix/test
+    sudo -u zabbix rm /var/lib/zabbix/test
+    ```
 
 ---
 
 ## Configuring the Zabbix Server
 
-Edit the Zabbix Server configuration.
+Next we need to configure the Zabbix Server so it knows where to find the
+web service and how many report writers to start.
 
-```bash
-sudo vi /etc/zabbix/zabbix_server.conf
-```
+!!! info "Configuring the Zabbix Server"
 
-Configure the Web Service URL.
+    Edit the Zabbix Server configuration.
 
-```text
-WebServiceURL=http://127.0.0.1:10053/report
-```
+    ```bash
+    sudo vi /etc/zabbix/zabbix_server.d/zabbix_web_service.conf
+    ```
 
-Enable at least one report writer.
+    Configure the Web Service URL.
 
-```text
-StartReportWriters=1
-```
+    ```ini
+    WebServiceURL=http://127.0.0.1:10053/report
+    ```
 
-Restart both services.
+    Enable at least one report writer.
 
-```bash
-sudo systemctl restart zabbix-web-service
-sudo systemctl restart zabbix-server
-```
+    ```ini
+    StartReportWriters=1
+    ```
+
+    Restart both services.
+
+    ```bash
+    sudo systemctl restart zabbix-web-service
+    sudo systemctl restart zabbix-server
+    ```
 
 ---
 
 ## Verifying the Installation
 
-Verify that the Web Service is running.
+Before creating scheduled PDF reports, verify that the Zabbix Web Service is running
+correctly and listening on the expected port.
 
-```bash
-systemctl status zabbix-web-service
-systemctl enable zabbix-web-service
+!!! info "Verifying the Installation"
+
+    Verify that the Web Service is running.
+
+    ```bash
+    systemctl status zabbix-web-service
+    systemctl enable zabbix-web-service
 ```
 
-You can also test whether the Web Service is listening.
+    You can also test whether the Web Service is listening.
 
-```bash
-curl http://127.0.0.1:10053/report
-```
+    ```bash
+    curl http://127.0.0.1:10053/report
+    ```
 
 One final step before we can start creating our scheduled reports is
 configuration of the frontend URL. Go to Administration -> General -> Other.

@@ -338,7 +338,7 @@ operating system.
     file is located at `/usr/etc/zabbix/zabbix_agent2.conf` and should not be edited
     as it will be overwritten when the package is updated. 
     Alternatively, you need to create an additional configuration file in the 
-    `/etc/zabbix/zabbix_agent2.conf.d/` directory and include your custom 
+    `/etc/zabbix/zabbix_agent2.d/` directory and include your custom 
     configuration there. This way you can keep the original configuration file 
     intact and only add your custom settings in the new file.
 

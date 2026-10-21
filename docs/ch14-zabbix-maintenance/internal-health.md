@@ -243,7 +243,7 @@ The most critical cache is the **Configuration Cache**, which holds the entire
 monitoring setup (hosts, items, triggers, etc.). Zabbix does not expose a
 direct internal item for its utilization — its health is inferred from general
 performance issues and log file warnings. Its size is controlled by the `CacheSize`
-parameter in `zabbix_server.conf`.
+parameter in the Zabbix Server configuration.
 
 Other caches, such as the **History Cache** and **Trend Cache**, do report their
 status directly:

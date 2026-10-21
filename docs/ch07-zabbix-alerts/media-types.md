@@ -194,7 +194,7 @@ industrial monitoring scenarios where SMS is a hard requirement.
 The Script media type runs a custom script located in the `AlertScriptsPath`
 directory on the Zabbix server. By default this is `/usr/lib/zabbix/alertscripts/`
 on most Linux distributions, though this can be changed in the Zabbix server
-configuration file (`/etc/zabbix/zabbix_server.conf`).
+configuration files.
 
 **Script name** — just the filename of the script, without a path. Zabbix will
 look for it in `AlertScriptsPath`. The script must be executable by the user running
@@ -567,7 +567,7 @@ webhook tokens are still valid.
 
 **Check the Zabbix server log.** The server log at `/var/log/zabbix/zabbix_server.log`
 contains detailed output from alert processing. Temporarily increasing `DebugLevel`
-to `4` in `zabbix_server.conf` (and reloading the server) produces significantly
+to `4` in the Zabbix server configuration (and reloading the server) produces significantly
 more detail and is often the fastest way to diagnose a webhook script that fails
 in production but passes the Test button.
 

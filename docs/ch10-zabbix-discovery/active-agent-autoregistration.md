@@ -59,48 +59,46 @@ must initiate communication towards the Zabbix server or proxy.
 A passive agent waits for the server or proxy to contact it, while an active agent
 establishes the connection itself.
 
-Let's open the Zabbix agent configuration file.
+Let's open the Zabbix agent configuration file (either `/etc/zabbix/zabbix_agent2.conf` 
+or `*.conf`-files in `/etc/zabbix/zabbix_agent2.d/` (preferred, and required on SLES16+)).
 
+!!! info "Zabbix agent configuration"
 
-```bash
-sudo vim /etc/zabbix/zabbix_agent2.conf
-```
+    For active checks, the following configuration parameters are especially important. 
 
-For active checks, the following configuration parameters are especially important. 
+    ```ini
+    ServerActive=192.168.1.10
+    Hostname=linux-web-01
+    ```
 
-```ini
-ServerActive=192.168.1.10
-Hostname=linux-web-01
-```
+    With those settings, we can already start doing active agent autoregistration.
+    However we can include an additional parameter to make things more useful.
 
-With those settings, we can already start doing active agent autoregistration.
-However we can include an additional parameter to make things more useful.
-
-```ini
-HostMetadata=linux
-```
+    ```ini
+    HostMetadata=linux
+    ```
 
 The key parameter here is `HostMetadata`. It functions as a text string sent during
 registration and can be used by autoregistration actions to determine how a host
 should be configured.
 
-For example:
+!!! example "HostMedata examples"
 
-```ini
-HostMetadata=linux
-```
+    ```ini
+    HostMetadata=linux
+    ```
 
-Or:
+    Or:
 
-```ini
-HostMetadata=windows
-```
+    ```ini
+    HostMetadata=windows
+    ```
 
-Or even:
+    Or even:
 
-```ini
-HostMetadata=windows/production/mssql
-```
+    ```ini
+    HostMetadata=windows/production/mssql
+    ```
 
 This allows us to create different autoregistration actions for different types
 of systems. Additionally if you combine this type of configuration with automatic
@@ -110,9 +108,11 @@ get a very versatile hands-off environment.
 After setting up your agent configuration, do not forget to restart the agent
 for the changes to take effect.
 
-```bash
-sudo systemctl restart zabbix-agent2
-```
+!!! info "Restarting the Zabbix agent"
+
+    ```bash
+    sudo systemctl restart zabbix-agent2
+    ```
 
 ## Creating an autoregistration action
 
@@ -185,9 +185,11 @@ Instead of using hardcoding metadata, the Zabbix agent can also generate it dyna
 For example, in the configuration file of the Zabbix agent we could add the following
 parameter.
 
-```ini
-HostMetadataItem=system.uname
-```
+!!! example "HostMetadataItem example"
+
+    ```ini
+    HostMetadataItem=system.uname
+    ```
 
 The agent will execute the item with the key `system.uname` and use its value as
 metadata.
@@ -208,20 +210,26 @@ successfully communicate with the Zabbix server or proxy.
 
 On the agent, configure the PSK settings.
 
-```ini
-TLSConnect=psk
-TLSAccept=psk
-TLSPSKIdentity=agent-psk-default
-TLSPSKFile=/etc/zabbix/agent.psk
-```
+!!! info "Zabbix agent PSK configuration"
+
+    ```ini
+    TLSConnect=psk
+    TLSAccept=psk
+    TLSPSKIdentity=agent-psk-default
+    TLSPSKFile=/etc/zabbix/agent.psk
+    ```
 
 Then, make sure the PSK file is configured and ready to use.
 
-```bash
-openssl rand -hex 32 > /etc/zabbix/agent.psk
-chmod 400 /etc/zabbix/agent.psk
-chown zabbix:zabbix /etc/zabbix/agent.psk
-```
+!!! info "Creating a PSK file"
+
+    Generate a random PSK and save it to the specified file.
+
+    ```bash
+    openssl rand -hex 32 > /etc/zabbix/agent.psk
+    chmod 400 /etc/zabbix/agent.psk
+    chown zabbix:zabbix /etc/zabbix/agent.psk
+    ```
 
 When configuring the autoregistration action, you can define the PSK identity
 and PSK value that should be assigned to newly registered hosts. Any agent that

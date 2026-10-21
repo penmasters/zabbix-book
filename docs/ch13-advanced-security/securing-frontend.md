@@ -50,7 +50,6 @@ _13.2 SSL Ok_
 
 To configure this there are a few steps that we need to follow:
 
-``` text
 - Generate a private key for the CA ( Certificate Authority )
 - Generate a root certificate
 - Generating CA-Authenticated Certificates
@@ -60,17 +59,19 @@ To configure this there are a few steps that we need to follow:
   and the config file
 - Copy the SSL certificates to our Virtual Host
 - Adapt your Nginx Zabbix config
-```
 
 ### Generate a private key for the CA
 
-First step is to make a folder named SSL so we can create our certificates and safe them:
+First step is to make a folder named SSL so we can create our certificates and 
+save them:
 
-``` text
->- mkdir ~/ssl
->- cd ~/ssl
->- openssl ecparam -out myCA.key -name prime256v1 -genkey
-```
+!!! info "Generate a private key for the CA"
+
+    ``` bash
+    mkdir ~/ssl
+    cd ~/ssl
+    openssl ecparam -out myCA.key -name prime256v1 -genkey
+    ```
 
 Let's explain all the options;
 
@@ -86,9 +87,11 @@ Let's explain all the options;
 
 ### Generate a Root Certificate
 
-``` bash
-openssl req -x509 -new -nodes -key myCA.key -sha256 -days 1825 -out myCA.pem
-```
+!!! info "Generate a Root Certificate"
+
+    ``` bash
+    openssl req -x509 -new -nodes -key myCA.key -sha256 -days 1825 -out myCA.pem
+    ```
 
 Let's explain all the options;
 
@@ -112,22 +115,24 @@ Let's explain all the options;
 The information you enter is not so important but it's best to fill it in as good
 as possible. Just make sure you enter for CN you IP or DNS.
 
-``` text
-You are about to be asked to enter information that will be incorporated
-into your certificate request.
-What you are about to enter is what is called a Distinguished Name or a DN.
-There are quite a few fields but you can leave some blank
-For some fields there will be a default value,
-If you enter '.', the field will be left blank.
------
-Country Name (2 letter code) [XX]:BE
-State or Province Name (full name) []:vlaams-brabant
-Locality Name (eg, city) [Default City]:leuven
-Organization Name (eg, company) [Default Company Ltd]:
-Organizational Unit Name (eg, section) []:
-Common Name (eg, your name or your server's hostname) []:192.168.0.134
-Email Address []:
-```
+!!! info "Generate a Root Certificate"
+
+   ``` text
+   You are about to be asked to enter information that will be incorporated
+   into your certificate request.
+   What you are about to enter is what is called a Distinguished Name or a DN.
+   There are quite a few fields but you can leave some blank
+   For some fields there will be a default value,
+   If you enter '.', the field will be left blank.
+   -----
+   Country Name (2 letter code) [XX]:BE
+   State or Province Name (full name) []:vlaams-brabant
+   Locality Name (eg, city) [Default City]:leuven
+   Organization Name (eg, company) [Default Company Ltd]:
+   Organizational Unit Name (eg, section) []:
+   Common Name (eg, your name or your server's hostname) []:192.168.0.134
+   Email Address []:
+   ```
 
 ### Generating CA-Authenticated Certificates
 
@@ -135,86 +140,105 @@ It's probably good practice to use de dns name of your website in the name of
 the private key. As we use in this case no DNS but an IP address I will use
 the fictive dns zabbix.mycompany.internal.
 
-``` bash
-openssl genrsa -out zabbix.mycompany.internal.key 2048
-```
+!!! info "Generating CA-Authenticated Certificates"
+
+    ``` bash
+    openssl genrsa -out zabbix.mycompany.internal.key 2048
+    ```
 
 ### Generate a Certificate Signing Request (CSR)
 
-``` bash
-openssl req -new -key zabbix.mycompany.internal.key -out zabbix.mycompany.internal.csr
-```
+!!! info "Generate a Certificate Signing Request (CSR)"
 
-You will be asked the same set of questions as above. Once again your answers hold
-minimal significance and in our case no one will inspect the certificate so they
-matter even less.
+    ``` bash
+    openssl req -new -key zabbix.mycompany.internal.key -out zabbix.mycompany.internal.csr
+    ```
 
-``` text
-You are about to be asked to enter information that will be incorporated
-into your certificate request.
-What you are about to enter is what is called a Distinguished Name or a DN.
-There are quite a few fields but you can leave some blank
-For some fields there will be a default value,
-If you enter '.', the field will be left blank.
------
-Country Name (2 letter code) [XX]:BE
-State or Province Name (full name) []:vlaams-brabant
-Locality Name (eg, city) [Default City]:leuven
-Organization Name (eg, company) [Default Company Ltd]:
-Organizational Unit Name (eg, section) []:
-Common Name (eg, your name or your server's hostname) []:192.168.0.134
-Email Address []:
+    You will be asked the same set of questions as above. Once again your answers hold
+    minimal significance and in our case no one will inspect the certificate so they
+    matter even less.
 
-Please enter the following 'extra' attributes
-to be sent with your certificate request
-A challenge password []:
-An optional company name []:
-```
+    ``` text
+    You are about to be asked to enter information that will be incorporated
+    into your certificate request.
+    What you are about to enter is what is called a Distinguished Name or a DN.
+    There are quite a few fields but you can leave some blank
+    For some fields there will be a default value,
+    If you enter '.', the field will be left blank.
+    -----
+    Country Name (2 letter code) [XX]:BE
+    State or Province Name (full name) []:vlaams-brabant
+    Locality Name (eg, city) [Default City]:leuven
+    Organization Name (eg, company) [Default Company Ltd]:
+    Organizational Unit Name (eg, section) []:
+    Common Name (eg, your name or your server's hostname) []:192.168.0.134
+    Email Address []:
+
+    Please enter the following 'extra' attributes
+    to be sent with your certificate request
+    A challenge password []:
+    An optional company name []:
+    ```
 
 ### Generate an X509 V3 certificate extension configuration file.
 
-``` bash
-# vi zabbix.mycompany.internal.ext
-```
+!!! info "Generate an X509 V3 certificate extension configuration file."
 
-Add the following lines in your certificate extension file. Replace IP or DNS
-with your own values.
+    ``` bash
+    vi zabbix.mycompany.internal.ext
+    ```
 
-``` bash
-authorityKeyIdentifier=keyid,issuer
-basicConstraints=CA:FALSE
-keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
-subjectAltName = @alt_names
+    Add the following lines in your certificate extension file. Replace IP or DNS
+    with your own values.
 
-[alt_names]
-IP.1 = 192.168.0.133
-#DNS.1 = MYDNS (You can use DNS if you have a dns name if you use IP then use the
-above line)
-```
+    ``` bash
+    authorityKeyIdentifier=keyid,issuer
+    basicConstraints=CA:FALSE
+    keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+    subjectAltName = @alt_names
+
+    [alt_names]
+    IP.1 = 192.168.0.133
+    #DNS.1 = MYDNS (You can use DNS if you have a dns name if you use IP then use the
+    above line)
+    ```
 
 ### Generate the certificate using our CSR, the CA private key, the CA certificate,
 and the config file
 
-``` bash
-openssl x509 -req -in zabbix.mycompany.internal.csr -CA myCA.pem -CAkey myCA.key \
--CAcreateserial -out zabbix.mycompany.internal.crt -days 825 -sha256 -extfile zabbix.mycompany.internal.ext
-```
+!!! info "Generate the certificate using our CSR, the CA private key, the CA certificate, and the config file"
+
+    ``` bash
+    openssl x509 -req -in zabbix.mycompany.internal.csr -CA myCA.pem -CAkey myCA.key \
+    -CAcreateserial -out zabbix.mycompany.internal.crt -days 825 -sha256 -extfile zabbix.mycompany.internal.ext
+    ```
 
 ### Copy the SSL certificates to our Virtual Host
 
-``` bash
-cp zabbix.mycompany.internal.crt /etc/pki/tls/certs/. 
-cp zabbix.mycompany.internal.key /etc/pki/tls/private/.
-```
+!!! info "Copy the SSL certificates to our Virtual Host"
 
-#### Import the CA in Linux (RHEL)
+    ``` bash
+    cp zabbix.mycompany.internal.crt /etc/pki/tls/certs/. 
+    cp zabbix.mycompany.internal.key /etc/pki/tls/private/.
+    ```
+
+#### Import the CA in Linux
 
 We need to update the CA certificate’s, run the below command to update the CA certs.
 
-```
-cp myCA.pem /etc/pki/ca-trust/source/anchors/myCA.crt
-update-ca-trust extract
-```
+!!! info "Install/Update CA certs"
+
+    RHEL
+    ```
+    cp myCA.pem /etc/pki/ca-trust/source/anchors/myCA.crt
+    update-ca-trust extract
+    ```
+
+    SUSE
+    ```
+    cp myCA.pem /etc/pki/trust/anchors/myCA.crt
+    update-ca-certificates
+    ```
 
 #### Import the CA in OSX
 
@@ -258,16 +282,17 @@ As you are using OpenSSL, you should also create a strong Diffie-Hellman group,
 which is used in negotiating Perfect Forward Secrecy with clients.
 You can do this by typing:
 
-```
-openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-```
+!!! info "Create a strong Diffie-Hellman group"
+
+    ```bash
+    openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+    ```
 
 #### Adapt your Nginx Zabbix config
 
 Add the following lines to your Nginx configuration, modifying the file paths as needed.
 Replace the already existing lines with port 80 with this configuration. This
 will enable SSL and HTTP2.
-
 
 !!! Info "Adapt the Nginx config"
 
@@ -302,14 +327,16 @@ will enable SSL and HTTP2.
 
 #### Restart all services and allow https traffic
 
-``` bash
-systemctl restart php-fpm.service
-systemctl restart nginx
+!!! info "Restart all services and allow https traffic"
 
-firewall-cmd --add-service=https --permanent
-firewall-cmd --add-service=http --permanent
-firewall-cmd --reload
-```
+    ``` bash
+    systemctl restart php-fpm.service
+    systemctl restart nginx
+
+    firewall-cmd --add-service=https --permanent
+    firewall-cmd --add-service=http --permanent
+    firewall-cmd --reload
+    ```
 
 When we go to our url ```http://<IP or DNS>/``` we get redirected to our ```https:// ``` page and when we check we can see that our site is secure:
 
@@ -333,111 +360,154 @@ few command in place add SSL to your website.
 You have a DNS server and everything is properly configured, configuration this
 is going to be easy.
 
-``` bash
-dnf install epel-release
-dnf install certbot python3-certbot-nginx
+!!! info "Setup Let's Encrypt with a DNS server"
 
-# Make sure you have added your domain in the file /etc/nginx/conf.d/zabbix.com
-# rename the file
-mv /etc/nginx/conf.d/zabix.conf /etc/nginx/conf.d/<yourdomain.com>
+    Install the needed packages for your OS:
 
-# run certbot replace yourdomain.com with your own domain 
-certbot --nginx -d yourdomain.com -d www.yourdomain.com
-```
+    RHEL
+    ``` bash
+    dnf install epel-release
+    dnf install certbot python3-certbot-nginx
+    ```
 
-``` bash
-# add firewall config
-firewall-cmd --permanent --add-service=https
-firewall-cmd --permanent --add-service=http
-firewall-cmd --reload
-```
+    SUSE
+    ``` bash
+    zypper install python313-certbot python313-certbot-nginx
+    ```
+    Note: On SLES you need to install and enable the [SUSE Package Hub](https://packagehub.suse.com/)
+    repository first. On OpenSUSE you can install the packages directly from the official repositories.
+    Possibly the python version mentioned in the packagenames is different depending on your OS version.
 
-``` bash
-# Obtain the SSL certificate
-sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
-```
+    Make sure you have added your domain in the file /etc/nginx/conf.d/zabbix.com
+    rename the file
 
-This will install the certificates automatic in your configuration file. In case
-you had not renamed your file with the domain name you have alter the config
+    ```bash
+    mv /etc/nginx/conf.d/zabbix.conf /etc/nginx/conf.d/<yourdomain.com>
+    ```
+
+    Run certbot. Replace **yourdomain.com** with your own domain 
+
+    ```bash
+    certbot --nginx -d yourdomain.com -d www.yourdomain.com
+    ```
+
+    Add firewall config
+
+    ``` bash
+    firewall-cmd --permanent --add-service=https
+    firewall-cmd --permanent --add-service=http
+    firewall-cmd --reload
+    ```
+
+This will install the certificates automatically in your configuration file. In case
+you had not renamed your file with the domain name or you have altered the config
 file yourself.
-You can take a look for an example to the next topic.
+You can take a look for an example in the next topic.
 
-### Setup Let's encrypt without local a DNS server
+### Setup Let's encrypt without a local DNS server
 
 In case you like to test this at home it's a bit more complex if you don't have a
 DNS server at home but still possible with DNS-01 if you have bought a domain and
 are able to configure the TXT records for this domain. In this case we can use
 get.acme.
 
-``` bash
-# Install the needed packages
-sudo dnf install epel-release
-sudo dnf install certbot python3-certbot-nginx
-sudo dnf install -y tar gzip openssl cronie
-sudo dnf install -y bind-utils # gives `dig`
+!!! info "Setup Let's encrypt without local a DNS server"
 
-# Install the acme script and add it to you path
-curl https://get.acme.sh | sh
-exec bash
-acme.sh --version
+    Install the needed packages
+    RHEL
+    ``` bash
+    sudo dnf install epel-release
+    sudo dnf install certbot python3-certbot-nginx
+    sudo dnf install -y tar gzip openssl cronie
+    sudo dnf install -y bind-utils # gives `dig`
+    ```
 
-# Activate crond and setup the certificate.
-sudo systemctl enable --now crond
-acme.sh --set-default-ca --server letsencrypt
-acme.sh --issue -d <mydomain.com> -d '*.<mydomain.com>' --dns --yes-I-know-dns-manual-mode-enough-go-ahead-please
+    SUSE
+    ``` bash
+    sudo zypper install certbot python3-certbot-nginx
+    sudo zypper install -y tar gzip openssl cronie
+    sudo zypper install -y bind-utils # gives `dig`
+    ```
 
-# The script had provided you with 2 TXT records add them to your domain and
-# check if they are properly configured. It can take a few minutes before other
-# DNS servers pickup the config change.
-dig +short TXT _acme-challenge.<mydomain.com> @8.8.8.8
+    Install the acme script and add it to you path
 
-# Try to renew the certificate and copy it to your webserver
-acme.sh --renew -d <mydomain.com> --ecc --dns --yes-I-know-dns-manual-mode-enough-go-ahead-please
-sudo mkdir -p /etc/ssl/<mydomain>
-acme.sh --install-cert -d <mydomain.com> --ecc --key-file /etc/ssl/<mydomain>/site.key --fullchain-file /etc/ssl/<mydomain>/site.fullchain.pem  --reloadcmd
-```
+    ``` bash
+    curl https://get.acme.sh | sh
+    exec bash
+    acme.sh --version
+    ```
+
+    Activate crond and setup the certificate.
+
+    ``` bash
+    sudo systemctl enable --now crond
+    acme.sh --set-default-ca --server letsencrypt
+    acme.sh --issue -d <mydomain.com> -d '*.<mydomain.com>' --dns --yes-I-know-dns-manual-mode-enough-go-ahead-please
+    ```
+
+    The script had provided you with 2 TXT records add them to your domain and
+    check if they are properly configured. It can take a few minutes before other
+    DNS servers pickup the config change.
+
+    ``` bash
+    dig +short TXT _acme-challenge.<mydomain.com> @8.8.8.8
+    ```
+
+    Try to renew the certificate and copy it to your webserver
+
+    ``` bash
+    acme.sh --renew -d <mydomain.com> --ecc --dns --yes-I-know-dns-manual-mode-enough-go-ahead-please
+    sudo mkdir -p /etc/ssl/<mydomain>
+    acme.sh --install-cert -d <mydomain.com> --ecc --key-file /etc/ssl/<mydomain>/site.key --fullchain-file /etc/ssl/<mydomain>/site.fullchain.pem  --reloadcmd
+    ```
 
 Next step is to alter your NGINX config and open the firewall on port 443
 
-``` bash
-# Configure the firewall
-firewall-cmd --add-service=https --permanent
-firewall-cmd --add-service=htts --permanent
-firewall-cmd --reload
-```
+!!! info "Alter your NGINX config and open the firewall on port 443"
 
-```bash
-# Add to your hosts file the domain zabbix.<mydomain.com>
-vi /etc/hosts
-```
+    Configure the firewall
 
-``` bash
-# Alter your NGINX config
-vi /etc/nginx/conf.d/zabbix.conf
+    ``` bash
+    firewall-cmd --add-service=https --permanent
+    firewall-cmd --reload
+    ```
+    Add to your hosts file the domain zabbix.<mydomain.com>
 
-server {
-        listen          443 ssl;
-        server_name     zabbix.mydoamin.com;
-        ssl_certificate     /etc/ssl/mydomain/site.fullchain.pem;
-        ssl_certificate_key /etc/ssl/mydomain/site.key;
-        ssl_protocols       TLSv1.2 TLSv1.3;
-        ssl_ciphers         HIGH:!aNULL:!MD5;
-```
+    ```bash
+    vi /etc/hosts
+    ```
 
-``` bash
-# Add a forward from port 80 to 443
+    Alter your NGINX config
+    ``` bash
+    vi /etc/nginx/conf.d/zabbix.conf
+    ```
+    ```nginx
+    server {
+            listen          443 ssl;
+            server_name     zabbix.mydomain.com;
+            ssl_certificate     /etc/ssl/mydomain/site.fullchain.pem;
+            ssl_certificate_key /etc/ssl/mydomain/site.key;
+            ssl_protocols       TLSv1.2 TLSv1.3;
+            ssl_ciphers         HIGH:!aNULL:!MD5;
+            ...
+    ```
 
-vi /etc/nginx/conf.d/no-ssl-zabbix.conf
-server{
-    listen  80;
-    return 301 https://$host$request_uri?;
-}
-```
+    Add a forward from port 80 to 443
 
-``` bash
-# restart the NGINX webserver
-systemctl restart nginx
-```
+    ``` bash
+    vi /etc/nginx/conf.d/no-ssl-zabbix.conf
+    ```
+    ``` bash
+    server{
+        listen  80;
+        return 301 https://$host$request_uri?;
+    }
+    ```
+
+    Restart the NGINX webserver
+    ``` bash
+    systemctl restart nginx
+    ```
 
 You can now browse to the url zabbix.mydomain.com and you should have a working
 certificate.

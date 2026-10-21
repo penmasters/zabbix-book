@@ -309,7 +309,7 @@ _4.70 JMX Gateway_
 
 After installing the gateway, you'll find its configuration file at 
 `/etc/zabbix/zabbix_java_gateway.conf`. 
-On SUSE, the file is located at `/usr/etc/zabbix/java_gateway.conf` but is not
+On SUSE 16+, the file is located at `/usr/etc/zabbix/java_gateway.conf` but is not
 intended to be modified directly and will be overwritten on next package upgrade.
 Instead create a new `.conf` file in `/etc/zabbix/zabbix_java_gateway.d/` adding any
 overrides to the default `zabbix_java_gateway.conf`.

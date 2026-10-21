@@ -161,8 +161,8 @@ executing the synthetic checks.
 
 ### Server Configuration Parameters
 
-Two parameters in the Zabbix server configuration files (`/etc/zabbix/zabbix_server.conf.d/*.conf`)
-or `zabbix_proxy.conf.d`) are essential: `WebDriverURL` and `StartBrowserPollers`.
+Two parameters in the Zabbix server configuration files (`/etc/zabbix/zabbix_server.d/*.conf`)
+or `zabbix_proxy.d`) are essential: `WebDriverURL` and `StartBrowserPollers`.
 
 **WebDriverURL (Mandatory)**
 This parameter must specify the web testing endpoint configured before (our container).
