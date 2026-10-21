@@ -49,7 +49,7 @@ For simplicity, take note of the server details:
 
     Starting from Zabbix 7.2, only MySQL (including its forks) and PostgreSQL are
     supported as back-end databases. Earlier versions of Zabbix also included support
-    for Oracle Database; however, this support was discontinued with Zabbix 7.0 LTS,
+    for Oracle Database; however, this support was discontinued after Zabbix 7.0 LTS,
     making it the last LTS version to officially support Oracle DB.
 
 ---
@@ -62,11 +62,17 @@ for every available OS would be impractical. To keep this book focused and effic
 we have chosen to cover only the most widely used options: Ubuntu, Red Hat, and Suse 
 based distributions.
 
-Since not everyone has access to a Red Hat Enterprise Linux (RHEL) or a SUSE Linux
-Enterprise Server (SLES) subscription even though a developer account provides limited 
-access we have opted for Rocky Linux respectively openSUSE Leap as a readily available
-alternative. For this book, we will be using Rocky Linux 9.x, openSUSE Leap 16 and
-Ubuntu LTS 24.04.x.
+Not everyone has access to a Red Hat Enterprise Linux (RHEL) or SUSE Linux Enterprise 
+Server (SLES) subscription, even though a developer account provides limited access.
+We have therefore opted for Rocky Linux and openSUSE Leap as readily available
+alternatives. For this book, we will be using Rocky Linux 9.x, openSUSE Leap 16
+and Ubuntu LTS 24.04.x.
+
+Newer versions of these distributions will most likely work as well, since the
+differences between releases are usually small. However, all instructions in this
+book have been written and tested on the versions listed above, so we cannot guarantee
+that they apply unchanged to other versions. If you use a different version, check
+the Zabbix documentation for your platform.
 
 - <https://rockylinux.org/>
 - <https://opensuse.org/>
@@ -77,7 +83,11 @@ Ubuntu LTS 24.04.x.
     OS installation steps are outside the scope of this book, but a default or even a
     minimal installation of your preferred OS should be sufficient. Please refrain from
     installing graphical user interfaces (GUIs) or desktop environments, as they are
-    unnecessary for server setups and consume valuable resources.
+    unnecessary for server setups and consume valuable resources. More importantly,
+    they pull in a large number of additional packages and services that your server
+    does not need. Every extra package increases the attack surface and adds more
+    software that has to be patched and maintained, so a GUI is a security risk as
+    much as a waste of resources.
 
 Once you have your preferred OS installed, there are a few essential configurations
 to perform before proceeding with the Zabbix installation. Perform the following
