@@ -176,18 +176,31 @@ Optional:
   how often we request configuration updates (every 10 seconds) from the _Zabbix server_.
 - `DataSenderFrequency`: How often data is sent to _Zabbix server_ (every second).
 
-When configuring resources for an _Active proxy_, it’s important to account for 
-its connection behavior with the _Zabbix server_. During operation, the proxy can 
-utilize up to two trapper processes on the server:
+When configuring resources for an active proxy, it’s important to account for
+how it connects to the Zabbix server. Since Zabbix 6.4, an active proxy uses at
+most two trapper processes on the server at any one time:
 
-- One trapper is dedicated to receiving data from the proxy
-- The other trapper is reserved for accepting configuration requests and sending back configuration updates.
+- One trapper handles the exchange of collected data (and tasks, such as remote
+commands).
+- One trapper handles configuration synchronization.
+
+This is the result of two changes introduced in Zabbix 6.4:
+
+- Heartbeat sender removed. The proxy no longer has a separate heartbeat sender
+  process (ZBXNEXT-7931), so the dedicated heartbeat connection that earlier
+  versions opened to the server is gone. The internal item `zabbix[process,heartbeat sender]`
+  is no longer supported and has been removed from the templates.
+- Incremental configuration sync. The proxy no longer needs a full copy of the
+  configuration on every update (ZBXNEXT-3290). Only changes are transferred, so
+  configuration connections are generally shorter and lighter than before.
 
 ???+ tip
 
-    To ensure smooth communication, it is considered best practice to allocate two 
-    trapper processes per _Active proxy_ on the _Zabbix server_. This configuration 
-    optimizes performance and prevents potential bottlenecks.
+    As a rule of thumb, allow for two trapper processes per active proxy on the
+    Zabbix server. Trappers are a shared pool that is also used by active agents
+    and Zabbix sender, so treat this as a minimum rather than a complete sizing.
+    Monitor trapper utilization (`zabbix[process,trapper,avg,busy]`) and increase
+    `StartTrappers` if it stays high.
 
 ![Active proxy communication](ch03.2-active-communication.png)
 
