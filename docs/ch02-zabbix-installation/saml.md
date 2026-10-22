@@ -155,8 +155,9 @@ _2.48 SAML config_
 
     With Zabbix 8.0 you have to paste your private key and certificates in the frontend.
     This means not the name but the content of the certificate like:
-    ---- BEGIN CERTIFICATE ----
-    MIIDTXCC.........
+
+    - ---- BEGIN CERTIFICATE ----
+    - MIIDTXCC.........
 
     IF you have an older version you can continue and ignore this and add the
     certificates in the frontend as explained under
