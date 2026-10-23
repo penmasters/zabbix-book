@@ -87,11 +87,11 @@ This initial tab defines the group's general properties and its membership:
 
 ---
 
-### Permission Tabs: Host Groups and Template Groups
+???+ tip "Permissions: Host Groups and Template Groups"
 
-Permissions are configured by assigning access levels to **Host Groups** and
-**Template Groups**. These entities act as containers, meaning the permissions
-assigned to the group apply to all nested groups and all entities within them.
+    Permissions are configured by assigning access levels to **Host Groups** and
+    **Template Groups**. These entities act as containers, meaning the permissions
+    assigned to the group apply to all nested groups and all entities within them.
 
 #### Template Permissions Tab
 
