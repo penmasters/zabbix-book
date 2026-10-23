@@ -101,32 +101,47 @@ consumption.
 
 ## Proxy throttling
 
-Imagine you need to restart your Zabbix server and that all proxies immediately start
-to push the data they gathered during the downtime of the Zabbix server.
+Imagine you need to restart your Zabbix server and that all proxies immediately
+start to push the data they gathered during the downtime of the Zabbix server.
 
-This would create a huge amount of data being sent to the Zabbix server at once 
-and possibly bring it to its knees in no time. Since Zabbix version 6, the developers have added 
-protection for these kind of situations. When the Zabbix server history cache is 
-full the history cache write access is being throttled:
-Zabbix server will stop accepting data from proxies when history cache usage 
-reaches 80%. Instead those proxies will be put on a throttling list. 
-This will continue until the cache usage falls down to 60%.
-At that point, the server will start accepting data from the proxies one by one, as defined by the
-throttling list. This means the first proxy that attempted to upload data during
-the throttling period will be served first and the server will
-not accept data from other proxies until it's done.
+This would create a huge amount of data being sent to the Zabbix server at once
+and possibly bring it to its knees in no time. Since Zabbix version 6, the developers
+have added protection for these kinds of situations. When the Zabbix server history
+cache is full, write access to the history cache is throttled, which stalls the
+server's data gathering processes. To avoid this, proxy throttling was added.
+Currently it cannot be disabled.
 
-This table gives you an overview of how throttling works and when it starts.
+When history cache usage reaches 80%, the Zabbix server enters throttling mode.
+It stops accepting data from proxies and puts those proxies on a throttling list.
+When cache usage falls to 60%, the server begins processing the throttling list.
+This means the first proxy that attempted to upload data during the throttling
+period is served first, and the server will not accept data from other proxies
+until that upload is done. Then the server moves on to the next proxy on the list.
 
-| History write cache usage | Zabbix server mode | Zabbix server action                                                                                             |
-| ------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Reaches 80%               | Wait               | Stops accepting proxy data, but maintains a throttling list (prioritized list of proxies to be contacted later). |
-| Drops to 60%              | Throttled          | Starts processing throttling list, but still not accepting proxy data.                                           |
-| Drops to 20%              | Normal             | Drops the throttling list and starts accepting proxy data normally.                                              |
+Zabbix 8.0 refines this recovery phase. Even while processing the throttling list,
+the server may still reject proxy uploads that contain very large batches
+(approximately 10,000 records or more) until cache pressure decreases further.
+This reduces the risk of repeated cache overloads while the server recovers. The
+same protection applies in normal mode: if history cache usage exceeds 60%,
+the server may throttle individual proxies that send very large packets.
 
-Keep in mind that throttling may cause delays in the detection of problems, as you
-will have to wait for all relevant data to be received and processed
-by the Zabbix server; but you won't lose any historical data.
+Throttling mode ends when cache usage drops to 20% or when the throttling list
+is empty, after which the server accepts data from all proxies again. If usage
+reaches 80% again before that, the server stops accepting proxy data again.
+
+| History write cache usage | Zabbix server mode                   | Zabbix server action                                                                                                                                   |
+|---------------------------|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Reaches 80%               | Wait                                 | Stops accepting proxy data, but maintains a throttling list (prioritized list of proxies to be contacted later).                                       |
+| Falls to 60%              | Throttled                            | Starts processing the throttling list, one proxy at a time. May still reject very large uploads (approximately 10,000+ records).                       |
+| Above 60% (normal mode)   | Normal, but prepared to be throttled | May refuse very large proxy uploads from individual proxies; continues accepting other proxy data.                                                     |
+| Drops to 20%              | Normal                               | Drops the throttling list and starts accepting proxy data normally.                                                                                    |
+
+!!! tip
+
+    Use the internal item `zabbix[wcache,history,pused]` to correlate this behavior
+    with a metric. The throttling decision is made at the moment the server evaluates
+    a proxy upload, so a short spike may not be visible in the graph, depending on
+    the item's update interval.
 
 ---
 
@@ -138,13 +153,13 @@ the proxy will initiate the connection by itself to the Zabbix Server. In
 version 1.8.3 _passive_ proxies where introduced. This allows the server to
 connect to the proxy instead of the other way around.
 
-As mentioned before Zabbix agents can simultaneously be in an active _and_ passive mode.
-However, proxies cannot be in both modes at the same time, meaning we have to
-choose the way of the communication when we configure a proxy. 
+As mentioned before Zabbix agents can simultaneously be in an active _and_ passive
+mode. However, proxies cannot be in both modes at the same time, meaning we have
+to choose the way of the communication when we configure a proxy.
 
 ???+ note "Active/Passive agent on Active/Passive proxy ?"
 
-    Remember that choosing the proxy mode _active_ or _passive_ has no impact on 
+    Remember that choosing the proxy mode _active_ or _passive_ has no impact on
     how Zabbix agents can communicate with this proxy. It's perfectly fine to have
     an _active proxy_ and a _passive agent_ working together.
 
@@ -154,7 +169,7 @@ choose the way of the communication when we configure a proxy.
 
 In _active_ mode, the proxy takes full control of its operational settings. This
 includes managing when it checks for new configuration updates and when it sends
-collected data to the server. 
+collected data to the server.
 
 It’s important to note that the key settings for an _active proxy_ are defined
 exclusively in the _Zabbix proxy_ configuration. Any adjustments to these
@@ -163,6 +178,7 @@ parameters should be made directly within the proxy configuration files.
 These are the proxy configuration settings you will need to set in _active_ mode:
 
 Mandatory:
+
 - `ProxyMode`: `0` - Sets the proxy in 'Active' mode
 - `Server`: IP or DNS of the Zabbix server
 - `Hostname`: Proxy name - this needs to be exactly the same as configured in the
@@ -173,7 +189,8 @@ Optional:
 - `ProxyLocalBuffer`: How long we like to keep data in the DB (in hours) even when
   it is already sent to the _Zabbix server_.
 - `ProxyConfigFrequency`: Replaces `ConfigFrequency` in earlier versions and defines
-  how often we request configuration updates (every 10 seconds) from the _Zabbix server_.
+  how often we request configuration updates (every 10 seconds) from the _Zabbix
+  server_.
 - `DataSenderFrequency`: How often data is sent to _Zabbix server_ (every second).
 
 When configuring resources for an active proxy, it’s important to account for
@@ -188,8 +205,9 @@ This is the result of two changes introduced in Zabbix 6.4:
 
 - Heartbeat sender removed. The proxy no longer has a separate heartbeat sender
   process (ZBXNEXT-7931), so the dedicated heartbeat connection that earlier
-  versions opened to the server is gone. The internal item `zabbix[process,heartbeat sender]`
-  is no longer supported and has been removed from the templates.
+  versions opened to the server is gone. The internal item
+  `zabbix[process,heartbeat sender]` is no longer supported and has been removed
+  from the templates.
 - Incremental configuration sync. The proxy no longer needs a full copy of the
   configuration on every update (ZBXNEXT-3290). Only changes are transferred, so
   configuration connections are generally shorter and lighter than before.
@@ -214,13 +232,14 @@ communication_
 In contrast to an _active proxy_, a proxy in _passive_ mode will have its operational
 settings controlled by the _Zabbix server_.
 
-Hence, configuring _passive_ proxies requires changes in both the _Zabbix server_ 
+Hence, configuring _passive_ proxies requires changes in both the _Zabbix server_
 and the _Zabbix proxy_ configuration files as it is now the server
 that controls when and how proxy data is requested by making use of pollers.
 
 The most important setting we can find back in the _proxy_ configuration file are:
 
 Mandatory:
+
 - `ProxyMode`: `1` - Sets the proxy in 'Passive' mode
 - `Server:` IP or DNS of the _Zabbix server_
 Optional:
@@ -234,7 +253,7 @@ And finally the config settings we need to change on our _Zabbix server_:
 - `StartProxyPollers`: The number of pollers to contact proxies.
 - `ProxyConfigFrequency`: Replaces `ConfigFrequency` and defines how often
   _Zabbix server_ will sent configuration changes to all proxies.
-- `ProxyDataFrequency`: How often _Zabbix server_ will request monitored data 
+- `ProxyDataFrequency`: How often _Zabbix server_ will request monitored data
   from our proxies.
 
 ???+ tip
@@ -267,43 +286,44 @@ options available to use.
 
 `zabbix_proxy --runtime-control housekeeper_execute`
 
-:   Triggers the immediate execution of the Zabbix housekeeper process on the 
-    proxy. The housekeeper is responsible for cleaning up outdated data (e.g., 
-    old history, trends, or events) according to the configured retention periods 
-    in Zabbix. This command forces the housekeeper to run now, instead of waiting 
+:   Triggers the immediate execution of the Zabbix housekeeper process on the
+    proxy. The housekeeper is responsible for cleaning up outdated data (e.g.,
+    old history, trends, or events) according to the configured retention periods
+    in Zabbix. This command forces the housekeeper to run now, instead of waiting
     for its scheduled interval.
 
 `zabbix_proxy --runtime-control log_level_increase=target`
 
-:   Increases the log verbosity level for a specific target process (e.g., by type 
+:   Increases the log verbosity level for a specific target process (e.g., by type
     like `configuration syncer`, `housekeeper`, `icmp pinger`, by type and number
-    like `poller,3` or by PID). This is useful for debugging or troubleshooting, 
-    as it provides more detailed log output for the specified target. For a full 
+    like `poller,3` or by PID). This is useful for debugging or troubleshooting,
+    as it provides more detailed log output for the specified target. For a full
     list of available targets, check the man-page [https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy](https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy).
-    *Example*: `log_level_increase="http poller"` would make http poller-related
+    _Example_: `log_level_increase="http poller"` would make http poller-related
     logs more verbose.
 
 `zabbix_proxy --runtime-control log_level_decrease=target`
 
-:   Decreases the log verbosity level for a specific target, reducing the amount 
+:   Decreases the log verbosity level for a specific target, reducing the amount
     of log output generated. This is helpful to lower noise in logs after debugging
     or to optimize performance by reducing I/O overhead.
-    *Example*: `log_level_decrease=trapper,2` would reduce the verbosity of 
+    _Example_: `log_level_decrease=trapper,2` would reduce the verbosity of
     trapper-related logs of the second trapper process.
 
 `zabbix_proxy --runtime-control snmp_cache_reload`
 
-:   Forces the proxy to reload its SNMP cache. This is useful if you've made 
-    changes to SNMP configurations (e.g., updated community strings, OIDs, or 
-    device IPs) and want the proxy to immediately pick up the new settings 
+:   Forces the proxy to reload its SNMP cache. This is useful if you've made
+    changes to SNMP configurations (e.g., updated community strings, OIDs, or
+    device IPs) and want the proxy to immediately pick up the new settings
     without restarting the entire service.
 
 `zabbix_proxy --runtime-control diaginfo=section`
 
-:   Generates diagnostic information for a specific section of the proxy’s 
-    operation. This is typically used for troubleshooting or performance analysis. 
-    The section parameter can target areas like history cache, preprocessing, or locks.
-    *Example*: `diaginfo=preprocessing` would provide detailed statistics about 
+:   Generates diagnostic information for a specific section of the proxy’s
+    operation. This is typically used for troubleshooting or performance analysis.
+    The section parameter can target areas like history cache, preprocessing,
+    or locks.
+    _Example_: `diaginfo=preprocessing` would provide detailed statistics about
     the preprocessing manager.
 
 ---
@@ -316,13 +336,14 @@ need to be configured the same as you would on a _Zabbix server_.
 
 When it comes to port for the proxy it depends on our proxy being `active` or `passive`.
 
-- **Active Proxy:** Zabbix server needs to accept connections on port `10051/tcp`, so the proxy can
-  connect.
-- **Passive Proxy:** Zabbix proxy needs to accept connections on port `10051/tcp`, so on the proxy so that the `server` can connect to the proxy.
+- **Active Proxy:** Zabbix server needs to accept connections on port `10051/tcp`,
+  so the proxy can connect.
+- **Passive Proxy:** Zabbix proxy needs to accept connections on port `10051/tcp`,
+  so on the proxy so that the `server` can connect to the proxy.
 
-Do note that for an active _Zabbix Agent_ or _Zabbix Sender_ to communicate with your proxy, 
-whether it is an active or a passive one, this will require port `10051/tcp` to be
-open on your proxy server:
+Do note that for an active _Zabbix Agent_ or _Zabbix Sender_ to communicate with
+your proxy, whether it is an active or a passive one, this will require port
+`10051/tcp` to be open on your proxy server:
 
 !!! info "Open firewall for zabbix-trapper"
 
