@@ -358,6 +358,27 @@ menu_
 - **Users**: The `Users` menu section provides the interface for managing individual user accounts, including creation and modification settings.
 - **API tokens**: The `API tokens` menu section manages authentication credentials specifically designed for programmatic access to the system's Application Programming Interface (API), enabling secure automation and integration with external applications.
 - **Authentication**: The `Authentication` menu section configures the methods and settings used to verify user identities and control access to the system.
+- **Devices** : Here a Zabbis Super admin can manage the mobile devices used
+  with the Zabbix mobile app.
+
+!!! note "Zabbix mobile app"
+
+    > Zabbix 8.0 supports the Zabbix mobile app, which lets you monitor your Zabbix
+    > environment from your mobile device. You can view problems, check their details,
+    > update problems, and receive push notifications when something needs attention.
+    >
+    > Supporting the app, Zabbix 8.0 adds the following:
+    >
+    > * **Device management** in the web interface: *Users* > *Devices* and *User
+    > settings* > *Devices*.
+    > * **Push notification media type** for sending problem notifications from
+    > the Zabbix server to the mobile app.
+    > * **Bridge adapter**, a component that allows your Zabbix server to communicate
+    > with the mobile app.
+    > * **Server configuration parameters**: `BridgeAdapterURL` and `EnableMobileDevices`.
+    >
+    > For setup details, see the [https://www.zabbix.com/documentation/devel/en/app](https://www.zabbix.com/documentation/
+    > devel/en/app) section of the Zabbix documentation.
 
 ---
 
