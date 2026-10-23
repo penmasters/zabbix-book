@@ -164,7 +164,7 @@ Relevant metric: `zabbix[process,alerter,avg,busy]`
 
 The housekeeper is responsible for removing outdated data from the database,
 including item history and trends, events and problems, user sessions, and data
-from deleted objects.
+left behind by deleted objects.
 
 When overloaded:
 
@@ -174,36 +174,84 @@ When overloaded:
 
 Relevant metric: `zabbix[process,housekeeper,avg,busy]`
 
-**How housekeeping works internally:** The housekeeper does not immediately delete
-data when objects are removed. Instead, Zabbix creates cleanup tasks and processes
-them in cycles. Deletion tasks are stored in the `housekeeper` table, each
-referencing an object type (item, trigger, service, etc.). The housekeeper removes
-related data in batches across multiple tables, limited per cycle by configuration
-parameters.
+**How housekeeping works internally:** The housekeeper runs in cycles. How often
+it runs is set by `HousekeepingFrequency`, and how much it deletes per cycle
+by `MaxHousekeeperDelete`. Any data that is not removed in one cycle is carried
+over to the next. Automatic housekeeping can be enabled and configured
+in *Administration* > *Housekeeping*.
 
-Since Zabbix 8.0, these tasks are created by database triggers. When items (including
-low-level discovery rules), triggers, services, or network discovery rules are deleted,
-database triggers populate the `housekeeper` table with cleanup tasks. In earlier
-versions, this was done by explicit calls in the application code.
+The housekeeper does not immediately delete data when objects are removed.
+Deleting a host, for example, deletes its items, but not their history, trends,
+or problems. Instead, cleanup tasks are stored in the `housekeeper` table, and
+the housekeeper processes them in later cycles. When items (including low-level
+discovery rules), triggers, services, or network discovery rules are deleted,
+database triggers populate this table. Each task consists of three fields:
+
+| Field           | Description                                                                                  |
+|-----------------|----------------------------------------------------------------------------------------------|
+| `housekeeperid` | Task ID                                                                                      |
+| `object`        | Object type: `0` item, `1` trigger, `2` service, `3` discovered host, `4` discovered service |
+| `objectid`      | Object ID, which helps the housekeeper find the data related to the object                   |
+
+For example, deleting a host with two items and one trigger populates the table like this:
+
+| housekeeperid | object | objectid |
+|---------------|--------|----------|
+| 1             | 1      | 28724    |
+| 2             | 0      | 59396    |
+| 3             | 0      | 59397    |
+
+The database triggers only record the task. They do not check whether any related
+data exists. That check is done by the housekeeper process when it removes the
+data. What it removes depends on the type of the deleted object:
+
+- **Items (including LLD rules):** their data from all history and trends tables
+  (`history`, `history_str`, `history_log`, `history_uint`, `history_text`,
+  `history_bin`, `history_json`, `trends`, `trends_uint`), and their internal
+  events from the `problem` table.
+- **Triggers:** their events from the event-related tables (`problem`, `event_symptom`,
+  `events`; the database itself removes events from `event_recovery`). The housekeeper
+  also notifies the service manager process about the removed events.
+- **Services:** their problems from the `problem` table. Their events in the
+  `events` table are removed only after the configured data storage period.
+- **Discovered hosts and services (network discovery):** their events from the
+  `events` table.
+
+The housekeeper removes only events that are not associated with problems. An
+outdated problem or recovery event, for example, is not removed while it is associated
+with an open problem. When removing outdated entities, the housekeeper first removes
+problems, then events. Tables in `partition` mode (TimescaleDB partitioned tables)
+are skipped. Only tables in `regular` mode are processed.
 
 This design prevents large blocking database operations, but introduces a delay
 between object deletion and actual data cleanup. In large environments, deleting
 many hosts or items can create a backlog of housekeeping tasks that may take
 multiple cycles to complete.
 
-**Event cleanup in Zabbix 8.0:** The housekeeper now also removes:
+!!! tip
 
-- network discovery events generated from discovered hosts or services that have
-  since been deleted;
-- all events associated with problems of triggers that have since been deleted.
+    A separate trigger housekeeper process removes problems and events that have
+    no known source trigger. Its frequency is controlled by `ProblemHousekeepingFrequency`,
+    and you can start it manually with the `trigger_housekeeper_execute` runtime
+    control option. Until it runs, problems created by triggers that have since
+    been deleted can still generate service problems and assign them to services.
+    If your services use status calculation rules based on triggers that are
+    frequently discovered and undiscovered, consider increasing this frequency.
 
-Previously, only the problems themselves were removed for deleted triggers, and
-the associated events remained until the *Trigger data storage period* expired.
+!!! note "New in Zabbix 8.0"
+
+    * Cleanup tasks are now created by database triggers instead of explicit calls
+    in the application code.
+    * The housekeeper now also removes network discovery events of discovered hosts
+    or services that have since been deleted, and all events associated with problems
+    of triggers that have since been deleted. In earlier versions, only the problems
+    themselves were removed, and the associated events remained until the *Trigger
+    data storage period* expired.
 
 !!! warning
 
-    Setting housekeeping limits too low, or running large cleanup operations
-    without tuning, can lead to prolonged database growth and degraded performance.
+    Setting `MaxHousekeeperDelete` too low, or running large cleanup operations without
+    tuning, can lead to prolonged database growth and degraded performance.
 
 ---
 
