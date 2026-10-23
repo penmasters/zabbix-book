@@ -162,9 +162,9 @@ Relevant metric: `zabbix[process,alerter,avg,busy]`
 
 ### Housekeeper — Data Cleanup
 
-The housekeeper is responsible for removing outdated data from the database, including
-item history and trends, events and problems, user sessions, and data from deleted
-objects.
+The housekeeper is responsible for removing outdated data from the database,
+including item history and trends, events and problems, user sessions, and data
+from deleted objects.
 
 When overloaded:
 
@@ -175,19 +175,35 @@ When overloaded:
 Relevant metric: `zabbix[process,housekeeper,avg,busy]`
 
 **How housekeeping works internally:** The housekeeper does not immediately delete
-data when objects are removed. Instead, Zabbix creates cleanup tasks internally
-and processes them in cycles. Deletion tasks are stored in the `housekeeper` table,
-each referencing an object type (item, trigger, service, etc.). The housekeeper
-removes related data in batches across multiple tables, limited per cycle by
-configuration parameters.
+data when objects are removed. Instead, Zabbix creates cleanup tasks and processes
+them in cycles. Deletion tasks are stored in the `housekeeper` table, each
+referencing an object type (item, trigger, service, etc.). The housekeeper removes
+related data in batches across multiple tables, limited per cycle by configuration
+parameters.
+
+Since Zabbix 8.0, these tasks are created by database triggers. When items (including
+low-level discovery rules), triggers, services, or network discovery rules are deleted,
+database triggers populate the `housekeeper` table with cleanup tasks. In earlier
+versions, this was done by explicit calls in the application code.
 
 This design prevents large blocking database operations, but introduces a delay
 between object deletion and actual data cleanup. In large environments, deleting
-many hosts or items can create a backlog of housekeeping tasks that may take multiple
-cycles to complete.
+many hosts or items can create a backlog of housekeeping tasks that may take
+multiple cycles to complete.
 
-> **Warning:** Setting housekeeping limits too low, or running large cleanup operations
-without tuning, can lead to prolonged database growth and degraded performance.
+**Event cleanup in Zabbix 8.0:** The housekeeper now also removes:
+
+- network discovery events generated from discovered hosts or services that have
+  since been deleted;
+- all events associated with problems of triggers that have since been deleted.
+
+Previously, only the problems themselves were removed for deleted triggers, and
+the associated events remained until the *Trigger data storage period* expired.
+
+!!! warning
+
+    Setting housekeeping limits too low, or running large cleanup operations
+    without tuning, can lead to prolonged database growth and degraded performance.
 
 ---
 
