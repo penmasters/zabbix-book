@@ -52,10 +52,10 @@ generations, ensuring a familiar configuration experience for administrators.
 
 ### Group Creation and General Attributes
 
-1. Navigate to `Administration` | `User groups`.
+1. Navigate to `User` | `User groups`.
 2. Click **Create user group** (or select an existing group to modify).
-3. The configuration form is divided into four critical tabs: **User group**,
-   **Template permissions**, **Host permissions**, and **Problem tag filter**.
+3. The configuration form is divided into five critical tabs: **User group**,
+   **Template permissions**, **Host permissions**, **Proxy access list** and **Problem tag filter**.
 
 ![ch02.23_user-groups_menu.png](ch02.23-user-groups_menu.png)
 
@@ -110,6 +110,44 @@ For each assigned Template Group, one of the following permissions must be selec
 
 This tab works identically to the Template Permissions tab but applies the access
 levels to **Host Groups** and the hosts contained within them.
+
+#### Proxy access list
+
+Zabbix 8.0 adds a *Proxy access list* tab to the user group configuration. It
+lets you control which proxies the members of a group can access, either
+individually or through proxy groups.
+
+Unlike host and template group permissions, which use *Read-write*, *Read* and
+*Deny* levels, proxy access is configured as a single list per user group,
+which is either an allow list or a deny list:
+
+* **Allow list**: the user group can access only the selected proxies and proxy
+  groups.
+* **Deny list**: the user group is denied access to the selected proxies and
+  proxy groups. Everything else remains accessible.
+
+Use the *Proxy groups* field to apply the setting to entire proxy groups, and
+the *Proxies* field to add individual proxies. A proxy that belongs to a proxy
+group can only be allowed or denied through that group. The *Proxies* field
+is therefore only for proxies that are not part of any group.
+
+Pay attention to empty selections, as they behave differently depending on
+the list type:
+
+* An allow list with no proxies selected gives the group no access to proxies
+  outside proxy groups. An allow list with no proxy groups selected gives no
+  access to any proxy group.
+* A deny list with no proxies or proxy groups selected denies nothing, so the
+  group keeps full access.
+
+When a user belongs to several user groups, the following rules apply: a deny
+list always overrides an allow list, so if any group denies access to a proxy,
+the user cannot access it. Allow lists are cumulative, so the user can access
+every proxy allowed by any of their groups.
+
+![ch02.23-1 proxy-access-list](ch02.23-1-proxy-access-list.png)
+
+_2.23-1 Proxy Access List_
 
 #### Problem Tag Filters: Granular Alert Access
 
@@ -215,46 +253,6 @@ an active problem:
 | **Suppress** / **Unsuppress** | **Read-write** required | **Read-write** if template trigger | Requires the **Suppress problems** capability. |
 | **Convert to cause** | **Read-write** required | **Read-write** if template trigger | Requires **Manage problem correlations** capability. |
 | **Close problem** | **Read-write** required | **Read-write** if template trigger | Requires **Close problems manually** capability. |
-
----
-
-## Proxy access list
-
-Zabbix 8.0 adds a *Proxy access list* tab to the user group configuration. It
-lets you control which proxies the members of a group can access, either
-individually or through proxy groups.
-
-Unlike host and template group permissions, which use *Read-write*, *Read* and
-*Deny* levels, proxy access is configured as a single list per user group,
-which is either an allow list or a deny list:
-
-* **Allow list**: the user group can access only the selected proxies and proxy
-  groups.
-* **Deny list**: the user group is denied access to the selected proxies and
-  proxy groups. Everything else remains accessible.
-
-Use the *Proxy groups* field to apply the setting to entire proxy groups, and
-the *Proxies* field to add individual proxies. A proxy that belongs to a proxy
-group can only be allowed or denied through that group. The *Proxies* field
-is therefore only for proxies that are not part of any group.
-
-Pay attention to empty selections, as they behave differently depending on
-the list type:
-
-* An allow list with no proxies selected gives the group no access to proxies
-  outside proxy groups. An allow list with no proxy groups selected gives no
-  access to any proxy group.
-* A deny list with no proxies or proxy groups selected denies nothing, so the
-  group keeps full access.
-
-When a user belongs to several user groups, the following rules apply: a deny
-list always overrides an allow list, so if any group denies access to a proxy,
-the user cannot access it. Allow lists are cumulative, so the user can access
-every proxy allowed by any of their groups.
-
-![ch02.23-1 proxy-access-list](ch02.23-1-proxy-access-list.png)
-
-_2.23-1 Proxy Access List_
 
 ---
 
