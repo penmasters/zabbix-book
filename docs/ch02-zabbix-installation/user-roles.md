@@ -41,6 +41,7 @@ initial **User Type** before any **Custom User Role** adjustments are made.
 | Metrics | ✅ | ✅ | ✅ |
 | Logs | ✅ | ✅ | ✅ |
 | **Services** | | | |
+| Services | ✅ | ✅ | ✅ |
 | SLA | | ✅ | ✅ |
 | SLA report | ✅ | ✅ | ✅ |
 | **Inventory** | | | |
@@ -54,8 +55,7 @@ initial **User Type** before any **Custom User Role** adjustments are made.
 | Audit log | | ✅ | ✅ |
 | Action log | | ✅ | ✅ |
 | Notifications | | ✅ | ✅ |
-| **Configuration** | | | |
-| Data collection | | ✅ | ✅ |
+| **Data collection** | | | |
 | Template groups | | ✅ | ✅ |
 | Host groups | | ✅ | ✅ |
 | Templates | | ✅ | ✅ |
@@ -69,15 +69,18 @@ initial **User Type** before any **Custom User Role** adjustments are made.
 | Discovery actions | | ✅ | ✅ |
 | Autoregistration actions| | ✅ | ✅ |
 | Internal actions | | ✅ | ✅ |
-| **Administration** | | | |
 | Media types | | | ✅ |
 | Scripts | | | ✅ |
-| Users | | | ✅ |
+| **Users** | | | |
 | User groups | | | ✅ |
 | User roles | | | ✅ |
+| Users | | | ✅ |
 | API tokens | | | ✅ |
 | Authentication | | | ✅ |
+| Devices | | | ✅ |
+| **Administration** | | | |
 | General | | | ✅ |
+| Data source | | | ✅ |
 | Audit log | | | ✅ |
 | Housekeeping | | | ✅ |
 | Proxy groups | | | ✅ |
@@ -125,6 +128,14 @@ of which menu they are in.
 | **Close problems manually** | The ability to force-close a problem, even if the underlying issue is unresolved. |
 | **Create and edit dashboards** | Controls the ability to build and modify frontend dashboards. |
 | **Execute scripts** | Controls the ability to execute global scripts (e.g., remote commands, inventory updates). |
+
+!!! info "Select `Server` for monitoring and discovery"
+
+    Zabbix 8.0 adds a new server access (user role). The new Select “Server” for
+    monitoring and discovery option in the user role configuration controls whether
+    users can select the Zabbix server as the monitoring source. When it is disabled,
+    users cannot create hosts monitored by the server, create network discovery
+    rules executed by the server, or test items against the server.
 
 ### API Permissions
 
