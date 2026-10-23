@@ -171,6 +171,12 @@ or user interaction flows that cannot be replicated with a plain HTTP request.
 compute a value from data already stored in Zabbix using a mathematical expression
 that can reference other items on the same host or on different hosts.
 
+- **JSON (New in Zabbix 8.0):** Stores structured JSON data natively, with a
+  maximum size of 128 MiB and automatic JSON validation. JSON values cannot
+  be used directly in triggers, but dependent items can extract individual
+  values. When using TimescaleDB, the new `history_json` hypertable must be
+  configured manually when upgrading to Zabbix 8.0
+
 ---
 
 ## What this chapter does not cover

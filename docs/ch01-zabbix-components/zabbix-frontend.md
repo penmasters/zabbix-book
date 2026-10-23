@@ -549,6 +549,20 @@ additional guidance and best practices.
     Also check if the `/etc/zabbix/web` directory is writable by the webservice
     user (usually `wwwrun` or `www`)
 
+### New and Embedded Fonts (New in Zabbix 8.0)
+
+Zabbix 8.0 introduces new embedded fonts that improve readability, loading
+performance, and support for additional languages.
+
+Because these fonts are embedded in the frontend, they provide a consistent
+appearance across different operating systems and browsers.
+
+The new fonts are used in almost all frontend themes. For users who prefer
+the previous appearance, Zabbix provides Blue (classic) and
+Dark (classic) themes that retain the legacy fonts.
+
+The font family used for monospace content and graphs remains unchanged.
+
 ---
 
 ## Conclusion

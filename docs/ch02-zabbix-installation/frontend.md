@@ -407,11 +407,33 @@ menu_
     module created by one of the Zabbix developers `UI Twix` will solve this problem
     for you.
 
-???+ warning
+## Dashboard Import and Export
 
-    At time of writing there is no Dashboard import/export functionality in zabbix.
-    So when upgrading dashboards it needs to be created by hand. It was on the roadmap
-    for 7 but didn't made it so feel free to vote <https://support.zabbix.com/browse/ZBXNEXT-5419>
+Starting with Zabbix 8.0, dashboards can be exported and imported, making it
+easier to migrate dashboards between Zabbix instances or reuse them in
+different environments.
+
+Dashboards can be exported in **YAML, JSON, or XML** format. The exported
+configuration includes dashboard pages, widgets, and their settings.
+
+!!! info "New in Zabbix 8.0"
+    Dashboard import and export functionality was introduced in Zabbix 8.0.
+    In previous versions, dashboards had to be recreated manually when
+    migrating between Zabbix instances.
+
+## Preconfigured Dashboards
+
+Zabbix 8 also provides ready-to-import dashboards through its Dashboard
+repository, including:
+
+- **Multicloud Cost Dashboard:** Monitors cloud costs across AWS, Azure,
+  Google Cloud, and Oracle Cloud.
+- **Multicloud Virtual Machines Dashboard:** Provides a unified overview
+  of virtual machines across multiple cloud providers.
+
+These dashboards combine data from existing Zabbix integrations into a
+single global dashboard.
+
 
 ## Conclusion
 

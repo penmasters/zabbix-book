@@ -241,6 +241,55 @@ If our data looked like below however, the result would be different.
 In this case our minimum value is `90%`, which is indeed equal to or higher than
 90 as stated in the expression with `=>90`.
 
+## Closing problems manually
+
+Most problems close on their own. As soon as the trigger expression is no longer
+true, Zabbix generates an `OK` event and the problem resolves. But not every
+problem can be detected that way. Imagine a log line that tells you a kernel
+parameter should be tuned. There is no metric that tells Zabbix when someone has
+fixed it. In cases like this, the person who solved the problem should be able
+to close it by hand.
+
+For this to work, the trigger needs the `Allow manual close` option enabled. Problems
+can only be closed manually for triggers that have this option turned on.
+
+To close a problem:
+
+1. Open the problem update window of the problem.
+2. Check the `Close problem` option.
+3. Click `Update`.
+
+The request is processed by the Zabbix server. Behind the scenes, Zabbix creates
+an internal task, and the task manager process executes it by generating an `OK`
+event, which closes the problem. This normally takes a few seconds, and during
+that time the problem shows the status `CLOSING` in `Monitoring` | `Problems`.
+
+You can verify that a problem was closed manually in the event details, available
+through `Monitoring` | `Problems`, or by using the `{EVENT.UPDATE.HISTORY}`
+macro in notification messages.
+
+!!! warning
+
+    Closing a problem manually does not mean the trigger will never fire again.
+    The trigger expression is evaluated again when new data arrives for any item
+    in the expression, or when the expression uses date and time functions or
+    `nodata()`. If the underlying cause has not been fixed, the problem will come
+    back. Values discarded by a throttling preprocessing step do not count as
+    received data and do not cause a new evaluation.
+
+The `OK` event created by a manual close carries the event's tags, and these are
+available in notifications through the macros `{EVENT.RECOVERY.TAGS}` and
+`{EVENT.RECOVERY.TAGSJSON}`.
+
+!!! note "New in Zabbix 8.0"
+
+    Recovery events created after a manual close now inherit the trigger tags,
+    in addition to the item and host tags. These tags are present in the event
+    tags array and are available to notification macros such as `{EVENT.RECOVERY.TAGS}`
+    and `{EVENT.RECOVERY.TAGSJSON}`. This means the `scope` tag you added to your
+    trigger earlier is now part of the recovery event of a manually closed problem,
+    so a recovery message that prints the recovery tags includes it.
+
 ## Conclusion
 
 Triggers in Zabbix can be used to detect problems and automatically resolved them
