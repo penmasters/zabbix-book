@@ -1,7 +1,8 @@
 ---
 description: |
-    Manage notifications with Zabbix media types. Send alerts via email, SMS,
-    webhook, or chat integrations to ensure critical issues never go unnoticed.
+    Manage notifications with Zabbix media types. Send alerts via email, push
+    notifications, SMS, webhooks, or chat integrations to ensure critical issues
+    never go unnoticed.
 tags: [advanced]
 ---
 
@@ -35,14 +36,18 @@ chapter and the `Actions` chapter that follows.
 
 ---
 
-## The Four Media Type Categories
+## The Five Media Type Categories
 
-Zabbix 8.0 supports four kinds of media types. Each has its own configuration
+Zabbix 8.0 supports five kinds of media types. Each has its own configuration
 form, but they all share a set of common settings that we will cover first.
 
 - **Email** : Is the most commonly used type and is built directly into the
   `Zabbix server`. No external scripts are required. Zabbix connects to
   an SMTP server and delivers messages.
+
+- **Push notification** : Sends notifications from the `Zabbix server` to the
+  official Zabbix mobile app. Push notifications require a configured Zabbix
+  bridge adapter and a mobile device registered for the receiving user.
 
 - **SMS** : Sends text messages via a GSM modem physically attached to the
   `Zabbix server`. This is a legacy option and rarely used in modern deployments,
@@ -73,7 +78,7 @@ fields at the top of its configuration form.
   customer notifications), the name is the only thing distinguishing them in
   dropdown lists.
 
-- **Type** : selects which of the four categories above you are configuring.
+- **Type** : selects which of the five categories above you are configuring.
 
 - **Description** : is optional free text. Use it. Documenting what the media type
   is for, which external service it connects to, and any non obvious configuration
@@ -167,6 +172,103 @@ acts as an SMTP client and delivers messages through your mail server.
     with a dedicated **Automated Gmail/Office365 media type** that uses OAuth2, which
     is the correct approach for those services. See the Zabbix documentation for
     the OAuth2 setup guide.
+
+---
+
+## Push Notification
+
+The Push media type sends notifications from the Zabbix server to the official
+Zabbix mobile app. Unlike a generic webhook, it is specifically designed for
+mobile devices registered in Zabbix.
+
+Push notifications use the following communication path:
+
+1. The Zabbix server sends the notification to the locally installed
+   **Zabbix bridge adapter**.
+2. The bridge adapter communicates with the centrally hosted **Zabbix Bridge**.
+3. Zabbix Bridge delivers the notification to the Zabbix mobile app.
+
+The mobile app does not connect directly to the Zabbix server for push delivery.
+
+### Requirements
+
+Before push notifications can be delivered:
+
+- The Zabbix bridge adapter must be installed and configured.
+- Mobile device support must be enabled using `EnableMobileDevices`.
+- An enabled media type with **Push** selected as its type must exist.
+- The receiving user must have access to mobile devices.
+- A mobile device must be registered for that user in the Zabbix frontend.
+
+!!! warning
+
+    You can create and enable a Push media type without configuring the bridge
+    adapter, but notifications will not be delivered until the adapter is
+    available and correctly configured.
+
+For bridge adapter installation and configuration, see
+[https://www.zabbix.com/documentation/8.0/en/manual/concepts/bridge_adapter](https://www.zabbix.com/documentation/8.0/en/manual/concepts/bridge_adapter).
+
+### Creating the Push Media Type
+
+Go to `Alerts` | `Media types` and click **Create media type**.
+
+Configure the following fields:
+
+- **Name** : enter a descriptive name, for example `Zabbix mobile push`.
+- **Type** : select **Push**.
+- **Message templates** : configure the messages for problem, recovery, update,
+  service, discovery, autoregistration, and internal events as required.
+- **Enabled** : make sure the media type is enabled.
+
+The configuration form also shows whether the Zabbix bridge adapter is configured.
+Save the media type when the configuration is complete.
+
+### Registering a Mobile Device
+
+A mobile device must be linked to a Zabbix user before it can receive push
+notifications.
+
+A Super admin can register a device as follows:
+
+1. Go to `Users` | `Devices`.
+2. Click **Add device**.
+3. Select the user who will own the device.
+4. Click **Add** to generate a QR code.
+5. Open the Zabbix mobile app on the user's device and scan the QR code.
+6. Confirm that the device status changes to **Active**.
+
+The selected user must have access to devices enabled in their user role. Users
+with sufficient permissions can also manage their own devices under
+`User settings` | `Devices`.
+
+When a device is added, Zabbix automatically adds the Push media type to that
+user's media assignments. Removing the device also removes the corresponding
+user media assignment and revokes the device credentials.
+
+!!! note
+
+    If multiple Push media types are enabled, Zabbix automatically assigns the
+    enabled Push media type that appears first alphabetically. Use clear names
+    and avoid creating multiple enabled Push media types unless this behaviour
+    is intentional.
+
+### Testing Push Notifications
+
+To test the configuration:
+
+1. Go to `Alerts` | `Media types`.
+2. Find the Push media type.
+3. Click **Test**.
+4. Select a registered device in the **Send to** field.
+5. Click **Test**.
+
+Zabbix displays whether the notification was sent successfully. If delivery
+fails, first verify the bridge adapter, the device status, the user media
+assignment, and the Zabbix server log.
+
+For additional details, see
+[https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/media/push](https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/media/push).
 
 ---
 
@@ -480,7 +582,7 @@ Subject:
 ```
 Resolved in {EVENT.DURATION}: {EVENT.NAME}
 ```
- 
+
 Message body:
 ```
 Problem resolved at {EVENT.RECOVERY.TIME} on {EVENT.RECOVERY.DATE}
@@ -607,6 +709,7 @@ carries a message template for an event type, Zabbix falls back to a minimal
 default that omits most useful context. At minimum, define templates for Problem
 and Problem recovery on every media type you deploy.
 
+
 **Test before going live.** Use the **Test** button to verify a new media type
 before attaching it to production actions. The few seconds this takes is nothing
 compared to discovering a broken SMTP configuration during an actual incident.
@@ -647,6 +750,12 @@ decides when to notify, who to notify, and what to say.
 - What is the difference between the Script and Webhook media types? In what situation
   would you choose one over the other?
 
+- Which additional component is required for Push media types, and what happens
+  when a Push media type is enabled before this component is configured?
+
+- How is a mobile device linked to a Zabbix user, and what happens to the user's
+  media assignment when the device is removed?
+
 - You need a user to receive SMS alerts only for High and Disaster severities, and
   only outside of business hours. Which two fields in the user's media assignment
   control this behaviour?
@@ -656,5 +765,8 @@ decides when to notify, who to notify, and what to say.
 
 - [https://smstools3.kekekasvi.com/](https://smstools3.kekekasvi.com/)
 - [https://webhook.site/](https://webhook.site/)
-- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/media](https://www.zabbix.com/documentation/current/en/manual/config/notifications/media)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/media](https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/media)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/media/push](https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/media/push)
+- [https://www.zabbix.com/documentation/8.0/en/manual/concepts/bridge_adapter](https://www.zabbix.com/documentation/8.0/en/manual/concepts/bridge_adapter)
+- [https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/users/devices](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/users/devices)
 
