@@ -6,11 +6,14 @@ Whether you're managing a small network or overseeing a large-scale enterprise
 system, Zabbix provides the tools you need to monitor performance, detect issues,
 and ensure the smooth operation of your services.
 
-In this book, we focus on **Zabbix LTS 8.0**, the long-term support version that
-ensures stability and reliability for your monitoring needs. We'll explore its
-extensive feature set, including the newly introduced **reporting functionality**
-and **built-in web monitoring** based on the Selenium driver, which allows for
-sophisticated end-user experience monitoring through automated browser interactions.
+In this book, we focus on **Zabbix 8.0 LTS**, the long-term support release
+designed to provide a stable and reliable foundation for your monitoring
+environment. We explore both its core and advanced capabilities, including
+scheduled reporting and browser-based website monitoring. Scheduled reporting,
+introduced in Zabbix 5.4, can automatically generate and distribute dashboard
+reports, while Browser items, introduced in Zabbix 7.0 and further supported in
+Zabbix 8.0, use Selenium WebDriver to automate browser interactions and provide
+end-user experience monitoring.
 
 Zabbix is more than just a simple monitoring tool. It offers a wide range of
 features that allow you to:
