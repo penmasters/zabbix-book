@@ -13,6 +13,26 @@ developing a small service(s) which runs on the top of Zabbix and do exactly
 the tasks we told to do.
 This is like simulating an extra employee in the company.
 
+!!! warning "Security notice — demonstration examples"
+
+    This chapter demonstrates what can be achieved with the Zabbix API. To keep
+    the examples short and easy to reproduce, some examples intentionally use
+    settings that are **not security best practices**, including:
+
+    - a service account with the `Super admin role`;
+    - an API token without an expiration date;
+    - storing an API token in a global macro;
+    - the `--insecure` option in `curl` commands.
+
+    Do not copy these settings directly into a production environment. In
+    production, create a dedicated service account with the minimum required
+    permissions, use short-lived or regularly rotated API tokens, store tokens
+    in a secrets manager or another protected location, and always validate the
+    Zabbix server's TLS certificate.
+
+    See the [https://www.zabbix.com/documentation/8.0/en/manual/best_practices/security/access_control](https://www.zabbix.com/documentation/8.0/en/manual/best_practices/security/access_control)
+    for additional guidance.
+
 ## API variables
 
 To start to engage with Zabbix API:

@@ -69,10 +69,14 @@ tool. It provides:
 - **Authentication methods**: (AppRole, Token, LDAP, Kubernetes, AWS IAM, etc.).
 - A RESTful API and CLI for interaction.
 
-Zabbix uses Vault's KV v2 secrets engine via the HTTP API, authenticating with a
-Vault token. Zabbix only supports token-based authentication — there is no native
-support for AppRole as a config parameter. AppRole can however be used to obtain
-a scoped token which is then passed to Zabbix.
+Zabbix uses Vault's KV v2 secrets engine via the HTTP API. Token-based
+authentication is supported in Zabbix 6.4 and later. Starting with Zabbix 8.0,
+the Zabbix server, proxy, and frontend also support native AppRole authentication.
+For the server and proxy, configure either `VaultToken` or the combination of
+`VaultAppRoleID` and `VaultAppSecretID`; these methods are mutually exclusive.
+
+For the complete list of parameters, see the
+[https://www.zabbix.com/documentation/8.0/en/manual/security/secrets/hashicorp](https://www.zabbix.com/documentation/8.0/en/manual/security/secrets/hashicorp).
 
 ---
 
@@ -112,8 +116,8 @@ for SLES.
 
 !!! warning "Bug in current openSUSE openbao-server package (2.0.2-bp160.1.13)"
 
-    The current OpenBao package, at least in openSuse Leap 16, has a bug where 
-    the service calls `/usr/bin/bao` instead of `/usr/bin/openbao` (https://bugzilla.opensuse.org/show_bug.cgi?id=1286353). 
+    The current OpenBao package, at least in openSuse Leap 16, has a bug where
+    the service calls `/usr/bin/bao` instead of `/usr/bin/openbao` (https://bugzilla.opensuse.org/show_bug.cgi?id=1286353).
     If you encounter this issue, the workaround is to create a symlink:
 
     ```bash
@@ -128,12 +132,12 @@ for SLES.
     OpenBao, replace `vault` with `openbao` in any of the commands below.
 
     Also Zabbix officially supports HashiCorp Vault, although OpenBao should
-    work fine as it is currently a drop-in fork of Vault. In the future, if 
+    work fine as it is currently a drop-in fork of Vault. In the future, if
     OpenBao diverges from Vault, Zabbix may not support it anymore.
 
 ### Configure Vault
 
-Create or edit `/etc/vault.d/vault.hcl` or `/etc/openbao/openbao.hcl`. The example 
+Create or edit `/etc/vault.d/vault.hcl` or `/etc/openbao/openbao.hcl`. The example
 below uses a file-based storage backend and enables TLS:
 
 !!! example "Vault configuration file"
@@ -273,6 +277,7 @@ connections:
 
     Credentials for the Zabbix frontend database connection
 
+
     ```bash
     vault kv put zabbix/frontend username=<db_user> password=<db_password>
     vault kv put zabbix/server username=<db_user> password=<db_password>
@@ -383,8 +388,9 @@ Write both policies to Vault:
 !!! note "Vault and Zabbix Proxies"
 
     In a distributed Zabbix setup with proxies, each proxy runs its own
-    `zabbix_proxy.conf` which supports the same Vault parameters as the server
-    (`VaultURL`, `VaultToken`, `VaultDBPath`). You have two options:
+    `zabbix_proxy.conf` which supports the same Vault parameters as the server,
+    including `VaultURL`, `VaultToken`, `VaultAppRoleID`, `VaultAppSecretID`, and
+    `VaultDBPath`. You have two options:
 
 > **Option 1 — Single centralised Vault instance**
 >
@@ -453,7 +459,7 @@ This role covers both the frontend and server policies:
 
     * If you only set period=720h → you're fine, no 32-day limit
     * If explicit_max_ttl is set → the token will expire when that explicit maximum TTL is reached.
- 
+
 Create a separate token for each component using the role created in previous section The
 `-type=service` flag explicitly creates a renewable service token:
 
@@ -468,7 +474,7 @@ Create a separate token for each component using the role created in previous se
         -type=service \
         -display-name="zabbix-frontend"
     ```
-    
+
     Token for the Zabbix server
 
     ```bash
@@ -504,6 +510,91 @@ Verify each token can access its respective secret:
     ```bash
     VAULT_TOKEN=<server-token> vault kv get zabbix/server
     ```
+
+### Alternative: Configure AppRole Authentication in Zabbix 8.0
+
+Starting with Zabbix 8.0, AppRole can be used directly instead of placing a
+pre-created Vault token in the Zabbix configuration. AppRole is particularly
+useful for machine-to-machine authentication because Vault issues the token after
+Zabbix authenticates with a RoleID and SecretID.
+
+The existing `zabbix-server` and `zabbix-frontend` policies can be reused. First,
+enable the AppRole authentication method:
+
+!!! info "Enabling AppRole authentication"
+
+    ```bash
+    vault auth enable approle
+    ```
+
+Create a separate AppRole for the Zabbix server and frontend. Using separate roles
+and policies limits the impact if one set of credentials is compromised:
+
+!!! info "Creating AppRoles for Zabbix"
+
+    ```bash
+    vault write auth/approle/role/zabbix-server \
+        token_policies="zabbix-server" \
+        token_ttl="1h" \
+        token_max_ttl="24h"
+
+    vault write auth/approle/role/zabbix-frontend \
+        token_policies="zabbix-frontend" \
+        token_ttl="1h" \
+        token_max_ttl="24h"
+    ```
+
+Retrieve a RoleID and generate a SecretID for each role:
+
+!!! info "Retrieving the AppRole credentials"
+
+    Zabbix server
+
+    ```bash
+    vault read -field=role_id auth/approle/role/zabbix-server/role-id
+    vault write -f -field=secret_id auth/approle/role/zabbix-server/secret-id
+    ```
+
+    Zabbix frontend
+
+    ```bash
+    vault read -field=role_id auth/approle/role/zabbix-frontend/role-id
+    vault write -f -field=secret_id auth/approle/role/zabbix-frontend/secret-id
+    ```
+
+Store each SecretID securely. A SecretID is a credential and must not be committed
+to version control or exposed in command output, shell history, or documentation.
+Its lifetime and usage limits should match your credential-rotation process. If a
+SecretID expires or reaches its usage limit, generate a new one and update the
+corresponding Zabbix configuration.
+
+For the Zabbix server or proxy, replace `VaultToken` with the AppRole parameters:
+
+!!! example "Zabbix server AppRole configuration"
+
+    ```ini
+    Vault=HashiCorp
+    VaultURL=https://vault.example.com:8200
+    VaultDBPath=zabbix/server
+    VaultAppRoleID=<zabbix-server-role-id>
+    VaultAppSecretID=<zabbix-server-secret-id>
+    ```
+
+For the frontend, use the corresponding AppRole settings in `zabbix.conf.php`:
+
+!!! example "Zabbix frontend AppRole configuration"
+
+    ```php
+    $DB['VAULT'] = 'HashiCorp';
+    $DB['VAULT_URL'] = 'https://vault.example.com:8200';
+    $DB['VAULT_DB_PATH'] = 'zabbix/frontend';
+    $DB['VAULT_APP_ROLE_ID'] = '<zabbix-frontend-role-id>';
+    $DB['VAULT_APP_SECRET_ID'] = '<zabbix-frontend-secret-id>';
+    ```
+
+Do not configure `VaultToken` together with `VaultAppRoleID` on the server or
+proxy. Likewise, do not combine `$DB['VAULT_TOKEN']` with the frontend AppRole
+settings.
 
 ### Open the Firewall
 
@@ -640,6 +731,7 @@ the server will log an error and fail to start.
 ---
 
 ## Configuring the Zabbix Frontend for Vault
+
 
 ### Edit `zabbix.conf.php`
 
@@ -798,8 +890,10 @@ When the Zabbix server needs to use a macro value of type *Vault secret*:
 1. It reads the macro value, e.g. `zabbix/monitoring/snmp:community`.
 2. It splits the value on `:` — the left part is the path, the right part is the key.
 3. It constructs the Vault API URL: `{VaultURL}/v1/{path}/data` → `https://vault_url:8200/v1/zabbix/data/monitoring/snmp`.
-4. It authenticates using the configured `VaultToken`.
-5. It retrieves the JSON response and extracts the value of `community` using the `zabbix-server` token.
+4. It authenticates using the configured `VaultToken` or, in Zabbix 8.0, the
+   configured `VaultAppRoleID` and `VaultAppSecretID`.
+5. It retrieves the JSON response and extracts the value of `community` using
+   the Vault identity and policy assigned to the Zabbix server.
 6. The resolved plaintext value is used in the check — it is **never stored** in the Zabbix database.
 
 !!! info
@@ -839,8 +933,10 @@ the Zabbix server host and configure the following parameters:
 ### Client Certificate Authentication (mTLS)
 
 Zabbix does not currently support client certificates for Vault authentication
-natively. Use **AppRole** authentication as the recommended alternative for strong
-mutual authentication.
+natively. Zabbix 8.0 AppRole support provides machine-oriented authentication and
+avoids the need to configure a pre-created Vault token, but it is not mutual TLS
+authentication. TLS server certificate validation is still required to authenticate
+the Vault endpoint and protect credentials in transit.
 
 ### Verifying TLS Connectivity
 
@@ -1040,6 +1136,7 @@ From the Zabbix server host, test with the same credentials Zabbix uses:
 
 ### Check Vault Audit Log
 
+
 If Vault's audit backend is enabled, you can trace exactly what Zabbix is requesting:
 
 !!! info "Checking the Vault audit log"
@@ -1086,19 +1183,21 @@ _13.11 vault login_
 
 Integrating HashiCorp Vault with Zabbix removes plaintext credentials from the
 Zabbix database entirely. Secrets are stored in a centralised, encrypted secrets
-store with fine-grained access control, full audit logging, and token-based authentication.
-The Zabbix server and frontend each use their own scoped token, limiting the blast
-radius of a potential compromise.
+store with fine-grained access control and full audit logging. Zabbix can authenticate
+using a scoped Vault token or, starting with Zabbix 8.0, native AppRole credentials.
+The Zabbix server, frontend, and individual proxies should each use their own
+policy and credentials, limiting the blast radius of a potential compromise.
 
 The `zabbix/monitoring/*` path structure means new monitoring secrets can be
 added at any time without policy changes, keeping operational overhead low. In
 distributed setups with proxies, the same pattern applies, each proxy gets its
-own scoped token, with the choice between a single centralised Vault or a local
-Vault per site depending on network topology and resilience requirements.
+own scoped token or AppRole, with the choice between a single centralised Vault
+or a local Vault per site depending on network topology and resilience requirements.
 
 The setup described in this chapter covers the core integration. As your environment
-grows, consider implementing token renewal automation and a dedicated admin policy
-for day-to-day secret management to avoid using the root token for routine tasks.
+grows, define a renewal and rotation process appropriate to the selected authentication
+method, and use a dedicated admin policy for day-to-day secret management instead
+of the root token.
 
 ---
 
@@ -1113,6 +1212,8 @@ for day-to-day secret management to avoid using the root token for routine tasks
   tokens instead of one shared token?
 - After updating a Vault policy, an existing token still gets a `403 Forbidden`
   error. What is the cause and how do you resolve it?
+- Which parameters enable native AppRole authentication in Zabbix 8.0, and why
+  must they not be configured together with `VaultToken`?
 - You have a Zabbix environment with 1 server and 3 proxies. Each proxy monitors
   hosts in a different location. Describe how you would organise Vault secrets
   and policies to follow the principle of least privilege.
@@ -1121,11 +1222,12 @@ for day-to-day secret management to avoid using the root token for routine tasks
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/latest/en/manual/config/secrets/hashicorp](https://www.zabbix.com/documentation/latest/en/manual/config/secrets/hashicorp)
-- [https://www.zabbix.com/documentation/latest/en/manual/config/secrets](https://www.zabbix.com/documentation/latest/en/manual/config/secrets)
+- [https://www.zabbix.com/documentation/8.0/en/manual/security/secrets/hashicorp](https://www.zabbix.com/documentation/8.0/en/manual/security/secrets/hashicorp)
+- [https://www.zabbix.com/documentation/8.0/en/manual/security/secrets](https://www.zabbix.com/documentation/8.0/en/manual/security/secrets)
 - [https://developer.hashicorp.com/vault/docs](https://developer.hashicorp.com/vault/docs)
 - [https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2)
 - [https://developer.hashicorp.com/vault/docs/auth/token](https://developer.hashicorp.com/vault/docs/auth/token)
 - [https://developer.hashicorp.com/vault/docs/auth/approle](https://developer.hashicorp.com/vault/docs/auth/approle)
 - [https://developer.hashicorp.com/vault/docs/concepts/policies](https://developer.hashicorp.com/vault/docs/concepts/policies)
 - [https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install)
+
