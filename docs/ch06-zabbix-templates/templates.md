@@ -13,13 +13,11 @@ be applied to any number of hosts. By grouping related items, triggers, graphs,
 discovery rules, and macros into a single logical entity, templates make it possible
 to standardize and scale monitoring efficiently.
 
-
-Zabbix 8.0 emphasizes a monolithic, self contained design. While template linking
-is still supported for compatibility, the recommended approach is to use standalone
-templates for simplicity and portability. A deliberate departure from the older
-inheritance based approach. used in previous versions. This design philosophy makes
-templates easier to export, share, and maintain, especially when managing multiple
-environments or distributing monitoring logic across teams.
+Zabbix 8.0 emphasizes self-contained template design. Where practical, templates
+should be standalone to simplify importing, exporting, versioning, and distribution.
+Template linking and nesting remain fully supported and can still be useful when
+multiple templates share reusable monitoring components or must be composed into
+a larger monitoring solution.
 
 ???+ info "Fun fact"
 
