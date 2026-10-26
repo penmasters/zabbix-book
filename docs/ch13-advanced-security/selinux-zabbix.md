@@ -2,7 +2,7 @@
 description: |
     Configure SELinux securely for Zabbix using best practices for contexts,
     policies, booleans, audit logs, custom modules, and Enterprise Linux.
-tags:[advanced]
+tags: [advanced]
 ---
 
 # SELinux and Zabbix
@@ -172,13 +172,14 @@ allow you to fine-tune SELinux policies without needing to understand complex po
 writing. Key Zabbix booleans include:
 
 - **zabbix_can_network**: Controls whether Zabbix can initiate network connections
-- **httpd_can_connect_zabbix**: Controls whether the web server can connect to Zabbix
 - **zabbix_run_sudo**: Controls whether Zabbix can execute sudo commands
 
 !!! info "You can view these settings with:"
-`yaml
+
+    ```yaml
     getsebool -a | grep zabbix
-   `
+    ```
+
 And you can toggle them as needed with setsebool.
 
 ### Enable Zabbix network connections (persistent across reboots)
@@ -264,23 +265,67 @@ allow zabbix_t self:capability net_raw;
     semodule -i zabbix_fping.pp
     ```
 
-## Securing zabbix admin
+### SELinux and the Zabbix frontend
 
-## HTTPS
+The Zabbix frontend uses PHP-FPM to execute PHP code and communicate
+with the Zabbix database and server.
+Depending on the SELinux policy and installation, the following
+booleans may be required:
 
-## DB certs
+| SELinux boolean | Purpose |
+|-----------------|---------|
+| `httpd_can_network_connect_db` | Allows PHP-FPM to connect to a remote database. |
+| `httpd_can_network_connect` | Allows broader outgoing network connections when more specific permissions are insufficient. |
+
+For a frontend connecting to a remote PostgreSQL database and Zabbix
+server, enable the following booleans:
+
+```bash
+
+sudo setsebool -P httpd_can_network_connect_db on
+sudo setsebool -P httpd_can_connect_zabbix on
+
+```
+
+These permissions apply when PHP-FPM runs under the standard HTTP
+SELinux policy.
+The current settings can be verified using:
+
+```bash
+getsebool httpd_can_network_connect_db
+getsebool httpd_can_connect_zabbix
+```
+
+!!! warning "Keep permissions restrictive"
+
+    Avoid enabling `httpd_can_network_connect` unless necessary.
+    This boolean provides broader network access than the more
+    specific permissions above.
+    When troubleshooting connectivity issues, always inspect
+    SELinux audit logs before changing additional permissions.
 
 ## Conclusion
+
+SELinux provides an additional layer of security by restricting what Zabbix
+processes can access and perform, even when traditional Linux permissions
+would otherwise allow it.
+Although SELinux can sometimes complicate troubleshooting, disabling it
+should never be the default solution. Understanding SELinux policies,
+interpreting audit logs, and applying targeted changes allows us to resolve
+access issues without compromising system security.
+By keeping SELinux enabled and properly configured, we can maintain a
+more secure and reliable Zabbix monitoring environment.
 
 ## Questions
 
 - Why does SELinux prevent Zabbix from executing fping by default?
-- In what situations might you need to create custom SELinux policies for other Zabbix monitoring tools?
-- What are the key differences between using audit2allow and manually creating a custom policy module?
+- In what situations might you need to create custom SELinux policies for other
+  Zabbix monitoring tools?
+- What are the key differences between using audit2allow and manually creating
+  a custom policy module?
 
 ## Useful URLs
 
-- https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/rhel?hl=SELinux#selinux-configuration
-- https://www.systutorials.com/docs/linux/man/8-zabbix_selinux/
-- https://man.linuxreviews.org/man8/zabbix_agent_selinux.8.html
-- https://phoenixnap.com/kb/selinux
+- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/#selinux-configuration](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/#selinux-configuration)
+- [https://www.systutorials.com/docs/linux/man/8-zabbix_selinux/](https://www.systutorials.com/docs/linux/man/8-zabbix_selinux/)
+- [https://phoenixnap.com/kb/selinux](https://phoenixnap.com/kb/selinux)
