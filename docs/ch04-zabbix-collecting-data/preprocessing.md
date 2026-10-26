@@ -346,6 +346,7 @@ supports several formatting options.
 | UTF-8 from hex-STRING | Converts hexadecimal string data into UTF-8 text. |
 | MAC from hex-STRING | Converts a hexadecimal MAC address into a readable MAC address. |
 | Integer from BITS | Converts a bit string into an unsigned integer. |
+
 These options are useful when working with SNMP objects that return
 hexadecimal strings, MAC addresses, or bit fields.
 
