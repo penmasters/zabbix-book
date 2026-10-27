@@ -25,9 +25,11 @@ For SELinux to actually provide security protection, it needs to be set to "enfo
 
 You can check the current SELinux mode with the getenforce command:
 
-```yaml
-getenforce
-```
+!!! info ""
+
+    ```yaml
+    getenforce
+    ```
 
 This should return : Enforcing
 
@@ -35,15 +37,19 @@ To properly secure Zabbix with SELinux, the system should be in `Enforcing` mode
 
 ##### Set to enforcing immediately (until reboot)
 
-```yaml
-sudo setenforce 1
-```
+!!! info ""
+
+    ```yaml
+    sudo setenforce 1
+    ```
 
 For permanent configuration, edit /etc/selinux/config and set:
 
-```yaml
-SELINUX=Enforcing
-```
+!!! info ""
+
+    ```yaml
+    SELINUX=Enforcing
+    ```
 
 ### Basic Structure of an SELinux Context
 
@@ -136,9 +142,11 @@ Benefits of Using the Package:
 
 The package is typically installed alongside other Zabbix components:
 
-```yaml
-dnf install zabbix-selinux-policy
-```
+!!! info
+
+    ```yaml
+    dnf install zabbix-selinux-policy
+    ```
 
 After installation, the SELinux contexts are automatically applied to standard Zabbix
 paths and ports. If you use non-standard configurations, you may still need to make
@@ -184,9 +192,11 @@ And you can toggle them as needed with setsebool.
 
 ### Enable Zabbix network connections (persistent across reboots)
 
-```yaml
-setsebool -P zabbix_can_network on
-```
+!!! info
+
+    ```yaml
+    setsebool -P zabbix_can_network on
+    ```
 
 These booleans make it much easier to securely deploy Zabbix while maintaining SELinux
 protection, as you can enable only the specific capabilities that your Zabbix implementation
@@ -208,9 +218,11 @@ SELinux denial messages and generate appropriate policies:
 
 First, capture the denial events from the audit log:
 
-```yaml
-sudo grep zabbix /var/log/audit/audit.log | grep fping | audit2allow -M zabbix_fping
-```
+!!! info
+
+    ```yaml
+    sudo grep zabbix /var/log/audit/audit.log | grep fping | audit2allow -M zabbix_fping
+    ```
 
 !!! info "Install the generated policy module:"
 
@@ -231,21 +243,23 @@ create a custom policy:
 
 Create a policy file named zabbix_fping.te with the following content:
 
-```yaml
-module zabbix_fping 1.0;
+!!! example
 
-require {
-    type zabbix_t;
-    type fping_t;
-    type fping_exec_t;
-    class file { execute execute_no_trans getattr open read };
-    class capability net_raw;
-}
-
-#============= zabbix_t ==============
-allow zabbix_t fping_exec_t:file { execute execute_no_trans getattr open read };
-allow zabbix_t self:capability net_raw;
-```
+    ```yaml
+    module zabbix_fping 1.0;
+    
+    require {
+        type zabbix_t;
+        type fping_t;
+        type fping_exec_t;
+        class file { execute execute_no_trans getattr open read };
+        class capability net_raw;
+    }
+    
+    #============= zabbix_t ==============
+    allow zabbix_t fping_exec_t:file { execute execute_no_trans getattr open read };
+    allow zabbix_t self:capability net_raw;
+    ```
 
 !!! info "Compile the policy module:"
 
@@ -280,21 +294,23 @@ booleans may be required:
 For a frontend connecting to a remote PostgreSQL database and Zabbix
 server, enable the following booleans:
 
-```bash
+!!! info
 
-sudo setsebool -P httpd_can_network_connect_db on
-sudo setsebool -P httpd_can_connect_zabbix on
-
-```
+    ```bash
+    sudo setsebool -P httpd_can_network_connect_db on
+    sudo setsebool -P httpd_can_connect_zabbix on
+    ```
 
 These permissions apply when PHP-FPM runs under the standard HTTP
 SELinux policy.
 The current settings can be verified using:
 
-```bash
-getsebool httpd_can_network_connect_db
-getsebool httpd_can_connect_zabbix
-```
+!!! info
+
+    ```bash
+    getsebool httpd_can_network_connect_db
+    getsebool httpd_can_connect_zabbix
+    ```
 
 !!! warning "Keep permissions restrictive"
 
