@@ -117,22 +117,22 @@ as possible. Just make sure you enter for CN you IP or DNS.
 
 !!! info "Generate a Root Certificate"
 
-   ``` text
-   You are about to be asked to enter information that will be incorporated
-   into your certificate request.
-   What you are about to enter is what is called a Distinguished Name or a DN.
-   There are quite a few fields but you can leave some blank
-   For some fields there will be a default value,
-   If you enter '.', the field will be left blank.
-   -----
-   Country Name (2 letter code) [XX]:BE
-   State or Province Name (full name) []:vlaams-brabant
-   Locality Name (eg, city) [Default City]:leuven
-   Organization Name (eg, company) [Default Company Ltd]:
-   Organizational Unit Name (eg, section) []:
-   Common Name (eg, your name or your server's hostname) []:192.168.0.134
-   Email Address []:
-   ```
+    ``` text
+    You are about to be asked to enter information that will be incorporated
+    into your certificate request.
+    What you are about to enter is what is called a Distinguished Name or a DN.
+    There are quite a few fields but you can leave some blank
+    For some fields there will be a default value,
+    If you enter '.', the field will be left blank.
+    -----
+    Country Name (2 letter code) [XX]:BE
+    State or Province Name (full name) []:vlaams-brabant
+    Locality Name (eg, city) [Default City]:leuven
+    Organization Name (eg, company) [Default Company Ltd]:
+    Organizational Unit Name (eg, section) []:
+    Common Name (eg, your name or your server's hostname) []:192.168.0.134
+    Email Address []:
+    ```
 
 ### Generating CA-Authenticated Certificates
 
