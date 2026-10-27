@@ -151,24 +151,38 @@ This will allow us to define our PSK identity and PSK value on the agents config
     TLSPSKFile=/etc/zabbix/agent.psk
     ```
 
-Keep in mind that `/etc/zabbix/agent.psk` should contain the same PSK value on every single agent we configure for autoregistration. We cannot use different keys, as the identity/value pair has to be unique. 
+Keep in mind that `/etc/zabbix/agent.psk` should contain the same PSK value on
+every single agent we configure for autoregistration. We cannot use different
+keys, as the identity/value pair has to be unique.
 
-This means that we do not have a unique PSK per Zabbix agent, decreasing our security. If one agent has its PSK compromised, you have to consider all agents compromised. There are a few options to work with this however.
+This means that we do not have a unique PSK per Zabbix agent, decreasing our security.
+If one agent has its PSK compromised, you have to consider all agents compromised.
+There are a few options to work with this however.
 
-- Make sure you automate the Zabbix agent installation process. Quickly allowing you to rotate PSK keys when necessary.
-- Do not share you PSK with possible customers you are monitoring. Use manually configured unique PSK values for them.
-- If you want, you can use autoregistration with PSK for the initial agent registration. Manually changed the PSK later or just for important infrastructure.
+- Make sure you automate the Zabbix agent installation process. Quickly allowing
+  you to rotate PSK keys when necessary.
+- Do not share you PSK with possible customers you are monitoring. Use manually
+  configured unique PSK values for them.
+- If you want, you can use autoregistration with PSK for the initial agent registration.
+  Manually changed the PSK later or just for important infrastructure.
 
 ## Certificates
-Pre-shared keys are simple and they work well to encrypt your agents fast and effectively. They do have a fundamental flaw however, once it is known we can easily impersonate it. Identity theft is not a joke and for that reason we are going to issues certificates to counter that issue. 
 
-Keep in mind, you can also use public certificates. But to keep things executable from the book we are going to use self-signed certificates here. Choose whichever you prefer.
+Pre-shared keys are simple and they work well to encrypt your agents fast and effectively.
+They do have a fundamental flaw however, once it is known we can easily impersonate
+it. Identity theft is not a joke and for that reason we are going to issues certificates
+to counter that issue.
+
+Keep in mind, you can also use public certificates. But to keep things executable
+from the book we are going to use self-signed certificates here. Choose whichever
+you prefer.
 
 ### Certificate Authority generation
 
-First, let's create the certificate authority (CA). 
+First, let's create the certificate authority (CA).
 
-!!! info “Create CA private key”
+!!! info "Create CA private key"
+
     Linux CLI
     ```bash
     openssl genrsa -out the-zabbix-book-ca.key 4096
@@ -176,7 +190,8 @@ First, let's create the certificate authority (CA).
 
 Next, we create a self-signed CA certificate. This certificate will be trusted by all Zabbix components.
 
-!!! info “Create CA certificate”
+!!! info "Create CA certificate"
+
     Linux CLI
     ```bash
     openssl req -x509 -new -nodes \
@@ -197,7 +212,8 @@ Executing these commands should give us 2 files.
 
 Let's move these files to the home folder on the server.
 
-!!! info “Move the CA files”
+!!! info "Move the CA files"
+
     Linux CLI
     ```bash
     mv the-zabbix-book-ca.key /home/zabbix/the-zabbix-book-ca.key
@@ -206,7 +222,8 @@ Let's move these files to the home folder on the server.
 
 Then we make sure they are secured.
 
-!!! info “Secure CA private key”
+!!! info "Secure CA private key"
+
     Linux CLI
     ```bash
     sudo chown zabbix:zabbix /home/zabbix/the-zabbix-book-ca.key /home/zabbix/the-zabbix-book-ca.crt
@@ -214,16 +231,20 @@ Then we make sure they are secured.
     sudo chmod 444 /home/zabbix/the-zabbix-book-ca.crt
     ```
 
-Since anyone with the key file can sign valid Zabbix certificates it is recommended to do these steps on a secure server where you will distribute the certificates from
-
-
+Since anyone with the key file can sign valid Zabbix certificates it is recommended
+to do these steps on a secure server where you will distribute the certificates
+from
 
 ### Certificate generation
-Next up, we are going to generate the certificate for the Zabbix agent to use. Here it is also recommended to use a unique certificate for each Zabbix agent you'd like to encrypt.
+
+Next up, we are going to generate the certificate for the Zabbix agent to use.
+Here it is also recommended to use a unique certificate for each Zabbix agent
+you'd like to encrypt.
 
 We will need the CA key we issues earlier in this step. Let's first generate the key.
 
-!!! info “Create agent private key”
+!!! info "Create agent private key"
+
     Linux CLI
     ```bash
     openssl genrsa -out zabbix_agent.key 2048
@@ -231,7 +252,8 @@ We will need the CA key we issues earlier in this step. Let's first generate the
 
 Then we create the certificate signing request (CSR).
 
-!!! info “Create Zabbix agent CSR”
+!!! info "Create Zabbix agent CSR"
+
     Linux CLI
     ```bash
     openssl req -new \
@@ -240,10 +262,12 @@ Then we create the certificate signing request (CSR).
     -subj "/CN=www01/OU=Servers/O=The Zabbix Book"
     ```
 
-Lastly, we sign the CSR with the CA. This is what makes it a “real” certificate in our environment.
+Lastly, we sign the CSR with the CA. This is what makes it a “real” certificate
+in our environment.
 
-!!! info “Sign agent certificate with CA”
-Linux CLI
+!!! info "Sign agent certificate with CA"
+
+    Linux CLI
     ```bash
     openssl x509 -req \
     -in zabbix_agent.csr \
@@ -261,16 +285,17 @@ We now have our Zabbix agent certificate and private key:
 
 The CSR is no longer needed after signing.
 
-!!! info “Remove CSR file”
+!!! info "Remove CSR file"
+
     Linux CLI
     ```bash
     rm -f zabbix_agent.csr
     ```
 
-
 Let's move these files to a folder where we can use them from the Zabbix agent.
 
-!!! info “Move the CA files”
+!!! info "Move the CA files"
+
     Linux CLI
     ```bash
     mv zabbix_agent.key /home/zabbix/the-zabbix-book-ca.key
@@ -279,7 +304,8 @@ Let's move these files to a folder where we can use them from the Zabbix agent.
 
 Of course it will also be important to secure the files.
 
-!!! info “Move the CA files”
+!!! info "Move the CA files"
+
     Linux CLI
     ```bash
     sudo chown zabbix:zabbix /home/zabbix/zabbix_agent.key /home/zabbix/zabbix_agent.crt
@@ -288,9 +314,13 @@ Of course it will also be important to secure the files.
     ```
 
 ### Setting up the agent configuration
-Lastly, it will be important to set up the Zabbix agent for the certificate to be used by it. Let's edit the Zabbix agent configuration file and add the following parameters.
 
-!!! info “Move the CA files”
+Lastly, it will be important to set up the Zabbix agent for the certificate to
+be used by it. Let's edit the Zabbix agent configuration file and add the
+following parameters.
+
+!!! info "Move the CA files"
+
     Linux CLI
     ```ini
     TLSConnect=cert
@@ -305,24 +335,36 @@ Lastly, it will be important to set up the Zabbix agent for the certificate to b
     TLSServerCertSubject=CN=zabbix-server,OU=Monitoring,O=The Zabbix Book
     ```
 
-!!! info “Restart to make certificate encryption take effect”
+!!! info "Restart to make certificate encryption take effect"
+
     Linux CLI
     ```bash
     systemctl restart zabbix-agent2
     ```
 
-Moving to the Zabbix frontend, all that's left to do is edit our host configuration under `Data collection` | `Hosts` and add the following information under `Encryption`.
+Moving to the Zabbix frontend, all that's left to do is edit our host configuration
+under `Data collection` | `Hosts` and add the following information under `Encryption`.
 
 ![Encrypted agent certificate](ch13.9-agent-certificate-encryption.png){ align=center }
 
 *13.9 Encrypted agent settings certificate*
 
 ## Conclusion
-If you want simple to set up security for your Zabbix agent, use pre-shared keys. They are secure, especially when using 2048-bit (512 hexadecimal digits) and if possible unique pre-shared keys for each agent.
 
-If you want some more layers of security, certificates do provide more security in the way they work alone. With certificate expiry, we are forced to set up good certificate management software to make managing the many certificates doable. Furthermore, certificates provide impersonation resistance by allowing us to restrict issuer/subject.
+If you want simple to set up security for your Zabbix agent, use pre-shared keys.
+They are secure, especially when using 2048-bit (512 hexadecimal digits) and if
+possible unique pre-shared keys for each agent.
 
-If you are using active agent autoregistration pre-shared keys seems like your only viable option out of the box. We are forced to use a single pre=shared key for this method, and as such it is less secure. This can still be a good option to provide that additional layer of security on internal networks. 
+If you want some more layers of security, certificates do provide more security
+in the way they work alone. With certificate expiry, we are forced to set up good
+certificate management software to make managing the many certificates doable.
+Furthermore, certificates provide impersonation resistance by allowing us to restrict
+issuer/subject.
+
+If you are using active agent autoregistration pre-shared keys seems like your only
+viable option out of the box. We are forced to use a single pre=shared key for this
+method, and as such it is less secure. This can still be a good option to provide
+that additional layer of security on internal networks. 
 
 ## Questions
 
