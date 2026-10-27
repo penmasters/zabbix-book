@@ -60,9 +60,9 @@ This tab defines the precise scheduling:
     maintenance period that will show that the server is in maintenance or not
     in the frontend.
 
-![ch14.01-maintenance.png](ch14.1-maintenance.png)
+![ch14.01-maintenance.png](ch14.01-maintenance.png)
 
-_14.1 ch14.01-maintenance.png_
+_14.1 Maintenance_
 
 ### 4. Scope (Hosts and Host Groups)
 
@@ -137,8 +137,10 @@ When a server is placed into maintenance mode, this state is clearly indicated
 in the Zabbix frontend, making it easy to distinguish whether a host is currently
 under maintenance or not.
 
-During maintenance, an orange wrench ![ch14.04-maintenance-wrench.png](ch14.04-maintenance-wrench.png)
+During maintenance, an orange wrench ![ch14.02-maintenance-wrench.png](ch14.02-maintenance-wrench.png)
 icon is displayed next to the host name in the following views:
+
+_14.2 Maintenance wrench_
 
 * **Dashboards**
 * `Monitoring` | `Problems`
@@ -163,9 +165,9 @@ When suppressed problems are configured to be shown, a dedicated status icon is
 displayed next to the problem. Hovering the mouse pointer over this icon reveals
 additional details about the suppression state.
 
-![ch14.05-maintenance-icon.png](ch14.2-maintenance-icon.png)
+![ch14.03-maintenance-icon.png](ch14.03-maintenance-icon.png)
 
-_14.2 ch14.05-maintenance-icon.png_
+_14.3 Maintenance icon_
 
 ---
 
@@ -249,9 +251,9 @@ every month** at midnight for **2 hours**. Only suppress problems related to the
 | **Tags Tab** | **Tag evaluation:** `AND` | Ensures both conditions (maintenance and tag) are met for suppression. |
 | **Tags Tab** | **Tag:** `service` **Operator:** `=` **Value:** `database` | **Crucial:** Only problems with the tag `service:database` are suppressed. |
 
-![ch14.02-maintenance-config.png](ch14.3-maintenance-config.png)
+![ch14.04-maintenance-config.png](ch14.04-maintenance-config.png)
 
-_14.3 ch14.02-maintenance-config.png_
+_14.4 Maintenance config_
 
 ### Execution Summary
 
@@ -483,9 +485,9 @@ script.
 
 A working easy to use maintenance script can be found here : [https://github.com/penmasters/trikke76-fork/tree/master/maintenance](https://github.com/penmasters/trikke76-fork/tree/master/maintenance)
 
-![ch14.03-maintenance-api.png](ch14.4-maintenance-api.png)
+![ch14.05-maintenance-api.png](ch14.05-maintenance-api.png)
 
-_14.4 ch14.03-maintenance-api.png_
+_14.5 Maintenance api_
 
 ---
 
