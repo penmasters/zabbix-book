@@ -190,28 +190,34 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
 ClickHouse requires Kernel delay accounting to be enabled. You can check the
 current status with:
 
-```bash
-cat /sys/kernel/debug/delayacct
-or
-sysctl kernel.task_delayacct
-```
+!!! info ""
+
+    ```bash
+    cat /sys/kernel/debug/delayacct
+    or
+    sysctl kernel.task_delayacct
+    ```
 
 If it displays `0`, it is disabled and you need to enable it.
 Create a new file `/etc/sysctl.d/99-clickhouse.conf` and add the following line:
 
-```ini
-# Enable delay accounting
-kernel.task_delayacct = 1
-```
-    
+!!! info ""
+
+    ```ini
+    # Enable delay accounting
+    kernel.task_delayacct = 1
+    ```
+
 This applies all the changes at once :
-    
-```bash
-sudo tee /etc/sysctl.d/99-clickhouse.conf > /dev/null <<'EOF'
-# Enable delay accounting
-kernel.task_delayacct = 1
-EOF
-```
+
+!!! info ""
+
+    ```bash
+    sudo tee /etc/sysctl.d/99-clickhouse.conf > /dev/null <<'EOF'
+    # Enable delay accounting
+    kernel.task_delayacct = 1
+    EOF
+    ```
 
 4. **Number of threads**
 
@@ -221,16 +227,20 @@ however, ClickHouse requires at least 30000.
 To ensure that the ClickHouse-server service has enough threads, create a 
 new systemd override file:
 
-```bash
-systemctl edit clickhouse-server
-```
-   
+!!! info ""
+
+    ```bash
+    systemctl edit clickhouse-server
+    ```
+
 and add the following lines:
 
-```ini
-[Service]
-LimitNPROC=30000
-```
+!!! info ""
+
+    ```ini
+    [Service]
+    LimitNPROC=30000
+    ```
 
 Enable the ClickHouse service so it starts automatically at boot.
 
@@ -725,16 +735,20 @@ If graphs or Latest data do not display history after enabling ClickHouse:
 
 If ClickHouse reports a permission error such as:
 
-``` bash
-Permission denied
-```
+!!! info ""
+
+    ``` bash
+    Permission denied
+    ```
 
 verify the ownership and SELinux contexts:
 
-```bash
-chown -R clickhouse:clickhouse /var/lib/clickhouse
-restorecon -Rv /var/lib/clickhouse
-```
+!!! info ""
+
+    ```bash
+    chown -R clickhouse:clickhouse /var/lib/clickhouse
+    restorecon -Rv /var/lib/clickhouse
+    ```
 
 Restart ClickHouse afterwards.
 
@@ -742,10 +756,12 @@ Restart ClickHouse afterwards.
 
 Verify connectivity manually:
 
-```bash
-curl -u zabbix:zabbix \
-"http://127.0.0.1:8123/?database=zabbix&query=SELECT%201"
-```
+!!! info ""
+
+    ```bash
+    curl -u zabbix:zabbix \
+    "http://127.0.0.1:8123/?database=zabbix&query=SELECT%201"
+    ```
 
 When Zabbix and ClickHouse run on the same server, prefer `http://127.0.0.1:8123`
 over a hostname, this avoids potential DNS or hostname resolution issues.
