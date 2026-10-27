@@ -72,7 +72,7 @@ nav:
       - ch04-zabbix-collecting-data/external-checks.md
       - ch04-zabbix-collecting-data/browser.md
       - ch04-zabbix-collecting-data/calculated.md
-      - APM: ch04-zabbix-collecting-data/telemetry.md
+      - ch04-zabbix-collecting-data/telemetry.md
   - "Chapter 05 : Triggers":
       - ch05-zabbix-triggers/chapter.md
       - ch05-zabbix-triggers/triggers.md
@@ -180,7 +180,11 @@ extra_css:
   - stylesheets/linewrap.css
 
 extra:
-  version_manifest: !ENV [ZABBIX_BOOK_VERSION_MANIFEST, "https://thezabbixbook.com/versions.json"]
+  version_manifest:
+    !ENV [
+      ZABBIX_BOOK_VERSION_MANIFEST,
+      "https://thezabbixbook.com/versions.json",
+    ]
   tags:
     index: tags.md
   tag_labels:
