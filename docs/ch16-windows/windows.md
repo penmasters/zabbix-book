@@ -27,13 +27,15 @@ will do fine.
 The agent ships as an MSI package, which makes unattended installs straightforward.
 A typical silent install looks like:
 
-``` shell
-msiexec /qn /i zabbix_agent2-<version>-windows-amd64-openssl.msi ^
-  SERVER=10.0.0.1 ^
-  SERVERACTIVE=10.0.0.1 ^
-  HOSTNAME=WIN-DC01 ^
-  ENABLEPATH=1
-```
+!!! example ""
+
+    ``` shell
+    msiexec /qn /i zabbix_agent2-<version>-windows-amd64-openssl.msi ^
+      SERVER=10.0.0.1 ^
+      SERVERACTIVE=10.0.0.1 ^
+      HOSTNAME=WIN-DC01 ^
+      ENABLEPATH=1
+    ```
 
 `SERVER` controls who is allowed to perform passive checks against the agent; `SERVERACTIVE`
 is where the agent sends active check data. `HOSTNAME` must match the host name
@@ -83,9 +85,11 @@ the generic `system.cpu.util` key (useful when you want to match exactly what
 an admin sees in Task Manager, or when you're after a more specific counter that
 doesn't have a dedicated cross-platform key):
 
-``` shell
-perf_counter_en["\Processor(_Total)\% Processor Time"]
-```
+!!! example ""
+
+    ``` shell
+    perf_counter_en["\Processor(_Total)\% Processor Time"]
+    ```
 
 !!! note
 
@@ -128,9 +132,11 @@ The item key is `eventlog`, and it requires the item type **Zabbix agent (active
 this is not optional; event log monitoring does not work as a passive check. The
 full syntax is:
 
-``` shell
-eventlog[name,<regexp>,<severity>,<source>,<eventid>,<maxlines>,<mode>]
-```
+!!! info ""
+
+    ``` shell
+    eventlog[name,<regexp>,<severity>,<source>,<eventid>,<maxlines>,<mode>]
+    ```
 
 Only `name` (the log name, e.g. `Application`, `System`, `Security`) is mandatory;
 everything else is an optional filter. A few working examples that illustrate
@@ -138,9 +144,11 @@ how the filters combine:
 
 **Watch the System log for any Warning or Error entries:**
 
-``` shell
-eventlog[System,,"Warning|Error"]
-```
+!!! info ""
+
+    ``` shell
+    eventlog[System,,"Warning|Error"]
+    ```
 
 The `severity` parameter is a case-insensitive regular expression matched against
 the severity values Windows reports: Information, Warning, Error, Critical, and
@@ -149,9 +157,11 @@ Verbose (the latter two only on Vista/Server 2008 and later).
 **Watch the Security log for failed logon attempts (event ID 4625), skipping anything
 that predates the item's first run:**
 
-``` shell
-eventlog[Security,,,,4625,,skip]
-```
+!!! info ""
+
+    ``` shell
+    eventlog[Security,,,,4625,,skip]
+    ```
 
 The `skip` mode tells Zabbix not to process the entire historical backlog of the
 log when the item is first activated. Without it, an item on a busy Security log
@@ -159,9 +169,11 @@ can generate a flood of historical matches the moment it's created.
 
 **Filter on event source as well as severity, and exclude specific noisy event IDs:**
 
-``` shell
-eventlog[Application,,"Error",MyAppService,,,]
-```
+!!! info ""
+
+    ``` shell
+    eventlog[Application,,"Error",MyAppService,,,]
+    ```
 
 `source` matches against the "Source" column you'd see in Event Viewer, the component
 or service that logged the event. This is useful for isolating events from one
@@ -192,9 +204,11 @@ disk, a network adapter, or any of the hundreds of other things WMI can describe
 For the simple, extremely common case of "is this service running," `service.info`
 is the right tool:
 
-``` shell
-service.info[<service name>,<param>]
-```
+!!! info ""
+
+    ``` shell
+    service.info[<service name>,<param>]
+    ```
 
 The first parameter is the **service name**, not the display name. These are often
 different: the display name "**DNS Client**" corresponds to the service name
@@ -250,9 +264,11 @@ syntax for querying WMI classes).
 `wmi.get[<namespace>,<query>]` returns a single value, the first property of the
 first matching object:
 
-``` shell
-wmi.get[root\cimv2,"select Status from Win32_DiskDrive where Name like '%PHYSICALDRIVE0%'"]
-```
+!!! info ""
+
+    ``` shell
+    wmi.get[root\cimv2,"select Status from Win32_DiskDrive where Name like '%PHYSICALDRIVE0%'"]
+    ```
 
 This returns the `Status` property (a string like "OK") of the first physical disk.
 Note the query itself needs to be wrapped in its own quotes when it contains special
@@ -266,9 +282,11 @@ with one object per matching WMI instance and one field per selected property.
 This is the key to use for low-level discovery. The official "Windows by Zabbix
 agent active" template uses exactly this pattern for network interface discovery:
 
-``` shell
-wmi.getall[root\cimv2,"select Name,Description,NetConnectionID,Speed,AdapterTypeId,NetConnectionStatus,GUID from win32_networkadapter where PhysicalAdapter=True and NetConnectionStatus>0"]
-```
+!!! info ""
+
+    ``` shell
+    wmi.getall[root\cimv2,"select Name,Description,NetConnectionID,Speed,AdapterTypeId,NetConnectionStatus,GUID from win32_networkadapter where PhysicalAdapter=True and NetConnectionStatus>0"]
+    ```
 
 The `where PhysicalAdapter=True and NetConnectionStatus>0` clause is doing useful
 filtering work here, it excludes virtual/tunnel adapters and adapters that are
