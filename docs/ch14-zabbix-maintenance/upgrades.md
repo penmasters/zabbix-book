@@ -83,17 +83,19 @@ perform an upgrade. You rolled the dice.”_**
 
 **Consider a real-world example:**
 
-``` text
-An administrator decides to upgrade an aging monitoring server. The OS is out of
-support, so it gets upgraded. The new OS ships with a newer PostgreSQL version,
-so that changes too. PHP is updated automatically as part of the process. Since
-Zabbix needs an upgrade anyway, that is done last.
+!!! example
 
-The server starts. The database upgrade begins. Disk usage spikes. PostgreSQL
-runs out of space halfway through rebuilding indexes. The Zabbix server refuses
-to start. The frontend is broken because PHP extensions changed. Monitoring is
-down, and restoring the backup takes hours.
-```
+    ``` text
+    An administrator decides to upgrade an aging monitoring server. The OS is out of
+    support, so it gets upgraded. The new OS ships with a newer PostgreSQL version,
+    so that changes too. PHP is updated automatically as part of the process. Since
+    Zabbix needs an upgrade anyway, that is done last.
+    
+    The server starts. The database upgrade begins. Disk usage spikes. PostgreSQL
+    runs out of space halfway through rebuilding indexes. The Zabbix server refuses
+    to start. The frontend is broken because PHP extensions changed. Monitoring is
+    down, and restoring the backup takes hours.
+    ```
 
 Nothing **“unexpected”** happened. Everything that went wrong was predictable.
 
