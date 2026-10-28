@@ -69,9 +69,11 @@ links you configured, and clicking the host name opens the usual host menu.
 A map can also be opened directly with a URL, using either the map name or the
 map ID:
 
-```
-http://zabbix/zabbix/zabbix.php?action=map.view&mapname=Local%20network
-```
+!!! info ""
+
+    ```
+    http://zabbix/zabbix/zabbix.php?action=map.view&mapname=Local%20network
+    ```
 
 If both parameters are present, `mapname` takes priority. This is convenient for
 bookmarks and for wall screens.
@@ -92,10 +94,9 @@ thresholds, for text items a regular expression pattern, and when the value
 reaches a threshold or matches the pattern the link is drawn with the type and
 color you chose for it. A link between two switches can now turn orange or red
 when the utilization of the connection passes a threshold, without you having to
-create a trigger for every level you want to see. If you keep using trigger based indicators and several
-triggers with the same severity are assigned to one link, the trigger with the
-lowest ID takes precedence.
-
+create a trigger for every level you want to see. If you keep using trigger based
+indicators and several triggers with the same severity are assigned to one link,
+the trigger with the lowest ID takes precedence.
 
 A second change helps with readability. A busy map becomes unreadable when every
 element and every link carries a label, so the map properties now offer *Auto
@@ -128,10 +129,14 @@ For example, a link between two switches could display
 the current traffic and the average traffic over the last
 five minutes:
 
-    Interface: GigabitEthernet1/0/24
-    Traffic in: {?last(/core-switch-01/net.if.in[ifHCInOctets.1])}
-    Traffic out: {?last(/core-switch-01/net.if.out[ifHCOutOctets.1])}
-    Average in: {?avg(/core-switch-01/net.if.in[ifHCInOctets.1],5m)}
+!!! example "Example"
+
+    ```text
+    - Interface: GigabitEthernet1/0/24
+    - Traffic in: {?last(/core-switch-01/net.if.in[ifHCInOctets.1])}
+    - Traffic out: {?last(/core-switch-01/net.if.out[ifHCOutOctets.1])}
+    - Average in: {?avg(/core-switch-01/net.if.in[ifHCInOctets.1],5m)}
+    ```
 
 Expression macros reference a specific host and item key,
 using the same syntax as trigger expressions. Only the

@@ -229,21 +229,25 @@ are portable across systems and PostgreSQL minor versions.
 
 A typical dump of a Zabbix database using pg_dump looks like this:
 
-``` bash
-sudo -u postgres pg_dump \
-  --format=custom \
-  --file=/backup/zabbix.dump \
-  zabbix
-```
+!!! example
+
+    ``` bash
+    sudo -u postgres pg_dump \
+      --format=custom \
+      --file=/backup/zabbix.dump \
+      zabbix
+    ```
 
 Restoring such a dump is equally straightforward:
 
-``` bash
-sudo -u postgres pg_restore \
-  --clean \
-  --dbname=zabbix \
-  zabbix.dump
-```
+!!! example
+
+    ``` bash
+    sudo -u postgres pg_restore \
+      --clean \
+      --dbname=zabbix \
+      zabbix.dump
+    ```
 
 While convenient, dumps have important limitations in a Zabbix context. On systems 
 with large history or trend tables, dumps can take a long time to complete and may 

@@ -368,4 +368,20 @@ that additional layer of security on internal networks.
 
 ## Questions
 
+- What are the main differences between PSK and certificate-based encryption in
+  Zabbix, and when would you choose one over the other?
+
+- Why is it recommended to use a unique PSK identity and secret for each Zabbix
+  agent, and what are the security implications of sharing the same PSK across
+  multiple hosts?
+
+- Why is certificate-based encryption not supported during active agent
+  autoregistration, and what security considerations should you keep in
+  mind when using PSK-based autoregistration?
+
 ## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/encryption](https://www.zabbix.com/documentation/current/en/manual/encryption)
+- [https://www.zabbix.com/documentation/current/en/manual/encryption/using_pre_shared_keys](https://www.zabbix.com/documentation/current/en/manual/encryption/using_pre_shared_keys)
+- [https://www.zabbix.com/documentation/current/en/manual/encryption/using_certificates](https://www.zabbix.com/documentation/current/en/manual/encryption/using_certificates)
+- [https://docs.openssl.org/master/](https://docs.openssl.org/master/)

@@ -465,14 +465,16 @@ They emerge when one or more processes cannot keep up with the monitoring load.
 Triggers can automatically warn about performance degradation before it becomes
 critical. Example:
 
-```text
-Problem:   avg(/Zabbix server/zabbix[process,poller,avg,busy],10m) > {$ZABBIX.SERVER.UTIL.MAX:"poller"}
-Recovery:  avg(/Zabbix server/zabbix[process,poller,avg,busy],10m) < {$ZABBIX.SERVER.UTIL.MIN:"poller"}
+!!! example
 
-Where:
-  {$ZABBIX.SERVER.UTIL.MAX} = 75
-  {$ZABBIX.SERVER.UTIL.MIN} = 65
-```
+    ```text
+    Problem:   avg(/Zabbix server/zabbix[process,poller,avg,busy],10m) > {$ZABBIX.SERVER.UTIL.MAX:"poller"}
+    Recovery:  avg(/Zabbix server/zabbix[process,poller,avg,busy],10m) < {$ZABBIX.SERVER.UTIL.MIN:"poller"}
+    
+    Where:
+      {$ZABBIX.SERVER.UTIL.MAX} = 75
+      {$ZABBIX.SERVER.UTIL.MIN} = 65
+    ```
 
 Similar triggers can be created for queues, caches, preprocessing workers, or proxy
 synchronization delays. The ultimate goal is to ensure the monitoring system never

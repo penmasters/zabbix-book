@@ -322,41 +322,44 @@ of the Month" maintenance window, which runs at midnight for 2 hours, and applie
 to host group ID `4`.
 
 ???+ note
+
     You must replace `<ZABBIX_SERVER_IP_OR_DNS>` with your server's address and
     `"YOUR API TOKEN"` with an active token from a successful `user.login` API
     call. The **Host Group ID** (e.g., `"4"`) must be known beforehand. This id
     can be found in the url when going to the host group` in the Zabbix menu.
 
-```bash
-curl -i -X POST \
-  -H 'Content-Type: application/json-rpc' \
-  -H 'Authorization: Bearer <YOUR API TOKEN>' \
-  -d '{
-    "jsonrpc": "2.0",
-    "method": "maintenance.create",
-    "params": {
-      "name": "Monthly DB Patching via API",
-      "active_since": 1748822400,
-      "active_till": 1780444800,
-      "maintenance_type": 0,
-      "groups": [
-        { "groupid": "4" }
-      ],
-      "timeperiods": [
-        {
-          "timeperiod_type": 4,
-          "start_time": 0,
-          "period": 7200,
-          "dayofweek": 64,
-          "every": 5,
-          "month": 4095
-        }
-      ]
-    },
-    "id": 1
-  }' \
-  http://<ZABBIX_SERVER_IP_OR_DNS>/api_jsonrpc.php
-```
+!!! example "Example"
+
+    ```bash
+    curl -i -X POST \
+      -H 'Content-Type: application/json-rpc' \
+      -H 'Authorization: Bearer <YOUR API TOKEN>' \
+      -d '{
+        "jsonrpc": "2.0",
+        "method": "maintenance.create",
+        "params": {
+          "name": "Monthly DB Patching via API",
+          "active_since": 1748822400,
+          "active_till": 1780444800,
+          "maintenance_type": 0,
+          "groups": [
+            { "groupid": "4" }
+          ],
+          "timeperiods": [
+            {
+              "timeperiod_type": 4,
+              "start_time": 0,
+              "period": 7200,
+              "dayofweek": 64,
+              "every": 5,
+              "month": 4095
+            }
+          ]
+        },
+        "id": 1
+      }' \
+      http://<ZABBIX_SERVER_IP_OR_DNS>/api_jsonrpc.php
+    ```
 
 ---
 
@@ -364,14 +367,16 @@ curl -i -X POST \
 
 Let's go over what we just did here to have a better understanding.
 
-```json
-"timeperiod_type": 4,
-"start_time": 0,
-"period": 7200,
-"dayofweek": 64,
-"every": 5,
-"month": 4095
-```
+!!! example "Json"
+
+    ```json
+    "timeperiod_type": 4,
+    "start_time": 0,
+    "period": 7200,
+    "dayofweek": 64,
+    "every": 5,
+    "month": 4095
+    ```
 
 ---
 
