@@ -26,24 +26,6 @@ upgrading agents or auto-registering new and existing hosts. Examples of the
 configuration files and PowerShell scripts are provided at the end of this
 chapter.
 
-## Summary
-
-Configuring the agent correctly from the start saves a great deal of time when
-upgrading the agent fleet wide, assuming you use the Microsoft Installer (MSI)
-package. The recommendations below are covered in the order listed.
-
-1. Take control of your configuration and treat it as a template.
-2. Keep the `Hostname=` field fully qualified and lowercase if you can, for
-   example `hostname.domain.org`.
-3. Use `Include=C:\\some\\path\\*.conf` to move customizations out of the
-   default configuration file.
-4. Use PowerShell scripting to set `Hostname=` automatically.
-5. Use `ForceActiveChecksOnStart` and `RefreshActiveChecks` when using active
-   templates (`ServerActive`).
-6. Define metadata strings and consider them for autoregistration.
-7. Prioritize active templates over passive ones where possible.
-8. Use the MSI installer package for deployment.
-
 ## Taking Control of Your Configuration File
 
 Treat the `zabbix_agent2.conf` file with care. Removing default lines can cause
@@ -122,23 +104,27 @@ uninstall of the agent and are not lost during an upgrade.
 
 Directory structure:
 
-```
-C:\ProgramData\Zabbix-ext
-├── conf.d
-│   ├── active_agent.conf
-│   ├── custom_config.conf
-│   └── metadata.conf
-└── scripts
-    └── Invoke-ActiveDirectoryChecks.ps1
-```
+!!! example ""
+
+    ```
+    C:\ProgramData\Zabbix-ext
+    ├── conf.d
+    │   ├── active_agent.conf
+    │   ├── custom_config.conf
+    │   └── metadata.conf
+    └── scripts
+        └── Invoke-ActiveDirectoryChecks.ps1
+    ```
 
 The following one-liner in
 `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` includes all three
 configuration files in the `C:\ProgramData\Zabbix-ext\conf.d` directory:
 
-```ini
-Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
-```
+!!! info ""
+
+    ```ini
+    Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
+    ```
 
 ## Using PowerShell Scripting to Your Advantage
 
@@ -158,13 +144,15 @@ template. PowerShell can then replace the `Hostname=` value with the current
 FQDN during installation, if your deployment method does not allow variables in
 the MSI switches.
 
-```PowerShell
-$file="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf"
-$FQDNHostName = [System.Net.Dns]::GetHostEntry($env:COMPUTERNAME).HostName
-$FQDNHostNameToLower = $FQDNHostName.ToLower()
-$FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase if needed
-(Get-Content $file) -replace "Hostname=REPLACEME","Hostname=$FQDNHostNameToLower" | Set-Content $file
-```
+!!! info ""
+
+    ```PowerShell
+    $file="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf"
+    $FQDNHostName = [System.Net.Dns]::GetHostEntry($env:COMPUTERNAME).HostName
+    $FQDNHostNameToLower = $FQDNHostName.ToLower()
+    $FQDNHostNameToLower += ".domain.org" # Your domain name but also lowercase if needed
+    (Get-Content $file) -replace "Hostname=REPLACEME","Hostname=$FQDNHostNameToLower" | Set-Content $file
+    ```
 
 ### Why Consider PowerShell?
 
@@ -184,12 +172,20 @@ For example, a specific deployment tool does not allow the following and
 accepts only inline string literals. It does not allow a variable to be passed
 to the MSI method switches:
 
-`/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"`
+!!! info ""
+
+    ```text
+    /HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"
+    ```
 
 In other cases, the tool lacks basic string manipulation, such as appending a
 domain to the variable inline in an MSI switch:
 
-`/HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"+'.domain.com'`
+!!! info ""
+
+    ```text
+    /HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"+'.domain.com'
+    ```
 
 In these cases, the organization needs an additional PowerShell step that edits
 `zabbix_agent2.conf` in place after the initial MSI installation.
@@ -241,21 +237,27 @@ You still need to configure the autoregistration actions on the Zabbix server.
 
 Example 1:
 
-```ini
-HostMetadata=WindowsServer
-```
+!!! info ""
+
+    ```ini
+    HostMetadata=WindowsServer
+    ```
 
 Example 2:
 
-```ini
-HostMetadata=WindowsServer_DomainController
-```
+!!! info ""
+
+    ```ini
+    HostMetadata=WindowsServer_DomainController
+    ```
 
 Example 3:
 
-```ini
-HostMetadata=WindowsServer_MSSQLServer
-```
+!!! info ""
+
+    ```ini
+    HostMetadata=WindowsServer_MSSQLServer
+    ```
 
 ## Active vs Passive Monitoring Templates
 
@@ -304,11 +306,11 @@ agent.
 
 ![Normal Operations](diagrams/ch16-msaosql_normal.png)
 
-_Normal operations_
+_16.1 Normal operations_
 
 ![Failover of VIP To Healthy Node](diagrams/ch16-msaosql_failover.png)
 
-_Microsoft Always On listener failover_
+_16.2 Microsoft Always On listener failover_
 
 ## Using the MSI Installer
 
@@ -330,15 +332,19 @@ installation.
 
 Command Prompt:
 
-```shell
-msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent
-```
+!!! info ""
+
+    ```shell
+    msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent
+    ```
 
 PowerShell:
 
-```PowerShell
-Start-Process msiexec.exe -ArgumentList '/i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent' -Wait
-```
+!!! info ""
+
+    ```PowerShell
+    Start-Process msiexec.exe -ArgumentList '/i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent' -Wait
+    ```
 
 ### Example Upgrade Command
 
@@ -347,15 +353,19 @@ of this chapter.
 
 Command Prompt:
 
-```shell
-msiexec.exe /i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent
-```
+!!! info ""
+
+    ```shell
+    msiexec.exe /i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent
+    ```
 
 PowerShell:
 
-```PowerShell
-Start-Process msiexec.exe -ArgumentList '/i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent' -Wait
-```
+!!! info ""
+
+    ```PowerShell
+    Start-Process msiexec.exe -ArgumentList '/i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent' -Wait
+    ```
 
 ### Order of the MSI and Script Installation
 
@@ -380,6 +390,8 @@ follow this order:
 5. Have a PowerShell script configure Windows via `sc.exe` to restart the
    Zabbix Agent 2 service if it fails:
 
+!!! info ""
+
     ```powershell
     # Set the service to restart itself if it fails
     & "$env:SystemRoot\System32\sc.exe" failure "Zabbix Agent 2" actions= "restart/60000/restart/60000/restart/60000" reset= 86400
@@ -395,168 +407,202 @@ You can use a PowerShell command to overwrite `Hostname=`, matching on
 
 ### C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
 
-```ini
-# C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf (snippet with author comments)
-# This is a snippet of the main configuration file with author comments.
-# Do not remove the default parameters or lines from this file. You may change
-# the Server and ServerActive values and add Include= at the bottom.
-# Do not customize this base file any further than those parameter values.
+!!! example ""
 
-# Log file configuration
-# Set by default by the agent at install/upgrade in the base file
-LogFile=C:\Program Files\Zabbix Agent 2\zabbix_agent2.log
-
-#...file continues...
-
-# Server, passive configuration (the Zabbix server/proxy polls this endpoint)
-# Set by the user via the MSI installer at install time
-Server=10.0.1.24,10.0.1.25
-
-#...file continues...
-
-# ServerActive, active configuration (the endpoint sends data to the Zabbix
-# server/proxy)
-# HA nodes of the same environment are separated by semicolons
-# Set by the user via the MSI installer at install time
-ServerActive=10.0.1.24;10.0.1.25
-
-#...file continues...
-
-# Preferably, fully qualify your hostname and make it lowercase.
-# For ServerActive configurations this field is REQUIRED and case-sensitive!
-# Set by the user via the MSI installer at install time
-Hostname=REPLACEMEBUTLOWERCASE.domain.com
-
-#...file continues...
-
-# Include configuration files for plugins. You can also use a literal path.
-# Include=C:\\Program Files\\Zabbix Agent 2\\zabbix_agent2.d\\
-# Set by default by the agent at install/upgrade in the base file
-Include=.\zabbix_agent2.d\plugins.d\*.conf
-
-#...file continues...
-
-# Include any extra configuration directories at the bottom of the file.
-# This one was added by the system administrator to place custom configuration
-# in the %PROGRAMDATA% directory, so that it is hidden from non-administrators.
-Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
-```
+    ```ini
+    # C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf (snippet with author comments)
+    # This is a snippet of the main configuration file with author comments.
+    # Do not remove the default parameters or lines from this file. You may change
+    # the Server and ServerActive values and add Include= at the bottom.
+    # Do not customize this base file any further than those parameter values.
+    
+    # Log file configuration
+    # Set by default by the agent at install/upgrade in the base file
+    LogFile=C:\Program Files\Zabbix Agent 2\zabbix_agent2.log
+    
+    #...file continues...
+    
+    # Server, passive configuration (the Zabbix server/proxy polls this endpoint)
+    # Set by the user via the MSI installer at install time
+    Server=10.0.1.24,10.0.1.25
+    
+    #...file continues...
+    
+    # ServerActive, active configuration (the endpoint sends data to the Zabbix
+    # server/proxy)
+    # HA nodes of the same environment are separated by semicolons
+    # Set by the user via the MSI installer at install time
+    ServerActive=10.0.1.24;10.0.1.25
+    
+    #...file continues...
+    
+    # Preferably, fully qualify your hostname and make it lowercase.
+    # For ServerActive configurations this field is REQUIRED and case-sensitive!
+    # Set by the user via the MSI installer at install time
+    Hostname=REPLACEMEBUTLOWERCASE.domain.com
+    
+    #...file continues...
+    
+    # Include configuration files for plugins. You can also use a literal path.
+    # Include=C:\\Program Files\\Zabbix Agent 2\\zabbix_agent2.d\\
+    # Set by default by the agent at install/upgrade in the base file
+    Include=.\zabbix_agent2.d\plugins.d\*.conf
+    
+    #...file continues...
+    
+    # Include any extra configuration directories at the bottom of the file.
+    # This one was added by the system administrator to place custom configuration
+    # in the %PROGRAMDATA% directory, so that it is hidden from non-administrators.
+    Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
+    ```
 
 ### The Zabbix-ext Directory, Configuration Files and Custom Scripts
 
 Directory structure of `Zabbix-ext` under `%PROGRAMDATA%`:
 
-```
-C:\ProgramData\Zabbix-ext
-├── conf.d
-│   ├── active_agent.conf
-│   ├── custom_checks.conf
-│   ├── metadata.conf
-│   ├── key.psk
-│   └── psk_options.conf
-└── scripts
-    └── Invoke-ActiveDirectoryChecks.ps1
-```
+!!! example ""
+
+    ```
+    C:\ProgramData\Zabbix-ext
+    ├── conf.d
+    │   ├── active_agent.conf
+    │   ├── custom_checks.conf
+    │   ├── metadata.conf
+    │   ├── key.psk
+    │   └── psk_options.conf
+    └── scripts
+        └── Invoke-ActiveDirectoryChecks.ps1
+    ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
 
-```ini
-# Place this file at C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
+!!! info ""
 
-# Forces the agent to fetch its configuration immediately on start
-ForceActiveChecksOnStart=1
-
-# How often the list of active checks is refreshed, in seconds
-RefreshActiveChecks=300
-```
+    ```ini
+    # Place this file at C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
+ 
+    # Forces the agent to fetch its configuration immediately on start
+    ForceActiveChecksOnStart=1
+ 
+    # How often the list of active checks is refreshed, in seconds
+    RefreshActiveChecks=300
+    ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\custom_checks.conf
 
-```ini
-# Put custom UserParameters here, or split them out per .conf file
-UserParameter=PowerShell.ps_dcdiag_checks,PowerShell -ExecutionPolicy Bypass -File "C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1"
-```
+!!! info ""
+
+    ```ini
+    # Put custom UserParameters here, or split them out per .conf file
+    UserParameter=PowerShell.ps_dcdiag_checks,PowerShell -ExecutionPolicy Bypass -File "C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1"
+    ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
 
-```ini
-# To be used with the deployment package. This file is intended to be changed
-# per server, or fleet-wide if all agents need the same change.
-# For example: WindowsServer_ActiveDirectoryServers ---> an autoregistration
-# action places the host in a host group.
-# Place this file at C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
-HostMetadata=WindowsServer
-```
+!!! info ""
+
+    ```ini
+    # To be used with the deployment package. This file is intended to be changed
+    # per server, or fleet-wide if all agents need the same change.
+    # For example: WindowsServer_ActiveDirectoryServers ---> an autoregistration
+    # action places the host in a host group.
+    # Place this file at C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
+    HostMetadata=WindowsServer
+    ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\key.psk
 
 This is not a real key and is not used anywhere. It only illustrates what the
 file contains.
 
-```txt
-c63e00000c9999999926fd58e24cdhotdogs7f54burgers627932efries87e79
-```
+!!! info ""
+
+    ```txt
+    c63e00000c9999999926fd58e24cdhotdogs7f54burgers627932efries87e79
+    ```
 
 #### C:\ProgramData\Zabbix-ext\conf.d\psk_options.conf
 
-```ini
-# PSK configuration
-# Generate a key with: openssl rand -hex 32, and store it in key.psk
-TLSConnect=psk
-TLSAccept=psk
-TLSPSKFile=C:\\ProgramData\\Zabbix-ext\\conf.d\\key.psk
-TLSPSKIdentity=PSK-001
-```
+!!! example ""
+
+    ```ini
+    # PSK configuration
+    # Generate a key with: openssl rand -hex 32, and store it in key.psk
+    TLSConnect=psk
+    TLSAccept=psk
+    TLSPSKFile=C:\\ProgramData\\Zabbix-ext\\conf.d\\key.psk
+    TLSPSKIdentity=PSK-001
+    ```
 
 #### C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1
 
-```PowerShell
-# This script is meant to run on a Windows domain controller to perform some
-# basic health checks. It returns a JSON payload that can be used in a template.
-# Add more tests here if you need them.
-$tests = "services","replications","advertising","fsmocheck","ridmanager","machineaccount","connectivity","FRSSysvol"
+!!! example ""
 
-# Runs dcdiag /test:INPUTSTRINGHERE and looks for "failed".
-# Returns a PSCustomObject as @{INPUTSTRINGHERE: INTEGER}
-function Invoke-DcDiagTest {
-    param (
-        [Parameter(Mandatory=$true)][string]$TestName
-    )
-
-    $ReturnPSCustomObject = [PSCustomObject]@{}
-
-    $result = dcdiag /test:$TestName | Select-String "failed"
-    If ($result) {
-        $ReturnPSCustomObject | Add-Member -MemberType NoteProperty -Name $TestName -Value 0 # 0 means bad
-    } else {
-        $ReturnPSCustomObject | Add-Member -MemberType NoteProperty -Name $TestName -Value 1 # 1 means good
+    ```PowerShell
+    # This script is meant to run on a Windows domain controller to perform some
+    # basic health checks. It returns a JSON payload that can be used in a template.
+    # Add more tests here if you need them.
+    $tests = "services","replications","advertising","fsmocheck","ridmanager","machineaccount","connectivity","FRSSysvol"
+    
+    # Runs dcdiag /test:INPUTSTRINGHERE and looks for "failed".
+    # Returns a PSCustomObject as @{INPUTSTRINGHERE: INTEGER}
+    function Invoke-DcDiagTest {
+        param (
+            [Parameter(Mandatory=$true)][string]$TestName
+        )
+    
+        $ReturnPSCustomObject = [PSCustomObject]@{}
+    
+        $result = dcdiag /test:$TestName | Select-String "failed"
+        If ($result) {
+            $ReturnPSCustomObject | Add-Member -MemberType NoteProperty -Name $TestName -Value 0 # 0 means bad
+        } else {
+            $ReturnPSCustomObject | Add-Member -MemberType NoteProperty -Name $TestName -Value 1 # 1 means good
+        }
+    
+        return $ReturnPSCustomObject
     }
-
-    return $ReturnPSCustomObject
-}
-
-$GlobalAllTestsOK = 1 # Preset to true unless a test fails
-$OutputOfTests = [PSCustomObject]@{} # Return object that we convert to JSON
-
-ForEach ($TestToRun in $tests) {
-    $SingularTest = Invoke-DcDiagTest -TestName $TestToRun
-    $OutputOfTests | Add-Member -MemberType NoteProperty -Name $TestToRun -Value $SingularTest.$TestToRun
-    If ($SingularTest.$TestToRun -eq 0) {
-        $GlobalAllTestsOK = 0 # If any test fails, set the flag to 0 (false)
+    
+    $GlobalAllTestsOK = 1 # Preset to true unless a test fails
+    $OutputOfTests = [PSCustomObject]@{} # Return object that we convert to JSON
+    
+    ForEach ($TestToRun in $tests) {
+        $SingularTest = Invoke-DcDiagTest -TestName $TestToRun
+        $OutputOfTests | Add-Member -MemberType NoteProperty -Name $TestToRun -Value $SingularTest.$TestToRun
+        If ($SingularTest.$TestToRun -eq 0) {
+            $GlobalAllTestsOK = 0 # If any test fails, set the flag to 0 (false)
+        }
     }
-}
+    
+    $OutputOfTests | Add-Member -MemberType NoteProperty -Name "AllTestsPassed" -Value $GlobalAllTestsOK
+    
+    # Test overrides for debugging
+    # $OutputOfTests.services = 0
+    # $OutputOfTests.AllTestsPassed = 0
+    
+    # Convert to JSON so the Zabbix template can read it
+    $JSONOutput = $OutputOfTests | ConvertTo-JSON
+    
+    return $JSONOutput
+    ```
 
-$OutputOfTests | Add-Member -MemberType NoteProperty -Name "AllTestsPassed" -Value $GlobalAllTestsOK
+## Summary
 
-# Test overrides for debugging
-# $OutputOfTests.services = 0
-# $OutputOfTests.AllTestsPassed = 0
+Configuring the agent correctly from the start saves a great deal of time when
+upgrading the agent fleet wide, assuming you use the Microsoft Installer (MSI)
+package. The recommendations below are covered in the order listed.
 
-# Convert to JSON so the Zabbix template can read it
-$JSONOutput = $OutputOfTests | ConvertTo-JSON
-
-return $JSONOutput
-```
+1. Take control of your configuration and treat it as a template.
+2. Keep the `Hostname=` field fully qualified and lowercase if you can, for
+   example `hostname.domain.org`.
+3. Use `Include=C:\\some\\path\\*.conf` to move customizations out of the
+   default configuration file.
+4. Use PowerShell scripting to set `Hostname=` automatically.
+5. Use `ForceActiveChecksOnStart` and `RefreshActiveChecks` when using active
+   templates (`ServerActive`).
+6. Define metadata strings and consider them for autoregistration.
+7. Prioritize active templates over passive ones where possible.
+8. Use the MSI installer package for deployment.
 
 ## Questions
 
