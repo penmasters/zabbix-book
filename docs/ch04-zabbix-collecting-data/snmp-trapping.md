@@ -61,7 +61,7 @@ and suitable for continuous metrics that change over time.
 - Delays between polls mean slower event detection.
 - If a device goes down, Zabbix won't notice until the next polling cycle. (This
   can be detected by using the `nodata` function or using "*SNMP agent availability*"
-  item but not for individual items unless every items has the `nodata` function and
+  item but not for individual items unless every item has the `nodata` function and
   this is also a bad idea.)
 
 ---
@@ -197,7 +197,7 @@ periodically.
 - **Trap Handler / Log File:**
 
     The handler script (often zabbix_trap_receiver.pl or SNMPTT) processes the trap
-    and writes it into a log file, usually "/var/log/snmptrap/snmptrap.log."
+    and writes it into a log file, usually `/var/log/snmptrap/snmptrap.log`.
     This file contains the raw trap data including timestamps, source IPs, and OIDs.
 
 - **Zabbix Server or Proxy:**
@@ -248,7 +248,7 @@ the device at a set interval to retrieve values.
 
 - **Zabbix Frontend:**
 
-    Displays the collected values in graphs, dashboards, and triggers thresholds if
+    Displays the collected values in graphs, dashboards, and trigger thresholds if
     defined.
 
 ???+ tip
@@ -273,7 +273,7 @@ the device at a set interval to retrieve values.
 | **Best for**       | Fault and alert notifications    | Performance and trend monitoring |
 
 
-!!! Tip
+!!! tip
 
     In production Zabbix environments, many administrators combine both methods:
     - Use SNMP polling for regular metrics (e.g., interface traffic, system uptime).
@@ -368,7 +368,7 @@ the Zabbix team and is commonly used to integrate SNMP traps with Zabbix.
     for now let's use the official Zabbix Perl script.
 
 Download the latest `zabbix_trap_receiver.pl` script from the official
-Zabbix GIT repository: [https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/misc/snmptrap](https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/misc/snmptrap))
+Zabbix GIT repository: [https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/misc/snmptrap](https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/misc/snmptrap)
 
 !!! info "Download zabbix_trap_receiver.pl"
 
@@ -421,7 +421,7 @@ exist and have the appropriate permissions.
     sudo mkdir -p /var/log/zabbix_traps_archive
     sudo chmod 755 /var/log/zabbix_traps_archive
     ```
-    On ubuntu only :
+    On Ubuntu only:
 
     ```bash
     chown Debian-snmp: /var/log/zabbix_traps_archive/
@@ -444,7 +444,7 @@ the script for each incoming trap.
     sudo vi /etc/snmp/snmptrapd.conf
     ```
 
-    Add following lines:
+    Add the following lines:
 
     ```text
     authCommunity execute public
@@ -461,8 +461,8 @@ the script for each incoming trap.
 
 ### Alternative: Setting up SNMP traps with bash parser
 
-Using `perl` parser script might feel the only way to do trap parsing but that
-is not true. A `bash` script for example will use less dependencies and can be shortcut
+Using a `perl` parser script might feel like the only way to do trap parsing but that
+is not true. A `bash` script for example will use fewer dependencies and can be a shortcut
 to get a working setup faster.
 
 ???+ example "Bash script to accept the trap"
@@ -684,7 +684,7 @@ terminal.
 When you now verify the terminal with the log file, you should see the trap 
 message with the source IP and timestamp displayed.
 
-While using "zabbix_trap_receiver.pl" as a parser, the perl dependencies will be
+While using "zabbix_trap_receiver.pl" as a parser, the Perl dependencies will be
 validated only at the runtime when receiving the actual message. It can be handy
 to see if the status of service is still healthy. Running the "status" for the
 systemd service automatically prints the most recent log lines of snmptrapd.
@@ -703,9 +703,9 @@ For troubleshooting efficiency:
 
 ---
 
-### Testing SNMP Trap reception without UPD channel
+### Testing SNMP Trap reception without UDP channel
 
-This method helps to simulate a SNMP trap message even if the device currently
+This method helps to simulate an SNMP trap message even if the device currently
 cannot send one.
 
 !!! info "Simulate SNMP trap message"
@@ -717,7 +717,7 @@ cannot send one.
     line three" | sudo tee --append /var/log/zabbix_traps_archive/zabbix_traps.log
     ```
 
-The most important part is having keyword "ZBXTRAP" (all caps) followed by the
+The most important part is having the keyword "ZBXTRAP" (all caps) followed by the
 IP address. The IP must belong to an **existing SNMP interface** behind 
 Zabbix proxy/server.
 
@@ -725,7 +725,7 @@ Zabbix proxy/server.
 
 ### Validate if proxy/server runs a correct mapping
 
-If the host is not yet configured in frontend, that is a perfect opportunity to validate
+If the host is not yet configured in the frontend, that is a perfect opportunity to validate
 if the Zabbix proxy/server service has recognised the mapping with a `zabbix_traps.log` file.
 
 Every time a trap message is received for an unknown host in Zabbix it will
@@ -837,9 +837,9 @@ specific monitored device.
 In the Zabbix web interface, navigate to:
 `Data collection` | `Hosts`, and click **Create host**.
 
-- **Hostname :** `Network Switch 01`
-- **Host groups :** SNMP Devices
-- **Interfaces :** SNMP with IP `127.0.0.1`
+- **Hostname:** `Network Switch 01`
+- **Host groups:** SNMP Devices
+- **Interfaces:** SNMP with IP `127.0.0.1`
 
 ![ch04.35-snmp-host.png](ch04.37-snmp-host.png)
 
@@ -860,7 +860,7 @@ when multiple community strings are used across the network.
 With the host and trap receiver configured, we can now simulate a link down event
 from our device by sending an SNMP trap manually from the command line:
 
-On the command line we can now sent a trap to mimic a Link down on our device.
+On the command line we can now send a trap to mimic a Link down on our device.
 
 ???+ example "Send a test SNMP trap"
 
@@ -925,7 +925,7 @@ Run the following command on the Zabbix server:
     IF-MIB::ifDescr s "GigabitEthernet0/1"
     ```
 
-This will give use the following output:
+This will give us the following output:
 
 ???+ example "Example of a more detailed SNMP trap in latest data"
 
@@ -990,7 +990,7 @@ fallback item or by just creating a new item and selecting type `Dependent item`
 - **Master item:** (Select your fallback item as master item)
 
 Click on the **Preprocessing** tab and select **Regular expression**.
-use `IF-MIB::ifAdminStatus[\s\S]*?INTEGER:\s+(\d+)` in the Parameters field and
+Use `IF-MIB::ifAdminStatus[\s\S]*?INTEGER:\s+(\d+)` in the Parameters field and
 `\1` in the Output box.
 
 Select the box **Custom on fail** and use the option **Discard value**.
@@ -1007,7 +1007,7 @@ Next we create our second item also dependent on our Fallback item.
 - **Type of information:** Numeric(unsigned)
 - **Master item:** (Select your fallback item as master item)
 
-Again go to the **Preprocessing** tab and enter following information.
+Again go to the **Preprocessing** tab and enter the following information.
 
 Select **Regular expression** and as Parameters enter `IF-MIB::ifOperStatus[\s\S]*?INTEGER:\s+(\d+)`
 and `\1` in the Output box.
@@ -1033,7 +1033,7 @@ _4.40 ch04.38-snmp-trigger.png_
 Make sure to also select the box **Allow manual close**. This can help to close
 the problem in case we don't receive a TRAP.
 
-You should now be able to sent a trap to open and close a problem in Zabbix
+You should now be able to send a trap to open and close a problem in Zabbix
 based on the status of the ifOperStatus and the ifAdminStatus 
 
 ???+ example "Send test SNMP traps to trigger the problem"
@@ -1049,7 +1049,7 @@ As a bonus you can add on the host a value map and link the items with it.
 
 _4.41 ch04.39-snmp-valuemap.png_
 
-If you don't like 2 different items and want to have a more fancy solution you
+If you don't like 2 different items and want to have a fancier solution you
 could create a dependent item like we did above and use JS instead of perl regex.
 
 ???+ example "Using JS to extract multiple values from the trap message"
@@ -1082,7 +1082,7 @@ could create a dependent item like we did above and use JS instead of perl regex
     interface=Gi0/1 adminStatus=down operStatus=down
     ```
 
-Another solution, way more easy, could be to create a specific item instead of
+Another solution, much easier, could be to create a specific item instead of
 falling back on the fallback item that looks exactly for a link that goes *Down*
 or *Up*. This can be done by creating a specific item like this:
 
@@ -1092,7 +1092,7 @@ We could then create a trigger like:
 
 - **Problem expression:** `str(/Network Switch 01/snmptrap["IF-MIB::link(Down|Up)"],"IF-MIB::linkDown")=1`
 
-and a recovery trigger like :
+and a recovery trigger like:
 
 - **Recovery expression:** `str(/Network Switch 01/snmptrap["IF-MIB::link(Down|Up)"],"IF-MIB::linkUp")=1`
 

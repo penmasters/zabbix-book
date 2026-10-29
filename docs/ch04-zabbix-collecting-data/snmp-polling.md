@@ -8,11 +8,11 @@ tags: [advanced]
 # SNMP Polling
 
 In the previous chapter, we explored monitoring strategies that relied on both
-active and passive Zabbix agents. This chapter introduces an alternative approach
+active and passive Zabbix agents. This chapter introduces an alternative approach:
 monitoring via SNMP (Simple Network Management Protocol) which does not require
 the installation of a Zabbix agent on the monitored device. This method is
 especially useful in environments where agent based monitoring is impractical,
-restricted or simply not allowed.
+restricted, or simply not allowed.
 
 Simple Network Management Protocol (SNMP) is a widely adopted protocol designed
 for monitoring and managing devices on IP networks. Despite the word "management"
@@ -23,7 +23,7 @@ of modern network visibility solutions.
 Originally developed in the late 1980s, SNMP has undergone several revisions.
 Early versions, such as SNMPv1 and SNMPv2c, were hampered by significant security
 limitations. As a result, while SNMP includes functionality for remote device
-configuration, its use has remained largely to status monitoring rather than
+configuration, its use has remained largely limited to status monitoring rather than
 active management of devices.
 
 SNMP is especially valuable for monitoring resource constrained or embedded devices
@@ -43,7 +43,7 @@ where installing or maintaining a Zabbix agent is either impractical or not perm
 This could be due to administrative policies, software compatibility, or security
 concerns, or simply a desire to reduce system footprint.
 
-Recognizing the ubiquity of SNMP, Zabbix provides native SNMP support. This
+Recognising the ubiquity of SNMP, Zabbix provides native SNMP support. This
 capability is powered by the open-source Net-SNMP suite, available at
 [http://net-snmp.sourceforge.net](http://net-snmp.sourceforge.net). The integration
 allows Zabbix to retrieve metrics from SNMP-enabled devices using industry standard
@@ -59,7 +59,7 @@ In this chapter, we will cover the following:
 
 This chapter serves as the foundation for SNMP-based monitoring in Zabbix. While
 we begin with the essentials such as polling, MIB usage, and SNMP item
-configuration this is just the start.
+configuration, this is just the start.
 
 Later in this book, we will build upon this knowledge by exploring Low-Level
 Discovery (LLD) mechanisms using SNMP. LLD allows Zabbix to automatically detect
@@ -73,11 +73,11 @@ network interfaces, power supplies, ...
 Imagine you have a house full of smart devices: a smart thermostat, a smart lamp,
 and a smart doorbell. All these devices keep track of various types of information.
 The thermostat has the indoor temperature and battery status, the lamp has its
-brightness and color, and the doorbell has a log of who has been at the door.
+brightness and colour, and the doorbell has a log of who has been at the door.
 
-A MIB (Management Information Base) is the "table of contents" or "catalog" of
+A MIB (Management Information Base) is the "table of contents" or "catalogue" of
 all this information on a network device. Every SNMP enabled device has its own
-MIB, which is structured and organized. Without a MIB, your Zabbix server wouldn't
+MIB, which is structured and organised. Without a MIB, your Zabbix server wouldn't
 know what data is available to monitor. The MIB specifies exactly which metrics
 the device can share.
 
@@ -85,7 +85,7 @@ the device can share.
 
 ## What is an OID?
 
-To retrieve a specific piece of information from that catalog, you need an address.
+To retrieve a specific piece of information from that catalogue, you need an address.
 An OID (Object Identifier) is that address.
 
 You can think of an OID as a GPS coordinate or a book's unique ISBN number. It's
@@ -99,7 +99,7 @@ the value of this specific OID," and the device returns the requested value.
 
 In short:
 
-- The MIB is the library catalog that describes the structure of all available
+- The MIB is the library catalogue that describes the structure of all available
   data.
 - The OID is the specific address that leads you to the book (the data) you're
   looking for.
@@ -114,11 +114,11 @@ SNMP based monitoring.
 ### What Is the OID Tree Structure?
 
 The OID (Object Identifier) structure is a hierarchical tree, much like a family
-tree or a computer's folder structure. This tree is standardized globally. Each
+tree or a computer's folder structure. This tree is standardised globally. Each
 point on the tree, from the root to the "leaves," is represented by a number.
 
 The tree starts at the root, with a few main branches managed by international
-organizations. The most common branch for network management and SNMP often begins
+organisations. The most common branch for network management and SNMP often begins
 with `1.3.6.1`. Let's break down this OID to see how the structure works:
 
 - **1:** This branch is managed by **ISO** (International Organization for Standardization).
@@ -144,7 +144,7 @@ into human-readable names.
 **Example:**
 
 - The OID for a device's system description is: `1.3.6.1.2.1.1.1.0`.
-- An MIB file translates this to: `sysDescr.0`.
+- A MIB file translates this to: `sysDescr.0`.
 
 You can use the OID tree to:
 
@@ -176,7 +176,7 @@ two approaches:
   server or a dedicated virtual machine.
 
 In this chapter, we will walk through the installation and configuration of a basic
-SNMP agent on a RedHat, Suse, or Ubuntu based Zabbix server. However, the same setup can
+SNMP agent on a Red Hat, SUSE, or Ubuntu-based Zabbix server. However, the same setup can
 be applied to any compatible Linux system.
 
 Note: If you're using a device already present on your network, ensure:
@@ -210,7 +210,7 @@ exactly do.
 ### Testing an SNMP Device: Where to Start?
 
 When you're looking to test an SNMP device, it's crucial to understand the available
-SNMP versions and which ones you should prioritize. Currently, there are three
+SNMP versions and which ones you should prioritise. Currently, there are three
 commonly used versions: **SNMPv1**, **SNMPv2c**, and **SNMPv3**.
 
 - **SNMPv1**: This is the oldest version and should generally be avoided unless
@@ -257,7 +257,7 @@ your network.
 1. **SNMP Version**: Which SNMP version (v1, v2c, or v3) is configured and enabled?
 2. **Community String (for v1/v2c)**: If your device uses SNMPv1 or SNMPv2c, what
    is the configured community string (similar to a password) for read-only and
-   potentially read- write access? It's rarely 'public' in a properly configured
+   potentially read-write access? It's rarely 'public' in a properly configured
    environment.
 3. **Username, Authentication, and Privacy (for v3)**: If your device uses SNMPv3,
    you'll need more specific information:
@@ -426,7 +426,7 @@ is reachable and responding with the requested information using SNMPv2c.
 
 ### Installing SNMP Agent on a Linux Host
 
-Now that we know a bit more about SNMP it's time to start playing next we will
+Now that we know a bit more about SNMP it's time to start playing. Next we will
 install the SNMP agent and utilities on our Zabbix server to do some testing.
 Or another compatible system if you prefer.
 
@@ -460,7 +460,7 @@ Follow the steps below to get the SNMP agent installed.
     sudo vi /etc/snmp/snmpd.conf
     ```
 
-Paste the following example configuration, which is optimized for SNMP-based
+Paste the following example configuration, which is optimised for SNMP-based
 discovery and testing in Zabbix:
 
 !!! example "Example SNMP configuration for Zabbix testing"
@@ -658,7 +658,7 @@ From your Zabbix server or any SNMP client system with net-snmp-utils installed:
 
 !!! info "Configure SNMPv3 users"
 
-    Look for the following lines in  '/etc/snmp/snmpd.conf` and adapt them as you like.
+    Look for the following lines in `/etc/snmp/snmpd.conf` and adapt them as you like.
     ```bash
     createUser authonlyuser SHA "AuthOnlyP@ss3"
     rouser authonlyuser authNoPriv
@@ -675,7 +675,7 @@ From your Zabbix server or any SNMP client system with net-snmp-utils installed:
     systemctl restart snmpd
     ```
 
-You should now be able to test your items with SNMPv3 Let me give you an example
+You should now be able to test your items with SNMPv3. Let me give you an example
 command for `noAuthNoPriv`, `authNoPriv`, and the most secure `authPriv`. This should
 work out of the box with what is already configured in our `snmpd.conf` file.
 
@@ -707,7 +707,7 @@ work out of the box with what is already configured in our `snmpd.conf` file.
 ---
 ### Deploying bare minimum MIB files
 
-Gathering proper MIB files might sounds a tedious and time consuming task.
+Gathering proper MIB files might sound like a tedious and time-consuming task.
 
 Installing too many MIBs will cause degradation for the
 SNMP trap translation process and slow down the SNMP polling process.
@@ -718,14 +718,14 @@ provides a collection of MIB files that can be used for SNMP monitoring. However
 these MIBs may not cover all the devices in your network, especially if you have
 equipment from multiple vendors.
 
-Here is an universal method (treat it as one of many possible options) on how 
-to obtain bare minimum MIBs to work with most of devices. This is useful for both
+Here is a universal method (treat it as one of many possible options) on how 
+to obtain bare minimum MIBs to work with most devices. This is useful for both
 SNMP polling and trapping.
 
 The project [https://github.com/netdisco/netdisco-mibs](https://github.com/netdisco/netdisco-mibs)
-exist for 20 years and is a collection of MIBs for a lot of vendors. Dare I say: all vendors?
+has existed for 20 years and is a collection of MIBs for a lot of vendors. Dare I say: all vendors?
 We will download the collection and install the MIB files in the `/usr/local/share/snmp/mibs` directory.
-After that we will configure SNMP to use only the MIBS we require. 
+After that we will configure SNMP to use only the MIBs we require. 
 
 !!! warning "Performance impact"
 
@@ -740,7 +740,7 @@ After that we will configure SNMP to use only the MIBS we require.
     Warning: Module P-BRIDGE-MIB was in /usr/local/share/snmp/mibs//P-BRIDGE-MIB.txt now is /usr/local/share/snmp/mibs//P-BRIDGE.txt
     ```
     This is because several MIB files may have the same module name defined inside
-    them. This may result in incorrect translation of OIDs and unexpected behavior.
+    them. This may result in incorrect translation of OIDs and unexpected behaviour.
     To avoid this, it's important to only load the MIB files that are necessary 
     for your specific devices/vendors and use cases.
 
@@ -755,7 +755,7 @@ After that we will configure SNMP to use only the MIBS we require.
     ```
 
     Next, move the MIB files from the Netdisco collection to the SNMP MIB directory.
-    The Netdisco collection organizes MIBs in subdirectories based on vendor names,
+    The Netdisco collection organises MIBs in subdirectories based on vendor names,
     and we will move only those directories that start with a lowercase letter or
     digit, which typically represent vendor-specific MIBs.
 
@@ -772,7 +772,7 @@ After that we will configure SNMP to use only the MIBS we require.
 
 To enable bare minimum MIBs we need to enable two catalogs "rfc" and "net-snmp".
 
-Overwrite/replace `/etc/snmp/snmp.conf` by with:
+Overwrite/replace `/etc/snmp/snmp.conf` with:
 
 !!! info "Configure SNMP to use RFC and Net-SNMP MIBs"
 
@@ -868,7 +868,7 @@ Next, restart the snmptrapd service, send test, and check the log:
     time required to design a template, since the dot (`.`) in numerical OIDs is a
     special character in regular expressions. This means that the dot must be
     escaped (e.g., `\.`) in any regex preprocessing steps to ensure proper parsing.
-    Failing to escape the dot can lead to unexpected behavior, even if it appears
+    Failing to escape the dot can lead to unexpected behaviour, even if it appears
     to work correctly 99.9% of the time. Without escaping, the dot acts as a 
     wildcard, matching *any* character, which violates the principle of a precise
     and bulletproof solution. Proper escaping ensures that the OID is interpreted
@@ -882,9 +882,9 @@ Using numerical traps can be best direction if:
   bare minimum of dependencies - MIBs are never required for Zabbix proxies.
 
 - Template readability is not an issue. You are the only person in the
-  monitoring department. There are no team mates.
+  monitoring department. There are no teammates.
 
-- Have a lot of time to design solution
+- You have a lot of time to design a solution
 
 - You are willing to share your masterpiece with the internet.
   Perhaps share it at GitHub
@@ -900,7 +900,7 @@ SNMP information from a device.
 
 !!! warning "EngineID Uniqueness"
 
-    The RFC3411 Specs specify that an EngineID needs to be unique this is very
+    The RFC3411 Specs specify that an EngineID needs to be unique, this is very
     important for monitoring. You will see errors like Bad parse of ASN.1 if you
     have a conflict.
 
@@ -934,7 +934,7 @@ but can become inefficient in large environments.
 
 - **Combined processing**:
   In legacy synchronous monitoring, Zabbix can combine multiple OIDs into a 
-  single request to optimize performance. However, this still operates within 
+  single request to optimise performance. However, this still operates within 
   the synchronous framework, meaning Zabbix will wait for the combined response
   before moving on to the next check.
   For more details about combined processing, refer to the [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing)
@@ -1032,7 +1032,7 @@ to its numerical form.
 
 !!! example "Converting OID to numerical form with snmpwalk"
 
-    The result of next command will be the specific OID for the inbound octets
+    The result of the next command will be the specific OID for the inbound octets
     on the `enp0s1` interface:
     ```shell-session
     localhost:~ $ snmpwalk -v2c -c public <IP_ADDRESS> IF-MIB::ifInOctets.2 -On
@@ -1055,9 +1055,9 @@ thing and also the other way back.
     IF-MIB::ifInOctets.2
     ```
 
-There is yet another tool that helps to visualise a SNMP table with the easy to
-remember name ... `snmptable`. This tool allows you to see the data more easy
-then a simple a snmp walk. To stay with our network cards have a look at this
+There is yet another tool that helps to visualise an SNMP table with the easy to
+remember name ... `snmptable`. This tool allows you to see the data more easily
+than a simple SNMP walk. To stay with our network cards have a look at this
 output.
 
 !!! example "snmptable"
@@ -1082,7 +1082,7 @@ polling (Or if we use a Proxy it will be the proxy.)
 
 So let's add a **SNMP Interface** and give it the IP of the device we would like
 to monitor. If you have been following our steps on the local machine you can
-use ip `127.0.0.1`, our own server.
+use IP `127.0.0.1`, our own server.
 
 ![Host Interface](ch04.30-snmp-host-.png)
 
@@ -1107,7 +1107,7 @@ in the item information.
 
 _4.31 SNMP Item_
 
-Before we safe this item there is one more important step we need to do. Network
+Before we save this item there is one more important step we need to do. Network
 items are usually counters. Meaning the device is just counting the amount of
 traffic that passed the interface. This means the counter will always go up as
 more data passes the interface over time. So we need to calculate a delta.
@@ -1135,7 +1135,7 @@ from the host.
 
 ---
 
-#### How does change per second work ?
+#### How does change per second work?
 
 Given a counter value sampled at two different times:
 
@@ -1153,7 +1153,7 @@ where $t_2 - t_1$ is the time elapsed in seconds.
 ---
 
 **If the counter rolls over** (i.e., $C_2 < C_1$, and the max counter value
-is $M$, then adjust as:
+is $M$), then adjust as:
 
 $$
 \text{Rate} = \frac{(M - C_1) + C_2 + 1}{t_2 - t_1}
@@ -1161,7 +1161,7 @@ $$
 
 ---
 
-### Polling a list of item
+### Polling a list of items
 
 Let's do the same for our snmp-walk item. This time we will look for the
 information from all our interfaces. For this we need to find our correct OID
@@ -1180,7 +1180,7 @@ some changes.
 
 - **Name:** `ifTable` (or another descriptive name)
 - **Key:** `snmp.ifTable`
-- **Type of information:**: Text
+- **Type of information:** Text
 - **SNMP OID:** `walk[.1.3.6.1.2.1.2.2]`
 
 The rest can stay as is, just remove the *preprocessing step* we added in the earlier
@@ -1246,8 +1246,8 @@ So we have the *traffic in* metrics but we would like to find *traffic out* metr
 as well of course. Let's use our `walk` item to extract the outgoing traffic. For
 this we need to create a dependent item.
 
-Go to **Data collection** - **Hosts** and click on **Items**. You should be able to
-see our newly created `ifTable` item and 3 dots before it's name.
+Go to `Data collection` | `Hosts` and click on **Items**. You should be able to
+see our newly created `ifTable` item and 3 dots before its name.
 
 Click on those 3 dots and select **Create dependent item** from the list.
 Fill in the new item with the following information:
@@ -1278,7 +1278,7 @@ Add the step **SNMP walk value** and paste the OID in the **Parameter** field:
     .1.3.6.1.2.1.2.2.1.16.1
     ```
 
-Remember from our previous item we need to calculate the **Changes per second**
+Remember from our previous item we need to calculate the **Change per second**
 so add this as the second *preprocessing step*.
 
 ![ch04.34-snmp-item-preprocessing.png](ch04.35-snmp-item-preprocessing.png)
@@ -1302,7 +1302,7 @@ SNMP polling remains a vital method for monitoring network devices when agents
 are not an option. With Zabbix's asynchronous polling, checks can run in parallel,
 dramatically improving performance and lowering the load on both your server and
 the network. SNMPv3 should be your go-to choice, delivering authentication and
-encryption to secure sensitive data. The SNMP walk item type adds another advantage
+encryption to secure sensitive data. The SNMP walk item type adds another advantage:
 collecting multiple metrics in bulk with a single request, making discovery and
 ongoing polling faster and more efficient.
 
@@ -1317,11 +1317,11 @@ go.
 
 ## Questions
 
-- Why is it better use SNMPv3 instead of v2c or v1 ?
-- Do I need to configure pollers for SNMP ? If so which pollers ?
-- Should I install MIB files on my Zabbix server ? What about proxies ?
-- Can I still use the old style to monitor SNMP ? Should I start using get[]
-  and walk[] instead ?
+- Why is it better to use SNMPv3 instead of v2c or v1?
+- Do I need to configure pollers for SNMP? If so which pollers?
+- Should I install MIB files on my Zabbix server? What about proxies?
+- Can I still use the old style to monitor SNMP? Should I start using get[]
+  and walk[] instead?
 
 ---
 

@@ -32,7 +32,7 @@ Starting with Zabbix 7.0, these functions were unified into a single item type:
 **Calculated**, with a single expression syntax. All former aggregation logic per host,
 per group, or cross group is now accessed directly through functions such as:
 
-!!!info
+!!! info
 
     ```bash
     avg()
@@ -77,7 +77,8 @@ like any other metric.
 - You want to calculate deltas (difference between two counters)
     - can also be done with preprocessing steps.
 - You want to aggregate values across multiple interfaces, disks, or services
-- You want to normalize data (e.g., dividing by CPU count)
+- You want to create aggregated data from metrics about multiple hosts
+- You want to normalise data (e.g., dividing by CPU count)
 - You want to create synthetic KPIs that do not exist natively
 
 ---
@@ -136,9 +137,9 @@ _calculated-item_
     our host.
 
 Another more useful example as the item `net.if.total` exists for the example
-above could be the calculation of the interface utilization.
+above could be the calculation of the interface utilisation.
 
-???+ example "Interface Utilization Formula"
+???+ example "Interface Utilisation Formula"
 
     ```bash
     ( last(/host/net.if.total[eth0]) * 100 ) / last(/host/net.if.speed[eth0])
@@ -148,9 +149,9 @@ above could be the calculation of the interface utilization.
     `net.if.speed[eth0]` for this to work.
 
 !!! note
-    Zabbix does not have an Built-in item `net.if.speed` but we can usually read
+    Zabbix does not have a built-in item `net.if.speed` but we can usually read
     the speed from network devices like switches. In Linux you could use as
-    alternative method `vfs.file.contents["/sys/class/net/{#IFNAME}/speed"]`
+    an alternative method `vfs.file.contents["/sys/class/net/{#IFNAME}/speed"]`
     where you replace `{#IFNAME}` with the correct interface name.
 
 ---
@@ -158,13 +159,15 @@ above could be the calculation of the interface utilization.
 ## Some good practices for Calculated items
 
 1. **Align Update Intervals:** If your source item updates every 60 seconds, 
-   avoid recalculating every 5 seconds.
+   it might not be worth setting the update interval to every 5 seconds and 
+   storing duplicate values.
 2. **Always Validate Item Existence:** If one referenced item is missing, 
    the calculated item returns unsupported.
 3. **Use Templates, Not Hosts:** Especially important when building:
-    - CPU utilization ratios
+    - CPU utilisation ratios
     - Disk usage summaries
     - Network traffic rollups
+    - Single aggregate hosts
    By using templates, calculated items become reusable and consistent across 
    infrastructure.
 4. **Use Value Type Carefully:**
@@ -172,10 +175,9 @@ above could be the calculation of the interface utilization.
 5. **Combine with LLD (Low-Level Discovery)**
    Calculated LLD prototypes allow:
     - Per-disk KPIs
-    - Per-interface utilization percentages
+    - Per-interface utilisation percentages
     - Storage pool ratios
     - Multi-core CPU computations
-`
 ---
 
 ## Practical Example
@@ -184,18 +186,18 @@ above could be the calculation of the interface utilization.
 
 **The Crucial Role of Percentile Analysis in Network Quality**
 When assessing network latency, specifically using metrics like *ICMP Ping response
-time*, relying solely on the average (mean) can be profoundly misleading a pitfall
+time*, relying solely on the average (mean) can be profoundly misleading, a pitfall
 analogous to analysing website performance without considering real world user
 experience.
 
-**Suppose :**
+**Suppose:**
 
 - 99% of all ICMP responses are 5 ms
 - 1% spike to 500 ms due to congestion
 
 In this case, the arithmetic mean latency will still appear negligible and highly
 satisfactory. However, this statistical comfort masks a critical flaw: a significant
-fraction of users the 1% are intermittently encountering severe, perceptible network
+fraction of users, the 1%, are intermittently encountering severe, perceptible network
 slowdowns.
 
 To accurately capture the real network quality and expose these intermittent performance
@@ -216,12 +218,12 @@ experienced by the majority of users, percentile analysis is indispensable.
 **Required Item: ICMP Response Time**
 
 Zabbix provides a built-in Simple Check for ICMP response time (`fping`-based).
-For this exercise make sure the item is already on the system available as we
+For this exercise make sure the item is already available on the system as we
 need it for our calculated item.
 
 | Field | Value |
 | ----  |----   |
-| Name  | `Icmpping`               |
+| Name  | `ICMP Ping`               |
 | Type  | Simple check           |
 | Key   | `icmppingsec[<target-IP>]` |
 | Units | `s`                      |
@@ -296,7 +298,7 @@ This is far more meaningful for:
 - SD-WAN
 - VoIP/Video systems
 
-If we now go to **Latest data** page we can take a look at our item and click on the
+If we now go to the **Latest data** page we can take a look at our item and click on the
 graph button at the right end of the screen.
 
 ![ch04.61-calculated-p99.png](ch04.103-calculated-p99.png)
@@ -333,9 +335,9 @@ distributed. They perform functions like:
 
 - **Average (`avg`):** The mean value across a set of items.
 - **Sum (`sum`):** The total combined value (e.g., total incoming traffic).
-- **Minimum (`min`) / Maximum (`max`):** The worst or best value recorded across 
+- **Minimum (`min`) / Maximum (`max`):** The lowest or highest value recorded across 
   the group.
-- **Count (`count`):** The number of items that match a specific criteria (e.g.,
+- **Count (`count`):** The number of items that match a specific criterion (e.g.,
   how many servers are currently unavailable).
 
 ### Usage of aggregate functions
@@ -374,12 +376,12 @@ by adding a *foreach* function as the sole parameter to select the items to aggr
     a set of items defined in the `item filter` and applies the specified aggregate 
     function to their values.
     For example, `last_foreach` retrieves the most recent value of each item in the
-    set, while `avg_foreach` returns the average value of each item during the
+    set, while `avg_foreach` returns the average value of each item during
     the specified `timeperiod`.
 
 `item filter`
 
-:   Filters the items to include in the aggregation and generally has following 
+:   Filters the items to include in the aggregation and generally has the following 
     syntax:
     ```
     /<HOST>/<key>[<parameters>]?[<conditions>]
@@ -463,7 +465,7 @@ the comparison operator (`gt` for "greater than") and the threshold value (`4`).
 ### Other Aggregate Functions
 
 Zabbix supports a wide array of aggregate functions beyond the basics shown here,
-including statistics like standard deviation (`stddevpop`) and more specialized
+including statistics like standard deviation (`stddevpop`) and more specialised
 counting and filtering.
 
 For a complete list of all supported aggregate functions, including detailed syntax
@@ -528,7 +530,7 @@ Key Takeaways:
   count of unhealthy hosts.
 
 By mastering **Calculated items**, you gain the ability to define metrics that
-directly correlate with your business objectives not just the underlying machine
+directly correlate with your business objectives, not just the underlying machine
 statistics. You can now build alerts and dashboards that clearly expose the health
 of your entire infrastructure or service stack, replacing vague metrics with
 concrete, measurable KPIs.
@@ -537,7 +539,7 @@ concrete, measurable KPIs.
 
 ## Questions
 
-- Explain the purpose of the foreach functions in Zabbix aggregation. How does it
+- Explain the purpose of the foreach functions in Zabbix aggregation. How do they
   allow you to achieve a goal that a simple `avg` or `sum` function cannot?
 - You need to calculate the total incoming network traffic for all devices in
   the "Core Routers" host group. Write the correct formula using the

@@ -22,7 +22,7 @@ One of the strengths of JMX is its flexibility. It supports both local and remot
 access, so whether your Java app is on the same machine or halfway across the
 network, Zabbix can still keep an eye on it. Combined with the Java Gateway, this
 makes JMX a powerful and scalable option for monitoring Java-based environments
-with minimal setup. Also JMX was an extension but is part of JAVA SE since java 5.
+with minimal setup. Also, JMX was an extension but has been part of Java SE since Java 5.
 
 ---
 
@@ -44,7 +44,7 @@ few core building blocks that make it all work:
 
 **MBean Server:**
 : A key part of the JMX agent, the MBean server is like a central registry where
-  MBeans are registered and managed. It keeps everything organized and accessible.
+  MBeans are registered and managed. It keeps everything organised and accessible.
 
 **Connectors:**
 : Want to monitor your Java app remotely? That's where connectors come in. They
@@ -70,7 +70,7 @@ external tools can reach them.
   and represent things like memory usage, thread counts, or application specific
   metrics.
 
-- **Agent Layer:** – Every JVM contains an MBeanServer, which acts as a registry
+- **Agent Layer:** Every JVM contains an MBeanServer, which acts as a registry
   and makes these MBeans available for management. When you start a JVM with
   -Dcom.sun.management.jmxremote, you are exposing this server for external access.
 
@@ -153,7 +153,7 @@ _4.69 Zabbix JMX monitoring architecture_
 
 ---
 
-## Setup Tomcat to monitor with Zabbix.
+## Set up Tomcat to monitor with Zabbix.
 
 To ensure accurate testing of JMX monitoring with Zabbix, a dedicated host is essential.
 Although configuration on the Zabbix server is possible, a separate machine provides a
@@ -164,9 +164,9 @@ this purpose.
 First, prepare the new VM as outlined in the [Preparing the system for Zabbix section](../ch00-getting-started/preparation.md),
 then continue with the following steps to set up Tomcat and enable JMX monitoring.
 
-???+ info "Setup Tomcat"
+???+ info "Set up Tomcat"
 
-    Red hat
+    Red Hat
     ```bash
     dnf install tomcat
     vi /etc/sysconfig/tomcat
@@ -242,7 +242,7 @@ Apache Tomcat.
   By setting it to `<your local IP>`, you ensure that the JMX port is bound to
   the correct network interface for remote access.
 
-???+ Note
+???+ note
 
     There isn't a single, universally "standard" port for JMX that is accepted
     across all applications and vendors. The JMX specification itself does not
@@ -259,18 +259,17 @@ Apache Tomcat.
     - `8686`: This port is a well-accepted and formally registered port for JMX with
       the Internet Assigned Numbers Authority (IANA). The IANA service name for port
       `8686` is `sun-as-jmxrmi`. This makes it a great choice because it's officially
-      recognized and less likely to conflict with other common services.
+      recognised and less likely to conflict with other common services.
 
     Why Port `8686` is a Good Choice?
     Port `8686` is a User Port (1024-49151), which means it's available for registered
     services but isn't a "well known" port that requires a special permission level
-    to use. It's IANA registration as `sun-as-jmxrmi` makes it a safe and logical
-    choice for JMX monitoring, especially when you need to standardize port assignments
+    to use. Its IANA registration as `sun-as-jmxrmi` makes it a safe and logical
+    choice for JMX monitoring, especially when you need to standardise port assignments
     across a large infrastructure.
-    ```
 ---
 
-## Setup Zabbix to monitor JMX
+## Set up Zabbix to monitor JMX
 
 Now that we've set up a JMX-enabled application, we need to configure Zabbix to
 monitor it. Since Zabbix can't connect directly to JMX endpoints, we need an
@@ -286,7 +285,7 @@ the connection chain.
 
 _4.70 JMX Gateway_
 
-???+ Info "Install the JAVA Gateway"
+???+ info "Install the JAVA Gateway"
 
     Red Hat
     ```
@@ -337,7 +336,7 @@ You'll need to add three key options:
 - `JavaGatewayPort`: This option should remain at the default `10052` unless
   you've changed the port in your gateway's configuration.
 
-- `StartJavaPollers`:** Set this option to define the number of
+- `StartJavaPollers`: Set this option to define the number of
   concurrent Java pollers the server will use. A good starting
   point is to match the number you set on the gateway, for
   example, `5`.
@@ -352,11 +351,11 @@ Restarting these two services applies the new configuration, allowing the server
 to communicate with the Java Gateway and begin polling for JMX data. Also don't
 forget to enable the `Zabbix Java Gateway` service.
 
-???+ Info "Restart the services"
+???+ info "Restart the services"
 
     ```
     systemctl enable zabbix-java-gateway --now
-    systemclt restart zabbix-server
+    systemctl restart zabbix-server
     ```
 
 On the application side don't forget to open the firewall so that our
@@ -375,19 +374,17 @@ On the application side don't forget to open the firewall so that our
     sudo ufw allow 8686/tcp
     ```
 
-???+ Warning
+???+ warning
 
-    ```
     Don't forget to place SELinux in permissive mode before you start else the
     JAVA gateway will not work. You should fix SELinux permissions once the setup
     is working.
-    ```
 
 ---
 
 ## Monitoring JMX items
 
-After having setup everything, we can now connect to our Java application's JMX port to
+After having set up everything, we can now connect to our Java application's JMX port to
 verify everything is working.
 
 For this, we can use JConsole, a monitoring tool that comes with the Java Development
@@ -400,8 +397,8 @@ Start your preferred application and connect to our JMX port on 8686.
 
 _4.71 Jconsole_
 
-After a successful login you should be greeted with a screen like this. Were you
-have a tree view overview of all the Mbeans we can use to gather information
+After a successful login you should be greeted with a screen like this, where you
+have a tree view overview of all the MBeans we can use to gather information
 from.
 
 ![ch04.37 Successful login](ch04.72-jconsole-mbeans-tree.png)
@@ -409,7 +406,7 @@ from.
 _4.72 Login screen_
 
 Before we can do this we need to create a new host in our Zabbix server. Let's
-go to `Data collection` - `Hosts` and click on `Create host` in the upper right
+go to `Data collection` | `Hosts` and click on `Create host` in the upper right
 corner. Use the following settings to create our host:
 
 - **Hostname**: `Tomcat`
@@ -420,14 +417,12 @@ corner. Use the following settings to create our host:
 
 Press the `Add` button when ready.
 
-???+ Note
+???+ note
 
-    ```
-    It seems weird that we not specify the `JavaGateway` here but it's actually
+    It seems weird that we do not specify the `JavaGateway` here but it's actually
     normal. Zabbix knows from its configuration file where the gateway is. So we
     need to specify the IP and the PORT of the JAVA application here that we would
     like to monitor.
-    ```
 
 ---
 
@@ -445,20 +440,18 @@ On our host Tomcat create a new item and add the following information.
 
 _4.73 JMX item_
 
-???+ Info "Verifying and Saving the Item"
+???+ info "Verifying and Saving the Item"
 
-    ```
     Before saving the configured item, use the **Test** button. Clicking **Get value**
     or **Get value and test** should populate the value field with data, confirming
     that the item is functional. Once the test is successful, you can save the
     item.
-    ```
 
 To understand how we constructed the item key, let's look at the process in JConsole.
 
 1. Navigate to the MBeans tab and expand Catalina → GlobalRequestProcessor → http-nio-8080.
 
-2. The ObjectNAme field on the right displays the MBean's fully qualified name:
+2. The ObjectName field on the right displays the MBean's fully qualified name:
    `Catalina:type=GlobalRequestProcessor,name="http-nio-8080"`. This is the base
    for our Zabbix item key.
 
@@ -494,7 +487,7 @@ heap memory usage, the Zabbix item key would be: `jmx["java.lang:type=Memory","H
 
 ![](ch04.75-jconsole-HeapMemory.Max.png)
 
-_4.75 HeapMemoryUsage
+_4.75 HeapMemoryUsage_
 
 ---
 
@@ -596,7 +589,7 @@ Zabbix communicates with the Java Gateway synchronously:
 This means that if JMX queries are slow (due to network, JVM GC pauses, or overloaded
 gateways), your monitoring queue can back up.
 
-To optimize performance:
+To optimise performance:
 
 - The Java Gateway bundles multiple requests for the same host and processes them
   in a single JVM connection.
@@ -669,7 +662,7 @@ Why Jolokia?
 
 This approach allows you to collect dozens of metrics with a single network request.
 
-???+ note "When to use it ?"
+???+ note "When to use it?"
 
     Choose Jolokia if you prefer a stateless, agent-based setup or need to monitor
     many JVMs without maintaining a central Java Gateway. Stick with the Zabbix
@@ -680,7 +673,7 @@ This approach allows you to collect dozens of metrics with a single network requ
 
 ## Conclusion
 
-Zabbix handles JMX monitoring synchronously, but optimizes performance with request
+Zabbix handles JMX monitoring synchronously, but optimises performance with request
 bundling and connection reuse. By tuning pollers, using reasonable update intervals,
 and selecting only the most valuable metrics, you can scale JMX monitoring without
 overloading your monitoring system or your Java applications.
@@ -691,9 +684,9 @@ overloading your monitoring system or your Java applications.
 
 - Explain how the Zabbix Java Gateway fits into the overall JMX architecture.
   Why is it needed?
-- In Zabbix, what is the difference between the item keys jmx[], jmx.get[] and
+- In Zabbix, what is the difference between the item keys jmx[], jmx.get[], and
   jmx.discovery[]? Give an example use case for each.
-- Reflect: In your environment, what Java-applications would benefit most from
+- Reflect: In your environment, what Java applications would benefit most from
   JMX monitoring? What metrics would you pick first, and why?
 - What are security considerations when enabling remote JMX monitoring in production?
   What could go wrong if you leave flags like authenticate=false and ssl=false in

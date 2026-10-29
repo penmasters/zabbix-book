@@ -23,9 +23,9 @@ identified as:
 - **Actions**
 
 But when we look at `Items` specifically, it's also possible to alter our data before
-storing the metrics in Zabbix. This is something we do with a process called pre-processing,
+storing the metrics in Zabbix. This is something we do with a process called preprocessing,
 which will take the collected data and change it before storing it in the Zabbix database.
-Our dataflow in the end then looks as such:
+Our dataflow in the end then looks like this:
 
 ![Basic dataflow](ch04.2-dataflow-basic.png){ align=left }
 *4.2 Zabbix basic dataflow*
@@ -48,7 +48,7 @@ more than a container (not the Docker kind), it's something that contains `Items
 `Triggers`, `graphs`, `Low Level Discovery` rules, and `Web scenarios`. All of these
 various different entities are contained within our **Hosts**.
 
-Often times, Zabbix users and administrators make the misconception here that a
+Often times, Zabbix users and administrators have the misconception here that a
 *`host`* always represents a physical or virtualised host. But in the end, hosts
 are nothing more than a representation of a `monitoring target`. A monitoring
 target is something we want to monitor. This can be a server in your datacenter,
@@ -62,7 +62,7 @@ contain your monitoring configuration on its entities.
 `Items` in Zabbix are Metrics. One `Item` is usually a single metric we'd like to
 collect, with the exception being bulk metric collection which we will discuss
 later on in the book. When we want to create our `Items` we can do this on a host
-and we can actually create an unlimited amount of `Items` on a host.
+and we can actually create an unlimited number of `Items` on a host.
 
 ---
 
@@ -85,12 +85,12 @@ We will discuss this in more detail later on in the book as well.
 
 ## Triggers
 With all of the collected metrics, we can now also start to create triggers if we
-would want to. A trigger is Zabbix is nothing more than a bit of configuration on
+would want to. A trigger in Zabbix is nothing more than a bit of configuration on
 our host, which we will use to define thresholds using metrics collected on items. 
 
 A trigger can be set up to use the data collected on an item in a logical expression.
 This logical expression will define the threshold and when data is received on the
-item(s) used in the logical expression the trigger can go or stay in on of two states:
+item(s) used in the logical expression the trigger can go or stay in one of two states:
 
 - **PROBLEM**: When the logical expression is TRUE
 - **OK**: When the logical expression is FALSE
@@ -102,7 +102,7 @@ This is how we define if our data is in a good or a bad state.
 ### Events
 When we discuss triggers however, we cannot skip past the Events. Whenever a trigger
 changes state, for example it was in OK state and goes into the PROBLEM state, then
-Zabbix will create a new Event. There's three types of these events created by our
+Zabbix will create a new Event. There are three types of these events created by our
 triggers:
 
 - **Problem event**: When the trigger goes from OK to PROBLEM
@@ -118,19 +118,19 @@ the Zabbix dataflow `Actions`.
 ## Actions
 Actions are the last step in our Zabbix dataflow and they are kind of split into
 two parts. An action consists of `Conditions` and `Operations`. This is going to
-be important in making sure the action executes on the right time (conditions)
+be important in making sure the action executes at the right time (conditions)
 and executes the right activity (operations). 
 
 What happens is, whenever a problem event in Zabbix is created it is sent to every
 single problem action in our Zabbix environment. All of these actions will then
-check the event details like what host did it come from, with which severity, when
-did it start, which tags are present. These event details are then checked against
+check the event details like which host it came from, its severity, when
+it started, and which tags are present. These event details are then checked against
 the action conditions and only when the conditions match will the operations be executed.
-The operation can then be something like, send a message to Microsoft Teams or
-Telegram. But an operation could also be, execute the reboot command on this host.
+The operation can then be something like sending a message to Microsoft Teams or
+Telegram. But an operation could also be executing the reboot command on this host.
 
 As you can imagine, the conditions will be very important to make sure that operation
-on that action are only executed when we specifically want it to. We do not want to
+on that action are only executed when we specifically want them to be. We do not want to
 for example reboot a host without the right problem being first detected.
 
 ---
@@ -146,9 +146,9 @@ looks like the image below.
 
 Here we can see the various steps coming together.
 
-- We have our `Hosts` container our `Items` and `Triggers`. 
+- We have our `Hosts` containing our `Items` and `Triggers`. 
 - Our `Items` are collecting metrics
-- The `Triggers` are using data from `Items` to detected problems and create problem `Events`.
+- The `Triggers` are using data from `Items` to detect problems and create problem `Events`.
 - If a problem `Event` matches the *Conditions* on an `Action` the *Operations* can be executed
 
 Important to note here is that if an item is collecting metrics, it doesn't necessarily
@@ -159,11 +159,11 @@ items or even several items from different hosts in a single trigger.
 
 The same is the case for our events. Not every event will match the conditions on
 an action. In practice, this means that some problems will only show up in your
-Zabbix frontend, while other might go on to send you an alert message or even execute
+Zabbix frontend, while others might go on to send you an alert message or even execute
 commands or scripts. A single event can also match the conditions on multiple actions,
-since we mentioned that all events are always send to all action for evaluation.
-This can be useful, for example if you want to split you messaging and your script
-execution in different action to keep things organised.
+since we mentioned that all events are always sent to all actions for evaluation.
+This can be useful, for example if you want to split your messaging and your script
+execution in different actions to keep things organised.
 
 Now that we understand the various parts of our Zabbix dataflow we can dive deeper into creating the configuration for the steps in the dataflow.
 

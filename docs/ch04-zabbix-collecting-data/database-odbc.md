@@ -76,8 +76,8 @@ to your database.
 This blocking nature has a direct consequence for how you should think about ODBC
 at scale. Each concurrent database monitor item in flight consumes one poller slot.
 If you have five pollers and six queries executing simultaneously, even briefly,
-one item queues. If queries are slow, that queue grows. If queries are pathological
-, the entire ODBC poller pool saturates and items go unsupported. Architecture
+one item queues. If queries are slow, that queue grows. If queries are pathological,
+the entire ODBC poller pool saturates and items go unsupported. Architecture
 first; configuration second.
 
 ---
@@ -460,7 +460,7 @@ whose existence cannot be known at template design time. Tables, schemas, replic
 slots, partitions, named queues: anything the database can enumerate, Zabbix can
 discover and monitor.
 We will cover Low Level Discovery (LLD) in detail in the [LLD chapter](../ch08-zabbix-lld/chapter.md).
-You may want to read that chapter first before in order to fully understand the
+You may want to read that chapter first in order to fully understand the
 patterns below.
 
 ### Native Discovery: `db.odbc.discovery`
@@ -575,11 +575,11 @@ in Zabbix metrics.
 Unhandled query timeouts are the most reliable path to a fully saturated poller
 pool. A query that hangs indefinitely ties up a poller slot until the database
 eventually errors or the connection is forcibly closed. In a pool of five pollers,
-three hanging queries means 60 percent of your ODBC capacity is unavailable.
+three hanging queries mean 60 percent of your ODBC capacity is unavailable.
 
 Zabbix 7.0 introduced per-item timeout configuration for database monitor items,
 accepting values from 1 second to 10 minutes. Use this to set timeouts appropriate
-to each query's expected duration. A simple aggregate query should have a 5 second
+to each query's expected duration. A simple aggregate query should have a 5-second
 timeout. A more complex cross-table query might justify 30 seconds. Nothing in a
 monitoring context should run for minutes.
 
@@ -665,7 +665,7 @@ appear distant from the root cause, an unrelated monitoring item goes unsupporte
 database response times spike during a specific window, Zabbix queue depth grows.
 Knowing the common failure patterns in advance makes them faster to diagnose.
 
-- **Monitoring queries written as reports.**: A query written for a business report
+- **Monitoring queries written as reports:** A query written for a business report
 is designed to be complete and correct, not fast. It likely scans multiple large
 tables, performs several joins, aggregates millions of rows, and computes derived
 fields. Running it once a month in a reporting tool is fine. Running it every 60
@@ -673,7 +673,7 @@ seconds as a Zabbix check against a production database is not. The symptom is a
 gradual increase in database CPU and I/O during monitoring windows, often dismissed
 as coincidental load until someone traces it.
 
-- **High-frequency polling of expensive metrics.**: Not all metrics need to be
+- **High-frequency polling of expensive metrics:** Not all metrics need to be
 collected at the same frequency. Replication lag, where a drift of even a few
 seconds may be significant, warrants a short polling interval. The number of tables
 in a schema, which changes only when a deployment runs, does not. Applying a 30
@@ -681,21 +681,21 @@ second polling interval uniformly across all ODBC items wastes both poller
 capacity and database resources. Assign intervals based on the operational sensitivity
 of each metric.
 
-- **Using privileged accounts.**: Monitoring with a DBA or application account
+- **Using privileged accounts:** Monitoring with a DBA or application account
 that has write privileges introduces unnecessary risk. A credential leak, an
 injection vulnerability in a poorly constructed monitoring query, or a simple
 configuration mistake could result in data modification. The monitoring account
 must be read-only. There are no legitimate exceptions to this in production.
 
-- **Scaling pollers to mask slow queries.**: When ODBC items go unsupported due
+- **Scaling pollers to mask slow queries:** When ODBC items go unsupported due
 to poller saturation, the instinct is to increase `StartODBCPollers`. If the saturation
 is caused by a growing item count or a genuine burst in monitoring demand, more
-pollers is the right answer. If it is caused by slow queries, more pollers shifts
+pollers is the right answer. If it is caused by slow queries, more pollers shift
 the problem: instead of queued items in Zabbix, you get queued connections at the
 database layer, which may then cause application connection pool exhaustion. Fix
 the query first. Scale pollers second.
 
-- **Ignoring driver-specific known issues.**: Each driver family carries its own
+- **Ignoring driver-specific known issues:** Each driver family carries its own
 list of quirks that are not discoverable through normal testing. The MySQL/MariaDB
 connector mismatch (ZBX-7665), the FreeTDS `SET NOCOUNT ON` requirement (ZBX-19917),
 Oracle Instant Client crashes on Linux (ZBX-18402, ZBX-20803), and MSSQL XML
@@ -705,7 +705,7 @@ specific driver before deployment is not optional reading — it is the step tha
 prevents a category of failures that no amount of query tuning or poller sizing
 will fix.
 
-- **Skipping DSN validation.**: Configuring a Zabbix item against an untested DSN
+- **Skipping DSN validation:** Configuring a Zabbix item against an untested DSN
 and then using Zabbix's error output to debug ODBC connectivity is slower and
 less informative than using `isql` directly. Zabbix normalises ODBC errors
 through its own logging layer; `isql` surfaces the raw driver error. Always
@@ -739,7 +739,7 @@ the full observability stack.
 
 ---
 
-## Summary
+## Conclusion
 
 ODBC occupies a unique position in the Zabbix monitoring toolkit: it is the only
 mechanism that gives you direct access to the data layer, the place where the most

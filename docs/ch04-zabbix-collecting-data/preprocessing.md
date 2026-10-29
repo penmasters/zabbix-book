@@ -1,6 +1,6 @@
 ---
 description: |
-    Learn Zabbix preprocessing. Transform, normalize, and validate collected data
+    Learn Zabbix preprocessing. Transform, normalise, and validate collected data
     using built-in steps like regex, JSONPath, JavaScript, and value mapping.
 tags: [advanced]
 ---
@@ -15,7 +15,7 @@ database.
 Without properly understanding this underlying technical functionality however,
 we do not have the correct foundation to understand what preprocessing is. As
 such, let's have a more detailed look into what preprocessing is exactly, how we
-can use it and why it is such an important part of our Zabbix environment.
+can use it, and why it is such an important part of our Zabbix environment.
 
 ---
 
@@ -54,11 +54,11 @@ it in the database.
 ![ch04.36-preprocessing-basic-functionality.png](ch04.44-preprocessing-basic-functionality.png)
 *4.44 Preprocessing basic functionality*
 
-When data is received, Zabbix will internally kick of a few steps. First, it will 
+When data is received, Zabbix will internally kick off a few steps. First, it will 
 add the received metric on your item to the preprocessing queue. From the processing 
 queue, the processing manager will find a free preprocessing worker process and 
 submit the preprocessing task on it. One preprocessing worker can handle the
-preprocessing steps for a single item at the time. Once the preprocessing worker 
+preprocessing steps for a single item at a time. Once the preprocessing worker 
 is done, the processed item moves on to the next step in our Zabbix server or 
 -proxy processes and the worker is free to handle the next item preprocessing.
 
@@ -115,12 +115,12 @@ following methods:
 Convert values in different numeral systems to decimal using the following methods:
 - **Boolean to decimal** is used to convert the aforementioned value.
 - **Octal to decimal** is used to convert the aforementioned value. 
-- **HExadecimal to decimal** is used to convert the aforementioned value. 
+- **Hexadecimal to decimal** is used to convert the aforementioned value. 
 
 **Custom scripts**:
 Process data using custom scripts with the following method:
-- **Javascript** is an extensive preprocessor, where we can use the built-in
-  Javascript Duktape engine to apply complex scripts for processing.
+- **JavaScript** is an extensive preprocessor, where we can use the built-in
+  JavaScript Duktape engine to apply complex scripts for processing.
 
 **Validation**:
 Validate data using the following methods:
@@ -134,7 +134,7 @@ Validate data using the following methods:
 - **Check for error in XML** is used to validate if there are errors in the 
   received XML.
 - **Check for error using regular expression** is used to validate if there 
-  are errors using an regular expression.
+  are errors using a regular expression.
 - **Check for not supported value** is used to validate if no value could be 
   received.
 
@@ -159,10 +159,11 @@ preprocessing steps are used more than others. Some of the most used ones are
 important to properly understand their functioning. 
 
 ### Regular expression
-Regular expressions are a whole subject on its own, there are many books on the 
-topic on its own. We won't going over the details here, for that we recommend 
-going to https://regex101.com. On this website you can read extensive documentation 
-about regular expressions, as well as test your existing ones. 
+Regular expressions are a whole subject on their own, there are many resources on the 
+subject already, so we won't be going over the details here. If you do want to learn
+more about regular expressions we recommend going to https://regex101.com. 
+On this website you can read extensive documentation about regular expressions, as well 
+as test your existing ones. 
 
 Let's start with a basic example, where we have an item that received the value:
 `The error is value: 0`. Let's say we want to get numeric value from the string,
@@ -184,7 +185,7 @@ larger data.
 ### JSONPath and additional steps
 Within Zabbix monitoring, JSON data structures are used quite a lot. We can find
 it in Low Level Discovery, export files, and it is often the data format sent back 
-by API's. As such, being able to process JSON datasets is important and that is 
+by APIs. As such, being able to process JSON datasets is important and that is 
 where *JSONPath* comes in. Let's say we have a basic JSON dataset we collected 
 from an API.
 
@@ -198,7 +199,7 @@ from an API.
     }
     ```
 
-Now with JSONpath, we could extract these values. Let's say we want to get the 
+Now with JSONPath, we could extract these values. Let's say we want to get the 
 `enabled` value and store it as a **Numeric (unsigned)** value. We could do the 
 following.
 
@@ -220,7 +221,7 @@ step, replacing `false` with `0` and `true` with `1`. If we press the
 ![ch04.39-preprocessing-jsonpath-test.png](ch04.47-preprocessing-jsonpath-test.png)
 *4.47 Preprocessing JSONPath test*
 
-It's important to know that we can add an unlimited amount of preprocessing 
+It's important to know that we can add an unlimited number of preprocessing 
 steps, but that Zabbix will always execute all of them in the order in which they 
 are defined. 
   - First, we extract the value from JSON. 
@@ -237,7 +238,7 @@ and false back into human readable format.
     This has a few benefits, but the main one is that we can now store this value
     as a **Numeric (unsigned)** value. This means we can use it in numerical trigger 
     functions like `min()`, `max()`, `count()`, `sum()`, etc. We can also use it
-    in graphs and other visualisations. Which is not possible if we store it as 
+    in graphs and other visualisations, which is not possible if we store it as 
     a string value.
     Secondly, storing this value as a **Numeric (unsigned)** value means Zabbix can 
     also store it in its `Trends` table, which allows us to keep a longer (trend-)history of 
@@ -498,7 +499,7 @@ This provides several benefits:
 
 ### Custom multiplier
 
-The *customer multiplier* is simple, but important. In Zabbix you might often find
+The *custom multiplier* is simple, but important. In Zabbix you might often find
 that you receive a value, that you would want to store slightly differently.
 Specifically, this preprocessing step is often used to convert numbers to their
 base value.
@@ -569,7 +570,7 @@ subtract $last_1$ and $last_2$.
 We also take the Unix timestamp $t_1$ and $t_2$ of when $last_1$ and $last_2$
 were collected, subtracting those gives us $\Delta t$, the time passed between
 the two values.
-Then the last step is to divide the values, giving us an estimate of how much
+Then the last step is to divide the values, giving us an estimate of how many
 values were received per second. Of course, the shorter our update interval is,
 the closer the estimate. But it gives us an accurate average over time.
 
@@ -583,23 +584,23 @@ time, instead of just a total.
 
 ---
 
-### Javascript
+### JavaScript
 
 With  many APIs out there being used to make monitoring data available to us,
 responses are getting more complex. It might happen that you get a response that
-isn't perfect to store in Zabbix. One of our favourite examples are dates
-and times. Sometimes developers might decide to gives us back a string value
+isn't perfect to store in Zabbix. One of our favourite examples is dates
+and times. Sometimes developers might decide to give us back a string value
 with the dates, for example:
 
 - **Aug 21 1991**
 - **Aug 24 1991**
 - **May 8 1945**
 
-Using Javascript, we could convert these dates into a nice *Unixtime* stamp.
+Using JavaScript, we could convert these dates into a nice *Unixtime* stamp.
 Unixtime is something Zabbix understands as a *Unit* and can be used in trigger
 functions.
 
-!!! example "Example Javascript"
+!!! example "Example JavaScript"
 
     ```javascript
     // Expecting: "Feb 20 2040"
@@ -633,12 +634,12 @@ functions.
         return ts;
     ```
 
-Keep in mind, Zabbix will already put this Javascript code in a function for
+Keep in mind, Zabbix will already put this JavaScript code in a function for
 preprocessing as `function (value) { }`. When testing this code, we can see it
-executed for us now, converting out weird date format into a nice Unixtime.
+executed for us now, converting our weird date format into a nice Unixtime.
 
 ![ch04.41-preprocessing-javascript.png](ch04.49-preprocessing-javascript.png)
-*4.49 Preprocessing Javascript*
+*4.49 Preprocessing JavaScript*
 
 ---
 
@@ -683,7 +684,7 @@ with a heartbeat value of `5m`. We might see the following happen:
 
 We can see that we only store the value if it changes from `0` to `1` or from
 `1` to `0` in this case. However, at the `2m ago` timestamp we can see an
-exception. This specific value had passed the 5 minute heartbeat interval,
+exception. This specific value had passed the 5-minute heartbeat interval,
 meaning we store this value even though it had not changed yet. This can be
 used to make sure we still save a value from time to time, which can be useful
 for data integrity or crafting your trigger expressions later on.
@@ -789,9 +790,9 @@ specific metrics from larger datasets.
 
 ## Conclusion
 
-As we can see preprocessing can be used to turns raw received data into 
-structured, meaningful monitoring data. Once you the various different types of
-preprocessing your Zabbix environment becomes cleaner and more powerful. It's 
+As we can see preprocessing can be used to turn raw received data into 
+structured, meaningful monitoring data. Once you understand the various different types of
+preprocessing, your Zabbix environment becomes cleaner and more powerful. It's 
 useful to familiarise yourself with the various options in preprocessing, although
 we do not need to know all of them in detail. Different situations call for different
 types of preprocessing, so it's good to at least know of the existence of most of

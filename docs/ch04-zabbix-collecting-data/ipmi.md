@@ -7,12 +7,12 @@ tags: [advanced]
 
 # IPMI Monitoring
 
-## What is IPMI
+## What is IPMI?
 
 Out-of-band management has been part of enterprise server administration for decades,
 long before modern APIs and automation frameworks became common. One of the most widely
 adopted standards in this space is the Intelligent Platform Management Interface
-(IPMI). Despite its age and limitations, IPMI remains deeply embedded in data centers
+(IPMI). Despite its age and limitations, IPMI remains deeply embedded in data centres
 and continues to play a role in hardware monitoring today.
 
 This chapter introduces IPMI from a practical monitoring perspective and explains
@@ -27,7 +27,7 @@ IPMI allows administrators to monitor and manage physical server hardware indepe
 of the operating system. Even when a system is powered off, hung, or unable to
 boot, IPMI usually remains accessible as long as the server has power.
 
-At the center of IPMI is the Baseboard Management Controller (BMC). The BMC is
+At the centre of IPMI is the Baseboard Management Controller (BMC). The BMC is
 a small embedded controller with its own firmware, network interface, and access
 to system sensors. Because it operates independently of the host operating system,
 it can continue reporting hardware health even when the OS is unavailable.
@@ -45,7 +45,7 @@ Common BMC implementations include:
 - Fujitsu – iRMC
 
 From a monitoring perspective, these differences matter because sensor names,
-availability, and behavior often vary by vendor and even by firmware version.
+availability, and behaviour often vary by vendor and even by firmware version.
 
 ```mermaid
 flowchart TB
@@ -161,7 +161,7 @@ agents or external scripts. This is done using the IPMI agent item type.
 
 To enable IPMI monitoring, a host must be configured with an IPMI interface specifying
 the BMC's management IP address and port. Credentials can be defined at the host
-or template level, depending on how standardized the environment is.
+or template level, depending on how standardised the environment is.
 
 Once configured, Zabbix queries individual sensors and stores their values just
 like any other monitored metric.
@@ -171,7 +171,7 @@ like any other monitored metric.
 ### IPMI Items and Templates
 
 Each IPMI item in Zabbix corresponds to a specific sensor name exposed by the BMC.
-Because sensor naming is not standardized, templates often require customization.
+Because sensor naming is not standardised, templates often require customisation.
 
 Zabbix ships with generic IPMI templates that provide a useful starting point.
 These templates usually include:
@@ -207,7 +207,7 @@ are already deployed and newer management standards are unavailable. In controll
 networks with proper isolation and access controls, it provides reliable insight
 into physical system health.
 
-For many organizations, IPMI will continue to coexist with newer technologies
+For many organisations, IPMI will continue to coexist with newer technologies
 for years to come.
 
 ---
@@ -414,7 +414,7 @@ For this reason, ipmitool remains the preferred tool for:
 
 - Validating IPMI connectivity
 - Discovering available sensors
-- Verifying sensor names and behavior
+- Verifying sensor names and behaviour
 - Troubleshooting authentication and firmware issues
 
 If a sensor cannot be queried successfully with ipmitool, it will almost 
@@ -513,7 +513,7 @@ That shift matters for monitoring:
 
 ---
 
-### JSON schema and standardized resources
+### JSON schema and standardised resources
 
 Redfish resources are delivered as JSON and described by formal schemas. DMTF
 publishes the schema index (including JSON Schema formats), which makes the ecosystem
@@ -529,7 +529,7 @@ resource types. You'll see the same patterns repeatedly across vendors:
 - **Power / Thermal:** structured telemetry for PSUs, fans, temperatures (often
   via chassis-related resources)
 
-Even when vendors add OEM extensions, the baseline model stays recognizable.
+Even when vendors add OEM extensions, the baseline model stays recognisable.
 
 ---
 
@@ -576,7 +576,7 @@ This repository is a fork of the upstream DMTF project and is used here for
 documentation and monitoring examples.
 
 Build the Container Image (optional but recommended)
-Building the image locally ensures reproducible behavior:
+Building the image locally ensures reproducible behaviour:
 
 !!! info "Building the Container Image"
 
@@ -682,7 +682,7 @@ In the Zabbix frontend, go to `Data collection` | `Hosts`
 _4.77 create Redfish host_
 
 This host will represent the Redfish endpoint rather than a traditional server.
-Next we can create a HTTP item on our host.
+Next we can create an HTTP item on our host.
 
 **Creating the HTTP Agent Item**
 
@@ -733,7 +733,7 @@ the *master item* using preprocessing.
 | **Master item** | `Redfish service root` | |
 | **Type of information** | Character | |
 | **Update interval** | | not available inherited from master item |
-| **Preprocessing :** |              |   |
+| **Preprocessing:** |              |   |
 | - JSONPath | `$.RedfishVersion` | Add as preprocessing step |
 
 Press **Add** to save the item.
@@ -753,8 +753,8 @@ _4.79 Latest data_
 ### LLD example
 
 ???+ note
-    If you have no idea how LLD (Low Level Discovery works it's best to skip
-    this for now and cover the [LLD chapter first](../ch08-zabbix-lld/chapter.md).)
+    If you have no idea how LLD (Low Level Discovery) works it's best to skip
+    this for now and cover the [LLD chapter first](../ch08-zabbix-lld/chapter.md).
 
 Redfish exposes many resources as collections containing a Members array. This
 structure is ideal for Zabbix Low-Level Discovery (LLD) because it allows
@@ -823,7 +823,7 @@ The JSONPath will output each member object individually, for example:
 
 This is exactly what Zabbix expects for JSONPath-based LLD.
 
-The LLD macros section define how values are extracted from each discovered object:
+The LLD macros section defines how values are extracted from each discovered object:
 
 - The JSONPath must start with `$`
 - The macro path is evaluated per discovered object
@@ -863,12 +863,12 @@ _4.81 Item prototype raw_
 
 #### Create a Dependent Item Prototype (Health)
 
-Our next step is to extract the health and the status with dependent items
+Our next step is to extract the health and the status with dependent item
 prototypes.
 
 The chassis resource already contains a standard Status object:
 
-???+example "Redfish chassis status object"
+???+ example "Redfish chassis status object"
 
     ``` json
     "Status": {
@@ -929,7 +929,7 @@ environments are gradually transitioning from IPMI to Redfish.
 | Discoverability         | Limited, often manual                         | Native via collections and `Members`                |
 | Resource model          | Individual sensors                            | Linked resources (`Systems`, `Chassis`, `Managers`) |
 | Low-Level Discovery     | Difficult and vendor-specific                 | Natural and scalable using JSONPath                 |
-| Poller behavior         | Specialized, limited scalability              | Uses existing HTTP infrastructure                   |
+| Poller behaviour         | Specialised, limited scalability              | Uses existing HTTP infrastructure                   |
 | Template portability    | Often vendor- and model-specific              | Largely vendor-neutral                              |
 | Automation friendliness | Limited                                       | Designed for automation and APIs                    |
 | Tooling                 | `ipmitool` and vendor utilities               | `curl`, browsers, standard HTTP tools               |
@@ -942,13 +942,12 @@ is limited or inconsistent. It provides reliable access to fundamental hardware
 health metrics and continues to work well when deployed on isolated management
 networks.
 
-Redfish, on the other hand, is clearly the direction of the industry. Its REST
-based design, structured data model, and native discoverability make it far better
+Redfish, on the other hand, is clearly the direction of the industry. Its REST-based design, structured data model, and native discoverability make it far better
 suited for modern monitoring platforms such as Zabbix. Redfish scales naturally,
 integrates cleanly with automation workflows, and is significantly easier to
 reason about and troubleshoot.
 
-For many organizations, the most realistic approach is coexistence: IPMI for
+For many organisations, the most realistic approach is coexistence: IPMI for
 legacy systems, Redfish for new deployments.
 
 !!! warning "Real hardware is not the simulator"
@@ -964,8 +963,8 @@ legacy systems, Redfish for new deployments.
     - Authentication: real devices require credentials or session tokens,
       and usually use self-signed certificates.
     - Licensing: some vendors only expose the basic endpoints on their
-      standard BMC license and return an error (often HTTP 403) for deeper
-      ones until a higher license is activated.
+      standard BMC licence and return an error (often HTTP 403) for deeper
+      ones until a higher licence is activated.
     - Structure: data you want, such as drives, power and thermal, is often
       behind links in the chassis or system resources. It cannot be reached
       with the single discovery step used in this chapter and typically needs
@@ -975,7 +974,7 @@ legacy systems, Redfish for new deployments.
     So when a Redfish template that works on one server fails on another, the
     cause is usually the vendor's implementation, not Redfish itself. Treat the
     example in this chapter as a pattern for learning HTTP agent items,
-    dependent items and LLD, and always test against your own hardware before
+    dependent items, and LLD, and always test against your own hardware before
     rolling it out.
 
 ---
