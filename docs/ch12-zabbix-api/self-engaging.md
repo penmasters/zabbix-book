@@ -1,16 +1,16 @@
 ---
 description: |
-    Discover some inside tips and tricks that will help you getting the best out
+    Discover some inside tips and tricks that will help you get the best out
     of Zabbix by making use of its API.
-tags: [expoert]
+tags: [expert]
 ---
 
 # Self-engaging
 
-Welcome to Zabbix API self engaging methods. All upcoming chapters will address
+Welcome to Zabbix API self-engaging methods. All upcoming chapters will address
 the tools available to allow software to re-engage with itself. It is like
-developing a small service(s) which runs on the top of Zabbix and do exactly
-the tasks we told to do.
+developing small services which run on top of Zabbix and do exactly
+the tasks we tell them to do.
 This is like simulating an extra employee in the company.
 
 !!! warning "Security notice — demonstration examples"
@@ -35,13 +35,13 @@ This is like simulating an extra employee in the company.
 
 ## API variables
 
-To start to engage with Zabbix API:
+To start engaging with the Zabbix API:
 
-Create a dedicated service user. Go to **Users** => **Users**,
-click **Create user**, set Username **api**,
-install Groups **No access to the frontend**,
-Under **Permissions** tab, assign user role **Super admin role**
-which will automatically give user type **Super admin**.
+Create a dedicated service user. Go to `Users` | `Users`,
+click **Create user**, set **Username** to **api**,
+set **Groups** to **No access to the frontend**,
+Under the **Permissions** tab, assign user role **Super admin role**
+which will automatically give the user the type **Super admin**.
 
 ![Create API user](ch12.1-create-api-user.png)
 
@@ -55,16 +55,16 @@ Permissions tab:
 _12.2
 API user role and user type_
 
-Under **Users** => **API tokens** press **New API token**,
-assign user **api**. We can uncheck **Set expiration date and time**,
-press **Add**. Copy macro to clipboard.
+Under `Users` | `API tokens`, press **New API token**,
+assign the user **api**. We can uncheck **Set expiration date and time**.
+Press **Add**. Copy the macro to the clipboard.
 
 ![Add token to user object](ch12.3-token-added-to-user.png)
 
 _12.3
 Add token to user object_
 
-Visit **Administration** => **Macros** and install macro.
+Visit `Administration` | `Macros` and install the macro.
 To simulate all upcoming chapters much faster,
 consider running token in plain text.
 
@@ -85,8 +85,8 @@ Address `https://zabbix.book.the` of the frontend server must be used via:
     {$ZABBIX.URL}
     ```
 
-Later throughout chapters,
-we will use a reference on the API endpoint in a format of:
+Later throughout the chapters,
+we will use a reference to the API endpoint in the following format:
 
 !!! info ""
 
@@ -94,7 +94,7 @@ we will use a reference on the API endpoint in a format of:
     {$ZABBIX.URL}/api_jsonrpc.php
     ```
 
-Now we can take new 2 variables and install globally:
+Now we can take the two new variables and install them globally:
 
 ![User macros](ch12.4-user-macro-global.png)
 
@@ -103,10 +103,10 @@ User macros_
 
 ## First API call
 
-If you feel new to Zabbix API,
-try this curl example from Zabbix frontend server.
+If you are new to the Zabbix API,
+try this `curl` example from the Zabbix frontend server.
 
-Set bash variables:
+Set Bash variables:
 
 !!! example ""
 
@@ -127,10 +127,10 @@ This snippet is tested and compatible with version 7.0/7.4:
     $ZABBIX_URL
     ```
 
-Setting Bearer token in header is available and recommended since 7.0.
+Setting a Bearer token in the header has been available and recommended since 7.0.
 
-Setting a static token is available since 6.0. In version 6.0,
-the token is not in header, but inside JSON body like this:
+Setting a static token has been available since 6.0. In version 6.0,
+the token is not in the header, but inside the JSON body like this:
 
 !!! example ""
 
@@ -145,25 +145,24 @@ the token is not in header, but inside JSON body like this:
 
 !!! tip "Use case"
 
-    Every time an email arrives
-    user would love to see all host groups the host belongs to.
+    Every time an email arrives, the user would love to see all host groups the host belongs to.
 
 ---
 
 !!! info "Implementation"
 
     Use {HOST.HOST} as an input for the "host.get" API method and find out about
-    host group membership. Format reply in one line, store it in inventory.
+    host group membership. Format the reply on one line and store it in the inventory.
 
 ---
 
 An item type "HTTP agent" is the fastest way to run a single Zabbix API call and
-retrieve back result. This is possible since Zabbix 6.0 where configuring
-a static session token becomes possible.
-An upcoming solution is tested and works on version 7.0/7.4
+retrieve the result. This has been possible since Zabbix 6.0, when configuring
+a static session token became possible.
+The following solution has been tested and works on version 7.0/7.4.
 
 
-Create new **HTTP agent** item
+Create a new **HTTP agent** item
 
 | Field                              | Value                                  |
 | :--------------------------------- | :--------------------------------------|
@@ -217,11 +216,11 @@ Preprocessing steps
 _12.6
 Preprocessing_
 
-Last step is to store the outcome in the inventory.
-Scroll down to the bottom of HTTP agent item and select an inventory field
+The last step is to store the outcome in the inventory.
+Scroll down to the bottom of the HTTP agent item and select an inventory field,
 for example "Site rack location".
 
-To access suggested inventory field, we must use:
+To access the suggested inventory field, we must use:
 
 !!! example ""
 
@@ -229,7 +228,7 @@ To access suggested inventory field, we must use:
     {INVENTORY.SITE.RACK}
     ```
 
-To include extra information inside the message template follow this lead:
+To include extra information inside the message template, follow this lead:
 
 ![Inventory fields in media type](ch12.7-use-invenotry-field-in-media-type-with-numbers.png)
 
@@ -238,30 +237,29 @@ Inventory fields in media type_
 
 !!! warning "Warning"
 
-    If data collection is done by Zabbix proxy, it is possible the proxy
-    is incapable to reach Zabbix frontend server due to limitation in firewall.
+    If data collection is done by a Zabbix proxy, it is possible the proxy
+    is unable to reach the Zabbix frontend server due to a firewall restriction.
     Use `curl -kL "https://zabbix.book.the"` to test!
 
 ---
 
-## Auto close problem (Webhook)
+## Automatically close a problem (Webhook)
 
 !!! tip "Use case"
 
-    Due to reason of not being able to find a recovery expression for a trigger,
-    need to close the event automatically after certain time.
+    Because we cannot find a recovery expression for a trigger,
+    we need to close the event automatically after a certain time.
 
 ---
 
 !!! info "Implementation"
 
-    Trigger settings must support `Allow manual close`. On trigger which needs
-    to be auto closed there must be a tag `auto` with a value `close`.
-    An action will invoke a webhook which will use Zabbix API to close event.
+    Trigger settings must support `Allow manual close`. On a trigger which needs to be automatically closed, there must be a tag `auto` with a value `close`.
+    An action will invoke a webhook which will use the Zabbix API to close the event.
 
 ---
 
-To implement, visit **Alerts** => **Scripts**, press **Create script**
+To implement, visit `Alerts` | `Scripts` and press **Create script**.
 
 ![Auto close problem](ch12.8-zabbix-api-auto-close-problem-webhook.png)
 
@@ -303,24 +301,24 @@ Script:
 
 For the triggers which need to be closed automatically, we need to:
 
-1) Set `Allow manual close` checkbox ON
+1) Select the `Allow manual close` checkbox
 
 ![Allow manual close](ch12.9-trigger-configuration-allow-manual-close.png)
 
 _12.9
 Allow manual close_
 
-2) Install tag `auto` with value `close`
+2) Add the tag `auto` with the value `close`
 
 ![Install trigger tags](ch12.10-trigger-configuration-install-tags.png)
 
 _12.10
 Trigger tags_
 
-Go to **Alerts** => **Actions** => **Trigger actions**
+Go to `Alerts` | `Actions` | `Trigger actions`
 
 Create an action which will be targetable
-by using tag name `auto` with a tag value `close`.
+by using the tag name `auto` with a tag value `close`.
 
 ![Set up conditions for action](ch12.11-create-new-action-install-conditions.png)
 
@@ -334,40 +332,39 @@ It's important to not create operation step 1, but start operation with step 2:
 _12.12
 A delayed operation_
 
-The **Default operation step duration** field will serve the purpose
-to tell how long the event will be in problem state.
+The **Default operation step duration** field will indicate how long the event will be in the problem state.
 
 ![Default operation step](ch12.13-default-operation-step-duration.png)
 
 _12.13
 Close event later_
 
-This solution has been tested with 7.0/7.4
+This solution has been tested with 7.0/7.4.
 
-## Self destructive host (Webhook)
+## Self-destructive host (Webhook)
 
 !!! tip "Use case"
 
-    On a big infrastructure with thousands of devices there is no human who can
+    In a large infrastructure with thousands of devices, there is no human who can
     track which devices are deprovisioned.
-    Need to automatically remove unhealthy devices.
+    We need to automatically remove unhealthy devices.
 
 ---
 
 !!! info "Implementation"
 
     Problem events such as "Zabbix agent is not available"
-    or "No SNMP data collection" sitting too long in problem state
+    or "No SNMP data collection" remaining too long in the problem state
     will invoke a webhook to delete the host.
 
 ---
 
-To implement, visit **Alerts** => **Scripts**, press **Create script**
+To implement, visit `Alerts` | `Scripts` and press **Create script**.
 
 ![Delete host webhook](ch12.14-delete-host-webhook.png)
 
 _12.14
-Auto close problem_
+Delete host webhook_
 
 | Field               | Value                                                 |
 | :------------------ | :-----------------------------------------------------|
@@ -402,7 +399,7 @@ Script:
     return JSON.stringify(hostDelete);
     ```
 
-To setup action, the trigger must running a tag `delete` with value `host`.
+To set up an action, the trigger must have a tag `delete` with value `host`.
 The conditions can be to target tag plus value and trigger severity:
 
 ![Delete host action conditions](ch12.15-delete-host-action-conditions.png)
@@ -411,7 +408,7 @@ _12.15
 Delete host target tag and tag value_
 
 Here we are running a delayed action with a step number 31.
-Because default duration is 1d, the host will be deleted after 30 days.
+Because the default duration is `1d`, the host will be deleted after 30 days.
 
 ![Delete host action operations](ch12.16-delete-host-action-operations.png)
 
@@ -422,15 +419,15 @@ Delete host operations_
 
 !!! tip "Use case"
 
-    Replace host "Visible name" with a name which is already stored in inventory
+    Replace the host's "Visible name" with a name which is already stored in the inventory.
 
 ---
 
 !!! info "Implementation"
 
-    The "Script" item, will read metadata for all hosts. Will read the **Name**
-    field stored inside inventory and compare with current **Visible name** of
-    host. If inventory field is empty, the visible field will not be replaced.
+    The "Script" item will read metadata for all hosts. It will read the **Name**
+    field stored in the inventory and compare it with the current **Visible name** of
+    the host. If the inventory field is empty, the visible field will not be replaced.
 
 ---
 
@@ -438,7 +435,7 @@ This is maximum efficiency to run a single API call once per day.
 If nothing needs to be done, "host.update" API calls will not be wasted.
 No SQL UPDATE operations for the Zabbix database :)
 
-Go to **Data collection** => **Hosts** => press **Create host**
+Go to `Data collection` | `Hosts` and press **Create host**
 
 | Field               | Value                                                 |
 | :------------------ | :-----------------------------------------------------|
@@ -532,9 +529,9 @@ Script:
 
 !!! warning "Warning"
 
-    The chances of having duplicate host names are still possible. In this case,
-    the script will continue to parse all hosts and will retry update operation.
-    Ensure $.listOfErrors in output is an empty list.
+    Duplicate host names are still possible. In this case,
+    the script will continue to parse all hosts and will retry the update operation.
+    Ensure `$.listOfErrors` in the output is an empty list.
 
 ---
 
@@ -545,22 +542,22 @@ All together
 _12.17
 Script item, host Visible name_
 
-The item will sit at host level and serve a purpose of cronjob
+The item will sit at host level and serve the purpose of a cron job.
 
 ![Script item ready](ch12.18-script-item-ready.png)
 
 _12.18
 Script item ready_
 
-This is tested and works with Zabbix 7.0
+This is tested and works with Zabbix 7.0.
 
-## Cleanup unused ZBX interfaces (Webhook)
+## Clean up unused ZBX interfaces (Webhook)
 
 !!! tip "Use case 1"
 
-    Default "Host availability" widget will print "Unknown" interfaces
-    if none of Zabbix agent passive checks are using it.
-    Need to remove interface to get "Unknown" interface number closer to 0
+    The default "Host availability" widget will print "Unknown" interfaces
+    if none of the Zabbix agent passive checks are using them.
+    We need to remove the interface to get the number of "Unknown" interfaces closer to 0.
 
 ---
 
@@ -573,8 +570,7 @@ Unknown ZBX passive interfaces_
 !!! tip "Use case 2"
 
     Active checks by design do not require an interface. Having a defined
-    interface will mislead the team to understand how active checks actually
-    works.
+    interface will mislead the team about how active checks actually work.
 
 ---
 
@@ -582,9 +578,8 @@ Unknown ZBX passive interfaces_
 !!! tip "Use case 3"
 
     https://cloud.zabbix.com/ is good for server monitoring with active checks.
-    While registering new servers, the IP address of host interface is not
-    relatable to infrastructure.
-    Remove the interface to make setup look more clean.
+    While registering new servers, the IP address of the host interface is not relevant to the infrastructure.
+    Remove the interface to make the setup look cleaner.
 
 ---
 
@@ -592,11 +587,11 @@ Unknown ZBX passive interfaces_
 !!! info "Implementation"
 
     To bring aboard a host, run a webhook to validate if an interface is used
-    by any passive Zabbix agent items. If it's not used, then remove interface.
+    by any passive Zabbix agent items. If it's not used, then remove the interface.
 
 ---
 
-To implement, visit **Alerts** => **Scripts**, press **Create script**
+To implement, visit `Alerts` | `Scripts` and press **Create script**.
 
 ![Remove unused ZBX interfaces](ch12.20-remove-unused-zbx-hosts.png)
 
@@ -727,23 +722,21 @@ Script:
  
     return 0;
     ```
-To make webhook in action visit **Alerts** => **Actions**
-=> **Autoregistration actions**. Press **Create action**. For example to auto
-register Linux servers, we can target a pattern ".lnx" inside the hostname.
+To put the webhook into action, visit `Alerts` | `Actions` | `Autoregistration actions`. Press **Create action**. For example, to autoregister Linux servers, we can target a pattern ".lnx" inside the hostname.
 
 ![Conditions for ZBX active checks](ch12.21-autoreg-conditions.png)
 
 _12.21
 Conditions for ZBX active checks_
 
-The operations will use newly made webhook
+The operations will use the newly created webhook.
 
 ![Operations of Zabbix agent autoregistration](ch12.22-autoreg-actions.png)
 
 _12.22
 Operations of Zabbix agent autoregistration_
 
-The complete picture is
+The complete picture is:
 
 ![Zabbix agent autoregistration completed](ch12.23-autoreg-completed.png)
 
@@ -754,30 +747,30 @@ Zabbix agent autoregistration completed_
 
 !!! tip "Use case"
 
-    Requirement is to read a filename
-    with today's pattern YYYY.MM.DD or YYYY_MM_DD or YYYYMMDD.
+    The requirement is to read a filename
+    with today's pattern `YYYY.MM.DD`, `YYYY_MM_DD`, or `YYYYMMDD`.
 
 !!! note "Popular solution 1 - logrt"
 
-    Using "logrt" item key can be used to cover use case.
-    However in case of hundreds of files in directory, the CPU will have impact.
+    The `logrt` item key can be used to cover this use case.
+    However, with hundreds of files in the directory, CPU usage will be affected.
 
 !!! note "Popular solution 2 - LLD rule"
 
-    We Zabbix LLD rule to find the files in directory.
-    This method does not allow storing all data inside same itemid.
-    When files are deleted from server, the items in Zabbix will get unsupported.
+    We use a Zabbix LLD rule to find the files in the directory.
+    This method does not allow storing all data under the same item ID.
+    When files are deleted from the server, the items in Zabbix will become unsupported.
 
 !!! info "Alternative solution"
 
-    We will use Zabbix API to create a global variables YYYY, MM, DD.
-    Those will be universally available by any host, template.
+    We will use Zabbix API to create global variables `YYYY`, `MM`, and `DD`.
+    Those will be universally available to any host or template.
     The "cronjob host" will run at least once per day
-    and reinstall the date right after the midnight.
-    Inside template level there will be a single/static item key
+    and reinstall the date right after midnight.
+    At the template level there will be a single/static item key
     which will be able to read today's log.
 
-Go to **Data collection** => **Hosts** => press **Create host**
+Go to `Data collection` | `Hosts` and press **Create host**
 
 | Field               | Value                                                 |
 | :------------------ | :-----------------------------------------------------|
@@ -798,7 +791,7 @@ Go to **Items** and press **Create item**
 Parameters:
 
 | Field                    | Value                                            |
-| :----------------------- | :------------------------------------------- ----|
+| :----------------------- | :------------------------------------------------|
 | 1_year                   | `{$DATE:arg1.year}`                              |
 | 2_month                  | `{$DATE:arg2.month}`                             |
 | 3_day                    | `{$DATE:arg3.day}`                               |
@@ -934,14 +927,14 @@ The script to create and maintain global variables:
 _12.24
 Create or reinstall global macros_
 
-After running a script now, there are global variables available:
+After running the script, the global variables are now available:
 
 ![Reinstall YYYY-MM-DD](ch12.25-yyyy-mm-dd-result.png)
 
 _12.25
-Global YYYY, MM, DD macros_
+Global YYYY, MM, and DD macros_
 
-For log item monitoring we can use native log item key:
+For log item monitoring, we can use the native log item key:
 
 !!! info ""
 
@@ -949,7 +942,7 @@ For log item monitoring we can use native log item key:
     log[/var/log/zabbix/backup_{$DATE:arg1.year}.{$DATE:arg2.month}.{$DATE:arg3.day}.log]
     ```
 
-In case need to analyze a single summary where file size is less than 16 MB, then can use:
+If you need to analyse a single summary where the file size is less than 16 MB, you can use:
 
 !!! info ""
 

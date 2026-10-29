@@ -3,7 +3,7 @@
 In today's interconnected IT landscape, monitoring systems like Zabbix have become
 critical infrastructure components, offering visibility into the health and performance
 of entire networks. However, these powerful monitoring tools also represent potential
-security vulnerabilities if not properly secured. This chapter will explores the
+security vulnerabilities if not properly secured. This chapter will explore the
 essential combination of SELinux and security best practices to harden your Zabbix
 deployment against modern threats.
 

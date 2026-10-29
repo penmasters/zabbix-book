@@ -11,11 +11,10 @@ If you're familiar with partitioning a Zabbix database using MySQL or any of the
 other forks like MariaDB, you're likely aware of the complexity involved, which
 often requires Perl scripts and manual database operations. Fortunately, PostgreSQL
 offers a much simpler and more streamlined approach. With the TimescaleDB extension,
-partitioning is fully automated. This extension is not only powerful and efficient,
-it is also the only method officially supported by Zabbix for database partitioning.
+partitioning is fully automated. This extension is not only powerful and efficient; it is also the only method officially supported by Zabbix for database partitioning.
 TimescaleDB takes care of the underlying logic, freeing you from custom scripts
 and manual tweaks. For this reason, PostgreSQL could be the preferred and most convenient
-option for managing large scale Zabbix environments.
+option for managing large-scale Zabbix environments.
 
 ---
 
@@ -25,10 +24,10 @@ First, make sure to download TimescaleDB from the correct source: [https://docs.
 Avoid using the version available in the standard PostgreSQL package repository,
 as it is outdated and not suitable for Zabbix.
 
-TimescaleDB comes in two editions: one released under the Apache license and the
+TimescaleDB comes in two editions: one released under the Apache licence and the
 other as the Community edition. For Zabbix, the Community edition is the recommended
 choice. It includes all advanced features such as native compression, which are
-essential for efficient long term data storage and performance in larger environments.
+essential for efficient long-term data storage and performance in larger environments.
 
 ???+ info
 
@@ -45,17 +44,17 @@ essential for efficient long term data storage and performance in larger environ
     But for that to work you DO need to install PostgreSQL from the OS vendor-provided
     packages instead of the official PostgreSQL repositories.
 
-    Unfortunately, TimescaleDB seems not to be the available for openSUSE Leap and SLES 16.
+    Unfortunately, TimescaleDB seems not to be available for openSUSE Leap and SLES 16.
     For those systems, you can add the SUSE Factory server:database:postgresql 
     repository to your system and install TimescaleDB from there. However, the
-    chances are high that this version will require also the Postgresql packages from
+    chances are high that this version will also require the PostgreSQL packages from
     that same SUSE Factory repository. Overall this should not be a problem on 
     openSUSE, but on SLES, if you have paid support for PostgreSQL via SUSE, 
     this will break your support contract. In that case your only option is to
-    compile TimescaleDB from source against the SUSE supported PostgreSQL package.
+    compile TimescaleDB from source against the SUSE-supported PostgreSQL package.
 
-    Warning: Due to licensing restrictions, TimescaleDB packages provided by SUSE uses the
-    Apache license instead of the Community edition. This means that some features
+    Warning: Due to licensing restrictions, TimescaleDB packages provided by SUSE use the
+    Apache licence instead of the Community edition. This means that some features
     like native compression are not available. If you require these features, you
     will need to compile TimescaleDB from source. In that case it won't matter
     if you installed PostgreSQL from the official PostgreSQL repositories or from the
@@ -64,9 +63,9 @@ essential for efficient long term data storage and performance in larger environ
 
 ???+ note
 
-    Always check in the Zabbix documentation before you start what version of
-    PostgreSQL is supported and what version of the TimescaleDB is supported that
-    way you don't install any unsupported version that could run you into issues.
+    Always check in the Zabbix documentation before you start which versions of
+    PostgreSQL and TimescaleDB are supported. That way, you won't install an
+    unsupported version that could cause issues.
     [https://docs.timescale.com/self-hosted/latest/install/installation-linux/#supported-platforms](https://docs.timescale.com/self-hosted/latest/install/installation-linux/#supported-platforms)
 
 ---
@@ -101,7 +100,7 @@ essential for efficient long term data storage and performance in larger environ
     zypper addrepo --refresh https://download.opensuse.org/repositories/server:/database:/postgresql/16.0/server:database:postgresql.repo
     ```
     (You can check https://download.opensuse.org/repositories/server:/database:/postgresql/
-    which SUSE versions are available and adjust the version in the above URL accordingly.)
+    to see which SUSE versions are available and adjust the version in the above URL accordingly.)
 
     Ubuntu
     ```bash
@@ -136,7 +135,7 @@ We will now install the TimescaleDB extension using the package manager, either
 from the official TimescaleDB repository for Red Hat and Ubuntu, or from the 
 SUSE PackageHub or SUSE Factory repository for SLES and openSUSE. 
 If you prefer to compile TimescaleDB from source, for example if you want the 
-Community edition on SUSE or if you are using a different Linux flavor not
+Community edition on SUSE or if you are using a different Linux flavour not
 supported by TimescaleDB, you can follow the instructions in the next section.
 
 !!! info "Install TimescaleDB"
@@ -183,14 +182,14 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
 ???+ warning
 
-    Be sure to install the version of TimescaleDB that is supported by Zabbix
-    also when you upgrade your OS verify that the new database version and
-    timescaledb are supported by Zabbix. It's probably best to exclude them from
-    automatic updates. Do note however that this will also prevent you from
-    getting newer postgresql packages as each timescaledb package is built against
-    a specific postgresql package. So you may see errors during system updates
-    when a newer postgresql package is available but the installed locked timescaledb
-    has a requirement for the older postgresql package.
+    Be sure to install the version of TimescaleDB that is supported by Zabbix.
+    Also, when you upgrade your OS, verify that the new database version and
+    TimescaleDB are supported by Zabbix. It's probably best to exclude them from
+    automatic updates. Do note, however, that this will also prevent you from
+    getting newer PostgreSQL packages as each TimescaleDB package is built against
+    a specific PostgreSQL package. So you may see errors during system updates
+    when a newer PostgreSQL package is available but the installed locked TimescaleDB
+    has a requirement for the older PostgreSQL package.
 
 !!! info "Check for specific versions"
 
@@ -209,7 +208,7 @@ supported by TimescaleDB, you can follow the instructions in the next section.
     apt-cache policy timescaledb-2-postgresql-17
     ```
 
-!!! info "installing a specific version and lock the version"
+!!! info "Install and lock a specific version"
 
     Red Hat
     ```bash
@@ -222,9 +221,9 @@ supported by TimescaleDB, you can follow the instructions in the next section.
     zypper install postgresql17-timescaledb-2.29.1
     zypper addlock postgresql17-timescaledb
     ```
-    Warning: on SLES15 using PackageHub you have all versions starting from the
-    version that was originally shipped with SLES15 up to the most recent version.
-    When using the SUSE Factory server:database:postgresql repository on SLES16 
+    Warning: on SLES 15 using PackageHub you have all versions starting from the
+    version that was originally shipped with SLES 15 up to the most recent version.
+    When using the SUSE Factory server:database:postgresql repository on SLES 16
     and openSUSE Leap you will always only have the latest built version available.
     On those systems, you can still lock the current version preventing it from
     being updated. But if you ever remove or upgrade the package, you won't be 
@@ -292,7 +291,7 @@ and tune the configuration. There are two ways to do this: the automated way and
 the manual way.
 
 TimescaleDB provides a tuning script that analyses your system and applies recommended
-settings to optimize performance. On Red Hat based systems, you can run:
+settings to optimise performance. On Red Hat-based systems, you can run:
 
 !!! info ""
 
@@ -304,7 +303,7 @@ When installed on SUSE using the SUSE packages, the script is not available and
 you will need to install it manually using Go. Additionally, the `pg_config` binary
 is part of the `postgresql17-server-devel` package, which is not installed by default.
 So we will install both packages, use Go to install the tuning script, and then
-run it to tune your PostgreSQL configuration.:
+run it to tune your PostgreSQL configuration:
 
 !!! info
 
@@ -314,7 +313,7 @@ run it to tune your PostgreSQL configuration.:
     /root/go/bin/timescaledb-tune -conf-path=/var/lib/pgsql/data/postgresql.conf
     ```
 
-For Ubuntu and Debian based systems, simply run:
+For Ubuntu and Debian-based systems, simply run:
 
 !!! info ""
 
@@ -322,10 +321,8 @@ For Ubuntu and Debian based systems, simply run:
     sudo timescaledb tune
     ```
 
-This script will suggest configuration changes and can update your postgresql
-configuration file automatically. If you prefer to tune the settings manually,
-which is often recommended for experienced users, you will need to edit your postgresql
-configuration file yourself.
+This script will suggest configuration changes and can update your PostgreSQL configuration file automatically. If you prefer to tune the settings manually,
+which is often recommended for experienced users, you will need to edit your PostgreSQL configuration file yourself.
 
 At a minimum, make sure to add the following line at the end of the file:
 
@@ -336,12 +333,12 @@ At a minimum, make sure to add the following line at the end of the file:
     ```
 
     Your PostgreSQL configuration file is typically located at `/var/lib/pgsql/17/data/postgresql.conf` 
-    on Red Hat based systems, `/var/lib/pgsql/data/postgresql.conf` on SUSE, and 
+    on Red Hat-based systems, `/var/lib/pgsql/data/postgresql.conf` on SUSE, and
     `/etc/postgresql/17/main/postgresql.conf` on Ubuntu.
 
 After making these changes to your PostgreSQL configuration, either manually or 
 using the tuning script, you must restart the PostgreSQL service to load the 
-TimescaleDB extension and apply the new settings.:
+TimescaleDB extension and apply the new settings:
 
 !!! info "Restart PostgreSQL service"
 
@@ -367,7 +364,7 @@ Next, we connect to the Zabbix database as the user `zabbixsrv`, or whichever da
 user you have configured earlier, and create the TimescaleDB extension. However,
 before doing this, it is strongly recommended to stop the Zabbix server. This will
 prevent the application from interfering with the database during the process, which
-could otherwise cause locks or unexpected behavior.
+could otherwise cause locks or unexpected behaviour.
 
 !!! info "Stop Zabbix server"
 
@@ -447,13 +444,13 @@ To use partitioned housekeeping for history and trends, both of these options mu
 be enabled. However, it is also possible to enable them individually, depending
 on your requirements.
 
-In addition, the script sets two TimescaleDB specific parameters:
+In addition, the script sets two TimescaleDB-specific parameters:
 
 - Enable compression
 - Compress records older than 7 days
 
-These settings help reduce the size of historical data and improve long term performance.
-Let's start our zabbix server again before we continue
+These settings help reduce the size of historical data and improve long-term performance.
+Let's start our Zabbix server again before we continue.
 
 !!! info "start Zabbix server"
 
@@ -461,7 +458,7 @@ Let's start our zabbix server again before we continue
     sudo systemctl start zabbix-server
     ```
 
-Let's have a look at them go in our menu to **Administration** -> **Housekeeping**
+Let's have a look at them: go to `Administration` | `Housekeeping`.
 
 ![TimescaleDB settings](ch13.12-timescaledb.png)
 
@@ -474,13 +471,12 @@ settings_
 
 Using TimescaleDB with PostgreSQL is the only officially supported method for database
 partitioning in Zabbix. It replaces complex manual setups with automated, efficient
-handling of historical and trend data. Features like native compression and time
-based partitioning significantly reduce storage usage and improve query performance.
+handling of historical and trend data. Features like native compression and time-based partitioning significantly reduce storage usage and improve query performance.
 
 By installing PostgreSQL from the correct repository, tuning it properly, and applying
 the TimescaleDB schema patch, you ensure that Zabbix can scale reliably with minimal
-maintenance overhead. This setup not only optimizes performance but also prepares
-your environment for long term growth and data retention.
+maintenance overhead. This setup not only optimises performance but also prepares
+your environment for long-term growth and data retention.
 
 ---
 
