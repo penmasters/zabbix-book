@@ -19,17 +19,17 @@ workflow. Picture adding custom menu items right within your **Hosts**, **Proble
 **Dashboards**, and even your **Maps** sections. This means the information and
 tools you need are always at your fingertips.
 
-Ultimately, frontend scripts empower you to extend Zabbix far beyond it's out-of-the-box
-capabilities. They provide that crucial extra layer of customization, allowing you
+Ultimately, frontend scripts empower you to extend Zabbix far beyond its out-of-the-box
+capabilities. They provide that crucial extra layer of customisation, allowing you
 to seamlessly integrate your own scripts and workflows directly into the Zabbix
 frontend. Get ready to harness this power and tailor Zabbix precisely to your needs!
 
-## Creating a frontend scripts
+## Creating a frontend script
 
 For this example, we'll work with a frontend script I developed that lets you put
 hosts in maintenance mode. This script makes it possible to add a convenient option
 in your GUI, allowing you to place hosts in maintenance with just a few clicks.
-You can download the script from our GitHub repository :
+You can download the script from our GitHub repository:
 
 [https://github.com/penmasters/trikke76-fork/blob/master/maintenance/](https://github.com/penmasters/trikke76-fork/blob/master/maintenance/)
 
@@ -58,8 +58,8 @@ running. Make sure you have this dependency set up on your system before executi
     ```
 
 ???+ note
-    For the user you can use the user `Admin` or you can create a new user. but
-    make sure this user has enough permissions to create a maintenance mode.
+    For the user you can use the user `Admin` or you can create a new user. But
+    make sure this user has enough permissions to create a maintenance period.
     It's best practice to create a dedicated user for this in production.
 
 Starting with Zabbix 7.2, token-based authentication is required when working with
@@ -69,14 +69,14 @@ privileges over all tokens.
 To create a token for your Admin user:
 
 - Navigate to `User settings`
-- Select the `API tokens` sections
+- Select the `API tokens` section
 
 ![User API](ch09.1-scripts-user.png)
 
 *9.1 User API*
 
 After selecting `API tokens` from the menu, you'll land on the `API tokens` page.
-Look for the `Create API` token button in the top right corner and click it to
+Look for the `Create API token` button in the top right corner and click it to
 begin the creation process.
 
 ![Create API](ch09.2-create-api.png)
@@ -123,34 +123,34 @@ from the dropdown to access the scripts configuration area.
 
 *9.5 Scripts menu*
 
-You should already see a few existing script  like `Ping`, `Traceroute`, .... that's
-normal those where created with the installation of Zabbix. Press the button `Create scripts`
-on the top right corner. A now form will popup where we will configure our maintenance
+You should already see a few existing scripts  like `Ping`, `Traceroute`, .... that's
+normal those were created with the installation of Zabbix. Press the button `Create scripts`
+on the top right corner. A new form will pop up where we will configure our maintenance
 script. Fill out the following fields:
 
 - *Name:* Create maintenance no data collection
-- *Scope* : Manual host action
-- *Menu path* : Maintenance
-- *Type* : Script 
-- *Execute on* : Zabbix proxy or server
-- *Commands* : `/usr/bin/zabbix-maintenance.py create "{HOST.HOST}" {MANUALINPUT} no`
+- *Scope*: Manual host action
+- *Menu path*: Maintenance
+- *Type*: Script 
+- *Execute on*: Zabbix proxy or server
+- *Commands*: `/usr/bin/zabbix-maintenance.py create "{HOST.HOST}" {MANUALINPUT} no`
 
-At the bottom we have a tab `Advanced configuration` Click on this and extra configuration
+At the bottom we have a tab `Advanced configuration`. Click on this and extra configuration
 options will appear.
 
-As you probably noticed we used in our `Command` the macro `{MANUALINPUT}` this
+As you probably noticed we used the macro `{MANUALINPUT}` in our `Command`. This macro
 will be used to gather information from a user prompt. This allows us to ask
-the user to fill in the time he wants to place the host in maintenance.
+the user to fill in the time they want to place the host in maintenance.
 
-- *Enable user input* : yes
-- *Input prompt* : How many minutes do you want to place the host in maintenance ?
-- *Input type* : String (A dropdown box can also be used in case you have a list of options)
-- *Default string* : 60 (but we can use anything this will just be the default answer)
-- *Input validation rule* : `(\d+)` (our regex in perl to only allow digits)
-- *Enable confirmation* : yes
-- *Confirmation text* : Are you sure ?
+- *Enable user input*: yes
+- *Input prompt*: How many minutes do you want to place the host in maintenance?
+- *Input type*: String (A dropdown box can also be used in case you have a list of options)
+- *Default string*: 60 (but we can use anything, this will just be the default answer)
+- *Input validation rule*: `(\d+)` (our regex in Perl to only allow digits)
+- *Enable confirmation*: yes
+- *Confirmation text*: Are you sure?
 
-If everything went well you should end up with a similar looking page :
+If everything went well you should end up with a similar-looking page:
 
 ![Script form](ch09.6-script-form.png)
 
@@ -163,15 +163,15 @@ If everything went well you should end up with a similar looking page :
     configuration file and change the config `EnableGlobalScripts=0` to
     `EnableGlobalScripts=0` and restart the service.
 
-When your are ready press `Add` at the bottom of the form. Let's test our script
+When you are ready press `Add` at the bottom of the form. Let's test our script
 to see if it works.
 
 ### Testing the frontend script
 
-In Zabbix go to the menu `Monitoring` => `Hosts` and click on the host `Zabbix server`
-and from the `scripts` menu select `Maintenance` and click on the sub Menu
+In Zabbix go to the menu `Monitoring` | `Hosts` and click on the host `Zabbix server`
+and from the `scripts` menu select `Maintenance` and click on the submenu
 `Create maintenance no data collection`. You should see a popup asking you how 
-many minutes you like to place the host in maintenance.
+many minutes you would like to place the host in maintenance.
 
 ![Monitoring host](ch09.7-host-testing-script.png)
 
@@ -183,13 +183,13 @@ When we click continue however we get a popup telling us that Zabbix cannot exec
 
 *9.8 Error executing script*
 
-This error is normal Zabbix has an option in the configuration file of the `Zabbix server`
+This error is normal, Zabbix has an option in the configuration file of the `Zabbix server`
 and the proxy that blocks the execution of global scripts. 
 
 We get a notification that `Zabbix` cannot execute the script. The config file
-has an option to block global executions by default in the server or proxy config
+has an option to block global executions by default in the server or proxy config,
 activate the option "EnableGlobalScripts=1". Go to the `Zabbix server` configuration
-file with you favourite editor and enable the parameter and restart the server service. 
+file with your favourite editor and enable the parameter and restart the server service. 
 
 
 If all goes well this time you will see a popup telling you it was successful this time.
@@ -198,20 +198,20 @@ If all goes well this time you will see a popup telling you it was successful th
 
 *9.9 Maintenance successful*
 
-When we look in our Zabbix menu under `Data collection` => `Maintenance` we can see
-that a new maintenance was created for our host with the time we had specified.
-This will allow us to create Maintenance windows for hosts from the frontend with
+When we look in our Zabbix menu under `Data collection` | `Maintenance` we can see
+that a new maintenance period was created for our host with the time we had specified.
+This will allow us to create maintenance windows for hosts from the frontend with
 only a few clicks.
 
-Even better we are now able to allow certain non `Admin` users to create `maintenance periods`
+Even better we are now able to allow certain users who are not `Admin` users to create `maintenance periods`
 for hosts without the need to give special access rights or create special profiles.
 We have in our config of our script the option to limit the use of this `frontend script`
 to certain `Host groups` and `User groups`.
 
-???+ Tip
+???+ tip
     You can now create the same script but add the option `yes` instead of `no`
     when it comes to data collection and you can also create a script to delete
-    the maintenance period by just replacing `create` with `delete` and remove
+    the maintenance period by just replacing `create` with `delete` and removing
     all options after "{HOST.HOST}". This way you are able to create `maintenance periods`
     and delete them when not needed anymore per host.
     
@@ -239,7 +239,7 @@ knowledge you've gained here will enable you to effectively leverage Zabbix.
 Remember, the examples and techniques presented in this book provide a foundation.
 The true power of Zabbix frontend scripts lies in their flexibility and your ability
 to adapt them to your specific needs. As you continue to explore and experiment,
-you'll discover new ways to enhance your monitoring capabilities and optimize
+you'll discover new ways to enhance your monitoring capabilities and optimise
 your Zabbix setup.
 
 ## Questions
@@ -250,8 +250,8 @@ your Zabbix setup.
 
 ## Useful URLs
 
-- https://blog.zabbix.com/setting-up-manual-ticket-creation-using-zabbix-frontend-scripts/15550/
-- https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/administration/scripts
-- https://github.com/Trikke76/Zabbix/tree/master/maintenance
+- [https://blog.zabbix.com/setting-up-manual-ticket-creation-using-zabbix-frontend-scripts/15550/](https://blog.zabbix.com/setting-up-manual-ticket-creation-using-zabbix-frontend-scripts/15550/)
+- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/administration/scripts](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/administration/scripts)
+- [https://github.com/Trikke76/Zabbix/tree/master/maintenance](https://github.com/Trikke76/Zabbix/tree/master/maintenance)
 
 

@@ -1,4 +1,4 @@
-# Using Low level discovery to automate
+# Using Low-Level Discovery to automate
 
 Monitoring a static infrastructure is straightforward: you know your hosts, you
 know your interfaces, and you create items manually. The moment your environment
@@ -51,7 +51,7 @@ flowchart TD
     M -- No --> N[Items, triggers and graphs deleted]
 ```
 
-_8.1 Low-level discovery lifecycle_
+_8.1 Low-Level Discovery lifecycle_
 
 ## The two categories of LLD
 
@@ -117,7 +117,7 @@ uplinks than for regular access ports. Or you may want to disable certain trigge
 prototypes for a subset of discovered filesystems, such as read-only media, without
 creating a separate discovery rule.
 
-Overrides allow you to apply different prototype behavior per entity based on
+Overrides allow you to apply different prototype behaviour per entity based on
 conditions evaluated against the discovered LLD macro values. Within a single
 discovery rule you can, for example, set a different item update interval, change
 a trigger severity, or suppress prototype creation entirely for entities that
@@ -161,7 +161,7 @@ The following chapters work through each category of LLD in detail.
 output correctly, and using the results to monitor application-specific entities
 that Zabbix has no built-in check for.
 
-**Dependent LLD** covers how to setup LLD with dependent items in Zabbix.
+**Dependent LLD** covers how to set up LLD with dependent items in Zabbix.
 
 **Built-in LLD** covers the native agent-based discovery rules for filesystems,
 network interfaces, CPUs, and services, and shows how to configure prototypes,

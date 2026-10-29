@@ -83,10 +83,10 @@ In the Zabbix frontend go to `Data collection` | `Hosts`, select your host, then
 | Type of information | Text |
 
 ???+ tip
-     Use the **Test** button to confirm that the agent can read the file and
-     returns the expected JSON.
+    Use the **Test** button to confirm that the agent can read the file and
+    returns the expected JSON.
 
-Any item that produces valid JSON can serve as master item (HTTP agent, trapper,
+Any item that produces valid JSON can serve as a master item (HTTP agent, trapper,
 script item, etc.). A file-based item is used here purely for simplicity.
 
 ### 2. Create the Parent Discovery Rule
@@ -130,7 +130,7 @@ We now want to discover the tablespaces of each database **without** an extra
 agent check or external query. This is done with a discovery prototype of type
 **Nested**.
 
-### How Nested type works
+### How the Nested type works
 
 When the type is set to Nested, Zabbix does **not** re-fetch data. Instead it
 passes the individual JSON object that belongs to the currently discovered parent
@@ -184,9 +184,9 @@ On the **LLD macros** tab of the discovery prototype:
 ```
 
 ???+ note
-     LLD macros defined on the parent rule (`{#DB}`) are automatically inherited
-     and remain available inside nested discovery prototypes and all of their
-     child prototypes.
+    LLD macros defined on the parent rule (`{#DB}`) are automatically inherited
+    and remain available inside nested discovery prototypes and all of their
+    child prototypes.
 
 ### 4. Item Prototypes for the Nested Level
 
@@ -208,10 +208,10 @@ JSONPath → $..[?(@.database=='{#DB}')].tablespaces[?(@.name=='{#TSNAME}')].siz
 
 JSONPath Breakdown:
 
-- $.. searches recursively through the original master item JSON.
-- [?(@.database=='{#DB}')] filters the specific database instance.
-- .tablespaces[?(@.name=='{#TSNAME}')] filters down to the matching tablespace object.
-- .size_mb.first() extracts the integer value without returning array brackets.
+- `$..` searches recursively through the original master item JSON.
+- `[?(@.database=='{#DB}')]` filters the specific database instance.
+- `.tablespaces[?(@.name=='{#TSNAME}')]` filters down to the matching tablespace object.
+- `.size_mb.first()` extracts the integer value without returning array brackets.
 
 Because the item is a dependent item of the original master item, the JSONPath
 must locate the correct value inside the full original payload. Parent and nested
@@ -223,9 +223,7 @@ Nested LLD also extends to Host Prototypes. When Zabbix generates a new host ent
 from a Host Prototype, it passes the JSON object of that discovered entity down to
 any template attached to the host prototype.
 
-If a template attached to a host prototype contains a Nested LLD rule:
-
-Typical pattern:
+If a template attached to a host prototype contains a Nested LLD rule, the typical pattern is:
 
 1. Root host runs a discovery rule that creates host prototypes (one host per
    database, for example).

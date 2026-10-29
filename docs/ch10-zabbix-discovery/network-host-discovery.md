@@ -1,6 +1,6 @@
 ---
 description: |
-    Master Zabbix network discovery. Automating discovery of devices on your
+    Master Zabbix network discovery. Automate discovery of devices on your
     network. Assign templates & host groups. Perfect for large, cloud & dynamic
     infrastructures.
 tags: [advanced]
@@ -10,7 +10,7 @@ tags: [advanced]
 
 In this chapter, we'll explore one of the more useful automation features included in Zabbix called **network discovery**. This feature allows Zabbix to do port scans to actively scan networks for new devices, making it an excellent solution for environments where hosts appear and disappear regularly.
 
-Once a device has been discovered, Zabbix can automatically execute discovery actions, creating hosts, assigning templates, placing them into host groups, and adding tags. Specifically for Zabbix agent and SNMP type of checks, we can even execute the discovery actions based on real data collected. For example using the system name, description or other information to automatically assign host groups, tags and even templates.
+Once a device has been discovered, Zabbix can automatically execute discovery actions, creating hosts, assigning templates, placing them into host groups, and adding tags. Specifically for Zabbix agent and SNMP types of checks, we can even execute the discovery actions based on real data collected. For example using the system name, description, or other information to automatically assign host groups, tags, and even templates.
 
 ## Understanding network discovery
 
@@ -22,7 +22,7 @@ Network discovery works the other way around.
 
 Instead of waiting for a device to contact Zabbix, the Zabbix server or proxy actively scans one or more IP ranges, kind of like a port scan with nmap, looking for devices. Once devices are found, data can be sent to discovery actions to create hosts.
 
-Zabbix does this by generating a discovery event. In our discovery actions that event its data can be matched against the configured discovery actions conditions.
+Zabbix does this by generating a discovery event. In our discovery actions that event's data can be matched against the configured discovery action conditions.
 
 This makes network discovery especially useful for monitoring:
 
@@ -56,12 +56,12 @@ It is also possible to add multiple ranges:
 192.168.47.1-254
 ```
 
-Now we need to configure our discovery checks. In our example, we will be going to discover Linux servers via SNMP. I want the hostname to be the same as the servers configured hostname. I also want to know if the server is actually a Linux server. Therefore we will use two OIDs:
+Now we need to configure our discovery checks. In our example, we are going to discover Linux servers via SNMP. I want the hostname to be the same as the server's configured hostname. I also want to know if the server is actually a Linux server. Therefore we will use two OIDs:
 
-- 1.3.6.1.2.1.1.5.0 = System hostname
-- 1.3.6.1.2.1.1.1.0 = System description
+- `1.3.6.1.2.1.1.5.0` = System hostname
+- `1.3.6.1.2.1.1.1.0` = System description
 
-Adding those checks will looks like this.
+Adding those checks will look like this.
 
 ![Network discovery rule check hostname](network-discovery/ch10.1-network-discovery-check-hostname.png){ align=center }
 
@@ -71,7 +71,7 @@ Adding those checks will looks like this.
 
 *10.2 Network discovery rule check description*
 
-Our Linux servers in the IP range 192.168.46.1-254 will only be discovered when these checks succeeds.
+Our Linux servers in the IP range `192.168.46.1-254` will only be discovered when these checks succeed.
 
 We also need to configure an update interval, which determines how often Zabbix will scan all the IP addresses in the configured IP range.
 
@@ -97,20 +97,20 @@ Navigate to `Alerts` | `Actions` | `Discovery actions`, then click on `Create ac
 
 Autoregistration actions, discovery actions, and even trigger actions are all very alike. They consist of conditions and operations.
 
-With our discovery rule receiving the OID `1.3.6.1.2.1.1.1.0`, we have a great value to check if the host is actually running like. With it we can create the following conditions.
+With our discovery rule receiving the OID `1.3.6.1.2.1.1.1.0`, we have a great value to check if the host is actually running Linux. With it we can create the following conditions.
 
 ![Network discovery action condition](network-discovery/ch10.4-network-discovery-action-condition-linux.png){ align=center }
 
 *10.4 Network discovery action condition*
 
-Added that looks like the following.
+Once added, that looks like the following.
 
 
 ![Network discovery action conditions](network-discovery/ch10.5-network-discovery-action-conditions.png){ align=center }
 
 *10.5 Network discovery action conditions*
 
-When the conditions are met, we can then set up the operations to.
+When the conditions are met, we can then set up the operations to:
 
 - Add host to `Servers/Linux`
 - Link the `Linux by SNMP` template
@@ -135,15 +135,15 @@ Instead of requiring the central Zabbix server to scan remote networks, a proxy 
 
 !!! note
 
-    Please keep in mind that many security departements or external security companies see
-    Zabbix network discovery as an nmap like port scan. This could trigger an alert on their side, as they
+    Please keep in mind that many security departments or external security companies see
+    Zabbix network discovery as an nmap-like port scan. This could trigger an alert on their side, as they
     see the traffic pattern happen. Make sure they know what you are doing, so they can create
     an exception in their alerting patterns.
 
 
 ## Conclusion
 
-Network discovery is a powerful automation feature that allows Zabbix to create hosts automatically by actively scanning your network. Discovered hosts can immediately be added to the correct host groups, templates, and become part of your monitoring environment with minimal manual setup.
+Network discovery is a powerful automation feature that allows Zabbix to create hosts automatically by actively scanning your network. Discovered hosts can immediately be added to the correct host groups, linked to templates, and become part of your monitoring environment with minimal manual setup.
 
 While active agent autoregistration is ideal for servers running the Zabbix agent, network discovery is great at finding devices such as switches, printers, routers, and other appliances where installing a Zabbix agent is either impossible or not desired.
 
@@ -159,4 +159,4 @@ While active agent autoregistration is ideal for servers running the Zabbix agen
 
 ## Useful URLs
 
-- https://www.zabbix.com/documentation/current/en/manual/discovery/network_discovery
+- [https://www.zabbix.com/documentation/current/en/manual/discovery/network_discovery](https://www.zabbix.com/documentation/current/en/manual/discovery/network_discovery)

@@ -1,7 +1,7 @@
 ---
 description: |
     Automate SNMP monitoring with Zabbix SNMP LLD rules. Dynamically discover
-    ojbjest on your devices and create items and triggers automatically.
+    objects on your devices and create items and triggers automatically.
 tags: [advanced]
 ---
 
@@ -40,7 +40,7 @@ device on every check.
 For a switch with 48 interfaces and three metrics per interface (status,
 inbound traffic, outbound traffic), that is one discovery request plus 144
 separate polling requests, every polling cycle. On a device that also has to
-answer routing, spanning-tree and hardware sensors, this adds up quickly and
+answer routing, spanning-tree, and hardware sensors, this adds up quickly and
 is a common source of `SNMP timeout` errors in busy environments.
 
 ## The dependent master item approach
@@ -50,10 +50,10 @@ collect the data once, then reuse it. The difference is that Zabbix now has
 native support for this on the SNMP side through two building blocks:
 
 - The `walk[OID1,OID2,...]` item key, which performs a single bulk SNMP walk
- over one or more OID subtrees and stores the raw result.
+  over one or more OID subtrees and stores the raw result.
 - Two dedicated preprocessing steps, `SNMP walk to JSON` and `SNMP walk value`,
- that know how to read that raw result and turn it into LLD macros or item
- values without touching the device again.
+  that know how to read that raw result and turn it into LLD macros or item
+  values without touching the device again.
 
 One request, one response, and every discovered interface plus every metric
 for that interface is derived from data we already have in memory.
@@ -66,7 +66,7 @@ interfaces through the standard `IF-MIB`. Any Linux host with `net-snmp`
 installed and at least two network interfaces (a loopback and a real one)
 works, including your Zabbix server itself.
 
-!!! info "Setup the SNMP daemon and config"
+!!! info "Set up the SNMP daemon and config"
 
     Ubuntu
     
@@ -99,7 +99,7 @@ works, including your Zabbix server itself.
     snmpwalk -v2c -c public localhost 1.3.6.1.2.1.2.2.1.2
     ```
     
-    Red hat
+    Red Hat
     
     1. **Install the SNMP daemon and client tools**
     
@@ -109,12 +109,12 @@ works, including your Zabbix server itself.
     
     2. **Allow read access to the standard MIBs**
 
-    Rocky's stock /etc/snmp/snmpd.conf does two things that will trip you up if
-    you just add a rocommunity line and move on:
+    Rocky's stock `/etc/snmp/snmpd.conf` does two things that will trip you up if
+    you just add a `rocommunity` line and move on:
     
-    It has a commented-out demo line, # rocommunity public default -V  systemonly,
+    It has a commented-out demo line, # `rocommunity` `public` default -V  systemonly,
     which looks like a quick fix but restricts you to the same dead end described above.
-    More importantly, further down the file it already wires the community public
+    More importantly, further down the file it already wires the community `public`
     to a restricted view through a separate block, roughly:
 
     ```
@@ -126,9 +126,9 @@ works, including your Zabbix server itself.
     access  notConfigGroup ""      any       noauth    exact  systemview none none
     ```
     
-    That block matches on the community string itself, so adding your own rocommunity
-    public default further up the file does not override it, public stays tied
-    to systemview, which only ever includes system and hrSystemUptime, never ifTable.
+    That block matches on the community string itself, so adding your own `rocommunity`
+    `public` default further up the file does not override it; `public` stays tied
+    to `systemview`, which only ever includes `system` and `hrSystemUptime`, never `ifTable`.
     
     The reliable fix is to comment out that entire block and use a community string
     of your own for the lab:
@@ -160,20 +160,20 @@ works, including your Zabbix server itself.
     snmpwalk -v2c -c public localhost 1.3.6.1.2.1.2.2.1.2
     ```
 
-!!! Note
+!!! note
 
     If the service still doesn't return interface data after fixing the community
-    line, check journalctl -u snmpd and sealert before assuming snmpd.conf itself
+    line, check `journalctl -u snmpd` and `sealert` before assuming `snmpd.conf` itself
     is still wrong, SELinux on Rocky is fairly strict by default and can silently
     block a restart.
 
-    Either way, this should list the ifDescr value for every interface on the host,
+    Either way, this should list the `ifDescr` value for every interface on the host,
     for example lo and eth0 (Ubuntu) or lo and enp0s3 (Rocky's predictable network
     interface naming). Note that the community string differs between our two examples,
-    public on Ubuntu, zabbix on Rocky, use whichever one you actually configured.
+    `public` on Ubuntu, `zabbix` on Rocky; use whichever one you actually configured.
     If you get a result here, Zabbix will too.
 
-!!! Note
+!!! note
 
     In production you will point this at a real switch or router instead of a
     Linux host, the configuration on the Zabbix side is identical. Only the
@@ -195,15 +195,15 @@ Next, create the master item that performs the bulk walk:
 - **Type**: SNMP agent
 - **Key**: `snmp.walk.raw` (the key is a free-form identifier, unlike a regular
   SNMP item there is nothing SNMP-specific about it)
-- SNMP OID: walk[1.3.6.1.2.1.2.2]
+- **SNMP OID**: `walk[1.3.6.1.2.1.2.2]`
 - **Type of information**: Text
 - **Update interval**: 3m
 - **History**: Do not keep history (we only need this item to feed our
- discovery rule and item prototypes, see `Dependent LLD` for why)
+  discovery rule and item prototypes, see `Dependent LLD` for why)
 
 The OID `1.3.6.1.2.1.2.2` is the `ifTable` subtree of `IF-MIB`. Walking it once
 returns every column, `ifDescr`, `ifType`, `ifSpeed`, `ifOperStatus`,
-`ifInOctets`, `ifOutOctets` and more, for every interface in a single SNMP
+`ifInOctets`, `ifOutOctets`, and more, for every interface in a single SNMP
 session.
 
 !!! tip
@@ -225,7 +225,7 @@ ourselves.
 ## Creating the discovery rule
 
 Go to `Discovery rules` and click `Create discovery rule` or click on the 3 dots
-in front of the item and select the `create dependent discovery rule`
+in front of the item and select the `create dependent discovery rule`.
 
 - **Name**: Interface discovery
 - **Type**: Dependent item
@@ -249,7 +249,7 @@ _8.23 LLD discovery preprocessing_
 
 **Note**
 
-Unlike the JSONPath based dependent LLD we built earlier, there is no
+Unlike the JSONPath-based dependent LLD we built earlier, there is no
 separate `LLD macros` tab to fill in here. `SNMP walk to JSON` produces the
 finished LLD JSON by itself, matching every index it finds under the given
 OID prefix to a `{#SNMPINDEX}` macro and pairing it with the value you asked
@@ -308,7 +308,7 @@ In `Preprocessing`, add:
 
 ![LLD Prototype item](ch08.25-lld_item.png)
 
-_8.25_lld_item_
+_8.25 LLD item_
 
 The `{#SNMPINDEX}` macro is what ties this item to one specific row of the
 table, `ifOperStatus.1`, `ifOperStatus.2` and so on. This is the same
@@ -354,13 +354,13 @@ bookkeeping on our part.
 
 There is a side effect of this design worth calling out. In the classic approach
 you had to balance two separate intervals: how often the discovery rule re-walks
-the device, and how often each item polls it. Here there is only one, the update
-interval of our walk[] master item, since both discovery and every dependent item
+the device, and how often each item polls it. Here there is only one: the update
+interval of our `walk[]` master item, since both discovery and every dependent item
 are fed from that same request.
 
-For a small lab that's convenient, but it hides a real cost. ifInOctets and
-ifOutOctets are counters, they change on practically every poll. Since our single
-master item bundles those counters together with ifDescr, its raw value is different
+For a small lab that's convenient, but it hides a real cost. `ifInOctets` and
+`ifOutOctets` are counters, they change on practically every poll. Since our single
+master item bundles those counters together with `ifDescr`, its raw value is different
 every single cycle too, which means the discovery rule reprocesses the interface
 list every cycle as well, even though the actual set of interfaces on a switch
 rarely changes. On a device with a lot of interfaces polled every minute, that is
@@ -386,7 +386,7 @@ new to discover.
     data instead of the combined item. The discovery rule's Master item keeps
     pointing at RAW: Interface discovery.
     
-    Because ifDescr barely ever changes, Discard unchanged with heartbeat: 1h means
+    Because `ifDescr` barely ever changes, Discard unchanged with heartbeat: 1h means
     the discovery rule only actually reprocesses once an hour, or immediately the
     moment an interface really does appear or disappear, whichever comes first.
     The data item, meanwhile, is free to poll as often as you need without ever
@@ -402,31 +402,31 @@ new to discover.
 ## Conclusion
 
 The dependent master item approach turns SNMP LLD from "one request per discovered
-object, every cycle" into "one request, then pure preprocessing". The walk[] SNMP
+object, every cycle" into "one request, then pure preprocessing". The `walk[]` SNMP
 OID collects the whole table in a single SNMP session, SNMP walk to JSON derives
 the LLD macros directly from it without any JSONPath mapping, and SNMP walk value
 lets every dependent item prototype read its own value straight out of that same
 response.
 
 The result scales the same way regardless of how many interfaces, outlets, or sensors
-a device exposes, because the number of SNMP requests per cycle stays low and fixed,
+a device exposes, because the number of SNMP requests per cycle stays low and fixed:
 one if you keep discovery and data together like we did here, two if you split them
 as recommended above, instead of growing with every object discovered. Everything
-we covered here for ifTable applies just as well to any other SNMP table: UPS outlets,
-printer supplies, disk arrays, as long as the data is organised in indexed columns,
+we covered here for `ifTable` applies just as well to any other SNMP table: UPS outlets,
+printer supplies, disk arrays. As long as the data is organised in indexed columns,
 this pattern will discover and monitor it.
 
 
 ## Questions
 
 - Why does the dependent master item approach reduce the number of SNMP
- requests compared to the classic native SNMP discovery rule?
+  requests compared to the classic native SNMP discovery rule?
 - What is the practical difference between the `SNMP walk to JSON` and
- `SNMP walk value` preprocessing steps, and where is each one used?
+  `SNMP walk value` preprocessing steps, and where is each one used?
 - Why is there no `LLD macros` tab to configure when using `SNMP walk to
- JSON`, unlike the JSONPath based dependent LLD from the previous topic?
+  JSON`, unlike the JSONPath-based dependent LLD from the previous topic?
 - How would you extend this example to also discover and monitor the
- interface speed (`ifSpeed`, OID `1.3.6.1.2.1.2.2.1.5`)?
+  interface speed (`ifSpeed`, OID `1.3.6.1.2.1.2.2.1.5`)?
 
 ## Useful URLs
 
