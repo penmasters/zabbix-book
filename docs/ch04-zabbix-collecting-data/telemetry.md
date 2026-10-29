@@ -51,7 +51,8 @@ switch to OTLP/gRPC or send data through an OpenTelemetry Collector that
 receives HTTP and forwards it using gRPC.
 
 For this lab, use **OTLP/gRPC on port 4317** when sending telemetry directly
-to the Zabbix proxy. See the [OTLP specification](https://opentelemetry.io/docs/specs/otlp/)
+to the Zabbix proxy. See the
+[https://opentelemetry.io/docs/specs/otlp/](https://opentelemetry.io/docs/specs/otlp/)
 for transport details.
 
 Applications, or an intermediate OpenTelemetry Collector, can send OTLP/gRPC
@@ -230,14 +231,16 @@ must be derived from the telemetry itself. For example, the following
 **configuration fragment** adds a team attribute only to metrics from the
 `checkout` service:
 
-```yaml
-processors:
-  transform/assign_team:
-    metric_statements:
-      - context: resource
-        statements:
-          - set(attributes["team"], "payments") where attributes["service.name"] == "checkout"
-```
+!!! example "Example"
+
+    ```yaml
+    processors:
+      transform/assign_team:
+        metric_statements:
+          - context: resource
+            statements:
+              - set(attributes["team"], "payments") where attributes["service.name"] == "checkout"
+    ```
 
 Unlike a static attribute configured on the Zabbix proxy, this rule checks
 the incoming `service.name` resource attribute before making a change. It
@@ -278,11 +281,13 @@ On the proxy receiving OpenTelemetry traffic, create
 `/etc/zabbix/zabbix_proxy.d/telemetry.conf` (assuming your proxy configuration
 loads files from that directory):
 
-```conf
-StartAPMCollectors=1
-APMListenPort=4317
-TelemetryProvider=clickhouse;url=http://clickhouse.example.com:8123,db=zabbix,username=zabbix,password=your_password
-```
+!!! info ""
+
+    ```conf
+    StartAPMCollectors=1
+    APMListenPort=4317
+    TelemetryProvider=clickhouse;url=http://clickhouse.example.com:8123,db=zabbix,username=zabbix,password=your_password
+    ```
 
 - `StartAPMCollectors=1` enables the collector process; the default is `0`.
 - `APMListenPort=4317` uses the conventional OTLP/gRPC port. By default the
@@ -423,64 +428,122 @@ is needed.
 ### Prerequisites
 
 - A proxy with APM collector enabled, configured, and restarted.
-- A compatible ClickHouse telemetry database initialised with the required schema.
+- A working ClickHouse instance with the required OpenTelemetry tables.
 - A global data source configured for the frontend APM views.
 - A server or proxy with working Telemetry query pollers and access to ClickHouse.
 - Network access to the proxy's OTLP/gRPC port and to ClickHouse.
 
-!!! warning "ClickHouse APM schema: pending verification"
+### Initializing the ClickHouse APM schema
 
-    **PLACEHOLDER: replace after testing the official Zabbix 8.0 RC3
-    initialisation script.**
+Before collecting OpenTelemetry data, the required ClickHouse tables must be
+created. Zabbix provides an initialization script for traces, metrics, and
+logs in the following directory:
 
-    Early 8.0 release-candidate testing encountered missing `otel_*` tables.
-    Do not copy the experimental hand-written `otel_traces` schema from those
-    tests into a production installation.
+!!! info ""
 
-    **TODO before publication:** identify the official schema initialisation
-    script and package path; add the tested import command; verify all required
-    trace, metric, and log tables; document required ClickHouse version and
-    permissions; and remove this warning.
+    ```text
+    /usr/share/zabbix/sql-scripts/clickhouse/
+    ```
 
-### Step 1: Generate sustained baseline traces
+Run the `otel_all.sh` script to create the required tables:
 
-Install OpenTelemetry's `telemetrygen` tool with Go, or use a container image.
-Pin a version tested in your environment. For example:
+!!! info ""
 
-```bash
-go install github.com/open-telemetry/opentelemetry-collector-contrib/cmd/telemetrygen@v0.120.0
-```
+    ```bash
+    cd /usr/share/zabbix/sql-scripts/clickhouse/
+ 
+    ./otel_all.sh \
+      --server http://localhost:8123 \
+      --db zabbix
+    ```
 
-Container alternative:
+If ClickHouse requires authentication, provide the `--user` and `--password`
+parameters. The script also supports TLS connections and custom retention
+settings.
 
-```bash
-docker run --rm ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:0.120.0 \
-  traces --help
-```
+By default, the OpenTelemetry tables use the `MergeTree` engine with a
+retention period of **31 days**. The script creates separate tables for traces,
+logs, and the supported OpenTelemetry metric types.
 
-A short burst is insufficient for stable time buckets and a three-minute
-trigger average. Generate several minutes of baseline spans at roughly 200 ms:
+Verify that the tables were created successfully:
 
-```bash
-telemetrygen traces \
-  --otlp-endpoint zabbix-proxy.example.com:4317 \
-  --otlp-insecure \
-  --service checkout \
-  --rate 5 \
-  --duration 5m \
-  --child-spans 2 \
-  --span-duration 200ms
-```
+!!! info ""
 
-Each trace contains a root span and child spans. **Duration is per span**, not
-per complete trace. `--otlp-insecure` is suitable only for an isolated lab;
-configure TLS for production.
+    ```bash
+    clickhouse-client --query "
+    SELECT name, engine
+    FROM system.tables
+    WHERE database = 'zabbix'
+      AND name LIKE 'otel_%'
+    ORDER BY name"
+    ```
 
-### Step 2: Confirm the data source
+The expected tables are:
+
+| Table | Purpose |
+|---|---|
+| `otel_traces` | Distributed traces and spans |
+| `otel_logs` | OpenTelemetry logs |
+| `otel_metrics_gauge` | Gauge metrics |
+| `otel_metrics_sum` | Sum metrics |
+| `otel_metrics_histogram` | Histogram metrics |
+| `otel_metrics_exponential_histogram` | Exponential histogram metrics |
+
+The initialization scripts are also available in the official
+[https://github.com/zabbix/zabbix/tree/master/database/clickhous](https://github.com/zabbix/zabbix/tree/master/database/clickhouse).
+
+!!! note "Telemetry retention"
+
+    OpenTelemetry data is retained according to the TTL configured in
+    ClickHouse. The Zabbix housekeeper does not manage this data.
+    Adjust the retention period using the `--ttl` parameter when
+    initializing the tables.
+
+### Step 1: Configure the global APM data source
 
 In `Administration` | `Data source` | `APM`, enable the global data source and
 enter the ClickHouse URL and credentials. It must point to the database used by
 the proxy for this lab.
+
+### Step 2: Generate sustained baseline traces
+
+Install OpenTelemetry's `telemetrygen` tool with Go, or use a container image.
+Pin a version tested in your environment. For example:
+
+!!! info ""
+
+    ```bash
+    go install github.com/open-telemetry/opentelemetry-collector-contrib/cmd/telemetrygen@v0.120.0
+    ```
+
+Container alternative:
+
+!!! info ""
+
+    ```bash
+    docker run --rm ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:0.120.0 \
+      traces --help
+    ```
+
+A short burst is insufficient for stable time buckets and a three-minute
+trigger average. Generate several minutes of baseline spans at roughly 200 ms:
+
+!!! example "Example"
+
+    ```bash
+    telemetrygen traces \
+      --otlp-endpoint zabbix-proxy.example.com:4317 \
+      --otlp-insecure \
+      --service checkout \
+      --rate 5 \
+      --duration 5m \
+      --child-spans 2 \
+      --span-duration 200ms
+    ```
+
+Each trace contains a root span and child spans. **Duration is per span**, not
+per complete trace. `--otlp-insecure` is suitable only for an isolated lab;
+configure TLS for production.
 
 ### Step 3: Confirm traces in the APM menu
 
@@ -495,6 +558,10 @@ connectivity. Also check that your generator is actually sending OTLP/gRPC.
 
 Create a host named `otel-lab`, monitored by the server or proxy that should
 execute the Telemetry query. This item type does not require an agent.
+
+![ch04.104_new_host.png](ch04.104_new_host.png)
+
+_ch4.104 Add new host_
 
 ### Step 5: Create the Telemetry query item
 
@@ -514,52 +581,60 @@ Create the following item on `otel-lab`:
 | Update interval | `1m` |
 | Type of information | Numeric (float), after preprocessing |
 | Units | `ms` |
+| Preprocessing | |
+| JsonPath | $.columns.p95 |
+| Custom multiplier | 0.000001 |
 
-Use `Test` | `Get value` to inspect the actual result returned by your RC
-build. Configure preprocessing only for the observed result format; do not
+![ch04.105_create_item.png](ch04.105_create_item.png)
+
+_ch04.105 Create Item_
+
+Use `Test` | `Get value` to inspect the actual result.
+Configure preprocessing only for the observed result format; do not
 assume a particular JSON structure or JSONPath. Span `Duration` is measured
 in nanoseconds in the ClickHouse trace schema, so multiply by `0.000001`
 when converting a numeric duration to milliseconds.
-
-Wait for enough completed buckets to arrive.
-
-<!-- TODO: Planned for Zabbix 8.0 RC3; verify once the build arrives.
-- Confirm the new JSON output for multiple aggregated values and groups.
-- Test a single master item returning p95, avg and count together.
-- Test dependent items extracting each value using JSONPath.
-- Capture an actual Test -> Get value response and document exact JSONPaths.
-- If supported, update this lab to use a Text master item and numeric
-  dependent items, avoiding multiple ClickHouse queries per interval.
--->
-
 
 ### Step 6: Create triggers and raise latency
 
 Create a latency trigger using a short rolling average:
 
-```text
-avg(/otel-lab/telemetry.checkout.p95,3m)>500
-```
+!!! info ""
+
+    ```text
+    avg(/otel-lab/telemetry.checkout.p95,3m)>500
+    ```
 
 For a separate missing-data alert:
 
-```text
-nodata(/otel-lab/telemetry.checkout.p95,10m)=1
-```
+!!! info ""
+
+    ```text
+    nodata(/otel-lab/telemetry.checkout.p95,10m)=1
+    ```
 
 After the baseline run ends, generate slower spans long enough to fill several
 one-minute buckets:
 
-```bash
-telemetrygen traces \
-  --otlp-endpoint zabbix-proxy.example.com:4317 \
-  --otlp-insecure \
-  --service checkout \
-  --rate 5 \
-  --duration 10m \
-  --child-spans 2 \
-  --span-duration 600ms
-```
+!!! example "Example"
+
+    ```bash
+    telemetrygen traces \
+      --otlp-endpoint zabbix-proxy.example.com:4317 \
+      --otlp-insecure \
+      --service checkout \
+      --rate 5 \
+      --duration 10m \
+      --child-spans 2 \
+      --span-duration 600ms
+    ```
+
+Go to `APM`|`Traces` and click on the right side of the screen and drag it to
+the middle so you can see the traces.
+
+![ch04.106_apm_traces.png](ch04.106_apm_traces.png)
+
+_ch04.106 APM traces panel_
 
 Avoid overlapping the baseline and slow runs in the same buckets if you want
 a clean rise above 500 ms. The latency trigger should activate once sufficient
@@ -577,22 +652,6 @@ new values when traffic stops.
 - Traces are visible in `APM` | `Traces`.
 - A Telemetry query can aggregate span duration for a particular service.
 - Normal Zabbix triggers can alert on the resulting item values.
-
----
-
-## Current release-candidate verification points
-
-Before publishing the final Zabbix 8.0 instructions, verify the following
-against the official RC3 packages and documentation:
-
-- **ClickHouse schema:** replace the initialisation-script placeholder with
-  the official shipped script and tested commands.
-- **Telemetry query JSON output (planned for RC3):** verify the shipped
-  JSON structure for multiple aggregations and groups, then test dependent
-  items extracting `p95`, `avg`, and `count`. Do not present the planned
-  output format as available in earlier release candidates.
-- **Lab preprocessing:** capture the real item response and use its exact
-  output structure to configure the numeric p95 item.
 
 ---
 
@@ -630,6 +689,7 @@ proxy-server monitoring connection.
 - [https://www.zabbix.com/documentation/8.0/en/manual/concepts/proxy/distributed_monitoring](https://www.zabbix.com/documentation/8.0/en/manual/concepts/proxy/distributed_monitoring)
 - [https://www.zabbix.com/documentation/8.0/en/manual/config/templates_out_of_the_box/otlp](https://www.zabbix.com/documentation/8.0/en/manual/config/templates_out_of_the_box/otlp)
 - [https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup](https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup)
+- [https://github.com/zabbix/zabbix/tree/master/database/clickhouse](https://github.com/zabbix/zabbix/tree/master/database/clickhouse)
 - [https://opentelemetry.io/docs/specs/otlp/](https://opentelemetry.io/docs/specs/otlp/)
 - [https://opentelemetry.io/docs/what-is-opentelemetry/](https://opentelemetry.io/docs/what-is-opentelemetry/)
 - [https://opentelemetry.io/docs/collector/](https://opentelemetry.io/docs/collector/)
