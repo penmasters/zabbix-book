@@ -7,8 +7,8 @@ tags: [advanced]
 
 # HTML for the win
 
-HTML? Why HTML? What it has to do with Zabbix other than being a part of its
-GUI you may ask?
+HTML? Why HTML? What does it have to do with Zabbix other than being a part of its
+GUI, you may ask?
 
 Well, there is one overlooked feature which allows you to display things in as
 many different custom ways as your imagination (or HTML limitations) allows you
@@ -19,39 +19,39 @@ consideration:
 
 _15.12 HTML for the win - how to_
 
-Our goal here is to form a valid HTML code for an item value - this allows us to
-feed it into "Item history" widget and let Zabbix display it not as a plain
-text, but treat it as an HTML.
+Our goal here is to form valid HTML code for an item value — this allows us to
+feed it into the "Item history" widget and let Zabbix display it not as plain
+text, but as HTML.
 
 Why this matters so much is because it allows you to build some custom ways of
-displaying things without any real programming skills needed (opposite to
+displaying things without any real programming skills needed (as opposed to
 developing some new widget from scratch). You just need to know HTML. And,
-preferably, some CSS - because this is how you can incorporate this way of
+preferably, some CSS — because this is how you can incorporate this way of
 displaying data into your dashboards extremely smoothly.
 
 All of the examples below will be based on `UserParameter` functionality. By
-now you should already know how to create one; if not - go to Chapter 09:
+now, you should already know how to create one; if not — go to Chapter 09:
 Extending Zabbix -> User Parameters. However, this is not the only way to form
-it - you could also use `zabbix_sender` to update item or possibly even do it
-with some JavaScript preprocessing. Main idea is to have item which stores
-some meaningful HTML code, how you achieve it - doesn't matter that much.
+it — you could also use `zabbix_sender` to update the item or possibly even do it
+with some JavaScript preprocessing. The main idea is to have an item which stores
+some meaningful HTML code, how you achieve it — doesn't matter that much.
 
-All items in the examples are "Text" type of items. Creation of them via GUI
-will not be discussed - unless there is something worth to note - since there
+All items in the examples are of type "Text". Their creation via the GUI
+will not be discussed — unless there is something worth noting — since there
 is nothing special about them from this perspective.
 
 ???+ info
     Keep in mind that Zabbix provides multiple ways of displaying things
-    natively thus if you are happy with what is already available
-    out-of-the-box - you don't need all of this. However, the more you use the
-    tool, the more situations you will face when you need "slightly different"
+    natively, so if you are happy with what is already available
+    out of the box — you don't need all of this. However, the more you use the
+    tool, the more situations you will face when you need a "slightly different"
     or "radically different" way to display things. That is exactly when this
-    approach becomes handy.
+    approach comes in handy.
 
 ## Hello World
 
-For starters, let's create something very simple. This script will create
-progress-bar type of display of how much time did we spend today so far:
+For starters, let's create something very simple. This script will create a
+progress-bar display of how much time we have spent today so far:
 
 ???+ example "Hello World script"
 
@@ -94,23 +94,23 @@ Now look at the result. Isn't it beautiful?
 _15.13 HTML for the win - how to_
 
 ???+ warning
-    Keep in mind Zabbix has light and dark themes, so pick colours that suits
-    well on both dark and light, especially if dashboard is to be used by
+    Keep in mind Zabbix has light and dark themes, so pick colours that work
+    well with both dark and light themes, especially if the dashboard is to be used by
     multiple users who have their own preferences towards which theme is
-    better
+    better.
 
 ## Tables
 
 There are countless use cases when you want to display things in a table-like
-form, thus `<table> ... </table>` approach makes it most iconic out of them all
-here. Tables are structured data display, which is what we often want when
+form, so the `<table> ... </table>` approach makes it most iconic out of them all
+here. Tables are a structured data display, which is what we often want when
 talking about displaying monitoring data. Besides that, with tables, you can
 easily display sorted output, so show "top" of something.
 
 Say we want to collect and display when the SSL certificate is expiring for
 many different websites. Of course, we can do it individually for all of them
-and choose the way to display it (even graph is good enough for it). However,
-table type of display is just perfect as you can sort by the ones that will
+and choose the way to display it (even a graph is good enough for it). However,
+a table-type display is just perfect as you can sort by the ones that will
 end sooner. So here we have a script that forms HTML output:
 
 ???+ example "Script for table"
@@ -168,7 +168,7 @@ end sooner. So here we have a script that forms HTML output:
     exit 0
     ```
 
-Here is the configuration on Zabbix GUI - worth to note that we provide list of
+Here is the configuration in the Zabbix GUI — worth noting that we provide a list of
 websites straight from here:
 
 ![HTML for the win - how to](ch15.14-html-for-the-win-simple-table-config.png)
@@ -183,13 +183,13 @@ _15.15 HTML for the win - how to_
 
 ## Output of top and cmdline
 
-Another, more advanced example - table with expandable row sections. Here we
-will combine output of `top` command with some more details about specific
+Another, more advanced example: a table with expandable row sections. Here we
+will combine the output of the `top` command with some more details about a specific
 process from `/proc/$pid/cmdline`.
 
-In the end, it's nothing much more complex than previous one - just know what
-you want to achieve, be able to do it and employ HTML capabilities to
-display it. In this case - by additional help of `<details>` element.
+In the end, it's nothing much more complex than the previous one — just know what
+you want to achieve, be able to do it, and employ HTML capabilities to
+display it. In this case — with the additional help of the `<details>` element.
 
 ???+ example "Script for advanced table"
 
@@ -261,19 +261,19 @@ _15.16 HTML for the win - how to_
 ## Vertical position
 
 As you can guess, the list of those examples can go on and on. Here are some
-more areas where this approach would also suit well:
+more areas where this approach would also work well:
 
-- traffic light type of display, like "go / no-go" for something
-- combination of progress and table, for example displaying some parallel
-processing as a table, where each row would have some progress bar or color of
-completeness (like green - processed, yellow - in progress, red - error)
+- traffic-light display, like "go / no-go" for something
+- a combination of progress and a table, for example displaying some parallel
+  processing as a table, where each row would have some progress bar or colour of
+  completeness (like green — processed, yellow — in progress, red — error)
 - something completely "outside the box"
 
 One last example, just for fun. Example for this "thinking outside the box".
-But you might find a similar real world use case and apply it as a prototype.
+But you might find a similar real-world use case and apply it as a prototype.
 
-Let's assume we have a 16 storey building with an elevator. We can determine
-its current floor at any given moment and we want to visualize it.
+Let's assume we have a 16-storey building with an elevator. We can determine
+its current floor at any given moment and we want to visualise it.
 
 ???+ example "Script for vertical position"
 
@@ -330,9 +330,9 @@ _15.17 HTML for the win - how to_
 
 ## Conclusion
 
-Most likely it is obvious from the provided examples, that results look like
-some brand new widgets being used. You will definitely receive questions like
-"What is this widget you are using here, looks awesome!", to which you can
+Most likely it is obvious from the provided examples that results look like
+some brand-new widgets being used. You will definitely receive questions like
+"What is this widget you are using here? It looks awesome!", to which you can
 proudly answer "Item history!". This approach, involving no more than default
 Zabbix features and HTML / CSS, is the easiest way to implement some custom
 forms of displaying things in Zabbix. Just use your imagination!

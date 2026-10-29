@@ -49,7 +49,7 @@ installation directory.
 When you upgrade via MSI (with the `NONMSICONFNAME` parameter), the installer
 merges your initial `zabbix_agent2.conf` file with the default one; your
 parameter values overwrite the default values. Be aware that custom content may
-not carry over. `Server`, `ServerActive`, `Include` and a few other values are
+not carry over. `Server`, `ServerActive`, `Include`, and a few other values are
 safe.
 
 Each time you change a configuration file, whether it is the main one or one
@@ -86,7 +86,7 @@ best to merge the old `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` file
 into the newly generated `zabbix_agent2.conf`.
 
 Even with the `NONMSICONFNAME` MSI parameter, not all parameters are merged or
-carried over (as of 7.0 LTS). `Server`, `ServerActive`, `Hostname` and
+carried over (as of 7.0 LTS). `Server`, `ServerActive`, `Hostname`, and
 `Include` are preserved. Consider the `C:\Program Files\Zabbix Agent 2\` root
 directory a "no-go" zone, apart from what the MSI needs for the initial
 installation.
@@ -156,7 +156,7 @@ the MSI switches.
 
 ### Why Consider PowerShell?
 
-Products such as Ivanti Endpoint Manager, SCCM and PDQ Deploy have native MSI
+Products such as Ivanti Endpoint Manager, SCCM, and PDQ Deploy have native MSI
 install steps for deployment tasks, so you do not need to write a PowerShell or
 batch script to perform the installation. The deployment tool calls it natively
 in `cmd.exe` with the `msiexec /i...` command. This sounds convenient, but it
@@ -187,7 +187,7 @@ domain to the variable inline in an MSI switch:
     /HOSTNAME="{{DEPLOYMENT_TOOL_VAR_TARGET_SERVER_NAME}}"+'.domain.com'
     ```
 
-In these cases, the organization needs an additional PowerShell step that edits
+In these cases, the organisation needs an additional PowerShell step that edits
 `zabbix_agent2.conf` in place after the initial MSI installation.
 
 ## Using `ForceActiveChecksOnStart` and `RefreshActiveChecks`
@@ -224,7 +224,7 @@ if you allow agent autoregistration.
 Metadata lets you control and direct autoregistration actions, for example to
 apply different templates based on the value assigned to `HostMetadata`.
 
-Some organizations use a single string for all hosts. Others set the metadata
+Some organisations use a single string for all hosts. Others set the metadata
 string based on server role. If you split by role, the value is set per server
 at installation time or changed afterwards.
 
@@ -269,7 +269,7 @@ From a design and architecture standpoint, active checks should be preferred
 whenever practical. However, you may not be able to send data from a DMZ subnet
 back to an internal network, for example when company policy only allows
 connections that originate from the internal network to reach the DMZ. In such
-cases active checks are not possible, and passive checks come into play.
+cases, active checks are not possible, and passive checks come into play.
 
 By default, prepare your agent configuration for both scenarios by setting
 `Server=` (passive) and `ServerActive=` (active).
@@ -277,7 +277,7 @@ By default, prepare your agent configuration for both scenarios by setting
 ### When to Use Active Templates
 
 Anything that requires LLD, such as discovering disks (`C:\`, `D:\`, and so on)
-or Windows services, as well as CPU, RAM and all other basic monitoring needs,
+or Windows services, as well as CPU, RAM, and all other basic monitoring needs,
 should be collected by the agent to reduce the load on your Zabbix server or
 proxy.
 
@@ -286,7 +286,7 @@ Active checks are strongly preferred in Windows environments, where querying
 
 ### When to Use Passive Templates
 
-This can be tricky, but one organization needed to monitor the status of a
+This can be tricky, but one organisation needed to monitor the status of a
 Microsoft SQL Server Always On availability group. The availability group
 consists of multiple hosts that already exist in Zabbix and are sending data.
 
@@ -296,7 +296,7 @@ you apply a template to all three hosts, you get duplicate data.
 
 The question becomes: how do you monitor the cluster health as a single entity?
 
-**The solution:** the organization created a separate passive template to query
+**The solution:** the organisation created a separate passive template to query
 the Microsoft SQL Server Always On listeners, which are virtual IPs that
 migrate between the hosts. They then created new hosts in Zabbix for each
 listener and used a passive check against the listener IP. If the availability
@@ -319,10 +319,10 @@ This is largely self-evident, so we keep it short.
 For deploying Zabbix Agent 2 on Windows, you need an installation package that
 can handle both installation and upgrade, and that meets a few requirements:
 
-- Standardized silent installations
+- Standardised silent installations
 - Standard switches for installation options
 - A standard switch for repairing or installing additional agent plugins
-- Easy management via PDQ Deploy, Ivanti Endpoint Manager, SCCM, Group Policy or
+- Easy management via PDQ Deploy, Ivanti Endpoint Manager, SCCM, Group Policy, or
   Intune
 
 The MSI meets these requirements, including detection of an existing
@@ -374,7 +374,7 @@ create the `Zabbix-ext` directory and apply a templated `zabbix_agent2.conf`,
 follow this order:
 
 1. Install the agent via MSI as usual.
-    - Optional edge case: if you cannot set `Hostname=`, `Server=` and
+    - Optional edge case: if you cannot set `Hostname=`, `Server=`, and
       `ServerActive=` through the MSI switches, have a PowerShell script
       overwrite these fields in
       `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`. A small example that
@@ -405,7 +405,7 @@ a `Zabbix-ext` directory under `%PROGRAMDATA%` instead of `zabbix_agent2.d`.
 You can use a PowerShell command to overwrite `Hostname=`, matching on
 `Hostname=REPLACEMEBUTLOWERCASE.domain.com`.
 
-### C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf
+### `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf`
 
 !!! example ""
 
@@ -456,7 +456,7 @@ You can use a PowerShell command to overwrite `Hostname=`, matching on
     Include=C:\\ProgramData\\Zabbix-ext\\conf.d\\*.conf
     ```
 
-### The Zabbix-ext Directory, Configuration Files and Custom Scripts
+### The Zabbix-ext Directory, Configuration Files, and Custom Scripts
 
 Directory structure of `Zabbix-ext` under `%PROGRAMDATA%`:
 
@@ -474,7 +474,7 @@ Directory structure of `Zabbix-ext` under `%PROGRAMDATA%`:
         └── Invoke-ActiveDirectoryChecks.ps1
     ```
 
-#### C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf
+#### `C:\ProgramData\Zabbix-ext\conf.d\active_agent.conf`
 
 !!! info ""
 
@@ -488,7 +488,7 @@ Directory structure of `Zabbix-ext` under `%PROGRAMDATA%`:
     RefreshActiveChecks=300
     ```
 
-#### C:\ProgramData\Zabbix-ext\conf.d\custom_checks.conf
+#### `C:\ProgramData\Zabbix-ext\conf.d\custom_checks.conf`
 
 !!! info ""
 
@@ -497,7 +497,7 @@ Directory structure of `Zabbix-ext` under `%PROGRAMDATA%`:
     UserParameter=PowerShell.ps_dcdiag_checks,PowerShell -ExecutionPolicy Bypass -File "C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1"
     ```
 
-#### C:\ProgramData\Zabbix-ext\conf.d\metadata.conf
+#### `C:\ProgramData\Zabbix-ext\conf.d\metadata.conf`
 
 !!! info ""
 
@@ -510,7 +510,7 @@ Directory structure of `Zabbix-ext` under `%PROGRAMDATA%`:
     HostMetadata=WindowsServer
     ```
 
-#### C:\ProgramData\Zabbix-ext\conf.d\key.psk
+#### `C:\ProgramData\Zabbix-ext\conf.d\key.psk`
 
 This is not a real key and is not used anywhere. It only illustrates what the
 file contains.
@@ -521,7 +521,7 @@ file contains.
     c63e00000c9999999926fd58e24cdhotdogs7f54burgers627932efries87e79
     ```
 
-#### C:\ProgramData\Zabbix-ext\conf.d\psk_options.conf
+#### `C:\ProgramData\Zabbix-ext\conf.d\psk_options.conf`
 
 !!! example ""
 
@@ -534,7 +534,7 @@ file contains.
     TLSPSKIdentity=PSK-001
     ```
 
-#### C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1
+#### `C:\ProgramData\Zabbix-ext\scripts\Invoke-ActiveDirectoryChecks.ps1`
 
 !!! example ""
 
@@ -586,22 +586,22 @@ file contains.
     return $JSONOutput
     ```
 
-## Summary
+## Conclusion
 
 Configuring the agent correctly from the start saves a great deal of time when
-upgrading the agent fleet wide, assuming you use the Microsoft Installer (MSI)
+upgrading the agent fleet-wide, assuming you use the Microsoft Installer (MSI)
 package. The recommendations below are covered in the order listed.
 
 1. Take control of your configuration and treat it as a template.
 2. Keep the `Hostname=` field fully qualified and lowercase if you can, for
    example `hostname.domain.org`.
-3. Use `Include=C:\\some\\path\\*.conf` to move customizations out of the
+3. Use `Include=C:\\some\\path\\*.conf` to move customisations out of the
    default configuration file.
 4. Use PowerShell scripting to set `Hostname=` automatically.
 5. Use `ForceActiveChecksOnStart` and `RefreshActiveChecks` when using active
    templates (`ServerActive`).
 6. Define metadata strings and consider them for autoregistration.
-7. Prioritize active templates over passive ones where possible.
+7. Prioritise active templates over passive ones where possible.
 8. Use the MSI installer package for deployment.
 
 ## Questions
@@ -609,7 +609,7 @@ package. The recommendations below are covered in the order listed.
 1. Why is it recommended to keep custom configuration outside of the default
    `zabbix_agent2.conf` file?
 2. What is the purpose of the `Include` parameter?
-3. Why might an organization use `HostMetadata`?
+3. Why might an organisation use `HostMetadata`?
 4. In which scenario would a passive check be used instead of an active check?
 
 ## Useful URLs

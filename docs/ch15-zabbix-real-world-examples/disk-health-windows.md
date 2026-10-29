@@ -8,12 +8,12 @@ tags: [beginner]
 # Disk Health Monitoring on Windows with Smartmontools
 
 This guide explains how to enable monitoring of the disk “health” (temperature,
-errors, wear level, alerts) on Windows computers using Zabbix + Smartmontools.
+errors, wear level, and alerts) on Windows computers using Zabbix + Smartmontools.
 
 ## Install Zabbix Agent 2 (required)
 
 To use Smartmontools with Zabbix, you must install Zabbix Agent 2. The standard
-Zabbix Agent does not support this functionality
+Zabbix Agent does not support this functionality.
 
 [https://cdn.zabbix.com/zabbix/binaries/stable/8.0/latest/](https://cdn.zabbix.com/zabbix/binaries/stable/8.0/latest/)
 
@@ -24,79 +24,87 @@ During installation:
 - Complete the installation normally.
 
 ![ch15_01_agent_config.jpg](ch15.1-agent_config.jpg)
-_15.1_agent_config_
+
+_15.1 Agent configuration_
 
 ## Set the Agent service to automatic start
 
 In Windows:
 
-- Open Services
-- Find Zabbix Agent 2
-- Right-click → Properties
-- Set Startup type to Automatic
-- Click Start if the service is not already running This ensures
-
-monitoring continues after PC restarts
+- Open `Services`.
+- Find `Zabbix Agent 2`.
+- Right-click and select `Properties`.
+- Set `Startup type` to `Automatic`.
+- Click `Start` if the service is not already running. This ensures
+  monitoring continues after PC restarts.
 
 ![ch15_02_services.jpg](ch15.2-services.jpg)
+
 _15.2 Configure Services_
 
 ## Test Smartmontools
 
-Download the smartmontools latest version. Ex: smartmontools-7.5.win32-setup.exe
+Download the latest version of Smartmontools. For example: `smartmontools-7.5.win32-setup.exe`
 
 [https://github.com/smartmontools/smartmontools/releases/](https://github.com/smartmontools/smartmontools/releases/)
 
 After installing Smartmontools, open Command Prompt (CMD) and run:
 
-`smartctl.exe -a /dev/sdX (where sdX is the name of your diskdrive)`
+`smartctl.exe -a /dev/sdX` (where `sdX` is the name of your disk drive)
 
 If everything is correct, it will display detailed information about your SSD/HDD
 such as temperature, usage hours, alerts, and more.
 
 ![ch15_03_smartmontool.jpg](ch15.3-smartmontool.jpg)
+
 _15.3 Smartmontools_
 
 ## Configure the Smart plugin in Zabbix Agent 2
 
 Locate the plugin configuration folder:
 
-- C:\Program Files\Zabbix Agent 2\zabbix_agent2.d\plugins.d
-- Open the file smart.conf using Notepad as Administrator, then add the following line:
-    - Plugins.Smart.Path=C:\PROGRA~1\smartmontools\bin\smartctl.exe Save and close the file.
+- `C:\Program Files\Zabbix Agent 2\zabbix_agent2.d\plugins.d`
+- Open the file `smart.conf` using Notepad as Administrator, then add the following line:
+    - `Plugins.Smart.Path=C:\PROGRA~1\smartmontools\bin\smartctl.exe`
+
+  Save and close the file.
 
 
 ![ch15_04_plugins.jpg](ch15.4-plugins.jpg)
+
 _15.4 Plugins_
 
 ![ch15_05_plugins.jpg](ch15.5-plugins.jpg)
-_15.5 plugin config_
+
+_15.5 Plugin config_
 
 ## Test communication between Zabbix Agent 2 and Smartmontools
 
-Inside the Zabbix Agent 2 installation folder, run: zabbix_agent2.exe -t smart.disk.get
+Inside the Zabbix Agent 2 installation folder, run: `zabbix_agent2.exe -t smart.disk.get`
 If successful, it will return the disk information that will be sent to Zabbix.
 
 ![ch15_06_communication.png](ch15.6-communication.png)
-_15.6 communication check_
+
+_15.6 Communication check_
 
 ## Configure it in the Zabbix Web Interface
 
-In Zabbix do the following steps:
+In Zabbix, follow these steps:
 
-- Open the Host you want to monitor (Data collection -> Hosts)
+- Open the host you want to monitor (`Data collection` | `Hosts`)
 - Go to Templates
 - Add the following template:
 
 ![ch15_07_host-add.png](ch15.7-host-add.png)
+
 _15.7 Host add_
 
 Wait 1–5 minutes for Zabbix to automatically detect the disk sensors and metrics.
 If it does not detect anything:
 
-- Restart the Zabbix Agent 2 service in Windows
-- Execute the discovery rule
-    - Wait a few more minutes
+- Restart the Zabbix Agent 2 service in Windows.
+- Execute the discovery rule.
+    - Wait a few more minutes.
 
 After collecting all the data, Zabbix will display all relevant disk health data, such as:
 
@@ -107,9 +115,9 @@ After collecting all the data, Zabbix will display all relevant disk health data
 - Read/Write status
 - Estimated disk lifespan
 
-Let's have a look at our latest data page. Monitoring -> Latest data.
+Let's have a look at our latest data page. `Monitoring` | `Latest data`.
 
 ![ch15_08_latestdata.png](ch15.8-latestdata.png)
 
-_15.8 latest data_
+_15.8 Latest data_
 

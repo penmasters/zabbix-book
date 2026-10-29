@@ -18,10 +18,10 @@ chapter focuses on is putting those pieces together correctly.
 ## Getting the agent onto the host
 
 Zabbix agent 2 is the recommended choice for new Windows installs if you need
-special plugins for monitoring a database for example. All item keys
+special plugins for monitoring a database, for example. All item keys
 available on the classic C agent are also available on agent 2, including the
 Windows-specific ones covered in this chapter, so there's no functional gap to
-worry about. If you don't need anything from the Agent 2 plugins then Agent 1
+worry about. If you don't need anything from the Agent 2 plugins, then Agent 1
 will do fine.
 
 The agent ships as an MSI package, which makes unattended installs straightforward.
@@ -48,9 +48,9 @@ repeatedly, while working through this chapter.
 
 The agent installs as a Windows service ("Zabbix Agent 2"), and its configuration
 file lives by default at `C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf` unless
-the LogFile parameter has been changed.
+the `LogFile` parameter has been changed.
 If something isn't working, the agent's own log file (path set by `LogFile` in
-that conf, typically alongside it) is the first place to look it will tell you
+that conf, typically alongside it) is the first place to look: it will tell you
 plainly if a key is unsupported, if a WMI query failed, or if TLS negotiation
 with the server is failing.
 
@@ -72,7 +72,7 @@ the same data source behind `perfmon` and `typeperf`. The Zabbix agent talks to
 this interface directly through two item keys: `perf_counter` and `perf_counter_en`.
 
 The difference between the two matters more than it might first appear. `perf_counter`
-uses the counter names as they're localized on the host, on a Dutch-language Windows
+uses the counter names as they're localised on the host, on a Dutch-language Windows
 install, the processor object might be named something other than "Processor".
 `perf_counter_en` always uses the English counter names regardless of the host's
 locale, which is what you want for any template that's meant to be reusable across
@@ -80,7 +80,7 @@ hosts. There's no reason to use `perf_counter` over `perf_counter_en` unless you
 working with a counter that genuinely has no English equivalent, which in practice
 is rare.
 
-As example: monitoring total CPU time as a performance counter rather than via
+As an example: monitoring total CPU time as a performance counter rather than via
 the generic `system.cpu.util` key (useful when you want to match exactly what
 an admin sees in Task Manager, or when you're after a more specific counter that
 doesn't have a dedicated cross-platform key):
@@ -93,16 +93,16 @@ doesn't have a dedicated cross-platform key):
 
 !!! note
 
-    For CPU monitoring, system.cpu.util remains the recommended Zabbix item because
-    it is portable across operating systems. perf_counter_en is mainly useful when
-    you need Windows specific counters. If for some reason the Processor Time doesn't
-    work you can try this alternative:
-    perf_counter_en["\Processor Information(_Total)\% Processor Utility"]"
+    For CPU monitoring, `system.cpu.util` remains the recommended Zabbix item because
+    it is portable across operating systems. `perf_counter_en` is mainly useful when
+    you need Windows-specific counters. If for some reason the Processor Time doesn't
+    work, you can try this alternative:
+    `perf_counter_en["\Processor Information(_Total)\% Processor Utility"]`
 
 The counter path syntax is `\<object>(<instance>)\<counter>`. `_Total` is the instance
 name Windows uses for the aggregate across all logical processors. If you need a
 specific core instead, the instance becomes the core index,
-for example:  `\Processor(0)\% Processor Time`.
+for example: `\Processor(0)\% Processor Time`.
 
 If you're not sure what a counter is called, don't guess, open `perfmon` on the
 target host, add a counter through its UI, and read the exact object/instance/counter
@@ -111,9 +111,9 @@ will dump the full list of available counters in the host's local language, and
 on Windows Server 2008/Vista and later you can rely on `perf_counter_en` to give
 you the English names without needing a separate lookup.
 
-One practical note for a book aimed at people coming from Linux. When monitoring
+One practical note for a book aimed at people coming from Linux: When monitoring
 on Windows, "a counter doesn't exist" and "a counter exists but currently has no
-instances", are different failure modes, and both will surface as the item going
+instances" are different failure modes, and both will surface as the item going
 unsupported. If a service-specific counter set (e.g. for IIS or SQL Server) isn't
 showing up, check first whether that service's performance counter category was
 actually registered. This is a Windows-side issue, not a Zabbix one, and usually
@@ -124,8 +124,8 @@ be covered further here).
 ## Event log monitoring
 
 The Windows Event Log is arguably the most Windows-specific and most valuable
-thing covered in this chapter. Almost every: "is something wrong with this server"
-question an admin asks, ultimately comes down to: "did an error get logged somewhere,"
+thing covered in this chapter. Almost every "Is something wrong with this server?"
+question an admin asks ultimately comes down to: "Did an error get logged somewhere?"
 and Zabbix can watch the event log natively without shelling out to anything.
 
 The item key is `eventlog`, and it requires the item type **Zabbix agent (active)**
@@ -180,11 +180,11 @@ or service that logged the event. This is useful for isolating events from one
 application without having to write a regex against the message body.
 
 A word of caution that's worth stating plainly in a book: broad event log items
-"**particularly on the Security log of a domain controller, which can log thousands
-of events per minute under normal load**" have a real performance cost, both on
+— **particularly on the Security log of a domain controller, which can log thousands
+of events per minute under normal load** — have a real performance cost, both on
 the agent (which has to evaluate every new entry against your regex) and on the
 Zabbix server (which has to ingest and store every match as log data). Filter as
-specifically as you can at the item level ( **severity, source, event ID** ) rather
+specifically as you can at the item level (**severity, source, and event ID**) rather
 than relying on broad regexes against the message text. If you only care about
 three or four specific event IDs, say so explicitly, `eventid` accepts a regex,
 so `^(4625|6008|41)$` is both precise and cheap.
@@ -196,12 +196,12 @@ log item on the host.
 
 ## Services and WMI
 
-The third pillar is asking Windows "what state is X in" where X is a service, a
+The third pillar is asking Windows "what state is X in?", where X is a service, a
 disk, a network adapter, or any of the hundreds of other things WMI can describe.
 
 ### Service state via `service.info`
 
-For the simple, extremely common case of "is this service running," `service.info`
+For the simple, extremely common case of "is this service running?", `service.info`
 is the right tool:
 
 !!! info ""
@@ -225,7 +225,7 @@ type: automatic, manual, disabled, etc.) and `displayname`, `path`, `user`, and
 A practical pattern: combine `state` with `startup` in a trigger. A service with
 `startup=stopped` (disabled) sitting at `state=stopped` is expected and not
 a problem. A service configured as `startup=automatic` but currently at `state=stopped`
-is exactly the kind of thing you want to alert on and that distinction is why
+is exactly the kind of thing you want to alert on, and that distinction is why
 monitoring `state` alone, without also knowing the intended startup type, tends
 to either miss real problems or generate noise about services that were deliberately
 disabled.
@@ -245,19 +245,19 @@ suitable for low-level discovery, exposing macros such as `{#SERVICE.NAME}`,
 for use in the discovery rule's filter and in item/trigger prototypes. A typical
 item prototype built on this is `service.info[{#SERVICE.NAME},<param>]`.
 
-Combined with an LLD filter "**for example, including only services where `{#SERVICE.STARTUPNAME}`
-matches "automatic"**" this gives you a rule that automatically picks up new auto-start
+Combined with an LLD filter — **for example, including only services where `{#SERVICE.STARTUPNAME}`
+matches "automatic"** — this gives you a rule that automatically picks up new auto-start
 services as they're installed and creates the corresponding state/startup items
 and "service should be running but isn't" triggers without any manual item creation.
 This is the mechanism behind the official Windows services templates mentioned
-above, and reusing those templates (or cloning them) "**including their pre-built
-filter regexes for excluding known noisy services**" is generally preferable to
+above, and reusing those templates (or cloning them) — **including their pre-built
+filter regexes for excluding known noisy services** — is generally preferable to
 building the discovery rule from scratch.
 
 ### WMI queries with `wmi.get` and `wmi.getall`
 
-For anything that doesn't have a dedicated item key, disk health and serial numbers,
-network adapter status, installed hotfixes, NLB cluster node state, and so on, the
+For anything that doesn't have a dedicated item key — disk health and serial numbers,
+network adapter status, installed hotfixes, NLB cluster node state, and so on — the
 agent can run a WMI query directly via WQL (the WMI Query Language, a SQL-like
 syntax for querying WMI classes).
 
@@ -310,19 +310,19 @@ deploying an agent to them at all.
 !!! info
 
     Although WMI is extremely flexible, it is significantly more expensive than
-    dedicated Zabbix item keys. Whenever a native item key exists (such as service.info,
-    system.cpu.util, or vfs.fs.size), prefer that over WMI. Reserve WMI for information
+    dedicated Zabbix item keys. Whenever a native item key exists (such as `service.info`,
+    `system.cpu.util`, or `vfs.fs.size`), prefer that over WMI. Reserve WMI for information
     that cannot be collected otherwise.
 
-    Although Zabbix does not natively support Get-CimInstance, it is worth mentioning
+    Although Zabbix does not natively support `Get-CimInstance`, it is worth mentioning
     because it is Microsoft’s recommended interface for querying Windows management
-    information. Get-CimInstance supersedes the older Get-WmiObject cmdlet and has
+    information. `Get-CimInstance` supersedes the older `Get-WmiObject` cmdlet and has
     been the preferred approach since PowerShell 3.0.
 
     The cmdlet queries the Common Information Model (CIM), providing access to
     a wide range of system information including operating system details, hardware
     inventory, running processes, network adapters, storage devices, and much more.
-    While Zabbix cannot execute Get-CimInstance directly through a dedicated item
+    While Zabbix cannot execute `Get-CimInstance` directly through a dedicated item
     key, it can still be leveraged through custom scripts executed by the Zabbix
     agent whenever information is not available through native Windows item keys
     or WMI queries.
@@ -330,10 +330,10 @@ deploying an agent to them at all.
 ### `registry.get` as a complement to WMI
 
 For data that lives in the registry rather than being exposed through WMI or a
-performance counter, version strings, installed-software lists under `Uninstall`
-keys, or arbitrary configuration values written by an application,
-`registry.get[<key>,<mode>]` reads registry keys and values directly, and like
-`wmi.getall` can return a JSON structure suitable for discovery (for example,
+performance counter — version strings, installed-software lists under `Uninstall`
+keys, or arbitrary configuration values written by an application —
+`registry.get[<key>,<mode>]` reads registry keys and values directly, and, like
+`wmi.getall`, can return a JSON structure suitable for discovery (for example,
 enumerating all subkeys under `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall`
 to build an inventory of installed software). It's a narrower tool than WMI, but
 for the specific case of "I need to know if this registry value is set to X,"
@@ -345,22 +345,22 @@ To tie the three pillars together, consider a typical "is this application serve
 healthy" set of checks for a Windows host running a custom service:
 
 - **Service health**: `service.info[MyAppService,state]` with a trigger comparing
-against the service's `startup` value, so a deliberately-stopped service doesn't
-fire an alert.
+  against the service's `startup` value, so a deliberately stopped service doesn't
+  fire an alert.
 - **Resource pressure**: `perf_counter_en["\Process(MyAppService)\% Processor Time"]`
-and `perf_counter_en["\Process(MyAppService)\Working Set"]`, giving you per-process
-CPU and memory figures specific to that application rather than the whole system
-aggregates.
+  and `perf_counter_en["\Process(MyAppService)\Working Set"]`, giving you per-process
+  CPU and memory figures specific to that application rather than the whole-system
+  aggregates.
 - **Application errors**: `eventlog[Application,,"Error",MyAppService,,,skip]`,
-catching anything the application itself writes to the Application log under its
-own source name.
+  catching anything the application itself writes to the Application log under its
+  own source name.
 - **Disk space for its data volume**: handled through the standard `vfs.fs.size`
-key (not Windows-specific, and already covered in the storage monitoring chapter),
-but worth cross-referencing here since "app server ran out of disk" is so often
-the actual root cause behind the other three alerts firing.
+  key (not Windows-specific, and already covered in the storage monitoring chapter),
+  but worth cross-referencing here since "app server ran out of disk" is so often
+  the actual root cause behind the other three alerts firing.
 
 None of these four items individually is complicated, but together they cover the
-categories of failure, "the process died," "the process is unhealthy but still
+categories of failure: "the process died", "the process is unhealthy but still
 running", "the application logged that something went wrong", and "the underlying
 resource it depends on is exhausted". That accounts for the overwhelming majority
 of real Windows server incidents.
@@ -370,41 +370,41 @@ of real Windows server incidents.
 A short list of the issues you're most likely to hit, in roughly the order you're
 likely to hit them:
 
-- **Item shows "Not supported."**: Test the key directly on the host with
-`zabbix_agent2.exe -t "<key>"` (quote the whole key). This tells you immediately
-whether the problem is the key itself (typo, wrong counter/service/WMI class
-name) or something on the Zabbix side (permissions, item configuration).
+- **Item shows "Not supported"**: Test the key directly on the host with
+  `zabbix_agent2.exe -t "<key>"` (quote the whole key). This tells you immediately
+  whether the problem is the key itself (typo, wrong counter/service/WMI class
+  name) or something on the Zabbix side (permissions, item configuration).
 
-- **`eventlog` item created but never returns data.**: Confirm the item type is
-"Zabbix agent (active)" and that `ServerActive` in the agent config points at
-the right server/proxy. Passive-only event log items simply won't work, and this
-is easy to get wrong if you're used to configuring everything as passive on Linux.
+- **`eventlog` item created but never returns data**: Confirm the item type is
+  "Zabbix agent (active)" and that `ServerActive` in the agent config points at
+  the right server/proxy. Passive-only event log items simply won't work, and this
+  is easy to get wrong if you're used to configuring everything as passive on Linux.
 
-- **`perf_counter_en` returns nothing for a counter you can see in `perfmon`.**:
-Check whether the counter belongs to a category that needs to be (re)registered
-on this particular host — application-specific counter sets (IIS, SQL Server,
-custom .NET apps) sometimes fail to register properly during install, independent
-of anything Zabbix-related.
+- **`perf_counter_en` returns nothing for a counter you can see in `perfmon`**:
+  Check whether the counter belongs to a category that needs to be (re)registered
+  on this particular host — application-specific counter sets (IIS, SQL Server,
+  custom .NET apps) sometimes fail to register properly during install, independent
+  of anything Zabbix-related.
 
-- **`wmi.get`/`wmi.getall` returns an error or "unsupported."**: Double check
-namespace and quoting first, `root\cimv2` is correct for the vast majority of
-classes, and the entire query generally needs to be inside its own quotes within
-the key. If the namespace and quoting are right, test the same WQL query locally
-with `wbemtest.exe` or PowerShell's `Get-CimInstance` to confirm the class/property
-names themselves are correct on that host — WMI class availability does vary
-slightly between Windows versions.
+- **`wmi.get`/`wmi.getall` returns an error or "unsupported"**: Double-check
+  namespace and quoting first, `root\cimv2` is correct for the vast majority of
+  classes, and the entire query generally needs to be inside its own quotes within
+  the key. If the namespace and quoting are right, test the same WQL query locally
+  with `wbemtest.exe` or PowerShell's `Get-CimInstance` to confirm the class/property
+  names themselves are correct on that host — WMI class availability does vary
+  slightly between Windows versions.
 
-- **Event log item floods with historical data on creation.**: Add `skip` as the
-`mode` parameter. This is easy to miss the first time and hard to miss the second
-time, once you've seen what a Security log backlog looks like in Zabbix's log
-item view.
+- **Event log item floods with historical data on creation**: Add `skip` as the
+  `mode` parameter. This is easy to miss the first time and hard to miss the second
+  time, once you've seen what a Security log backlog looks like in Zabbix's log
+  item view.
 
 ## Questions
 
-- Why is perf_counter_en generally preferred over perf_counter in reusable templates?
+- Why is `perf_counter_en` generally preferred over `perf_counter` in reusable templates?
 - When would you choose a native Zabbix item key over a WMI query?
-- Why must the eventlog item key use an active agent item?
-- How would you troubleshoot a Windows item that suddenly becomes Not supported?
+- Why must the `eventlog` item key use an active agent item?
+- How would you troubleshoot a Windows item that suddenly becomes `Not supported`?
 
 ## Useful URLs
 

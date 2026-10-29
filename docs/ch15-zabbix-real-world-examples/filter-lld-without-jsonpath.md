@@ -25,9 +25,9 @@ per discovered object.
 
 ## The Two Approaches
 
-### Approach A — JSONPath filter (The more complex option)
+### Approach A — JSONPath filter (the more complex option)
 
-In this approach a single trap item `db.raw` does everything: it feeds the discovery
+In this approach, a single trap item `db.raw` does everything: it feeds the discovery
 rule and also serves as the master item for all item prototypes. The preprocessing
 step uses a filter expression to extract the relevant row per discovered object:
 
@@ -44,7 +44,7 @@ $[?(@.db == '{#DB}')].price.first()
 - Debugging failed preprocessing is harder because the resolved expression changes
   per discovered item.
 - A single key has to serve two structurally different purposes (list of objects
-  for discovery, and a data source for value extraction), which limits how you can
+  for discovery and a data source for value extraction), which limits how you can
   design each payload.
 
 **Data flow:**
@@ -87,8 +87,8 @@ Two separate trap items are used intentionally:
 | `db.raw2` | Feeds the **item prototypes** — structured data optimised for value extraction |
 
 The key insight is in the design of `db.raw2`. Instead of a flat array where each
-row contains all fields, `db.raw2` is a single element array containing one object
-whose top level keys are the `{#ID}` values themselves. This means each item prototype
+row contains all fields, `db.raw2` is a single-element array containing one object
+whose top-level keys are the `{#ID}` values themselves. This means each item prototype
 can reach its own data with a direct path:
 
 ```
@@ -278,12 +278,12 @@ zabbix_export:
 ---
 !!! warning
 
-    Create 2 files with the content from the above examples and import them as a
-    host. When import make sure to not delete missing hosts.
+    Create two files with the content from the above examples and import them as a
+    host. When importing, make sure not to delete missing hosts.
 
 ![import-host.png](ch15.11-import-host.png)
 
-_15.11 import-host.png_
+_15.11 Import host_
 
 
 ## Comparison Summary
@@ -304,7 +304,7 @@ _15.11 import-host.png_
 
     Approach A is still fine for quick prototypes, small payloads, or one-off lab
     use; Approach B is preferable when you want stable preprocessing and clearer
-    debugging. The tradeoff is slightly more setup (two items and data flow coordination),
+    debugging. The trade-off is slightly more setup (two items and data-flow coordination),
     but this is usually outweighed by better clarity and maintainability.
     
 ---
@@ -333,7 +333,7 @@ different payloads:
 ## Conclusion
 
 By designing your JSON payload so that the unique identifier becomes both an LLD
-macro (`{#ID}`) and a top level key in the data payload (`db.raw2`), each discovered
+macro (`{#ID}`) and a top-level key in the data payload (`db.raw2`), each discovered
 item can reach its own data with a simple, direct JSONPath expression. The result
 is a more readable, maintainable, and debuggable discovery setup, with no filter
 operator required.

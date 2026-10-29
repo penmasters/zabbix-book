@@ -23,7 +23,7 @@ tickets, etc.) are typically paused.
 
 ### 1. Maintenance Type
 
-The Maintenance section is located in the main menu under `Data collection` | `Maintenance`. To create a new maintenance window, click Create maintenance.
+The Maintenance section is located in the main menu under `Data collection` | `Maintenance`. To create a new maintenance window, click `Create maintenance`.
 When doing so, Zabbix presents two available maintenance types, allowing you to
 choose the one that best fits your needs.
 
@@ -35,14 +35,14 @@ This defines how Zabbix handles data during the maintenance window:
 | **No data collection** | Data collection is completely paused for the items on the maintained host(s). | **Not Processed** | **Ignored/Not Collected** | Major hardware upgrades or OS reloads where the host is completely unavailable. |
 
 !!! note
-    When using `no data collection`, host and proxies will still sent data to the
-    Zabbix server. However the server will not process the data and store it into
+    When using `no data collection`, hosts and proxies will still send data to the
+    Zabbix server. However, the server will not process the data and store it in
     the database.
 
 ### 2. Time Window Definition (`Active Since` / `Active Till`)
 
-The Start and End dates determine the overall duration of the maintenance rule.
-Specific maintenance execution times are configured on the Periods tab. Each
+The `Start` and `End` dates determine the overall duration of the maintenance rule.
+Specific maintenance execution times are configured on the `Periods` tab. Each
 defined period must fall within the maintenance window’s overall lifespan.
 
 ### 3. Maintenance Periods (The Schedule)
@@ -56,8 +56,8 @@ This tab defines the precise scheduling:
   **Day of Week** within a month (e.g., the last Sunday).
 
 !!! info
-    Active Since/Till will not put the server in maintenance. It is the
-    maintenance period that will show that the server is in maintenance or not
+    `Active Since` / `Active Till` will not put the server in maintenance. It is the
+    maintenance period that will show whether the server is in maintenance
     in the frontend.
 
 ![ch14.01-maintenance.png](ch14.01-maintenance.png)
@@ -100,7 +100,7 @@ maintenance:
 
 In Zabbix 8.0, trigger-level maintenance can be created in three ways:
 
-1. **Data collection → Maintenance:** Create a maintenance period and configure
+1. `Data collection` | `Maintenance`: Create a maintenance period and configure
    its scope using the available trigger or event-name options.
 
 2. **Event menu:** Open the event menu for an existing problem and create a
@@ -152,7 +152,7 @@ In addition, hosts in maintenance are highlighted with an orange background on
 
 By default, problems associated with hosts in maintenance are *suppressed* and
 therefore not shown in the frontend. However, Zabbix can be configured to display
-these suppressed problems. This behavior can be enabled by selecting the
+these suppressed problems. This behaviour can be enabled by selecting the
 **Show suppressed problems** option in the following locations:
 
 * **Dashboards** – in the configuration of the *Problem hosts*, *Problems*,
@@ -177,8 +177,8 @@ Understanding how time zones work in Zabbix is essential for scheduling reliable
 maintenance tasks. Zabbix handles time zones differently depending on whether
 a maintenance window is one-time or recurring.
 
-For one time maintenance, the start and end times are interpreted in the frontend
-user's local time zone. The same time zone configured for the logged-in user.
+For one-time maintenance, the start and end times are interpreted in the frontend
+user's local time zone — the same time zone configured for the logged-in user.
 In contrast, recurring maintenance is evaluated based on the Zabbix server's time
 zone, ensuring that the recurrence pattern remains consistent, even if users in
 different regions view it.
@@ -196,7 +196,7 @@ another time zone.
 | **`Active since` / `Active till`** | **User's Browser Time Zone** | **User's Browser Time Zone** | These bounding dates are based on the time zone of the user who configured them. |
 
 ???+ info
-    **It's Good Practice:** to use a common time zone (e.g., **UTC**) across the
+    **It's good practice to use** a common time zone (e.g., **UTC**) across the
     Zabbix Server, the database, and the PHP frontend configuration for predictable
     results, especially with recurring periods and DST changes. Another way is
     to add a clock widget to the dashboard with the `Zabbix server` time.
@@ -280,7 +280,7 @@ corresponding `.get`, `.update`, and `.delete` methods).
 
 * **ITSM Integration:** Allows automated creation of maintenance windows when
   a Change Request (CR) is approved in an external system (e.g., ServiceNow, Jira),
-  ensuring alerts are suppressed only during authorized work.
+  ensuring alerts are suppressed only during authorised work.
 * **Automation:** Facilitates the management of maintenance templates using
   infrastructure-as-code tools (like Ansible or Terraform).
 * **Dynamic Scheduling:** Enables the creation of immediate, short-term maintenance
@@ -325,8 +325,8 @@ to host group ID `4`.
 
     You must replace `<ZABBIX_SERVER_IP_OR_DNS>` with your server's address and
     `"YOUR API TOKEN"` with an active token from a successful `user.login` API
-    call. The **Host Group ID** (e.g., `"4"`) must be known beforehand. This id
-    can be found in the url when going to the host group` in the Zabbix menu.
+    call. The **Host Group ID** (e.g., `"4"`) must be known beforehand. This ID
+    can be found in the URL when going to the host group in the Zabbix menu.
 
 !!! example "Example"
 
@@ -367,7 +367,7 @@ to host group ID `4`.
 
 Let's go over what we just did here to have a better understanding.
 
-!!! example "Json"
+!!! example "JSON"
 
     ```json
     "timeperiod_type": 4,
@@ -485,14 +485,14 @@ To include all months, add them up:
 So `4095` means **every month**.
 
 Ok, let's verify what we just did. Go to `Data collection` | `Maintenance`. If
-all went well you should now see a new maintenance that was created by our
+all went well, you should now see a new maintenance period that was created by our
 script.
 
-A working easy to use maintenance script can be found here : [https://github.com/penmasters/trikke76-fork/tree/master/maintenance](https://github.com/penmasters/trikke76-fork/tree/master/maintenance)
+A working, easy-to-use maintenance script can be found here: [https://github.com/penmasters/trikke76-fork/tree/master/maintenance](https://github.com/penmasters/trikke76-fork/tree/master/maintenance)
 
 ![ch14.05-maintenance-api.png](ch14.05-maintenance-api.png)
 
-_14.5 Maintenance api_
+_14.5 Maintenance API_
 
 ---
 

@@ -8,20 +8,20 @@ platform you depend on during incidents remains healthy, recoverable, and curren
 
 The chapter opens with **maintenance periods**, Zabbix's built-in mechanism for
 suppressing alerts during planned work. A maintenance period defines a time window
-and a scope for a specific hosts or host groups, during which problem notifications
+and a scope for specific hosts or host groups, during which problem notifications
 can be paused. Zabbix continues collecting data throughout, but alert actions are
 held back if we prefer. Maintenance periods can be scheduled as one-time windows
 or recurring patterns, scoped to specific problem tags so that only relevant
 alerts are suppressed, and created programmatically through the Zabbix API
 to integrate with external change management workflows.
 
-From there the chapter moves to **internal health checks**, which allow Zabbix to
+From there, the chapter moves to **internal health checks**, which allow Zabbix to
 monitor its own operational state. Through a set of internal items with keys
-beginning with `zabbix[...]`, the server exposes metrics for process utilization,
+beginning with `zabbix[...]`, the server exposes metrics for process utilisation,
 queue depth, cache usage, and data throughput. These metrics are collected against
 a virtual internal host that requires no agent or network interface. Built-in
 templates and dashboards surface this data visually, and triggers can raise alerts
-when process utilization climbs or queues begin to grow, giving administrators
+when process utilisation climbs or queues begin to grow, giving administrators
 early warning of performance degradation before it affects monitoring quality.
 
 The third section covers **backup strategies**. Because Zabbix stores all
@@ -30,7 +30,7 @@ backup is sufficient to recover most of a Zabbix environment. The chapter covers
 logical dumps using `mysqldump`, `mariadb-dump`, and `pg_dump` for smaller
 installations, and physical backup approaches including WAL archiving and dedicated
 tools such as PgBackRest and PgBarman for larger PostgreSQL environments. Alongside
-the database, a set of configuration files, and custom scripts deserve equal
+the database, a set of configuration files and custom scripts deserve equal
 attention: alert scripts, external checks, and web server configuration are easy
 to overlook and time-consuming to rebuild from memory.
 

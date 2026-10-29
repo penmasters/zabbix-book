@@ -20,7 +20,7 @@ when you upgrade Zabbix, what can go wrong, and how to make sure it does not.
 
 _“Good upgrades are quiet. Bad ones become stories.”_
 
-### How Zabbix Really Upgrades
+## How Zabbix Really Upgrades
 
 Zabbix does not upgrade like some other open-source software.
 
@@ -33,22 +33,22 @@ This means that a database created with Zabbix 2.0 can be upgraded directly to
 Zabbix 8.0. No intermediate versions are required. No manual schema juggling is
 needed.
 
-This capability is powerful, and often misunderstood.
+This capability is powerful and often misunderstood.
 
 What matters is not the starting version of Zabbix, but whether the surrounding
 system, the operating system, database engine, PHP, and optional extensions can support
 the target version.
 
-### Major and Minor Upgrades: Two Very Different Beasts
+## Major and Minor Upgrades: Two Very Different Beasts
 
 Not all upgrades deserve the same level of concern.
 
-A minor upgrade for example from 8.0.1 to 8.0.8 focuses on stability. These releases
+A minor upgrade, for example from 8.0.1 to 8.0.8, focuses on stability. These releases
 fix bugs, close security issues, and improve performance. They are usually quick,
 safe, and should be applied regularly. Treating them as major events often leads
 to them being postponed, which quietly increases risk over time.
 
-A major upgrade, on the other hand, changes behavior. It may introduce new features,
+A major upgrade, on the other hand, changes behaviour. It may introduce new features,
 remove deprecated ones, and almost always involves database schema changes. While
 Zabbix can apply these changes automatically, the impact depends heavily on the
 size of your database and the age of your installation.
@@ -63,7 +63,7 @@ This book focuses on Zabbix 8.0 as the target version. Older releases matter onl
 in how they shape the path toward it.
 
 
-### The Stack Beneath the Server
+## The Stack Beneath the Server
 
 Zabbix is not an island. It rests on a stack of software that evolves independently
 and sometimes forces upgrades on its own schedule.
@@ -79,14 +79,14 @@ This is where many upgrades go wrong: everything changes at once.
 **_“If the OS, database, PHP, and Zabbix all change in the same night, you did not
 perform an upgrade. You rolled the dice.”_**
 
-#### A Short Story About an Upgrade Gone Wrong
+### A Short Story About an Upgrade Gone Wrong
 
 **Consider a real-world example:**
 
 !!! example
 
     ``` text
-    An administrator decides to upgrade an aging monitoring server. The OS is out of
+    An administrator decides to upgrade an ageing monitoring server. The OS is out of
     support, so it gets upgraded. The new OS ships with a newer PostgreSQL version,
     so that changes too. PHP is updated automatically as part of the process. Since
     Zabbix needs an upgrade anyway, that is done last.
@@ -101,9 +101,9 @@ Nothing **“unexpected”** happened. Everything that went wrong was predictabl
 
 The mistake was not technical. It was concurrent change without isolation.
 
-### Why Migrations Are Often Safer Than Upgrades
+## Why Migrations Are Often Safer Than Upgrades
 
-For this reason, many experienced administrators prefer migration based upgrades,
+For this reason, many experienced administrators prefer migration-based upgrades,
 especially when major versions or operating systems are involved.
 
 Instead of upgrading an existing system in place, a new system is built alongside
@@ -115,11 +115,11 @@ pressure, rollback without panic, and validation without guessing.
 
 It also forces clarity.
 
-### What Actually Makes a Zabbix System
+## What Actually Makes a Zabbix System
 
 Despite appearances, a Zabbix system consists of remarkably few moving parts.
 
-**The database holds almost everything:** configuration, history, trends, users,
+**The database holds almost everything:** configuration, history, trends, users, and
 permissions. Migrating the database brings the environment with it. When restored
 into a new system and started with a newer Zabbix server, the schema is upgraded
 automatically.
@@ -127,7 +127,7 @@ automatically.
 Configuration files matter too, but far less than many expect. Server and proxy
 configuration files, alert scripts, external checks, and certificates should be
 migrated deliberately, not copied blindly. Paths change. Defaults improve. Old
-workarounds often become unnecessary. As an example Zabbix now support
+workarounds often become unnecessary. As an example, Zabbix now supports
 preprocessing with JSONPath and JavaScript. This alone can reduce tons of
 scripts we used before.
 
@@ -136,7 +136,7 @@ overrides. Migration is not just movement, it is an opportunity to let go.
 
 **_“If you copy every problem forward, you did not migrate. You embalmed.”_**
 
-### Time, Scale, and Reality
+## Time, Scale, and Reality
 
 Upgrade duration has little to do with version numbers and everything to do with
 data volume.
@@ -150,17 +150,17 @@ This is normal.
 
 What turns long upgrades into outages is not duration, but surprise.
 
-A well planned upgrade announces its timeline in advance. A poorly planned one
+A well-planned upgrade announces its timeline in advance. A poorly planned one
 discovers it in production.
 
-#### A Crucial Detour: Primary Keys and Database Health
+### A Crucial Detour: Primary Keys and Database Health
 
-At some point in every long running Zabbix installation, performance questions
-arise. Queries get slower. Housekeeping takes longer. Vacuuming or optimization
+At some point in every long-running Zabbix installation, performance questions
+arise. Queries get slower. Housekeeping takes longer. Vacuuming or optimisation
 jobs begin to dominate maintenance windows. Very often, the root cause is not
 hardware, scale, or even Zabbix itself.
 
-It is missing or late added primary keys.
+It is missing or late-added primary keys.
 
 Historically, early Zabbix versions did not enforce primary keys on all large tables.
 This was not negligence it reflected the realities of database engines and workloads at the
@@ -177,7 +177,7 @@ Adding them late is possible, but it is not free.
 
 **_“A database without primary keys works… until it really, really doesn't.”_**
 
-#### Why Primary Keys Matter More During Upgrades
+### Why Primary Keys Matter More During Upgrades
 
 Database upgrades and migrations are moments of maximum leverage. Tables are already
 being rewritten, indexes rebuilt, and metadata refreshed. This makes them the ideal
@@ -194,9 +194,9 @@ If your database still lacks required primary keys, an upgrade is not just an
 opportunity to add them, it is the safest time you will ever get.
 
 
-#### Database Engines Are Not Neutral Observers
+### Database Engines Are Not Neutral Observers
 
-database does not exist in a vacuum. It may feel self contained once it is running,
+A database does not exist in a vacuum. It may feel self-contained once it is running,
 but it is quietly shaped by the operating system beneath it, sometimes in ways that
 only become visible years later.
 
@@ -210,8 +210,8 @@ longer be considered correct tomorrow.
 This is not hypothetical.
 
 During major Linux distribution upgrades such as the transition from CentOS 6 to 7,
-or across certain Ubuntu releases the underlying C library changed its collation
-behavior. Databases that were perfectly healthy before the upgrade suddenly contained
+or across certain Ubuntu releases, the underlying C library changed its collation
+behaviour. Databases that were perfectly healthy before the upgrade suddenly contained
 indexes that no longer matched the new sorting rules.
 
 Nothing was “broken”. Queries still worked. Data was still there. But indexes were
@@ -233,16 +233,16 @@ These problems do not announce themselves loudly. They simply erode confidence
 over time.
 
 Reindexing after a major OS or database upgrade is not superstition. It is an
-acknowledgement that databases inherit behavior from the systems they run on and
+acknowledgement that databases inherit behaviour from the systems they run on and
 that those systems do change.
 
 ???+ note
     Historically, major upgrades of CentOS, Ubuntu, and SUSE Linux Enterprise have 
     all introduced updates to core system libraries, including the C standard library.
-    In some cases, these updates altered collation and sorting behavior in ways that
+    In some cases, these updates altered collation and sorting behaviour in ways that
     directly affected database indexes.
 
-#### PostgreSQL: Upgrade and Migration Strategies
+### PostgreSQL: Upgrade and Migration Strategies
 
 PostgreSQL offers administrators an unusual degree of flexibility when it comes to
 upgrades. That flexibility is a strength but only if it is understood.
@@ -262,7 +262,7 @@ PostgreSQL’s native upgrade tooling is often used to perform an in-place upgra
 
 This is where installing multiple PostgreSQL versions side by side becomes important.
 
-Tools such as pg_upgrade rely on having both the old and the new PostgreSQL binaries
+Tools such as `pg_upgrade` rely on having both the old and the new PostgreSQL binaries
 available at the same time. By explicitly controlling which binaries operate on a
 given data directory, administrators can perform a fast upgrade while preserving
 the existing data layout. When executed correctly, this approach dramatically reduces
@@ -271,7 +271,7 @@ downtime compared to logical migrations.
 Some teams take this one step further by carefully structuring filesystem layouts
 or using symbolic links to ensure that data directories remain stable while binaries
 change around them. This is not casual administration, it requires discipline, documentation,
-and rehearsals but it allows upgrades to be repeatable and predictable even at scale.
+and rehearsals, but it allows upgrades to be repeatable and predictable even at scale.
 
 **_“Fast upgrades are never accidental. They are designed long before they are needed.”_**
 
@@ -280,20 +280,20 @@ consistent practices.
 
 Testing the upgrade process on a restored copy of the database removes uncertainty.
 Performing explicit reindexing after major operating system or engine upgrades ensures
-that indexes reflect the behavior of the new environment. Verifying extensions
-particularly TimescaleDB before starting Zabbix prevents avoidable startup failures.
+that indexes reflect the behaviour of the new environment. Verifying extensions,
+particularly TimescaleDB, before starting Zabbix prevents avoidable startup failures.
 
 PostgreSQL provides the tools to upgrade safely. The challenge lies not in choosing
 the fastest method, but in choosing the one that matches the size, risk tolerance,
 and operational maturity of your environment.
 
-#### MariaDB and MySQL: Different Tools, Same Principles
+### MariaDB and MySQL: Different Tools, Same Principles
 
 MariaDB and MySQL follow a different philosophy, but the fundamentals remain unchanged.
 
 Major engine upgrades should be treated as database migrations, not package updates.
 Replication can be used to great advantage here: upgrading a replica first, validating
-behavior, and only then promoting it.
+behaviour, and only then promoting it.
 
 This approach reduces downtime and provides a clean rollback path.
 
@@ -301,7 +301,7 @@ Primary key enforcement, index health, and collation consistency deserve special
 care in these environments. What works adequately on smaller systems can degrade
 sharply at scale.
 
-#### Replication as an Upgrade Tool
+### Replication as an Upgrade Tool
 
 Replication is often discussed only in the context of high availability, but its
 value goes far beyond failover. Used correctly, replication is one of the most
@@ -310,7 +310,7 @@ powerful tools available for safe upgrades.
 Whether using PostgreSQL replication or MariaDB replicas, maintaining a secondary
 system allows administrators to observe the effects of an upgrade without putting
 production at risk. Schema changes can be applied and evaluated, performance
-characteristics measured, and perhaps most importantly the true duration of the
+characteristics measured, and perhaps most importantly, the true duration of the
 upgrade can be understood before it matters.
 
 Only once the replica behaves exactly as expected does the primary system change.
@@ -320,7 +320,7 @@ This transforms upgrades from leaps of faith into rehearsed procedures.
 **_“If you have a replica and didn't test the upgrade on it first, you skipped
 the best gift you were given.”_**
 
-##### Logical Replication and Near-Zero Downtime
+#### Logical Replication and Near-Zero Downtime
 
 **PostgreSQL adds another powerful option:** logical replication.
 
@@ -331,7 +331,7 @@ changes rather than raw data files. This makes it possible to replicate data bet
 - Different database layouts
 - Even different operating systems
 
-In upgrade scenarios, this opens the door to near zero downtime migrations.
+In upgrade scenarios, this opens the door to near-zero-downtime migrations.
 
 A new system can be built with the target PostgreSQL version, operating system,
 and Zabbix release. Data is streamed continuously from the old system into the
@@ -340,7 +340,7 @@ downtime is reduced to the moment required to stop writes, let replication catch
 up, and redirect the application.
 
 This approach requires more planning and careful validation, but it fundamentally
-changes what “upgrade downtime” means especially for large installations where
+changes what “upgrade downtime” means, especially for large installations where
 traditional upgrades would take hours.
 
 MariaDB offers similar concepts through replication and online schema changes,
@@ -350,7 +350,7 @@ data movement from service interruption.
 **_“The fastest upgrade is the one that finishes before users notice it
 started.”_**
 
-##### When Replication Is the Right Choice
+#### When Replication Is the Right Choice
 
 Replication-based upgrades shine when:
 
@@ -360,32 +360,32 @@ Replication-based upgrades shine when:
 - A clean separation between old and new systems is desired
 
 They also impose discipline. Replication setups must be monitored, understood,
-and tested long before an upgrade is planned. This is not a last minute solution
-but when available, it is one of the safest ones.
+and tested long before an upgrade is planned. This is not a last-minute solution
+but, when available, it is one of the safest ones.
 
-##### Bringing It Back to Zabbix
+#### Bringing It Back to Zabbix
 
-For Zabbix, replication based upgrades are particularly attractive. Configuration
+For Zabbix, replication-based upgrades are particularly attractive. Configuration
 data changes slowly. History and trends are append-only. This makes the data model
 well suited to replication strategies.
 
 Used correctly, replication allows Zabbix upgrades to feel less like maintenance
 windows and more like controlled transitions.
 
-_And that, ultimately, is the goal !_
+_And that, ultimately, is the goal!_
 
-### The Frontend as an Early Warning
+## The Frontend as an Early Warning
 
 **One often overlooked lesson:** the Zabbix frontend is your canary.
 
 After OS or PHP changes, the frontend is usually the first thing to break. When
-it does, it is a signal not an inconvenience. It tells you something in the
+it does, it is a signal, not an inconvenience. It tells you something in the
 environment is no longer aligned.
 
 If the frontend is unhealthy, do not proceed with the server upgrade. Fix the
 stack first. Zabbix itself is rarely the problem.
 
-### Choosing the Right Approach
+## Choosing the Right Approach
 
 There is no universal rule that says every upgrade must be done in place, nor
 that every system requires migration. The decision depends on scale, risk tolerance,
@@ -428,4 +428,3 @@ learn how it works.
 - [https://www.zabbix.com/documentation/current/en/manual/installation/upgrade](https://www.zabbix.com/documentation/current/en/manual/installation/upgrade)
 - [https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_primary_keys](https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_primary_keys)
 - [https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_scripts](https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_scripts)
-- 
