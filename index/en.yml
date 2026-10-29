@@ -631,11 +631,11 @@ entries:
       - term: disk health
         targets:
           - label: monitoring disk health
-            start: ch15-zabbix-real-world-examples/disk-health-windows.md
+            start: ch16-zabbix-real-world-examples/disk-health-windows.md
       - term: overview
         targets:
           - label: monitoring Windows
-            start: ch16-windows/windows.md
+            start: ch15-windows/windows.md
 
   - term: Zabbix agent
     subterms:

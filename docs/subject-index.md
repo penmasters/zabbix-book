@@ -283,8 +283,8 @@ print edition, locators are rendered as page numbers.
     - <span id="index-web-monitoring-browser-items"></span>[browser items](ch04-zabbix-collecting-data/browser.md){ .index-target }[](ch04-zabbix-collecting-data/browser.md#conclusion){ .index-range-end }
     - <span id="index-web-monitoring-http-agent-items"></span>[HTTP agent items](ch04-zabbix-collecting-data/http.md){ .index-target }[](ch04-zabbix-collecting-data/http.md#conclusion){ .index-range-end }
 - <span id="index-windows-monitoring"></span>**Windows monitoring**
-    - <span id="index-windows-monitoring-disk-health"></span>[monitoring disk health](ch15-zabbix-real-world-examples/disk-health-windows.md){ .index-target }
-    - <span id="index-windows-monitoring-overview"></span>[monitoring Windows](ch16-windows/windows.md){ .index-target }
+    - <span id="index-windows-monitoring-disk-health"></span>[monitoring disk health](ch16-zabbix-real-world-examples/disk-health-windows.md){ .index-target }
+    - <span id="index-windows-monitoring-overview"></span>[monitoring Windows](ch15-windows/windows.md){ .index-target }
 
 ## Z {#index-letter-z}
 
