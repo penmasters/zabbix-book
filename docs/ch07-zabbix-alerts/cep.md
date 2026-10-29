@@ -8,7 +8,7 @@ tags: [advanced]
 # Complex event processing
 
 When we start monitoring more and more devices, we also start generating more
-and more events. Of course, this is exactly what we want Zabbix to be doing, but it can introduce a new problem. A single device failure might result in tens, maybe even hundreds of problems
+and more events. Of course, this is exactly what we want Zabbix to be doing, but it can introduce a new problem. A single device failure might result in tens, maybe even hundreds of problems.
 
 For example, let's say a network switch with several access points
 connected behind it goes down. When the switch goes down, all of
@@ -16,8 +16,8 @@ the access points connected to that switch will become unavailable as well
 and generate a problem in Zabbix. In this case the switch is the actual
 cause, while the access point problems are only symptoms of that same failure.
 
-This is where `Complex event processing`, or `CEP` is going to make a
-big difference in. CEP was added in Zabbix 8.0 to avoid alert fatigue
+This is where `Complex event processing`, or `CEP`, is going to make a
+big difference. CEP was added in Zabbix 8.0 to avoid alert fatigue
 from many problems related to a single other problem. We can use CEP to
 group events together, instead of looking at every event as a completely
 separate problem.
@@ -27,7 +27,7 @@ separate problem.
 ## The basics
 
 As we have learned, normally a trigger evaluates our item values and
-generated a problem event. This is then seen as a problem when we look
+generates a problem event. This is then seen as a problem when we look
 at our dashboards or `Monitoring` | `Problems`. This fact does not
 change with CEP. CEP only starts working when the problem event has been
 created, using CEP we can decide what should happen with the problem event
@@ -43,7 +43,7 @@ flowchart LR
     D --> E[Problems and actions]
 ```
 
-A CEP rule consists the following important parts:
+A CEP rule consists of the following important parts:
 
 - **Conditions** define which events should be processed by the rule
 - **Time window processing** defines how matching events are kept together within time windows
@@ -52,13 +52,13 @@ A CEP rule consists the following important parts:
 - **Stop after this rule** prevents later CEP rules from processing the event
 
 CEP rules are executed in their configured sort order. Changes made by an
-earlier rule their operations (such as adding a tag), are visible to rules executed afterward.
+earlier rule’s operations (such as adding a tag) are visible to rules executed afterwards.
 
 ![Event processing overview](ch07.5-cep-event-processing-overview.png){ align=center }
 
 _7.5 Event processing overview_
 
-These are only the basics, as we can get more options through `Simple (multipe)`, `Simple (once)`, `Cause and symptom grouping` and `Pattern match`.
+These are only the basics, as we can get more options through `Simple (multiple)`, `Simple (once)`, `Cause and symptom grouping`, and `Pattern match`.
 
 ---
 
@@ -119,14 +119,14 @@ immediately, for example by changing the severity or by adding a tag.
 ### Simple
 
 There are two `Simple` options to choose from in Zabbix CEP rules.
-Both `Simple (multipe)` and `Simple (once)` place matching events
+Both `Simple (multiple)` and `Simple (once)` place matching events
 in a sliding time window. Our events will leave the CEP window when
 they reach the configured duration or when the window
 reaches its capacity.
 
 While an event is in the window, Operations can be executed.
 Specifically when the event occurs, is added to the window, is
-evicted from the window, or when the window closes specific operations
+evicted from the window, or when the window closes, specific operations
 can be executed.
 
 The main use case of the two `Simple` processing types:
@@ -146,14 +146,14 @@ These CEP types are useful for rate limiting problems, deduplicating problems,
 automatically closing problems after a certain time, or applying different
 processing based on the age or number of events in the window.
 
-One use case that it is particularly useful is suppressing duplicate problems,
+One use case where it is particularly useful is suppressing duplicate problems,
 suppressing problems like ping down or port issues. Specifically when there
 is a cause/symptom relation but you might not want to use cause/symptom grouping.
 
 ### Cause and symptoms grouping
 
 The `Cause and symptoms grouping` option groups related problems together. In
-older Zabbix versions is was already possible to create a cause/symptom relationship
+older Zabbix versions it was already possible to create a cause/symptom relationship
 manually, with CEP we can now automate that process. This works by adding the
 first event in a window as the cause. Events arriving afterwards become
 symptoms of that cause.
@@ -163,24 +163,24 @@ relationship is created automatically. It is however smart to use the
 `Group by` feature to match specific events correctly.
 
 Keep in mind that CEP does not automatically understand your infrastructure.
-This CEP rule type is first come first serve, meaning the first event will always
-be the cause. If we are trying to build a topology based cause/symptom relation
+This CEP rule type is first come, first served, meaning the first event will always
+be the cause. If we are trying to build a topology-based cause/symptom relation
 and a downstream device reports its problem before the actual upstream failure,
 the downstream event will incorrectly become the cause. In our topology example with
-a switch and access point, we would have to account for that making sure the switch
+a switch and an access point, we would have to account for that by making sure the switch
 problem is detected first.
 
 ### Pattern match
 
 The `Pattern match` option is by far the most complex of Complex Event Processing
 options. It uses JavaScript to inspect the events in a sliding time window.
-Only when the script returns a match, will Zabbix execute the configured
+Only when the script returns a match will Zabbix execute the configured
 operations.
 
 Besides being more complex, Pattern matching is the most flexible option. 
 We can use it to detect event sequences, repeated events, missing events, or even
 more advanced cause and symptom logic. It is also the option that requires the
-most careful testing as you will need to build the correct Javascript logic for
+most careful testing as you will need to build the correct JavaScript logic for
 matching events consistently.
 
 ---
@@ -199,7 +199,7 @@ on the CEP time window type, but we can usually pick from:
 - **When a pattern is matched**
 
 Operations are useful to change information on an event like its name or severity.
-We can also use it to close or discard an event, suppress or unsuppress it, create
+We can also use them to close or discard an event, suppress or unsuppress it, create
 a copy, and add, change, rename, or remove tags. Within our CEP rule we can define multiple operations, each with its own conditions.
 
 For simple cause and symptom grouping we do not need any operations, so without
@@ -234,10 +234,10 @@ to the switch and all three access points:
 failure_domain=edge-01
 ```
 
-`failure_domain` : `edge-01` in this case will represent this specific edge
-network, where the switch and access points reside in together. 
+`failure_domain`: `edge-01` in this case will represent this specific edge
+network, where the switch and access points reside together. 
 
-Since Host tags are inherited by problem events, we can add the tags to the hosts
+Since host tags are inherited by problem events, we can add the tags to the hosts
 directly, making it easy to see them in our overviews later. Having the host tags
 available on the problem event means the CEP rule can use this tag without
 adding it to every trigger separately.
@@ -249,10 +249,10 @@ processed by CEP:
 scope=cep
 ```
 
-This is usually a trigger such as `ICMP Down`, on both devices. The `Scope` : `cep`
+This is usually a trigger such as `ICMP Down`, on both devices. The `Scope`: `cep`
 tag is our opt-in tag. A trigger without `scope=cep` will not be processed by 
 the CEP rule in this example, giving us granular control over which problems will 
-be processed by CEP
+be processed by CEP.
 
 ![CEP host and trigger tags](ch07.6-cep-host-trigger-tags.png){ align=center }
 
@@ -274,8 +274,8 @@ Access point trigger: max(/ap-01/icmpping,5m)=0
 Let's say both icmpping items have an update interval of 1 minute, this means that 
 the switch will always be detected before the access point.
 
-The switch needs 3 minutes worth of failed values, three values in total. While
-an access point will need at least 5 minutes worth of failed values, 5 in total. We 
+The switch needs 3 minutes’ worth of failed values, three values in total. While
+an access point will need at least 5 minutes’ worth of failed values, 5 in total. We 
 can apply this logic to all access points, by setting up our templates in a smart 
 manner.
 
@@ -285,7 +285,7 @@ event order predictable.
 ### Creating the CEP rule
 
 Next up, we can finally start creating our CEP rules. It's important to have our 
-logic all setup before we do this. Since we have our logic defined, let's 
+logic all set up before we do this. Since we have our logic defined, let's 
 navigate to `Alerts` | `Event processing` and click on `Create complex event processing`.
 
 Let's configure the rule as follows:
@@ -296,17 +296,17 @@ Let's configure the rule as follows:
 - **Time window processing**: `Cause and symptoms grouping`
 - **Duration**: `10m`
 - **Capacity**: `Unlimited`
-- **Group by**: `Tag` : `failure_domain`
+- **Group by**: `Tag`: `failure_domain`
 
 In this specific case, operations can remain empty as the Cause and symptoms grouping 
-cep rule type will create the relation for us automatically.
+CEP rule type will create the relation for us automatically.
 
 ![CEP switch rule configuration](ch07.7-cep-switch-rule.png){ align=center }
 
 _7.7 CEP switch rule configuration_
 
 Since we are matching on the generic tag `failure_domain`, we can use this CEP rule for
-many more failure domains, not just `edge-01`. This immediately shows use the flexibility of 
+many more failure domains, not just `edge-01`. This immediately shows us the flexibility of 
 the new CEP functionality, as we can group many different problems with only one CEP rule.
 
 ### Testing the result
@@ -315,12 +315,12 @@ We are now ready to do our first test, by making `ap-01` unavailable. The proble
 the access point will be the first and only event in the `edge-01` window, so it will be shown as the cause.
 
 When we recover the access point we do need to make sure to wait for the original window to
-close (10m) before starting the next test. If the CEP time window hasn't closed yet, the `switch-01` problems could become a symptom of `ap-01` problem. 
+close (10m) before starting the next test. If the CEP time window hasn't closed yet, the `switch-01` problem could become a symptom of the `ap-01` problem. 
 
 Once the ap-01 problem has resolved and the window has closed (or if you used the 
-`Reset time windows` button on the CEP rule make `switch-01` and `ap-01` unavailable 
+`Reset time windows` button on the CEP rule), make `switch-01` and `ap-01` unavailable 
 (in that order). The switch event should now be created first, meaning that when the 
-access point event follows, they are added as symptoms of the switch problem.
+access point events follow, they are added as symptoms of the switch problem.
 
 The result should look like this:
 
@@ -358,11 +358,11 @@ manually. Sliding time windows keep recent events together, while conditions,
 grouping, and operations determine how those events should be processed.
 
 One of the most anticipated options, automatic Cause and symptoms grouping 
-gives us a quick way to group network topology related problems like a switch 
+gives us a quick way to group network-topology-related problems like a switch 
 failure with the endpoints behind it. We just need to remember the most important 
 rule for cause/symptom grouping: the first event in the window becomes the cause. 
 For a simple topology we can control that with trigger timing. For larger production 
-environments, explicit topology information and pattern matching to supress problems 
+environments, explicit topology information and pattern matching to suppress problems 
 is usually a safer solution.
 
 ---

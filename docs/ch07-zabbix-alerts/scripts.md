@@ -44,17 +44,17 @@ Webhooks (covered in the previous section) are the preferred modern approach for
 integrating with external HTTP services. So when does a custom script make more
 sense?
 
-- **No HTTP endpoint exists.**: If your target system does not expose an API.
-  For example, a legacy ticketing system you interact with via a command-line
+- **No HTTP endpoint exists:** If your target system does not expose an API,
+  for example, a legacy ticketing system you interact with via a command-line
   tool, a script is your only option.
-- **Complex local logic is required.**: A script can read local files, query a
+- **Complex local logic is required:** A script can read local files, query a
   local database, call multiple external tools in sequence, or make decisions
   based on the state of the Zabbix server host itself. JavaScript inside a webhook
   is sandboxed and cannot do any of this.
-- **You need shell-level access.**: Writing to a file, rotating logs, calling
+- **You need shell-level access:** Writing to a file, rotating logs, calling
   `logger` to push entries into syslog, or invoking system commands all require
   a real process running on the server. Exactly what the Script type provides.
-- **Learning and debugging.**: A logging script that simply writes every alert to
+- **Learning and debugging:** A logging script that simply writes every alert to
   a file is invaluable when you are learning how Zabbix constructs notifications
   or when you are troubleshooting why a more complex integration is not receiving
   the data it expects.
@@ -88,7 +88,7 @@ decides how to use it.
 
 ---
 
-## The AlertScriptsPath Directory
+## The `AlertScriptsPath` Directory
 
 All scripts must live inside the directory defined by `AlertScriptsPath` in
 the Zabbix server configuration. Usually the default value is:
@@ -122,10 +122,10 @@ chmod 750 /usr/lib/zabbix/alertscripts/your-script.sh
 
 !!! note
 
-    Why root:zabbix and not zabbix:zabbix? The zabbix user needs to execute the
+    Why `root:zabbix` and not zabbix:zabbix? The zabbix user needs to execute the
     script, not own it. Ownership by root means only root can modify the file. If
     the zabbix process were ever compromised, an attacker could not alter scripts
-    in AlertScriptsPath to execute arbitrary code. This is the same principle that
+    in `AlertScriptsPath` to execute arbitrary code. This is the same principle that
     applies to system binaries — readable and executable by unprivileged users,
     but modifiable only by root.
 
@@ -138,7 +138,7 @@ file. It is useful in two concrete ways:
 
 - As a **permanent audit trail** of every notification Zabbix attempted to send,
   independent of the Action log retention period in the database.
-- As a **debugging aid** when building more complex integrations, you can see
+- As a **debugging aid** when building more complex integrations: you can see
   exactly what data Zabbix is sending before you point a script at a real endpoint.
 
 ### Step 1 — Create the Script
@@ -272,7 +272,7 @@ Host web01 has exceeded 90% CPU for 5 minutes.
 ```
 
 If the file is empty or does not exist, the most likely cause is a permissions
-problem, or things like SeLinux or AppArmor. Run the command above without
+problem, or things like SELinux or AppArmor. Run the command above without
 `sudo -u zabbix` as root first to confirm the script itself works, then re-check
 the ownership of both the script and the
 log directory.
@@ -361,9 +361,9 @@ the script does not use it for routing, but it is written to the log entry so yo
 can see which user or team the alert was destined for — useful when multiple users
 share the same log file.
 
-Click **Add** then **Update**.
+Click **Add**, then **Update**.
 
-### Step 7 - Verify an Action Is in Place
+### Step 7 — Verify an Action Is in Place
 
 The media type and user assignment are ready, but Zabbix will not call the script
 until an Action decides to send a notification. Go to `Alerts` | `Actions` | `Trigger actions` and confirm that at least one enabled action exists that:
@@ -401,8 +401,8 @@ Click **Add** to save. Within a few seconds the trigger should fire. Go to
 !!! note
 
     For this to work you need the standard `Zabbix server` working with the
-    standard templates still applied to your host. If not create a new item with
-    the item key system.uptime.
+    standard templates still applied to your host. If not, create a new item with
+    the item key `system.uptime`.
 
 Then check the log file on the Zabbix server:
 
@@ -417,7 +417,7 @@ the dummy trigger.
 
 ## Log Rotation
 
-The log file will grow indefinitely without rotation. On most linux distros
+The log file will grow indefinitely without rotation. On most Linux distros
 `logrotate` is the standard tool for this. Create a configuration file:
 
 ```bash
@@ -475,9 +475,8 @@ script, and ensure the `zabbix` user has permission to execute it.
 !!! warning
 
     Do not make scripts world-writable. If any unprivileged user on the system
-    can modify a script in AlertScriptsPath, they could insert arbitrary code
-    that the Zabbix server will execute. The root:zabbix ownership with chmod
-    750 described above prevents this entirely.
+    can modify a script in `AlertScriptsPath`, they could insert arbitrary code
+    that the Zabbix server will execute. The `root:zabbix` ownership with `chmod 750` described above prevents this entirely.
 
 !!! tip
 
@@ -492,29 +491,20 @@ script, and ensure the `zabbix` user has permission to execute it.
 
 Once the basic logger is working, several natural extensions become straightforward:
 
-- **Route by severity.**: Parse `$2` (the subject) for keywords like `DISASTER`
+- **Route by severity:** Parse `$2` (the subject) for keywords like `DISASTER`
   or `HIGH` and write those entries to a separate file or send an additional
   notification.
-- **Push to syslog.**: Replace the `cat >> $LOG_FILE` block with
+- **Push to syslog:** Replace the `cat >> $LOG_FILE` block with
   `logger -t zabbix-alert "$SUBJECT: $MESSAGE"` to send alerts into the system
   journal, where they become visible in `journalctl` and can be forwarded by
   `rsyslog` or `fluentd`.
-- **Call a secondary script.**: Once you are confident the data Zabbix passes
+- **Call a secondary script:** Once you are confident the data Zabbix passes
   looks correct (confirmed by inspecting the log), replace or supplement the
   logging block with a `curl` call to a REST API, passing `$MESSAGE` as the
   request body.
 
-The logger pattern, write first, act second. This is a reliable development workflow
+The logger pattern: write first, act second. This is a reliable development workflow
 for any custom script integration.
-
----
-
-## Useful URLs
-
-- https://www.zabbix.com/documentation/current/en/manual/config/notifications/media/script
-- https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location
-- https://www.gnu.org/software/bash/manual/bash.html
-- https://linux.die.net/man/8/logrotate
 
 ---
 
@@ -542,3 +532,12 @@ for any custom script integration.
    file so they are never mixed with lower-severity entries. Which argument
    (`$1`, `$2`, or `$3`) would you inspect in the script to determine severity,
    and why?
+
+---
+
+## Useful URLs
+
+- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/media/script](https://www.zabbix.com/documentation/current/en/manual/config/notifications/media/script)
+- [https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location](https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location)
+- [https://www.gnu.org/software/bash/manual/bash.html](https://www.gnu.org/software/bash/manual/bash.html)
+- [https://linux.die.net/man/8/logrotate](https://linux.die.net/man/8/logrotate)

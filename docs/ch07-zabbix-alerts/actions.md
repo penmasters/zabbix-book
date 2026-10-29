@@ -68,7 +68,7 @@ This is what kicks off the escalation chain. Every problem event gets a unique
 event ID. All operations, including escalation steps, are executed in the context
 of this single event.
 
-- **Update event**: Generated whenever a problem is modified without resolving.
+- **Update event**: Generated whenever a problem is modified without being resolved.
 This includes acknowledgements, manual severity changes, comments, and
 suppression/unsuppression. Update events are linked to the original problem
 event by its event ID. Update operations in an action respond to these.
@@ -124,14 +124,14 @@ The **Type of calculation** field gives you four options:
 | `Custom expression` | You write a logical formula using condition labels (A, B, C…) |
 
 The `AND / OR` default is often misunderstood. Concretely: if you add two **Host
-group** conditions, `Host group = Linux servers` and `Host group = Database servers`;
+group** conditions, `Host group = Linux servers` and `Host group = Database servers`,
 then Zabbix evaluates them as *"host is in Linux servers OR Database servers"*.
 If you then also add a **Trigger severity** condition of `>= High`, the full
 expression becomes *`"(host is in Linux servers OR Database servers) AND
 severity >= High"`*. This is logical and efficient for most alerting designs.
 
 The `Custom expression` mode gives you full control. Conditions are labelled A,
-B, C, D and so on as you add them, and you write the formula yourself. For example:
+B, C, D, and so on as you add them, and you write the formula yourself. For example:
 `(A or B) and C and not D`. Use this when the default AND/OR logic does not produce
 the correct result.
 
@@ -166,7 +166,7 @@ the more practical approach is usually a tag-based condition instead.
 
 ### Condition Operators
 
-Depending on the condition type, the available operators vary. String based conditions
+Depending on the condition type, the available operators vary. String-based conditions
 (trigger name, host name, tag value, host metadata) support:
 
 - `=` and `<>` (equals / does not equal)
@@ -185,7 +185,7 @@ used elsewhere in Zabbix.
 
 Trigger actions are what most people think of when they hear **"action"** in Zabbix.
 They respond to **problem events**, moments when a trigger changes from `OK`
-to `PROBLEM` and they are the foundation of any meaningful alerting setup.
+to `PROBLEM`, and they are the foundation of any meaningful alerting setup.
 
 ### Condition Types for Trigger Actions
 
@@ -255,7 +255,7 @@ When a problem event fires:
 3. After another hour, if still unresolved: step 3 fires, `management`
    gets notified.
 4. After another hour, if still unresolved: step 4 fires (because steps
-   3–0 means "step 3 to infinity"), `management` gets notified again.
+   3–0 mean "step 3 to infinity"), `management` gets notified again.
 5. This continues indefinitely until the problem resolves.
 
 ![ch07_pause_operations.png](ch07.4-pause_operations.png)
@@ -358,7 +358,7 @@ regardless of which escalation step the problem had reached.
 
 !!! warning 
 
-    recovery operations only fire if a recovery event actually exists.
+    Recovery operations only fire if a recovery event actually exists.
     A recovery event requires the trigger to have explicitly transitioned back
     to `OK`. If a host is deleted, a trigger is disabled, or an item goes unsupported
     while a problem is open, no recovery event is generated and no recovery operations
@@ -382,14 +382,14 @@ received a notification during any escalation step of this problem.
 
 Update operations fire whenever a problem event is updated. Updates include:
 
-- Adding an acknowledgment
+- Adding an acknowledgement
 - Adding a comment
 - Changing the problem severity manually
 - Suppressing or unsuppressing the problem
 
 You can check any combination of these triggers in the **Conditions** section of
 an update operation. This allows you to do things like: "when someone acknowledges
-the problem, send a notification to the oncall channel confirming the acknowledgment."
+the problem, send a notification to the on-call channel confirming the acknowledgement."
 
 Update operations are especially valuable for workflow integration. Common use cases:
 
@@ -523,7 +523,7 @@ conditions in scripts or webhook calls.
 
 !!! tip
 
-    A clean design principle: **A useful design principle is to avoid
+    **A useful design principle is to avoid
     overlapping team-specific actions when the same routing can be expressed more
     cleanly through tags and escalation logic.**
 
@@ -636,13 +636,13 @@ event is generated. Discovery actions respond to those events.
 | Received value | The value returned by the discovery check |
 | Proxy | Which Zabbix proxy performed the discovery |
 | Host IP | Match on the IP address of the discovered host |
-| Service type | Protocol of the discovered service (HTTP, FTP, SSH, SMTP, POP, IMAP, HTTPS, Telnet, LDAP, HTTPS, SNMP, ICMP, Zabbix agent, etc.) |
+| Service type | Protocol of the discovered service (HTTP, FTP, SSH, SMTP, POP, IMAP, HTTPS, Telnet, LDAP, SNMP, ICMP, Zabbix agent, etc.) |
 | Service port | The port number |
 
 The distinction between `Discovered` and `Up` is subtle. `Up` fires every time a
 check for an already known device returns a successful result. `Discovered` fires
 only the first time a device is seen. It will not fire again on subsequent scans
-until the device had been in `Lost` state and then returns. This distinction matters
+until the device has been in the `Lost` state and then returns. This distinction matters
 enormously for your action design: use `Discovered` if you want to add a host once;
 use `Up` if you want to react every time a service check succeeds.
 
@@ -743,11 +743,11 @@ and `does not match`. This lets you do things like:
 
 ### Autoregistration Operations
 
-The available operations are identical to discovery actions:
+The available operations are identical to those of discovery actions:
 
 - Add host, Remove host, Enable host, Disable host
 - Add to host group, Remove from host group
-- Link to template, Unlink from template, Unlink, and clear
+- Link to template, Unlink from template, Unlink and clear
 - Set host inventory mode
 - Send message
 - Run global script
@@ -821,7 +821,7 @@ internal event types:
 !!! note
 
     Internal actions support **Recovery operations** but **do not support Update
-    operations** (acknowledgements). They also do not support **Run global script**,
+    operations** (acknowledgements). They also do not support **Run global script**.
     Only **Send message** is available.
 
 This last point is easy to miss in the documentation. You cannot run an automated
@@ -830,7 +830,7 @@ notification.
 
 ### Why Internal Actions Matter
 
-In a large Zabbix deployment, items go unsupported more often than expected, a
+In a large Zabbix deployment, items go unsupported more often than expected: a
 remote system changes its SNMP OID structure, a cloud API endpoint moves, a JMX
 target loses its credentials. Without internal actions, these failures are silent.
 Zabbix continues to show the last known value for the item while the actual collection
@@ -953,7 +953,7 @@ may silently skip until Monday morning.
 ## Using Macros in Actions
 
 Both the subject and body of Send message operations support a wide range of
-macros. Some of the most frequently used:
+macros. Some of the most frequently used are:
 
 | Macro | Resolves to |
 |---|---|
@@ -1156,4 +1156,4 @@ A few principles to keep in mind as you build your action configuration:
 - [https://www.zabbix.com/documentation/current/en/manual/maintenance](https://www.zabbix.com/documentation/current/en/manual/maintenance)
 - [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/alerts/scripts](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/alerts/scripts)
 - [https://www.zabbix.com/documentation/current/en/manual/config/notifications/action/update_operations](https://www.zabbix.com/documentation/current/en/manual/config/notifications/action/update_operations)
--[https://www.zabbix.com/documentation/current/en/manual/it_services](https://www.zabbix.com/documentation/current/en/manual/it_services)
+- [https://www.zabbix.com/documentation/current/en/manual/it_services](https://www.zabbix.com/documentation/current/en/manual/it_services)

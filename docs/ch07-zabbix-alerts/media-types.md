@@ -23,12 +23,12 @@ It is important to understand that a media type on its own does nothing. It is j
 a reusable configuration template. The full notification chain in Zabbix always
 involves three pieces working together:
 
-1. **A media type** : defines the delivery channel and its technical settings (SMTP
+1. **A media type**: defines the delivery channel and its technical settings (SMTP
    server, webhook URL, script name, etc.).
-2. **A user media assignment** : connects a specific user to a media type, supplying
+2. **A user media assignment**: connects a specific user to a media type, supplying
    that user's personal contact details (email address, phone number, Slack user
    ID, etc.) and optionally restricting which severities or time windows apply.
-3. **An action** : defines when to send a notification and to which users.
+3. **An action**: defines when to send a notification and to which users.
 
 If any of these three pieces is missing or misconfigured, notifications will not
 be delivered. Keep this triangle in mind as you read through the rest of this
@@ -41,28 +41,28 @@ chapter and the `Actions` chapter that follows.
 Zabbix 8.0 supports five kinds of media types. Each has its own configuration
 form, but they all share a set of common settings that we will cover first.
 
-- **Email** : Is the most commonly used type and is built directly into the
+- **Email**: Is the most commonly used type and is built directly into the
   `Zabbix server`. No external scripts are required. Zabbix connects to
   an SMTP server and delivers messages.
 
-- **Push notification** : Sends notifications from the `Zabbix server` to the
+- **Push notification**: Sends notifications from the `Zabbix server` to the
   official Zabbix mobile app. Push notifications require a configured Zabbix
   bridge adapter and a mobile device registered for the receiving user.
 
-- **SMS** : Sends text messages via a GSM modem physically attached to the
+- **SMS**: Sends text messages via a GSM modem physically attached to the
   `Zabbix server`. This is a legacy option and rarely used in modern deployments,
-  but it remains available. The sms modem is usually connected to a serial port
+  but it remains available. The SMS modem is usually connected to a serial port
   or USB port with the help of some special software like smstools.
 
-- **Script** : Lets you execute any custom script or binary on the `Zabbix server`
+- **Script**: Lets you execute any custom script or binary on the `Zabbix server`
   when a notification needs to be sent. This is how you can integrate with almost
   anything. PagerDuty, a ticketing system, a proprietary API, ... as long as you
   can write a script that talks to it.
 
-- **Webhook** : Is the modern evolution of Script. Instead of running a local script,
+- **Webhook**: Is the modern evolution of Script. Instead of running a local script,
   Zabbix executes a JavaScript function internally (using the Duktape JS engine
   embedded in the server) that makes HTTP requests. Zabbix ships with a large
-  collection of ready to use webhook integrations for services like Slack,
+  collection of ready-to-use webhook integrations for services like Slack,
   Microsoft Teams, Telegram, Opsgenie, Jira, and many more. This is the preferred
   approach for new integrations.
 
@@ -73,23 +73,23 @@ form, but they all share a set of common settings that we will cover first.
 Regardless of which type you are configuring, every media type shares the following
 fields at the top of its configuration form.
 
-- **Name** : is simply a descriptive label. Choose something meaningful, if you have
+- **Name**: is simply a descriptive label. Choose something meaningful, if you have
   multiple email configurations (for example, one for internal alerts and one for
   customer notifications), the name is the only thing distinguishing them in
   dropdown lists.
 
-- **Type** : selects which of the five categories above you are configuring.
+- **Type**: selects which of the five categories above you are configuring.
 
-- **Description** : is optional free text. Use it. Documenting what the media type
-  is for, which external service it connects to, and any non obvious configuration
+- **Description**: is optional free text. Use it. Document what the media type
+  is for, which external service it connects to, and any non-obvious configuration
   choices. This saves a great deal of confusion later.
 
-- **Enabled/Disabled** : toggle. A disabled media type will not deliver any
+- **Enabled/Disabled**: toggle. A disabled media type will not deliver any
   notifications even if it is assigned to users and referenced in actions. This
   is useful when you need to temporarily suppress a channel without deleting its
   configuration.
 
-- **Message templates** : every media type can carry default message templates for
+- **Message templates**: every media type can carry default message templates for
   each event type:
 
   ``` ini
@@ -110,14 +110,14 @@ fields at the top of its configuration form.
   `{TRIGGER.NAME}`, `{EVENT.SEVERITY}`, etc.), which are substituted at send time.
   We will look at a full example template in the step-by-step section below.
 
-- **Concurrent sessions** : controls how many simultaneous alert notifications this
+- **Concurrent sessions**: controls how many simultaneous alert notifications this
   media type is allowed to process at once. For most installations, the default
   (one) is fine. Webhooks to fast external APIs can sometimes benefit from a higher
   value. Increasing this also increases load on the Zabbix server. Also don't
   forget to increase in the `Zabbix server` config the option `StartAlerters`
   if needed.
 
-- **Attempts** and **Attempt interval** : if a notification fails to deliver
+- **Attempts** and **Attempt interval**: if a notification fails to deliver
   (for example, the SMTP server is temporarily unavailable), Zabbix will retry.
   The *Attempts* field sets how many total tries it will make (minimum 1,
   maximum 100), and *Attempt interval* sets how long Zabbix waits between retries.
@@ -132,37 +132,37 @@ acts as an SMTP client and delivers messages through your mail server.
 
 ### Configuration Fields
 
-- **SMTP server** : the hostname or IP address of the mail server Zabbix should
-  connect to. If you are using an internal relay, this is typically your organization's
+- **SMTP server**: the hostname or IP address of the mail server Zabbix should
+  connect to. If you are using an internal relay, this is typically your organisation's
   mail relay hostname.
 
-- **SMTP server port** : the TCP port to connect on. The most common values are 25
+- **SMTP server port**: the TCP port to connect on. The most common values are 25
   (plain SMTP), 465 (SMTPS — SSL/TLS from the start of the connection), and 587
   (SMTP with STARTTLS).
 
-- **SMTP helo** : the HELO/EHLO hostname Zabbix presents when connecting to the
+- **SMTP helo**: the HELO/EHLO hostname Zabbix presents when connecting to the
   SMTP server. This should be the fully qualified domain name of the `Zabbix server`.
 
-- **SMTP email** : the sender address that will appear in the `From:` header. Make
+- **SMTP email**: the sender address that will appear in the `From:` header. Make
   sure this address is permitted to send mail through the SMTP server you specified,
   otherwise you may encounter relay rejection or SPF failures.
 
-- **Connection security** : controls how the SMTP connection is encrypted. Choose
+- **Connection security**: controls how the SMTP connection is encrypted. Choose
   from **None** (plain text, not recommended for production), **STARTTLS** (upgrades
   an unencrypted connection to TLS after the initial handshake), or **SSL/TLS**
   (TLS from the very first byte, used with port 465).
 
-- **SSL verify peer** and **SSL verify host** : when using TLS, these control
+- **SSL verify peer** and **SSL verify host**: when using TLS, these control
   whether the server's certificate is validated. In a production environment,
   both should be enabled. Disabling them is useful only for testing with self-signed
   certificates and should not be left off permanently.
 
-- **Authentication** : SMTP authentication. If your mail server requires a username
+- **Authentication**: SMTP authentication. If your mail server requires a username
   and password, select **Normal** and enter the credentials. If no authentication
   is needed (for example, a local relay that accepts mail from the Zabbix server
   by IP), leave this as **None**.
 
-- **Username / Password** : the SMTP credentials, visible only when Authentication
+- **Username / Password**: the SMTP credentials, visible only when Authentication
   is set to Normal.
 
 ???+ note
@@ -215,11 +215,11 @@ Go to `Alerts` | `Media types` and click **Create media type**.
 
 Configure the following fields:
 
-- **Name** : enter a descriptive name, for example `Zabbix mobile push`.
-- **Type** : select **Push**.
-- **Message templates** : configure the messages for problem, recovery, update,
+- **Name**: enter a descriptive name, for example `Zabbix mobile push`.
+- **Type**: select **Push**.
+- **Message templates**: configure the messages for problem, recovery, update,
   service, discovery, autoregistration, and internal events as required.
-- **Enabled** : make sure the media type is enabled.
+- **Enabled**: make sure the media type is enabled.
 
 The configuration form also shows whether the Zabbix bridge adapter is configured.
 Save the media type when the configuration is complete.
@@ -312,7 +312,7 @@ The script's exit code matters: exit 0 means success; any non-zero exit code is
 treated as a failure, and Zabbix will log the error and retry according to the
 *Attempts* setting.
 
-Checkout the next topic `Custom Alert Scripts` if you like to find out more on
+Check out the next topic `Custom Alert Scripts` if you would like to find out more on
 how to configure this in Zabbix.
 
 ### Important Security Consideration
@@ -447,26 +447,25 @@ request will appear in webhook.site within seconds.
 
 ![webhook](ch07.2-webhook.png)
 
-_7.2
-webhook_
+_7.2 webhook_
 
 Once you see the request on webhook.site and the JSON looks correct, the media type
-is working. Disable or delete the dummy trigger, replace the endpoint_url parameter
-value with your real endpoint, and the setup is production ready.
+is working. Disable or delete the dummy trigger, replace the `endpoint_url` parameter
+value with your real endpoint, and the setup is production-ready.
 For server-side logging during development, the Zabbix object is available in the
-script environment. Zabbix.Log(4, 'response was: ' + response) writes to the
+script environment. `Zabbix.Log(4, 'response was: ' + response)` writes to the
 `Zabbix server` log at debug level 4, which is useful for tracing what a script
 is doing when a problem only appears in production and not during testing.
 
 !!! note
 
-    HttpRequest is the correct object name in Zabbix 5.4 and later, including
+    `HttpRequest` is the correct object name in Zabbix 5.4 and later, including
     Zabbix 8.0. Older documentation and community examples often reference
-    CurlHttpRequest, which was the name used in Zabbix 5.2 and older and no longer
+    `CurlHttpRequest`, which was the name used in Zabbix 5.2 and older and no longer
     works. If you copy a webhook script from an external source and it throws a
     ReferenceError: identifier 'CurlHttpRequest' undefined error, replacing
-    CurlHttpRequest with HttpRequest and updating the method names to lowercase
-    (addHeader, post, getStatus) is all that is needed.
+    `CurlHttpRequest` with `HttpRequest` and updating the method names to lowercase
+    (`addHeader`, `post`, `getStatus`) is all that is needed.
 
 
 ---
@@ -547,12 +546,12 @@ relay requires SSL/TLS from the start of the connection, use port 465 and set
 !!! note
 
     This is just an example setup, not a working configuration. You need to add
-    the correct SMTP server address etc ... .
+    the correct SMTP server address, etc.
 
 ### Step 3 — Set Retry Parameters
 
 Leave **Concurrent sessions** at `1` for email. Set **Attempts** to `3` and **Attempt
-interval** to `5m`, Zabbix will retry up to three times with a five minute gap
+interval** to `5m`, Zabbix will retry up to three times with a five-minute gap
 if the SMTP server is temporarily unavailable.
 
 ### Step 4 — Configure Message Templates
@@ -600,9 +599,7 @@ back to Zabbix's bare-bones defaults.
 !!! note
 
     A list of all macros that you can use here can be found at the following
-    location: [https://www.zabbix.com/documentation/current/en/manual/appendix/
-    macros/supported_by_location](https://www.zabbix.com/documentation/current/
-    en/manual/appendix/macros/supported_by_location)
+    location: [https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location](https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location)
 
 ### Step 5 — Save and Test
 
@@ -715,7 +712,7 @@ before attaching it to production actions. The few seconds this takes is nothing
 compared to discovering a broken SMTP configuration during an actual incident.
 
 **Watch for silent failures.** A media type can fail consistently for days without
-any visible indication unless you are actively monitoring the Action log. Periodic
+any visible indication unless you are actively monitoring the Action log. Periodically
 check `Reports` | `Action log`, filter by status Failed, this is a simple habit
 that catches problems early.
 
@@ -736,7 +733,7 @@ under which Zabbix decides to send. All three must be in place. A gap in any one
 of them and notifications will not flow.
 
 In the next section we look at Actions in detail, where you define the logic that
-decides when to notify, who to notify, and what to say.
+decides when to notify, whom to notify, and what to say.
 
 ## Questions
 
