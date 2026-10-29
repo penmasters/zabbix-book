@@ -7,7 +7,7 @@ of default templates** and how to find new ones, helping you get up and running
 with minimal effort.
 
 Once you're comfortable with default templates, we’ll dive into **building your
-own templates**, offering detailed instructions on customization and best practices.
+own templates**, offering detailed instructions on customisation and best practices.
 We’ll also cover how to **share your templates** within the Zabbix community,
 fostering collaboration and knowledge exchange.
 
@@ -16,5 +16,5 @@ templates and why they're most effective when understood in the context of
 template usage. This structured approach will ensure you grasp the full potential
 of templates and their associated features in Zabbix.
 
-By the end of this chapter, you'll be well versed in both using and creating templates,
+By the end of this chapter, you'll be well-versed in both using and creating templates,
 equipped to enhance your monitoring setup and contribute to the broader Zabbix ecosystem.

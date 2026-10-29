@@ -1,8 +1,7 @@
 ---
 description: |
   Learn how to use the built-in reports in Zabbix 8.0 to review system
-  status, availability, trigger activity, audit information and
-  notifications.
+  status, availability, trigger activity, audit information, and notifications.
 tags:
 - beginner
 ---
@@ -11,10 +10,10 @@ tags:
 
 Zabbix collects a large amount of operational information while
 monitoring your environment. While dashboards are generally used to
-visualize current monitoring data, the **Reports** section provides
-several built-in views that help administrators analyze the Zabbix
+visualise current monitoring data, the **Reports** section provides
+several built-in views that help administrators analyse the Zabbix
 environment itself, historical availability, trigger activity,
-configuration changes and notifications.
+configuration changes, and notifications.
 
 The available reports can be found under:
 
@@ -49,7 +48,7 @@ look when checking the general state of a Zabbix server.
 
 Navigate to:
 
-**Reports \> System information**
+`Reports` | `System information`
 
 The page displays information about the Zabbix server and frontend
 together with statistics about the monitored environment.
@@ -73,7 +72,7 @@ such as monitored, disabled, and unsupported where applicable.
 
 ![ch11.37-system-information.png](ch11.37-system-information.png)
 
-_ch11.37 system-information_
+_11.37 system-information_
 
 ### Required server performance
 
@@ -121,7 +120,7 @@ Information includes:
 -   status
 
 A node can, for example, be displayed as **Active**, **Standby**,
-**Unavailable** or **Stopped**.
+**Unavailable**, or **Stopped**.
 
 This makes the System information page a useful first check when
 investigating the state of a Zabbix server HA cluster.
@@ -139,10 +138,10 @@ versions of Zabbix dashboards and distribute them by email.
 
 Navigate to:
 
-**Reports \> Scheduled reports**
+`Reports` | `Scheduled reports`
 
 A scheduled report can generate a dashboard report on a daily, weekly,
-monthly or yearly schedule.
+monthly, or yearly schedule.
 
 The overview shows information such as the report owner, reporting
 period, generation frequency, last delivery, and current status.
@@ -164,7 +163,7 @@ triggers have remained in the **OK** and **Problem** states.
 
 Navigate to:
 
-**Reports \> Availability report**
+`Reports` | `Availability report`
 
 For every displayed trigger, Zabbix calculates the percentage of time
 spent in each state.
@@ -198,8 +197,7 @@ information graphically, with bars representing the OK and Problem time.
 
 ### Availability is based on trigger state
 
-**Important:** this report only shows how long a trigger spent in OK or Problem
-state. It is not a business SLA and it does not equal the availability of a
+**Important:** this report only shows how long a trigger spent in an OK or Problem state. It is not a business SLA and it does not equal the availability of a
 whole service. An ICMP trigger and an application trigger on the same host
 can easily produce very different percentages depending on how the triggers
 were written.
@@ -226,12 +224,12 @@ A maintenance period configured with **No data collection** stops data
 collection for the affected entities, preventing new problems from being
 generated from that data during the maintenance period.
 
-Keep this behavior in mind when using Availability reports for
+Keep this behaviour in mind when using Availability reports for
 historical analysis.
 
 ![ch11.38-availability-report.png](ch11.38-availability-report.png)
 
-_ch11.38 availability-report_
+_11.38 availability-report_
 
 ------------------------------------------------------------------------
 
@@ -242,7 +240,7 @@ the highest number of problems during a selected period.
 
 Navigate to:
 
-**Reports \> Top 100 triggers**
+`Reports` | `Top 100 triggers`
 
 This report is useful for finding monitoring objects that generate
 problems repeatedly.
@@ -286,7 +284,7 @@ configuration itself.
 
 ![ch11.39-triggers-100.png](ch11.39-triggers-100.png)
 
-_ch11.39 triggers Top 100_
+_11.39 triggers Top 100_
 
 ------------------------------------------------------------------------
 
@@ -296,7 +294,7 @@ The **Audit log** records user and system activity within Zabbix.
 
 Navigate to:
 
-**Reports \> Audit log**
+`Reports` | `Audit log`
 
 The report contains information including:
 
@@ -309,9 +307,8 @@ The report contains information including:
 -   recordset ID
 -   details
 
-Recorded actions can include operations such as adding, updating and
-deleting configuration, logins and logouts, failed logins, executing
-operations and clearing history.
+Recorded actions can include operations such as adding, updating, and deleting configuration, logins and logouts, failed logins, executing
+operations, and clearing history.
 
 ### Tracking configuration changes
 
@@ -356,11 +353,11 @@ export contains the filtered records.
 
 !!! warning
 
-    Audit records are only collected when audit logging is enabled under **Administration > Audit log**. If audit logging is disabled, user and system activities are not recorded in the audit log database records.
+    Audit records are only collected when audit logging is enabled under `Administration` | `Audit log`. If audit logging is disabled, user and system activities are not recorded in the audit log database records.
 
 ![ch11.40-audit-log.png](ch11.40-audit-log.png)
 
-_ch11.40 Audit log_
+_11.40 Audit log_
 
 ------------------------------------------------------------------------
 
@@ -371,7 +368,7 @@ configured actions.
 
 Navigate to:
 
-**Reports \> Action log**
+`Reports` | `Action log`
 
 These operations can include:
 
@@ -389,7 +386,7 @@ For each operation, the report can display information such as:
 -   additional information
 
 Possible operation states include **In progress**, **Sent**,
-**Executed** and **Failed**.
+**Executed**, and **Failed**.
 
 ### Troubleshooting notifications
 
@@ -418,7 +415,7 @@ about the failure.
 
 ![ch11.41-action-log.png](ch11.41-action-log.png)
 
-_ch11 Action Log_
+_11.41 Action log_
 
 ### Audit log versus Action log
 
@@ -462,7 +459,7 @@ of notifications sent to Zabbix users.
 
 Navigate to:
 
-**Reports \> Notifications**
+`Reports` | `Notifications`
 
 Unlike the Action log, this report is not intended to show the details
 of individual messages. Instead, it provides an overview of notification
@@ -500,31 +497,15 @@ individual operations need to be investigated.
 The reports overlap in some areas, but each answers a different
 operational question.
 
-  -----------------------------------------------------------------------
-  Report                              Typical question
-  ----------------------------------- -----------------------------------
-  System information                  What is the current state and size
-                                      of this Zabbix installation?
-
-  Scheduled reports                   Which dashboard reports are
-                                      generated and distributed
-                                      automatically?
-
-  Availability report                 How long was this trigger in an OK
-                                      or Problem state?
-
-  Top 100 triggers                    Which triggers generated the most
-                                      problems?
-
-  Audit log                           Who or what changed something in
-                                      Zabbix?
-
-  Action log                          What happened when Zabbix executed
-                                      an action?
-
-  Notifications                       How many notifications were sent to
-                                      each user?
-  -----------------------------------------------------------------------
+| Report | Typical question |
+|--------|------------------|
+| System information | What is the current state and size of this Zabbix installation? |
+| Scheduled reports | Which dashboard reports are generated and distributed automatically? |
+| Availability report | How long was this trigger in an OK or Problem state? |
+| Top 100 triggers | Which triggers generated the most problems? |
+| Audit log | Who or what changed something in Zabbix? |
+| Action log | What happened when Zabbix executed an action? |
+| Notifications | How many notifications were sent to each user? |
 
 Learning which report answers which question makes troubleshooting
 considerably faster.
@@ -541,7 +522,7 @@ configuration was recently changed.
 
 ![ch11.42-notifications.png](ch11.42-notifications.png)
 
-_ch11.42 Notifications_
+_11.42 Notifications_
 
 ------------------------------------------------------------------------
 
@@ -552,7 +533,7 @@ that is already available inside the monitoring system.
 
 The **System information** report provides a quick overview of the
 Zabbix installation itself. **Availability report** and **Top 100
-triggers** help analyze historical monitoring behavior. **Audit log**
+triggers** help analyse historical monitoring behaviour. **Audit log**
 records administrative and system activity, while **Action log**
 provides detailed information about notifications and remote commands
 executed by actions. Finally, the **Notifications** report provides an
@@ -561,7 +542,7 @@ aggregated view of notification volume per user.
 These reports do not replace dashboards, Services, SLAs, or external
 reporting tools. Instead, they provide focused operational views that
 are especially useful for administration, troubleshooting, and reviewing
-the behavior of a Zabbix environment.
+the behaviour of a Zabbix environment.
 
 Knowing where to look is often more important than the amount of
 information available. The Reports menu provides several of those

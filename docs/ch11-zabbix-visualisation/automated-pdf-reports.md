@@ -101,9 +101,9 @@ correctly and listening on the expected port.
     ```
 
 One final step before we can start creating our scheduled reports is
-configuration of the frontend URL. Go to Administration -> General -> Other.
-Fill in the `Frontend URL` field met the correct url of your frontend. This can
-be something like `http://192.168.0.1/` or `https://myzabbixurl/` or even
+configuration of the frontend URL. Go to `Administration` | `General` | `Other`.
+Fill in the `Frontend URL` field with the correct URL of your frontend. This can
+be something like `http://192.168.0.1/`, `https://myzabbixurl/`, or even
 `https://my_zabbix_domain/zabbix/`. This depends on how you have configured your
 frontend.
 
@@ -148,6 +148,6 @@ PDF reports directly from Zabbix.
 
 ## Useful URLs
 
-  - [https://www.zabbix.com/documentation/current/en/manual/config/reports](https://www.zabbix.com/documentation/current/en/manual/config/reports)
-  - [https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service](https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service)
-  -[https://www.google.com/chrome/](https://www.google.com/chrome/)
+- [https://www.zabbix.com/documentation/current/en/manual/config/reports](https://www.zabbix.com/documentation/current/en/manual/config/reports)
+- [https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service](https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service)
+- [https://www.google.com/chrome/](https://www.google.com/chrome/)

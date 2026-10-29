@@ -1,6 +1,6 @@
 ---
 description: |
-    Learn how to create, customize, and optimize Zabbix templates to monitor any
+    Learn how to create, customise, and optimise Zabbix templates to monitor any
     system efficiently. Perfect for admins seeking automation and visibility.
 tags: [advanced]
 ---
@@ -11,9 +11,9 @@ Templates are one of the most fundamental building blocks in Zabbix. They define
 what and how to monitor, and serve as reusable configuration blueprints that can
 be applied to any number of hosts. By grouping related items, triggers, graphs,
 discovery rules, and macros into a single logical entity, templates make it possible
-to standardize and scale monitoring efficiently.
+to standardise and scale monitoring efficiently.
 
-Zabbix 8.0 emphasizes self-contained template design. Where practical, templates
+Zabbix 8.0 emphasises self-contained template design. Where practical, templates
 should be standalone to simplify importing, exporting, versioning, and distribution.
 Template linking and nesting remain fully supported and can still be useful when
 multiple templates share reusable monitoring components or must be composed into
@@ -36,7 +36,7 @@ complex multi-layer application such as PostgreSQL, VMware, or Kubernetes.
 
 Each template can include:
 
-- **Items:** definitions of data to collect (e.g., system.cpu.load, vfs.fs.size[/,free]).
+- **Items:** definitions of data to collect (e.g., `system.cpu.load`, `vfs.fs.size[/,free]`).
 - **Triggers:** logical expressions that evaluate collected data to identify problem
   conditions.
 - **Graphs:** visual representations of collected metrics.
@@ -44,9 +44,9 @@ Each template can include:
   or interfaces) and dynamically create item prototypes.
 - **Value Maps:** mappings that translate raw data into human-readable text.
 - **Macros:** reusable variables that make templates configurable and environment
-  agnostic.
+  independent.
 - **Tags:** metadata used for filtering, correlation, and alert routing.
-- **Dashboards:** predefined visualization layouts attached to the template.
+- **Dashboards:** predefined visualisation layouts attached to the template.
 
 Templates are linked to hosts to apply these monitoring definitions. Once linked,
 the host immediately inherits all monitoring logic from the template.
@@ -58,7 +58,7 @@ parent and child templates. While powerful, this approach often led to dependenc
 complexity, version mismatches, and export/import challenges.
 
 Starting with Zabbix 6.4 and refined in 7.x, the preferred design is monolithic
-templates meaning each template is self contained and does not rely on inheritance.
+templates, meaning each template is self-contained and does not rely on inheritance.
 This makes templates easier to:
 
 - Export and share as standalone YAML files.
@@ -72,8 +72,8 @@ missing dependency breaks the import process.
 ### Template UUIDs
 
 Starting with Zabbix 6.2, every configuration entity, including templates, is
-assigned a Universally Unique Identifier (UUID). This fundamentally changed how
-Zabbix tracks and synchronizes configuration objects across different environments.
+assigned a universally unique identifier (UUID). This fundamentally changed how
+Zabbix tracks and synchronises configuration objects across different environments.
 
 #### Purpose of UUIDs
 
@@ -86,7 +86,7 @@ each template, independent of its name or internal database ID.
 
 #### Benefits
 
-- **Reliable synchronization:** Imports and updates use the UUID, preventing duplication
+- **Reliable synchronisation:** Imports and updates use the UUID, preventing duplication
   and mismatched merges.
 - **Conflict prevention:** Avoids overwriting templates with the same name.
 - **Version-control stability:** Git-based workflows can track the same object
@@ -112,17 +112,17 @@ zabbix_export:
 
 ```
 
-???+ info "Behavior and Persistence"
+???+ info "Behaviour and Persistence"
 
     The UUID remains constant even if the template is renamed or moved between
     groups. However, when a template is cloned or copied, Zabbix generates new
     UUIDs for the template and all of its entities. This ensures the cloned template
     is treated as a distinct object and does not conflict with the original during
-    import, export, or API synchronization.
+    import, export, or API synchronisation.
 
 #### What Happens When You Clone a Template
 
-When you clone or copy a template (for example, to customize it), Zabbix creates
+When you clone or copy a template (for example, to customise it), Zabbix creates
 a completely new object. All nested entities like items, triggers, discovery rules,
 dashboards, etc. will receive new UUIDs.
 
@@ -130,7 +130,7 @@ This means your cloned template is independent:
 
 - It will not overwrite the original during imports.
 - It can coexist safely even if it has a similar name.
-- It is ideal for creating customized variants of official templates.
+- It is ideal for creating customised variants of official templates.
 
 ???+ note
 
@@ -146,8 +146,8 @@ This means your cloned template is independent:
 
 ## Template Groups
 
-Template groups in Zabbix are used for `organization` and `access control targeting`.
-They provide a logical way to categorize templates (for example, Operating Systems,
+Template groups in Zabbix are used for `organisation` and `access control targeting`.
+They provide a logical way to categorise templates (for example, Operating Systems,
 Databases, Network Devices), but they do not themselves define access rights.
 
 A template group itself does not carry permissions.
@@ -158,14 +158,14 @@ in the frontend.
 
 In other words:
 
-- **Template groups:** organize and classify templates.
+- **Template groups:** organise and classify templates.
 - **User groups:** hold the permissions that control access to those template groups.
 
-This model provides flexible role based access control (RBAC): administrators can
+This model provides flexible role-based access control (RBAC): administrators can
 manage access centrally by assigning or revoking permissions for user groups
 rather than editing individual templates.
 
-If you like to make a new template group then they can be found under `Data collection` | `Host groups` | `Create template group`
+If you would like to make a new template group then they can be found under `Data collection` | `Host groups` | `Create template group`.
 
 ![ch06.01-template-group.png](ch06.1-template-group.png)
 
@@ -174,9 +174,9 @@ _6.1 Template Group_
 ### Permissions and Access Control
 
 In Zabbix 8.0, access to templates is controlled by a combination of `user roles`
-and `usergroup` permissions.
+and `user group` permissions.
 
-- **Roles** define what actions a user can perform globally. Such as viewing problems,
+- **Roles** define what actions a user can perform globally, such as viewing problems,
   acknowledging events, or modifying configuration.
 - **User groups:** define which objects the role can act on by granting `Read-only
   (RO)` or `Read-write (RW)` permissions to specific object groups (host groups,
@@ -194,7 +194,7 @@ they are allowed.
 #### Impact of template permissions
 
 Although template group permissions primarily govern configuration access, they
-can also influence operational behavior in the frontend. When users view or interact
+can also influence operational behaviour in the frontend. When users view or interact
 with problems, their ability to take certain actions depends both on their role
 and their permissions for the underlying host or template.
 
@@ -256,7 +256,7 @@ This clear separation ensures operational access (hosts) and configuration acces
 ???+ note
 
     Roles (user, admin, and super admin) define what you can do.
-    Usergroup permissions define where you can do it.
+    User group permissions define where you can do it.
 
 ### Best Practices for Permissions
 
@@ -265,16 +265,16 @@ This clear separation ensures operational access (hosts) and configuration acces
 - **Align permissions logically:** If a user group manages database hosts, grant
   them RW access to both the relevant host groups and the corresponding `Templates/Databases`
   group.
-- **Review permissions regularly:** Periodically audit usergroup assignments to
-  ensure only authorized teams have configuration privileges.
+- **Review permissions regularly:** Periodically audit user group assignments to
+  ensure only authorised teams have configuration privileges.
 - **Use clear naming conventions for groups:** Distinguish functional scopes (Templates/OS/Linux)
-  from organizational ones (Templates/Customers/Prod). This improves clarity when
+  from organisational ones (Templates/Customers/Prod). This improves clarity when
   assigning permissions in large environments.
 
 ### Template Subgroups
 
 Zabbix 3.2 introduced nested template groups (subgroups), enabling a hierarchical
-structure similar to host groups. Subgroups allow administrators to build organized,
+structure similar to host groups. Subgroups allow administrators to build organised,
 multi-level collections of templates, which improves navigation and permission
 granularity.
 
@@ -299,7 +299,7 @@ Templates
     └── Web Servers
 ```
 
-- **Hierarchy for organization and permissions only:** Subgroups do not change how
+- **Hierarchy for organisation and permissions only:** Subgroups do not change how
   templates link to hosts; they are purely structural.
 - **Automatic downward inheritance:** If a user group has RW or RO access to a
   parent template group, that access automatically extends to all its existing
@@ -311,15 +311,15 @@ Templates
   Administrators must manually grant permissions on the parent group if required.
 - **Search and filtering benefits:** The hierarchical view makes it easier to locate
   and manage templates in large environments.
-- **Consistency with host groups:** Subgroup behavior and inheritance are identical
-  for host groups and template groups, providing a uniform organizational model.
+- **Consistency with host groups:** Subgroup behaviour and inheritance are identical
+  for host groups and template groups, providing a uniform organisational model.
 
 ???+ tip
 
     Use top-level groups for broad classifications (e.g., Templates/Applications)
-    and subgroups for vendor or technology specialization. Assign RW rights at
+    and subgroups for vendor or technology specialisation. Assign RW rights at
     the top level for global administrators, and finer-grained access on subgroups
-    for specialized teams.
+    for specialised teams.
 
 ## Tags
 
@@ -360,13 +360,13 @@ interface: uplink
 
 - Use consistent naming for tag keys across templates (e.g., service, component,
   role).
-- Avoid over tagging; focus on attributes useful for filtering or alerting.
-- Use lower case, underscore separated keys for uniformity.
+- Avoid over-tagging; focus on attributes useful for filtering or alerting.
+- Use lowercase, underscore-separated keys for uniformity.
 
-### Tag Inheritance and Merging Behavior
+### Tag Inheritance and Merging Behaviour
 
 When templates are linked to hosts and hosts or items already define their own
-tags — Zabbix merges all tag sources into a single event level tag set.
+tags, Zabbix merges all tag sources into a single event-level tag set.
 Understanding this inheritance order is crucial for predictable alerting and correlation.
 
 ```mermaid
@@ -398,7 +398,7 @@ _6.3 Zabbix tag inheritance and event tag merging_
 Interpretation:
 
 Zabbix merges tags from top to bottom.
-Template level tags are the most general, while item level tags are the most specific.
+Template-level tags are the most general, while item-level tags are the most specific.
 All resulting tags flow into the generated event.
 
 **Inheritance Order explained:**
@@ -421,7 +421,7 @@ removed.
 - Tags are additive, not overridden. Unlinking or clearing a template removes only
   that template’s tags from future events.
 
-**Example :**
+**Example:**
 
 | Source                  | Tag Key     | Tag Value     |
 | :---------------------- | :---------- | :------------ |
@@ -441,13 +441,13 @@ component: replication
 
 #### Some good practices when tagging
 
-- Keep template level tags generic (e.g., service: database).
-- Use host level tags for environmental context (e.g., region: europe, customer:
+- Keep template-level tags generic (e.g., service: database).
+- Use host-level tags for environmental context (e.g., region: europe, customer:
   acme).
 - Apply item/trigger-level tags for event specificity (component: disk, component:
   replication).
 - Regularly audit merged event tags under `Monitoring` | `Problems` | `Tags` to verify
-  inheritance behavior.
+  inheritance behaviour.
 
 ## Template macros
 
@@ -485,7 +485,7 @@ Example:
 | Template OS Linux       | 10101       | `{$CPU_UTIL_MAX}` | 85    |
 | Template App PostgreSQL | 10115       | `{$CPU_UTIL_MAX}` | 90    |
 
-→ The oldest template (lowest ID) wins → {$CPU_UTIL_MAX}=85.
+→ The oldest template (lowest ID) wins → `{$CPU_UTIL_MAX}=85`.
 
 Precedence Hierarchy:
 
@@ -503,7 +503,7 @@ Precedence Hierarchy:
 
 ## Value Maps
 
-Value maps convert raw numeric or coded values into meaningful, human readable text.
+Value maps convert raw numeric or coded values into meaningful, human-readable text.
 They make dashboards, triggers, and data views more intuitive. For example, turning
 SNMP status codes like 1, 2, 3 into Up, Down, Unknown.
 
@@ -568,14 +568,14 @@ For a specific host, e.g. Switch A, you might define:
 | 2         | Non-operational |
 
 Only items defined directly on Switch A (not inherited from a template) can use
-this map. If the same host a template is applied, that host will use the
+this map. If a template is applied to the same host, that host will use the
 template’s value map instead of the host-level one for items from the template.
 
 #### Some good practices for value maps
 
-- Keep template level value maps technology specific (e.g. SNMP interface, SMART
+- Keep template-level value maps technology-specific (e.g. SNMP interface, SMART
   disk status).
-- Define host level maps only when customization is necessary for that device.
+- Define host-level maps only when customisation is necessary for that device.
 - Maintain consistent naming conventions (Interface Status, Disk Health) across
   templates to simplify export/import.
 - If multiple templates require the same mapping logic, simply define identical
@@ -588,7 +588,7 @@ template’s value map instead of the host-level one for items from the template
 Template dashboards allow you to attach pre-designed visual dashboards directly
 to a template. When the template is linked to a host, Zabbix automatically creates
 a **host-specific dashboard instance** based on that template. This makes it possible
-to provide consistent visualizations for every host or application without manually
+to provide consistent visualisations for every host or application without manually
 building dashboards for each one.
 
 ### Where to Find Template Dashboards
@@ -608,7 +608,7 @@ and graphs populated with that host’s data.
 
 ### Purpose and Use Cases
 
-Template dashboards are most useful for application-level or host-specific visualization.
+Template dashboards are most useful for application-level or host-specific visualisation.
 They provide a structured, ready-to-use view tailored to the technology being monitored.
 
 Typical Use Cases:
@@ -619,7 +619,7 @@ Typical Use Cases:
     - When linked, each database instance automatically gains its own PostgreSQL
       performance dashboard.
 - Operating system dashboards:
-    - Template OS Linux may display CPU load, memory utilization, filesystem usage,
+    - Template OS Linux may display CPU load, memory utilisation, filesystem usage,
       and system uptime widgets.
 - Network device dashboards:
     - Template Net Cisco SNMP could show interface bandwidth, packet errors, and
@@ -634,7 +634,7 @@ Template dashboards support the same widget types as user dashboards, including:
 
 | Category           | Widget Examples                    | Purpose                                       |
 | :----------------- | :--------------------------------- | :-------------------------------------------- |
-| **Data visualization** | Graphs, time series, top N         | Show trends and metric comparisons            |
+| **Data visualisation** | Graphs, time series, top N         | Show trends and metric comparisons            |
 | **Status views**       | Problems, Item values, SLA widgets | Real-time status per host/application         |
 | **Service overview**   | Business service state, SLA        | Map triggers to service impact                |
 | **Layout elements**    | Text, maps, URL embeds             | Add context, documentation, or external views |
@@ -650,9 +650,9 @@ _6.6 Template Dashboards_
 
 - **Keep dashboards concise:** Focus on the key health indicators of that application
   or system.
-- **Leverage macros:** Use template macros (e.g., {$PG.DBNAME}) inside widgets
+- **Leverage macros:** Use template macros (e.g., `{$PG.DBNAME}`) inside widgets
   to make them adaptive across instances.
-- **Group widgets logically:** Use grid layout — metrics at top, triggers below,
+- **Group widgets logically:** Use a grid layout — metrics at the top, triggers below,
   historical trends on the side.
 - **Document context:** Include a Text widget describing what each graph shows
   or what thresholds mean.
@@ -676,7 +676,7 @@ renders **three dashboards,** each showing real metrics for its respective insta
 
 ### Advantages of Template Dashboards
 
-- **Consistency:** every host or application gets the same visualization standard.
+- **Consistency:** every host or application gets the same visualisation standard.
 - **Zero manual setup:** dashboards appear automatically on linking.
 - **Version control:** dashboards are stored inside templates and follow the same
   YAML export/import flow.
@@ -738,12 +738,12 @@ Example:
   linked hosts.
 
 When performing cleanup or migration, Delete and Clear ensures no residual items
-remain in configuration cache.
+remain in the configuration cache.
 
 ???+ warning
 
     Deletes happen immediately so there is no undo. Also deletes are performed
-    on the database immediately so a large scale delete could have a serious
+    on the database immediately so a large-scale delete could have a serious
     performance impact.
 
 ### Mass Update of Templates
@@ -765,7 +765,7 @@ group structures across many templates.
 | **Dashboards**      | Replace or refresh template dashboards               |
 | **Permissions**     | Move templates between groups (changes RBAC context) |
 
-### Behavior and Cautions
+### Behaviour and Cautions
 
 - Only the properties you select are overwritten.
 - Existing macros or tags with identical names are replaced.
@@ -782,7 +782,7 @@ group structures across many templates.
 - Always test mass updates on a staging instance before production rollout.
 
 ## Importing and Exporting Templates
-Templates can be imported or exported in both YAML, JSON and XML formats, although
+Templates can be imported or exported in YAML, JSON, and XML formats, although
 YAML is strongly preferred for readability and version control. It is also the
 standard now in Zabbix.
 
@@ -816,7 +816,7 @@ zabbix_export:
 
 ### Importing Templates
 
-The import process in Zabbix 8.0  is intelligent — it compares UUIDs, detects
+The import process in Zabbix 8.0 is intelligent — it compares UUIDs, detects
 differences, and optionally merges or removes entities.
 You can import templates via:
 
@@ -824,9 +824,9 @@ You can import templates via:
 
 The button is on the upper right side of your window.
 
-![ch06.09-template-export.png](ch06.10-template-export.png)
+![ch06.10-template-export.png](ch06.10-template-export.png)
 
-_6.10 Template Export_
+_6.10 Template Import_
 
 Zabbix supports both `YAML` `JSON and `XML`, though YAML is preferred due to its
 readability and UUID retention.
@@ -836,7 +836,7 @@ readability and UUID retention.
 When importing a template, the import dialog presents several options that determine
 how conflicts and differences are handled:
 
-| Option                    | Description                                                     | Behavior                                                   |
+| Option                    | Description                                                     | Behaviour                                                   |
 | :------------------------ | :-------------------------------------------------------------- | :--------------------------------------------------------- |
 | **Create new**                | Import entities that do not exist yet                           | New templates and their entities are created               |
 | **Update existing**           | Update entities that already exist based on matching UUIDs      | Existing templates are modified to match the import file   |
@@ -858,22 +858,22 @@ for matching.
     When re-importing from version-controlled YAML, always keep original UUIDs
     intact. Editing or regenerating them will cause duplicates rather than updates.
 
-#### Diff Visualization
+#### Diff Visualisation
 
 Before confirming an import, Zabbix displays a visual diff screen showing what will change.
-This interface uses color coding to illustrate modifications at a granular level:
+This interface uses colour coding to illustrate modifications at a granular level:
 
-| Color    | Meaning                                             |
-| :------- | :---------------------------------    ------------- |
+| Colour    | Meaning                                             |
+| :------- | :----------------------------------------------- |
 | 🟩 **Green** | Elements that will be added or new attribute values |
 | 🟥 **Red**   | Elements that will be removed or replaced           |
 
-Zabbix compares entities by UUID and lists each difference per category, items,
+Zabbix compares entities by UUID and lists each difference per category: items,
 triggers, graphs, macros, value maps, discovery rules, and dashboards.
 Modified objects show their old values in red and new values in green, providing
 a clear preview of all pending changes.
 
-#### “Update Existing” Behavior
+#### “Update Existing” Behaviour
 
 When Update existing is enabled:
 
@@ -882,9 +882,9 @@ When Update existing is enabled:
 - Template-level fields (name, groups, description, macros, dashboards) are replaced
   by those from the import.
 
-This mode is ideal for incremental updates or synchronization with a Git-tracked source.
+This mode is ideal for incremental updates or synchronisation with a Git-tracked source.
 
-#### “Delete Missing” Behavior
+#### “Delete Missing” Behaviour
 
 With Delete missing enabled, Zabbix removes any element present in the database
 but absent in the import file:
@@ -892,11 +892,11 @@ but absent in the import file:
 - Items, triggers, discovery rules, graphs, dashboards, and value maps
 - Orphaned macros and outdated entities
 
-???+ Warning
+???+ warning
 
     **This action is destructive.**
     It permanently removes definitions and historical associations.
-    Use only when performing full synchronization from version-controlled sources
+    Use only when performing full synchronisation from version-controlled sources
     or replacing obsolete templates.
 
 When both Update existing and Delete missing are checked, the import performs a
@@ -917,41 +917,40 @@ The error list shows affected entity names, allowing quick correction and re-imp
 
 #### Safe Import Workflow
 
-For production grade environments:
+For production-grade environments:
 
 - **Export first:** always back up current templates.
 - **Validate syntax:** use yamllint or JSON validators.
-    - yamllint template.yaml
-    - jq empty template.json
+    - `yamllint template.yaml`
+    - `jq empty template.json`
 - **Preview diff:** check additions (green) and deletions (red).
-- **Test in staging:** confirm behavior before production import.
-- **Promote via automation:** use the Zabbix API (configuration.import) for reproducible
+- **Test in staging:** confirm behaviour before production import.
+- **Promote via automation:** use the Zabbix API (`configuration.import`) for reproducible
   CI/CD deployments.
 
-  ???+ tip
+    ???+ tip
 
-      Automating template synchronization via API and Git ensures identical configurations
-      across multiple Zabbix servers or environments.
+        Automating template synchronisation via API and Git ensures identical configurations
+        across multiple Zabbix servers or environments.
 
 ## Conclusion
 
-Templates in Zabbix 8.0 are now fully self-contained, UUID-tracked, and automation 
-ready. With improved import/export handling, color-coded diffs, and fine-grained
+Templates in Zabbix 8.0 are now fully self-contained, UUID-tracked, and automation-ready. With improved import/export handling, colour-coded diffs, and fine-grained
 RBAC, they deliver both control and scalability.
 
-By following some good practices, cloning instead of editing `built-ins`, organizing
+By following some good practices, cloning instead of editing `built-ins`, organising
 templates by group and tag, tuning intervals, maintaining YAML or JSON in Git,
 and verifying diffs before import, administrators achieve consistent, predictable
 monitoring deployments.
 
 Templates are no longer mere configuration helpers; they are core assets in a modern
-observability strategy, enabling reproducible, automated, and standards driven
+observability strategy, enabling reproducible, automated, and standards-driven
 monitoring across diverse infrastructures.
 
 ## Questions
 
 - What are the main configuration elements a Zabbix template can contain, and how
-  do they contribute to standardizing monitoring?
+  do they contribute to standardising monitoring?
 - Explain what happens to UUIDs when a template is cloned.
 - Why is it important to preserve UUIDs when managing templates through YAML or Git?
 - Describe how tags are inherited when a template is applied to a host.

@@ -8,7 +8,7 @@ tags: [advanced]
 
 # Zabbix Agent installation and Passive monitoring
 
-At this point we are familiar with the Zabbix dataflow, how to create hosts and,
+At this point we are familiar with the Zabbix dataflow, how to create hosts and
 add interfaces and items to a host. As a system administrator or anyone else working
 with Linux, Unix, or Windows systems usually we jump right into installing the Zabbix
 agent and monitoring with it. Using our previous steps however, we have laid the
@@ -113,7 +113,7 @@ cannot directly access the agent.
 - **Buffering:** Zabbix Agent 2 can buffer active check results during server 
   outages, ensuring uninterrupted data collection.
 - **Timestamps:** The agent sets the timestamp for collected values, improving 
-  accuracy but requiring synchronized time between the agent and server.
+  accuracy but requiring synchronised time between the agent and server.
 
 **Pros:**
   - Reduces server load by eliminating constant polling.
@@ -129,7 +129,7 @@ cannot directly access the agent.
     Zabbix frontend, reducing flexibility.
   - Uses a single thread for data collection, so slow checks can delay subsequent 
     ones.
-  - Accurate time synchronization between the agent and server is critical for 
+  - Accurate time synchronisation between the agent and server is critical for 
     data integrity.
 
 ---
@@ -169,16 +169,16 @@ Before we can configure either though, we will have to install our Zabbix agent
 first. When installing on Linux and Windows we have a choice between two different
 agents, `Zabbix agent` and `Zabbix agent 2`. Both of these Zabbix agents are still
 in active development and receive both major (LTS) and minor updates. The difference
-between them is in Programming language and features.
+between them is in programming language and features.
 
 |                      | Zabbix agent                     | Zabbix agent 2                          |
 | :------------------- | :------------------------------- | :-------------------------------------- |
 | Features             | No focus to include new features | Supports everything agent 1 does + more |
-| Programming language | C                                | GoLang                                  |
-| Extensions           | C Loadable Modules               | GoLang plugins                          |
+| Programming language | C                                | Go                                  |
+| Extensions           | C Loadable Modules               | Go plugins                          |
 | Platforms            | All                              | Linux and Windows                       |
 | Concurrency          | In sequence                      | Concurrently                            |
-| Storage on outage    | No                               | Sqlite                                  |
+| Storage on outage    | No                               | SQLite                                  |
 | Item timeouts        | Agent wide                       | Per plugin                              |
 
 ???+ note 
@@ -198,7 +198,7 @@ between them is in Programming language and features.
 ## Agent installation on Linux
 
 Installation on Linux can be done in one of three ways. Through direct install
-files like `.rpm` and `.deb`, by building from sources and through packages pulled
+files like `.rpm` and `.deb`, by building from sources, and through packages pulled
 from the repository. Installation through the packages is preferred as this means
 Zabbix agent will be updated when updating with commands like `dnf update` and
 `apt upgrade`. Keep in mind, Zabbix agent is a piece of software just like any
@@ -217,7 +217,7 @@ After adding the repository, we should be able to install `Zabbix agent 2`.
 
 !!! info "install Zabbix agent 2 package"
 
-    Redhat
+    Red Hat
 
     ```bash
     dnf install zabbix-agent2
@@ -270,14 +270,14 @@ _4.16 Zabbix Agent Windows install step 1_
 
 Step 1 is a simple welcome screen, nothing to do here except click on `Next`.
 
-![Zabbix Agent Windows install step 1](ch04.17-windows-agent-install-step2.png){ align=center }
+![Zabbix Agent Windows install step 2](ch04.17-windows-agent-install-step2.png){ align=center }
 
 _4.17 Zabbix Agent Windows install step 2_
 
 For step 2, make sure to read the `License Agreement` (or don't, we do not give 
 legal advice). Then click `Next`.
 
-![Zabbix Agent Windows install step 1](ch04.18-windows-agent-install-step3.png){ align=center }
+![Zabbix Agent Windows install step 3](ch04.18-windows-agent-install-step3.png){ align=center }
 
 _4.18 Zabbix Agent Windows install step 3_
 
@@ -287,7 +287,7 @@ separate utilities that we do not need on every Windows server. I will not insta
 them now, but we can always use the `.msi` to install them later. The Zabbix agent
 will function fine without them.
 
-![Zabbix Agent Windows install step 1](ch04.19-windows-agent-install-step4.png){ align=center }
+![Zabbix Agent Windows install step 4](ch04.19-windows-agent-install-step4.png){ align=center }
 
 _4.19 Zabbix Agent Windows install step 4_
 
@@ -298,7 +298,7 @@ also set the `Server or proxy for active checks` parameter. As you can see we
 could also immediately configure encryption with the `Enable PSK` option, but
 we will do this later.
 
-![Zabbix Agent Windows install step 1](ch04.20-windows-agent-install-step5.png){ align=center }
+![Zabbix Agent Windows install step 5](ch04.20-windows-agent-install-step5.png){ align=center }
 
 _4.20 Zabbix Agent Windows install step 5_
 
@@ -316,9 +316,9 @@ For Unix based systems, simply download the files on the Zabbix download page fo
 
 ---
 
-## Agent installation on MacOS
+## Agent installation on macOS
 
-For MacOS systems, simply download the files on the Zabbix download page and run
+For macOS systems, simply download the files on the Zabbix download page and run
 through the `.pkg` installer.
 
 <https://www.zabbix.com/download_agents?os=macOS>
@@ -328,7 +328,7 @@ through the `.pkg` installer.
 ## Agent side configuration
 
 Configuring the Zabbix agent is similar for all installations. Whether you are on
-`Linux`, `Unix`, `Windows`, or `MacOS` you will always find the `zabbix_agent2.conf` file.
+`Linux`, `Unix`, `Windows`, or `macOS` you will always find the `zabbix_agent2.conf` file.
 The parameters in this configuration file are mostly the same, regardless of the
 operating system.
 
@@ -349,7 +349,7 @@ All of the entries in this `Server=` allowlist will be allowed to make a connect
 to the `Passive` Zabbix agent and collect data from it.
 
 Edit your configuration file to include your Zabbix server (or proxy) IP address,
-IP range or DNS entry.
+IP range, or DNS entry.
 
 ???+ example "Edit the Server= parameter"
 
@@ -365,7 +365,7 @@ entries for the Zabbix components that need to connect.
 
 After making changes to the Zabbix agent configuration file, make sure to restart
 the Zabbix Agent 2 service. On Windows systems, use the service manager, on Linux
-systems use `sytemctl` to restart.
+systems use `systemctl` to restart.
 
 !!! info "Restart Zabbix agent"
 
@@ -406,7 +406,7 @@ click on `Items` and then `Create item` in the top right corner.
 
 Let's create an item `System hostname`, making sure that if we have more system
 items alphabetical sorting will group them together. For `Passive` Zabbix agent
-the type `Zabbix agent` is used and we have to specific an `Interface`. We will
+the type `Zabbix agent` is used and we have to specify an `Interface`. We will
 use the item key `system.hostname`.
 
 ![Zabbix Agent passive host item](ch04.23-passive-agent-item.png){ align=left }
@@ -426,7 +426,7 @@ _4.24 Zabbix Agent passive host item tag_
 
 We learned about the two communication methods of the Zabbix agent, `Active` and 
 `Passive`. We discussed the differences between these two methods and their pros 
-and cons so that you can make an informed decision on which method to use when 
+and cons so that you can make an informed decision on which method to use 
 in your environment.
 
 Installing the Zabbix agent can be done with either `Zabbix agent` or 

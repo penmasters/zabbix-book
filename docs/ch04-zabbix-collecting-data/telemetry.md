@@ -1,6 +1,6 @@
 ---
 description: |
-    Set up Zabbix 8.0 APM with OpenTelemetry, the proxy collector and
+    Set up Zabbix 8.0 APM with OpenTelemetry, the proxy collector, and
     ClickHouse, and alert on span latency using Telemetry query items.
 tags: [advanced]
 ---
@@ -9,12 +9,12 @@ tags: [advanced]
 
 Zabbix 8.0 introduces application performance monitoring (APM) based on
 OpenTelemetry. Alongside infrastructure monitoring, Zabbix can now display
-application traces, metrics and logs, and turn selected telemetry into ordinary
+application traces, metrics, and logs, and turn selected telemetry into ordinary
 item values for triggers and dashboards.
 
 This chapter explains the architecture and provides a hands-on lab using the
 Zabbix proxy's built-in APM collector. It also introduces alternative ingestion
-and visualization options without turning the chapter into an OpenTelemetry or
+and visualisation options without turning the chapter into an OpenTelemetry or
 Grafana installation guide.
 
 We assume a working ClickHouse instance. ClickHouse installation is covered in
@@ -28,13 +28,13 @@ OpenTelemetry is an open standard for producing and exporting three kinds of
 telemetry:
 
 - **Traces:** spans describing how requests move through services.
-- **Metrics:** measurements such as request counts, latency and error rates.
+- **Metrics:** measurements such as request counts, latency, and error rates.
 - **Logs:** structured event records.
 
 ### Understanding OTLP and gRPC
 
-**OTLP (OpenTelemetry Protocol)** defines how OpenTelemetry traces, metrics and
-logs are encoded and exchanged between applications, collectors and backends.
+**OTLP (OpenTelemetry Protocol)** defines how OpenTelemetry traces, metrics, and
+logs are encoded and exchanged between applications, collectors, and backends.
 It supports two transport options:
 
 | Transport | How it works | Default port |
@@ -57,8 +57,8 @@ for transport details.
 Applications, or an intermediate OpenTelemetry Collector, can send OTLP/gRPC
 to the APM collector built into a Zabbix proxy. The proxy writes the received
 telemetry directly to ClickHouse. **The Zabbix server does not receive OTLP.**
-The frontend reads telemetry from ClickHouse and exposes **APM → Traces**,
-**APM → Metrics** and **APM → Logs**.
+The frontend reads telemetry from ClickHouse and exposes `APM` | `Traces`,
+`APM` | `Metrics`, and `APM` | `Logs`.
 
 Zabbix uses three distinct data paths:
 
@@ -66,7 +66,7 @@ Zabbix uses three distinct data paths:
    which writes raw telemetry directly to ClickHouse. Alternatively, an
    external OpenTelemetry Collector can populate a compatible ClickHouse
    schema without using the Zabbix proxy.
-2. **Visualization:** the Zabbix frontend queries ClickHouse for the built-in
+2. **Visualisation:** the Zabbix frontend queries ClickHouse for the built-in
    APM views. These requests do not pass through the Zabbix proxy.
 3. **Alerting:** a *Telemetry query* item periodically reads ClickHouse and
    converts its result into a regular Zabbix item value. The Zabbix server
@@ -103,7 +103,7 @@ flowchart TB
 The diagram is simplified: when the server executes a Telemetry query, its
 result is handled locally rather than being forwarded from a proxy. A proxy
 that executes a query forwards **only the resulting item value** through the
-normal proxy-server monitoring path, not the raw traces, metrics or logs.
+normal proxy-server monitoring path, not the raw traces, metrics, or logs.
 Zabbix does not evaluate triggers directly against raw ClickHouse telemetry.
 Telemetry query items bridge the telemetry store and the existing trigger
 engine. They are periodic checks, not streaming alerts.
@@ -120,7 +120,7 @@ installation.
 APM introduces a separate network and storage path. Traditional active proxies
 send collected monitoring values to the Zabbix server, normally on TCP 10051.
 The APM collector instead writes raw telemetry **directly to ClickHouse**. It
-does not forward those raw traces, metrics or logs through the normal
+does not forward those raw traces, metrics, or logs through the normal
 proxy-server connection. Results of *Telemetry query* items still follow the
 ordinary Zabbix monitoring path.
 
@@ -170,14 +170,14 @@ The frontend and query pollers need access to the data source they query, or
 an independently designed replication or forwarding mechanism. ClickHouse is
 **not supported as the proxy's normal history database**.
 
-Plan TLS, access controls, availability, network connectivity and retention for
+Plan TLS, access controls, availability, network connectivity, and retention for
 this separate pipeline. The Zabbix housekeeper does not remove ClickHouse data;
 configure retention in ClickHouse itself.
 
 ### Central APM storage and other telemetry data sources
 
-The **global telemetry data source** in **Administration → Data source** is the
-default shared by Zabbix server, proxy and frontend. It is used by the built-in
+The **global telemetry data source** in `Administration` | `Data source` is the
+default shared by Zabbix server, proxy, and frontend. It is used by the built-in
 APM views, and by Telemetry query pollers unless their component configuration
 overrides it.
 
@@ -191,7 +191,7 @@ selector on every Telemetry query item.
 For example, a central ClickHouse database can serve the Zabbix APM views,
 while a separate ClickHouse instance holds application-specific data queried by
 items executed on a dedicated proxy. Each data source can have its own schema,
-retention and access policy, provided its data is compatible with the queries.
+retention, and access policy, provided its data is compatible with the queries.
 
 ```mermaid
 flowchart TB
@@ -210,7 +210,7 @@ by the first one automatically.
 
 The built-in proxy collector is the simplest route for this lab. For more
 advanced processing, an OpenTelemetry Collector can receive telemetry, apply
-processors and export it to a compatible ClickHouse destination. The exporter
+processors, and export it to a compatible ClickHouse destination. The exporter
 and schema must match what Zabbix expects.
 
 | Capability | Zabbix proxy APM collector | OpenTelemetry Collector |
@@ -225,7 +225,7 @@ and schema must match what Zabbix expects.
 | Configuration effort | Lower | Higher |
 
 The proxy can already attach **static resource attributes** to incoming traces,
-metrics and logs. The OpenTelemetry Collector becomes useful when attributes
+metrics, and logs. The OpenTelemetry Collector becomes useful when attributes
 must be derived from the telemetry itself. For example, the following
 **configuration fragment** adds a team attribute only to metrics from the
 `checkout` service:
@@ -247,7 +247,7 @@ Collector configuration. OpenTelemetry calls these values *attributes*;
 they are similar to Prometheus *labels*. The complete Collector setup is
 outside the scope of this book.
 
-### Alternative APM visualization
+### Alternative APM visualisation
 
 ClickHouse stores queryable telemetry data. The built-in Zabbix APM frontend is
 not the only way to inspect it: other tools, such as Grafana with a ClickHouse
@@ -256,17 +256,17 @@ data source, can query the same tables directly.
 | Capability | Zabbix APM frontend | Grafana with ClickHouse |
 |---|---|---|
 | View traces | Built-in Traces view | Possible with suitable queries and trace-compatible views |
-| View metrics | Built-in Metrics view | Custom metrics visualizations |
-| View logs | Built-in Logs view | Custom log queries and visualizations |
-| Custom dashboards | Zabbix dashboards and item-based widgets | Extensive dashboard customization |
+| View metrics | Built-in Metrics view | Custom metrics visualisations |
+| View logs | Built-in Logs view | Custom log queries and visualisations |
+| Custom dashboards | Zabbix dashboards and item-based widgets | Extensive dashboard customisation |
 | Direct custom ClickHouse SQL | Not the focus of the built-in APM views | Yes, through the ClickHouse data source |
 | Custom aggregations | Supported Telemetry query aggregations | ClickHouse SQL aggregations |
 | Zabbix triggers and actions | Via Telemetry query items | Not a replacement for Zabbix triggers/actions |
 
 Grafana does not automatically reproduce every feature of a dedicated tracing
 backend. Trace navigation and cross-signal correlation depend on the available
-data, queries, plugins and visualizations. The point is that **the telemetry
-storage is reusable**; you are not required to visualize it only in Zabbix.
+data, queries, plugins, and visualisations. The point is that **the telemetry
+storage is reusable**; you are not required to visualise it only in Zabbix.
 
 ---
 
@@ -292,20 +292,20 @@ TelemetryProvider=clickhouse;url=http://clickhouse.example.com:8123,db=zabbix,us
   default data source for Telemetry query pollers.
 
 Restart the proxy. For incoming OTLP TLS, consult `APMTLSCAFile`,
-`APMTLSCertFile` and `APMTLSKeyFile` in the proxy parameter reference. For TLS
+`APMTLSCertFile`, and `APMTLSKeyFile` in the proxy parameter reference. For TLS
 from the proxy to ClickHouse, use the documented `ssl_*` provider options.
 
 To obtain credentials from Vault, use `vault_path` instead of the inline
 `username` and `password`, and configure the required Vault settings on the
 same component.
 
-In **Administration → Proxies**, open the proxy's **APM** tab and enable data
+In `Administration` | `Proxies`, open the proxy's **APM** tab and enable data
 collection. You can also configure message-rate limits and additional resource
 attributes, such as `environment=lab`.
 
 ### 2. Global data source for the frontend
 
-Open **Administration → Data source → APM**, enable the global telemetry data
+Open `Administration` | `Data source` | `APM`, enable the global telemetry data
 source and configure the ClickHouse connection. For this lab, point it to the
 same database that receives telemetry from the proxy. The built-in APM views
 query this source directly.
@@ -336,12 +336,12 @@ and returns the result as a normal Zabbix item value.
 
 | Parameter | What it does |
 |---|---|
-| **Category** | Traces, Metrics or Logs |
-| **Metric points** | For Metrics: Sum, Gauge, Histogram or Exponential histogram |
+| **Category** | Traces, Metrics, or Logs |
+| **Metric points** | For Metrics: Sum, Gauge, Histogram, or Exponential histogram |
 | **Columns** | Include selected raw columns |
-| **Aggregated columns** | Calculate min, max, avg, count, sum or percentile; provide aliases for results |
+| **Aggregated columns** | Calculate min, max, avg, count, sum, or percentile; provide aliases for results |
 | **Conditions** | Filter records, including matching keys in attribute maps |
-| **Type of calculation** | Combine conditions using And/Or, And, Or or a custom expression |
+| **Type of calculation** | Combine conditions using And/Or, And, Or, or a custom expression |
 | **Granularity** | Duration of each aggregation bucket, for example `1m` |
 | **Time shift** | Move the end of the query range into the past, allowing late telemetry to arrive |
 | **Lookback limit** | Maximum catch-up range after a delayed or interrupted query; not the normal query duration |
@@ -386,7 +386,7 @@ is subject to the RC3 changes discussed below.
 
 For traces, commonly useful columns include `Duration`, `ServiceName`,
 `SpanName`, `StatusCode`, `SpanAttributes`, `ResourceAttributes`, `TraceId`,
-`SpanId` and `Timestamp`. The exact supported column list is in the official
+`SpanId`, and `Timestamp`. The exact supported column list is in the official
 *Telemetry query* reference.
 
 | Trace column | Raw columns | Aggregation | Conditions |
@@ -422,8 +422,8 @@ is needed.
 
 ### Prerequisites
 
-- A proxy with APM collector enabled, configured and restarted.
-- A compatible ClickHouse telemetry database initialized with the required schema.
+- A proxy with APM collector enabled, configured, and restarted.
+- A compatible ClickHouse telemetry database initialised with the required schema.
 - A global data source configured for the frontend APM views.
 - A server or proxy with working Telemetry query pollers and access to ClickHouse.
 - Network access to the proxy's OTLP/gRPC port and to ClickHouse.
@@ -431,15 +431,15 @@ is needed.
 !!! warning "ClickHouse APM schema: pending verification"
 
     **PLACEHOLDER: replace after testing the official Zabbix 8.0 RC3
-    initialization script.**
+    initialisation script.**
 
     Early 8.0 release-candidate testing encountered missing `otel_*` tables.
     Do not copy the experimental hand-written `otel_traces` schema from those
     tests into a production installation.
 
-    **TODO before publication:** identify the official schema initialization
+    **TODO before publication:** identify the official schema initialisation
     script and package path; add the tested import command; verify all required
-    trace, metric and log tables; document required ClickHouse version and
+    trace, metric, and log tables; document required ClickHouse version and
     permissions; and remove this warning.
 
 ### Step 1: Generate sustained baseline traces
@@ -478,17 +478,17 @@ configure TLS for production.
 
 ### Step 2: Confirm the data source
 
-In **Administration → Data source → APM**, enable the global data source and
+In `Administration` | `Data source` | `APM`, enable the global data source and
 enter the ClickHouse URL and credentials. It must point to the database used by
 the proxy for this lab.
 
 ### Step 3: Confirm traces in the APM menu
 
-Open **APM → Traces**, select the last 15–30 minutes and filter on
+Open `APM` | `Traces`, select the last 15–30 minutes and filter on
 `ServiceName = checkout`. You should see traces and be able to inspect spans.
 
 If the list is empty, inspect the proxy log, collector enablement, the proxy's
-`TelemetryProvider`, the frontend data source, ClickHouse tables and network
+`TelemetryProvider`, the frontend data source, ClickHouse tables, and network
 connectivity. Also check that your generator is actually sending OTLP/gRPC.
 
 ### Step 4: Create a host
@@ -515,7 +515,7 @@ Create the following item on `otel-lab`:
 | Type of information | Numeric (float), after preprocessing |
 | Units | `ms` |
 
-Use **Test → Get value** to inspect the actual result returned by your RC
+Use `Test` | `Get value` to inspect the actual result returned by your RC
 build. Configure preprocessing only for the observed result format; do not
 assume a particular JSON structure or JSONPath. Span `Duration` is measured
 in nanoseconds in the ClickHouse trace schema, so multiply by `0.000001`
@@ -574,7 +574,7 @@ new values when traffic stops.
 ### What this lab proves
 
 - The proxy accepts OTLP/gRPC telemetry and writes it to ClickHouse.
-- Traces are visible in **APM → Traces**.
+- Traces are visible in `APM` | `Traces`.
 - A Telemetry query can aggregate span duration for a particular service.
 - Normal Zabbix triggers can alert on the resulting item values.
 
@@ -585,29 +585,29 @@ new values when traffic stops.
 Before publishing the final Zabbix 8.0 instructions, verify the following
 against the official RC3 packages and documentation:
 
-- **ClickHouse schema:** replace the initialization-script placeholder with
+- **ClickHouse schema:** replace the initialisation-script placeholder with
   the official shipped script and tested commands.
 - **Telemetry query JSON output (planned for RC3):** verify the shipped
   JSON structure for multiple aggregations and groups, then test dependent
-  items extracting `p95`, `avg` and `count`. Do not present the planned
+  items extracting `p95`, `avg`, and `count`. Do not present the planned
   output format as available in earlier release candidates.
 - **Lab preprocessing:** capture the real item response and use its exact
   output structure to configure the numeric p95 item.
 
 ---
 
-## Closing thoughts
+## Conclusion
 
 Zabbix 8.0 connects application telemetry with traditional monitoring. The
 built-in proxy APM collector is a practical starting point, while the
 OpenTelemetry Collector offers more elaborate processing when needed. The
-ClickHouse storage layer can also serve other analytics and visualization
+ClickHouse storage layer can also serve other analytics and visualisation
 tools, including Grafana; it is not restricted to the Zabbix frontend.
 
 Remember the architectural distinction: raw telemetry is ingested directly
 into ClickHouse, whereas Telemetry query results become ordinary Zabbix item
 values. For distributed deployments, plan the telemetry network path,
-retention, security and data-source configuration separately from the normal
+retention, security, and data-source configuration separately from the normal
 proxy-server monitoring connection.
 
 ---

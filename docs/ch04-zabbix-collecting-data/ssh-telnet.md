@@ -7,9 +7,9 @@ tags: [beginner]
 
 # SSH / Telnet
 
-Let's say you have a device that doesn't support SNMP, there is no API and it's 
+Let's say you have a device that doesn't support SNMP, there is no API, and it's 
 just not exposing any data (or just the data you need) via any protocol. However,
-you are able to login to the device and you are able to execute commands through
+you are able to log in to the device and you are able to execute commands through
 the SSH or Telnet terminal. In this case Zabbix can still provide you with a
 solid option to monitor the device.
 
@@ -28,7 +28,7 @@ create valuable monitoring metrics from it.
 
 ---
 
-# SSH Monitoring
+## SSH Monitoring
 
 Let's start with the most used method, SSH. Since this is a secure encrypted 
 connection, it is often used to get data from devices that do not expose 
@@ -52,7 +52,7 @@ about this item is that the `Key` is automatically filled in as:
 
 The key for SSH items is built in and we are thus forced to use this key format 
 to make the item work. You can see however we get some key parameters to 
-customize how it works.
+customise how it works.
 
 - `<unique short description>`: Is used to make this item unique, as we cannot 
   have duplicate keys on Zabbix hosts.
@@ -71,14 +71,14 @@ As you can see we have a lot of options, but in most cases the
 
 Let's give the item the **Key** value `ssh.run[ssh.logins.10m,127.0.0.1]` and 
 also a **Name** value `SSH Logins (10m)`. Then the trick to making this item 
-works comes along, we need to login using SSH and execute commands.
+work comes along: we need to log in using SSH and execute commands.
 
 At **Authentication method** we will select **Password** for the example, but
 you are also able to select **Public key** as an option here. Going with 
 **Public key** would allow you to set:
-- **User name**: The user to login as.
-- **Public key file**: The path to the Public key we will use to login.
-- **Private key file**: The path to the Private key we will use to login.
+- **User name**: The user to log in as.
+- **Public key file**: The path to the Public key we will use to log in.
+- **Private key file**: The path to the Private key we will use to log in.
 - **Key passphrase**: The password to decrypt the Private key.
 
 Keep in mind, when using SSH key authentication it is important to update your
@@ -93,7 +93,7 @@ SELinux issues reading the SSH key files, but you can of course
 choose a different path as well, just make sure to update the `SSHKeyLocation`
 parameter accordingly and make sure the Zabbix user has the necessary permissions).
 
-But as we mentioned let's start with by setting **Authentication method** to
+But as we mentioned let's start by setting **Authentication method** to
 **Password**. I will set my **User name** to `ssh-monitoring` and set a strong
 secure **Password**.
 
@@ -120,7 +120,7 @@ option is to execute an entire script located somewhere on your device. The
 options are quite endless. 
 
 In this case we are executing a command through SSH on a Linux system, simply 
-because it's an easy to explain and setup option. But of course, if I had the 
+because it's an easy option to explain and set up. But of course, if I had the 
 Zabbix agent installed on this server already I might as well have used a 
 `UserParameter` (or remote command if preferred). SSH checks are way more useful
 on devices where no agent can be installed.
@@ -157,12 +157,12 @@ This should now work as expected and when you navigate to `Monitoring` | `Latest
 
     If you are using SELinux or a similar security tool, please keep in mind 
     this can block Zabbix access to execute SSH as usual. You should check your 
-    audit logs and make sure to allow the SSH connection you'd like to setup. 
+    audit logs and make sure to allow the SSH connection you'd like to set up. 
     Do not over allow and keep things secure.
 
 ---
 
-# Telnet Monitoring
+## Telnet Monitoring
 
 Telnet monitoring works almost in the exact same way as SSH monitoring, except 
 of course the Telnet protocol is used in the background. When we navigate to 
@@ -173,21 +173,21 @@ Let's add the item **Type** as **TELNET agent** and you will see the **Key**
 field already filled out just like the SSH check:
 `telnet.run[<unique short description>,<ip>,<port>,<encoding>]`
 
-The fields are almost the same as SSH, with a few less options.
+The fields are almost the same as SSH, with a few fewer options.
 - `<unique short description>`: Is used to make this item unique, as we cannot 
   have duplicate keys on Zabbix hosts.
-- `<ip>`: Can we used to specify the target IP Address for Telnet to connect to.
+- `<ip>`: Can be used to specify the target IP Address for Telnet to connect to.
   If this parameter is skipped, the default host interface is used.
 - `<port>`: Can be used to specify a different Telnet port, the default is port
   `23`.
 - `<encoding>`: How to decode the remote output, is it UTF-8 or ANSI for example.
 
-Let's set this one up similar to SSH with the item the **Key** value 
+Let's set this one up similar to SSH with the item **Key** value 
 `telnet.run[telnet.logins.10m,127.0.0.1]` and also a **Name** value 
 `Telnet Logins (10m)`. Of course we also need to specify a command to execute 
 again, so let's add this to the **Executed script** field.
 
-!!! example "Executed script for SSH"
+!!! example "Executed script for Telnet"
 
     ``` bash
     journalctl --since "-10 min" --no-pager -t in.telnetd | grep -c "LOGIN"
@@ -217,14 +217,14 @@ Do not forget to add your tag.
 ![CLI Monitoring Telnet item tag](ch04.65-cli-monitoring-telnet-item-tag.png){ align=left }
 *4.65 Zabbix CLI Monitoring Telnet item tag*
 
-Then, if you had a Telnet user set up. You can go to `Monitoring` | `Latest data` to check if the value is coming in.
+Then, if you have a Telnet user set up, you can go to `Monitoring` | `Latest data` to check if the value is coming in.
 
 ---
 
 ## Conclusion
 
 SSH and Telnet monitoring provide you with a great fallback when traditional
-protocols like SNMP or API's simply aren't available. It might also be the case 
+protocols like SNMP or APIs simply aren't available. It might also be the case 
 that a vendor hides important information within CLI commands. Using a limited 
 user account, only granted access to specific commands, Zabbix can remotely 
 authenticate and execute CLI commands or even entire scripts to get us raw 

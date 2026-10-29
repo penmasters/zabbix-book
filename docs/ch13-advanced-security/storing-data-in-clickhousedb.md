@@ -5,7 +5,7 @@ description: |
 tags: [advanced]
 ---
 
-# Storing history data in Clickhouse
+# Storing history data in ClickHouse
 
 Beginning with Zabbix 8, ClickHouse can be used as an external storage backend
 for item history. Configuration, events, problems, audit data, and other
@@ -24,7 +24,7 @@ storing history in ClickHouse.
 
 ---
 
-## What Moves to ClickHouse ...  and What Doesn't
+## What Moves to ClickHouse ... and What Doesn't
 
 ClickHouse stores the raw item history values for the value types assigned
 to the ClickHouse history provider:
@@ -105,7 +105,7 @@ Before starting ClickHouse, we need to tune the system for optimal performance.
 
 1. **Hugepages**
    
-Clickhouse does not use hugepages and requires it to be disabled. 
+ClickHouse does not use hugepages and requires them to be disabled.
 On SUSE, transparent hugepages are enabled by default. 
    
 You can check the current status with:
@@ -121,7 +121,7 @@ You will see something like:
 ```
 
 The value in brackets indicates the current setting. If it is set to `always`,
-you need to set it to `madvise` or to `never`. Clickhouse recommends to use `madvise`.
+you need to set it to `madvise` or to `never`. ClickHouse recommends using `madvise`.
 
 To disable it, edit `/etc/default/grub` and add the `transparent_hugepage=never`
 parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
@@ -187,7 +187,7 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
 
 2. **Delay accounting**
    
-ClickHouse requires Kernel delay accounting to be enabled. You can check the
+ClickHouse requires kernel delay accounting to be enabled. You can check the
 current status with:
 
 !!! info ""
@@ -208,7 +208,7 @@ Create a new file `/etc/sysctl.d/99-clickhouse.conf` and add the following line:
     kernel.task_delayacct = 1
     ```
 
-This applies all the changes at once :
+This applies all the changes at once:
 
 !!! info ""
 
@@ -219,7 +219,7 @@ This applies all the changes at once :
     EOF
     ```
 
-4. **Number of threads**
+3. **Number of threads**
 
 ClickHouse is a multi-threaded application and requires a sufficient number
 of threads to be available. On SUSE, the default max. number of threads is 15574
@@ -260,9 +260,9 @@ Enable the ClickHouse service so it starts automatically at boot.
     systemctl enable /lib/systemd/system/clickhouse-server.service
     ```
 
-    This will probably be fixed in a future SUSE release as from Systemd 260,
+    This will probably be fixed in a future SUSE release as, from systemd 260,
     SysV init compatibility will also be removed from systemd itself, but for
-    now Suse ships Systemd 257.
+    now SUSE ships systemd 257.
 
 Verify that the service is running before continuing.
 
@@ -413,7 +413,7 @@ Navigate to the ClickHouse database scripts:
     history_log_schema.sh
     history_json_schema.sh
     ```
-    You can also use `history_all.sh` instead of running the script one by one.
+    You can also use `history_all.sh` instead of running the scripts one by one.
 
 Once complete, ClickHouse will contain a separate table for every supported Zabbix
 history value type.
@@ -422,12 +422,12 @@ history value type.
 
 ## Configuring Retention and Partitioning
 
-The schema generation scripts let you customize both data retention and partitioning
+The schema generation scripts let you customise both data retention and partitioning
 at creation time.
 
 ### Configuring Retention (TTL)
 
-Each history table includes a Time-To-Live (TTL) expression that automatically
+Each history table includes a time-to-live (TTL) expression that automatically
 removes old history data. By default, the scripts retain history for 31
 days (2,678,400 seconds).
 
@@ -651,8 +651,8 @@ the frontend knows where to find the history data.
 
 !!! warning "Restart PHP-FPM or Apache"
 
-    Restart PHP-FPM or Apache after modifying zabbix.conf.php if configuration
-    caching is enabled.`
+    Restart PHP-FPM or Apache after modifying `zabbix.conf.php` if configuration
+    caching is enabled.
 
 !!! info "Zabbix frontend configuration"
 
@@ -695,7 +695,7 @@ It's worth treating ClickHouse's backup strategy as a separate decision from you
 primary database's backup strategy, rather than assuming they should mirror each
 other.
 
-For many organizations, raw history data is effectively disposable: it's valuable
+For many organisations, raw history data is effectively disposable: it's valuable
 for troubleshooting and short-term analysis, but it isn't the system of record
 for configuration or for the current state of problems, that all lives in the
 primary database, which still needs rigorous, tested backups. Depending on your
@@ -705,7 +705,7 @@ expiry and re-collection, rather than the same RPO/RTO targets you'd apply to
 PostgreSQL or MySQL.
 
 If you do need durable ClickHouse backups, for example, to satisfy a compliance
-requirement around historical data retention — tools like `clickhouse-backup` can
+requirement around historical data retention, tools like `clickhouse-backup` can
 perform consistent backups of MergeTree tables without stopping the server. Weigh
 this against your actual retention needs before adding the operational overhead.
 
@@ -779,6 +779,6 @@ over a hostname, this avoids potential DNS or hostname resolution issues.
 
 ## Useful URLs
 
-[https://clickhouse.com/docs/faq/operations/delete-old-data](https://clickhouse.com/docs/faq/operations/delete-old-data)
-[https://clickhouse.com/docs/](https://clickhouse.com/docs/)
-[https://www.zabbix.com/documentation/current/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE](https://www.zabbix.com/documentation/current/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE)
+- [https://clickhouse.com/docs/faq/operations/delete-old-data](https://clickhouse.com/docs/faq/operations/delete-old-data)
+- [https://clickhouse.com/docs/](https://clickhouse.com/docs/)
+- [https://www.zabbix.com/documentation/current/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE](https://www.zabbix.com/documentation/current/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE)

@@ -17,7 +17,7 @@ following ways:
 
 - **Plaintext in configuration files**: readable by anyone with file system access,
   often forgotten in backups or version control.
-- **Hardcoded in templates or host macros** : while Zabbix's built-in *Secret
+- **Hardcoded in templates or host macros**: while Zabbix's built-in *Secret
   text* macro type masks the value in the UI and omits it from template exports,
   the value is still stored in the Zabbix database in plaintext. Anyone with direct
   database access can read every credential without any additional barrier.
@@ -53,7 +53,7 @@ by providing a centralised, encrypted secrets store with:
   revoked after use.
 - **Encryption at rest and in transit**: secrets never touch disk in plaintext.
 
-Zabbix 6.4 and later supports native integration with HashiCorp Vault, allowing
+Zabbix 6.4 and later support native integration with HashiCorp Vault, allowing
 macros to reference secrets stored in Vault rather than holding the secret value
 directly. This keeps plaintext credentials out of the Zabbix database entirely.
 
@@ -83,9 +83,9 @@ For the complete list of parameters, see the
 ## Installing and Configuring Vault on RHEL
 
 This section covers a minimal production-ready Vault installation on Red Hat
-Enterprise Linux 8/9/10 (or compatible distributions such as AlmaLinux, Rocky Linux).
+Enterprise Linux 8/9/10 (or compatible distributions such as AlmaLinux and Rocky Linux).
 
-For SUSE based distributions, since HashiCorp does not provide packages, we will
+For SUSE-based distributions, since HashiCorp does not provide packages, we will
 install OpenBao, which is a community-supported drop-in fork of Vault available
 in the SUSE package repositories for openSUSE Leap and in the PackageHub module
 for SLES.
@@ -116,7 +116,7 @@ for SLES.
 
 !!! warning "Bug in current openSUSE openbao-server package (2.0.2-bp160.1.13)"
 
-    The current OpenBao package, at least in openSuse Leap 16, has a bug where
+    The current OpenBao package, at least in openSUSE Leap 16, has a bug where
     the service calls `/usr/bin/bao` instead of `/usr/bin/openbao` (https://bugzilla.opensuse.org/show_bug.cgi?id=1286353).
     If you encounter this issue, the workaround is to create a symlink:
 
@@ -131,7 +131,7 @@ for SLES.
     are the same, but the CLI name is `openbao` instead of `vault`. So when using
     OpenBao, replace `vault` with `openbao` in any of the commands below.
 
-    Also Zabbix officially supports HashiCorp Vault, although OpenBao should
+    Also, Zabbix officially supports HashiCorp Vault, although OpenBao should
     work fine as it is currently a drop-in fork of Vault. In the future, if
     OpenBao diverges from Vault, Zabbix may not support it anymore.
 
@@ -294,7 +294,7 @@ connections:
 
 Rather than granting access per individual secret path, organise secrets by function
 under a `monitoring/` prefix. This way the Zabbix server policy covers all monitoring
-credentials in one rule. No policy changes needed when adding new secrets.
+credentials in one rule. No policy changes are needed when adding new secrets.
 
 Recommended secret structure:
 
@@ -310,7 +310,7 @@ First create the policies directory:
 
 !!! info "Creating the policies directory"
 
-    Hashicorp Vault
+    HashiCorp Vault
     ```bash
     sudo mkdir -p /etc/vault.d/policies
     ```
@@ -373,7 +373,7 @@ Write both policies to Vault:
 
 !!! info "Writing policies to Vault"
 
-    Hashicorp Vault
+    HashiCorp Vault
     ```bash
     vault policy write zabbix-server /etc/vault.d/policies/zabbix-server-policy.hcl
     vault policy write zabbix-frontend /etc/vault.d/policies/zabbix-frontend-policy.hcl
@@ -392,36 +392,36 @@ Write both policies to Vault:
     including `VaultURL`, `VaultToken`, `VaultAppRoleID`, `VaultAppSecretID`, and
     `VaultDBPath`. You have two options:
 
-> **Option 1 — Single centralised Vault instance**
->
-> All proxies connect to the same Vault server. Each proxy gets its own scoped token
-> and policy, limiting access to only the secrets relevant to the hosts it monitors.
-> Organise secrets per proxy under the `monitoring/` prefix:
->
-> | Path | Purpose | Read by |
-> |------|---------|---------|
-> | `zabbix/monitoring/proxy-brussels/*` | Secrets for Brussels proxy | token-proxy-brussels |
-> | `zabbix/monitoring/proxy-amsterdam/*` | Secrets for Amsterdam proxy | token-proxy-amsterdam |
->
-> This is the simplest setup to manage — one Vault to maintain, with access controlled
-> per proxy through policies.
->
-> **Option 2 — Vault instance per proxy**
-> Each proxy site runs its own Vault instance. The proxy connects to its local
-> Vault, which only contains secrets for the hosts that proxy monitors. This approach
-> improves resilience (a Vault outage only affects one proxy) and keeps sensitive
-> credentials fully local to each site — useful when proxies are deployed in remote
-> locations or different security zones.
->
-> In both options, a compromised proxy token only exposes the secrets for that
-> proxy's hosts, not the entire monitoring infrastructure. The choice between the
-> two depends on your network topology, resilience requirements, and how many
-proxies you operate.
+    **Option 1 — Single centralised Vault instance**
+
+    All proxies connect to the same Vault server. Each proxy gets its own scoped token
+    and policy, limiting access to only the secrets relevant to the hosts it monitors.
+    Organise secrets per proxy under the `monitoring/` prefix:
+
+    | Path | Purpose | Read by |
+    |------|---------|---------|
+    | `zabbix/monitoring/proxy-brussels/*` | Secrets for Brussels proxy | token-proxy-brussels |
+    | `zabbix/monitoring/proxy-amsterdam/*` | Secrets for Amsterdam proxy | token-proxy-amsterdam |
+
+    This is the simplest setup to manage — one Vault to maintain, with access controlled
+    per proxy through policies.
+
+    **Option 2 — Vault instance per proxy**
+    Each proxy site runs its own Vault instance. The proxy connects to its local
+    Vault, which only contains secrets for the hosts that proxy monitors. This approach
+    improves resilience (a Vault outage only affects one proxy) and keeps sensitive
+    credentials fully local to each site — useful when proxies are deployed in remote
+    locations or different security zones.
+
+    In both options, a compromised proxy token only exposes the secrets for that
+    proxy's hosts, not the entire monitoring infrastructure. The choice between the
+    two depends on your network topology, resilience requirements, and how many
+    proxies you operate.
 
 !!! note
 
-    Since Zabbix 7.4 it is possible to choose how to resolve secret vault macros
-    under Administration => General => Others we have the option `Resolve secret vault macros by`.
+    Since Zabbix 7.4, it is possible to choose how to resolve secret vault macros.
+    Under `Administration` | `General` | `Others`, we have the option `Resolve secret vault macros by`.
 
     - Zabbix server - secrets are retrieved by Zabbix server and forwarded to proxies when needed (default);
     - Zabbix server and proxy - secrets are retrieved by both Zabbix server and proxies, allowing them to resolve macros independently.
@@ -450,17 +450,16 @@ This role covers both the frontend and server policies:
     Since Zabbix 7.0.5, the Zabbix server and proxy can automatically renew **renewable service
     tokens** and **periodic service tokens**. This means you no longer need a cron job or manual
     renewal process for long-running deployments. Periodic tokens are a strong fit here, Vault can
-    renew them indefinitely unless an explicit `explicit_max_ttl` is imposed. The token role
-    created in previous section `period="720h"` which produces periodic tokens that Zabbix will
+    renew them indefinitely unless an explicit `explicit_max_ttl` is imposed. The token role created in the previous section uses `period="720h"` which produces periodic tokens that Zabbix will
     renew automatically. However, these tokens are not truly non-expiring, but can be renewed
     indefinitely as long as Zabbix is running and the token has no explicit maximum TTL. Vault's
-    default max_lease_ttl, commonly 32 days, does not cap periodic tokens unless explicit_max_ttl
+    default `max_lease_ttl`, commonly 32 days, does not cap periodic tokens unless `explicit_max_ttl`
     is configured.
 
-    * If you only set period=720h → you're fine, no 32-day limit
-    * If explicit_max_ttl is set → the token will expire when that explicit maximum TTL is reached.
+    * If you only set `period=720h` → you're fine, no 32-day limit
+    * If `explicit_max_ttl` is set → the token will expire when that explicit maximum TTL is reached.
 
-Create a separate token for each component using the role created in previous section The
+Create a separate token for each component using the role created in the previous section. The
 `-type=service` flag explicitly creates a renewable service token:
 
 !!! info "Creating tokens for Zabbix frontend and server"
@@ -668,7 +667,7 @@ interacts with Vault:
 
 !!! note
 
-    on `/v1/` in paths:** The `/v1/` prefix in Vault API URLs refers to the **Vault
+    **On `/v1/` in paths:** The `/v1/` prefix in Vault API URLs refers to the **Vault
     HTTP API version**, not the KV engine version. It is always `/v1/` regardless
     of whether you use KV v1 or KV v2. So `/v1/zabbix/data/server` is correct even
     though we enabled KV v2.
@@ -700,7 +699,7 @@ Next, edit or create `/etc/zabbix/zabbix_server.d/vault.conf` and add the Vault 
 !!! note
 
     `VaultDBPath` requires the full path including the mount point: `zabbix/server`.
-    This resolves to `/v1/zabbix/data/server` the path where the server credentials
+    This resolves to `/v1/zabbix/data/server`, the path where the server credentials
     were stored.
 
 ### TLS Certificate Verification
@@ -908,7 +907,7 @@ When the Zabbix server needs to use a macro value of type *Vault secret*:
 
 For production use, all communication between Zabbix and Vault must be TLS-encrypted.
 
-###  Using a Custom CA Certificate
+### Using a Custom CA Certificate
 
 If your Vault instance uses a certificate signed by an internal Certificate Authority
 (CA), you must configure Zabbix to trust that CA. Copy the CA certificate to
@@ -963,7 +962,7 @@ Test Vault connectivity from the Zabbix server host before restarting the servic
 
 ---
 
-##  Verifying the Integration
+## Verifying the Integration
 
 Once Vault and Zabbix are configured, use the steps below to confirm that the
 integration is working end to end, from Vault connectivity through to macro resolution
@@ -984,7 +983,7 @@ restart using the runtime control option:
 This sends a signal to the running Zabbix server process instructing it to re-fetch
 all macros that reference Vault. Use this command whenever you:
 
-- Add a new *Vault secret* macro to a host, template, or globally.
+- Add a new *Vault secret* macro at host, template, or global level.
 - Update a secret value in Vault.
 - Rotate a Vault token or AppRole secret ID in `zabbix_server.conf`.
 
@@ -1114,7 +1113,7 @@ Common errors and resolutions:
 | `403 Forbidden` | Token/AppRole lacks permission | Review and reapply the Vault policy |
 | `connection refused` | Vault is sealed or not running | Unseal Vault: `vault operator unseal` |
 | `invalid path` | `VaultDBPath` or secret path is incorrect | Verify with `vault kv list zabbix/` |
-| `macro not resolved` | Wrong path, key name, or macro type not set to *Vaultsecret* | Check macro value syntax: `<path>:<key>` and verify macro type |
+| `macro not resolved` | Wrong path, key name, or macro type not set to *Vault secret* | Check macro value syntax: `<path>:<key>` and verify macro type |
 
 ### Verify a Secret is Accessible
 
@@ -1155,17 +1154,16 @@ If Vault's audit backend is enabled, you can trace exactly what Zabbix is reques
 All configuration and verification tasks described in this chapter can also be
 performed through the Vault web interface, available at `https://<vault-server>:8200`.
 
-After logging in with your token you can:
+After logging in with your token, you can:
 
 - Browse secrets under the `zabbix/` mount point, provided your token has the
   appropriate metadata list permissions.
 - Create, update, and view secret versions.
 - View and manage policies under **Policies**.
-- View token details and check expiry under **Access → Tokens**.
-- Enable and review the audit log under **Access → Audit**.
+- View token details and check expiry under `Access` | `Tokens`.
+- Enable and review the audit log under `Access` | `Audit`.
 
-The GUI is particularly useful for day-to-day secret management such as rotating
-credentials, log in with the root token, navigate to the secret, and update the
+The GUI is particularly useful for day-to-day secret management such as rotating credentials: log in with the root token, navigate to the secret, and update the
 value. Then trigger a reload on the Zabbix server:
 
 !!! info "Reloading secrets in Zabbix server from GUI"
@@ -1175,7 +1173,7 @@ value. Then trigger a reload on the Zabbix server:
     ```
 ![ch13_vault_login.png](ch13.11-vault_login.png)
 
-_13.11 vault login_
+_13.11 Vault login_
 
 ---
 

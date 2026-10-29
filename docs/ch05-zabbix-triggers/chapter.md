@@ -11,5 +11,5 @@ of **monitoring and alerting fatigue**, providing strategies to fine-tune your t
 to reduce unnecessary alerts while maintaining optimal system oversight.
 
 By the end, you'll have the knowledge to set up both simple and complex triggers,
-helping you maintain a well balanced monitoring system that minimizes noise and
+helping you maintain a well-balanced monitoring system that minimises noise and
 focuses on what truly matters.

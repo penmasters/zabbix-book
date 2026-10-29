@@ -23,7 +23,7 @@ At an expert level, it answers “is this application behaving correctly, secure
 and predictably under real conditions?”.
 
 With the release of the Zabbix 7.x series, the HTTP agent has become more efficient and
-user friendly, featuring realtime configuration validation and improved connection
+user friendly, featuring real-time configuration validation and improved connection
 handling.
 
 ---
@@ -41,7 +41,7 @@ to support both simple availability checks and advanced API monitoring.
 
 Internally, Zabbix uses `libcurl` to perform HTTP and HTTPS requests. This is an
 important implementation detail. Redirect handling, TLS negotiation, proxy
-behavior, timeout semantics, and error reporting all follow `curl` behavior.
+behaviour, timeout semantics, and error reporting all follow `curl` behaviour.
 If a request can be reproduced successfully using the `curl` command line, it can
 almost always be made to work in Zabbix with the same parameters.
 
@@ -55,9 +55,9 @@ connection open. This significantly reduces CPU overhead and network latency,
 especially when polling high frequency API endpoints.
 
 Also since Zabbix 7.0 HTTP pollers are **asynchronous**, execution order and timing
-is not as simple as “one poller, one request”.
+are not as simple as “one poller, one request”.
 
-An HTTP poller can initiate *hundreds* of requests, (1000 per poller to be precise)
+An HTTP poller can initiate *hundreds* of requests (1000 per poller to be precise),
 wait for responses, and process completed transactions while other requests are
 still in flight. This makes HTTP monitoring efficient, but it also means that
 slow endpoints do not block fast ones, as long as poller capacity is not exhausted.
@@ -100,7 +100,7 @@ for advanced use cases discussed later.
 
 Headers: This is where authentication tokens and vendor-specific requirements belong.
 
-**Expert Tip :** Always use Secret Macros (e.g., `{$API.TOKEN}`) for headers containing
+**Expert Tip:** Always use Secret Macros (e.g., `{$API.TOKEN}`) for headers containing
 credentials to ensure they are masked in the UI and logs.
 
 ---
@@ -136,7 +136,7 @@ distinction matters in production.
 
 The configured timeout is not a single, shared budget for the entire request.
 Instead, it is applied to multiple blocking phases of the HTTP transaction,
-following `libcurl` behavior.
+following `libcurl` behaviour.
 
 Conceptually, the timeout applies to:
 
@@ -151,7 +151,7 @@ These phases occur sequentially, and each phase can consume up to the configured
 timeout.
 
 As a result, the total wall clock execution time can exceed the configured timeout.
-This is why users sometimes observe behavior that looks like “double timeout”.
+This is why users sometimes observe behaviour that looks like “double timeout”.
 
 For example, with a timeout of 10 seconds:
 
@@ -181,7 +181,7 @@ Storing the full response body allows multiple dependent items to extract differ
 values from a single request. Storing only the status code creates a lightweight
 availability or correctness check with minimal processing overhead.
 
-At scale, choosing the correct retrieval mode reduces API load, minimizes network
+At scale, choosing the correct retrieval mode reduces API load, minimises network
 traffic, and keeps Zabbix performance predictable.
 
 ---
@@ -235,13 +235,13 @@ By default, Zabbix expects HTTP responses to return status codes that are explic
 allowed for the item. If the response code does not match what is configured, the
 item becomes unsupported.
 
-This behavior is often misunderstood. An unsupported item is not the same as a 
+This behaviour is often misunderstood. An unsupported item is not the same as a 
 failed check. It indicates that Zabbix considers the response invalid for this
 item's definition.
 
 Zabbix allows you to define accepted response codes in a flexible way. You can
 specify a single code, a comma-separated list of codes, or ranges of codes. This
-makes it possible to model real application behavior accurately.
+makes it possible to model real application behaviour accurately.
 
 For example, some APIs legitimately return `204 No Content` on success, while others
 use `202 Accepted` for asynchronous processing. If these codes are not listed as
@@ -257,7 +257,7 @@ transport-level failures such as timeouts or TLS errors.
 ### Redirect Handling Limits
 
 When redirect following is enabled, Zabbix will automatically follow HTTP redirects.
-However, this behavior is not unlimited.
+However, this behaviour is not unlimited.
 
 Zabbix follows up to 10 HTTP redirects per request. If this limit is exceeded,
 the request fails. This protects the server from redirect loops and misconfigured
@@ -279,7 +279,7 @@ HTTP agent items are typically used in a polling model, where Zabbix initiates
 the request. However, Zabbix also supports a hybrid approach through the “Enable
 trapping” option.
 
-When trapping is enabled, the item can accept data pushed to it using zabbix_sender
+When trapping is enabled, the item can accept data pushed to it using `zabbix_sender`
 or the Zabbix API `history.push` method. This allows external systems or applications
 to send web content or processed results directly into Zabbix.
 
@@ -366,7 +366,7 @@ externally if required.
 Debugging HTTP agent items does not require restarting the Zabbix server or proxy.
 Zabbix supports runtime log level control, including per-process adjustments.
 
-HTTP agent items are executed by HTTP poller processes. To debug HTTP agent behavior
+HTTP agent items are executed by HTTP poller processes. To debug HTTP agent behaviour
 specifically, logging should be increased only for those processes.
 
 This is done using runtime control commands `log_level_increase` and 
@@ -390,7 +390,7 @@ or flooding logs from unrelated processes.
 
 When debug logging is enabled, the Zabbix log will show detailed information about
 DNS resolution, TLS negotiation, certificate validation, proxy usage, and timeout
-behavior. These messages are the authoritative source of truth when troubleshooting
+behaviour. These messages are the authoritative source of truth when troubleshooting
 HTTP agent issues.
 
 Always enable debugging on the node that actually executes the item. If a host is
@@ -423,7 +423,7 @@ The table below summarizes the key HTTP agent parameters and their purpose.
 !!! note
 
     Starting with Zabbix 8.0, the list of allowed hosts for trapper items is predefined
-    through the macro {$TRAPPER.ALLOWED_HOSTS}. By default, this macro is set to
+    through the macro `{$TRAPPER.ALLOWED_HOSTS}`. By default, this macro is set to
     127.0.0.1,::1, allowing only connections from the local host over both IPv4
     and IPv6. Change this macro to include the IP addresses or networks of any
     external systems that need to send trapper data to the Zabbix server.

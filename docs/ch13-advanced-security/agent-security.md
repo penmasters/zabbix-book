@@ -1,33 +1,33 @@
 ---
 description: |
-    Use built-in techniques to secure the Zabbix agent with end-to-end encryption. Using  
-    both Pre-shared keys (PSK) and Certificates.
+    Use built-in techniques to secure the Zabbix agent with end-to-end encryption using
+    both pre-shared keys (PSKs) and certificates.
 tags: [advanced]
 ---
 
 # Securing the Zabbix agent with encryption
-In chapter 4 we have learned how to set up our Zabbix agent in both the active and the passive mode. In an internal network, this might be all you need to do for your monitoring of Linux, Unix, and Windows systems. But what if you need to monitor a Zabbix agent host over the internet or what if you'd just like to add an additional layer of security. This is where Zabbix agent encryption comes in. 
+In chapter 4, we learned how to set up our Zabbix agent in both the active and the passive mode. In an internal network, this might be all you need to do for your monitoring of Linux, Unix, and Windows systems. But what if you need to monitor a Zabbix agent host over the internet or what if you'd just like to add an additional layer of security? This is where Zabbix agent encryption comes in.
 
-There are two basic methods to encrypt your Zabbix agent and they apply to both passive and active agents.
+There are two basic methods to encrypt your Zabbix agent, and they apply to both passive and active agents.
 - Pre-shared keys
 - Certificates
 
 Both provide a secure method of encrypting the communication between your Zabbix agent and Zabbix server or proxy. So let's dive into both of them.
 
 ## Pre-shared keys
-Whenever you start working with Zabbix agent encryption, pre-shared keys are the easiest method to provide an additional layer of security on your internal networks or encrypt internet connected agents. They are easy to understand and do not require maintenance, as they are a set and forget kind of encryption method.
+Whenever you start working with Zabbix agent encryption, pre-shared keys are the easiest method to provide an additional layer of security on your internal networks or encrypt internet-connected agents. They are easy to understand and do not require maintenance, as they are a set-and-forget kind of encryption method.
 
-The basis is simple, Zabbix agent uses a pre-shared key (PSK) identity and a PSK string. We set these up both on the Zabbix agent and Zabbix server side to encrypt the communication between them. If you are using Zabbix proxies, the Zabbix server will make sure the proxies know about the pre-shared keys (do not forget to encrypt proxy communication).
+The basis is simple: the Zabbix agent uses a pre-shared key (PSK) identity and a PSK string. We set these up both on the Zabbix agent and Zabbix server side to encrypt the communication between them. If you are using Zabbix proxies, the Zabbix server will make sure the proxies know about the pre-shared keys (do not forget to encrypt proxy communication).
 
 - *PSK identity*: A non-secret UTF-8 string. 
-- *PSK string*: A secret between 128 bit (16 Bytes, 32 character hexadecimal) and 2048 bit (256 Bytes, 512 character hexadecimal) string.
+- *PSK string*: A secret string between 128 bits (16 bytes, 32 hexadecimal characters) and 2048 bits (256 bytes, 512 hexadecimal characters).
 
 ???+ important note
 
-    The combination of the PSK identity and PSK string has to be unique. There can not be two PSKs with the same identity string but different values.
+    The combination of the PSK identity and PSK string has to be unique. There cannot be two PSKs with the same identity string but different values.
     We have to keep this in mind when setting up the PSK identity and I usually use something that cannot be duplicate like the hostname of the host we're encrypting.
 
-Let's login to the CLI of a host with the Zabbix agent installed. We are going to edit the Zabbix agent 2 configuration file to allow for PSK encryption.
+Let's log in to the CLI of a host with the Zabbix agent installed. We are going to edit the Zabbix agent 2 configuration file to allow for PSK encryption.
 
 !!! info "Edit Zabbix agent 2 configuration file"
 
@@ -36,7 +36,7 @@ Let's login to the CLI of a host with the Zabbix agent installed. We are going t
     vi /etc/zabbix/zabbix_agent2.d/encryption.conf
     ```
 
-In the configuration file there are 4 parameters we need to edit. By default they aren't set, but we will set them as specified below.
+In the configuration file, there are 4 parameters we need to edit. By default, they aren't set, but we will set them as specified below.
 
 !!! info "Zabbix agent 2 configuration file encryption parameters"
 
@@ -53,10 +53,10 @@ I've used `zbx-agent-active-rocky` as the identity, as that is the hostname on m
 
 - *TLSConnect*: This parameter makes sure that when the Zabbix agent connects in active mode it will either use `unencrypted`, `psk`, or `cert` to connect.
 - *TLSAccept*: This parameter makes sure that when the Zabbix agent is connected to in passive mode it will either use `unencrypted`, `psk`, or `cert` to allow the connection.
-- *TLSPSKIdentity*: The plain text non-secret identity used for PSK encryption.
+- *TLSPSKIdentity*: The plaintext, non-secret identity used for PSK encryption.
 - *TLSPSKFile*: The path to the file where the secret PSK is stored.
 
-As you might have noticed, I have set both `TLSConnect` and `TLSAccept`. This is something recommended to always do to safeguard against configuration mistakes. Let's say you only use the Active Zabbix agent connection, but left `TLSConnect` set to `unencrypted`. If your Zabbix agent allows passive agent connections (due to configuration error, history, or on purpose) an unencrypted connection will still be allowed. Recommendation, set both always unless you have a good reason not to.
+As you might have noticed, I have set both `TLSConnect` and `TLSAccept`. This is something recommended to always do to safeguard against configuration mistakes. Let's say you only use the active Zabbix agent connection, but leave `TLSConnect` set to `unencrypted`. If your Zabbix agent allows passive agent connections (due to configuration error, history, or on purpose), an unencrypted connection will still be allowed. Recommendation: always set both unless you have a good reason not to.
 
 We're not done with the configuration on the Zabbix agent side however, we still need to create the PSK. There is a simple command to execute and create the PSK.
 
@@ -67,7 +67,7 @@ We're not done with the configuration on the Zabbix agent side however, we still
     openssl rand -hex 128 | sudo tee /etc/zabbix/agent.psk > /dev/null
     ```
 
-This will not only create the 128 Bytes (1024 bit and 256 Hex characters) PSK, it will also add it to the file we specified in the Zabbix agent configuration file under `TLSPSKFile=/etc/zabbix/agent.psk`. We can check to see what the PSK looks like.
+This will not only create the 128 bytes (1024 bits and 256 hexadecimal characters) PSK, it will also add it to the file we specified in the Zabbix agent configuration file under `TLSPSKFile=/etc/zabbix/agent.psk`. We can check to see what the PSK looks like.
 
 !!! info "Show agent.psk file with new pre-shared key"
 
@@ -76,7 +76,7 @@ This will not only create the 128 Bytes (1024 bit and 256 Hex characters) PSK, i
     cat /etc/zabbix/agent.psk
     ```
 
-We get a string the looks like this:
+We get a string that looks like this:
 
 !!! info "agent.psk file contents"
 
@@ -87,7 +87,7 @@ We get a string the looks like this:
 
 Do not use the above PSK as it is now of course compromised (everyone reading the book has it). But it shows you what it would look like and we can now copy it for later use in the Zabbix frontend, as well as store it in a password vault perhaps.
 
-Before we go on to the Zabbix frontend however, let's make sure the file where we stored the PSK in is secure.
+Before we go on to the Zabbix frontend, let's make sure the file where we stored the PSK is secure.
 
 !!! info "agent.psk file security settings"
 
@@ -97,20 +97,20 @@ Before we go on to the Zabbix frontend however, let's make sure the file where w
     sudo chmod 400 /etc/zabbix/agent.psk
     ```
 
-This will make sure only the zabbix user on your Linux system has read only access. Now let's move on to the Zabbix frontend and find our `zbx-agent-active-rocky` host under `Data collection` | `Hosts`.
+This will make sure only the zabbix user on your Linux system has read-only access. Now let's move on to the Zabbix frontend and find our `zbx-agent-active-rocky` host under `Data collection` | `Hosts`.
 
-Open you host configuration and go to the `Encryption` tab. By default it will be set to not use encryption.
+Open your host configuration and go to the `Encryption` tab. By default it will be set to not use encryption.
 
 ![Unencrypted agent](ch13.4-frontend-agent-host-no-encryption.png){ align=center }
 *13.4 Unencrypted agent settings*
 
-Let's fill our the details here, just as we did on the Zabbix agent host side.
+Let's fill out the details here, just as we did on the Zabbix agent host side.
 
 ![Encrypted agent](ch13.5-frontend-agent-host-encryption.png){ align=center }
 
 *13.5 Encrypted agent settings*
 
-As you can see, even though this is an Active Zabbix agent, I set up encryption requirements for both. Click on the `Update` button to save these changes and go back to the Zabbix agent host CLI to restart the agent.
+As you can see, even though this is an active Zabbix agent, I set up encryption requirements for both. Click on the `Update` button to save these changes and go back to the Zabbix agent host CLI to restart the agent.
 
 !!! info "Restart to make encryption settings take effect."
 
@@ -126,14 +126,14 @@ Your agent icon should remain green and you should now see that the agent is enc
 *13.6 Encrypted agent status*
 
 ### Active agent autoregistration
-Another thing you might want to do is encrypt all of the Zabbix agents in active mode that are being registered into Zabbix automatically. This process called autoregistration was discussed in detail in chapter 10. What we did not cover however is how to encrypt this process.
+Another thing you might want to do is encrypt all of the Zabbix agents in active mode that are being registered into Zabbix automatically. This process called autoregistration was discussed in detail in chapter 10. What we did not cover, is how to encrypt this process.
 
 When you navigate to `Administration` | `General` | `Autoregistration` there are not many options available. As you can see we are using `No encryption` by default. 
 
 ![Autoregistration without encryption](ch13.7-autoregistration-no-encryption.png){ align=center }
 *13.7 Autoregistration without encryption*
 
-We can only change this `PSK` to encrypt all of the autoregistered Zabbix agents. There is no certificate option for autoregistration. But, we can now do the following setup.
+We can only change this to `PSK` to encrypt all of the autoregistered Zabbix agents. There is no certificate option for autoregistration. But, we can now do the following setup.
 
 ![Autoregistration with encryption](ch13.8-autoregistration-encryption.png){ align=center }
 *13.8 Autoregistration with encryption*
@@ -159,18 +159,18 @@ This means that we do not have a unique PSK per Zabbix agent, decreasing our sec
 If one agent has its PSK compromised, you have to consider all agents compromised.
 There are a few options to work with this however.
 
-- Make sure you automate the Zabbix agent installation process. Quickly allowing
-  you to rotate PSK keys when necessary.
-- Do not share you PSK with possible customers you are monitoring. Use manually
+- Make sure you automate the Zabbix agent installation process, allowing
+  you to rotate PSK keys quickly when necessary.
+- Do not share your PSK with possible customers you are monitoring. Use manually
   configured unique PSK values for them.
 - If you want, you can use autoregistration with PSK for the initial agent registration.
-  Manually changed the PSK later or just for important infrastructure.
+  Manually change the PSK later or just for important infrastructure.
 
 ## Certificates
 
 Pre-shared keys are simple and they work well to encrypt your agents fast and effectively.
-They do have a fundamental flaw however, once it is known we can easily impersonate
-it. Identity theft is not a joke and for that reason we are going to issues certificates
+They do have a fundamental flaw, however: once it is known we can easily impersonate
+it. Identity theft is not a joke and for that reason we are going to issue certificates
 to counter that issue.
 
 Keep in mind, you can also use public certificates. But to keep things executable
@@ -203,7 +203,7 @@ Next, we create a self-signed CA certificate. This certificate will be trusted b
 
 - 3650 days gives us a 10-year CA lifetime
 - Anyone with the key file can sign valid Zabbix certificates, so keep it secret.
-- As you can see we used `The Zabbix Book` in our CN/CA. Treat this as `Your Company Name here`. 
+- As you can see, we used `The Zabbix Book` in our CN/CA. Treat this as `Your Company Name here`.
 
 Executing these commands should give us 2 files.
 
@@ -231,9 +231,9 @@ Then we make sure they are secured.
     sudo chmod 444 /home/zabbix/the-zabbix-book-ca.crt
     ```
 
-Since anyone with the key file can sign valid Zabbix certificates it is recommended
+Since anyone with the key file can sign valid Zabbix certificates, it is recommended
 to do these steps on a secure server where you will distribute the certificates
-from
+from.
 
 ### Certificate generation
 
@@ -241,7 +241,7 @@ Next up, we are going to generate the certificate for the Zabbix agent to use.
 Here it is also recommended to use a unique certificate for each Zabbix agent
 you'd like to encrypt.
 
-We will need the CA key we issues earlier in this step. Let's first generate the key.
+We will need the CA key we issued earlier in this step. Let's first generate the key.
 
 !!! info "Create agent private key"
 
@@ -279,9 +279,9 @@ in our environment.
     ```
 
 We now have our Zabbix agent certificate and private key:
-	•	*zabbix_agent.key*: Keep secret on the agent
-	•	*zabbix_agent.crt*: Public certificate for the agent
-	•	*the-zabbix-book-ca.crt*: CA certificate the agent uses to trust the Zabbix server/proxy
+- *zabbix_agent.key*: Keep secret on the agent
+- *zabbix_agent.crt*: Public certificate for the agent
+- *the-zabbix-book-ca.crt*: CA certificate the agent uses to trust the Zabbix server/proxy
 
 The CSR is no longer needed after signing.
 
@@ -294,7 +294,7 @@ The CSR is no longer needed after signing.
 
 Let's move these files to a folder where we can use them from the Zabbix agent.
 
-!!! info "Move the CA files"
+!!! info "Move the certificate files"
 
     Linux CLI
     ```bash
@@ -304,7 +304,7 @@ Let's move these files to a folder where we can use them from the Zabbix agent.
 
 Of course it will also be important to secure the files.
 
-!!! info "Move the CA files"
+!!! info "Secure the certificate files"
 
     Linux CLI
     ```bash
@@ -319,7 +319,7 @@ Lastly, it will be important to set up the Zabbix agent for the certificate to
 be used by it. Let's edit the Zabbix agent configuration file and add the
 following parameters.
 
-!!! info "Move the CA files"
+!!! info "Edit the Zabbix agent configuration"
 
     Linux CLI
     ```ini
@@ -351,9 +351,8 @@ under `Data collection` | `Hosts` and add the following information under `Encry
 
 ## Conclusion
 
-If you want simple to set up security for your Zabbix agent, use pre-shared keys.
-They are secure, especially when using 2048-bit (512 hexadecimal digits) and if
-possible unique pre-shared keys for each agent.
+If you want simple-to-set-up security for your Zabbix agent, use pre-shared keys.
+They are secure, especially when using 2048-bit keys (512 hexadecimal digits) and, if possible, unique pre-shared keys for each agent.
 
 If you want some more layers of security, certificates do provide more security
 in the way they work alone. With certificate expiry, we are forced to set up good
@@ -361,8 +360,8 @@ certificate management software to make managing the many certificates doable.
 Furthermore, certificates provide impersonation resistance by allowing us to restrict
 issuer/subject.
 
-If you are using active agent autoregistration pre-shared keys seems like your only
-viable option out of the box. We are forced to use a single pre=shared key for this
+If you are using active agent autoregistration, pre-shared keys seem like your only
+viable option out of the box. We are forced to use a single pre-shared key for this
 method, and as such it is less secure. This can still be a good option to provide
 that additional layer of security on internal networks. 
 

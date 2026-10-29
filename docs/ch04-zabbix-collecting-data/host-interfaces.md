@@ -22,8 +22,8 @@ four types of interfaces.
 - **JMX**
 - **IPMI**
 
-These interface types are tied directly to the items types. Meaning that when you
-want to monitoring the Zabbix agent (passive) you will need a ZBX (agent) type
+These interface types are tied directly to the item types. Meaning that when you
+want to monitor the Zabbix agent (passive) you will need a ZBX (agent) type
 interface. If you do not have the correct interface, you will not be able to add
 the items for monitoring.
 
@@ -53,13 +53,13 @@ interface types allow us to define four things.
 
 It's important to take note of the `Connect to` field here. It indicates whether
 we will use the `IP address` or `DNS name` field configured for this interface.
-Within Zabbix interfaces it is only possible to use one at the time. That means
+Within Zabbix interfaces it is only possible to use one at a time. That means
 there is no failover if DNS starts to fail and as such when using DNS your monitoring
 will be dependent on your DNS servers.
 
 ???+ tip
 
-    The question often asked at this point is "Should I use DNS or IP". The choice
+    The question often asked at this point is "Should I use DNS or IP?" The choice
     in the end is up to the Zabbix administrator, but a simple rule we always
     follow is:
     
@@ -81,7 +81,7 @@ like version, community, and credentials.
 When selecting the `SNMP version` as either `SNMPv1` or `SNMPv2`, we are shown
 the `SNMP community` field. `SNMPv1` and `SNMPv2` both use unauthenticated and
 unencrypted connections by using a plain text `SNMP community` to initiate a connection
-to the SNMP monitoring target like a switch or a router. This `SNMP community is
+to the SNMP monitoring target like a switch or a router. This `SNMP community` is
 sent over the network in plain text and as such it can not be seen as fully secure
 authentication.
 
@@ -106,7 +106,7 @@ For `SNMPv3` many additional fields will be available for configuration.
   target
 - **Security level** noAuthNoPriv, AuthNoPriv, AuthPriv. We can choose to do SNMPv3
   without authentication and data encryption, with authentication and without data
-  encryption or with both authentication and data encryption.
+  encryption, or with both authentication and data encryption.
 - **Authentication protocol** MD5, SHA1, SHA224, SHA256, SHA384, SHA512. The encryption
   strength for our authentication.
 - **Authentication passphrase** The password for authentication.
@@ -121,9 +121,9 @@ to important information or worse write access to devices without authentication
 It's up to the Zabbix administrator to determine what the monitoring target supports,
 but higher security is better in this case.
 
-- noAuthNoPriv utilizes the `SNMPv3` protocol without authenticating and encrypting 
+- noAuthNoPriv utilises the `SNMPv3` protocol without authenticating and encrypting 
   the data.
-- AuthNoPriv uses encrypted authentication, but sends monitoring data plain text 
+- AuthNoPriv uses encrypted authentication, but sends monitoring data in plain text 
   over the network
 - AuthPriv is the recommended method for high security, as it uses encrypted
   authentication and also sends monitoring data encrypted over the network.
@@ -131,28 +131,28 @@ but higher security is better in this case.
 When using `SNMPv3` it is also best practice to use a strong authentication protocol.
 MD5 and DES are both no longer recommended due to the possibility to brute force
 the passwords with consumer grade hardware amongst other risks. That's why SHA1
-and AES128 or higher is always recommended.
+and AES128 or higher are always recommended.
 
 ---
 
 ## IPMI
 
 For `IPMI agent` type items we want to add the `IPMI` type interface. We can use
-it to connect to `BMC's (Baseboard Management Controller)` like `iDRAC` and `iLo`.
+it to connect to `BMCs (Baseboard Management Controllers)` like `iDRAC` and `iLo`.
 This interface is slightly different again from the previous three interfaces.
 
 ![IPMI interface](ch04.13-ipmi-interface.png){ align=center }
 *4.13 IPMI interface*
 
-We have the same settings for `IP`, `DNS` and `Port` again, but in the case of
+We have the same settings for `IP`, `DNS`, and `Port` again, but in the case of
 IPMI we do not define credentials on the interface level. Instead these are provided
  on a different tab on the host configuration settings.
 
 ![IPMI host settings](ch04.14-ipmi-settings.png){ align=center }
 *4.14 IPMI host settings*
 
-For a host in Zabbix we can only define one IPMI use for authentication,
-regardless of the amount of interfaces we add.
+For a host in Zabbix we can only define one IPMI user for authentication,
+regardless of the number of interfaces we add.
 
 - **Authentication algorithm** None, MD2, MD5, Straight, OEM, RMCP+. Determines
   the encryption strength.
@@ -167,7 +167,7 @@ If possible, try to use `RMCP+`, which in most cases is the most secure.
 
 For the `Privilege level` it is recommended to use either `Callback` or `User`
 in most scenarios. `Callback` will allow us to access alerts, `User` will also
-allow us to access monitoring data. If need higher privilege levels to execute
+allow us to access monitoring data. If you need higher privilege levels to execute
 commands on the `BMC` as well, this is possible. But keep in mind, write access
 from your monitoring system comes with additional security risks.
 
@@ -175,14 +175,14 @@ from your monitoring system comes with additional security risks.
 
 ### Interface availability
 
-All four interface types, also come with an icon that can turn <span style="color: green;">Green</span>,
-<span style="color: orange;">Orange</span>, <span style="color: red;">Red</span> or
-<span style="color: grey;">Grey</span>. This color determines the interfaces'
+All four interface types also come with an icon that can turn <span style="color: green;">Green</span>,
+<span style="color: orange;">Orange</span>, <span style="color: red;">Red</span>, or
+<span style="color: grey;">Grey</span>. This colour determines the interface's
 current availability and is shown in a few places in the Zabbix frontend:
 
 - On the host overview page (`Monitoring` | `Hosts`)
-- On the hosts configuration page (`Data Collection` | `Hosts`)
-- On the host configuration page when editing a host (`Data Collection` | `Hosts` | `[Host name]`)
+- On the hosts configuration page (`Data collection` | `Hosts`)
+- On the host configuration page when editing a host (`Data collection` | `Hosts` | `[Host name]`)
 
 When you hover over, or click on one of the availability icons, you will get a 
 tooltip with the current status and possible error reason of each individual 
@@ -226,7 +226,7 @@ Zabbix agent to the Zabbix server or proxy. The status remains <span style="colo
 until the first heartbeat is received. Once the first heartbeat is received,
 the status will switch to <span style="color: green;">Available</span>.
 
-The frequency of there heartbeats is determined by the `HeartbeatFrequency`
+The frequency of these heartbeats is determined by the `HeartbeatFrequency`
 parameter in the Zabbix agent configuration file and defaults to 60 seconds.
 If the Zabbix server or proxy has not received a subsequent heartbeat from the agent for 
 a period of 2 times the `HeartbeatFrequency`, the status will switch to
@@ -259,7 +259,7 @@ of all interfaces of that specific type and can have the following colours:
 
 When configuring your host interfaces in Zabbix, we need to match our `Item type`
 to our `Interface type`. When we have the correct `Host interface` configured we
-will be able to add the corresponding `Items` on our  host to collect data. Upon
+will be able to add the corresponding `Items` on our host to collect data. Upon
 successful data collection, the interface availability icon will also turn `Green`.
 
 Some item types like the `Simple check` also have the possibility to use host

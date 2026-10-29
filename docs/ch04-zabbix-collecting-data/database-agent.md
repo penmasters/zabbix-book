@@ -14,7 +14,7 @@ environments, this might be out of the question. ODBC monitoring also requires
 additional tooling to be installed, which is something you will need to maintain.
 
 The Zabbix agent 2 however, comes with built-in functionality to monitor some 
-of the most popular SQL and no-SQL databases.
+of the most popular SQL and NoSQL databases.
 - MariaDB
 - MySQL
 - PostgreSQL
@@ -29,7 +29,7 @@ server running that database. Since the Zabbix agent is running on the local
 machine, the Zabbix agent can now be used to connect using localhost (127.0.0.1) 
 to the database.
 
-![Zabbix ODBC vs Agent Database connection*](ch04.84-odbc-vs-agent.png){ align=center }
+![Zabbix ODBC vs Agent Database connection](ch04.84-odbc-vs-agent.png){ align=center }
 *4.84 Zabbix ODBC vs Agent Database connection*
 
 ---
@@ -45,7 +45,7 @@ specifically for:
 - MongoDB
 
 To install the packages on Linux is not too much additional work, as we should 
-already have the Zabbix repository available. Simply issues the following 
+already have the Zabbix repository available. Simply issue the following 
 command to install the additional package(s) and you should be ready to go.
 
 !!! info "Install Zabbix agent 2 database monitoring plugins"
@@ -124,7 +124,7 @@ just clone template *MSSQL by Zabbix agent 2* to *MSSQL by Zabbix agent 2 **acti
 and change all *item types* to *Zabbix agent (active)*.
 
 In the end it does not matter if you use a passive or active agent, as long as
-you have the agent connection setup we can do the next step. We need to configure
+you have the agent connection set up we can do the next step. We need to configure
 our Zabbix agent to connect to the database server via the network. We do this
 using the macros on the host.
 
@@ -136,7 +136,7 @@ Since the agent is installed on the server running Microsoft SQL, we can simply
 connect to `localhost` or `127.0.0.1`. That means the connection from the Zabbix
 agent towards the Microsoft SQL server never leaves the server itself and we do
 not need to expose our SQL server port to the network for our Zabbix server or
-proxy. Combined with Zabbix agent active mode, a limited Microsoft SQL user and
+proxy. Combined with Zabbix agent active mode, a limited Microsoft SQL user, and
 agent encryption, we can guarantee a secure setup that is ready for high-risk
 environments like banks, hospitals, air traffic, and even military applications.
 This is the biggest advantage of using the Zabbix agent 2 database monitoring,
@@ -166,9 +166,9 @@ Zabbix agent 2 database monitoring? With ODBC we could simply add the query to
 the frontend and ODBC would execute it for us. For the Zabbix agent, there are
 some additional steps required. 
 
-First, let's make sure our agent configuration is setup correctly. Whenever we
+First, let's make sure our agent configuration is set up correctly. Whenever we
 install the Zabbix agent 2 with any of the plugins, there will be additional 
-configuration files located in the zabbix_agent2.d folder.
+configuration files located in the `zabbix_agent2.d` folder.
 
 - *Windows*: `C:\Program Files\Zabbix Agent 2\zabbix_agent2.d\`
 - *Linux*: `/etc/zabbix/zabbix_agent2.d/`
@@ -263,7 +263,7 @@ for the Zabbix server or proxy, significantly reducing the attack surface.
 
 With the built-in database plugins and official templates, most common 
 monitoring metrics are available immediately after configuration. This allows 
-us to quickly gain insight into the health and performance of their database 
+us to quickly gain insight into the health and performance of our database 
 systems without relying on external scripts or additional monitoring frameworks.
 
 For environments with specific monitoring requirements, the agent also supports 

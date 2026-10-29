@@ -1,7 +1,7 @@
 ---
 description: |
     Learn how to partition the Zabbix database to improve performance, simplify
-    maintenance, optimize data retention, and scale large environments.
+    maintenance, optimise data retention, and scale large environments.
 tags: [advanced]
 ---
 
@@ -10,12 +10,11 @@ tags: [advanced]
 As your Zabbix environment grows, you'll eventually notice that the built-in housekeeper
 struggles to keep up. This happens because the Zabbix housekeeper works by scanning
 the database for each history or trend entry that exceeds its configured retention
-period and deletes them row by row. While this works for smaller setups, as the
-database grows your housekeeper process will reach a limit as to what it can delete
+period and deleting it row by row. While this works for smaller setups, as the database grows, your housekeeper process will reach a limit as to what it can delete
 in time.
 
 You can usually see this issue happening when the housekeeper process runs at 100%
-continuously and the database keeps growing larger. This indicated that the cleanup
+continuously and the database keeps growing larger. This indicates that the cleanup
 can't keep pace with incoming data.
 
 PostgreSQL users can use the native TimescaleDB plugin in Zabbix, which handles
@@ -27,14 +26,14 @@ This is where `MariaDB` partitioning comes in.
 ???+ note
 
     It's recommended to do partitioning right after setting up your Zabbix database.
-    This process is a lot easier on a clean database, than it is on a database
-    that is already is use.
+    This process is a lot easier on a clean database than it is on a database
+    that is already in use.
 
 ## Preparing the database
 
 To begin implementing `MariaDB` partitioning, you'll need access with super privileges
 to your Zabbix database server. Before starting however, if you are going to partition
-an existing zabbix database make sure to create a backup of your database. We can
+an existing Zabbix database, make sure to create a backup of your database. We can
 do this in various ways and with various tools, but the built-in `mariadb-dump` tool
 will work perfectly fine.
 
@@ -44,12 +43,12 @@ will work perfectly fine.
 
 `Make sure to export your database backup to a different server (or disk at least).`
 
-Keep in mind, data corruption can happen when performing large scale changes on
+Keep in mind, data corruption can happen when performing large-scale changes on
 your DB and as such also with partitioning.
 
 To prevent MariaDB running out of space, also make sure to have a generous amount
 of free space on your system. Running partitioning when you have no free space left
-can lead to a corrupted database data. Check your free space with:
+can lead to corrupted database data. Check your free space with:
 
 !!! info "Check disk space availability"
 
@@ -90,7 +89,7 @@ Now we can issue the tmux command to open a new tmux session:
     tmux
     ```
 
-This opens up an terminal session that will remain active even if our SSH session
+This opens up a terminal session that will remain active even if our SSH session
 times out.
 
 Now, let's open up a notepad and prepare our partitions. We’ll be partitioning
@@ -98,23 +97,23 @@ the following tables:
 
 | Table name   | Purpose                                                                             | Data type |
 | ------------ | ----------------------------------------------------------------------------------- | --------- |
-| history      | Stores numeric floating point values                                                |           |
+| history      | Stores numeric floating-point values                                                |           |
 | history_uint | Stores numeric unsigned values                                                      |           |
 | history_str  | Stores text values up to 255 characters                                             |           |
 | history_text | Stores text values up to 64kB                                                       |           |
-| history_log  | Stores text values up to 64kB with additional log related properties like timestamp |           |
+| history_log  | Stores text values up to 64kB with additional log-related properties like timestamp |           |
 | history_bin  | Stores binary image data                                                            |           |
-| trends       | Stores the min/avg/max/count trends of numeric floating point data                  |           |
+| trends       | Stores the min/avg/max/count trends of numeric floating-point data                  |           |
 | trends_uint  | Stores the min/avg/max/count trends of numeric unsigned data                        |           |
 
-We first will have first have to determine how long we want to store the information
+We will first have to determine how long we want to store the information
 per table. MariaDB partitioning will take over the history and trend storage periods
 as usually configured in the Zabbix frontend. We will configure these retention
-periods later in the perl script.
+periods later in the Perl script.
 
 Let's say I want to store my history tables for `31 days` and my trend data for
 `15 months`. This allows me to troubleshoot in depth for a month and also audit
-my data for little over a year.
+my data for a little over a year.
 
 Now this is where I open up a notepad and prepare my partitioning commands. Our
 history tables will be partitioned by day and our trends tables will be
@@ -161,19 +160,18 @@ So, let’s start with our history_uint table:
     ```
 
 As you can see, I only created `16` partitions here. I could have created `31`,
-which would have been better perhaps. `MariaDB` will now add all my older than 2025-03-26
-data in that single partition. No problem, but it will take longer for my disk space to
-free up this bigger partitioning, after which is will only keep 1 day worth of data
+which would have been better perhaps. `MariaDB` will now add all my data older than 2025-03-26 in that single partition. No problem, but it will take longer for my disk space to
+free up this bigger partitioning, after which it will only keep one day’s worth of data
 from that point.
 
 I also created a partition in the future, just to have it. The script will handle
 creating new partitions later for us.
 
-- Creating less than 31 partitions: End up with 1 big partition until it is deleted
+- Creating fewer than 31 partitions: End up with 1 big partition until it is deleted
 - Creating exactly 31 partitions: End up with the ideal set-up immediately, but more
   to create.
 
-Now, create this `ALTER TABLE` commands with the partitions for all history tables.
+Now, create these `ALTER TABLE` commands with the partitions for all history tables.
 We then do the same for the trends tables:
 
 !!! info "Prepare trends partitioning (assuming today is May 10th 2025)"
@@ -195,10 +193,10 @@ We then do the same for the trends tables:
     ```
 
 As you can see, here we are partitioning by month instead of by day. Once again,
-I can create all partitions for 15 months, or less. That's up to us to decide.
-Prepared this command for all trends tables.
+I can create all partitions for 15 months, or fewer. That's up to us to decide.
+Prepare this command for all trends tables.
 
-Then it is time to login to MariaDB and start the partitioning. Please do not forget
+Then it is time to log in to MariaDB and start the partitioning. Please do not forget
 to use the `tmux` command as we mentioned earlier.
 
 !!! info "Login to MariaDB"
@@ -208,15 +206,14 @@ to use the `tmux` command as we mentioned earlier.
     ```
 
 Execute the history and trends partitioning commands you prepared in your notepad
-one by one and make sure to wait for each to finish. As mentioned with large database,
-be patient. With a clean Zabbix database, this process should be near instant.
+one by one and make sure to wait for each to finish. As mentioned, with a large database, be patient. With a clean Zabbix database, this process should be nearly instant.
 
 ## Setting up the Perl script
 
 With the partitioning done, we still need to maintain the partitioned setup. MariaDB
 will not create new and delete old partitions for us automatically, we need to
-use a `perl` script for this. Years ago, an honorable Zabbix community member wrote
-a `perl` script to maintain the partitioning and the people at `Opensource ICT Solutions`
+use a `Perl` script for this. Years ago, an honourable Zabbix community member wrote
+a `Perl` script to maintain the partitioning and the people at `Opensource ICT Solutions`
 have been maintaining it. You can find it on their GitHub repository:
 
 <https://github.com/OpensourceICTSolutions/zabbix-mysql-partitioning-perl>
@@ -230,7 +227,7 @@ in the following folder:
     mkdir -p /usr/lib/zabbix/
     ```
 
-Then make the script executable, so we can create a cronjob later to execute it.
+Then make the script executable, so we can create a cron job later to execute it.
 
 !!! info "Make the script executable"
 
@@ -238,7 +235,7 @@ Then make the script executable, so we can create a cronjob later to execute it.
     chmod 750 /usr/lib/zabbix/mysql_zbx_part.pl
     ```
 
-Now, let's make sure all the settings in the script are set-up correctly. Edit the
+Now, let's make sure all the settings in the script are set up correctly. Edit the
 script with your favourite editor (yes, nano is also an option).
 
 !!! info "Edit the script"
@@ -266,8 +263,8 @@ your Zabbix server configuration file. You can also create a different user for
 this if preferred.
 
 Also, keep in mind that the MariaDB socket file can vary depending on your distribution.
-If the default path (/var/lib/mysql/mysql.sock) doesn't apply, update it accordingly.
-For example, on Ubuntu systems, the socket is often located at /var/run/mysqld/mysql.sock.
+If the default path (`/var/lib/mysql/mysql.sock`) doesn't apply, update it accordingly.
+For example, on Ubuntu systems, the socket is often located at `/var/run/mysqld/mysql.sock`.
 
 Next up, we should edit the settings related to how long we want our data to be stored.
 We define that in the following block.
@@ -294,10 +291,10 @@ We define that in the following block.
 
 Keep in mind that `history` is defined by day here and `trends` are defined by month.
 
-We also need to change the timezone to match the timezone configured on our Zabbix
+We also need to change the time zone to match the time zone configured on our Zabbix
 database server. As this was written in the Netherlands, I will use `Europe/Amsterdam`.
 
-!!! info "Add correct timezone"
+!!! info "Add correct time zone"
 
     ```bash
     my $curr_tz = 'Europe/Amsterdam';
@@ -305,13 +302,13 @@ database server. As this was written in the Netherlands, I will use `Europe/Amst
 
 Then the last important step is to make sure that we comment or uncomment some lines
 in the script. The script works for both `MariaDB` and `MySQL`, as well as for older
-versions. It is however not smart enough to detect what to use automatically, but
+versions. It is, however, not smart enough to detect what to use automatically, but
 feel free to open up that pull request!
 
-The script is already out of the box configured for `MariaDB`, so we don't need
+The script is already configured out of the box for `MariaDB`, so we don't need
 to do anything.
 
-For the `MySQL 8.x` users comment the following `MariaDB` lines.
+For `MySQL 8.x` users, comment the following `MariaDB` lines.
 !!! info "Comment MariaDB"
 
     ```bash
@@ -349,10 +346,9 @@ And uncomment the `MySQL 8.x` lines.
         # End of MySQL 8.x
     ```
 
-Keep in mind, ONLY do this if you are using `MySQL 8.x` and later. If you are on
-`MySQL 5.6` or `MariaDB` do NOT change these lines.
+Keep in mind, ONLY do this if you are using `MySQL 8.x` and later. If you are on `MySQL 5.6` or `MariaDB`, do NOT change these lines.
 
-For Zabbix 5.4 and OLDER versions also make sure to uncomment the indicated lines.
+For Zabbix 5.4 and OLDER versions, also make sure to uncomment the indicated lines.
 But do not do this for Zabbix 6.0 and higher though.
 
 !!! info "Uncomment for Zabbix 5.4 and older only"
@@ -366,7 +362,7 @@ But do not do this for Zabbix 6.0 and higher though.
         }
     ```
 
-For Zabbix 6.4 and OLDER versions also make sure to comment the following line.
+For Zabbix 6.4 and OLDER versions, also make sure to comment the following line.
 Do not do this for Zabbix 7.0 and higher though:
 
 !!! info "Uncomment for Zabbix 6.4 and older only"
@@ -379,7 +375,7 @@ We also need to install some Perl dependencies to make sure we can execute the s
 
 !!! info "Install dependencies"
 
-    Red Hat-Based
+    Red Hat-based
     ```bash
     dnf install perl-DateTime perl-Sys-Syslog
     ```
@@ -396,17 +392,17 @@ We also need to install some Perl dependencies to make sure we can execute the s
     apt-get install libdatetime-perl liblogger-syslog-perl
     ```
 
-If perl-DateTime isn't available on your Red Hat 7.x installation make sure to install
+If `perl-DateTime` isn't available on your Red Hat 7.x installation, make sure to install
 the powertools repo.
 
 !!! info "Install correct repository"
 
-    Red Hat 7 based
+    Red Hat 7-based
     ```bash
     yum config-manager --set-enabled powertools
     ```
 
-    Red Hat 9 based
+    Red Hat 9-based
     ```bash
     dnf config-manager --enable crb
     ```
@@ -421,7 +417,7 @@ the powertools repo.
     dnf config-manager --set-enabled ol8_codeready_builder
     ```
 
-Then the last step is to add a cronjob to execute the script everyday.
+Then the last step is to add a cron job to execute the script every day.
 
 !!! info "Open crontab"
 
@@ -429,9 +425,9 @@ Then the last step is to add a cronjob to execute the script everyday.
     crontab -e
     ```
 
-Add the following line to create the cronjob.
+Add the following line to create the cron job.
 
-!!! info "Create cronjob"
+!!! info "Create cron job"
 
     ```bash
     55 22 * * * /usr/lib/zabbix/mysql_zbx_part.pl >/dev/null 2>&1
@@ -455,4 +451,4 @@ Then we can check and see if it worked.
 
 This will give you back a list of created and deleted partitions if you've done
 everything right. Make sure to check this command again tomorrow, to make sure
-the cronjob is working as expected.
+the cron job is working as expected.

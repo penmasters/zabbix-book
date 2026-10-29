@@ -7,10 +7,10 @@ tags: [beginner]
 
 # Dependent items
 
-There are cases when you have large chunks of data which are rich of monitoring
+There are cases when you have large chunks of data which are rich in monitoring
 metrics. You can of course slice them with the help of scripts and so extract
 needed valuable pieces to be stored individually, as separate items. However,
-there is a native way in Zabbix which can do the very same thing without a need
+there is a native way in Zabbix which can do the very same thing without the need
 to involve any scripting. And that is something called "Dependent items".
 
 Think of "Dependent items" as small fragments of your large dataset. Of course,
@@ -24,7 +24,7 @@ collection has "high cost", in terms of time retrieving it or when network
 traffic matters. For example, some remote resource which you want to collect has
 slow network or you want to save each and every byte sent over the network, but
 there are multiple things in that resource which you want to monitor. Without
-dependent items approach you would need to retrieve that resource as many times
+the dependent items approach you would need to retrieve that resource as many times
 as you have unique items, or store it once and then slice it on your own. But
 with dependent items, you need to collect such data only once and transform it
 into individual metrics just by employing native Zabbix features.
@@ -44,7 +44,7 @@ or anything else.
 
 **Dependent item** is an item which relies on a *master item* for its value. It does not
 have its own data collection method, it just copies its value from the *master item*. The
-power of dependent item is in its **preprocessing**. It is the preprocessing which
+power of a dependent item is in its **preprocessing**. It is the preprocessing which
 extracts the needed part of data from the *master item* data and transforms it into a separate
 metric making the *dependent item* a separate monitoring entity. 
 
@@ -60,19 +60,19 @@ unlimited number of dependent items.
 
 As a *dependent item* actually clones the full value of its *master item*, you
 are able to extract just the needed part of data using preprocessing.
-Preprocessing loves structured data, so you should in all cases seek for 
-structured data as your *master item*'s content (e.g. json, csv, etc). This way, 
-you will be able to extract needed data easier. When dealing with preprocessing,
+Preprocessing loves structured data, so you should in all cases seek
+structured data as your *master item*'s content (e.g. JSON, CSV, etc). This way, 
+you will be able to extract needed data more easily. When dealing with preprocessing,
 apply the most suitable method for the particular data source format (e.g. use 
-JSONPath for json) and understand your limits (e.g. regex is Perl flavor and 
+JSONPath for JSON) and understand your limits (e.g. regex is Perl flavour and 
 JavaScript is Duktape underneath).
 
 ???+ tip "Transform master item data into structured format"
 
     If your *master item* data is not structured, you can always apply some
     preprocessing on the *master item* to transform it into a structured format. 
-    With the ability to use Javascript in preprocessing, you can do pretty much
-    any type of transformation you want right in Zabbix itself, without a need to
+    With the ability to use JavaScript in preprocessing, you can do pretty much
+    any type of transformation you want right in Zabbix itself, without the need to
     involve any external scripts.
 
 ---
@@ -103,7 +103,7 @@ of structured data.
 
     This script is added to cron and is being run once a minute. It is kind of
     obvious what this script does - it outputs a random number and has a prefix of
-    one of the three letters: "a", "b" or "c":
+    one of the three letters: "a", "b", or "c":
 
     ```shell-session
     binary@linux:~$ cat /tmp/master.txt
@@ -122,7 +122,7 @@ _4.50 Dependent items - first master item_
 
 ???+ info
 
-    *Master item* on its own has a little purpose of being stored, especially when
+    *Master item* on its own has little purpose of being stored, especially when
     it is huge. Its only purpose could be debugging, thus once operating 
     normally, it should not be stored by setting **History** to **Do not store**
     in the *master item*'s definition. This will prevent Zabbix from storing the
@@ -142,7 +142,7 @@ number from the line starting with "a":
 
 _4.52 Dependent items - first dependent item preprocessing_
 
-We will then clone the first item in same fashion and get a full set of items:
+We will then clone the first item in the same fashion and get a full set of items:
 
 ![Dependent items - first dependent items all](ch04.53-dependent-items-hello-world-all.png)
 
@@ -159,7 +159,7 @@ _4.54 Dependent items - first dependent items results_
 
 ## Dependent items from JSON
 
-Previous example had a "Regular expression" as the preprocessing step. In real
+The previous example had a "Regular expression" as the preprocessing step. In real
 life, you might often face JSON structured data as your master item, so preprocessing would be
 different. Of course, regexp is a universal thing so it is also suitable to
 extract something from JSON data, but there is a dedicated preprocessing type
@@ -198,9 +198,9 @@ of plain text:
     }
     ```
 
-Now we can have a similar approach of one single master item and bunch of
+Now we can have a similar approach of one single master item and a bunch of
 dependent items nearby. Just this time, we would have `JSONPath` as
-preprocessing step for dependent items.
+the preprocessing step for dependent items.
 
 ![Dependent items - first dependent item - json](ch04.55-dependent-items-hello-world-dependent-preprocessing-json.png)
 
@@ -216,7 +216,7 @@ Now imagine that our example script produces not `{a..c}`, but a full alphabet
 `{a..z}`. We could clone dependent items one by one, but that would also
 include editing the preprocessing step regexp each time as well. If you are already
 familiar with Low-Level Discovery (LLD), you most likely already see where this 
-is going; We will apply LLD here and combine it with dependent items!
+is going; we will apply LLD here and combine it with dependent items!
 
 !!! tip "Low-Level Discovery (LLD)"
 
@@ -248,7 +248,7 @@ Once LLD "magic" happens, we have all items in place:
 
 _4.58 Dependent items - LLD item values_
 
-Now by using wildcard in our dashboard "Graph" widget:
+Now by using a wildcard in our dashboard "Graph" widget:
 
 ![Dependent items - LLD graph widget](ch04.59-dependent-items-hello-world-lld-widget.png)
 
@@ -268,21 +268,21 @@ _4.60 Dependent items - LLD result_
 
 ## Conclusion
 
-Dependent items concept is a great way to become more efficient in data
+The dependent items concept is a great way to become more efficient in data
 collection under certain circumstances.
 
 If you have some huge structured data file or output and want to split it into
 separate monitoring entities - think no more. Dependent items are here for you.
-Same is applicable to all the other cases when you want to collect data once
+The same is applicable to all the other cases when you want to collect data once
 but have multiple separate metrics out of it.
 
 ---
 
 ## Questions
 
-- Does master item have to be some special type of item or it can be collected
+- Does a master item have to be some special type of item or can it be collected
 in any regular way?
-- Are you limited in number of dependent items from one master item?
+- Are you limited in the number of dependent items from one master item?
 - What is the main benefit of using dependent items?
 
 ---

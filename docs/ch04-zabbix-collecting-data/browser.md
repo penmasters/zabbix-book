@@ -11,9 +11,8 @@ tags: [advanced, expert]
 
 The introduction of the **Browser Item** in Zabbix 7.0 marked a significant
 expansion of monitoring capabilities, allowing Zabbix to serve not only as a traditional
-IT infrastructure monitoring tool but also as a powerful resource for monitoring
-strategic web-based information. This item type enables synthetic monitoring, a
-method that simulates the behavior of a real user, including multi-step journeys
+IT infrastructure monitoring tool but also as a powerful resource for monitoring web-based information. This item type enables synthetic monitoring, a
+method that simulates the behaviour of a real user, including multi-step journeys
 (user journeys) such as logging in, navigating through menus, or completing a checkout
 process.
 
@@ -23,9 +22,9 @@ In essence, the Browser Item collects data by executing user-defined JavaScript 
 in an automated browser environment via HTTP/HTTPS. Unlike simple HTTP requests,
 this item simulates complex actions like clicks, text input, and dynamic navigation
 within web applications. The ability to simulate the website in this manner, including
-capturing screenshots and measuring performance, enables organizations to ensure
-the availability and integrity of both internal websites and external strategic
-information sources (such as government portals for tenders).
+capturing screenshots and measuring performance, enables organisations to ensure
+the availability and integrity of both internal websites and external web sources 
+(such as government portals for tenders).
 
 ### The Technological Foundation: WebDriver API
 
@@ -46,9 +45,8 @@ _4.100 Architecture Overview_
 Before implementing the Browser Item, it is crucial to understand the difference
 between this and the older, classic Web Scenarios. Classic web scenarios are based
 on the HTTP Agent and execute steps sequentially, collecting only protocol-level
-metrics such as download speed, response time, and the HTTP response code. They
-check whether a predefined string is present in the HTML response and can perform
-a simulated login, but they do not render the full Document Object Model (DOM)
+metrics such as download speed, response time, and the HTTP response code. These classic web scenarios can check whether a predefined string is present in the HTML response 
+and can perform a simulated login, but they do not render the full Document Object Model (DOM)
 of the page.
 
 The Browser Item, conversely, simulates the entire browser stack. This is indispensable
@@ -84,7 +82,7 @@ chapter for instructions on preparing your system for running containers using P
 
 
 The following `podman run` command is used to start the Selenium Server with Chrome
-in detached mode (-d), allocating the necessary ports and memory :
+in detached mode (-d), allocating the necessary ports and memory:
 
 !!! info
 
@@ -96,7 +94,7 @@ in detached mode (-d), allocating the necessary ports and memory :
     -d selenium/standalone-chrome:latest
     ```
 
-**The parameters in this command serve specific, critical purposes :**
+**The parameters in this command serve specific, critical purposes:**
 
 1. **`podman run --name browser`:** This initiates a new container named "browser"
 2. **`-p 4444:4444`:** This is the primary communication port. It maps port 4444
@@ -109,7 +107,7 @@ in detached mode (-d), allocating the necessary ports and memory :
    scripts and unexpected web interactions.
 4. **`--shm-size="2g"`:** This is a critical stability parameter. It allocates 2GB
    of shared memory to the container. Chrome requires a significant amount of
-   shared memory (/dev/shm) to function correctly and stable under automation.
+   shared memory (/dev/shm) to function correctly and stably under automation.
    Failing to set this can lead to unpredictable browser crashes or slow execution
    times that are difficult to diagnose from Zabbix.
 5. **`-d`**: Runs the container in detached mode, meaning it will run in the background.
@@ -121,7 +119,7 @@ Before configuring the Zabbix Server, the accessibility and functionality of the
 WebDriver Endpoint must be validated. This eliminates network or container issues
 as potential causes of subsequent Zabbix errors.
 
-The validation steps are as follows :
+The validation steps are as follows:
 
 1. **Determine IP Address:** Identify the IP address of the Docker interface
    (e.g., 192.0.2.1).
@@ -161,13 +159,13 @@ executing the synthetic checks.
 
 ### Server Configuration Parameters
 
-Two parameters in the Zabbix server configuration files (`/etc/zabbix/zabbix_server.d/*.conf`)
+Two parameters in the Zabbix server configuration files (`/etc/zabbix/zabbix_server.d/*.conf`
 or `zabbix_proxy.d`) are essential: `WebDriverURL` and `StartBrowserPollers`.
 
 **WebDriverURL (Mandatory)**
 This parameter must specify the web testing endpoint configured before (our container).
 This is a mandatory parameter, as the default value is empty. Without a valid URL,
-Zabbix cannot initialize the WebDriver sessions.
+Zabbix cannot initialise the WebDriver sessions.
 
 ???+ example
 
@@ -185,7 +183,7 @@ determines how many synthetic checks Zabbix can initiate concurrently. It is a
 common mistake to increase this number without increasing the capacity of the
 WebDriver Endpoint (the number of simultaneous browser sessions Selenium can handle).
 An imbalance here causes the Zabbix Queue Overview to grow, indicating that values
-are taking too long to update. To optimize monitoring performance, the
+are taking too long to update. To optimise monitoring performance, the
 N<sub>Pollers</sub> in Zabbix must be balanced with the actual parallel execution
 capacity of the WebDriver host.
 
@@ -241,8 +239,8 @@ to set up website monitoring.
 #### Host Macro Definitions
 
 The linked template typically uses User Macros to set dynamic parameters, keeping
-the template reusable. These macros must be set at the Host level (via the Macros
-tab -> Inherited and host macros) :
+the template reusable. These macros must be set at the Host level (via the `Macros`
+tab | `Inherited and host macros`):
 
 - `{$WEBSITE.DOMAIN}`: Define the target URL or domain name to be monitored
   (e.g., `git.zabbix.com/projects/ZBX/repos/zabbix/browse`).
@@ -253,7 +251,7 @@ tab -> Inherited and host macros) :
 #### Master Browser Item Configuration
 
 The **Browser Item** itself acts as the *Master Item* that returns a large, structured
-JSON data set. Configuration at the item level is crucial for functionality :
+JSON data set. Configuration at the item level is crucial for functionality:
 
 - **Type:** Select Browser.
 - **Key:** Enter a unique key (e.g., `web.browser.scenario[login_check]`).
@@ -272,7 +270,7 @@ JSON data set. Configuration at the item level is crucial for functionality :
 
 ## Scripting Advanced Browser Interactions (JavaScript API)
 
-The power of the **Browser Item** lies in the specialized JavaScript environment provided
+The power of the **Browser Item** lies in the specialised JavaScript environment provided
 by Zabbix. The JavaScript script directs the entire browser interaction and data
 collection.
 
@@ -280,18 +278,18 @@ collection.
 
 The script has access to Zabbix's additions to the JavaScript language, particularly
 the **Browser objects**. The central `Browser` object manages the WebDriver session;
-it is initialized upon creation and terminated upon destruction. A single script
+it is initialised upon creation and terminated upon destruction. A single script
 can support up to four `Browser` objects but they will share the same WebDriver
 session internally.
 
-**The basic workflow of any script includes :**
+**The basic workflow of any script includes:**
 
-- Initialization of a `Browser` session, optionally with custom `chromeOptions`
+- Initialisation of a `Browser` session, optionally with custom `chromeOptions`
   (e.g., `--headless=new` for performance).
 - Navigation to the starting URL (`browser.navigate(url)`).
 - Execution of the defined interactions.
 - Data collection via `browser.collectPerfEntries()` at crucial points.
-- Returning the results as a JSON string via `JSON.stringify(browser.getResult()`).
+- Returning the results as a JSON string via `JSON.stringify(browser.getResult())`).
 
 ### Running Browsers in Headless Mode
 
@@ -333,11 +331,11 @@ graphical environment.
 ### Essential Methods for Interaction and Timing
 
 For executing complex interactions, the following methods of the `Browser` object
-are crucial :
+are crucial:
 
 - `navigate(url)`: Navigates the browser to the specified URL.
 - `findElement(strategy, selector)`: Finds a single element on the page (e.g., an
-  input field or button) using a location strategy (CSS, XPath )
+  input field or button) using a location strategy (CSS, XPath).
 - `sendKeys(text)/click()`: Methods of the returned Element object to enter text
   or click buttons.
 - `setElementWaitTimeout(timeout)`: Sets the implicit wait time (in milliseconds)
@@ -353,7 +351,7 @@ are crucial :
 A common scenario is monitoring a login procedure. A robust script for this task
 must dynamically handle credentials (passed as parameters/macros) and time each
 step.
-The script initializes a session, navigates, uses `findElement` to locate the
+The script initialises a session, navigates, uses `findElement` to locate the
 username and password fields (often via XPath or CSS selectors), and enters the
 data using `sendKeys`. The login button is then clicked. Using
 `collectPerfEntries()` immediately after navigation and again after clicking the
@@ -368,19 +366,19 @@ handling. Zabbix's JavaScript environment allows for robust error handling with
 try...catch blocks.
 
 - **Error Handling and Screenshots:** When detecting an error (e.g., an element not
-  found, a `WebdriverError` ), the `catch` block should capture a screenshot using
+  found, a `WebdriverError`), the `catch` block should capture a screenshot using
   `browser.getScreenshot()`. This Base64-encoded image is added to the JSON results.
   This provides immediate visual context of the error, resulting in significant
   time savings during debugging compared to just a textual error message.
 
 ---
 
-## Data Processing, Preprocessing, and Visualization
+## Data Processing, Preprocessing, and Visualisation
 
 The Master Browser Item produces a single, large JSON string containing all
 collected data, including performance metrics, status information, and the
 Base64 screenshot. To make this raw data useful for triggers, graphs, and
-dashboards, **Dependent Items**, and **Preprocessing** are necessary.
+dashboards, **Dependent Items** and **Preprocessing** are necessary.
 
 ### Extraction via Dependent Items
 
@@ -388,7 +386,7 @@ A *Dependent Item* is directly linked to its *Master Item* and obtains its value
 processing the *Master Item's* value. For every desired metric from the **Browser
 Item's** JSON output, a separate *Dependent Item* must be created.
 
-The configuration of a *Dependent Item* includes :
+The configuration of a *Dependent Item* includes:
 
 - **Type:** Select Dependent item.
 - **Master item:** Select the previously configured Browser Item.
@@ -407,7 +405,7 @@ type matches the **Type of information** of the *Dependent Item*.
 
 ### Capturing and Storing Screenshots
 
-The capture and visualization of screenshots is one of the most valued features
+The capture and visualisation of screenshots are one of the most valued features
 of the Browser Item.
 
 - **Extraction:** Create a Dependent Item specifically for the screenshot.
@@ -419,13 +417,13 @@ of the Browser Item.
 It is vital to consider storage limits. The Base64-encoded image may be a maximum
 of 1 MB in size. This limit can theoretically be adjusted via the `ZBX_MAX_IMAGE_SIZE`
 environment variable, but it is usually more practical to reduce the browser viewport using
-`browser.setScreenSize(x,y)` in the JavaScript script to comply with the 1MB limit,
+`browser.setScreenSize(x,y)` in the JavaScript script to comply with the 1 MB limit,
 especially for complex pages.
 
-### Visualization
+### Visualisation
 
-The stored binary data can be visualized directly in the Zabbix Frontend. The
-**Item History Widget** on Zabbix Dashboards is optimized to display binary data
+The stored binary data can be visualised directly in the Zabbix Frontend. The
+**Item History Widget** on Zabbix Dashboards is optimised to display binary data
 (such as the Base64 image). When the user hovers over or clicks the **Show**
 option of the binary value, a pop-up window opens with the actual captured
 image. This provides an immediate, visual overview of the web application's
@@ -438,12 +436,12 @@ status at the moment of the check.
 Effective management of the **Browser Item** requires proactive monitoring and attention
 to performance and security.
 
-### Performance Optimization Best Practices
+### Performance Optimisation Best Practices
 
 Synthetic monitoring is resource intensive. Balancing the Zabbix settings with the
 underlying WebDriver infrastructure is essential.   
 
-- **Timeout Optimization:** In addition to the Zabbix Master Item Timeout parameter,
+- **Timeout Optimisation:** In addition to the Zabbix Master Item Timeout parameter,
   script authors should actively use the internal JavaScript timeouts, such as
   `browser.setElementWaitTimeout(ms)` and `browser.setSessionTimeout(ms)` and,
   when needed, `browser.setScriptTimeout(ms)`.
@@ -459,7 +457,7 @@ underlying WebDriver infrastructure is essential.
 ### Troubleshooting Matrix
 
 Errors with **Browser Items** often fall into three categories: Network/Connectivity,
-WebDriver-related (Selenium/Chrome), and Script Logics. The Zabbix Server logs
+WebDriver-related (Selenium/Chrome), and Script Logic. The Zabbix Server logs
 and the external WebDriver logs should be investigated jointly.
 
 **Troubleshooting Matrix for Browser Items:**
@@ -496,7 +494,7 @@ In this example we will monitor the website https://www.zabbix.com
 - Navigate to https://www.zabbix.com/
 - Click the "GET ZABBIX" link
 - Wait for the Download page to load
-- Extract the : headline text
+- Extract the headline text
 - Collect performance timing
 - Return all results as JSON
 
@@ -728,7 +726,7 @@ try {
 | Website screenshot (GET ZABBIX) | Dependent item | your Browser item | Binary | JSONPath | `$.screenshot` |
 | GET ZABBIX – headline | Dependent item | your Browser item |  Binary | JSONPath | `$.headline` |
 
-Since we only make screenshots when it fails also add a custom on fail option to
+Since we only make screenshots when it fails, also add a custom on fail option to
 your item.
 
 ![ch03_xx_discard-value.png](ch04.101-discard-value.png)
@@ -756,9 +754,9 @@ application via screenshots.
 The success of this functionality depends on a robust, orchestrated architecture,
 where the Zabbix Server acts as the conductor and the external WebDriver Endpoint
 (preferably Selenium Standalone Chrome in a Docker container with adequate shared
-memory allocation) acts as the specialized executor.
+memory allocation) acts as the specialised executor.
 
-Administrators should prioritize the following actions to ensure a stable and
+Administrators should prioritise the following actions to ensure a stable and
 scalable environment:
 
 - **Dependency Validation:** Configure and validate the external WebDriver Endpoint

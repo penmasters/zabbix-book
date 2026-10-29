@@ -8,10 +8,10 @@ tags: [beginner]
 
 # Setting up Dashboards
 
-Dashboards are the central visualization layer in Zabbix. They bring together
-widgets self-contained panels that each display a specific type of data, onto a
+Dashboards are the central visualisation layer in Zabbix. They bring together
+widgets — self-contained panels that each display a specific type of data — onto a
 single, configurable canvas that updates in real time. Whether you are building
-an operations center screen showing the health of your entire infrastructure, or
+an operations centre screen showing the health of your entire infrastructure, or
 a focused view for a single application team, dashboards give you the flexibility
 to present exactly the data that matters.
 
@@ -43,7 +43,7 @@ chapter.
 
 ## The Dashboard List
 
-Navigate to *Dashboards* in the left hand menu. The page shows a list of all dashboards
+Navigate to *Dashboards* in the left-hand menu. The page shows a list of all dashboards
 you have access to. Each row shows the dashboard name, the owner, and whether
 it is shared.
 
@@ -51,9 +51,9 @@ From this list you can:
 
 - Click a dashboard name to open it in view mode.
 - Use the *Create dashboard* button in the top-right corner to start a new
-one or click import to import an existing one. ( If you have the correct permissions)
+  one or click import to import an existing one. (If you have the correct permissions.)
 - Click the row's action menu (the three-line icon) to share, edit, clone, delete,
-or change sharing settings. (Again only if you have those permissions)
+  or change sharing settings. (Again, only if you have those permissions.)
 - Since Zabbix 8.0 there is also the option to Export.
 
 Zabbix ships with a default dashboard called *Global view* that gives a good starting
@@ -72,11 +72,11 @@ Click *Create dashboard*. A dialog appears asking for:
 
 - **Name**: the title shown in the page header and the dashboard list.
 - **Owner**: the Zabbix user who owns the dashboard. Only the owner (and administrators)
-can edit it by default.
+  can edit it by default.
 - **Display period**: how long the dashboard auto-cycles pages before returning
-to the first. This is relevant only if you add multiple pages.
-- **Start slideshow automatically**: When selected Zabbix will automatically start
-the slideshow if you have multiple pages.
+  to the first. This is relevant only if you add multiple pages.
+- **Start slideshow automatically**: When selected, Zabbix will automatically start
+  the slideshow if you have multiple pages.
 
 ![ch11.2_create_dashboards.png](ch11.2-create_dashboards.png)
 
@@ -121,7 +121,7 @@ Every widget shares a set of common fields at the top of the dialog:
 
 | Field | Description |
 |---|---|
-| **Type** | The widget type. Changing this resets the type specific fields. |
+| **Type** | The widget type. Changing this resets the type-specific fields. |
 | **Name** | An optional label displayed in the widget header. If left blank, the default title for that widget type is used.|
 | **Refresh interval** | How often the widget polls for new data. Options range from *No refresh* to *15 minutes*. The default varies by widget type.|
 
@@ -145,7 +145,7 @@ is best used for, and its key configuration options.
 ### Action log
 
 Displays a log of actions (alert notifications, remote commands) that Zabbix has
-executed. Useful for an audit style view of what your alerting system has been doing.
+executed. Useful for an audit-style view of what your alerting system has been doing.
 
 **Key options:** filter by time period, media type, status, and recipient.
 
@@ -158,11 +158,11 @@ _11.3 Action Log widget_
 ### Clock
 
 Shows the current date and time, either as a digital or an analog clock face. You
-can configure it to show the time in any timezone rather than the browser's local
+can configure it to show the time in any time zone rather than the browser's local
 time. Useful for teams operating across time zones to know the server time.
 
 Key options: *Clock type* (digital / analog), *Time type* (local / server /
-specified timezone).
+specified time zone).
 
 ![ch11.4_clock.png](ch11.4-clock.png)
 
@@ -225,7 +225,7 @@ Places hosts on a geographic map based on their inventory latitude/longitude fie
 Hosts are shown as coloured markers that reflect their current problem severity.
 Click a marker to drill down to the host.
 
-**Key options:** host groups to include, the initial map center and zoom level.
+**Key options:** host groups to include, the initial map centre and zoom level.
 
 > **Prerequisite:** Host inventory must be populated with latitude and longitude
   values for the Geomap to place hosts correctly.
@@ -240,23 +240,23 @@ _11.9 Geomap_
 
 The primary graph widget for Zabbix 8.0. Renders a time-series SVG graph and is
 the recommended widget for displaying metric data over time. It supports multiple
-data sets, color customization, and is fully interactive in view mode (you can
+data sets, colour customisation, and is fully interactive in view mode (you can
 zoom and pan the time range).
 
 **Key options:**
 
 - **Data set**: add one or more data sets, each selecting hosts/items via a pattern
-or direct selection. Each data set gets its own color, draw type (line, points,
-staircase and bars), and y-axis assignment.
+  or direct selection. Each data set gets its own colour, draw type (line, points,
+  staircase, and bars), and y-axis assignment.
 - **Display**: toggle whether to show the working time overlay, simple triggers,
-  hostnames and percentiles.
+  hostnames, and percentiles.
 - **Time period**: either follow the dashboard's global time selector or set a
-fixed period.
-- **Axes**:  configure left/right y-axis ranges, labels, and units.
+  fixed period.
+- **Axes**: configure left/right y-axis ranges, labels, and units.
 - **Legend**: control visibility and placement of the legend.
-- **Problems**: Show problems and Severity of selected hosts
+- **Problems**: Show problems and severity of selected hosts.
 - **Override host**: allows the widget to be driven by a dynamic host selection
-from a *Host navigator* widget on the same dashboard page (see below).
+  from a *Host navigator* widget on the same dashboard page (see below).
 
 This widget is preferred over the legacy *Graph (classic)* for all new dashboards.
 It is built on the newer SVG rendering engine introduced in Zabbix 6.0 and offers
@@ -265,7 +265,7 @@ far more display options.
 !!! note
 
     Since Zabbix 8.0 we now have the option in the Graph widget to display our
-    data with inverted Y-axis values
+    data with inverted Y-axis values.
 
 ![ch11.10_graph.png](ch11.10-graph.png)
 
@@ -275,18 +275,18 @@ _11.10 Graph_
 
 ### Graph (classic)
 
-Renders a previously defined custom graph (created under `Data collection` | `Hosts/Templates` | `Graphs`) or a simple graph for a single item. It uses the older PNG-based rendering
+Renders a previously defined custom graph (created under `Data collection` | `Hosts` | `Graphs` or `Data collection` | `Templates` | `Graphs`) or a simple graph for a single item. It uses the older PNG-based rendering
 engine.
 
 Use this widget when you need to display a named custom graph that you have already
 defined elsewhere and do not want to reconfigure in the widget itself. For new
-visualization work, prefer the *Graph* widget.
+visualisation work, prefer the *Graph* widget.
 
 ![ch11.11_classic_graph.png](ch11.11-classic_graph.png)
 
 _11.11 Classic Graph_
 
---
+---
 
 ### Graph prototype
 
@@ -306,7 +306,7 @@ _11.12 Graph prototype_
 ### Honeycomb
 
 Displays a set of items as a grid of coloured hexagonal cells. Each cell represents
-one host/item combination, and its color reflects the item's current value relative
+one host/item combination, and its colour reflects the item's current value relative
 to configured thresholds. Good for a dense, at-a-glance health view over many similar
 entities.
 
@@ -335,20 +335,20 @@ _11.14 Host availability_
 
 Displays a compact summary card for a single host: its name, availability indicators,
 tags, and current problem count per severity. Useful as a focused panel for a
-host specific dashboard page.
+host-specific dashboard page.
 
 **Key options:** the host to display, which details to include.
 
 ![ch11.15_host_card.png](ch11.15-host_card.png)
 
-_11.15_host card_
+_11.15 Host card_
 
 ---
 
 ### Host navigator
 
 A dynamic host selector widget. It renders a filterable, searchable list of hosts
-(filtered by host groups,host patterns, tags, or severity). When a user selects
+(filtered by host groups, host patterns, tags, or severity). When a user selects
 a host from the list, other widgets on the same dashboard page that have
 *Override host* enabled will update to show data for that selected host.
 
@@ -371,7 +371,7 @@ Displays the item's current value, units, and a small sparkline trend.
 
 ![ch11.17_item_card.png](ch11.17-item_card.png)
 
-_11.17 Item Card__
+_11.17 Item Card_
 
 ---
 
@@ -403,11 +403,11 @@ _11.19 Item Navigator_
 ### Item value
 
 Displays the current (most recent) value of a single item as large text. Optionally
-shows a sparkline below the value, and supports threshold based colouring so the
-widget background or text changes color when the value crosses a threshold.
+shows a sparkline below the value, and supports threshold-based colouring so the
+widget background or text changes colour when the value crosses a threshold.
 
-This is one of the most versatile widgets for building executive or NOC dashboards
-,a single value, big and clear, with immediate color feedback.
+This is one of the most versatile widgets for building executive or NOC dashboards:
+a single value, big and clear, with immediate colour feedback.
 
 **Key options:** item to display, units override, decimal places, threshold zones,
 sparkline on/off.
@@ -463,7 +463,7 @@ _11.23 Pie_
 
 Shows a summary table of hosts that currently have active problems, grouped or
 filtered by host group. Each row shows a host name and a count of problems per
-severity level, color-coded.
+severity level, colour-coded.
 
 ![ch11.24_problem_hosts.png](ch11.24-problem_hosts.png)
 
@@ -505,7 +505,7 @@ _11.26 Problems By Severity_
 Plots two item values against each other as dots on an X/Y plane. Useful for correlation
 analysis between two metrics.
 
-**Key options:** X-axis item, Y-axis item, point size and color, axis labels.
+**Key options:** X-axis item, Y-axis item, point size and colour, axis labels.
 
 ![ch11.27_scatter_plot.png](ch11.27-scatter_plot.png)
 
@@ -521,7 +521,7 @@ time period.
 
 ![ch11.28_sla_reports.png](ch11.28-sla_reports.png)
 
-_11.28 Sla Reports_
+_11.28 SLA Reports_
 
 ---
 
@@ -540,7 +540,7 @@ _11.29 System Information_
 ### Top hosts
 
 Displays a table of hosts ranked by the value of a specified item. For example,
-you can rank all hosts by their CPU utilization or by free disk space to quickly
+you can rank all hosts by their CPU utilisation or by free disk space to quickly
 find the outliers.
 
 **Key options:** items to rank by, host group filter, number of rows, sort order.
@@ -591,7 +591,7 @@ dashboards, documentation pages, or any web content alongside your Zabbix data.
 
 ![ch11.34_url.png](ch11.34-url.png)
 
-_11.34 url_
+_11.34 URL_
 
 ### Web monitoring
 
@@ -611,7 +611,7 @@ canvas and its own set of widgets. Pages share the same dashboard name and setti
 but their widget layouts are entirely separate.
 
 To add a page in edit mode, click *Add page*. A new tab appears. You can rename
-a page by clicking on the 3 dots next to it's label. Reorder pages by dragging their tabs.
+a page by clicking on the 3 dots next to its label. Reorder pages by dragging their tabs.
 
 When a dashboard has multiple pages, a *Display period* setting controls how long
 each page is shown before automatically cycling to the next, useful for NOC screens
@@ -677,8 +677,8 @@ community.
 
 **To export:** in the dashboard, select the actions menu (3 horizontal lines),
 then click the *Export* button and choose the format you like. Or go to the
-dashboard list select all the dashboards you like and click on th export button.
-Zabbix downloads a `.yaml, xml or json` file containing the full dashboard definition
+dashboard list, select all the dashboards you like and click on the export button.
+Zabbix downloads a `.yaml`, `.xml`, or `.json` file containing the full dashboard definition
 including all widget configurations.
 
 **To import:** click the *Import* button in the top right of the dashboard list,
@@ -723,7 +723,7 @@ to the template.
 
 ## Building a Practical Example: Linux Server Overview Dashboard
 
-To put it all together, here is a step by step walkthrough of building a useful
+To put it all together, here is a step-by-step walkthrough of building a useful
 dashboard for monitoring a Linux server. This assumes you have a host monitored
 with the standard *Linux by Zabbix agent* template, so items like `system.cpu.util`,
 `vm.memory.size[available]`, and filesystem usage data are already being collected.
@@ -766,7 +766,7 @@ Add another *Graph* widget. Add two data sets: one for `net.if.in[eth0]` and one
 for `net.if.out[eth0]`. Give them different colours. Name it *Network Traffic*.
 Place it next to the CPU history graph.
  
-The name eth0 can be different on your system.
+The name `eth0` can be different on your system.
 
 **Step 7 — Save**
 
@@ -777,8 +777,8 @@ top right to zoom out to *Last 24 hours* and verify all widgets populate correct
 
 ## Tips and Best Practices
 
-**Design for your audience.** An operations center screen viewed from a distance
-needs large text and bold color cues (Item value, Gauge, Problems by severity).
+**Design for your audience.** An operations centre screen viewed from a distance
+needs large text and bold colour cues (Item value, Gauge, Problems by severity).
 A deep-dive analysis dashboard for an engineer can be denser and graph-heavy.
 
 **Use the Host navigator for flexible dashboards.** Rather than creating a separate
@@ -805,12 +805,12 @@ the dashboard once in the template and get it automatically for every host.
 ## Conclusion
 
 Dashboards are one of the most powerful ways to present monitoring data in Zabbix.
-By combining widgets, graphs, maps, status indicators, and business focused metrics,
+By combining widgets, graphs, maps, status indicators, and business-focused metrics,
 you can transform raw monitoring information into clear and actionable insights.
 
-In this chapter, you learned how to create and customize dashboards, organize
-information for different audiences, and use visualization techniques to highlight
-the most important aspects of your infrastructure. Well designed dashboards help
+In this chapter, you learned how to create and customise dashboards, organise
+information for different audiences, and use visualisation techniques to highlight
+the most important aspects of your infrastructure. Well-designed dashboards help
 operators detect issues faster, enable administrators to monitor system health
 efficiently, and provide management with a high-level overview of service availability
 and performance.

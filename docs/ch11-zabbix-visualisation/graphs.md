@@ -1,7 +1,7 @@
 ---
 description: |
     Master Zabbix graphs with step-by-step guidance on creating, configuring, and
-    customizing graphs to visualize performance and monitoring data.
+    customising graphs to visualise performance and monitoring data.
 tags: [beginner]
 ---
 
@@ -33,14 +33,14 @@ remain useful for a few reasons:
   item gets one automatically.
 - They're the fastest way to do an **ad-hoc comparison** of two or three
   items without building a dashboard widget first.
-- Custom graphs let you define reusable, purpose-built visualizations (for
+- Custom graphs let you define reusable, purpose-built visualisations (for
   example, combined inbound/outbound network traffic) that can be attached to
   a host or template once and reused everywhere that host or template is
   applied.
 
 Think of built-in graphs as your investigative toolkit, and dashboards as
 your presentation layer. You'll often reach for a simple or ad-hoc graph
-while troubleshooting, then formalize the useful ones into a custom graph or
+while troubleshooting, then formalise the useful ones into a custom graph or
 a dashboard widget afterwards.
 
 ## Simple graphs
@@ -62,7 +62,7 @@ Above the graph, you'll find the time period selector. It lets you jump to
 commonly needed ranges (last hour, last 24 hours, last 7 days, and so on)
 with a single click, or drag the slider to define a custom window. We'll come
 back to the time period and host selectors in more detail later in this
-chapter, since it's shared behavior across all graph types.
+chapter, since this behaviour is shared across all graph types.
 
 !!! tip
     If you only remember one shortcut from this chapter, make it this one:
@@ -96,7 +96,7 @@ long-term reuse.
     Ad-hoc graphs can also be reached directly through a crafted URL, which
     is handy if you want to bookmark a specific comparison or link to it from
     an external tool. Multiple items are passed as `itemids[]` parameters.
-    This is a lower-level mechanism most people won't need day-to-day, but
+    This is a lower-level mechanism most people won't need day to day, but
     it's worth knowing it exists if you're scripting around the Zabbix
     frontend.
 
@@ -126,7 +126,7 @@ that template inherits the graph).
    - If the first item comes from a host directly, you can add items from
      any host, but no longer from templates.
 7. For each item, you can set its **draw style** (line, filled region,
-   staircase, and so on), color, and Y-axis side (left or right — handy when
+   staircase, and so on), colour, and Y-axis side (left or right — handy when
    combining metrics with very different scales, such as latency in
    milliseconds alongside throughput in megabits).
 8. Switch to the **Preview** tab at any point to see exactly what you're
@@ -167,7 +167,7 @@ graph name, and a **Show** option (all graphs, host graphs only, or simple
 graphs only). Note that if no host is selected in the filter, no graphs are
 displayed at all, a common point of confusion for people new to this page.
 
-Below the main filter, you'll find the **sub-filter**. If your graphs are
+Below the main filter, you'll find the **subfilter**. If your graphs are
 associated with tagged entities, the subfilter shows clickable tag
 name/value combinations, letting you narrow the graph list without touching
 the main filter or clicking Apply. Selecting a tag highlights it and
@@ -196,11 +196,11 @@ A few habits that will save you time as your Zabbix instance grows:
 
 ## Conclusion
 
-Built-in graphs are often overlooked in favor of dashboards, but they remain
+Built-in graphs are often overlooked in favour of dashboards, but they remain
 the fastest path from "I want to see this metric" to an actual chart on your
 screen. Simple graphs need no setup at all, ad-hoc graphs let you compare
 items on the fly without saving anything, and custom graphs give you a
-reusable, configurable visualization once you know exactly what you need.
+reusable, configurable visualisation once you know exactly what you need.
 Combined with tagging and the subfilter on the `Monitoring` | `Hosts` page,
 these tools scale surprisingly well even in larger environments and they
 form a natural stepping stone toward the dashboard widgets we'll cover next.

@@ -101,14 +101,14 @@ brings them together by showing how a problem event travels from
 detection to notification, what can break at each stage, and how to verify that
 the full chain is working correctly.
 
-**Actions** covered how to define conditions, operations, and escalation steps so
+**Actions** cover how to define conditions, operations, and escalation steps so
 that Zabbix responds to the right events in the right way.
 
-**Media types** covered the built-in delivery channels — email, SMS, and webhooks —
+**Media types** cover the built-in delivery channels — email, SMS, and webhooks —
 as well as custom alert scripts for integrations that Zabbix does not support
 natively.
 
-**Custom alert scripts** covered how to write and deploy scripts that Zabbix calls
+**Custom alert scripts** cover how to write and deploy scripts that Zabbix calls
 as a media type, giving you full control over the notification delivery mechanism.
 
 By combining a precise trigger, a well-scoped action, a working media type, and

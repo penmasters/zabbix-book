@@ -7,12 +7,12 @@ tags: [advanced]
 
 # Zabbix trapper
 
-So you already know what is the difference between `Active` and `Passive`
+So you already know what the difference is between `Active` and `Passive`
 Zabbix agent item types. However, there is a third, special item type which
 also starts with "Zabbix". And that is "**Zabbix trapper**".
 
 Most likely not by coincidence it is named so, since by its nature it reminds
-us of the "SNMP trap". Data in both cases is not expected to arrive in predefined
+us of the "SNMP trap". Data in both cases is not expected to arrive at a predefined
 frequency, but rather "when needed" or "when something happens".
 
 Zabbix trapper items are extremely useful when you have:
@@ -24,7 +24,7 @@ Zabbix trapper items are extremely useful when you have:
   to run them in the context of Zabbix agent (e.g. some script is running as
   a different user and you don't want to give Zabbix agent access to it, or
   the script is running for longer than the Zabbix agent timeout, etc.)
-- scripts that collect data for a multiple of Zabbix hosts at once, and you
+- scripts that collect data for multiple Zabbix hosts at once, and you
   want to send the data to the different hosts on the Zabbix server in one go.
 - scripts that otherwise do some other things, but at some points you want to
   send some data to be monitored (i.e. monitoring is just a part of the script
@@ -37,27 +37,27 @@ Zabbix trapper items are extremely useful when you have:
 
 ## How to send data?
 
-There are two ways to send values to Zabbix trapper item:
+There are two ways to send values to a Zabbix trapper item:
 
 - using `zabbix_sender`
 - via Zabbix API
 
 ???+ info
 
-    Zabbix trapper item receives data over the same TCP port as Zabbix agent items
+    A Zabbix trapper item receives data over the same TCP port as Zabbix agent items
     (10051) when `zabbix_sender` is used.
 
 In both cases, item configuration from Zabbix GUI perspective doesn't differ.
-Once configuring Zabbix trapper items, main thing is to have a unique meaningful
+When configuring Zabbix trapper items, the main thing is to have a unique meaningful
 item key (it must be unique on host level) and type of information of your
-choice. Type of information possibilities are same to classic Zabbix agent
+choice. Type of information possibilities are the same as for classic Zabbix agent
 items.
 
 ---
 
 ## Hello World
 
-In this example, we will simply send a string "Hello!" to Zabbix trapper item.
+In this example, we will simply send a string "Hello!" to a Zabbix trapper item.
 
 First we will create a Zabbix trapper item on the Zabbix server. Create a new
 template for this purpose, and add a new **Zabbix trapper** item to it:
@@ -125,7 +125,7 @@ items. For this, we need to employ a combination of `zabbix_sender` options:
 ???+ info
 
     Here is even one more overlooked feature of this approach - you actually
-    don't even need files necessarily. Providing `-` as value for `-i` means reading
+    don't even need files necessarily. Providing `-` as the value for `-i` means reading
     from standard input
 
 Next we will show you a couple of examples when this feature might be useful.
@@ -134,8 +134,8 @@ Next we will show you a couple of examples when this feature might be useful.
 
 One of the examples when you might want to employ this feature is to force data
 to be stored precisely at 00 seconds of the minute. Imagine you run a script
-each minute and it might run for duration anything between 10 and 50 seconds.
-This script in the end produces time in seconds, how long did it run - and you
+each minute and it might run for a duration of anything between 10 and 50 seconds.
+This script in the end produces the time in seconds for which it ran - and you
 send this duration to Zabbix via `zabbix_sender`:
 
 
@@ -161,7 +161,7 @@ send this duration to Zabbix via `zabbix_sender`:
 _4.93 Zabbix trapper - not aligned time_
 
 Problem here is that since the script runs with chaotic durations, results will be
-displayed on the time axis of graphs in unequal intervals between collected values:
+displayed on the time axis of graphs at unequal intervals between collected values:
 
 ![Zabbix trapper - not aligned time graph](ch04.94-trapper-not-aligned-time-graph.png)
 
@@ -174,7 +174,7 @@ seconds of the minute the script was started:
 ???+ example "Zabbix trapper - sending data with zabbix_sender with timestamps"
 
     We adapt the previous script to use `-T` and `-i` options of `zabbix_sender`
-    to include timestamps in the sent data. We will also use `-` as value for `-i` to read
+    to include timestamps in the sent data. We will also use `-` as the value for `-i` to read
     from standard input instead of a file: 
 
     ```bash
@@ -191,7 +191,7 @@ seconds of the minute the script was started:
     exit 0
     ```
 
-Now the values are collected exactly at the 00 second of each minute:
+Now the values are collected exactly at second 00 of each minute:
 
 ![Zabbix trapper - not aligned time](ch04.95-trapper-aligned-time.png)
 
@@ -203,13 +203,13 @@ And our graph becomes smooth:
 
 _4.96 Zabbix trapper - aligned time graph_
 
-The bigger the possible gaps between the values, the more such approach makes
+The bigger the possible gaps between the values, the more such an approach makes
 sense.
 
 ### Past incidents
 
 Imagine you had some incident which had no or had poor monitoring. Say you regret it
-and find some valuable data which you would like to visualize. With Zabbix
+and find some valuable data which you would like to visualise. With Zabbix
 trapper items and combination of `-T` and `-i` options it is absolutely
 possible. Just form sets of data from your data sources (e.g. logs) and feed
 them into Zabbix by creating some temporary trapper items. You will then have a
@@ -221,7 +221,7 @@ _4.97 Zabbix trapper - past incident_
 
 ### Have some fun
 
-Similar to above, but in more creative fashion, you can visualize some ASCII art
+Similar to above, but in a more creative fashion, you can visualise some ASCII art
 in Zabbix by creating sets of data aligned so in time and value amplitude, that
 it would form some image. That is a fun way to entertain your colleagues or
 just sharpen your skills in scripting!
@@ -242,7 +242,7 @@ multiple lines, each line containing a value to be sent to a Zabbix trapper item
 Each line must be in the following format:
 
 !!! info
-    For non-timestamped values, the format is a white-space separated list of 
+    For non-timestamped values, the format is a whitespace-separated list of 
     three values:
 
     ```
@@ -288,7 +288,7 @@ hosts in one go.
 
 This can be extremely useful for example when you have a script that queries 
 a backup system and collects the status of backups for multiple hosts. You can then
-send all backups statuses to their respective Zabbix hosts instead of collecting
+send all backup statuses to their respective Zabbix hosts instead of collecting
 them in a separate backup system 'host'.
 
 Of course, you can also use the `-` value for the `-i` option to read from standard
@@ -309,7 +309,7 @@ Zabbix API method.
     the Zabbix API. It assumes you have already obtained an API token and stored
     it in a file called `token.conf` in the same directory as the script. Refer
     to the [Zabbix API](../ch12-zabbix-api/chapter.md) chapter for more details
-    on how to obtain an API token.:
+    on how to obtain an API token:
 
     ```bash
     #!/bin/bash
@@ -389,7 +389,7 @@ particular cases they are extremely useful (or even the only option to go with).
 
 In this section you have learned when Zabbix trappers are most useful, as well
 as how to create Zabbix trapper items and send data to them, both using `zabbix_sender`
-and the Zabbix API. We've seen how to customize the item value timestamps recorded
+and the Zabbix API. We've seen how to customise the item value timestamps recorded
 by Zabbix, as well as some advanced usages.
 
 Using Zabbix trapper is heavily related to more programmatic approaches towards
@@ -401,7 +401,7 @@ you should definitely try it out.
 ## Questions
 
 - Do you need Zabbix agent if you want to use `zabbix_sender`?
-- Does Zabbix trapper item have checking interval?
+- Does a Zabbix trapper item have a checking interval?
 - Can you send text for Zabbix trapper items, or is it only for numerical data?
 
 ---

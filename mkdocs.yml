@@ -125,15 +125,15 @@ nav:
       - Internal health: ch14-zabbix-maintenance/internal-health.md
       - Backups: ch14-zabbix-maintenance/taking-backups.md
       - Upgrades: ch14-zabbix-maintenance/upgrades.md
-  - "Chapter 15 : Real world examples":
-      - ch15-zabbix-real-world-examples/chapter.md
-      - Disk health on Windows: ch15-zabbix-real-world-examples/disk-health-windows.md
-      - Filter LLD without JSONPath: ch15-zabbix-real-world-examples/filter-lld-without-jsonpath.md
-      - HTML for the win: ch15-zabbix-real-world-examples/html-for-the-win.md
-  - "Chapter 16 : Windows monitoring":
-      - ch16-windows/chapter.md
-      - Windows: ch16-windows/windows.md
-      - Zabbix Agent2 Config Tips For Windows: ch16-windows/windows-zabbix-agent2-config-tips.md
+  - "Chapter 15 : Windows monitoring":
+      - ch15-windows/chapter.md
+      - Windows: ch15-windows/windows.md
+      - Zabbix Agent2 Config Tips For Windows: ch15-windows/windows-zabbix-agent2-config-tips.md
+  - "Chapter 16 : Real world examples":
+      - ch16-zabbix-real-world-examples/chapter.md
+      - Disk health on Windows: ch16-zabbix-real-world-examples/disk-health-windows.md
+      - Filter LLD without JSONPath: ch16-zabbix-real-world-examples/filter-lld-without-jsonpath.md
+      - HTML for the win: ch16-zabbix-real-world-examples/html-for-the-win.md
   - Subject index: subject-index.md
 
 theme:

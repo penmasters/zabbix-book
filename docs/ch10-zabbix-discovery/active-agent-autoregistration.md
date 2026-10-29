@@ -8,9 +8,9 @@ tags: [advanced]
 
 # Automating adding hosts with active agent autoregistration
 
-In this chapter, we'll explore the powerful automation features in Zabbix called
-**active agent autoregistration**. This tools are essential for scaling your monitoring
-efforts by minimizing manual configuration and ensuring new devices and services
+In this chapter, we'll explore the powerful automation feature in Zabbix called
+**active agent autoregistration**. This tool is essential for scaling your monitoring
+efforts by minimising manual configuration and ensuring new devices and services
 are seamlessly integrated into your Zabbix environment.
 
 We'll dive into **active agent autoregistration**, which simplifies the management
@@ -35,7 +35,7 @@ Normally, when we want to monitor a new server with a Zabbix agent, we must firs
 3. Assign templates
 4. Place the host into the correct host groups
 
-Only after those steps have been completed, the host can start sending monitoring data.
+Only after those steps have been completed can the host start sending monitoring data.
 
 With active agent autoregistration, the workflow is reversed.
 
@@ -60,7 +60,7 @@ A passive agent waits for the server or proxy to contact it, while an active age
 establishes the connection itself.
 
 Let's open the Zabbix agent configuration file (either `/etc/zabbix/zabbix_agent2.conf` 
-or `*.conf`-files in `/etc/zabbix/zabbix_agent2.d/` (preferred, and required on SLES16+)).
+or `*.conf` files in `/etc/zabbix/zabbix_agent2.d/` (preferred, and required on SLES16+)).
 
 !!! info "Zabbix agent configuration"
 
@@ -82,7 +82,7 @@ The key parameter here is `HostMetadata`. It functions as a text string sent dur
 registration and can be used by autoregistration actions to determine how a host
 should be configured.
 
-!!! example "HostMedata examples"
+!!! example "HostMetadata examples"
 
     ```ini
     HostMetadata=linux
@@ -117,7 +117,7 @@ for the changes to take effect.
 ## Creating an autoregistration action
 
 Let's configure our first autoregistration action.
-Navigate to `Alerts` | `Actions` | `Autoregistration actions`
+Navigate to `Alerts` | `Actions` | `Autoregistration actions`.
 
 Click on `Create action` and give the action a name. For example `Linux servers
 autoregistration`.
@@ -143,9 +143,9 @@ When a host registers successfully, we can automatically perform actions such as
 Since every host needs at least one host group, Zabbix will automatically add
 the `Discovered hosts` host group. However, that is usually not enough for a
 structured Zabbix environment. As such we will add the host to a host group
-called `Servers/Linux`
+called `Servers/Linux`.
 
-This keeps our environment organized from the moment the host appears.
+This keeps our environment organised from the moment the host appears.
 
 We can also automatically assign templates, which is where the `HostMetadata`
 really starts to shine. For example we can now attach the `Linux by Zabbix agent
@@ -157,7 +157,7 @@ manually later.
 
 Our Action conditions should now look something like below.
 
-![Zabbix Agent autoregistration action conditions]](autoregistration/ch10.x-autoregistration-action-conditions.png){ align=center }
+![Zabbix Agent autoregistration action conditions](autoregistration/ch10.x-autoregistration-action-conditions.png){ align=center }
 
 _10.x Zabbix Agent autoregistration action conditions_
 
@@ -165,13 +165,13 @@ The operations should contain the following.
 
 ![Zabbix Agent autoregistration action operations](autoregistration/ch10.8-autoregistration-action-operations.png){ align=center }
 
-_10.8 Zabbix Agent autoregistration action operations
+_10.8 Zabbix Agent autoregistration action operations_
 
 One of my favourite tricks here is to let a tool like Ansible set the `HostMetadata`
 field with software like `NGINX` automatically. Then we can add additional Actions
 with rules to add those templates as well. These can be done in separate actions,
 as an incoming host registering itself will create an autoregistration event. In
-Zabbix, any event coming in will always be matches against all action conditions
+Zabbix, any event coming in will always be matched against all action conditions
 and execute the operations for all matches.
 
 ![Zabbix Agent autoregistration action list](ch10.9-autoregistration-action-list.png){ align=center }
@@ -180,7 +180,7 @@ _10.9 Zabbix Agent autoregistration action list_
 
 ## Using HostMetadataItem
 
-Instead of using hardcoding metadata, the Zabbix agent can also generate it dynamically.
+Instead of using hardcoded metadata, the Zabbix agent can also generate it dynamically.
 
 For example, in the configuration file of the Zabbix agent we could add the following
 parameter.
@@ -268,7 +268,7 @@ Automation should reduce the administrative load, without impacting security.
 
 Active agent autoregistration is one of the most useful automation features in
 Zabbix. Instead of manually creating hosts and assigning configuration, agents
-can register themselves to the monitoring environment and receive everything
+can register themselves with the monitoring environment and receive everything
 they need automatically.
 
 By combining active checks, host metadata, PSK authentication, and autoregistration
@@ -281,8 +281,8 @@ monitored immediately, consistently, securely, and with minimal administrative l
 ## Questions
 
 - What is Active Agent Autoregistration in Zabbix, and how does it work?
-- Which parameters do you need to configure in the zabbix_agent2.conf (or
-  zabbix_agentd.conf) to enable autoregistration?
+- Which parameters do you need to configure in the `zabbix_agent2.conf` (or
+  `zabbix_agentd.conf`) to enable autoregistration?
 - What security considerations should you keep in mind when using autoregistration
   (especially in production)?
 

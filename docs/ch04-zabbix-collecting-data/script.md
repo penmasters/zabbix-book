@@ -49,7 +49,7 @@ The complete list of objects can be found in the official Zabbix documentation:
 Let's create some example scripts so that you get a better understanding of how
 it works.
 
-Create a new host in `Data collection` -> `Hosts`.
+Create a new host in `Data collection` | `Hosts`.
 
 * **Host name:** `javascript`
 * **Host groups:** `JS Servers`
@@ -68,7 +68,7 @@ using the REST API.
 
 | Field               | Value                                                 |
 | :------------------ | :-----------------------------------------------------|
-| Name                | `Query Github Repository`                             |
+| Name                | `Query GitHub Repository`                             |
 | Type                | Script                                                |
 | Key                 | `github.repo.stars`                                   |
 | Type of information | Numeric (unsigned)                                    |
@@ -77,7 +77,7 @@ using the REST API.
 | Timeout             | `5s`                                                  |
 | Parameters          | owner = `zabbix`                                      |
 |                     | repo = `zabbix`                                       |
-|                     | token = `<optional Github token>`                     |
+|                     | token = `<optional GitHub token>`                     |
 
 > **Note:** GitHub’s API enforces rate limits for unauthenticated requests (≈60/hour per IP).
 > Add a personal access token for higher limits.
@@ -153,7 +153,7 @@ In this case we get an alert if the script returns 0.
 ## Example 2 - Public weather
 
 In this script we call Open-Meteo and ask for information like temperature,
-windspeed, direction based on our longitude / latitude.
+wind speed, and direction based on our longitude / latitude.
 
 ### Item setup
 
@@ -207,7 +207,7 @@ Add the following code in the script box.
 
 _4.67 ch04.42-script-example2.png_
 
-Next create a few dependent items that use this script as master item.
+Next create a few dependent items that use this script as the master item.
 
 | Field                    | Value                        |
 | :----------------------- | :--------------------------- |
@@ -274,7 +274,7 @@ Script items shine when you need full control.
 
 ### 1. Debugging things
 
-During development, use the internal logging API to trace script behavior:
+During development, use the internal logging API to trace script behaviour:
 
 !!! note "Debugging with Zabbix.log"
 
@@ -333,8 +333,8 @@ You can catch and handle network failures, retry, or return a fallback value:
     }
     ```
 
-    This script catches any errors (network failure, bad JSON, missing .value, etc.):
-    Logs the error at severity level 2 (Warning) into the Zabbix server log.
+    This script catches any errors (network failure, bad JSON, missing .value, etc.) and
+    logs the error at severity level 2 (Warning) into the Zabbix server log.
     It returns a numeric 0 instead of throwing errors, so the item remains
     supported.
 
@@ -345,7 +345,7 @@ by combining one master *Script* or *Trapper* item that stores the full JSON res
 with several dependent items that extract individual fields. This isn't true caching
 inside JavaScript. It's data reuse via Zabbix history, avoiding repeated API calls.
 
-### 5. Parallelization and performance considerations
+### 5. Parallelisation and performance considerations
 
 Each Script item consumes one poller slot.
 If you have dozens of Script items that do API calls, consider:
@@ -380,13 +380,13 @@ Script items can return **JSON strings** which can then be used in **dependent i
     $.disk_free
     ```
 
-This allows one Script item to feed many dependent metrics. A professional optimization
+This allows one Script item to feed many dependent metrics. A professional optimisation
 pattern.
 
 ### 7. Combining script items with preprocessing JavaScript
 
 Advanced users often pair a Script item that performs heavy retrieval with preprocessing
-JavaScript that performs lightweight normalization.
+JavaScript that performs lightweight normalisation.
 
 ???+ example "Heavy lifting in Script, light processing in preprocessing"
 
@@ -413,7 +413,7 @@ proxy. Understanding this helps when debugging:
 
     There is a small exception when it comes to the use of the poller process.
     If you make use of the test button to test the item then the check will not
-    user the poller but the task manager process.
+    use the poller but the task manager process.
 
 ### 9. Best practice checklist
 
@@ -426,7 +426,7 @@ proxy. Understanding this helps when debugging:
 * ✅ Document the purpose and return type at the top of each script.
 
 
-### 12. Summary
+### 10. Summary
 
 By mastering Script items, you've reached the **expert level of Zabbix data collection**.
 You now understand not just how to fetch and return data, but how to:
@@ -463,7 +463,7 @@ These skills let you integrate Zabbix with virtually any system.
     ```
 
     If you try to reference a `parameters` object (as seen in some very old examples),
-    you will get : `ReferenceError: identifier 'parameters' undefined` because the
+    you will get: `ReferenceError: identifier 'parameters' undefined` because the
     Duktape runtime does not inject such a variable anymore. All parameters are
     passed inside the value JSON string.
 
@@ -492,7 +492,7 @@ and the modern API world — simple, powerful, and entirely scriptable.
 * What makes Script items different from external checks or user parameters in Zabbix?
 * How are Script item parameters passed to the JavaScript environment in modern
   Zabbix versions?
-* Why does using JSON.parse(value) make your scripts more portable?
+* Why does using `JSON.parse(value)` make your scripts more portable?
 * How can you avoid making multiple API calls when several metrics come from the
   same endpoint?
 * Why are global macros usually not a good choice for secrets in exported templates?

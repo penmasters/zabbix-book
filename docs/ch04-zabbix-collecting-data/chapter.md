@@ -2,11 +2,11 @@
 
 Everything in Zabbix starts with data. Dashboards, alerts, reports, and SLA
 calculations are all downstream of a single fundamental operation: an item
-collecting a metric from a monitored target. This chapter is about that operation.
-What it looks like, how it works, and the different ways Zabbix can perform it.
+collecting a metric from a monitored target. This chapter is all about items.
+What they look like, how they work, and the different ways Zabbix can execute them.
 
 The number of items you configure directly determines how much data your Zabbix
-system must collect, process, and store. At scale, item design is one of the
+system collects, processes, and stores. At scale, item design is one of the
 primary factors influencing performance and database load.
 
 Before any data can be collected, two things need to exist: a host and an item.
@@ -14,7 +14,8 @@ A host in Zabbix is not necessarily a physical or virtual machine. It is a
 monitoring target, a logical container that holds items, triggers, graphs, discovery
 rules, and web scenarios. A server, a network switch, a container, a website, or
 a cloud API endpoint are all equally valid hosts. An item represents a single metric
-attached to that host, defined by a key that tells Zabbix what to collect and how.
+attached to that host, defined by a key, with the item settings telling Zabbix what 
+to collect and how.
 
 ---
 
@@ -78,8 +79,8 @@ configuration, but also for troubleshooting and performance tuning.
 ## Item types covered in this chapter
 
 Zabbix supports a large number of item types, each designed for a different
-collection method or protocol. This chapter covers all of them in sequence,
-starting from the simplest and progressing to the more specialised.
+collection method or protocol. In this chapter we try to cover all of them,
+starting from the simplest and progressing to the more specialised item types.
 
 The following sections group item types by how they collect data and where the
 execution takes place.
@@ -175,7 +176,7 @@ that can reference other items on the same host or on different hosts.
   maximum size of 128 MiB and automatic JSON validation. JSON values cannot
   be used directly in triggers, but dependent items can extract individual
   values. When using TimescaleDB, the new `history_json` hypertable must be
-  configured manually when upgrading to Zabbix 8.0
+  configured manually when upgrading to Zabbix 8.0.
 
 ---
 
@@ -183,7 +184,7 @@ that can reference other items on the same host or on different hosts.
 
 Custom scripts used as alert scripts for media types are covered in the alerting
 chapter. Auto-registration of active agents and the mechanism that creates hosts
-automatically when a new agent connects, is covered in a dedicated chapter later
+automatically when a new agent connects is covered in a dedicated chapter later
 in the book. Templates, which are the correct place to define items for reuse
 across many hosts, are covered in the templates chapter.
 

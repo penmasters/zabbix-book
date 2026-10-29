@@ -8,7 +8,7 @@ tags: [advanced]
 # External checks
 
 Zabbix is remarkably capable out of the box, but the real world has a
-habit of throwing requirements at you that no built in item type can
+habit of throwing requirements at you that no built-in item type can
 neatly address. Maybe you need to query a proprietary API, scrape a
 value from a legacy system, or run a bespoke health check that only your
 team understands. That is exactly the problem external checks solve.
@@ -88,14 +88,14 @@ enough for any reasonable monitoring purpose.
 
 ---
 
-## Practical example : Counting Logged-In Users
+## Practical example: Counting Logged-In Users
 
 To show you an easy example, let's build something you can try right now on the
 machine where Zabbix is installed. The script will count how many users are
 currently logged into the local system, using the who command, which is part of the
 standard coreutils package present on every distribution.
 
-You will create the item on the Zabbix server host itself the one
+You will create the item on the Zabbix server host itself, the one
 that already appears in your host list as "Zabbix server". The script
 runs locally on that same machine, so there is nothing to connect to and
 no credentials to manage.
@@ -157,14 +157,14 @@ Save the item and navigate to `Monitoring` | `Latest data`. Within a minute
 you should see a value like `2` (depending on your system) appear next to your
 new item, reflecting the number of active sessions on the Zabbix server at that
 moment. Open a second terminal to SSH in, wait for the next collection cycle,
-and watch the number go up to `3` (or 1 higher then previous number). Close it,
+and watch the number go up to `3` (or 1 higher than the previous number). Close it,
 and it comes back down. From here you could add a trigger to alert when the count
 exceeds an expected threshold, useful for detecting unexpected logins on a
 production server.
 
 !!! note "A word of wisdom when it comes to scripts"
 
-    A colleague of me once created an external check
+    A colleague of mine once created an external check
     that itself called another monitoring tool, which in turn called a
     Python script that imported a module and complained about a missing
     dependency.
@@ -195,10 +195,10 @@ simple, fast, and reliable.
 ## Questions
 
 - You configure an external check on a host that is monitored through a Zabbix proxy.
-  On which machine does the script actually execute
+  On which machine does the script actually execute?
 
 - An external check item suddenly becomes unsupported and the error message reads
-  "Cannot execute external check command." What are the two most likely causes ?
+  "Cannot execute external check command." What are the two most likely causes?
 
 - You have written a script that takes 45 seconds to complete. The item's update interval
   is set to 1 minute. What risk does this create, and what would you do to address it?

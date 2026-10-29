@@ -10,14 +10,14 @@ to what's available out of the box, you can tailor the platform to your exact
 environment and requirements. In this chapter we explore two of the most practical
 and powerful ways to extend Zabbix:
 
-### Frontend Scripts
+## Frontend Scripts
 
 Learn how to run custom scripts directly from the Zabbix frontend with just a
 few clicks. This feature is incredibly useful for quick troubleshooting, executing
 maintenance tasks, gathering on-the-fly diagnostics, or integrating external
 tools, all without leaving the Zabbix web interface.
 
-### User Parameters
+## User Parameters
 
 Dive deep into extending the Zabbix Agent itself. With User Parameters you can
 create your own custom item keys to monitor virtually anything: application-specific
