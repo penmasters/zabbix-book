@@ -186,8 +186,12 @@ Head over to the `LLD macros` tab in our Discovery rule and map the following ma
 with our JSONPath filters to extract the needed info so that we can use it later
 in our LLD items, triggers, graphs, etc.
 
-- **`{#PRINTER.NAME}`**: Map it with `$.name`.
-- **{#PRINTER.STATUS}**: Map it with `$.status`.
+!!! example ""
+
+    ```text
+    - {#PRINTER.NAME}: Map it with `$.name`.
+    - {#PRINTER.STATUS}: Map it with `$.status`.
+    ```
 
 ![LLD Macros](ch08.16-dependent-lld-create-lldmacro.png)
 *8.16 Create a LLD Macro*

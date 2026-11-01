@@ -37,31 +37,35 @@ their tablespaces.
 
 Log in to your Zabbix server or agent host via SSH and create the following file:
 
-```bash
-echo '[
-  {
-    "database": "db_sales",
-    "status": "online",
-    "tablespaces": [
-      { "name": "ts_sales_data", "size_mb": 10240 },
-      { "name": "ts_sales_idx", "size_mb": 4096 }
-    ]
-  },
-  {
-    "database": "db_hr",
-    "status": "online",
-    "tablespaces": [
-      { "name": "ts_hr_data", "size_mb": 2048 }
-    ]
-  }
-]' | sudo tee /home/db-cluster-status.json > /dev/null
-```
+!!! example "Example"
+
+    ```bash
+    echo '[
+      {
+        "database": "db_sales",
+        "status": "online",
+        "tablespaces": [
+          { "name": "ts_sales_data", "size_mb": 10240 },
+          { "name": "ts_sales_idx", "size_mb": 4096 }
+        ]
+      },
+      {
+        "database": "db_hr",
+        "status": "online",
+        "tablespaces": [
+          { "name": "ts_hr_data", "size_mb": 2048 }
+        ]
+      }
+    ]' | sudo tee /home/db-cluster-status.json > /dev/null
+    ```
 
 Verify the file:
 
-```bash
-cat /home/db-cluster-status.json
-```
+!!! info ""
+
+    ```bash
+    cat /home/db-cluster-status.json
+    ```
 
 The structure has two clear levels:
 
@@ -102,9 +106,11 @@ Navigate to **Discovery rules** on the same host and click **Create discovery ru
 
 On the **LLD macros** tab map:
 
-```
-{#DB} → $.database
-```
+!!! info ""
+
+    ```
+    {#DB} → $.database
+    ```
 
 ### 3. Create an Item Prototype for Level 1
 
@@ -118,11 +124,11 @@ Under the parent discovery rule go to `Item prototypes` | `Create item prototype
 | Key | `db.status[{#DB}]` |
 | Type of information | Text |
 
-**Preprocessing:**
+!!! info "**Preprocessing:**"
 
-```
-JSONPath → $..[?(@.database=='{#DB}')].status.first()
-```
+    ```
+    JSONPath → $..[?(@.database=='{#DB}')].status.first()
+    ```
 
 ## Step 2: Configuring the Nested Discovery Prototype
 
@@ -138,16 +144,18 @@ entity to the nested rule.
 
 For the database `db_sales` the nested rule therefore receives:
 
-```json
-{
-  "database": "db_sales",
-  "status": "online",
-  "tablespaces": [
-    { "name": "ts_sales_data", "size_mb": 10240 },
-    { "name": "ts_sales_idx", "size_mb": 4096 }
-  ]
-}
-```
+!!! info ""
+
+    ```json
+    {
+      "database": "db_sales",
+      "status": "online",
+      "tablespaces": [
+        { "name": "ts_sales_data", "size_mb": 10240 },
+        { "name": "ts_sales_idx", "size_mb": 4096 }
+      ]
+    }
+    ```
 
 Preprocessing on the nested rule can then extract the next level (`$.tablespaces`).
 
@@ -168,9 +176,11 @@ Including `{#DB}` in the key guarantees uniqueness per parent entity.
 
 On the **Preprocessing** tab add:
 
-```
-JSONPath → $.tablespaces
-```
+!!! info ""
+
+    ```
+    JSONPath → $.tablespaces
+    ```
 
 This extracts the tablespace array from the single database object that the
 Nested type already provided.
@@ -179,11 +189,14 @@ Nested type already provided.
 
 On the **LLD macros** tab of the discovery prototype:
 
-```
-{#TSNAME} → $.name
-```
+!!! info ""
+
+    ```
+    {#TSNAME} → $.name
+    ```
 
 ???+ note
+
     LLD macros defined on the parent rule (`{#DB}`) are automatically inherited
     and remain available inside nested discovery prototypes and all of their
     child prototypes.
@@ -200,11 +213,12 @@ Inside the discovery prototype go to `Item prototypes` | `Create item prototype`
 | Key | `db.ts.size[{#DB},{#TSNAME}]` |
 | Type of information | Numeric (unsigned) |
 
-**Preprocessing:**
 
-```
-JSONPath → $..[?(@.database=='{#DB}')].tablespaces[?(@.name=='{#TSNAME}')].size_mb.first()
-```
+!!! info "**Preprocessing:**"
+
+    ```json
+    JSONPath → $..[?(@.database=='{#DB}')].tablespaces[?(@.name=='{#TSNAME}')].size_mb.first()
+    ```
 
 JSONPath Breakdown:
 

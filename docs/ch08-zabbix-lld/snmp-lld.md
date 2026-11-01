@@ -211,12 +211,14 @@ session.
     Press `Test` before saving. The raw result looks like a plain list of
     `OID = value` pairs, for example:
 
-```
-IF-MIB::ifDescr.1 = STRING: lo
-IF-MIB::ifDescr.2 = STRING: eth0
-IF-MIB::ifOperStatus.1 = INTEGER: up(1)
-IF-MIB::ifOperStatus.2 = INTEGER: up(1)
-```
+!!! info ""
+
+    ```text
+    IF-MIB::ifDescr.1 = STRING: lo
+    IF-MIB::ifDescr.2 = STRING: eth0
+    IF-MIB::ifOperStatus.1 = INTEGER: up(1)
+    IF-MIB::ifOperStatus.2 = INTEGER: up(1)
+    ```
 
 This is not JSON yet, and that is fine. Both `SNMP walk to JSON` and `SNMP
 walk value` read this raw walk result directly, we never have to convert it
@@ -259,18 +261,20 @@ name and OID prefix, both will end up in the same discovered objects.
 
 Testing this rule against our sample data produces something like:
 
-```json
-[
- {
- "{#SNMPINDEX}": "1",
- "{#IFDESCR}": "lo"
- },
- {
- "{#SNMPINDEX}": "2",
- "{#IFDESCR}": "eth0"
- }
-]
-```
+!!! example "Example"
+
+    ```json
+    [
+     {
+     "{#SNMPINDEX}": "1",
+     "{#IFDESCR}": "lo"
+     },
+     {
+     "{#SNMPINDEX}": "2",
+     "{#IFDESCR}": "eth0"
+     }
+    ]
+    ```
 
 ### Filtering out interfaces we don't care about
 
