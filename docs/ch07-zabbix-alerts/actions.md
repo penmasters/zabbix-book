@@ -269,30 +269,32 @@ _7.4 pause operations_
     the recovery.
 
 #### Step Duration: Default vs Per-Step
- 
+
 Every step has two duration settings: the **action-level default** and an optional
 **per-step override**.
- 
+
 - The action-level default (`Default operation step duration`) applies to every
   step that has its own duration set to `0`. The default is 3600 seconds.
 - Setting a per-step duration overrides only that step. The next step reverts
   to the action default unless it also has its own override.
- 
+
 A common pattern is a short first step followed by longer escalation intervals:
- 
-```
-Default step duration: 3600 (1 hour)
-Step 1, duration: 300 (5 minutes) — fast first alert
-Step 2, duration: 0               — inherits 1 hour
-Step 3–0, duration: 0             — inherits 1 hour, repeats indefinitely
-```
- 
+
+!!! info ""
+
+    ```
+    Default step duration: 3600 (1 hour)
+    Step 1, duration: 300 (5 minutes) — fast first alert
+    Step 2, duration: 0               — inherits 1 hour
+    Step 3–0, duration: 0             — inherits 1 hour, repeats indefinitely
+    ```
+
 This gives a 5-minute window for self-service resolution before escalating,
 then hourly escalation after that. The per-step duration is the tool for this
 kind of nuanced design.
- 
+
 !!! warning
- 
+
     Do not set step durations below 60 seconds in production. The escalator
     process does not guarantee sub-minute precision, and at high event volume
     it may fall behind. For time-sensitive alerting, consider whether a shorter
@@ -460,7 +462,7 @@ There are two types of maintenance:
 This distinction is critical: if you want recovery notifications to fire after
 maintenance ends, you need "with data collection" mode. In "without data collection"
 mode, problems that started before maintenance began will have no recovery event
-until the trigger is re-evaluated after maintenance ends — which may take an entire
+until the trigger is re-evaluated after maintenance ends, which may take an entire
 check cycle.
 
 ### Suppression and the Action Checkbox
@@ -758,33 +760,33 @@ Suppose your Linux team uses `HostMetadata = linux` and your Windows team uses
 `HostMetadata = windows`. You have multiple environments tagged in the metadata
 as `prod`, `staging`, or `dev`.
 
-**Autoregistration action for Linux production servers:**
+!!! info "**Autoregistration action for Linux production servers:**"
 
-``` bash
-- Conditions (AND):
-  - `Host metadata contains "linux"`
-  - `Host metadata contains "prod"`
-- Operations:
-  1. Add host
-  2. Add to host group: `Linux servers`
-  3. Add to host group: `Production`
-  4. Link to template: `Linux by Zabbix agent`
-  5. Enable host
-```
+    ``` text
+    - Conditions (AND):
+      - `Host metadata contains "linux"`
+      - `Host metadata contains "prod"`
+    - Operations:
+      1. Add host
+      2. Add to host group: `Linux servers`
+      3. Add to host group: `Production`
+      4. Link to template: `Linux by Zabbix agent`
+      5. Enable host
+    ```
 
-**Autoregistration action for Windows dev servers:**
+!!! info "**Autoregistration action for Windows dev servers:**"
 
-``` bash
-- Conditions:
-  - `Host metadata contains "windows"`
-  - `Host metadata contains "dev"`
-- Operations:
-  1. Add host
-  2. Add to host group: `Windows servers`
-  3. Add to host group: `Development`
-  4. Link to template: `Windows by Zabbix agent`
-  5. Disable host *(development hosts start disabled until approved)*
-```
+    ```text
+    - Conditions:
+      - `Host metadata contains "windows"`
+      - `Host metadata contains "dev"`
+    - Operations:
+      1. Add host
+      2. Add to host group: `Windows servers`
+      3. Add to host group: `Development`
+      4. Link to template: `Windows by Zabbix agent`
+      5. Disable host *(development hosts start disabled until approved)*
+    ```
 
 !!! tip
 
@@ -882,22 +884,22 @@ Consider a service called `E-commerce platform` that aggregates status across we
 servers, database servers, and payment gateway checks. You want different notification
 channels depending on severity:
 
-**Service action: E-commerce degraded**
+!!! info "**Service action: E-commerce degraded**"
 
-``` bash
-- Conditions: `Service name = E-commerce platform` AND status changes to `Warning`
-- Operations: Send message to `team_lead` via Slack
-```
+    ```text
+    - Conditions: `Service name = E-commerce platform` AND status changes to `Warning`
+    - Operations: Send message to `team_lead` via Slack
+    ```
 
-**Service action: E-commerce down**
+!!! info "**Service action: E-commerce down**"
 
-``` bash
-- Conditions: `Service name = E-commerce platform` AND status changes to `High` or `Disaster`
-- Operations: 
-  - Step 1: Send message to `oncall_engineer` via PagerDuty
-  - Step 2 (after 900 seconds): Send message to `team_lead` via PagerDuty
-  - Step 3 (after 1800 seconds): Send message to `management_group` via Email
-```
+    ```text
+    - Conditions: `Service name = E-commerce platform` AND status changes to `High` or `Disaster`
+    - Operations: 
+      - Step 1: Send message to `oncall_engineer` via PagerDuty
+      - Step 2 (after 900 seconds): Send message to `team_lead` via PagerDuty
+      - Step 3 (after 1800 seconds): Send message to `management_group` via Email
+    ```
 
 !!! tip
 
@@ -991,61 +993,63 @@ Some macros depend on:
 
 Adapt the template to your own environment rather than copying it blindly.
 
-``` text
-==============================
-⚠️  ZABBIX ALERT
-==============================
+!!! exampel "Example"
 
-HOST
------
-Name        : {HOST.NAME}
-IP          : {HOST.CONN}
-Proxy       : {PROXY.NAME}
-Uptime      : {?last(//system.uptime)}
+    ``` text
+    ==============================
+    ⚠️  ZABBIX ALERT
+    ==============================
+ 
+    HOST
+    -----
+    Name        : {HOST.NAME}
+    IP          : {HOST.CONN}
+    Proxy       : {PROXY.NAME}
+    Uptime      : {?last(//system.uptime)}
+ 
+    Performance
+    - CPU Usage : {?last(//system.cpu.util)} %
+    - Memory    : {?last(//vm.memory.utilization)} %
+ 
+    Description
+    {HOST.DESCRIPTION}
+ 
+ 
+    EVENT
+    -----
+    Name        : {EVENT.NAME}
+    Status      : {EVENT.STATUS}
+    Started at  : {EVENT.DATE} {EVENT.TIME}
+    Duration    : {EVENT.DURATION}
+    Age         : {EVENT.AGE}
+    Value       : {ITEM.VALUE}
+ 
+    Acknowledgement
+    - Status    : {EVENT.ACK.STATUS}
+    - History   : {EVENT.ACK.HISTORY}
 
-Performance
-- CPU Usage : {?last(//system.cpu.util)} %
-- Memory    : {?last(//vm.memory.utilization)} %
-
-Description
-{HOST.DESCRIPTION}
-
-
-EVENT
------
-Name        : {EVENT.NAME}
-Status      : {EVENT.STATUS}
-Started at  : {EVENT.DATE} {EVENT.TIME}
-Duration    : {EVENT.DURATION}
-Age         : {EVENT.AGE}
-Value       : {ITEM.VALUE}
-
-Acknowledgement
-- Status    : {EVENT.ACK.STATUS}
-- History   : {EVENT.ACK.HISTORY}
-
-
-TRIGGER
--------
-Severity    : {TRIGGER.SEVERITY}
-Status      : {TRIGGER.STATUS}
-Description : {TRIGGER.DESCRIPTION}
-URL         : {TRIGGER.URL}
-
-
-LINKS
------
-Event       : {$ZABBIX.URL}/tr_events.php?triggerid={TRIGGER.ID}&eventid={EVENT.ID}
-Acknowledge : {$ZABBIX.URL}/zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[]={EVENT.ID}
-Host        : {$ZABBIX.URL}/hostinventories.php?hostid={HOST.ID}
-Graph       : {$ZABBIX.URL}/history.php?action=showgraph&itemids[]={ITEM.ID1}
-Latest data : {$ZABBIX.URL}/zabbix.php?action=latest.view&hostids[]={HOST.ID}&show_details=0
-
-
-------------------------------
-Generated: {EVENT.DATE} {EVENT.TIME}
-------------------------------
-```
+ 
+    TRIGGER
+    -------
+    Severity    : {TRIGGER.SEVERITY}
+    Status      : {TRIGGER.STATUS}
+    Description : {TRIGGER.DESCRIPTION}
+    URL         : {TRIGGER.URL}
+ 
+ 
+    LINKS
+    -----
+    Event       : {$ZABBIX.URL}/tr_events.php?triggerid={TRIGGER.ID}&eventid={EVENT.ID}
+    Acknowledge : {$ZABBIX.URL}/zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[]={EVENT.ID}
+    Host        : {$ZABBIX.URL}/hostinventories.php?hostid={HOST.ID}
+    Graph       : {$ZABBIX.URL}/history.php?action=showgraph&itemids[]={ITEM.ID1}
+    Latest data : {$ZABBIX.URL}/zabbix.php?action=latest.view&hostids[]={HOST.ID}&show_details=0
+ 
+ 
+    ------------------------------
+    Generated: {EVENT.DATE} {EVENT.TIME}
+    ------------------------------
+    ```
 ---
 
 ## Common Mistakes and How to Avoid Them

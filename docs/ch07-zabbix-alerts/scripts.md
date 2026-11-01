@@ -93,15 +93,19 @@ decides how to use it.
 All scripts must live inside the directory defined by `AlertScriptsPath` in
 the Zabbix server configuration. Usually the default value is:
 
-``` bash
-AlertScriptsPath=/usr/lib/zabbix/alertscripts
-```
+!!! info ""
+
+    ``` bash
+    AlertScriptsPath=/usr/lib/zabbix/alertscripts
+    ```
 
 You can verify the value on your system with:
 
-```bash
-grep -R AlertScriptsPath /etc/zabbix/
-```
+!!! info ""
+
+    ```bash
+    grep -R AlertScriptsPath /etc/zabbix/
+    ```
 
 If the line is commented out or not found, the default above applies. Zabbix will refuse to
 execute any script located outside this directory, even if you supply a full path.
@@ -115,10 +119,12 @@ The script file must meet two requirements:
 
 The correct ownership and permissions for most scripts are:
 
-```bash
-chown root:zabbix /usr/lib/zabbix/alertscripts/your-script.sh
-chmod 750 /usr/lib/zabbix/alertscripts/your-script.sh
-```
+!!! info ""
+
+    ```bash
+    chown root:zabbix /usr/lib/zabbix/alertscripts/your-script.sh
+    chmod 750 /usr/lib/zabbix/alertscripts/your-script.sh
+    ```
 
 !!! note
 
@@ -145,76 +151,86 @@ file. It is useful in two concrete ways:
 
 Create the script file:
 
-```bash
-vi /usr/lib/zabbix/alertscripts/alert_logger.sh
-```
+!!! info ""
+
+    ```bash
+    vi /usr/lib/zabbix/alertscripts/alert_logger.sh
+    ```
 
 Paste the following content:
 
-```bash
-#!/bin/bash
-# alert_logger.sh
-# Writes every Zabbix alert notification to a structured log file.
+???+ example
 
-# ── Arguments ────────────────────────────────────────────────────────────────
-# Zabbix passes the three parameters we define in the media type as positional
-# arguments. We assign them to named variables immediately so the rest of the
-# script is readable.
-SENDTO="$1"       # The value from the user's "Send to" field
-SUBJECT="$2"      # The notification subject
-MESSAGE="$3"      # The full notification body
-
-# ── Configuration ─────────────────────────────────────────────────────────────
-# The file we write to. The zabbix user must be able to write here.
-# /var/log/zabbix/ already exists and is owned by the zabbix user on a standard
-# installation.
-LOG_FILE="/var/log/zabbix/alert_logger.log"
-
-# ── Timestamp ─────────────────────────────────────────────────────────────────
-# $(date ...) runs the date command and substitutes its output inline.
-# +"%Y-%m-%d %H:%M:%S" formats it as: 2026-03-30 14:22:05
-TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
-
-# ── Write the log entry ───────────────────────────────────────────────────────
-# The >> operator appends to the file (a single > would overwrite it each time).
-# The lines between the two EOF markers are a "here document" — a convenient
-# way to write a multi-line block of text without lots of echo statements.
-# Each variable is expanded when the line is written.
-cat >> "$LOG_FILE" << EOF
-────────────────────────────────────────────────────
-Timestamp : $TIMESTAMP
-Send To   : $SENDTO
-Subject   : $SUBJECT
-Message   :
-$MESSAGE
-EOF
-
-# ── Exit cleanly ──────────────────────────────────────────────────────────────
-# Exit code 0 tells Zabbix the notification was delivered successfully.
-# Any non-zero exit code causes Zabbix to mark the attempt as failed and retry.
-exit 0
-```
+    ```bash
+    #!/bin/bash
+    # alert_logger.sh
+    # Writes every Zabbix alert notification to a structured log file.
+    
+    # ── Arguments ────────────────────────────────────────────────────────────────
+    # Zabbix passes the three parameters we define in the media type as positional
+    # arguments. We assign them to named variables immediately so the rest of the
+    # script is readable.
+    SENDTO="$1"       # The value from the user's "Send to" field
+    SUBJECT="$2"      # The notification subject
+    MESSAGE="$3"      # The full notification body
+    
+    # ── Configuration ─────────────────────────────────────────────────────────────
+    # The file we write to. The zabbix user must be able to write here.
+    # /var/log/zabbix/ already exists and is owned by the zabbix user on a standard
+    # installation.
+    LOG_FILE="/var/log/zabbix/alert_logger.log"
+    
+    # ── Timestamp ─────────────────────────────────────────────────────────────────
+    # $(date ...) runs the date command and substitutes its output inline.
+    # +"%Y-%m-%d %H:%M:%S" formats it as: 2026-03-30 14:22:05
+    TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+    
+    # ── Write the log entry ───────────────────────────────────────────────────────
+    # The >> operator appends to the file (a single > would overwrite it each time).
+    # The lines between the two EOF markers are a "here document" — a convenient
+    # way to write a multi-line block of text without lots of echo statements.
+    # Each variable is expanded when the line is written.
+    cat >> "$LOG_FILE" << EOF
+    ────────────────────────────────────────────────────
+    Timestamp : $TIMESTAMP
+    Send To   : $SENDTO
+    Subject   : $SUBJECT
+    Message   :
+    $MESSAGE
+    EOF
+    
+    # ── Exit cleanly ──────────────────────────────────────────────────────────────
+    # Exit code 0 tells Zabbix the notification was delivered successfully.
+    # Any non-zero exit code causes Zabbix to mark the attempt as failed and retry.
+    exit 0
+    ```
 
 Save and close the file.
 
 ### Step 2 — Set Permissions
 
-```bash
-chown root:zabbix /usr/lib/zabbix/alertscripts/alert_logger.sh
-chmod 750 /usr/lib/zabbix/alertscripts/alert_logger.sh
-```
+!!! info ""
+
+    ```bash
+    chown root:zabbix /usr/lib/zabbix/alertscripts/alert_logger.sh
+    chmod 750 /usr/lib/zabbix/alertscripts/alert_logger.sh
+    ```
 
 Verify:
 
-```bash
-ls -l /usr/lib/zabbix/alertscripts/alert_logger.sh
-```
+!!! info ""
+
+    ```bash
+    ls -l /usr/lib/zabbix/alertscripts/alert_logger.sh
+    ```
 
 Expected output:
 
-``` bash
--rwxr-x--- 1 root zabbix ... alert_logger.sh
-```
+!!! info ""
+
+    ``` bash
+    -rwxr-x--- 1 root zabbix ... alert_logger.sh
+    ```
 
 ### Step 3 — Verify the Log Directory
 
@@ -223,23 +239,29 @@ directory already exists and is owned by the `zabbix` user.
 
 Confirm:
 
-```bash
-ls -ld /var/log/zabbix/
-```
+!!! info ""
+
+    ```bash
+    ls -ld /var/log/zabbix/
+    ```
 
 Expected output:
 
-``` bash
-drwxr-xr-x 2 zabbix zabbix ... /var/log/zabbix/
-```
+!!! info ""
+
+    ``` bash
+    drwxr-xr-x 2 zabbix zabbix ... /var/log/zabbix/
+    ```
 
 If the directory does not exist, create it:
 
-```bash
-mkdir -p /var/log/zabbix/
-chown zabbix:zabbix /var/log/zabbix/
-chmod 755 /var/log/zabbix/
-```
+!!! info ""
+
+    ```bash
+    mkdir -p /var/log/zabbix/
+    chown zabbix:zabbix /var/log/zabbix/
+    chmod 755 /var/log/zabbix/
+    ```
 
 ### Step 4 — Test the Script Manually
 
@@ -247,29 +269,35 @@ Before touching the Zabbix frontend, test the script directly as the `zabbix` us
 This confirms the permissions are correct and the script runs without errors,
 independently of Zabbix itself.
 
-```bash
-sudo -u zabbix /usr/lib/zabbix/alertscripts/alert_logger.sh \
-  "ops-team" \
-  "Problem: High CPU on web01" \
-  "Host web01 has exceeded 90% CPU for 5 minutes."
-```
+!!! info ""
+
+    ```bash
+    sudo -u zabbix /usr/lib/zabbix/alertscripts/alert_logger.sh \
+      "ops-team" \
+      "Problem: High CPU on web01" \
+      "Host web01 has exceeded 90% CPU for 5 minutes."
+    ```
 
 Then check the log:
 
-```bash
-cat /var/log/zabbix/alert_logger.log
-```
+!!! info ""
+
+    ```bash
+    cat /var/log/zabbix/alert_logger.log
+    ```
 
 You should see:
 
-```bash
-────────────────────────────────────────────────────
-Timestamp : 2026-03-30 14:22:05
-Send To   : ops-team
-Subject   : Problem: High CPU on web01
-Message   :
-Host web01 has exceeded 90% CPU for 5 minutes.
-```
+!!! info ""
+
+    ```bash
+    ────────────────────────────────────────────────────
+    Timestamp : 2026-03-30 14:22:05
+    Send To   : ops-team
+    Subject   : Problem: High CPU on web01
+    Message   :
+    Host web01 has exceeded 90% CPU for 5 minutes.
+    ```
 
 If the file is empty or does not exist, the most likely cause is a permissions
 problem, or things like SELinux or AppArmor. Run the command above without
@@ -304,43 +332,43 @@ at `10s`.
 
 Under **Message templates**, add a template for the **Problem** event type:
 
-Subject:
+!!! info "Subject:"
 
-```bash
-Problem: {EVENT.NAME}
-```
+    ```bash
+    Problem: {EVENT.NAME}
+    ```
 
-Message body:
+!!! info "Message body:"
 
-``` bash
-Host       : {HOST.NAME}
-Severity   : {EVENT.SEVERITY}
-Problem    : {EVENT.NAME}
-Started    : {EVENT.DATE} {EVENT.TIME}
-Event ID   : {EVENT.ID}
-Operational: {EVENT.OPDATA}
-URL        : {EVENT.URL}
-```
+    ``` bash
+    Host       : {HOST.NAME}
+    Severity   : {EVENT.SEVERITY}
+    Problem    : {EVENT.NAME}
+    Started    : {EVENT.DATE} {EVENT.TIME}
+    Event ID   : {EVENT.ID}
+    Operational: {EVENT.OPDATA}
+    URL        : {EVENT.URL}
+    ```
 
 Add a second template for **Problem recovery**:
 
-Subject:
+!!! info "Subject:"
 
-``` bash
-Resolved: {EVENT.NAME}
-```
+    ``` bash
+    Resolved: {EVENT.NAME}
+    ```
 
-Message body:
+!!! info "Message body:"
 
-```bash
-Host       : {HOST.NAME}
-Severity   : {EVENT.SEVERITY}
-Problem    : {EVENT.NAME}
-Resolved   : {EVENT.RECOVERY.DATE} {EVENT.RECOVERY.TIME}
-Duration   : {EVENT.DURATION}
-Event ID   : {EVENT.ID}
-URL        : {EVENT.URL}
-```
+    ```bash
+    Host       : {HOST.NAME}
+    Severity   : {EVENT.SEVERITY}
+    Problem    : {EVENT.NAME}
+    Resolved   : {EVENT.RECOVERY.DATE} {EVENT.RECOVERY.TIME}
+    Duration   : {EVENT.DURATION}
+    Event ID   : {EVENT.ID}
+    URL        : {EVENT.URL}
+    ```
 
 Click **Add** to save the media type.
 
@@ -406,9 +434,11 @@ Click **Add** to save. Within a few seconds the trigger should fire. Go to
 
 Then check the log file on the Zabbix server:
 
-```bash
-tail -f /var/log/zabbix/alert_logger.log
-```
+!!! info ""
+
+    ```bash
+    tail -f /var/log/zabbix/alert_logger.log
+    ```
 
 You should see a new entry for the test alert. Once confirmed, disable or delete
 the dummy trigger.
@@ -420,20 +450,24 @@ the dummy trigger.
 The log file will grow indefinitely without rotation. On most Linux distros
 `logrotate` is the standard tool for this. Create a configuration file:
 
-```bash
-vi /etc/logrotate.d/zabbix-alert-logger
-```
+!!! info ""
 
-```bash
-/var/log/zabbix/alert_logger.log {
-    daily
-    rotate 30
-    compress
-    missingok
-    notifempty
-    create 0640 zabbix zabbix
-}
-```
+    ```bash
+    vi /etc/logrotate.d/zabbix-alert-logger
+    ```
+
+!!! info ""
+
+    ```bash
+    /var/log/zabbix/alert_logger.log {
+        daily
+        rotate 30
+        compress
+        missingok
+        notifempty
+        create 0640 zabbix zabbix
+    }
+    ```
 
 Each directive does the following:
 
@@ -447,9 +481,11 @@ Each directive does the following:
 
 Test the configuration:
 
-```bash
-logrotate -d /etc/logrotate.d/zabbix-alert-logger
-```
+!!! info ""
+
+    ```bash
+    logrotate -d /etc/logrotate.d/zabbix-alert-logger
+    ```
 
 The `-d` flag runs a dry run and prints what would happen without actually rotating
 anything. Confirm the output references the correct file, then let the system
