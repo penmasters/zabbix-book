@@ -307,26 +307,32 @@ The Zabbix API uses JSON-RPC over HTTP. Authentication is performed by calling
 the `user.login` method. Another better way is to use an API token and pass it in the
 `Authorization` header in the headers section.
 
-```yaml
-Authorization: Bearer {$YOUR_TOKEN_MACRO}
-```
+!!! info ""
+
+    ```yaml
+    Authorization: Bearer {$YOUR_TOKEN_MACRO}
+    ```
 
 The endpoint is typically:
 
-```
-http://<IP Address>/api_jsonrpc.php
-```
+!!! info ""
+
+    ```
+    http://<IP Address>/api_jsonrpc.php
+    ```
 
 The HTTP agent item is configured with a POST request and the following body:
 
-```json
-{
-  "jsonrpc": "2.0",
-  "method": "apiinfo.version",
-  "params": {},
-  "id": 1
-}
-```
+!!! info ""
+
+    ```json
+    {
+      "jsonrpc": "2.0",
+      "method": "apiinfo.version",
+      "params": {},
+      "id": 1
+    }
+    ```
 
 The `Content-Type` header must be set to `application/json`. Without it, the API
 will reject the request.
@@ -337,13 +343,15 @@ _4.42 ch04.60_http_item.png_
 
 The response looks like this:
 
-```json
-{
-  "jsonrpc": "2.0",
-  "result": "8.0.0",
-  "id": 1
-}
-```
+!!! info ""
+
+    ```json
+    {
+      "jsonrpc": "2.0",
+      "result": "8.0.0",
+      "id": 1
+    }
+    ```
 
 Using *JSONPath* preprocessing with `$.result`, the authentication token can be extracted.
 
@@ -372,18 +380,18 @@ specifically, logging should be increased only for those processes.
 This is done using runtime control commands `log_level_increase` and 
 `log_level_decrease` with the `http poller` target:
 
-???+ example "Runtime log level control commands for HTTP pollers"
+!!! example "Runtime log level control commands for HTTP pollers"
 
-  Increasing HTTP poller logging:
-  ```
-  zabbix_server -R log_level_increase=http poller
-  ```
+    Increasing HTTP poller logging:
+    ```
+    zabbix_server -R log_level_increase=http poller
+    ```
 
-  Decreasing HTTP poller logging:
+!!! example "Decreasing HTTP poller logging:"
 
-  ```
-  zabbix_server -R log_level_decrease=http poller
-  ```
+    ```
+    zabbix_server -R log_level_decrease=http poller
+    ```
 
 This approach allows detailed `libcurl`-level diagnostics without restarting services
 or flooding logs from unrelated processes.
