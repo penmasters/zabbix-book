@@ -154,10 +154,12 @@ FreeTDS also has a query-level requirement that is not documented prominently an
 produces a confusing error when missing. Every SQL query executed through the FreeTDS
 driver must be prefixed with `SET NOCOUNT ON`:
 
-```sql
-SET NOCOUNT ON
-SELECT COUNT(*) FROM orders WHERE status = 'pending'
-```
+!!! example ""
+
+    ```sql
+    SET NOCOUNT ON
+    SELECT COUNT(*) FROM orders WHERE status = 'pending'
+    ```
 
 Without this prefix, the driver returns an empty result set and the Zabbix item
 goes unsupported with the error "SQL query returned empty result", even when the
@@ -217,10 +219,11 @@ the checks, not on the monitored database host. The package set is the same rega
 of which database you intend to monitor: the unixODBC driver manager first, then
 the database-specific driver on top.
 
-!!! note "ODBC Driver Installation"
+!!! info "ODBC Driver Installation"
 
     Red Hat
-    ```bash
+    ```
+    bash
     sudo dnf install unixODBC unixODBC-devel
     sudo dnf install mariadb-connector-odbc    # for MySQL or MariaDB targets
     sudo dnf install postgresql-odbc           # for PostgreSQL targets
@@ -243,7 +246,7 @@ the database-specific driver on top.
 
 After installation, confirm that the driver manager can see the installed drivers:
 
-!!!+ note "Verify Installed Drivers"
+!!! info "Verify Installed Drivers"
 
     ```bash
     odbcinst -q -d

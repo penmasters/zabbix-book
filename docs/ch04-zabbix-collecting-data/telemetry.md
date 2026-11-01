@@ -324,9 +324,11 @@ it only if the query workload requires more workers, and ensure it is not `0`.
 On a server that needs to query ClickHouse, configure its telemetry data source,
 for example:
 
-```conf
-TelemetryProvider=clickhouse;url=http://clickhouse.example.com:8123,db=zabbix,username=zabbix,password=your_password
-```
+!!! info ""
+
+    ```conf
+    TelemetryProvider=clickhouse;url=http://clickhouse.example.com:8123,db=zabbix,username=zabbix,password=your_password
+    ```
 
 The proxy configuration shown earlier already covers both its APM ingestion
 and its own Telemetry query pollers. If the global data source is configured,
@@ -561,7 +563,7 @@ execute the Telemetry query. This item type does not require an agent.
 
 ![ch04.104_new_host.png](ch04.104_new_host.png)
 
-_ch4.104 Add new host_
+4.104 Add new host_
 
 ### Step 5: Create the Telemetry query item
 
@@ -587,7 +589,7 @@ Create the following item on `otel-lab`:
 
 ![ch04.105_create_item.png](ch04.105_create_item.png)
 
-_ch04.105 Create Item_
+_4.105 Create Item_
 
 Use `Test` | `Get value` to inspect the actual result.
 Configure preprocessing only for the observed result format; do not
@@ -634,7 +636,7 @@ the middle so you can see the traces.
 
 ![ch04.106_apm_traces.png](ch04.106_apm_traces.png)
 
-_ch04.106 APM traces panel_
+_4.106 APM traces panel_
 
 Avoid overlapping the baseline and slow runs in the same buckets if you want
 a clean rise above 500 ms. The latency trigger should activate once sufficient

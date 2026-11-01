@@ -458,9 +458,11 @@ configuration:
 **Preprocessing type:** SNMP walk value
 **SNMP OID:**
 
-```text
-1.3.6.1.2.1.2.2.1.8.{#SNMPINDEX}
-```
+!!! info ""
+
+    ```text
+    1.3.6.1.2.1.2.2.1.8.{#SNMPINDEX}
+    ```
 
 This would allow us to extract the operational status for each
 discovered interface from a separate SNMP walk containing interface
@@ -735,9 +737,11 @@ item and configure the following preprocessing step:
 
 The resulting value is:
 
-```text
-1520
-```
+!!! info ""
+
+    ```text
+    1520
+    ```
 
 The preprocessing step provides several output options:
 

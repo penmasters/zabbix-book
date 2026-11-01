@@ -250,7 +250,7 @@ of collected data.
 
 **Formula:**
 
-!!! info
+!!! info ""
 
     ```bash
     percentile(/<HOST>/icmppingsec[<target-IP>],15m,99)
@@ -260,11 +260,11 @@ With the monitoring item now collecting data, our immediate next step is to defi
 a trigger. This trigger will allow Zabbix to notify us instantly if the defined
 threshold for network quality degradation is breached.
 
-!!! info
+!!! info ""
 
-  ```bash
-  last(/<HOST>/icmppingsec.p99) > 0.150
-  ```
+    ```bash
+    last(/<HOST>/icmppingsec.p99) > 0.150
+    ```
 
 This will alert us if the P99 ping latency goes above 150 ms.
 
@@ -346,6 +346,7 @@ Aggregate functions use a slightly different syntax in a **calculated item** for
 by adding a *foreach* function as the sole parameter to select the items to aggregate.
 
 !!! info "Aggregate functions syntax"
+
     The general format for an aggregate function is:
 
     ```
@@ -364,14 +365,14 @@ by adding a *foreach* function as the sole parameter to select the items to aggr
     the use of a fixed list of items to cases where you know the exact items you 
     want to aggregate and you know they will not change in the future.
 
-`aggregate_function`
+!!! info "aggregate_function"
 
-:   The statistical operation to perform (e.g., `avg`, `sum`, `max`, `min`, `count`).
+    The statistical operation to perform (e.g., `avg`, `sum`, `max`, `min`, `count`).
     For a full list of supported aggregate functions, see the Zabbix documentation.
 
-`function_foreach`
+!!! info "function_foreach"
 
-:   Defines what item values to include in the aggregation (e.g., `last_foreach`,
+    Defines what item values to include in the aggregation (e.g., `last_foreach`,
     `avg_foreach`, `count_foreach`, `exists_foreach`). This function iterates over
     a set of items defined in the `item filter` and applies the specified aggregate 
     function to their values.
@@ -379,9 +380,9 @@ by adding a *foreach* function as the sole parameter to select the items to aggr
     set, while `avg_foreach` returns the average value of each item during
     the specified `timeperiod`.
 
-`item filter`
+!!! info "item filter"
 
-:   Filters the items to include in the aggregation and generally has the following 
+    Filters the items to include in the aggregation and generally has the following 
     syntax:
     ```
     /<HOST>/<key>[<parameters>]?[<conditions>]
@@ -403,9 +404,9 @@ by adding a *foreach* function as the sole parameter to select the items to aggr
     /*/system.cpu.load[all,avg1]?[group="Web Servers"]
     ``` 
 
-`timeperiod`
+!!! info "timeperiod"
 
-:   The time window to use for the `function_foreach`. For example, a `timeperiod`
+    The time window to use for the `function_foreach`. For example, a `timeperiod`
     of `5m` in the `avg_foreach` function would return the 5 minute average of
     each item in the set defined by the `item filter`. This parameter is optional
     for the `last_foreach` function and is not supported in `exists_foreach`.

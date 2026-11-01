@@ -78,7 +78,7 @@ enough for any reasonable monitoring purpose.
 - For text-type items (character, log, or text), a non-empty stderr
   output alone does not cause the item to become unsupported.
 
-!!!+ warning
+!!! warning "Pay attention"
 
     Every external check creates a new forked process. Running dozens of them
     at a short collection interval can noticeably impact Zabbix server

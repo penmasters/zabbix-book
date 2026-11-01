@@ -126,17 +126,17 @@ The validation steps are as follows:
 2. **Test Port Connectivity:** Use nc (Ncat) to verify the connection to the
    WebDriver port:
 
-!!! info
+!!! info ""
 
-  ```bash
-  nc -zv 192.0.2.1 4444
-  # Expected output: Connection to 192.0.2.1 4444 port [tcp/*] succeeded!
-  ```
+    ```bash
+    nc -zv 192.0.2.1 4444
+    # Expected output: Connection to 192.0.2.1 4444 port [tcp/*] succeeded!
+    ```
 
 3. Test Selenium Server Response: Use curl to confirm that the Selenium Server
    is serving a valid HTML response:
 
-!!! info
+!!! info ""
 
     ```bash
     curl -L 192.0.2.1:4444
@@ -500,141 +500,147 @@ In this example we will monitor the website https://www.zabbix.com
 
 ### Script
 
-```JavaScript
-// Chrome settings (headless, sandbox, viewport)
-var opts = Browser.chromeOptions({
-    args: [
-        "--headless=new",
-        "--no-sandbox",
-        "--disable-gpu",
-        "--window-size=1920,1080"
-    ]
-});
+!!! example "JavaScript"
 
-var browser = null;
-var out = {};
-
-try {
-    browser = new Browser(opts);
-
-    browser.setSessionTimeout(15000);
-    browser.setElementWaitTimeout(10000);
-    browser.setScreenSize(1920, 1080);
-
-    // 1) Load homepage
-    browser.navigate("https://www.zabbix.com/");
-    browser.collectPerfEntries("open_home");
-
-    // 2) Click GET ZABBIX
-    var btn = browser.findElement("link text", "GET ZABBIX");
-    if (!btn) {
-        throw Error("cannot find 'GET ZABBIX' link");
+    ```JavaScript
+    // Chrome settings (headless, sandbox, viewport)
+    var opts = Browser.chromeOptions({
+        args: [
+            "--headless=new",
+            "--no-sandbox",
+            "--disable-gpu",
+            "--window-size=1920,1080"
+        ]
+    });
+    
+    var browser = null;
+    var out = {};
+    
+    try {
+        browser = new Browser(opts);
+    
+        browser.setSessionTimeout(15000);
+        browser.setElementWaitTimeout(10000);
+        browser.setScreenSize(1920, 1080);
+    
+        // 1) Load homepage
+        browser.navigate("https://www.zabbix.com/");
+        browser.collectPerfEntries("open_home");
+    
+        // 2) Click GET ZABBIX
+        var btn = browser.findElement("link text", "GET ZABBIX");
+        if (!btn) {
+            throw Error("cannot find 'GET ZABBIX' link");
+        }
+        btn.click();
+    
+        browser.collectPerfEntries("after_click");
+    
+        // 3) Extract H1 headline
+        var h1 = browser.findElement("tag name", "h1");
+        out.headline = h1 ? h1.getText() : null;
+    
+        // Build result
+        out.status = "ok";
+    
+    } catch (err) {
+    
+        // Catch any JS or WebDriver error
+        if (!(err instanceof BrowserError)) {
+            browser.setError(err.message);
+        }
+    
+        out.status = "error";
+        out.error = err.toString();
+    
+        // Attach screenshot
+        out.screenshot = browser.getScreenshot();
+    
+    } finally {
+    
+        // Zabbix BrowserResult (contains perf + duration + URL)
+        if (browser) {
+            out.final_url = browser.getUrl();
+            out.result = browser.getResult();
+        }
+    
+        return JSON.stringify(out);
     }
-    btn.click();
-
-    browser.collectPerfEntries("after_click");
-
-    // 3) Extract H1 headline
-    var h1 = browser.findElement("tag name", "h1");
-    out.headline = h1 ? h1.getText() : null;
-
-    // Build result
-    out.status = "ok";
-
-} catch (err) {
-
-    // Catch any JS or WebDriver error
-    if (!(err instanceof BrowserError)) {
-        browser.setError(err.message);
-    }
-
-    out.status = "error";
-    out.error = err.toString();
-
-    // Attach screenshot
-    out.screenshot = browser.getScreenshot();
-
-} finally {
-
-    // Zabbix BrowserResult (contains perf + duration + URL)
-    if (browser) {
-        out.final_url = browser.getUrl();
-        out.result = browser.getResult();
-    }
-
-    return JSON.stringify(out);
-}
-
-```
+    
+    ```
 
 #### What the Script Returns
 
-```js
-{
-  "status": "ok",
-  "headline": "Zabbix Cloud",
-  "final_url": "https://www.zabbix.com/zabbix_cloud",
+!!! example "Example output"
 
-  "result": {
-    "duration": 2.53,
-    "performance_data": {
-      "summary": {
-        "navigation": {
-          "response_time": 0.19,
-          "dom_content_loading_time": 0.01,
-          "load_finished": 0.64,
-          "encoded_size": 17753,
-          "total_size": 102839,
-          "redirect_count": 0
-        },
-        "resource": {
-          "response_time": 12.37,
-          "resource_fetch_time": 0.42,
-          "count": 42
+    ```js
+    {
+      "status": "ok",
+      "headline": "Zabbix Cloud",
+      "final_url": "https://www.zabbix.com/zabbix_cloud",
+    
+      "result": {
+        "duration": 2.53,
+        "performance_data": {
+          "summary": {
+            "navigation": {
+              "response_time": 0.19,
+              "dom_content_loading_time": 0.01,
+              "load_finished": 0.64,
+              "encoded_size": 17753,
+              "total_size": 102839,
+              "redirect_count": 0
+            },
+            "resource": {
+              "response_time": 12.37,
+              "resource_fetch_time": 0.42,
+              "count": 42
+            }
+          },
+          "details": [
+            {
+              "mark": "open_home",
+              "navigation": { /* navigation timing for homepage */ },
+              "resource":   { /* aggregated resource metrics */ },
+              "user":       [ /* optional marks set by the website itself */ ]
+            },
+            {
+              "mark": "after_click",
+              "navigation": { /* navigation timing for /zabbix_cloud */ },
+              "resource":   { /* aggregated resource metrics */ }
+            }
+          ],
+          "marks": [
+            { "name": "open_home",   "index": 0 },
+            { "name": "after_click", "index": 1 }
+          ]
         }
-      },
-      "details": [
-        {
-          "mark": "open_home",
-          "navigation": { /* navigation timing for homepage */ },
-          "resource":   { /* aggregated resource metrics */ },
-          "user":       [ /* optional marks set by the website itself */ ]
-        },
-        {
-          "mark": "after_click",
-          "navigation": { /* navigation timing for /zabbix_cloud */ },
-          "resource":   { /* aggregated resource metrics */ }
-        }
-      ],
-      "marks": [
-        { "name": "open_home",   "index": 0 },
-        { "name": "after_click", "index": 1 }
-      ]
+      }
     }
-  }
-}
-
-```
+    
+    ```
 
 **On error, you'll see something like:**
 
-```js
-{
-  "status": "error",
-  "error": "cannot find 'GET ZABBIX' link",
-  "screenshot": "<base64-encoded PNG>",
-  "final_url": "https://www.zabbix.com/",
-  "result": {
-    "duration": 12.02,
-    "error": {
-      "http_status": 0,
-      "code": "",
-      "message": "cannot find 'GET ZABBIX' link"
-    }
-  }
-}
+!!! example "example error message"
 
-```
+    ```js
+    {
+      "status": "error",
+      "error": "cannot find 'GET ZABBIX' link",
+      "screenshot": "<base64-encoded PNG>",
+      "final_url": "https://www.zabbix.com/",
+      "result": {
+        "duration": 12.02,
+        "error": {
+          "http_status": 0,
+          "code": "",
+          "message": "cannot find 'GET ZABBIX' link"
+        }
+      }
+    }
+    
+    ```
 
 #### Let's go over the script 
 

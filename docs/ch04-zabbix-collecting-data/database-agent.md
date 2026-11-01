@@ -247,12 +247,6 @@ This item should now return a nice numeric value which you can see at
 
 ---
 
-## Setting up Redis and MongoDB monitoring
-
-TODO
-
----
-
 ## Conclusion
 
 Monitoring databases through the Zabbix agent 2 provides a secure and efficient

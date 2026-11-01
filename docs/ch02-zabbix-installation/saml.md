@@ -246,14 +246,16 @@ Modifying `zabbix.conf.php`:
 - **Configure SAML Settings:** Within the file, locate or add the following
   configuration directives:
 
-```php
-// Uncomment to override the default paths to SP private key, SP and IdP X.509 certificates,
-// and to set extra settings.
-$SSO['SP_KEY']                  = 'conf/certs/sp.key';
-$SSO['SP_CERT']                 = 'conf/certs/sp.crt';
-$SSO['IDP_CERT']                = 'conf/certs/idp.crt';
-//$SSO['SETTINGS']              = [];
-```
+!!! info ""
+
+    ```php
+    // Uncomment to override the default paths to SP private key, SP and IdP X.509 certificates,
+    // and to set extra settings.
+    $SSO['SP_KEY']                  = 'conf/certs/sp.key';
+    $SSO['SP_CERT']                 = 'conf/certs/sp.crt';
+    $SSO['IDP_CERT']                = 'conf/certs/idp.crt';
+    //$SSO['SETTINGS']              = [];
+    ```
 
 ---
 
@@ -323,29 +325,37 @@ can be sent to Zabbix. Add the following.
 Now, let's download the `Certificate (Base64)` under `SAML Certificates` and save
 it as `idp.crt`. Then we upload this to the Zabbix server(s).
 
-```bash
-scp idp.crt user@zabbix_server_ip:/usr/share/zabbix/ui/conf/certs/
-```
+!!! info ""
+
+    ```bash
+    scp idp.crt user@zabbix_server_ip:/usr/share/zabbix/ui/conf/certs/
+    ```
 
 The login to the Zabbix server and set the permissions.
 
-```bash
-chmod 644 entra.cer
-```
+!!! info ""
+
+    ```bash
+    chmod 644 entra.cer
+    ```
 
 While on the Zabbix server, edit the Zabbix web server configuration at
 `../zabbix.conf.php`, usually found in the directory below.
 
-```bash
-/etc/zabbix/web/zabbix.conf.php
-```
+!!! info ""
+
+    ```bash
+    /etc/zabbix/web/zabbix.conf.php
+    ```
 
 At the part about SAML configuration, make sure to add these two settings.
 
-```php
-$SSO['IDP_CERT']                = 'conf/certs/entra.cer';
-$SSO['SETTINGS']                = ['use_proxy_headers' => true];
-```
+!!! info ""
+
+    ```php
+    $SSO['IDP_CERT']                = 'conf/certs/entra.cer';
+    $SSO['SETTINGS']                = ['use_proxy_headers' => true];
+    ```
 
 In the last steps, we can now start the configuration of Zabbix SAML.
 
