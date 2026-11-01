@@ -40,21 +40,22 @@ For the sake of clarity, say that we have a value constantly growing but not
 ever-growing in terms of deltas between two consecutive values. It might go down
 a little bit and then grow again. Something like this:
 
-```bash
-#!/bin/bash
+!!! example "Example script"
 
-# time in seconds for current hour
-
-seconds=$(($(date +%s)%3600))
-
-(( seconds < 2 )) && seconds=2
-
-random=$((RANDOM%$((seconds/2))-$((seconds/4))))
-
-echo $((seconds+random))
-
-exit 0
-```
+    ```bash
+    #!/bin/bash
+    # time in seconds for current hour
+ 
+    seconds=$(($(date +%s)%3600))
+ 
+    (( seconds < 2 )) && seconds=2
+ 
+    random=$((RANDOM%$((seconds/2))-$((seconds/4))))
+ 
+    echo $((seconds+random))
+ 
+    exit 0
+    ```
 
 This script will produce an ever-growing value for us until the end of each hour, but
 it will not be growing in a linear way.
@@ -232,11 +233,13 @@ _5.19 Advanced triggers - multiple events - result_
 
 In this case, real access log lines were the following:
 
-```text
-192.168.1.253 - - [04/Mar/2026:22:58:59 +0000] "GET /test HTTP/1.1" 404 491 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
-192.168.1.253 - - [04/Mar/2026:22:59:03 +0000] "GET /hello/world HTTP/1.1" 404 491 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
-192.168.1.253 - - [04/Mar/2026:22:59:05 +0000] "GET /zabbix/book HTTP/1.1" 404 491 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
-```
+!!! example "Example log lines"
+
+    ```text
+    192.168.1.253 - - [04/Mar/2026:22:58:59 +0000] "GET /test HTTP/1.1" 404 491 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+    192.168.1.253 - - [04/Mar/2026:22:59:03 +0000] "GET /hello/world HTTP/1.1" 404 491 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+    192.168.1.253 - - [04/Mar/2026:22:59:05 +0000] "GET /zabbix/book HTTP/1.1" 404 491 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+    ```
 
 See the beauty here? Displaying only the part that matters for us. And nothing
 else but a simple regexp and native Zabbix features do it!
@@ -321,12 +324,14 @@ _5.22 Advanced triggers - more functions_
 
 Macros in this trigger configuration are set accordingly:
 
-```text
-{$INCIDENT_START_WINDOW} => 3m
-{$INCIDENT_START_THRESHOLD} => 100
-{$INCIDENT_END_THRESHOLD} => 5
-{$INCIDENT_END_WINDOW} => 10m
-```
+!!! info ""
+
+    ```text
+    {$INCIDENT_START_WINDOW} => 3m
+    {$INCIDENT_START_THRESHOLD} => 100
+    {$INCIDENT_END_THRESHOLD} => 5
+    {$INCIDENT_END_WINDOW} => 10m
+    ```
 
 So now let's illustrate what it would look like during a real incident:
 
@@ -394,13 +399,15 @@ _5.26 Advanced triggers - growing fast_
 
 Macros in this trigger configuration are set accordingly:
 
-```text
-{$DISK_FULL_PCT_DELTA_WARN} => 60
-{$DISK_FULL_PCT_DELTA_THRESHOLD} => 1
-{$DISK_FULL_PCT_DELTA_WINDOW} => 10m
-{$DISK_FULL_PCT_DELTA_THRESHOLD} => 1
-{$DISK_FULL_PCT_DELTA_RECOVERY_WINDOW} => 30m
-```
+!!! info ""
+
+    ```text
+    {$DISK_FULL_PCT_DELTA_WARN} => 60
+    {$DISK_FULL_PCT_DELTA_THRESHOLD} => 1
+    {$DISK_FULL_PCT_DELTA_WINDOW} => 10m
+    {$DISK_FULL_PCT_DELTA_THRESHOLD} => 1
+    {$DISK_FULL_PCT_DELTA_RECOVERY_WINDOW} => 30m
+    ```
 
 From the trigger expression it is clear that we use context macros here. So these
 thresholds can be adjusted per filesystem.

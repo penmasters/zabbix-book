@@ -94,23 +94,23 @@ each template, independent of its name or internal database ID.
 - **Improved automation:** APIs and pipelines can safely address templates by UUID
   rather than numeric IDs.
 
-Example YAML template:
+!!! example "Example YAML template:"
 
-```YAML
-zabbix_export:
-  version: '8.0'
-  templates:
-    - uuid: a4c1d0f2d7de4a40a8b347afeb9a88df
-      template: 'Template OS Rocky Linux'
-      groups:
-        - name: 'Templates/Operating Systems/Linux'
-      items:
-        - uuid: f0c1b836c81d4bba9419dc12bce7e411
-          name: 'System uptime'
-          key: 'system.uptime'
-          type: ZABBIX_AGENT
-
-```
+    ```YAML
+    zabbix_export:
+      version: '8.0'
+      templates:
+        - uuid: a4c1d0f2d7de4a40a8b347afeb9a88df
+          template: 'Template OS Rocky Linux'
+          groups:
+            - name: 'Templates/Operating Systems/Linux'
+          items:
+            - uuid: f0c1b836c81d4bba9419dc12bce7e411
+              name: 'System uptime'
+              key: 'system.uptime'
+              type: ZABBIX_AGENT
+    
+    ```
 
 ???+ info "Behaviour and Persistence"
 
@@ -283,21 +283,21 @@ want to create a group `Databases` as a subgroup of `Templates` then we only nee
 to create the new group like this: `Templates/Databases`. However it's
 recommended to create `Templates` first.
 
-Example hierarchy:
+!!! example "Example hierarchy:"
 
-```text
-Templates
-├── Operating Systems
-│   ├── Linux
-│   ├── Windows
-│   └── Network Appliances
-└── Applications
-    ├── Databases
-    │   ├── PostgreSQL
-    │   ├── MySQL
-    │   └── Oracle
-    └── Web Servers
-```
+    ```text
+    Templates
+    ├── Operating Systems
+    │   ├── Linux
+    │   ├── Windows
+    │   └── Network Appliances
+    └── Applications
+        ├── Databases
+        │   ├── PostgreSQL
+        │   ├── MySQL
+        │   └── Oracle
+        └── Web Servers
+    ```
 
 - **Hierarchy for organisation and permissions only:** Subgroups do not change how
   templates link to hosts; they are purely structural.
@@ -344,17 +344,19 @@ _6.2 Template Tags_
 
 ### Examples
 
-For a PostgreSQL database template:
-```yaml
-service: database
-component: backend
-```
+!!! example "For a PostgreSQL database template:"
 
-For a network device template:
-```yaml
-vendor: cisco
-interface: uplink
-```
+    ```yaml
+    service: database
+    component: backend
+    ```
+
+!!! example "For a network device template:"
+
+    ```yaml
+    vendor: cisco
+    interface: uplink
+    ```
 
 ### Some good practices to consider
 
@@ -430,14 +432,14 @@ removed.
 | Host                    | `region`    | `europe`      |
 | Item                    | `component` | `replication` |
 
+!!! info "The resulting event tags will be:"
 
-The resulting event tags will be:
-```yaml
-service: os
-service: database
-region: europe
-component: replication
-```
+    ```yaml
+    service: os
+    service: database
+    region: europe
+    component: replication
+    ```
 
 #### Some good practices when tagging
 
@@ -461,12 +463,12 @@ logic.
 
 _6.4 Template Macros_
 
-Example:
+!!! example "Example:"
 
-```bash
-{$CPU_UTIL_MAX}=90
-{$MEMORY_WARN}=75
-```
+    ```bash
+    {$CPU_UTIL_MAX}=90
+    {$MEMORY_WARN}=75
+    ```
 
 Macros can be defined globally, at the template level, host-group level, or host
 level, and can be overridden according to a strict precedence order.
@@ -476,7 +478,9 @@ level, and can be overridden according to a strict precedence order.
 When multiple templates linked to the same host define the same macro, Zabbix
 resolves conflicts by comparing template IDs.
 
-:warning: The macro from the template with the lowest template ID takes precedence.
+???+ warning
+
+    The macro from the template with the lowest template ID takes precedence.
 
 Example:
 
@@ -794,25 +798,25 @@ Navigate to `Data collection` | `Templates` | `Select Your Template(s)` | `Expor
 
 _6.9 Template Export_
 
-A typical export looks like:
+!!! example "A typical export looks like:"
 
-```yaml
-zabbix_export:
-  version: '8.0'
-  templates:
-    - uuid: a4c1d0f2d7de4a40a8b347afeb9a88df
-      template: 'Template OS Rocky Linux'
-      groups:
-        - name: 'Templates/Operating Systems/Linux'
-      macros:
-        - macro: '{$CPU_UTIL_MAX}'
-          value: '90'
-      items:
-        - name: 'System uptime'
-          key: 'system.uptime'
-          type: ZABBIX_AGENT
-
-```
+    ```yaml
+    zabbix_export:
+      version: '8.0'
+      templates:
+        - uuid: a4c1d0f2d7de4a40a8b347afeb9a88df
+          template: 'Template OS Rocky Linux'
+          groups:
+            - name: 'Templates/Operating Systems/Linux'
+          macros:
+            - macro: '{$CPU_UTIL_MAX}'
+              value: '90'
+          items:
+            - name: 'System uptime'
+              key: 'system.uptime'
+              type: ZABBIX_AGENT
+    
+    ```
 
 ### Importing Templates
 
