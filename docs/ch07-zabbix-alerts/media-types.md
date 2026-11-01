@@ -92,18 +92,20 @@ fields at the top of its configuration form.
 - **Message templates**: every media type can carry default message templates for
   each event type:
 
-  ``` ini
-  - Problem
-  - Problem recovery
-  - Problem update
-  - Service
-  - Service recovery
-  - Service update
-  - Disscovery
-  - Auto registration
-  - Internal problem.
-  - Internal problem recovery
-  ```
+!!! info ""
+
+    ``` ini
+    - Problem
+    - Problem recovery
+    - Problem update
+    - Service
+    - Service recovery
+    - Service update
+    - Disscovery
+    - Auto registration
+    - Internal problem.
+    - Internal problem recovery
+    ```
 
   These templates define the subject and body that Zabbix uses when no action-level
   template overrides them. They support Zabbix macros (like `{HOST.NAME}`,
@@ -383,29 +385,30 @@ looks correct.
 
 Here is a minimal webhook script that posts a JSON notification:
 
-``` js
-var params = JSON.parse(value);
+!!! example "Example"
 
-var message = {
-    "host":     params.host,
-    "subject":  params.subject,
-    "message":  params.message
-};
-
-var payload = JSON.stringify(message);
-
-var request = new HttpRequest();
-request.addHeader('Content-Type: application/json');
-
-var response = request.post(params.endpoint_url, payload);
-
-if (request.getStatus() !== 200) {
-    throw 'Unexpected HTTP status ' + request.getStatus() + ': ' + response;
-}
-
-return response;
-```
-
+    ``` js
+    var params = JSON.parse(value);
+ 
+    var message = {
+        "host":     params.host,
+        "subject":  params.subject,
+        "message":  params.message
+    };
+ 
+    var payload = JSON.stringify(message);
+ 
+    var request = new HttpRequest();
+    request.addHeader('Content-Type: application/json');
+ 
+    var response = request.post(params.endpoint_url, payload);
+ 
+    if (request.getStatus() !== 200) {
+        throw 'Unexpected HTTP status ' + request.getStatus() + ': ' + response;
+    }
+ 
+    return response;
+    ```
 
 To wire this up for testing:
 
@@ -559,38 +562,42 @@ if the SMTP server is temporarily unavailable.
 Click **Message templates** and then **Add** to create a template for the
 **Problem** event type.
 
-Subject:
-```
-Problem: {EVENT.NAME}
-```
+!!! info "Subject:"
 
-Message body:
-```
-Problem started at {EVENT.TIME} on {EVENT.DATE}
-Problem name: {EVENT.NAME}
-Host: {HOST.NAME}
-Severity: {EVENT.SEVERITY}
-Operational data: {EVENT.OPDATA}
-Original problem ID: {EVENT.ID}
-{EVENT.URL}
-```
+    ```
+    Problem: {EVENT.NAME}
+    ```
+
+!!! info "Message body:""
+
+    ```
+    Problem started at {EVENT.TIME} on {EVENT.DATE}
+    Problem name: {EVENT.NAME}
+    Host: {HOST.NAME}
+    Severity: {EVENT.SEVERITY}
+    Operational data: {EVENT.OPDATA}
+    Original problem ID: {EVENT.ID}
+    {EVENT.URL}
+    ```
 
 Then add a second template for **Problem recovery**:
 
-Subject:
-```
-Resolved in {EVENT.DURATION}: {EVENT.NAME}
-```
+!!! info "Subject:"
 
-Message body:
-```
-Problem resolved at {EVENT.RECOVERY.TIME} on {EVENT.RECOVERY.DATE}
-Problem name: {EVENT.NAME}
-Host: {HOST.NAME}
-Severity: {EVENT.SEVERITY}
-Original problem ID: {EVENT.ID}
-{EVENT.URL}
-```
+    ```
+    Resolved in {EVENT.DURATION}: {EVENT.NAME}
+    ```
+
+!!! info "Message body:"
+
+    ```
+    Problem resolved at {EVENT.RECOVERY.TIME} on {EVENT.RECOVERY.DATE}
+    Problem name: {EVENT.NAME}
+    Host: {HOST.NAME}
+    Severity: {EVENT.SEVERITY}
+    Original problem ID: {EVENT.ID}
+    {EVENT.URL}
+    ```
 
 It is also worth adding templates for **Problem update** and **Internal problem**
 while you are here, so all event types produce sensible messages rather than falling

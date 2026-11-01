@@ -230,9 +230,11 @@ to keep information in your Zabbix environment structured. Either through correc
 host grouping or more likely tags. For this example let's add the following host tag
 to the switch and all three access points:
 
-```text
-failure_domain=edge-01
-```
+!!! info ""
+
+    ```text
+    failure_domain=edge-01
+    ```
 
 `failure_domain`: `edge-01` in this case will represent this specific edge
 network, where the switch and access points reside together. 
@@ -245,9 +247,11 @@ adding it to every trigger separately.
 Next, we add the following trigger tag to the availability trigger that should be
 processed by CEP:
 
-```text
-scope=cep
-```
+!!! info ""
+
+    ```text
+    scope=cep
+    ```
 
 This is usually a trigger such as `ICMP Down`, on both devices. The `Scope`: `cep`
 tag is our opt-in tag. A trigger without `scope=cep` will not be processed by 
@@ -266,10 +270,12 @@ need the switch problem to be generated before the access point problems.
 That means we need to take this into account when defining our templates. We 
 can do something like the below on our triggers.
 
-```text
-Switch trigger:       max(/switch-01/icmpping,3m)=0
-Access point trigger: max(/ap-01/icmpping,5m)=0
-```
+!!! info ""
+
+    ```text
+    Switch trigger:       max(/switch-01/icmpping,3m)=0
+    Access point trigger: max(/ap-01/icmpping,5m)=0
+    ```
 
 Let's say both icmpping items have an update interval of 1 minute, this means that 
 the switch will always be detected before the access point.
@@ -322,14 +328,14 @@ Once the ap-01 problem has resolved and the window has closed (or if you used th
 (in that order). The switch event should now be created first, meaning that when the 
 access point events follow, they are added as symptoms of the switch problem.
 
-The result should look like this:
+!!! info "The result should look like this:"
 
-```text
-switch-01 is unavailable            Cause
-|- ap-01 is unavailable             Symptom
-|- ap-02 is unavailable             Symptom
-`- ap-03 is unavailable             Symptom
-```
+    ```text
+    switch-01 is unavailable            Cause
+    |- ap-01 is unavailable             Symptom
+    |- ap-02 is unavailable             Symptom
+    `- ap-03 is unavailable             Symptom
+    ```
 
 ![CEP cause and symptoms result](ch07.8-cep-switch-result.png){ align=center }
 
