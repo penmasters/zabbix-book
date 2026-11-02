@@ -110,15 +110,19 @@ On SUSE, transparent hugepages are enabled by default.
    
 You can check the current status with:
 
-```shell-session
-cat /sys/kernel/mm/transparent_hugepage/enabled
-```
+!!! info ""
+
+    ```shell-session
+    cat /sys/kernel/mm/transparent_hugepage/enabled
+    ```
 
 You will see something like:
 
-```text
-[always] madvise never
-```
+!!! info ""
+
+    ```text
+    [always] madvise never
+    ```
 
 The value in brackets indicates the current setting. If it is set to `always`,
 you need to set it to `madvise` or to `never`. ClickHouse recommends using `madvise`.

@@ -34,6 +34,7 @@ requirement – Zabbix agent should be able to execute whatever you provide for
 it as a command and it should produce some (hopefully meaningful) output.
 
 ???+ tip
+
     `UserParameter` can be used not only to collect data, but also as a custom
     LLD (Low-Level Discovery) rule.
 
@@ -111,11 +112,13 @@ some other directory of your choice) for Zabbix agent to include:
 
 Here is an example of such a `.conf` file:
 
-```bash
-binary@binary:~$ cat /etc/zabbix/zabbix_agentd.d/userparameter_book.conf
-UserParameter=my.user.parameter,echo "Hello World"
-binary@binary:~$
-```
+!!! example "Example config file"
+
+    ```bash
+    binary@binary:~$ cat /etc/zabbix/zabbix_agentd.d/userparameter_book.conf
+    UserParameter=my.user.parameter,echo "Hello World"
+    binary@binary:~$
+    ```
 
 This way you have a much cleaner approach of creating `UserParameter`
 definitions. You can group them logically, you are not affected by main
@@ -134,17 +137,19 @@ sequence of commands, but much easier to maintain, especially as it grows.
 
 So our final first `UserParameter` configuration could be as follows:
 
-```bash
-binary@binary:~$ cat /etc/zabbix/zabbix_agentd.d/userparameter_book.conf
-UserParameter=my.user.parameter,/opt/scripts/binary/my.sh
-binary@binary:~$ cat /opt/scripts/binary/my.sh
-#!/bin/bash
+!!! info ""
 
-echo "Hello World"
-
-exit 0
-binary@binary:~$
-```
+    ```bash
+    binary@binary:~$ cat /etc/zabbix/zabbix_agentd.d/userparameter_book.conf
+    UserParameter=my.user.parameter,/opt/scripts/binary/my.sh
+    binary@binary:~$ cat /opt/scripts/binary/my.sh
+    #!/bin/bash
+ 
+    echo "Hello World"
+ 
+    exit 0
+    binary@binary:~$
+    ```
 
 ???+ warning
 
@@ -183,37 +188,39 @@ creating a `UserParameter`, you must use `[*]` along with your custom item key.
 For example, let's create an item which will draw a sine wave. It will accept
 several parameters so we can draw different waves:
 
-```bash
-binary@binary:~$ cat /etc/zabbix/zabbix_agentd.d/userparameter_sin.conf
-UserParameter=sin[*],/opt/scripts/binary/sin.sh $1 $2 $3 $4
-binary@binary:~$ cat /opt/scripts/binary/sin.sh
-#!/bin/bash
+!!! example ""
 
-# $1 - frequency multiplier (times_pi)
-# $2 - amplitude
-# $3 - phase shift in multiples of pi
-# $4 - period length in seconds
-
-times_pi="$1"
-amplitude="$2"
-time_shift="$3"
-period="$4"
-
-pi=3.141592653589793
-
-now=$(( $(date +%s) % period ))
-
-value=$(bc -l <<EOF
-scale=14
-${amplitude} * s( (${time_shift} * ${pi}) + 2 * ${pi} * ${times_pi} * ${now} / ${period} )
-EOF
-)
-
-printf "%.8f\n" "${value}"
-
-exit 0
-binary@binary:~$
-```
+    ```bash
+    binary@binary:~$ cat /etc/zabbix/zabbix_agentd.d/userparameter_sin.conf
+    UserParameter=sin[*],/opt/scripts/binary/sin.sh $1 $2 $3 $4
+    binary@binary:~$ cat /opt/scripts/binary/sin.sh
+    #!/bin/bash
+ 
+    # $1 - frequency multiplier (times_pi)
+    # $2 - amplitude
+    # $3 - phase shift in multiples of pi
+    # $4 - period length in seconds
+ 
+    times_pi="$1"
+    amplitude="$2"
+    time_shift="$3"
+    period="$4"
+ 
+    pi=3.141592653589793
+ 
+    now=$(( $(date +%s) % period ))
+ 
+    value=$(bc -l <<EOF
+    scale=14
+    ${amplitude} * s( (${time_shift} * ${pi}) + 2 * ${pi} * ${times_pi} * ${now} / ${period} )
+    EOF
+    )
+ 
+    printf "%.8f\n" "${value}"
+ 
+    exit 0
+    binary@binary:~$
+    ```
 
 So now when creating items, we can provide parameters in the `[]` part of item
 keys, like:
@@ -244,25 +251,29 @@ add them incorrectly, the agent will stop and fail to start once being restarted
 thus a better idea is to check it in advance with `zabbix_agentd -t`. For
 example, here we have duplicated entries (same item key defined twice):
 
-```bash
-zabbix@binary:/$ cat /etc/zabbix/zabbix_agentd.d/userparameter_book.conf
-UserParameter=my.user.parameter,echo "Hello World"
-UserParameter=my.user.parameter,echo "Hello World 2"
-zabbix@binary:/$ zabbix_agentd -t my.user.parameter
-zabbix_agentd [1505972]: ERROR: cannot load user parameters: user parameter "my.user.parameter,echo "Hello World 2"": key "my.user.parameter" already exists
-zabbix@binary:/$
-```
+!!! example ""
+
+    ```bash
+    zabbix@binary:/$ cat /etc/zabbix/zabbix_agentd.d/userparameter_book.conf
+    UserParameter=my.user.parameter,echo "Hello World"
+    UserParameter=my.user.parameter,echo "Hello World 2"
+    zabbix@binary:/$ zabbix_agentd -t my.user.parameter
+    zabbix_agentd [1505972]: ERROR: cannot load user parameters: user parameter "my.user.parameter,echo "Hello World 2"": key "my.user.parameter" already exists
+    zabbix@binary:/$
+    ```
 
 After removing the duplicate and checking once again, we will get a value for the
 defined item:
 
-```bash
-zabbix@binary:/$ cat /etc/zabbix/zabbix_agentd.d/userparameter_book.conf
-UserParameter=my.user.parameter,echo "Hello World"
-zabbix@binary:/$ zabbix_agentd -t my.user.parameter
-my.user.parameter                             [t|Hello World]
-zabbix@binary:/$
-```
+!!! example ""
+
+    ```bash
+    zabbix@binary:/$ cat /etc/zabbix/zabbix_agentd.d/userparameter_book.conf
+    UserParameter=my.user.parameter,echo "Hello World"
+    zabbix@binary:/$ zabbix_agentd -t my.user.parameter
+    my.user.parameter                             [t|Hello World]
+    zabbix@binary:/$
+    ```
 
 *Make it executable and reachable*
 
@@ -276,25 +287,27 @@ forget that one of the directories in the path where our script lives is not
 reachable by anyone except us. So, it might look like this script is working,
 but it is working just for us:
 
-```bash
-binary@binary:~$ /opt/scripts/binary/my.sh
-Hello World
-binary@binary:~$ sudo -u zabbix bash -c "cd / && exec bash"
-zabbix@binary:/$ /opt/scripts/binary/my.sh
-bash: /opt/scripts/binary/my.sh: Permission denied
-zabbix@binary:/$ whoami
-zabbix
-zabbix@binary:/$ exit
-exit
-binary@binary:~$ namei -mo /opt/scripts/binary/my.sh
-f: /opt/scripts/binary/my.sh
- drwxr-xr-x root   root   /
- drwxr-xr-x root   root   opt
- drwxrwxrwt root   root   scripts
- drwxrwx--- binary binary binary
- -rwxrwxr-x binary binary my.sh
-binary@binary:~$
-```
+!!! example ""
+
+    ```bash
+    binary@binary:~$ /opt/scripts/binary/my.sh
+    Hello World
+    binary@binary:~$ sudo -u zabbix bash -c "cd / && exec bash"
+    zabbix@binary:/$ /opt/scripts/binary/my.sh
+    bash: /opt/scripts/binary/my.sh: Permission denied
+    zabbix@binary:/$ whoami
+    zabbix
+    zabbix@binary:/$ exit
+    exit
+    binary@binary:~$ namei -mo /opt/scripts/binary/my.sh
+    f: /opt/scripts/binary/my.sh
+     drwxr-xr-x root   root   /
+     drwxr-xr-x root   root   opt
+     drwxrwxrwt root   root   scripts
+     drwxrwx--- binary binary binary
+     -rwxrwxr-x binary binary my.sh
+    binary@binary:~$
+    ```
 
 *Be as fast as possible*
 
@@ -324,7 +337,7 @@ with some structured format and apply dependent items on top.
 Some symbols are not allowed by default to be passed in arguments for the
 `UserParameter`.
 
-These are ``\ ' " ` * ? [ ] { } ~ $ ! & ; ( ) < > | # @``, plus a newline
+These are ``\ ' " ` * ? [ ] { } ~ $ ! & ; ( ) < > | # @ %``, plus a newline
 character.
 
 If you really need it, you can enable it by setting `UnsafeUserParameters=1` in

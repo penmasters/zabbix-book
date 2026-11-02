@@ -42,7 +42,7 @@ _13.2 SSL Ok_
 <br />
 
 ???+ note
-    The designs were borrowed from https://www.youtube.com/watch?v=WqgzYuHtnIM.
+    The designs were inspired from https://www.youtube.com/watch?v=WqgzYuHtnIM.
     This video explains how SSL works.
 
 ## Securing the frontend with self-signed certificates
