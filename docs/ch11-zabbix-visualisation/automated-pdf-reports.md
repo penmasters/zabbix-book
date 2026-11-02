@@ -92,7 +92,7 @@ correctly and listening on the expected port.
     ```bash
     systemctl status zabbix-web-service
     systemctl enable zabbix-web-service
-```
+    ```
 
     You can also test whether the Web Service is listening.
 

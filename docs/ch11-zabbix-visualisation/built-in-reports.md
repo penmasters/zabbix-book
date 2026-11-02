@@ -170,18 +170,22 @@ spent in each state.
 
 For example, a trigger could show:
 
-``` text
-OK       99.95%
-Problem   0.05%
-```
+!!! info ""
+
+    ``` text
+    OK       99.95%
+    Problem   0.05%
+    ```
 
 This makes the report useful for quickly investigating the historical
 availability of monitored components.
 
 The report can operate in two modes:
 
--   **By host**
--   **By trigger template**
+!!! info ""
+
+    -   **By host**
+    -   **By trigger template**
 
 When using **By host**, the report can be filtered by host groups and
 hosts.
@@ -550,16 +554,16 @@ starting points directly in the Zabbix frontend.
 
 ## Questions
 
-1.  What is the difference between the estimated required server
-    performance and the actual number of values processed by Zabbix?
-2.  Why should the Availability report not automatically be interpreted
-    as an SLA report?
-3.  Which report would you use to identify triggers that repeatedly
-    generate problems?
-4.  Which report can help determine who modified a Zabbix configuration
-    object?
-5.  What is the purpose of the Recordset ID in the Audit log?
-6.  Which report would you use to troubleshoot a failed notification?
-7.  What is the difference between the Action log and the Notifications
-    report?
-8.  How do maintenance periods affect the Availability report?
+- What is the difference between the estimated required server
+  performance and the actual number of values processed by Zabbix?
+- Why should the Availability report not automatically be interpreted
+  as an SLA report?
+- Which report would you use to identify triggers that repeatedly
+  generate problems?
+- Which report can help determine who modified a Zabbix configuration
+  object?
+- What is the purpose of the Recordset ID in the Audit log?
+- Which report would you use to troubleshoot a failed notification?
+- What is the difference between the Action log and the Notifications
+  report?
+- How do maintenance periods affect the Availability report?

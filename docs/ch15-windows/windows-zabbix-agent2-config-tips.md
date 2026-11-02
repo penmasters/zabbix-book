@@ -606,11 +606,11 @@ package. The recommendations below are covered in the order listed.
 
 ## Questions
 
-1. Why is it recommended to keep custom configuration outside of the default
+- Why is it recommended to keep custom configuration outside of the default
    `zabbix_agent2.conf` file?
-2. What is the purpose of the `Include` parameter?
-3. Why might an organisation use `HostMetadata`?
-4. In which scenario would a passive check be used instead of an active check?
+- What is the purpose of the `Include` parameter?
+- Why might an organisation use `HostMetadata`?
+- In which scenario would a passive check be used instead of an active check?
 
 ## Useful URLs
 

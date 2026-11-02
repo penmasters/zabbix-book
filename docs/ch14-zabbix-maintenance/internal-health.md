@@ -28,21 +28,23 @@ visible symptoms emerge: queue growth, delayed metrics, or slow alerting.
 
 Each Zabbix installation automatically creates a **virtual internal host**:
 
-- **Zabbix server** — represents the server process itself
-- **Zabbix proxy** — represents each proxy instance
+!!! info ""
+
+    - **Zabbix server** — represents the server process itself
+    - **Zabbix proxy** — represents each proxy instance
 
 These hosts are not linked to any physical device or network interface. They exist
 entirely within the Zabbix backend and collect self-monitoring data through *internal
 items* with keys beginning with `zabbix[...]`.
 
-Examples:
+!!! example "Examples:"
 
-```text
-zabbix[process,poller,avg,busy]
-zabbix[queue,all]
-zabbix[wcache,values,free]
-zabbix[items]
-```
+    ```text
+    zabbix[process,poller,avg,busy]
+    zabbix[queue,all]
+    zabbix[wcache,values,free]
+    zabbix[items]
+    ```
 
 These items require no agent or SNMP interface — they are gathered internally by
 Zabbix itself.
@@ -53,9 +55,11 @@ Zabbix itself.
 
 At a high level, Zabbix operates as a sequential pipeline:
 
-``` text
-Data collection → Preprocessing → Storage → Trigger evaluation → Alerting
-```
+!!! info ""
+
+    ``` text
+    Data collection → Preprocessing → Storage → Trigger evaluation → Alerting
+    ```
 
 Each stage is handled by a different group of specialised processes. Understanding
 how these processes relate to each other is the key to diagnosing performance problems.
@@ -498,23 +502,23 @@ every other monitored component.
 
 ## Questions
 
-1. What is the purpose of the "Zabbix server" internal host, and why does it require
+- What is the purpose of the "Zabbix server" internal host, and why does it require
 no agent or SNMP interface?
-2. Why does Zabbix 7.0+ still require a special setup to collect proxy *performance*
+- Why does Zabbix 7.0+ still require a special setup to collect proxy *performance*
 statistics, even though proxy availability is monitored out of the box?
-3. Why must a Zabbix proxy's agent be monitored by the proxy itself rather than
+- Why must a Zabbix proxy's agent be monitored by the proxy itself rather than
 by the server?
-4. What are the key differences between the *Zabbix proxy health* and the
+- What are the key differences between the *Zabbix proxy health* and the
 *Remote Zabbix Server/Proxy Health* templates?
-5. Which internal metric indicates poller utilisation, and at what threshold
+- Which internal metric indicates poller utilisation, and at what threshold
 should you act?
-6. What are the three most common root causes of a growing item queue?
-7. Why is preprocessing often called a "hidden bottleneck," and what symptoms
+- What are the three most common root causes of a growing item queue?
+- Why is preprocessing often called a "hidden bottleneck," and what symptoms
 does it cause when overloaded?
-8. In what scenario would you use the *Remote Zabbix Server Health* template?
-9. Why does the Configuration Cache have no direct utilisation metric, and how
+- In what scenario would you use the *Remote Zabbix Server Health* template?
+- Why does the Configuration Cache have no direct utilisation metric, and how
 do you infer its health?
-10. How can triggers help you detect Zabbix server performance problems automatically?
+- How can triggers help you detect Zabbix server performance problems automatically?
 
 ---
 
