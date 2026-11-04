@@ -93,9 +93,110 @@ item to determine the hostname used. This can be an existing item, but also a
 `UserParameter` (more on those later). With this functionality, you can even
 execute a Bash or PowerShell script to set a custom hostname like that.
 
+### Restricting which item keys the agent can execute
+
+Now that our Zabbix agent knows where to connect, let's have a look at the security aspect.
+By default, Zabbix can execute all item keys. We might want to allow the monitoring of
+only certain item keys. For example monitoring specific files, but preventing other files 
+from being read through the agent. We can do this with the `AllowKey` and `DenyKey` parameters 
+in the Zabbix agent configuration file. Keep in mind that these parameters work for both 
+`Passive` and `Active` checks, in both Zabbix agent and Zabbix agent 2.
+
+#### Using AllowKey and DenyKey
+
+The `AllowKey` parameter allows an item key to be executed, while `DenyKey`
+blocks it. We can specify an exact item key or use the wildcard `*` to match
+any number of characters.
+
+Let's say we want to collect the size of a specfic application log file, but we do 
+not want to allow file size checks for other files. We also want to block checks
+that read file contents. To do this, we can add the following parameters to our Zabbix
+agent configuration file.
+
+???+ example "Allow and deny item keys"
+
+    ```ini
+    AllowKey=vfs.file.size[/var/log/myapp.log]
+    DenyKey=vfs.file.size[*]
+    DenyKey=vfs.file.contents[*]
+    ```
+
+As you can see, we first allow `vfs.file.size[/var/log/myapp.log]`. We then deny
+all other file size checks with `DenyKey=vfs.file.size[*]`. So a parameter like
+`vfs.file.size[/etc/passwd]` will not be allowed. The last parameter blocks all
+checks using `vfs.file.contents`, regardless of which file is requested.
+
+This makes sure that we can read the log file we need, but block the monitoring of
+all other file sizes and especially their content. Of course, Zabbix agent (on Linux)
+run as the `zabbix` user by default, already giving us limited permissions. But the 
+AllowKey and DenyKey paramters give us additional options to secure our agent 
+configuration further.
+
+!!! tip "Put specific rules first"
+
+    It's important to remember that the agent checks these rules in the configuration
+    order (Top to Bottom). The first matching rule decides whether the item key is 
+    allowed or denied. In our example, placing `DenyKey=vfs.file.size[*]` first would also
+    block the application log file. Do not forget to place the `DenyKey` as an `AllowKey` parameter does not automatically block all other item keys without it.
+
+#### Using AllowKey and DenyKey regular expressions
+
+What if we have multiple application log files and want more control over which
+files we allow monitoring on? Since Zabbix 8.0, we can also use `AllowKeyRegexp` and
+`DenyKeyRegexp`, which give us more granular control using regular expressions. These 
+Regular Expressions allow us to match item keys and their parameters in more detail.
+
+Instead of the previous example, let's allow file size checks for two
+application log files.
+
+???+ example "Allow and deny item keys with regular expressions"
+
+    ```ini
+    AllowKeyRegexp=^vfs\.file\.size\[/var/log/myapp[12]\.log\]$
+    DenyKeyRegexp=^vfs\.file\.size\[.*\]$
+    DenyKeyRegexp=^vfs\.file\.contents\[.*\]$
+    ```
+
+With `[12]` we allow either `myapp1.log` or `myapp2.log`. The next two rules 
+block other file size checks and all file contents checks, just as in our 
+previous example. We can also combine the regular expression parameters with the 
+regular `AllowKey` and `DenyKey`, but the first matching rule still makes the decision.
+
+#### Keeping rules in a separate configuration file
+
+It's also possible to keep these parameters in a separate `.conf` file. This
+makes it easier to keep our custom settings together. For our Zabbix agent 2
+on Linux, let's create a file in the `zabbix_agent2.d` directory.
+
+!!! info "Create an additional agent configuration file"
+
+    Linux
+
+    ```bash
+    sudo vim /etc/zabbix/zabbix_agent2.d/key-access.conf
+    ```
+
+Add one of the example rule sets above to this file. Then make sure the main
+`zabbix_agent2.conf` file includes the directory. Depending on your installation,
+the following parameter might already be configured.
+
+???+ example "Include additional configuration files"
+
+    ```ini
+    Include=/etc/zabbix/zabbix_agent2.d/*.conf
+    ```
+
+Do not forget to check the existing `Include` parameters first, so the same
+configuration file is not loaded twice.
+
+!!! tip "Keep related rules together"
+
+    Keep allow and deny rules that depend on each other in the same file.
+    We cannot rely on the order in which files from an included directory are
+    loaded, even if we give them names that sort alphabetically.
+
 With this configuration set you can restart the Zabbix agent to make the changes
-take effect. In `Windows` restart the Zabbix Agent 2 service using the Services 
-management console, for `Linux` issue the command below.
+take effect. In `Windows` restart the Zabbix Agent 2 service, for `Linux` issue the command below.
 
 !!! info "Restart Zabbix agent on Linux"
 
