@@ -117,8 +117,8 @@ operacional:
 
     Ubuntu
     ```bash
-    sudo apt update
-    sudo apt upgrade
+    apt update
+    apt upgrade
     ```
 ???+ note "O que são apt, dnf e zypper?"
 
@@ -217,8 +217,8 @@ Para instalar e ativar o firewall, execute o seguinte comando:
 
     Ubuntu
     ```bash
-    sudo apt install ufw
-    sudo ufw enable
+    apt install ufw
+    ufw enable
     ```
 ???+ note "O que são firewalld e ufw?"
 
@@ -330,7 +330,7 @@ Para instalar e ativar o chrony, nosso cliente NTP, use o seguinte comando:
 
     Ubuntu
     ```bash
-    sudo apt install chrony
+    apt install chrony
     ```
 
 Após a instalação, verifique se o Chrony está ativado e em execução, verificando
@@ -499,7 +499,7 @@ Chrony:
 
     Ubuntu
     ```bash
-    sudo vi /etc/chrony/chrony.conf
+    vi /etc/chrony/chrony.conf
     ```
 
 Substitua o pool de servidores NTP existente por um mais próximo de sua

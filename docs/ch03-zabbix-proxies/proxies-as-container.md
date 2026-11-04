@@ -341,7 +341,7 @@ timer.
 !!! info "For System-Wide Services"
 
     ```bash
-    sudo systemctl enable --now podman-auto-update.timer
+    systemctl enable --now podman-auto-update.timer
     ```
 
 !!! info "For User-Level Services"

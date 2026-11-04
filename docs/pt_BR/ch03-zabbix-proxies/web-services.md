@@ -118,7 +118,7 @@ your operating system.
 
     Ubuntu
     ```bash
-    sudo apt-get install zabbix-web-service
+    apt-get install zabbix-web-service
     ```
 
 As mentioned before, the Zabbix web service requires a headless Google Chrome or
@@ -147,7 +147,7 @@ already, you can install it using the package manager of your operating system.
 
     Ubuntu
     ```bash
-    sudo apt-get install chromium-browser
+    apt-get install chromium-browser
     ```
 
 Alternatively, you can also install Google Chrome by downloading the package
@@ -190,7 +190,7 @@ service using the Systemd service manager.
 !!! info "Start Zabbix web service"
 
     ```bash
-    sudo systemctl enable zabbix-web-service --now
+    systemctl enable zabbix-web-service --now
     ```
 
 After this, the Zabbix web service should be up and running and ready to accept
@@ -361,13 +361,13 @@ firewall allows incoming connections on the new port.
 
     Red Hat / SUSE
     ```bash
-    sudo firewall-cmd --add-service=zabbix-web-service --permanent
-    sudo firewall-cmd --reload
+    firewall-cmd --add-service=zabbix-web-service --permanent
+    firewall-cmd --reload
     ```
 
     Ubuntu
     ```bash
-    sudo ufw allow 10053/tcp
+    ufw allow 10053/tcp
     ```
 ---
 
@@ -383,7 +383,7 @@ creating or editing the `/etc/zabbix/zabbix_server.d/web_service.conf` file.
 !!! info "Edit zabbix_server.d/web_service.conf"
 
     ```bash
-    sudo vi /etc/zabbix/zabbix_server.d/web_service.conf
+    vi /etc/zabbix/zabbix_server.d/web_service.conf
     ```
 
     ```ini
@@ -402,7 +402,7 @@ Zabbix web service. This can be done using the following command:
 !!! info "Allow Zabbix server to connect to Zabbix web service with SELinux"
 
     ```bash
-    sudo setsebool -P zabbix_can_network=1
+    setsebool -P zabbix_can_network=1
     ```
 
 After making these changes, restart the Zabbix server to apply the new
@@ -411,7 +411,7 @@ configuration.
 !!! info "Restart Zabbix server"
 
     ```bash
-    sudo systemctl restart zabbix-server
+    systemctl restart zabbix-server
     ```
 
 Finally, you have to tell Zabbix where to find the Zabbix Frontend so that it

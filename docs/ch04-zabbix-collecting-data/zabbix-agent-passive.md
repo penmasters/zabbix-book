@@ -231,7 +231,7 @@ After adding the repository, we should be able to install `Zabbix agent 2`.
      Ubuntu
 
     ```bash
-    sudo apt install zabbix-agent2
+    apt install zabbix-agent2
     ```
 
 After installation make sure to start and enable the Zabbix agent.

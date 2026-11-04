@@ -25,7 +25,7 @@ Chrome cannot start and PDF generation will fail.
     Create the directory manually.
 
     ```bash
-    sudo install -d -o zabbix -g zabbix -m 0750 /var/lib/zabbix
+    install -d -o zabbix -g zabbix -m 0750 /var/lib/zabbix
     ```
 
     Create the directories required by Google Chrome.
@@ -56,7 +56,7 @@ web service and how many report writers to start.
     Edit the Zabbix Server configuration.
 
     ```bash
-    sudo vi /etc/zabbix/zabbix_server.d/zabbix_web_service.conf
+    vi /etc/zabbix/zabbix_server.d/zabbix_web_service.conf
     ```
 
     Configure the Web Service URL.
@@ -74,8 +74,8 @@ web service and how many report writers to start.
     Restart both services.
 
     ```bash
-    sudo systemctl restart zabbix-web-service
-    sudo systemctl restart zabbix-server
+    systemctl restart zabbix-web-service
+    systemctl restart zabbix-server
     ```
 
 ---

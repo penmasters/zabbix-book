@@ -73,8 +73,8 @@ works, including your Zabbix server itself.
     1. **Install the SNMP daemon and client tools**
     
     ```
-    sudo apt update
-    sudo apt install snmpd snmp -y
+    apt update
+    apt install snmpd snmp -y
     ```
     
     2. **Allow read access to the standard MIBs**
@@ -89,8 +89,8 @@ works, including your Zabbix server itself.
     3. **Restart and enable the service**
     
     ```
-    sudo systemctl restart snmpd
-    sudo systemctl enable snmpd
+    systemctl restart snmpd
+    systemctl enable snmpd
     ```
     
     4. **Verify locally**
@@ -104,7 +104,7 @@ works, including your Zabbix server itself.
     1. **Install the SNMP daemon and client tools**
     
     ```
-    sudo dnf install net-snmp net-snmp-utils -y
+    dnf install net-snmp net-snmp-utils -y
     ```
     
     2. **Allow read access to the standard MIBs**
@@ -143,15 +143,15 @@ works, including your Zabbix server itself.
     unless you allow it:
     
     ```
-    sudo firewall-cmd --permanent --add-service=snmp
-    sudo firewall-cmd --reload
+    firewall-cmd --permanent --add-service=snmp
+    firewall-cmd --reload
     ```
     
     4. **Restart and enable the service**
     
     ```
-    sudo systemctl restart snmpd
-    sudo systemctl enable snmpd
+    systemctl restart snmpd
+    systemctl enable snmpd
     ```
     
     5. **Verify locally**

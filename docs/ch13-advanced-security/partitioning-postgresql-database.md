@@ -76,7 +76,7 @@ essential for efficient long-term data storage and performance in larger environ
 
     Red Hat
     ```bash
-    sudo tee /etc/yum.repos.d/timescale_timescaledb.repo <<EOL
+    tee /etc/yum.repos.d/timescale_timescaledb.repo <<EOL
     [timescale_timescaledb]
     name=timescale_timescaledb
     baseurl=https://packagecloud.io/timescale/timescaledb/el/$(rpm -E %{rhel})/\$basearch
@@ -104,11 +104,11 @@ essential for efficient long-term data storage and performance in larger environ
 
     Ubuntu
     ```bash
-    echo "deb https://packagecloud.io/timescale/timescaledb/ubuntu/ $(lsb_release -c -s) main" | sudo tee /etc/apt/sources.list.d/timescaledb.list
+    echo "deb https://packagecloud.io/timescale/timescaledb/ubuntu/ $(lsb_release -c -s) main" | tee /etc/apt/sources.list.d/timescaledb.list
     ```
     ```bash
     wget --quiet -O - https://packagecloud.io/timescale/timescaledb/gpgkey |
-    sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/timescaledb.gpg
+    gpg --dearmor -o /etc/apt/trusted.gpg.d/timescaledb.gpg
     ```
 
 !!! info "Update your local repository list"
@@ -125,7 +125,7 @@ essential for efficient long-term data storage and performance in larger environ
 
     Ubuntu
     ```bash
-    sudo apt update -y
+    apt update -y
     ```
 ---
 
@@ -162,7 +162,7 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
     Ubuntu
     ```
-    sudo apt install timescaledb-2-postgresql-17 postgresql-client-17
+    apt install timescaledb-2-postgresql-17 postgresql-client-17
     ```
 
 ???+ note
@@ -231,8 +231,8 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
     Ubuntu
     ```bash
-    sudo apt install timescaledb-2-postgresql-17=2.19.3~ubuntu24.04 timescaledb-2-loader-postgresql-17=2.19.3~ubuntu24.04
-    sudo apt-mark hold timescaledb-2-postgresql-17
+    apt install timescaledb-2-postgresql-17=2.19.3~ubuntu24.04 timescaledb-2-loader-postgresql-17=2.19.3~ubuntu24.04
+    apt-mark hold timescaledb-2-postgresql-17
     ```
 ---
 
@@ -258,7 +258,7 @@ First, we need to install the required dependencies for building TimescaleDB:
 
     Ubuntu
     ```bash
-    sudo apt install -y git cmake g++ make postgresql-server-dev-17 libicu-dev
+    apt install -y git cmake g++ make postgresql-server-dev-17 libicu-dev
     ```
 
 Next we will download the TimescaleDB source code from the official GitHub 
@@ -279,7 +279,7 @@ Now it is time to actually build and install TimescaleDB:
     ```bash
     ./bootstrap
     cd build && make
-    sudo make install
+    make install
     ```
 
 ---
@@ -296,7 +296,7 @@ settings to optimise performance. On Red Hat-based systems, you can run:
 !!! info ""
 
     ```bash
-    sudo timescaledb-tune --pg-config=/usr/pgsql/17/bin/pg_config
+    timescaledb-tune --pg-config=/usr/pgsql/17/bin/pg_config
     ```
 
 When installed on SUSE using the SUSE packages, the script is not available and 
@@ -318,7 +318,7 @@ For Ubuntu and Debian-based systems, simply run:
 !!! info ""
 
     ```bash
-    sudo timescaledb tune
+    timescaledb tune
     ```
 
 This script will suggest configuration changes and can update your PostgreSQL configuration file automatically. If you prefer to tune the settings manually,
@@ -354,7 +354,7 @@ TimescaleDB extension and apply the new settings:
 
     Ubuntu
     ```bash
-    sudo systemctl restart postgresql
+    systemctl restart postgresql
     ```
 ---
 
@@ -369,7 +369,7 @@ could otherwise cause locks or unexpected behaviour.
 !!! info "Stop Zabbix server"
 
     ```bash
-    sudo systemctl stop zabbix-server
+    systemctl stop zabbix-server
     ```
 
 !!! info "Create timescaledb extension"
@@ -455,7 +455,7 @@ Let's start our Zabbix server again before we continue.
 !!! info "start Zabbix server"
 
     ```bash
-    sudo systemctl start zabbix-server
+    systemctl start zabbix-server
     ```
 
 Let's have a look at them: go to `Administration` | `Housekeeping`.

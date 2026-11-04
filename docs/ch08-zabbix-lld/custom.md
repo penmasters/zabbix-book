@@ -58,7 +58,7 @@ in the `/usr/bin/` directory on each system with an agent installed:
 
 !!! info "create our script"
     ``` yaml
-    sudo vi /usr/bin/users-discovery.sh
+    vi /usr/bin/users-discovery.sh
     ```
 Paste the following content in the file:
 
@@ -94,7 +94,7 @@ Once you have created the script, don't forget to make it executable.
 
 !!! info ""
     ``` yaml
-    sudo chmod +x /usr/bin/users-discovery.sh
+    chmod +x /usr/bin/users-discovery.sh
     ```
 The script will be executed by the Zabbix agent and will return discovery data
 about user sessions in the JSON format required for Low-Level Discovery processing.
@@ -112,11 +112,11 @@ personal user account. Feel free to add as many users as you like.
 
 !!! info "create some users"
     ``` yaml
-    sudo for user in sven brian cartman kenny; do sudo useradd $user; done
+    for user in sven brian cartman kenny; do useradd $user; done
     ```
     Create a password for every user so that we can log in on the console
     ``` yaml
-    sudo passwd <user>
+    passwd <user>
     ```
 
 

@@ -354,7 +354,7 @@ o temporizador de atualização automática do Podman.
 !!! info "Para serviços em todo o sistema"
 
     ```bash
-    sudo systemctl enable --now podman-auto-update.timer
+    systemctl enable --now podman-auto-update.timer
     ```
 
 !!! info "Para serviços de nível de usuário"

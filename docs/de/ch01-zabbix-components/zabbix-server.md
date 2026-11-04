@@ -41,9 +41,9 @@ Um die Komponenten des Zabbix-Servers zu installieren, führen Sie den folgenden
     Ubuntu
     ``` bash
     # For MySQL/MariaDB backend:
-    sudo apt install zabbix-server-mysql
+    apt install zabbix-server-mysql
     # For PostgreSQL backend:
-    sudo apt install zabbix-server-pgsql
+    apt install zabbix-server-pgsql
     ```
 
 
@@ -173,14 +173,14 @@ Um diese Verbindungen zuzulassen, müssen Sie diesen Port im Firewall öffnen.
 
     Red Hat / SUSE
     ``` bash
-    sudo firewall-cmd --add-service=zabbix-trapper --permanent
-    sudo firewall-cmd --reload
+    firewall-cmd --add-service=zabbix-trapper --permanent
+    firewall-cmd --reload
     ```
 
 
     Ubuntu
     ``` bash
-    sudo ufw allow 10051/tcp
+    ufw allow 10051/tcp
     ```
 
 
@@ -213,7 +213,7 @@ um den Zabbix-Server zu aktivieren und sicherzustellen, dass er bei jedem System
 
     Red Hat, SUSE und Ubuntu
     ``` bash
-    sudo systemctl enable zabbix-server --now
+    systemctl enable zabbix-server --now
     ```
 
 
@@ -299,13 +299,13 @@ und nach einem Neustart überlebt.
 !!! info "Überprüfung des Status des zabbix-server-Dienstes"
 
     ```bash
-    sudo systemctl status zabbix-server
+    systemctl status zabbix-server
     ```
 
 
 ???+ example "Beispielausgabe"
     ```shell-session
-    localhost:~> sudo systemctl status zabbix-server
+    localhost:~> systemctl status zabbix-server
 
     ● zabbix-server.service - Zabbix Server
          Loaded: loaded (/usr/lib/systemd/system/zabbix-server.service; enabled; preset: disabled)

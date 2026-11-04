@@ -96,7 +96,7 @@ Add a new configuration file for the HA setup on the first Zabbix server:
 !!! info "Add High Availability Zabbix server configuration"
 
     ``` bash
-    sudo vi /etc/zabbix/zabbix_server.d/high-availability.conf
+    vi /etc/zabbix/zabbix_server.d/high-availability.conf
     ```
 
     Insert the following line into the configuration file to enable HA mode.
@@ -145,7 +145,7 @@ After configuring both servers, enable and start the zabbix-server service on ea
 !!! info "Enable and start zabbix-server service"
 
     ```
-    sudo systemctl enable zabbix-server --now
+    systemctl enable zabbix-server --now
     ```
 
 ---
@@ -160,7 +160,7 @@ On the first server:
 !!! info "Check logs for HA messages"
 
     ``` bash
-    sudo grep HA /var/log/zabbix/zabbix_server.log
+    grep HA /var/log/zabbix/zabbix_server.log
     ```
 
 In the system logs, you should observe the following entries, indicating the initialization
@@ -169,7 +169,7 @@ of the High Availability (HA) manager:
 ???+ example "HA log messages on active node"
 
     ```shell-session
-    localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
+    localhost:~> grep HA /var/log/zabbix/zabbix_server.log
     22597:20240309:155230.353 starting HA manager
     22597:20240309:155230.362 HA manager started in active mode
     ```
@@ -184,7 +184,7 @@ Running the same command on the second server (and any additional nodes):
 ???+ example "HA log messages on standby node"
 
     ```shell-session
-    localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
+    localhost:~> grep HA /var/log/zabbix/zabbix_server.log
     22304:20240309:155331.163 starting HA manager
     22304:20240309:155331.174 HA manager started in standby mode
     ```
@@ -267,7 +267,7 @@ servers to ensure high availability of both the frontend and the server.
 
     Ubuntu
     ```bash
-    sudo apt install keepalived
+    apt install keepalived
     ```
 
 Next, we need to modify the Keepalived configuration on all servers. While the
@@ -278,7 +278,7 @@ command:
 !!! info "Edit the keepalived config"
 
     ```bash
-    sudo vi /etc/keepalived/keepalived.conf
+    vi /etc/keepalived/keepalived.conf
     ```
 
 If the file contains any existing content, it should be cleared and replaced
@@ -367,7 +367,7 @@ firewall. Perform the following commands on all servers:
 
     Ubuntu
     ```yaml
-    sudo ufw allow to 224.0.0.18 comment ‘keepalived multicast’
+    ufw allow to 224.0.0.18 comment ‘keepalived multicast’
     ```
 
 This ends the configuration of Keepalived. We can now continue adapting the frontend.
@@ -434,7 +434,7 @@ managing the VIP:
 !!! info "Start and enable keepalived"
 
     ```yaml
-    sudo systemctl enable keepalived nginx --now
+    systemctl enable keepalived nginx --now
     ```
 
 
@@ -485,7 +485,7 @@ runtime command must be used:
 !!! info ""
 
     ```bash
-    sudo zabbix_server -R ha_remove_node=`zabbix1`
+    zabbix_server -R ha_remove_node=`zabbix1`
     ```
 
 Executing this command removes the node from the HA cluster. Upon successful

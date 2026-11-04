@@ -58,9 +58,9 @@ tags: [beginner]
     Ubuntu
     ```bash
     # When using MySQL/MariaDB
-    sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
+    apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
     # or when using PostgreSQL
-    sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
+    apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
 
@@ -139,7 +139,7 @@ tags: [beginner]
     vi /etc/nginx/nginx.conf
     ```
 
-Если вы используете Ubuntu, не нужно редактировать `nginx.conf` просто выполните `sudo unlink /etc/nginx/sites-enabled/default`
+Если вы используете Ubuntu, не нужно редактировать `nginx.conf` просто выполните `unlink /etc/nginx/sites-enabled/default`
 
 В этом файле конфигурации найдите следующий блок, который начинается с `server {`:
 
@@ -179,7 +179,7 @@ tags: [beginner]
 !!! info "Измените конфигурацию Zabbix для nginx"
 
     ```bash
-    sudo vi /etc/nginx/conf.d/zabbix.conf
+    vi /etc/nginx/conf.d/zabbix.conf
     ```
 
 
@@ -233,7 +233,7 @@ tags: [beginner]
 
     Ubuntu
     ```bash
-    sudo systemctl enable nginx php8.3-fpm --now
+    systemctl enable nginx php8.3-fpm --now
     ```
 
 
@@ -242,13 +242,13 @@ tags: [beginner]
 !!! info "Проверьте работу службы"
 
     ```bash
-    sudo systemctl status nginx
+    systemctl status nginx
     ```
 
 ???+ example "Пример вывода"
 
     ```shell-session
-    localhost:~> sudo systemctl status nginx
+    localhost:~> systemctl status nginx
     ● nginx.service - The nginx HTTP and reverse proxy server
           Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
          Drop-In: /usr/lib/systemd/system/nginx.service.d
@@ -282,7 +282,7 @@ tags: [beginner]
 
     Ubuntu
     ```bash
-    sudo ufw allow 80/tcp
+    ufw allow 80/tcp
     ```
 
 
@@ -351,9 +351,9 @@ _1.3 Выбор языка приветствия Zabbix_
 !!! info "Это можно легко исправить с помощью следующих команд."
 
     ```bash
-    sudo locale-gen en_US.UTF-8
-    sudo update-locale
-    sudo systemctl restart nginx php8.3-fpm
+    locale-gen en_US.UTF-8
+    update-locale
+    systemctl restart nginx php8.3-fpm
     ```
 
 
@@ -425,7 +425,7 @@ _1.3 Выбор языка приветствия Zabbix_
 
     Ubuntu
     ```bash
-    sudo apt-cache search language-pack | grep -i zh
+    apt-cache search language-pack | grep -i zh
     ```
 
 
@@ -440,21 +440,21 @@ _1.3 Выбор языка приветствия Zabbix_
     Red Hat
     ```bash
     dnf install glibc-langpack-zh.x86_64
-    sudo systemctl restart nginx php-fpm
+    systemctl restart nginx php-fpm
     ```
 
 
     SUSE
     ```bash
     zypper install glibc-locale
-    sudo systemctl restart nginx php-fpm
+    systemctl restart nginx php-fpm
     ```
 
 
     Ubuntu
     ```bash
-    sudo apt install language-pack-zh-hans
-    sudo systemctl restart nginx php8.3-fpm
+    apt install language-pack-zh-hans
+    systemctl restart nginx php8.3-fpm
     ```
 
 

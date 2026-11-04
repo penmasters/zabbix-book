@@ -204,9 +204,9 @@ supprimer les anciens fichiers et de mettre les métadonnées à jour :
 
     Ubuntu
     ``` bash
-    sudo wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo apt update
+    wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    apt update
     ```
 
 Ces commandes actualisent les métadonnées des dépôts et préparent le système à
@@ -273,7 +273,7 @@ outils supplémentaires nécessaires à leur gestion avec systemd.
 
     Ubuntu
     ```bash
-    sudo apt install podman
+    apt install podman
     ```
 
 ### Configurer Podman pour une gestion des conteneurs par utilisateur
@@ -285,7 +285,7 @@ n'exécutera qu'un proxy Zabbix dans un conteneur.
 !!! info "Créer et initialiser l'utilisateur Podman"
 
     ```bash
-    sudo useradd --comment "User for running container workloads" podman
+    useradd --comment "User for running container workloads" podman
     sudo -i -u podman
     mkdir -p ~/.local/share/containers
     mkdir -p ~/.config/containers/systemd/

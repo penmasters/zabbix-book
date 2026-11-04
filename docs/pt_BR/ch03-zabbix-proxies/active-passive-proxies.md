@@ -114,7 +114,7 @@ Database_](../ch01-zabbix-components/database.md).
 
     Ubuntu
     ```
-    sudo apt install zabbix-proxy-sqlite3
+    apt install zabbix-proxy-sqlite3
     ```
 
 ???+ dica
@@ -321,7 +321,7 @@ servidor _Zabbix_ para o proxy ativo.
 !!! info "Habilitar e iniciar o serviço de proxy"
 
     ```bash
-      sudo systemctl enable zabbix-proxy --now
+      systemctl enable zabbix-proxy --now
       ```
 
 Se tudo correr bem, podemos verificar o arquivo de registro do nosso proxy e
@@ -330,7 +330,7 @@ veremos que o Zabbix criou o banco de dados sozinho.
 ???+ exemplo "Exibir registros de proxy do Zabbix"
 
     ```shell-session
-    localhost:~> sudo tail -f /var/log/zabbix/zabbix_proxy.log`
+    localhost:~> tail -f /var/log/zabbix/zabbix_proxy.log`
     11134:20250519:152232.419 Starting Zabbix Proxy (active) [Zabbix proxy]. Zabbix 7.4.0beta2 (revision 7cd11a01d42).
     11134:20250519:152232.419 **** Enabled features ****
     11134:20250519:152232.419 SNMP monitoring:       YES
@@ -384,7 +384,7 @@ E reinicie o processo _Zabbix Server_.
 !!! info "Reinicie o servidor Zabbix"
 
     ```bash
-    sudo systemctl restart zabbix-server
+    systemctl restart zabbix-server
     ```
 
 Agora, voltando ao frontend, veremos que o nosso _proxy passivo_ está

@@ -40,7 +40,7 @@ The original version can be found here:
 !!! info "Download this script and place it in `/usr/bin/` "
     ```
     cd /usr/bin/
-    sudo dnf install wget -y
+    dnf install wget -y
     wget https://raw.githubusercontent.com/Trikke76/Zabbix/refs/heads/master/maintenance/zabbix-maintenance.py -P /usr/bin/
     chmod +x /usr/bin/zabbix-maintenance.py
     ```
@@ -54,7 +54,7 @@ running. Make sure you have this dependency set up on your system before executi
     ```
     Ubuntu
     ```
-    sudo apt install python3-requests
+    apt install python3-requests
     ```
 
 ???+ note
@@ -108,7 +108,7 @@ protocol. Be sure the URL in your script matches your actual server configuratio
 
 !!! info "Replace variables"
     ```
-    sudo vi /usr/bin/zabbix-maintenance.py
+    vi /usr/bin/zabbix-maintenance.py
     ```
     ```
     ZABBIX_API_URL = "https://zabbix-url.be/api_jsonrpc.php"

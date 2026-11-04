@@ -56,7 +56,7 @@ to ensure we have this utility:
 
     Ubuntu
     ```bash
-    sudo apt install apache2-utils
+    apt install apache2-utils
     ``` 
 
 Next we will create the required file and the `Admin` user in it:
@@ -65,17 +65,17 @@ Next we will create the required file and the `Admin` user in it:
 
     NGINX
     ```bash
-    sudo htpasswd -c /etc/nginx/httpauth Admin
+    htpasswd -c /etc/nginx/httpauth Admin
     ```
 
     Apache on Red Hat
     ```bash
-    sudo htpasswd -c /etc/httpd/.htpasswd Admin
+    htpasswd -c /etc/httpd/.htpasswd Admin
     ```
 
     Apache on SUSE / Ubuntu
     ```bash
-    sudo htpasswd -c /etc/apache2/.htpasswd Admin
+    htpasswd -c /etc/apache2/.htpasswd Admin
     ```
 
 This command will request you to input the desired password for the `Admin` user
@@ -88,7 +88,7 @@ as the file is now already created:
 ???+ example "Add additional users"
 
     ```shell-session
-    localhost:~> sudo htpasswd /etc/nginx/httpauth user1
+    localhost:~> htpasswd /etc/nginx/httpauth user1
     New password: 
     Re-type new password: 
     Adding password for user user1
@@ -102,7 +102,7 @@ In the end the password-file should look something like:
 ???+ example "Example password-file"
 
     ```shell-session
-    localhost:~> sudo cat /etc/nginx/httpauth
+    localhost:~> cat /etc/nginx/httpauth
     Admin:$1$8T6SbR/N$rgANUPGvFh7H.R1Mffexh.
     user1:$1$GXoDIOCA$u/n1kkDeFwcI4KhyHkY6p/
     ```

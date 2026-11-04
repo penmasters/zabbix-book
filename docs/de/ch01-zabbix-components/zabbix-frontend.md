@@ -61,9 +61,9 @@ Führen Sie alle nachfolgenden Schritte auf dem für das Frontend vorgesehenen S
     Ubuntu
     ```bash
     # When using MySQL/MariaDB
-    sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
+    apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
     # or when using PostgreSQL
-    sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
+    apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
 
@@ -140,7 +140,7 @@ die Standardkonfiguration verwenden und das Zabbix-Frontend über Port 80 servie
     vi /etc/nginx/nginx.conf
     ```
 
-Wenn Sie auf Ubuntu sind, müssen Sie `nginx.conf` nicht bearbeiten, führen Sie stattdessen `sudo unlink /etc/nginx/sites-enabled/default` aus
+Wenn Sie auf Ubuntu sind, müssen Sie `nginx.conf` nicht bearbeiten, führen Sie stattdessen `unlink /etc/nginx/sites-enabled/default` aus
 
 In dieser Konfigurationsdatei suchen Sie nach dem folgenden Block, der mit `server {` beginnt:
 
@@ -181,7 +181,7 @@ wir haben gerade deaktiviert.
 !!! info "Bearbeite Zabbix-Config für nginx"
 
     ```bash
-    sudo vi /etc/nginx/conf.d/zabbix.conf
+    vi /etc/nginx/conf.d/zabbix.conf
     ```
 
 
@@ -235,7 +235,7 @@ Führen Sie die folgenden Befehle aus, um sie zu aktivieren und sofort zu starte
 
     Ubuntu
     ```bash
-    sudo systemctl enable nginx php8.3-fpm --now
+    systemctl enable nginx php8.3-fpm --now
     ```
 
 
@@ -245,13 +245,13 @@ damit er nach dem nächsten Neustart weiterläuft.
 !!! info "Überprüfe, ob der Dienst läuft"
 
     ```bash
-    sudo systemctl status nginx
+    systemctl status nginx
     ```
 
 ???+ example "Beispielausgabe"
 
     ```shell-session
-    localhost:~> sudo systemctl status nginx
+    localhost:~> systemctl status nginx
     ● nginx.service - The nginx HTTP and reverse proxy server
           Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
          Drop-In: /usr/lib/systemd/system/nginx.service.d
@@ -286,7 +286,7 @@ die folgenden Befehle aus:
 
     Ubuntu
     ```bash
-    sudo ufw allow 80/tcp
+    ufw allow 80/tcp
     ```
 
 
@@ -358,9 +358,9 @@ is not found on the web server."``" bemerken.
 !!! info "Dies kann einfach mit folgenden Befehlen gelöst werden."
 
     ```bash
-    sudo locale-gen en_US.UTF-8
-    sudo update-locale
-    sudo systemctl restart nginx php8.3-fpm
+    locale-gen en_US.UTF-8
+    update-locale
+    systemctl restart nginx php8.3-fpm
     ```
 
 
@@ -432,7 +432,7 @@ beginnt der Code mit zh.
 
     Ubuntu
     ```bash
-    sudo apt-cache search language-pack | grep -i zh
+    apt-cache search language-pack | grep -i zh
     ```
 
 
@@ -447,21 +447,21 @@ installiert ist oder nicht.
     Red Hat
     ```bash
     dnf install glibc-langpack-zh.x86_64
-    sudo systemctl restart nginx php-fpm
+    systemctl restart nginx php-fpm
     ```
 
 
     SUSE
     ```bash
     zypper install glibc-locale
-    sudo systemctl restart nginx php-fpm
+    systemctl restart nginx php-fpm
     ```
 
 
     Ubuntu
     ```bash
-    sudo apt install language-pack-zh-hans
-    sudo systemctl restart nginx php8.3-fpm
+    apt install language-pack-zh-hans
+    systemctl restart nginx php8.3-fpm
     ```
 
 

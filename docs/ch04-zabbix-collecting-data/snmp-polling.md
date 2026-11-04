@@ -438,7 +438,7 @@ Follow the steps below to get the SNMP agent installed.
 
     Red Hat
     ```bash
-    sudo dnf install net-snmp net-snmp-utils
+    dnf install net-snmp net-snmp-utils
     ```
 
     Suse
@@ -448,7 +448,7 @@ Follow the steps below to get the SNMP agent installed.
 
     Ubuntu
     ``` bash
-    sudo apt install snmp snmpd
+    apt install snmp snmpd
     ```
 
 2. Configure the SNMP Agent
@@ -457,7 +457,7 @@ Follow the steps below to get the SNMP agent installed.
 !!! info "Create a clean SNMP configuration file"
 
     ```bash
-    sudo vi /etc/snmp/snmpd.conf
+    vi /etc/snmp/snmpd.conf
     ```
 
 Paste the following example configuration, which is optimised for SNMP-based
@@ -601,12 +601,12 @@ and Configure the Firewall
 
     Start and enable snmpd service to start on boot
     ```bash
-    sudo systemctl enable --now snmpd
+    systemctl enable --now snmpd
     ```
 
     Check if the service is correctly started and running
     ```bash
-    sudo systemctl status snmpd
+    systemctl status snmpd
     ```
 
     If your system uses a firewall, ensure that SNMP traffic is allowed:
@@ -619,8 +619,8 @@ and Configure the Firewall
 
     Ubuntu
     ```bash
-    sudo ufw allow snmp
-    sudo ufw reload
+    ufw allow snmp
+    ufw reload
     ```
 
 Verifying SNMP Functionality
@@ -700,7 +700,7 @@ work out of the box with what is already configured in our `snmpd.conf` file.
     - If there are no special characters used, just try restarting the service.
     - If things still don't work, you can try removing the persistent key file:
       ```bash
-      sudo rm /var/lib/net-snmp/snmpd.conf
+      rm /var/lib/net-snmp/snmpd.conf
       ```
       It's quite brutal but in our test environment it should help you out.
 

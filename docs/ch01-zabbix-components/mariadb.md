@@ -41,7 +41,7 @@ following command:
 
     Ubuntu
     ```bash
-    sudo apt install mariadb-server
+    apt install mariadb-server
     ```
 
 This command will download and install both the server and client packages, enabling
@@ -70,16 +70,16 @@ To create the MariaDB repository file, execute the following command in your ter
 
     SUSE
     ``` bash
-    sudo vi /etc/zypp/repos.d/mariadb.repo
+    vi /etc/zypp/repos.d/mariadb.repo
     ```
 
     Ubuntu
     ``` bash
-    sudo apt install apt-transport-https curl
-    sudo mkdir -p /etc/apt/keyrings
-    sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+    apt install apt-transport-https curl
+    mkdir -p /etc/apt/keyrings
+    curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
 
-    sudo vi /etc/apt/sources.list.d/mariadb.sources
+    vi /etc/apt/sources.list.d/mariadb.sources
     ```
 
 This will open a text editor where you can input the repository configuration details.
@@ -158,14 +158,14 @@ To install the MariaDB server and client, execute the following command:
 
     SUSE
     ```bash
-    sudo rpm --import https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
-    sudo zypper install MariaDB-server MariaDB-client
+    rpm --import https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
+    zypper install MariaDB-server MariaDB-client
     ```
 
 
     Ubuntu
     ```bash
-    sudo apt install mariadb-server
+    apt install mariadb-server
     ```
 
 This command will download and install both the server and client packages, enabling
@@ -182,7 +182,7 @@ upon boot and start it immediately. Use the following command to accomplish this
 !!! info "Enable MariaDB service"
 
     ```bash
-    sudo systemctl enable mariadb --now
+    systemctl enable mariadb --now
     ```
 
 This command will both enable and start the MariaDB service and since this will be
@@ -211,7 +211,7 @@ with the following command:
 !!! info "Get mariadb status"
 
     ```bash
-    sudo systemctl status mariadb
+    systemctl status mariadb
     ```
 
 You should see an output similar to this, indicating that the MariaDB service
@@ -220,7 +220,7 @@ is active and running:
 ???+ example "Mariadb service status example"
 
     ```shell-session
-    localhost:~ $ sudo systemctl status mariadb
+    localhost:~ $ systemctl status mariadb
     ● mariadb.service - MariaDB database server
          Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
          Active: active (running) since Wed 2025-12-03 00:16:04 CET; 5s ago
@@ -260,7 +260,7 @@ Run the following command:
 !!! info "Secure Mariadb setup"
 
     ```bash
-    sudo mariadb-secure-installation
+    mariadb-secure-installation
     ```
 
 The mariadb-secure-installation script will guide you through several key steps:
@@ -276,7 +276,7 @@ Once complete, your MariaDB instance will be significantly more secure.
 !!! example "mariadb-secure-installation example output"
 
     ```shell-session
-    localhost:~ $ sudo mariadb-secure-installation
+    localhost:~ $ mariadb-secure-installation
     NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
           SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
 
@@ -432,7 +432,7 @@ to the database server. By default, MariaDB listens on port 3306.
 
     Ubuntu
     ``` bash
-    sudo ufw allow 3306/tcp
+    ufw allow 3306/tcp
     ```
 
 ---
@@ -461,7 +461,7 @@ import scripts for the database.
 
     Ubuntu
     ``` bash
-    sudo apt install zabbix-sql-scripts
+    apt install zabbix-sql-scripts
     ```
 
 ???+ warning
@@ -490,7 +490,7 @@ for this we make use of the user `zabbix-srv` and we upload it all in our DB `za
 !!! info "Populate the database"
 
     ``` bash
-    sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
+    zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
     ```
 
 !!! warning

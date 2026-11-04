@@ -62,7 +62,7 @@ Ajoutez un nouveau fichier de configuration pour la configuration HA sur le prem
 !!! info "Ajouter la configuration du serveur Zabbix en mode haute disponibilité"
 
     ``` bash
-    sudo vi /etc/zabbix/zabbix_server.d/high-availability.conf
+    vi /etc/zabbix/zabbix_server.d/high-availability.conf
     ```
 
 
@@ -110,7 +110,7 @@ Après avoir configuré les deux serveurs, activez et démarrez le service zabbi
 !!! info "Activer et démarrer le service zabbix-server"
 
     ```
-    sudo systemctl enable zabbix-server --now
+    systemctl enable zabbix-server --now
     ```
 
 
@@ -125,7 +125,7 @@ Sur le premier serveur :
 !!! info "Vérifier les journaux pour les messages HA"
 
     ``` bash
-    sudo grep HA /var/log/zabbix/zabbix_server.log
+    grep HA /var/log/zabbix/zabbix_server.log
     ```
 
 
@@ -134,7 +134,7 @@ Dans les journaux du système, vous devriez observer les entrées suivantes, ind
 ???+ example "Messages de journal HA sur le nœud actif"
 
     ```shell-session
-    localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
+    localhost:~> grep HA /var/log/zabbix/zabbix_server.log
     22597:20240309:155230.353 starting HA manager
     22597:20240309:155230.362 HA manager started in active mode
     ```
@@ -147,7 +147,7 @@ Exécutez la même commande sur le deuxième serveur (et tout autre nœud suppl�
 ???+ example "Messages de journal HA sur le nœud en attente"
 
     ```shell-session
-    localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
+    localhost:~> grep HA /var/log/zabbix/zabbix_server.log
     22304:20240309:155331.163 starting HA manager
     22304:20240309:155331.174 HA manager started in standby mode
     ```
@@ -205,7 +205,7 @@ Sur tous les serveurs qui hébergeront l'interface frontale Zabbix, nous devons 
 
     Ubuntu
     ```bash
-    sudo apt install keepalived
+    apt install keepalived
     ```
 
 
@@ -214,7 +214,7 @@ Ensuite, nous devons modifier la configuration Keepalived sur tous les serveurs.
 !!! info "Éditer la configuration keepalived"
 
     ```bash
-    sudo vi /etc/keepalived/keepalived.conf
+    vi /etc/keepalived/keepalived.conf
     ```
 
 
@@ -296,7 +296,7 @@ Vérifiez que le pare-feu autorise le trafic Keepalived sur tous les serveurs. L
 
     Ubuntu
     ```yaml
-    sudo ufw allow to 224.0.0.18 comment ‘keepalived multicast’
+    ufw allow to 224.0.0.18 comment ‘keepalived multicast’
     ```
 
 
@@ -352,7 +352,7 @@ Une fois le frontend installé sur tous les serveurs, nous devons démarrer et a
 !!! info "Démarrer et activer keepalived"
 
     ```yaml
-    sudo systemctl enable keepalived nginx --now
+    systemctl enable keepalived nginx --now
     ```
 
 
@@ -393,7 +393,7 @@ Pour supprimer un nœud qui est soit **arrêté** soit **inatteignable**, la com
 !!! info ""
 
     ```bash
-    sudo zabbix_server -R ha_remove_node=`zabbix1`
+    zabbix_server -R ha_remove_node=`zabbix1`
     ```
 
 

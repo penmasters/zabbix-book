@@ -64,7 +64,7 @@ We're not done with the configuration on the Zabbix agent side however, we still
 
     Linux CLI
     ```bash
-    openssl rand -hex 128 | sudo tee /etc/zabbix/agent.psk > /dev/null
+    openssl rand -hex 128 | tee /etc/zabbix/agent.psk > /dev/null
     ```
 
 This will not only create the 128 bytes (1024 bits and 256 hexadecimal characters) PSK, it will also add it to the file we specified in the Zabbix agent configuration file under `TLSPSKFile=/etc/zabbix/agent.psk`. We can check to see what the PSK looks like.
@@ -93,8 +93,8 @@ Before we go on to the Zabbix frontend, let's make sure the file where we stored
 
     Linux CLI
     ```bash
-    sudo chown zabbix:zabbix /etc/zabbix/agent.psk
-    sudo chmod 400 /etc/zabbix/agent.psk
+    chown zabbix:zabbix /etc/zabbix/agent.psk
+    chmod 400 /etc/zabbix/agent.psk
     ```
 
 This will make sure only the zabbix user on your Linux system has read-only access. Now let's move on to the Zabbix frontend and find our `zbx-agent-active-rocky` host under `Data collection` | `Hosts`.
@@ -226,9 +226,9 @@ Then we make sure they are secured.
 
     Linux CLI
     ```bash
-    sudo chown zabbix:zabbix /home/zabbix/the-zabbix-book-ca.key /home/zabbix/the-zabbix-book-ca.crt
-    sudo chmod 400 /home/zabbix/the-zabbix-book-ca.key
-    sudo chmod 444 /home/zabbix/the-zabbix-book-ca.crt
+    chown zabbix:zabbix /home/zabbix/the-zabbix-book-ca.key /home/zabbix/the-zabbix-book-ca.crt
+    chmod 400 /home/zabbix/the-zabbix-book-ca.key
+    chmod 444 /home/zabbix/the-zabbix-book-ca.crt
     ```
 
 Since anyone with the key file can sign valid Zabbix certificates, it is recommended
@@ -308,9 +308,9 @@ Of course it will also be important to secure the files.
 
     Linux CLI
     ```bash
-    sudo chown zabbix:zabbix /home/zabbix/zabbix_agent.key /home/zabbix/zabbix_agent.crt
-    sudo chmod 400 /home/zabbix/zabbix_agent.key
-    sudo chmod 444 /home/zabbix/zabbix_agent.crt
+    chown zabbix:zabbix /home/zabbix/zabbix_agent.key /home/zabbix/zabbix_agent.crt
+    chmod 400 /home/zabbix/zabbix_agent.key
+    chmod 444 /home/zabbix/zabbix_agent.crt
     ```
 
 ### Setting up the agent configuration

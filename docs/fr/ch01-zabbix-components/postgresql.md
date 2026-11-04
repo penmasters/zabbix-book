@@ -63,7 +63,7 @@ commandes suivantes :
 
     Ubuntu
     ``` bash
-    sudo apt install postgresql postgresql-client postgresql-contrib
+    apt install postgresql postgresql-client postgresql-contrib
     ```
 
 
@@ -164,15 +164,15 @@ pour plus d'informations.
     Ubuntu
     ```bash
     # Import the repository signing key:
-    sudo apt install curl ca-certificates
-    sudo install -d /usr/share/postgresql-common/pgdg
-    sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    apt install curl ca-certificates
+    install -d /usr/share/postgresql-common/pgdg
+    curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
 
     # Create the repository configuration file:
-    sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
     # Update the package lists:
-    sudo apt update
+    apt update
     ```
 
 
@@ -201,7 +201,7 @@ et gérer votre base de données.
 
     Ubuntu
     ```bash
-    sudo apt install postgresql-17 postgresql-client-17
+    apt install postgresql-17 postgresql-client-17
     ```
 
 
@@ -214,7 +214,7 @@ base de données vide :
 !!! info "Initialisation d'une base de données PostgreSQL vide"
 
     ```
-    sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
+    /usr/pgsql-17/bin/postgresql-17-setup initdb
     ```
 
 
@@ -231,13 +231,13 @@ au démarrage du système ainsi que lancer immédiatement. Utilisez la commande 
 
     Pour les paquets fournis par le gestionnaire d'opérateur système
     ```bash
-    sudo systemctl enable postgresql --now
+    systemctl enable postgresql --now
     ```
 
 
     Pour les paquets officiels de PostgreSQL :
     ```bash
-    sudo systemctl enable postgresql-17 --now
+    systemctl enable postgresql-17 --now
     ```
 
 
@@ -269,13 +269,13 @@ avec la commande suivante :
 
     Pour les paquets fournis par le gestionnaire d'opérateur système
     ```bash
-    sudo systemctl status postgresql
+    systemctl status postgresql
     ```
 
 
     Pour les paquets officiels de PostgreSQL :
     ```bash
-    sudo systemctl status postgresql-17
+    systemctl status postgresql-17
     ```
 
 
@@ -284,7 +284,7 @@ Vous devriez voir une sortie similaire à celle-ci, indiquant que le service Pos
 ???+ example "Exemple du statut du service PostgreSQL"
 
     ```shell-session
-    localhost:~ $ sudo systemctl status postgresql-17
+    localhost:~ $ systemctl status postgresql-17
     ● postgresql-17.service - PostgreSQL 17 database server
         Loaded: loaded (/usr/lib/systemd/system/postgresql-17.service; enabled; preset: disabled)
         Active: active (running) since Mon 2025-12-29 17:24:07 CET; 6s ago
@@ -345,10 +345,10 @@ Ajoutez les lignes suivantes, l'ordre ici est important.
     Ubuntu
     ``` bash
     # for OS-provided packages
-    sudo vi /etc/postgresql/current/main/pg_hba.conf
+    vi /etc/postgresql/current/main/pg_hba.conf
 
     # for official packages
-    sudo vi /etc/postgresql/17/main/pg_hba.conf
+    vi /etc/postgresql/17/main/pg_hba.conf
     ```
 
 
@@ -408,10 +408,10 @@ du serveur Zabbix. PostgreSQL ne permet par défaut que les connexions depuis un
     Ubuntu
     ``` bash
     # for OS-provided packages
-    sudo vi /etc/postgresql/current/main/postgresql.conf
+    vi /etc/postgresql/current/main/postgresql.conf
 
     # for official packages
-    sudo vi /etc/postgresql/17/main/postgresql.conf
+    vi /etc/postgresql/17/main/postgresql.conf
     ```
 
 
@@ -445,13 +445,13 @@ Après avoir effectué ce changement, redémarrez le service PostgreSQL pour app
 
     Pour les paquets fournis par le gestionnaire d'opérateur système
     ``` bash
-    sudo systemctl restart postgresql
+    systemctl restart postgresql
     ```
 
 
     Pour les paquets officiels
     ```bash
-    sudo systemctl restart postgresql-17
+    systemctl restart postgresql-17
     ```
 
 
@@ -638,7 +638,7 @@ le serveur de la base de données. Par défaut, PostgreSQL écoute sur le port 5
 
     Ubuntu
     ``` bash
-    sudo ufw allow 5432/tcp
+    ufw allow 5432/tcp
     ```
 
 ---
@@ -668,7 +668,7 @@ Tout d'abord, nous avons besoin d'installer les scripts SQL Zabbix qui contienne
 
     Ubuntu
     ``` bash
-    sudo apt install zabbix-sql-scripts
+    apt install zabbix-sql-scripts
     ```
 
 
@@ -684,7 +684,7 @@ Ensuite, vous devez préparer le schéma de la base de données : décompressez 
 
     Ubuntu
     ``` bash
-    sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+    gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
     ```
 
 

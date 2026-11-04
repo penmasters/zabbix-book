@@ -185,9 +185,9 @@ alte Dateien entfernt und Metadaten aktualisiert werden:
 
     Ubuntu
     ``` bash
-    sudo wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo apt update
+    wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    apt update
     ```
 
 Damit sind die Repository-Metadaten aktuell und das System ist für die
@@ -236,7 +236,7 @@ Installieren Sie Podman und die Werkzeuge zur Verwaltung mit systemd.
 
     Ubuntu
     ```bash
-    sudo apt install podman
+    apt install podman
     ```
 
 ### Podman für benutzerbasierte Containerverwaltung konfigurieren
@@ -248,7 +248,7 @@ nur einen Zabbix-Proxy im Container startet.
 !!! info "Podman-Benutzer erstellen und initialisieren"
 
     ```bash
-    sudo useradd --comment "User for running container workloads" podman
+    useradd --comment "User for running container workloads" podman
     sudo -i -u podman
     mkdir -p ~/.local/share/containers
     mkdir -p ~/.config/containers/systemd/

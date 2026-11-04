@@ -77,7 +77,7 @@ Fügen Sie eine neue Konfigurationsdatei für die HA-Einrichtung auf dem ersten 
 !!! info "Hochverfügbarkeit-Zabbix-Server-Konfiguration hinzufügen"
 
     ``` bash
-    sudo vi /etc/zabbix/zabbix_server.d/high-availability.conf
+    vi /etc/zabbix/zabbix_server.d/high-availability.conf
     ```
 
 
@@ -129,7 +129,7 @@ Nach der Konfiguration beider Server aktivieren und starten Sie den zabbix-serve
 !!! info "Aktivieren und starten von zabbix-server-Dienst"
 
     ```
-    sudo systemctl enable zabbix-server --now
+    systemctl enable zabbix-server --now
     ```
 
 
@@ -145,7 +145,7 @@ Auf dem ersten Server:
 !!! info "Protokolle für HA-Nachrichten überprüfen"
 
     ``` bash
-    sudo grep HA /var/log/zabbix/zabbix_server.log
+    grep HA /var/log/zabbix/zabbix_server.log
     ```
 
 
@@ -155,7 +155,7 @@ des Hochverfügbarkeits-Managers (HA) anzeigt:
 ???+ example "HA-Protokolleinträge auf aktiven Knoten"
 
     ```shell-session
-    localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
+    localhost:~> grep HA /var/log/zabbix/zabbix_server.log
     22597:20240309:155230.353 starting HA manager
     22597:20240309:155230.362 HA manager started in active mode
     ```
@@ -170,7 +170,7 @@ Das Ausführen des gleichen Befehls auf dem zweiten Server (und jedem zusätzlic
 ???+ example "HA-Protokolleinträge auf Bereitschaftsknoten"
 
     ```shell-session
-    localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
+    localhost:~> grep HA /var/log/zabbix/zabbix_server.log
     22304:20240309:155331.163 starting HA manager
     22304:20240309:155331.174 HA manager started in standby mode
     ```
@@ -235,7 +235,7 @@ aber in dieser Anleitung werden wir Keepalived auf beiden Zabbix-Servers install
 
     Ubuntu
     ```bash
-    sudo apt install keepalived
+    apt install keepalived
     ```
 
 
@@ -244,7 +244,7 @@ Im nächsten Schritt müssen wir die Keepalived-Konfiguration auf allen Servern 
 !!! info "Bearbeiten der keepalived-Konfiguration"
 
     ```bash
-    sudo vi /etc/keepalived/keepalived.conf
+    vi /etc/keepalived/keepalived.conf
     ```
 
 
@@ -332,7 +332,7 @@ Führen Sie folgende Befehle auf allen Servern aus:
 
     Ubuntu
     ```yaml
-    sudo ufw allow to 224.0.0.18 comment ‘keepalived multicast’
+    ufw allow to 224.0.0.18 comment ‘keepalived multicast’
     ```
 
 
@@ -398,7 +398,7 @@ um sicherzustellen, dass er bei jedem Neustart automatisch gestartet wird und di
 !!! info "Starte und aktiviere keepalived"
 
     ```yaml
-    sudo systemctl enable keepalived nginx --now
+    systemctl enable keepalived nginx --now
     ```
 
 
@@ -445,7 +445,7 @@ Runtime-Befehl verwendet werden:
 !!! info ""
 
     ```bash
-    sudo zabbix_server -R ha_remove_node=`zabbix1`
+    zabbix_server -R ha_remove_node=`zabbix1`
     ```
 
 

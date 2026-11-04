@@ -206,9 +206,9 @@ repositorymetadata bij te werken. Dat doen we met de volgende commando's:
 
     Ubuntu
     ```bash
-    sudo wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo apt update
+    wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    apt update
     ```
 
 Hiermee wordt de repositorymetadata vernieuwd en is het systeem klaar om
@@ -275,7 +275,7 @@ enkele aanvullende tools voor het beheer van containers met systemd.
 
     Ubuntu
     ```bash
-    sudo apt install podman
+    apt install podman
     ```
 
 ### Podman configureren voor containerbeheer per gebruiker
@@ -288,7 +288,7 @@ container uitvoert.
 !!! info "De podman-gebruiker aanmaken en initialiseren"
 
     ```bash
-    sudo useradd --comment "User for running container workloads" podman
+    useradd --comment "User for running container workloads" podman
     sudo -i -u podman
     mkdir -p ~/.local/share/containers
     mkdir -p ~/.config/containers/systemd/

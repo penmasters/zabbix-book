@@ -371,7 +371,7 @@ On the application side don't forget to open the firewall so that our
 
     Ubuntu
     ```
-    sudo ufw allow 8686/tcp
+    ufw allow 8686/tcp
     ```
 
 ???+ warning
