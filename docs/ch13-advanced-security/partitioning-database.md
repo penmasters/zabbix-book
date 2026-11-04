@@ -241,7 +241,7 @@ script with your favourite editor (yes, nano is also an option).
 !!! info "Edit the script"
 
     ```bash
-    vim /usr/lib/zabbix/mysql_zbx_part.pl
+    vi /usr/lib/zabbix/mysql_zbx_part.pl
     ```
 
 There are a few lines here we need to edit to make sure the script works. Let's start
