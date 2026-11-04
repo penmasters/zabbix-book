@@ -70,7 +70,7 @@ After this is done, we are ready to configure the Zabbix MCP server. It comes wi
 
 !!! info "Edit Zabbix MCP server configuration"
     ```bash
-    vim /etc/zabbix/zabbix_mcp_server.conf
+    vi /etc/zabbix/zabbix_mcp_server.conf
     ```
 
 The configuration file contains several parameters that control how the MCP server communicates with Zabbix and which clients are allowed to connect.
@@ -115,7 +115,7 @@ Open the configuration file again:
 
 !!! info "Configure TLS encryption"
     ```bash
-    vim /etc/zabbix/zabbix_mcp_server.conf
+    vi /etc/zabbix/zabbix_mcp_server.conf
     ```
 
 Find the TLS-related parameters and configure them as follows:
