@@ -207,17 +207,17 @@ form a natural stepping stone toward the dashboard widgets we'll cover next.
 
 ## Questions
 
-1. What's the key difference between a simple graph and an ad-hoc graph, and
-   when would you reach for one over the other?
-2. You need to compare inbound and outbound traffic on a network interface,
-   with outbound plotted as a negative value below the axis. Which graph
-   type and draw style settings would you use?
-3. Why might you prefer to configure a custom graph on a template rather
-   than directly on a host?
-4. How does the subfilter on the `Monitoring` | `Hosts` | `Graphs` page behave
-   when you click a second tag after already selecting one?
-5. Why do textual items show a History link instead of a Graph link on the
-   Latest data page?
+- What's the key difference between a simple graph and an ad-hoc graph, and
+  when would you reach for one over the other?
+- You need to compare inbound and outbound traffic on a network interface,
+  with outbound plotted as a negative value below the axis. Which graph
+  type and draw style settings would you use?
+- Why might you prefer to configure a custom graph on a template rather
+  than directly on a host?
+- How does the subfilter on the `Monitoring` | `Hosts` | `Graphs` page behave
+  when you click a second tag after already selecting one?
+- Why do textual items show a History link instead of a Graph link on the
+  Latest data page?
 
 ## Useful URLs
 
