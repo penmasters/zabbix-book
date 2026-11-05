@@ -1,3 +1,10 @@
+---
+description: |
+    Learn the fundamentals of the Zabbix 8.0 API, including authentication,
+    API requests, permissions, and automating common monitoring tasks.
+tags: [beginner]
+---
+
 # API basics
 
 
@@ -148,7 +155,7 @@ We send the token, API token or session token, in the `Authorization` header of 
     Header names are case-insensitive, and the header also works in cross-origin (CORS)
     requests. If the API keeps answering that we are not authorized although the token
     is correct, the web server may not forward the header to PHP. See *Authorization
-    header forwarding* in the Zabbix known issues: https://www.zabbix.com/documentation/8.0/en/manual/installation/known\_issues#authorization-header-forwarding
+    header forwarding* in the Zabbix known issues: https://www.zabbix.com/documentation/8.0/en/manual/installation/known_issues#authorization-header-forwarding
     Older versions also accepted the token inside the JSON body. The 8.0 documentation
     only describes the `Authorization` header and, for code that runs inside the frontend
     (modules and custom widgets), the `zbx_session` cookie.
@@ -221,7 +228,7 @@ name and the interfaces of all hosts:
 
 The `result` is an array with one object per host:
 
-!!! example "Exanple output"
+!!! example "Example output"
 
     ```json
     {
@@ -248,9 +255,8 @@ Three things to remember:
   which returns everything. That is slower and returns more data than we need.
 - **The ID of the object is always in the response**, even if we do not ask for
   it in `output`.
-- **Object IDs are returned as strings**, even when they contain only digits. A
-  `hostid` of `10084` is the string `"10084"`. Other properties can have
-  different JSON types, including numbers, booleans, arrays and objects.
+- “Values are always returned as strings or arrays. A hostid of 10084 is the string
+  "10084", and a status of 0 comes back as "0".”
 
 The `select...` parameters, like `selectInterfaces` above, add related objects
 to the result in the same call.
@@ -438,29 +444,43 @@ The `proxy` API gets the `selectApm` parameter in `proxy.get` and the `apm` para
 
 ### New and extended objects
 
-- **JSON values.** A new JSON value type (`6`) for `history.get`, for the `value_type` of items and item prototypes, and `64` for the `item_value_type` of connectors.
-- **Telemetry query items.** The item and item prototype `type` `24` with the new properties `query`, `time_shift`, `lookback_limit` and `granularity`. Proxies get `timeout_telemetry_query`.
+- **JSON values.** A new JSON value type (`6`) for `history.get`, for the `value_type`
+  of items and item prototypes, and `64` for the `item_value_type` of connectors.
+- **Telemetry query items.** The item and item prototype `type` `24` with the new
+  properties `query`, `time_shift`, `lookback_limit` and `granularity`. Proxies
+  get `timeout_telemetry_query`.
 - **Push media type.** A new media type `type` `5`.
-- **Maintenance.** New `triggers` and `event_names` properties, new `triggerids`, `selectTriggers` and `selectEventNames` parameters in `maintenance.get`, and the operators *Does not equal* and *Does not contain* for `problem_tags`.
-- **Inherited tags.** New `inheritedTags` and `selectInheritedTags` parameters in `item.get` and `httptest.get`, and `selectInheritedTags` in `itemprototype.get` and `hostprototype.get`.
-- **Host interfaces.** A new `retries` property in the `details` of host interfaces and host prototypes, and user macro support for `max_repetitions`.
-- **Configuration import and export.** New `returnMissingObjects` parameter and a `dashboards` rule in `configuration.import` and `configuration.importcompare`, and `global_regexes` for export, import and compare.
-- **Acknowledgements.** `selectAcknowledges` in `event.get` and `problem.get` now has the property `maintenanceid`.
-- **Dashboards.** A new `scatterplot` widget type and new fields for the graph, pie chart, top items and geomap widgets.
-- **Actions.** The condition type `29` (proxy group) for discovery and autoregistration actions. The user group API gained filtering on APM resource attributes, and complex event processing can now also run its operations when an event is closed.
-
-!!! note 
-
-    The Authorization header, API tokens and the request format are the same as
-    in Zabbix 7.0 and 7.4, so existing integrations keep working as long as they
-    do not use the removed methods and the API user has API access in its role.
+- **Maintenance.** New `triggers` and `event_names` properties, new `triggerids`, `selectTriggers`
+  and `selectEventNames` parameters in `maintenance.get`, and the operators *Does
+  not equal* and *Does not contain* for `problem_tags`.
+- **Inherited tags.** New `inheritedTags` and `selectInheritedTags` parameters
+  in `item.get` and `httptest.get`, and `selectInheritedTags` in `itemprototype.get`
+  and `hostprototype.get`.
+- **Host interfaces.** A new `retries` property in the `details` of host interfaces
+  and host prototypes, and user macro support for `max_repetitions`.
+- **Configuration import and export.** New `returnMissingObjects` parameter and a
+  `dashboards` rule in `configuration.import` and `configuration.importcompare`,
+  and `global_regexes` for export, import and compare.
+- **Acknowledgements.** `selectAcknowledges` in `event.get` and `problem.get` now
+  has the property `maintenanceid`.
+- **Dashboards.** A new `scatterplot` widget type and new fields for the graph,
+  pie chart, top items and geomap widgets.
+- **Actions.** The condition type `29` (proxy group) for discovery and
+  autoregistration actions.
+- The user group API gained filtering on APM resource attributes, and complex
+  event processing can now also run its operations when an event is closed.
 
 ## Questions
 
+- What protocol does the Zabbix API use, and which HTTP method is required to send API requests?
+- What is the difference between authenticating with an API token and using user.login?
+- How do user roles and host group permissions affect what a user can access through the Zabbix API?
+- What is the purpose of the output, filter, and selectInterfaces parameters in a host.get request?
+- What important API changes were introduced in Zabbix 8.0 that could affect existing scripts and integrations?
 
 ## Useful URLs
 
 - [https://www.zabbix.com/documentation/8.0/en/manual/api](https://www.zabbix.com/documentation/8.0/en/manual/api)
 - [https://www.zabbix.com/documentation/8.0/en/manual/api/reference](https://www.zabbix.com/documentation/8.0/en/manual/api/reference)
-- [https://www.zabbix.com/documentation/8.0/en/manual/api/reference\_commentary](https://www.zabbix.com/documentation/8.0/en/manual/api/reference_commentary)
+- [https://www.zabbix.com/documentation/8.0/en/manual/api/reference_commentary](https://www.zabbix.com/documentation/8.0/en/manual/api/reference_commentary)
 - [https://www.zabbix.com/documentation/8.0/en/manual/api/changes](https://www.zabbix.com/documentation/8.0/en/manual/api/changes)
