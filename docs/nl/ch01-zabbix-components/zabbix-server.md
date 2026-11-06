@@ -39,9 +39,9 @@ Voer het volgende commando uit om de Zabbix servercomponenten te installeren:
     Ubuntu
     ``` bash
     # Voor MySQL/MariaDB backend:
-    sudo apt install zabbix-server-mysql
+    apt install zabbix-server-mysql
     # Voor PostgreSQL backend:
-    sudo apt install zabbix-server-pgsql
+    apt install zabbix-server-pgsql
     ```
 
 Na de succesvolle installatie van het Zabbix serverpakket moeten we de Zabbix
@@ -172,13 +172,13 @@ en Zabbix proxies accepteren. Standaard gebruikt Zabbix hiervoor poort
 
     Red Hat / SUSE
     ``` bash
-    sudo firewall-cmd --add-service=zabbix-trapper --permanent
-    sudo firewall-cmd --reload
+    firewall-cmd --add-service=zabbix-trapper --permanent
+    firewall-cmd --reload
     ```
 
     Ubuntu
     ``` bash
-    sudo ufw allow 10051/tcp
+    ufw allow 10051/tcp
     ```
 
 Als de service niet wordt herkend door `firewall-cmd --add-service`, kun je
@@ -209,7 +209,7 @@ commando uit om ervoor te zorgen dat de service automatisch start bij het opstar
 
     Red Hat, SUSE en Ubuntu
     ``` bash
-    sudo systemctl enable zabbix-server --now
+    systemctl enable zabbix-server --now
     ```
 
 Dit commando start de Zabbix server service onmiddellijk en zorgt ervoor dat
@@ -291,13 +291,13 @@ ze na een reboot automatisch opnieuw wordt gestart.
 !!! info "Status van de zabbix-server service controleren"
 
     ```bash
-    sudo systemctl status zabbix-server
+    systemctl status zabbix-server
     ```
 
 ???+ example "Voorbeelduitvoer" 
 
     ``` ini
-    shell-session localhost:~> sudo systemctl
+    shell-session localhost:~> systemctl
     status zabbix-server
 
     ● zabbix-server.service - Zabbix Server

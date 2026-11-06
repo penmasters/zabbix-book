@@ -60,7 +60,7 @@ Zabbix для получения актуального списка подде�
 
     Ubuntu
     ``` bash
-    sudo apt install postgresql postgresql-client postgresql-contrib
+    apt install postgresql postgresql-client postgresql-contrib
     ```
 
 
@@ -161,15 +161,15 @@ Zabbix для получения актуального списка подде�
     Ubuntu
     ```bash
     # Import the repository signing key:
-    sudo apt install curl ca-certificates
-    sudo install -d /usr/share/postgresql-common/pgdg
-    sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    apt install curl ca-certificates
+    install -d /usr/share/postgresql-common/pgdg
+    curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
 
     # Create the repository configuration file:
-    sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
     # Update the package lists:
-    sudo apt update
+    apt update
     ```
 
 
@@ -197,7 +197,7 @@ Zabbix для получения актуального списка подде�
 
     Ubuntu
     ```bash
-    sudo apt install postgresql-17 postgresql-client-17
+    apt install postgresql-17 postgresql-client-17
     ```
 
 
@@ -210,7 +210,7 @@ Zabbix для получения актуального списка подде�
 !!! info "Инициализация пустой базы данных PostgreSQL"
 
     ```
-    sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
+    /usr/pgsql-17/bin/postgresql-17-setup initdb
     ```
 
 
@@ -227,13 +227,13 @@ Zabbix для получения актуального списка подде�
 
     для пакетов, предоставляемых поставщиком ОС:
     ```bash
-    sudo systemctl enable postgresql --now
+    systemctl enable postgresql --now
     ```
 
 
     для официальных пакетов PostgreSQL:
     ```bash
-    sudo systemctl enable postgresql-17 --now
+    systemctl enable postgresql-17 --now
     ```
 
 
@@ -265,13 +265,13 @@ Zabbix для получения актуального списка подде�
 
     для пакетов, предоставляемых поставщиком ОС:
     ```bash
-    sudo systemctl status postgresql
+    systemctl status postgresql
     ```
 
 
     для официальных пакетов PostgreSQL:
     ```bash
-    sudo systemctl status postgresql-17
+    systemctl status postgresql-17
     ```
 
 
@@ -281,7 +281,7 @@ Zabbix для получения актуального списка подде�
 ???+ example "Пример статуса службы PostgreSQL"
 
     ```shell-session
-    localhost:~ $ sudo systemctl status postgresql-17
+    localhost:~ $ systemctl status postgresql-17
     ● postgresql-17.service - PostgreSQL 17 database server
         Loaded: loaded (/usr/lib/systemd/system/postgresql-17.service; enabled; preset: disabled)
         Active: active (running) since Mon 2025-12-29 17:24:07 CET; 6s ago
@@ -342,10 +342,10 @@ PostgreSQL полагается на файл `pg_hba.conf` для управл�
     Ubuntu
     ``` bash
     # for OS-provided packages
-    sudo vi /etc/postgresql/current/main/pg_hba.conf
+    vi /etc/postgresql/current/main/pg_hba.conf
 
     # for official packages
-    sudo vi /etc/postgresql/17/main/pg_hba.conf
+    vi /etc/postgresql/17/main/pg_hba.conf
     ```
 
 
@@ -406,10 +406,10 @@ PostgreSQL по умолчанию позволяет подключения т�
     Ubuntu
     ``` bash
     # for OS-provided packages
-    sudo vi /etc/postgresql/current/main/postgresql.conf
+    vi /etc/postgresql/current/main/postgresql.conf
 
     # for official packages
-    sudo vi /etc/postgresql/17/main/postgresql.conf
+    vi /etc/postgresql/17/main/postgresql.conf
     ```
 
 
@@ -443,13 +443,13 @@ PostgreSQL по умолчанию позволяет подключения т�
 
     для пакетов, предоставляемых поставщиком ОС:
     ``` bash
-    sudo systemctl restart postgresql
+    systemctl restart postgresql
     ```
 
 
     для официальных пакетов:
     ```bash
-    sudo systemctl restart postgresql-17
+    systemctl restart postgresql-17
     ```
 
 
@@ -649,7 +649,7 @@ Zabbix, нам все еще нужно заполнить базу данных
 
     Ubuntu
     ``` bash
-    sudo ufw allow 5432/tcp
+    ufw allow 5432/tcp
     ```
 
 ---
@@ -680,7 +680,7 @@ Zabbix, нам все еще нужно заполнить базу данных
 
     Ubuntu
     ``` bash
-    sudo apt install zabbix-sql-scripts
+    apt install zabbix-sql-scripts
     ```
 
 
@@ -697,7 +697,7 @@ Zabbix, нам все еще нужно заполнить базу данных
 
     Ubuntu
     ``` bash
-    sudo gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
+    gzip -d /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz
     ```
 
 

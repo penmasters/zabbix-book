@@ -408,17 +408,17 @@ get.acme.
     Install the needed packages
     RHEL
     ``` bash
-    sudo dnf install epel-release
-    sudo dnf install certbot python3-certbot-nginx
-    sudo dnf install -y tar gzip openssl cronie
-    sudo dnf install -y bind-utils # gives `dig`
+    dnf install epel-release
+    dnf install certbot python3-certbot-nginx
+    dnf install -y tar gzip openssl cronie
+    dnf install -y bind-utils # gives `dig`
     ```
 
     SUSE
     ``` bash
-    sudo zypper install certbot python3-certbot-nginx
-    sudo zypper install -y tar gzip openssl cronie
-    sudo zypper install -y bind-utils # gives `dig`
+    zypper install certbot python3-certbot-nginx
+    zypper install -y tar gzip openssl cronie
+    zypper install -y bind-utils # gives `dig`
     ```
 
     Install the acme script and add it to your path
@@ -432,7 +432,7 @@ get.acme.
     Activate crond and set up the certificate.
 
     ``` bash
-    sudo systemctl enable --now crond
+    systemctl enable --now crond
     acme.sh --set-default-ca --server letsencrypt
     acme.sh --issue -d <mydomain.com> -d '*.<mydomain.com>' --dns --yes-I-know-dns-manual-mode-enough-go-ahead-please
     ```
@@ -449,7 +449,7 @@ get.acme.
 
     ``` bash
     acme.sh --renew -d <mydomain.com> --ecc --dns --yes-I-know-dns-manual-mode-enough-go-ahead-please
-    sudo mkdir -p /etc/ssl/<mydomain>
+    mkdir -p /etc/ssl/<mydomain>
     acme.sh --install-cert -d <mydomain.com> --ecc --key-file /etc/ssl/<mydomain>/site.key --fullchain-file /etc/ssl/<mydomain>/site.fullchain.pem  --reloadcmd
     ```
 

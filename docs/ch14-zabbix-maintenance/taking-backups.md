@@ -93,7 +93,7 @@ If you get no result, try to install the MariaDB client.
 
     Ubuntu
     ```bash
-    sudo apt install mariadb-client
+    apt install mariadb-client
     ```
 
 ### Creating a Logical Database Backup
@@ -158,7 +158,7 @@ storing it to disk. To do this, we can install a compression tool like `lz4`.
 
     Ubuntu
     ```bash
-    sudo apt install lz4
+    apt install lz4
     ```
 
 Using `lz4`, we can now compress our database dump by using a quick pipe in our

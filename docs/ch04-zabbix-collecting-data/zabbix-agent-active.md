@@ -173,7 +173,7 @@ on Linux, let's create a file in the `zabbix_agent2.d` directory.
     Linux
 
     ```bash
-    sudo vim /etc/zabbix/zabbix_agent2.d/key-access.conf
+    vi /etc/zabbix/zabbix_agent2.d/key-access.conf
     ```
 
 Add one of the example rule sets above to this file. Then make sure the main

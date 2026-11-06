@@ -100,8 +100,8 @@ Verwenden Sie den Befehl für Ihr Betriebssystem:
 
     Ubuntu
     ```bash
-    sudo apt update
-    sudo apt upgrade
+    apt update
+    apt upgrade
     ```
 ???+ note "Was sind apt, dnf und zypper?"
 
@@ -184,8 +184,8 @@ Installieren und aktivieren Sie die Firewall wie folgt:
 
     Ubuntu
     ```bash
-    sudo apt install ufw
-    sudo ufw enable
+    apt install ufw
+    ufw enable
     ```
 ???+ note "Was sind firewalld und ufw?"
 
@@ -282,7 +282,7 @@ Installieren und aktivieren Sie Chrony als NTP-Client:
 
     Ubuntu
     ```bash
-    sudo apt install chrony
+    apt install chrony
     ```
 
 Prüfen Sie anschließend den Status von Chrony:
@@ -441,7 +441,7 @@ NTP-Server finden Sie hier:
 
     Ubuntu
     ```bash
-    sudo vi /etc/chrony/chrony.conf
+    vi /etc/chrony/chrony.conf
     ```
 
 Ersetzen Sie den vorhandenen NTP-Pool durch einen näher gelegenen.

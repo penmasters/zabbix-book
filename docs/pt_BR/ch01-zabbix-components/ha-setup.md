@@ -87,7 +87,7 @@ Adicione um novo arquivo de configuração para a configuração HA no primeiro 
 !!! info "Adicionar configuração do servidor Zabbix HA"
 
     ``` bash
-    sudo vi /etc/zabbix/zabbix_server.d/high-availability.conf
+    vi /etc/zabbix/zabbix_server.d/high-availability.conf
     ```
 
 
@@ -139,7 +139,7 @@ Após a configuração de ambos os servidores, habilite e inicie o serviço zabb
 !!! info "Habilitar e iniciar o serviço zabbix-server"
 
     ```
-    sudo systemctl enable zabbix-server --now
+    systemctl enable zabbix-server --now
     ```
 
 
@@ -155,7 +155,7 @@ No primeiro servidor:
 !!! info "Verificar logs por mensagens HA"
 
     ``` bash
-    sudo grep HA /var/log/zabbix/zabbix_server.log
+    grep HA /var/log/zabbix/zabbix_server.log
     ```
 
 
@@ -165,7 +165,7 @@ do Gerenciador de Alta Disponibilidade (HA):
 ???+ example "Mensagens de log HA no nó ativo"
 
     ```shell-session
-    localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
+    localhost:~> grep HA /var/log/zabbix/zabbix_server.log
     22597:20240309:155230.353 starting HA manager
     22597:20240309:155230.362 HA manager started in active mode
     ```
@@ -180,7 +180,7 @@ Executando o mesmo comando no segundo servidor (e em quaisquer nós adicionais):
 ???+ example "Mensagens de log HA no nó standby"
 
     ```shell-session
-    localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
+    localhost:~> grep HA /var/log/zabbix/zabbix_server.log
     22304:20240309:155331.163 starting HA manager
     22304:20240309:155331.174 HA manager started in standby mode
     ```
@@ -256,7 +256,7 @@ e do front-end, mas nesta guia instalaremos o Keepalived nos dois servidores Zab
 
     Ubuntu
     ```bash
-    sudo apt install keepalived
+    apt install keepalived
     ```
 
 
@@ -266,7 +266,7 @@ configurações sejam semelhantes, cada servidor requer ajustes sutis. Começare
 !!! info "Editar a configuração keepalived"
 
     ```bash
-    sudo vi /etc/keepalived/keepalived.conf
+    vi /etc/keepalived/keepalived.conf
     ```
 
 
@@ -351,7 +351,7 @@ Certifique-se de que o firewall permite o tráfego do Keepalived em todos os ser
 
     Ubuntu
     ```yaml
-    sudo ufw allow to 224.0.0.18 comment ‘keepalived multicast’
+    ufw allow to 224.0.0.18 comment ‘keepalived multicast’
     ```
 
 
@@ -407,7 +407,7 @@ Uma vez que o frontend é instalado em todos os servidores, precisamos iniciar e
 !!! info "Iniciar e habilitar keepalived"
 
     ```yaml
-    sudo systemctl enable keepalived nginx --now
+    systemctl enable keepalived nginx --now
     ```
 
 
@@ -448,7 +448,7 @@ Para remover um nó que está ou seja **parado** ou **inacessível**, deve-se us
 !!! info ""
 
     ```bash
-    sudo zabbix_server -R ha_remove_node=`zabbix1`
+    zabbix_server -R ha_remove_node=`zabbix1`
     ```
 
 

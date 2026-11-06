@@ -224,24 +224,24 @@ the database-specific driver on top.
     Red Hat
     ```
     bash
-    sudo dnf install unixODBC unixODBC-devel
-    sudo dnf install mariadb-connector-odbc    # for MySQL or MariaDB targets
-    sudo dnf install postgresql-odbc           # for PostgreSQL targets
+    dnf install unixODBC unixODBC-devel
+    dnf install mariadb-connector-odbc    # for MySQL or MariaDB targets
+    dnf install postgresql-odbc           # for PostgreSQL targets
     ```
 
     SUSE
     ```bash
-    sudo zypper install unixODBC-devel
-    sudo zypper install mariadb-connector-odbc # for MySQL or MariaDB targets
-    sudo zypper install psqlODBC               # for PostgreSQL targets
+    zypper install unixODBC-devel
+    zypper install mariadb-connector-odbc # for MySQL or MariaDB targets
+    zypper install psqlODBC               # for PostgreSQL targets
     ```
 
     Debian
     ```bash
-    sudo apt update
-    sudo apt install unixodbc unixodbc-dev
-    sudo apt install odbc-mariadb              # for MySQL or MariaDB targets
-    sudo apt install odbc-postgresql           # for PostgreSQL targets
+    apt update
+    apt install unixodbc unixodbc-dev
+    apt install odbc-mariadb              # for MySQL or MariaDB targets
+    apt install odbc-postgresql           # for PostgreSQL targets
     ```
 
 After installation, confirm that the driver manager can see the installed drivers:

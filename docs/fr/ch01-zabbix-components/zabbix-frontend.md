@@ -53,9 +53,9 @@ Effectuez toutes les étapes suivantes sur le serveur désigné pour l'interface
     Ubuntu
     ```bash
     # When using MySQL/MariaDB
-    sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
+    apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
     # or when using PostgreSQL
-    sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
+    apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
 
@@ -123,7 +123,7 @@ La première chose que nous devons faire est d'ajuster le fichier de configurati
     vi /etc/nginx/nginx.conf
     ```
 
-Si vous êtes sous Ubuntu, il n'est pas nécessaire d'éditer `nginx.conf` ; exécutez simplement `sudo unlink /etc/nginx/sites-enabled/default`
+Si vous êtes sous Ubuntu, il n'est pas nécessaire d'éditer `nginx.conf` ; exécutez simplement `unlink /etc/nginx/sites-enabled/default`
 
 Dans ce fichier de configuration, recherchez le bloc suivant qui commence par `server {` :
 
@@ -160,7 +160,7 @@ Ouvrez le fichier suivant pour l'édition :
 !!! info "Modifier la configuration Zabbix pour NGINX"
 
     ```bash
-    sudo vi /etc/nginx/conf.d/zabbix.conf
+    vi /etc/nginx/conf.d/zabbix.conf
     ```
 
 
@@ -211,7 +211,7 @@ Le serveur web et le service PHP-FPM sont maintenant prêts pour la mise en rout
 
     Ubuntu
     ```bash
-    sudo systemctl enable nginx php8.3-fpm --now
+    systemctl enable nginx php8.3-fpm --now
     ```
 
 
@@ -220,13 +220,13 @@ Vérifions maintenant si le service est correctement démarré et configuré pou
 !!! info "Vérifier que le service fonctionne"
 
     ```bash
-    sudo systemctl status nginx
+    systemctl status nginx
     ```
 
 ???+ example "Sortie d'exemple"
 
     ```shell-session
-    localhost:~> sudo systemctl status nginx
+    localhost:~> systemctl status nginx
     ● nginx.service - The nginx HTTP and reverse proxy server
           Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
          Drop-In: /usr/lib/systemd/system/nginx.service.d
@@ -260,7 +260,7 @@ Avec le service opérationnel et configuré pour un démarrage automatique, l'é
 
     Ubuntu
     ```bash
-    sudo ufw allow 80/tcp
+    ufw allow 80/tcp
     ```
 
 
@@ -330,9 +330,9 @@ Les utilisateurs d'Ubuntu remarqueront probablement l'erreur suivante : `"Locale
 !!! info "Cela peut être résolu facilement avec les commandes suivantes."
 
     ```bash
-    sudo locale-gen en_US.UTF-8
-    sudo update-locale
-    sudo systemctl restart nginx php8.3-fpm
+    locale-gen en_US.UTF-8
+    update-locale
+    systemctl restart nginx php8.3-fpm
     ```
 
 
@@ -403,7 +403,7 @@ Recherchons maintenant notre localisation chinoise pour voir si elle est disponi
 
     Ubuntu
     ```bash
-    sudo apt-cache search language-pack | grep -i zh
+    apt-cache search language-pack | grep -i zh
     ```
 
 
@@ -415,21 +415,21 @@ sur SUSE, soit seuls les locaux `C.UTF-8` et `en_US.UTF-8` sont installés ou to
     Red Hat
     ```bash
     dnf install glibc-langpack-zh.x86_64
-    sudo systemctl restart nginx php-fpm
+    systemctl restart nginx php-fpm
     ```
 
 
     SUSE
     ```bash
     zypper install glibc-locale
-    sudo systemctl restart nginx php-fpm
+    systemctl restart nginx php-fpm
     ```
 
 
     Ubuntu
     ```bash
-    sudo apt install language-pack-zh-hans
-    sudo systemctl restart nginx php8.3-fpm
+    apt install language-pack-zh-hans
+    systemctl restart nginx php8.3-fpm
     ```
 
 

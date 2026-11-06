@@ -131,14 +131,14 @@ for testing.
 !!! example "Create ssh-monitoring user"
 
     ``` bash
-    sudo useradd -m -s /bin/bash ssh-monitoring
+    useradd -m -s /bin/bash ssh-monitoring
     passwd ssh-monitoring
     ```
 
     Set that secure password we discussed earlier and then give it limited permissions
 
     ``` bash
-    sudo usermod -aG systemd-journal ssh-monitor
+    usermod -aG systemd-journal ssh-monitor
     ```
 
 Afterwards let's double-check our item configuration, make sure everything is set up correctly. 

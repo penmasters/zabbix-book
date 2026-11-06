@@ -77,7 +77,7 @@ SUSE
 
 Ubuntu
   ```bash
-  sudo apt install podman
+  apt install podman
   ```
 
 ???+ nota "O que é Podman"?

@@ -178,10 +178,10 @@ Create the data directory for Vault and set the correct ownership and permission
 !!! info "Creating the Vault data directory"
 
     ```bash
-    sudo mkdir -p /opt/vault/data
-    sudo chown -R vault:vault /opt/vault   # for HashiCorp Vault
-    sudo chown -R openbao:openbao /opt/vault   # for OpenBao
-    sudo chmod 750 /opt/vault/data
+    mkdir -p /opt/vault/data
+    chown -R vault:vault /opt/vault   # for HashiCorp Vault
+    chown -R openbao:openbao /opt/vault   # for OpenBao
+    chmod 750 /opt/vault/data
     ```
 
 ### Enable and Start the Vault Service
@@ -190,14 +190,14 @@ Create the data directory for Vault and set the correct ownership and permission
 
     HashiCorp Vault
     ```bash
-    sudo systemctl enable vault
-    sudo systemctl start vault
+    systemctl enable vault
+    systemctl start vault
     ```
 
     OpenBao
     ```bash
-    sudo systemctl enable openbao
-    sudo systemctl start openbao
+    systemctl enable openbao
+    systemctl start openbao
     ```
 
 ### Initialise Vault
@@ -312,12 +312,12 @@ First create the policies directory:
 
     HashiCorp Vault
     ```bash
-    sudo mkdir -p /etc/vault.d/policies
+    mkdir -p /etc/vault.d/policies
     ```
 
     OpenBao
     ```bash
-    sudo mkdir -p /etc/openbao/policies
+    mkdir -p /etc/openbao/policies
     ```
 
 **Server policy** — create `policies/zabbix-server-policy.hcl`:
@@ -720,8 +720,8 @@ If Vault uses a publicly trusted certificate, this parameter is not required.
 !!! info "Restarting the Zabbix server"
 
     ```bash
-    sudo systemctl restart zabbix-server
-    sudo journalctl -u zabbix-server -f
+    systemctl restart zabbix-server
+    journalctl -u zabbix-server -f
     ```
 
 Check the log for a successful start. If the Vault token or path is incorrect,
@@ -769,20 +769,20 @@ by the web server process:
 
     RHEL - Apache
     ```bash
-    sudo chown apache:apache /etc/zabbix/web/zabbix.conf.php
-    sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
+    chown apache:apache /etc/zabbix/web/zabbix.conf.php
+    chmod 600 /etc/zabbix/web/zabbix.conf.php
     ```
 
     SUSE - Apache
     ```bash
-    sudo chown wwwrun:www /etc/zabbix/web/zabbix.conf.php
-    sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
+    chown wwwrun:www /etc/zabbix/web/zabbix.conf.php
+    chmod 600 /etc/zabbix/web/zabbix.conf.php
     ```
 
     Nginx:
     ```bash
-    sudo chown nginx:nginx /etc/zabbix/web/zabbix.conf.php
-    sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
+    chown nginx:nginx /etc/zabbix/web/zabbix.conf.php
+    chmod 600 /etc/zabbix/web/zabbix.conf.php
     ```
 
 !!! note
@@ -1029,17 +1029,17 @@ error log:
 
     RHEL - Apache
     ```bash
-    sudo tail -f /var/log/httpd/error_log | grep -i vault
+    tail -f /var/log/httpd/error_log | grep -i vault
     ```
 
     SUSE - Apache
     ```bash
-    sudo tail -f /var/log/apache2/error_log | grep -i vault
+    tail -f /var/log/apache2/error_log | grep -i vault
     ```
 
     Nginx
     ```bash
-    sudo tail -f /var/log/nginx/error.log | grep -i vault
+    tail -f /var/log/nginx/error.log | grep -i vault
     ```
 
 ### Verify a Secret Reaches an Actual Check
@@ -1147,7 +1147,7 @@ If Vault's audit backend is enabled, you can trace exactly what Zabbix is reques
 
     Tail the audit log
     ```bash
-    sudo tail -f /var/log/vault/audit.log | jq '.request.path'
+    tail -f /var/log/vault/audit.log | jq '.request.path'
     ```
 ## Vault GUI
 

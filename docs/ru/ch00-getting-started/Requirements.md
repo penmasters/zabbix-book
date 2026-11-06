@@ -117,8 +117,8 @@ Zabbix, сервер базы данных и веб-сервер).
 
     Ubuntu
     ```bash
-    sudo apt update
-    sudo apt upgrade
+    apt update
+    apt upgrade
     ```
 ???+ note "Что такое apt, dnf или zypper"
 
@@ -216,8 +216,8 @@ Zabbix, сервер базы данных и веб-сервер).
 
     Ubuntu
     ```bash
-    sudo apt install ufw
-    sudo ufw enable
+    apt install ufw
+    ufw enable
     ```
 ???+ note "Что такое firewalld / ufw"
 
@@ -330,7 +330,7 @@ Zabbix.
 
     Ubuntu
     ```bash
-    sudo apt install chrony
+    apt install chrony
     ```
 
 После установки убедитесь, что Chrony включен и работает, проверив его состояние
@@ -498,7 +498,7 @@ Zabbix.
 
     Ubuntu
     ```bash
-    sudo vi /etc/chrony/chrony.conf
+    vi /etc/chrony/chrony.conf
     ```
 
 Замените существующий пул NTP-серверов на более близкий к вашему местоположению.

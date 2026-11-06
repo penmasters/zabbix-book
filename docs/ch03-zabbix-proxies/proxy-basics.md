@@ -349,11 +349,11 @@ your proxy, whether it is an active or a passive one, this will require port
 
     Red Hat / SUSE
     ``` bash
-    sudo firewall-cmd --add-service=zabbix-trapper --permanent
-    sudo firewall-cmd --reload
+    firewall-cmd --add-service=zabbix-trapper --permanent
+    firewall-cmd --reload
     ```
 
     Ubuntu
     ``` bash
-    sudo ufw allow 10051/tcp
+    ufw allow 10051/tcp
     ```

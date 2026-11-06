@@ -56,7 +56,7 @@ Log in to your Zabbix server or agent host via SSH and create the following file
           { "name": "ts_hr_data", "size_mb": 2048 }
         ]
       }
-    ]' | sudo tee /home/db-cluster-status.json > /dev/null
+    ]' | tee /home/db-cluster-status.json > /dev/null
     ```
 
 Verify the file:

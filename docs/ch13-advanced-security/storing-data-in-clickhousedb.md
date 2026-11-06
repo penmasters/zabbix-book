@@ -139,7 +139,7 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
     recommended approach for systems using Boot Loader Specification (BLS).
 
     ```bash
-    sudo grubby --update-kernel=ALL --args="transparent_hugepage=madvise"
+    grubby --update-kernel=ALL --args="transparent_hugepage=madvise"
     ```
 
     **Ubuntu**
@@ -156,7 +156,7 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
     Apply the configuration:
 
     ```bash
-    sudo update-grub
+    update-grub
     ```
 
     **Verify the configuration**
@@ -164,7 +164,7 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
     Reboot the system to activate the new kernel parameters:
 
     ```bash
-    sudo reboot
+    reboot
     ```
 
     After rebooting, verify the active THP configuration:
@@ -217,7 +217,7 @@ This applies all the changes at once:
 !!! info ""
 
     ```bash
-    sudo tee /etc/sysctl.d/99-clickhouse.conf > /dev/null <<'EOF'
+    tee /etc/sysctl.d/99-clickhouse.conf > /dev/null <<'EOF'
     # Enable delay accounting
     kernel.task_delayacct = 1
     EOF

@@ -122,8 +122,8 @@ To update your system, run the following command based on your OS:
 
     Ubuntu
     ```bash
-    sudo apt update
-    sudo apt upgrade
+    apt update
+    apt upgrade
     ```
 ???+ note "What is apt, dnf, or zypper"
 
@@ -218,8 +218,8 @@ To install and enable the firewall, run the following command:
 
     Ubuntu
     ```bash
-    sudo apt install ufw
-    sudo ufw enable
+    apt install ufw
+    ufw enable
     ```
 ???+ note "What is firewalld / ufw"
 
@@ -331,7 +331,7 @@ To install and enable chrony, our NTP client, use the following command:
 
     Ubuntu
     ```bash
-    sudo apt install chrony
+    apt install chrony
     ```
 
 After installation, verify that Chrony is enabled and running by checking its
@@ -497,7 +497,7 @@ To update the time servers, modify the Chrony configuration file:
 
     Ubuntu
     ```bash
-    sudo vi /etc/chrony/chrony.conf
+    vi /etc/chrony/chrony.conf
     ```
 
 Replace the existing NTP server pool with one closer to your location.

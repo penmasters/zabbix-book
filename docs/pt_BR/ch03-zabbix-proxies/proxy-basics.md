@@ -332,11 +332,11 @@ comunique com seu proxy, seja ele ativo ou passivo, será necessário que a port
 
     Red Hat / SUSE
     ``` bash
-    sudo firewall-cmd --add-service=zabbix-trapper --permanent
-    sudo firewall-cmd --reload
+    firewall-cmd --add-service=zabbix-trapper --permanent
+    firewall-cmd --reload
     ```
 
     Ubuntu
     ``` bash
-    sudo ufw allow 10051/tcp
+    ufw allow 10051/tcp
     ```

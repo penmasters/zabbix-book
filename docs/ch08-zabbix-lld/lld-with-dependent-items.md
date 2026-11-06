@@ -90,7 +90,7 @@ that will serve as the master item for our Low-Level Discovery (LLD) rule.
           "status": "NOK"
         }
       ]
-    }' | sudo tee /home/printer-status.txt > /dev/null
+    }' | tee /home/printer-status.txt > /dev/null
     ```
 
 3. **Verify the File**: Ensure the file is correctly created by running:

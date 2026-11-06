@@ -200,9 +200,9 @@ antigos e atualizar os metadados:
 
     Ubuntu
     ``` bash
-    sudo wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo apt update
+    wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    apt update
     ```
 
 Esses comandos atualizam os metadados dos repositórios e preparam o sistema para
@@ -269,7 +269,7 @@ adicionais necessárias para gerenciá-los com o systemd.
 
     Ubuntu
     ```bash
-    sudo apt install podman
+    apt install podman
     ```
 
 ### Configurando o Podman para gerenciamento de containers por usuário
@@ -281,7 +281,7 @@ proxy Zabbix em um container.
 !!! info "Criar e inicializar o usuário do Podman"
 
     ```bash
-    sudo useradd --comment "User for running container workloads" podman
+    useradd --comment "User for running container workloads" podman
     sudo -i -u podman
     mkdir -p ~/.local/share/containers
     mkdir -p ~/.config/containers/systemd/

@@ -40,7 +40,7 @@ To properly secure Zabbix with SELinux, the system should be in `Enforcing` mode
 !!! info ""
 
     ```yaml
-    sudo setenforce 1
+    setenforce 1
     ```
 
 For permanent configuration, edit `/etc/selinux/config` and set:
@@ -222,19 +222,19 @@ First, capture the denial events from the audit log:
 !!! info
 
     ```yaml
-    sudo grep zabbix /var/log/audit/audit.log | grep fping | audit2allow -M zabbix_fping
+    grep zabbix /var/log/audit/audit.log | grep fping | audit2allow -M zabbix_fping
     ```
 
 !!! info "Install the generated policy module:"
 
     ```yaml
-    sudo semodule -i zabbix_fping.pp
+    semodule -i zabbix_fping.pp
     ```
 
 !!! info "Apply the correct SELinux context to the `fping` binary:"
 
     ```yaml
-    sudo chcon -t fping_exec_t /usr/sbin/fping
+    chcon -t fping_exec_t /usr/sbin/fping
     ```
 
 - **Method 2: Manual Policy Creation :**
@@ -298,8 +298,8 @@ server, enable the following booleans:
 !!! info
 
     ```bash
-    sudo setsebool -P httpd_can_network_connect_db on
-    sudo setsebool -P httpd_can_connect_zabbix on
+    setsebool -P httpd_can_network_connect_db on
+    setsebool -P httpd_can_connect_zabbix on
     ```
 
 These permissions apply when PHP-FPM runs under the standard HTTP

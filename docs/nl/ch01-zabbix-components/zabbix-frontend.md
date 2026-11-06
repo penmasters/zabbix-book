@@ -63,9 +63,9 @@ Voer alle volgende stappen uit op de server die is aangewezen voor de frontend.
     Ubuntu
     ```bash
     # When using MySQL/MariaDB
-    sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
+    apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
     # or when using PostgreSQL
-    sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
+    apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
 Deze commando's installeren de Zabbix frontend-pakketten en de benodigde
@@ -138,7 +138,7 @@ niet langer poort 80 gebruikt en de Zabbix frontend die poort kan overnemen.
     vi /etc/nginx/nginx.conf
     ```
 Op Ubuntu hoef je `nginx.conf` niet aan te passen. Voer daar alleen
-`sudo unlink /etc/nginx/sites-enabled/default` uit.
+`unlink /etc/nginx/sites-enabled/default` uit.
 
 Zoek in dit configuratiebestand het blok dat begint met `server {`:
 
@@ -176,7 +176,7 @@ poort 80 gebruikt. Open het volgende bestand:
 !!! info "Zabbix-configuratie voor NGINX aanpassen"
 
     ```bash
-    sudo vi /etc/nginx/conf.d/zabbix.conf
+    vi /etc/nginx/conf.d/zabbix.conf
     ```
 
 
@@ -227,7 +227,7 @@ commando's schakel je de services in en start je ze meteen:
 
     Ubuntu
     ```bash
-    sudo systemctl enable nginx php8.3-fpm --now
+    systemctl enable nginx php8.3-fpm --now
     ```
 
 Controleer of de service correct draait en automatisch wordt gestart
@@ -236,12 +236,12 @@ na een reboot.
 !!! info "Controleren of de service draait"
 
     ```bash
-    sudo systemctl status nginx
+    systemctl status nginx
     ```
 ???+ example "Voorbeelduitvoer"
 
     ```shell-session
-    localhost:~> sudo systemctl status nginx
+    localhost:~> systemctl status nginx
     ● nginx.service - The nginx HTTP and reverse proxy server
           Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
          Drop-In: /usr/lib/systemd/system/nginx.service.d
@@ -274,7 +274,7 @@ HTTP-verkeer toestaan in de firewall. Voer de volgende commando's uit:
 
     Ubuntu
     ```bash
-    sudo ufw allow 80/tcp
+    ufw allow 80/tcp
     ```
 
 Open je browser en ga naar de URL of het IP-adres van je Zabbix frontend:
@@ -335,9 +335,9 @@ Op Ubuntu kun je de volgende foutmelding tegenkomen:
 !!! info "Dit kun je oplossen met de volgende commando’s."
 
     ```bash
-    sudo locale-gen en_US.UTF-8
-    sudo update-locale
-    sudo systemctl restart nginx php8.3-fpm
+    locale-gen en_US.UTF-8
+    update-locale
+    systemctl restart nginx php8.3-fpm
     ```
 
 Je krijgt een lijst zoals in de volgende voorbeelden:
@@ -403,7 +403,7 @@ De taalcode begint met `zh`.
 
     Ubuntu
     ```bash
-    sudo apt-cache search language-pack | grep -i zh
+    apt-cache search language-pack | grep -i zh
     ```
 
 Op Red Hat en Ubuntu kunnen meerdere pakketten worden weergegeven. Voor
@@ -416,19 +416,19 @@ locales. Dit hangt af van de installatie van het pakket `glibc-locale`.
     Red Hat
     ```bash
     dnf install glibc-langpack-zh.x86_64
-    sudo systemctl restart nginx php-fpm
+    systemctl restart nginx php-fpm
     ```
 
     SUSE
     ```bash
     zypper install glibc-locale
-    sudo systemctl restart nginx php-fpm
+    systemctl restart nginx php-fpm
     ```
 
     Ubuntu
     ```bash
-    sudo apt install language-pack-zh-hans
-    sudo systemctl restart nginx php8.3-fpm
+    apt install language-pack-zh-hans
+    systemctl restart nginx php8.3-fpm
     ```
 
 Wanneer je terugkeert naar de Zabbix frontend en de pagina opnieuw laadt,

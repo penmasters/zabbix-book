@@ -43,7 +43,7 @@ la commande suivante :
 
     Ubuntu
     ```bash
-    sudo apt install mariadb-server
+    apt install mariadb-server
     ```
 
 
@@ -73,17 +73,17 @@ Pour créer le fichier de dépôt MariaDB, exécutez la commande suivante dans v
 
     SUSE
     ``` bash
-    sudo vi /etc/zypp/repos.d/mariadb.repo
+    vi /etc/zypp/repos.d/mariadb.repo
     ```
 
 
     Ubuntu
     ``` bash
-    sudo apt install apt-transport-https curl
-    sudo mkdir -p /etc/apt/keyrings
-    sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+    apt install apt-transport-https curl
+    mkdir -p /etc/apt/keyrings
+    curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
 
-    sudo vi /etc/apt/sources.list.d/mariadb.sources
+    vi /etc/apt/sources.list.d/mariadb.sources
     ```
 
 
@@ -163,15 +163,15 @@ Pour installer le serveur et le client MariaDB, exécutez la commande suivante :
 
     SUSE
     ```bash
-    sudo rpm --import https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
-    sudo zypper install MariaDB-server MariaDB-client
+    rpm --import https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
+    zypper install MariaDB-server MariaDB-client
     ```
 
 
 
     Ubuntu
     ```bash
-    sudo apt install mariadb-server
+    apt install mariadb-server
     ```
 
 
@@ -188,7 +188,7 @@ au démarrage et le démarrer immédiatement. Utilisez la commande suivante pour
 !!! info "Activation du service MariaDB"
 
     ```bash
-    sudo systemctl enable mariadb --now
+    systemctl enable mariadb --now
     ```
 
 
@@ -219,7 +219,7 @@ avec la commande suivante :
 !!! info "Vérification du statut mariadb"
 
     ```bash
-    sudo systemctl status mariadb
+    systemctl status mariadb
     ```
 
 
@@ -228,7 +228,7 @@ Vous devriez voir une sortie similaire à celle-ci, indiquant que le service Mar
 ???+ example "Exemple de statut du service Mariadb"
 
     ```shell-session
-    localhost:~ $ sudo systemctl status mariadb
+    localhost:~ $ systemctl status mariadb
     ● mariadb.service - MariaDB database server
          Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
          Active: active (running) since Wed 2025-12-03 00:16:04 CET; 5s ago
@@ -268,7 +268,7 @@ Exécutez la commande suivante :
 !!! info "Sécurisation de l'installation Mariadb"
 
     ```bash
-    sudo mariadb-secure-installation
+    mariadb-secure-installation
     ```
 
 
@@ -285,7 +285,7 @@ Une fois terminé, votre instance MariaDB sera significativement plus sécurisé
 !!! example "Exemple de sortie du script mariadb-secure-installation"
 
     ```shell-session
-    localhost:~ $ sudo mariadb-secure-installation
+    localhost:~ $ mariadb-secure-installation
     NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
           SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
 
@@ -444,7 +444,7 @@ machine serveur de base de données. Par défaut, MariaDB écoute sur le port 33
 
     Ubuntu
     ``` bash
-    sudo ufw allow 3306/tcp
+    ufw allow 3306/tcp
     ```
 
 
@@ -475,7 +475,7 @@ Tout d'abord, nous devons installer les scripts SQL Zabbix qui contiennent les s
 
     Ubuntu
     ``` bash
-    sudo apt install zabbix-sql-scripts
+    apt install zabbix-sql-scripts
     ```
 
 
@@ -508,7 +508,7 @@ l'utilisateur `zabbix-srv` et nous l'importons tout dans notre DB
 !!! info "Populer la base de données"
 
     ``` bash
-    sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
+    zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
     ```
 
 

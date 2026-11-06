@@ -115,8 +115,8 @@ Pour mettre à jour le système, exécutez la commande correspondant à votre OS
 
     Ubuntu
     ```bash
-    sudo apt update
-    sudo apt upgrade
+    apt update
+    apt upgrade
     ```
 ???+ note "Que sont apt, dnf et zypper ?"
 
@@ -213,8 +213,8 @@ Pour installer et activer le pare-feu, exécutez la commande suivante :
 
     Ubuntu
     ```bash
-    sudo apt install ufw
-    sudo ufw enable
+    apt install ufw
+    ufw enable
     ```
 ???+ note "Que sont firewalld et ufw ?"
 
@@ -329,7 +329,7 @@ suivante :
 
     Ubuntu
     ```bash
-    sudo apt install chrony
+    apt install chrony
     ```
 
 Après l'installation, vérifiez que Chrony est activé et fonctionne en contrôlant
@@ -501,7 +501,7 @@ de Chrony :
 
     Ubuntu
     ```bash
-    sudo vi /etc/chrony/chrony.conf
+    vi /etc/chrony/chrony.conf
     ```
 
 Remplacez le pool de serveurs NTP existant par un pool plus proche de votre

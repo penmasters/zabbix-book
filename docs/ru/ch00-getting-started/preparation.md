@@ -196,9 +196,9 @@ _0.1 Загрузка Zabbix_
 
     Ubuntu
     ``` bash
-    sudo wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo apt update
+    wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    apt update
     ```
 
 Эти команды обновят метаданные репозиториев и подготовят систему к установке
@@ -262,7 +262,7 @@ Zabbix.
 
     Ubuntu
     ```bash
-    sudo apt install podman
+    apt install podman
     ```
 
 ### Настройка Podman для управления контейнерами от имени пользователя
@@ -274,7 +274,7 @@ Zabbix.
 !!! info "Создать и инициализировать пользователя Podman"
 
     ```bash
-    sudo useradd --comment "User for running container workloads" podman
+    useradd --comment "User for running container workloads" podman
     sudo -i -u podman
     mkdir -p ~/.local/share/containers
     mkdir -p ~/.config/containers/systemd/

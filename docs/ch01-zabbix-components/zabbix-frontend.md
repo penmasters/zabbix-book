@@ -61,9 +61,9 @@ Perform all subsequent steps on the server designated for the frontend.
     Ubuntu
     ```bash
     # When using MySQL/MariaDB
-    sudo apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
+    apt install zabbix-frontend-php php8.3-mysql zabbix-nginx-conf
     # or when using PostgreSQL
-    sudo apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
+    apt install zabbix-frontend-php php8.3-pgsql zabbix-nginx-conf
     ```
 
 This command will install the front-end packages along with the required dependencies
@@ -139,7 +139,7 @@ use the standard config and serve the Zabbix frontend on port 80.
     ```bash
     vi /etc/nginx/nginx.conf
     ```
-If you are on Ubuntu no need to edit `nginx.conf` just run `sudo unlink /etc/nginx/sites-enabled/default`
+If you are on Ubuntu no need to edit `nginx.conf` just run `unlink /etc/nginx/sites-enabled/default`
 
 In this configuration file look for the following block that starts with `server {`:
 
@@ -178,7 +178,7 @@ Open the following file for editing:
 !!! info "Edit Zabbix config for nginx"
 
     ```bash
-    sudo vi /etc/nginx/conf.d/zabbix.conf
+    vi /etc/nginx/conf.d/zabbix.conf
     ```
 
 And alter the following lines:
@@ -228,7 +228,7 @@ startup. Execute the following commands to enable and start them immediately:
 
     Ubuntu
     ```bash
-    sudo systemctl enable nginx php8.3-fpm --now
+    systemctl enable nginx php8.3-fpm --now
     ```
 
 Let's verify if the service is properly started and enabled so that it survives
@@ -237,12 +237,12 @@ our reboot next time.
 !!! info "Check if the service is running"
 
     ```bash
-    sudo systemctl status nginx
+    systemctl status nginx
     ```
 ???+ example "Example output"
 
     ```shell-session
-    localhost:~> sudo systemctl status nginx
+    localhost:~> systemctl status nginx
     ● nginx.service - The nginx HTTP and reverse proxy server
           Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
          Drop-In: /usr/lib/systemd/system/nginx.service.d
@@ -276,7 +276,7 @@ following commands:
 
     Ubuntu
     ```bash
-    sudo ufw allow 80/tcp
+    ufw allow 80/tcp
     ```
 
 Open your browser and go to the url or ip of your front-end :
@@ -345,9 +345,9 @@ is not found on the web server."``
 !!! info "This can be solved easy with the following commands."
 
     ```bash
-    sudo locale-gen en_US.UTF-8
-    sudo update-locale
-    sudo systemctl restart nginx php8.3-fpm
+    locale-gen en_US.UTF-8
+    update-locale
+    systemctl restart nginx php8.3-fpm
     ```
 
 This will give you a list like:
@@ -413,7 +413,7 @@ the code starts with zh.
 
     Ubuntu
     ```bash
-    sudo apt-cache search language-pack | grep -i zh
+    apt-cache search language-pack | grep -i zh
     ```
 
 On RedHat and Ubuntu, the command outputs two lines; however, given the identified language code,
@@ -427,19 +427,19 @@ is installed or not.
     Red Hat
     ```bash
     dnf install glibc-langpack-zh.x86_64
-    sudo systemctl restart nginx php-fpm
+    systemctl restart nginx php-fpm
     ```
 
     SUSE
     ```bash
     zypper install glibc-locale
-    sudo systemctl restart nginx php-fpm
+    systemctl restart nginx php-fpm
     ```
 
     Ubuntu
     ```bash
-    sudo apt install language-pack-zh-hans
-    sudo systemctl restart nginx php8.3-fpm
+    apt install language-pack-zh-hans
+    systemctl restart nginx php8.3-fpm
     ```
 
 When we return now to our front-end we are able to select the Chinese language,

@@ -42,7 +42,7 @@ tags: [beginner]
 
     Ubuntu
     ```bash
-    sudo apt install mariadb-server
+    apt install mariadb-server
     ```
 
 
@@ -74,17 +74,17 @@ tags: [beginner]
 
     SUSE
     ``` bash
-    sudo vi /etc/zypp/repos.d/mariadb.repo
+    vi /etc/zypp/repos.d/mariadb.repo
     ```
 
 
     Ubuntu
     ``` bash
-    sudo apt install apt-transport-https curl
-    sudo mkdir -p /etc/apt/keyrings
-    sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+    apt install apt-transport-https curl
+    mkdir -p /etc/apt/keyrings
+    curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
 
-    sudo vi /etc/apt/sources.list.d/mariadb.sources
+    vi /etc/apt/sources.list.d/mariadb.sources
     ```
 
 
@@ -165,15 +165,15 @@ tags: [beginner]
 
     SUSE
     ```bash
-    sudo rpm --import https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
-    sudo zypper install MariaDB-server MariaDB-client
+    rpm --import https://mirror.bouwhuis.network/mariadb/yum/RPM-GPG-KEY-MariaDB
+    zypper install MariaDB-server MariaDB-client
     ```
 
 
 
     Ubuntu
     ```bash
-    sudo apt install mariadb-server
+    apt install mariadb-server
     ```
 
 
@@ -191,7 +191,7 @@ tags: [beginner]
 !!! info "Включение службы MariaDB"
 
     ```bash
-    sudo systemctl enable mariadb --now
+    systemctl enable mariadb --now
     ```
 
 
@@ -222,7 +222,7 @@ tags: [beginner]
 !!! info "Получение статуса mariadb"
 
     ```bash
-    sudo systemctl status mariadb
+    systemctl status mariadb
     ```
 
 
@@ -231,7 +231,7 @@ tags: [beginner]
 ???+ example "Пример статуса службы Mariadb"
 
     ```shell-session
-    localhost:~ $ sudo systemctl status mariadb
+    localhost:~ $ systemctl status mariadb
     ● mariadb.service - MariaDB database server
          Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; preset: disabled)
          Active: active (running) since Wed 2025-12-03 00:16:04 CET; 5s ago
@@ -271,7 +271,7 @@ tags: [beginner]
 !!! info "Усиление настроек MariaDB"
 
     ```bash
-    sudo mariadb-secure-installation
+    mariadb-secure-installation
     ```
 
 
@@ -288,7 +288,7 @@ tags: [beginner]
 !!! example "Пример вывода mariadb-secure-installation"
 
     ```shell-session
-    localhost:~ $ sudo mariadb-secure-installation
+    localhost:~ $ mariadb-secure-installation
     NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
           SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
 
@@ -445,7 +445,7 @@ tags: [beginner]
 
     Ubuntu
     ``` bash
-    sudo ufw allow 3306/tcp
+    ufw allow 3306/tcp
     ```
 
 
@@ -476,7 +476,7 @@ tags: [beginner]
 
     Ubuntu
     ``` bash
-    sudo apt install zabbix-sql-scripts
+    apt install zabbix-sql-scripts
     ```
 
 
@@ -507,7 +507,7 @@ tags: [beginner]
 !!! info "Заполните базу данных"
 
     ``` bash
-    sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
+    zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
     ```
 
 

@@ -72,7 +72,7 @@ First we will need to ensure that we have a container engine installed.
 
   Ubuntu
   ```bash
-  sudo apt install podman
+  apt install podman
   ```
 
 ???+ note "What is Podman"

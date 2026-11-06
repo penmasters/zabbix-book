@@ -199,9 +199,9 @@ by running:
 
     Ubuntu
     ``` bash
-    sudo wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
-    sudo apt update
+    wget https://repo.zabbix.com/zabbix/8.0/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    dpkg -i zabbix-release_latest_8.0+ubuntu24.04_all.deb
+    apt update
     ```
 
 This will refresh the repository metadata and prepare the system for Zabbix installation.
@@ -264,7 +264,7 @@ some additional tools that will help us manage containers with Systemd.
 
     Ubuntu
     ```bash
-    sudo apt install podman
+    apt install podman
     ```
 
 ### Configure Podman for user-based container management
@@ -276,7 +276,7 @@ be running only zabbix-proxy in a container.
 !!! info "Create and init podman user"
 
     ```bash
-    sudo useradd --comment "User for running container workloads" podman
+    useradd --comment "User for running container workloads" podman
     sudo -i -u podman
     mkdir -p ~/.local/share/containers
     mkdir -p ~/.config/containers/systemd/

@@ -307,7 +307,7 @@ that Zabbix can read.
 
     Red Hat
     ``` bash
-    sudo dnf install net-snmp-utils net-snmp-perl net-snmp
+    dnf install net-snmp-utils net-snmp-perl net-snmp
     ```
 
     Suse
@@ -317,7 +317,7 @@ that Zabbix can read.
     
     Ubuntu
     ```
-    sudo apt install snmpd snmp libsnmp-dev snmptrapd
+    apt install snmpd snmp libsnmp-dev snmptrapd
     ```
 
 This installs the SNMP tools, daemon, and Perl modules used by Zabbix's receiver
@@ -341,14 +341,14 @@ Make sure this port is open on your Zabbix server:
 
     Red Hat / Suse
     ``` bash
-    sudo firewall-cmd --add-service=snmptrap --permanent
-    sudo firewall-cmd --reload
+    firewall-cmd --add-service=snmptrap --permanent
+    firewall-cmd --reload
     ```
 
     Ubuntu
     ```
-    sudo ufw allow snmptrap
-    sudo ufw reload
+    ufw allow snmptrap
+    ufw reload
     ```
 
 This allows incoming traps from SNMP-enabled devices to be received by the 
@@ -373,7 +373,7 @@ Zabbix GIT repository: [https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/
 !!! info "Download zabbix_trap_receiver.pl"
 
     ```bash
-    sudo wget https://git.zabbix.com/projects/ZBX/repos/zabbix/raw/misc/snmptrap/zabbix_trap_receiver.pl
+    wget https://git.zabbix.com/projects/ZBX/repos/zabbix/raw/misc/snmptrap/zabbix_trap_receiver.pl
     ```
 
 Once downloaded, move the script to /usr/bin and make it executable:
@@ -381,15 +381,15 @@ Once downloaded, move the script to /usr/bin and make it executable:
 !!! info "Install zabbix_trap_receiver.pl"
 
     ```bash
-    sudo mv zabbix_trap_receiver.pl /usr/local/bin/
-    sudo chmod +x /usr/local/bin/zabbix_trap_receiver.pl
+    mv zabbix_trap_receiver.pl /usr/local/bin/
+    chmod +x /usr/local/bin/zabbix_trap_receiver.pl
     ```
 
     If you have SELinux enabled, you will need to set the correct context for the
     script:
 
     ```bash
-    sudo restorecon -v /usr/local/bin/zabbix_trap_receiver.pl
+    restorecon -v /usr/local/bin/zabbix_trap_receiver.pl
     ```
 
 This script will receive traps from *snmptrapd* and write them to a log file that Zabbix
@@ -401,7 +401,7 @@ configure it to write to a different location in the next step.
     Edit the trap receiver script:
 
     ```bash
-    sudo vi /usr/local/bin/zabbix_trap_receiver.pl
+    vi /usr/local/bin/zabbix_trap_receiver.pl
     ```
 
     Set the desired log file path in the script by searching for the line that 
@@ -418,8 +418,8 @@ exist and have the appropriate permissions.
     Create the directory:
 
     ```bash
-    sudo mkdir -p /var/log/zabbix_traps_archive
-    sudo chmod 755 /var/log/zabbix_traps_archive
+    mkdir -p /var/log/zabbix_traps_archive
+    chmod 755 /var/log/zabbix_traps_archive
     ```
     On Ubuntu only:
 
@@ -441,7 +441,7 @@ the script for each incoming trap.
     Edit the SNMP trap daemon configuration file:
 
     ```bash
-    sudo vi /etc/snmp/snmptrapd.conf
+    vi /etc/snmp/snmptrapd.conf
     ```
 
     Add the following lines:
@@ -523,7 +523,7 @@ log file:
     Edit the Zabbix server configuration file:
 
     ```bash
-    sudo vi /etc/zabbix/zabbix_server.d/snmp_trapper.conf
+    vi /etc/zabbix/zabbix_server.d/snmp_trapper.conf
     ```
 
     Uncomment or add the following parameters:
@@ -544,7 +544,7 @@ Restart the Zabbix server to apply changes:
 !!! info "Restart Zabbix server"
 
     ```bash
-    sudo systemctl restart zabbix-server
+    systemctl restart zabbix-server
     ```
 
 ---
@@ -562,7 +562,7 @@ file:
 ???+ example "Check for SELinux denials"
 
     ```shell-session
-    localhost:~$ sudo ausearch -c 'zabbix_server' -ts recent
+    localhost:~$ ausearch -c 'zabbix_server' -ts recent
     time->Sun Mar  8 23:04:40 2026
     type=AVC msg=audit(1773007480.439:3417): avc:  denied  { read } for  pid=5278 comm="zabbix_server" name="zabbix_traps.log" dev="vda3" ino=21234 scontext=system_u:system_r:zabbix_t:s0 tcontext=system_u:object_r:snmpd_log_t:s0 tclass=file permissive=0
 
@@ -587,7 +587,7 @@ Finally, activate and start the SNMP trap daemon so it launches at boot:
 !!! info "Enable and start snmptrapd"
 
     ```bash
-    sudo systemctl enable snmptrapd --now
+    systemctl enable snmptrapd --now
     ```
 
 This service will now listen on UDP 162 and feed incoming traps to Zabbix.
@@ -615,7 +615,7 @@ already installed.
     Create a new logrotate configuration file `/etc/logrotate.d/zabbix_traps`:
 
     ```bash
-    sudo vi /etc/logrotate.d/zabbix_traps
+    vi /etc/logrotate.d/zabbix_traps
     ```
 
     Add the following content to this file.
@@ -651,7 +651,7 @@ You can manually test the log rotation to ensure it's working correctly:
 !!! info "Force log rotation"
 
     ```bash
-    sudo logrotate --force /etc/logrotate.d/zabbix_traps
+    logrotate --force /etc/logrotate.d/zabbix_traps
     ```
 
 ## Testing and debugging
@@ -673,12 +673,12 @@ terminal.
 
     Example 1: SNMP v1 Test Trap
     ``` bash
-    sudo snmptrap -v 1 -c public 127.0.0.1 '.1.3.6.1.6.3.1.1.5.4' '0.0.0.0' 6 33 '55' .1.3.6.1.6.3.1.1.5.4 s "eth0"
+    snmptrap -v 1 -c public 127.0.0.1 '.1.3.6.1.6.3.1.1.5.4' '0.0.0.0' 6 33 '55' .1.3.6.1.6.3.1.1.5.4 s "eth0"
     ```
 
     Example 2: SNMP v2c Test Trap
     ``` bash
-    sudo snmptrap -v 2c -c public localhost '' 1.3.6.1.4.1.8072.2.3.0.1 1.3.6.1.4.1.8072.2.3.2.1 i 123456
+    snmptrap -v 2c -c public localhost '' 1.3.6.1.4.1.8072.2.3.0.1 1.3.6.1.4.1.8072.2.3.2.1 i 123456
     ```
 
 When you now verify the terminal with the log file, you should see the trap 
@@ -692,7 +692,7 @@ systemd service automatically prints the most recent log lines of snmptrapd.
 !!! info "Check snmptrapd status"
 
     ``` bash
-    sudo systemctl status snmptrapd
+    systemctl status snmptrapd
     ```
 
 For troubleshooting efficiency:
@@ -714,7 +714,7 @@ cannot send one.
     echo "ZBXTRAP 127.0.0.1
     $(date)
     line two
-    line three" | sudo tee --append /var/log/zabbix_traps_archive/zabbix_traps.log
+    line three" | tee --append /var/log/zabbix_traps_archive/zabbix_traps.log
     ```
 
 The most important part is having the keyword "ZBXTRAP" (all caps) followed by the
@@ -734,7 +734,7 @@ print a line about "unmatched trap received from" in the log file.
 !!! info "Send a test trap"
 
     ```
-    sudo snmptrap -v 1 -c public 127.0.0.1 '.1.3.6.1.6.3.1.1.5.4' '0.0.0.0' 6 33 '55' .1.3.6.1.6.3.1.1.5.4 s "eth0"
+    snmptrap -v 1 -c public 127.0.0.1 '.1.3.6.1.6.3.1.1.5.4' '0.0.0.0' 6 33 '55' .1.3.6.1.6.3.1.1.5.4 s "eth0"
     ```
 
 Immediately after sending the trap, check the Zabbix proxy/server log for any 
@@ -767,7 +767,7 @@ If SELinux is enabled and traps are not being processed, check for denied action
 
     more generally for any AVC denials:
     ``` bash
-    sudo ausearch -m AVC,USER_AVC -ts recent
+    ausearch -m AVC,USER_AVC -ts recent
     ```
 
 Adjust SELinux policies or create exceptions for `/usr/local/bin/zabbix_trap_receiver.pl`
@@ -814,7 +814,7 @@ to make it functional and have confidence that trap receiving is working.
 
     # Forward message to parser script
     traphandle default /usr/bin/zabbix_trap_receiver.sh
-    " | sudo tee /etc/snmp/snmptrapd.conf
+    " | tee /etc/snmp/snmptrapd.conf
     ```
 
 This is only applicable to SNMPv2 traps. This will not work with SNMPv3 traps.

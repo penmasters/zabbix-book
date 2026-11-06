@@ -91,7 +91,7 @@ _1.10 HA
 !!! info "Добавление конфигурации сервера Zabbix с высокой доступностью"
 
     ``` bash
-    sudo vi /etc/zabbix/zabbix_server.d/high-availability.conf
+    vi /etc/zabbix/zabbix_server.d/high-availability.conf
     ```
 
 
@@ -144,7 +144,7 @@ _1.10 HA
 !!! info "Включение и запуск службы zabbix-server"
 
     ```
-    sudo systemctl enable zabbix-server --now
+    systemctl enable zabbix-server --now
     ```
 
 
@@ -160,7 +160,7 @@ _1.10 HA
 !!! info "Проверка журналов на сообщения HA"
 
     ``` bash
-    sudo grep HA /var/log/zabbix/zabbix_server.log
+    grep HA /var/log/zabbix/zabbix_server.log
     ```
 
 
@@ -170,7 +170,7 @@ _1.10 HA
 ???+ example "Сообщения журнала HA на активном узле"
 
     ```shell-session
-    localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
+    localhost:~> grep HA /var/log/zabbix/zabbix_server.log
     22597:20240309:155230.353 starting HA manager
     22597:20240309:155230.362 HA manager started in active mode
     ```
@@ -186,7 +186,7 @@ _1.10 HA
 ???+ example "Сообщения журнала HA на резервном узле"
 
     ```shell-session
-    localhost:~> sudo grep HA /var/log/zabbix/zabbix_server.log
+    localhost:~> grep HA /var/log/zabbix/zabbix_server.log
     22304:20240309:155331.163 starting HA manager
     22304:20240309:155331.174 HA manager started in standby mode
     ```
@@ -264,7 +264,7 @@ VIP для услуг фронтенда, обеспечивая бесшовн�
 
     Ubuntu
     ```bash
-    sudo apt install keepalived
+    apt install keepalived
     ```
 
 
@@ -275,7 +275,7 @@ VIP для услуг фронтенда, обеспечивая бесшовн�
 !!! info "Редактирование конфигурации keepalived"
 
     ```bash
-    sudo vi /etc/keepalived/keepalived.conf
+    vi /etc/keepalived/keepalived.conf
     ```
 
 
@@ -360,7 +360,7 @@ VIP для услуг фронтенда, обеспечивая бесшовн�
 
     Ubuntu
     ```yaml
-    sudo ufw allow to 224.0.0.18 comment ‘keepalived multicast’
+    ufw allow to 224.0.0.18 comment ‘keepalived multicast’
     ```
 
 
@@ -417,7 +417,7 @@ VIP для услуг фронтенда, обеспечивая бесшовн�
 !!! info "Запуск и активация keepalived"
 
     ```yaml
-    sudo systemctl enable keepalived nginx --now
+    systemctl enable keepalived nginx --now
     ```
 
 
@@ -458,7 +458,7 @@ HA_
 !!! info ""
 
     ```bash
-    sudo zabbix_server -R ha_remove_node=`zabbix1`
+    zabbix_server -R ha_remove_node=`zabbix1`
     ```
 
 

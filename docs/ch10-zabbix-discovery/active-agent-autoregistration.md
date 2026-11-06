@@ -111,7 +111,7 @@ for the changes to take effect.
 !!! info "Restarting the Zabbix agent"
 
     ```bash
-    sudo systemctl restart zabbix-agent2
+    systemctl restart zabbix-agent2
     ```
 
 ## Creating an autoregistration action

@@ -117,8 +117,8 @@ OS:
 
     Ubuntu
     ```bash
-    sudo apt update
-    sudo apt upgrade
+    apt update
+    apt upgrade
     ```
 ???+ note "Wat is apt, dnf of zypper?"
 
@@ -214,8 +214,8 @@ Voer het volgende commando uit om de firewall te installeren en in te schakelen:
 
     Ubuntu
     ```bash
-    sudo apt install ufw
-    sudo ufw enable
+    apt install ufw
+    ufw enable
     ```
 ???+ note "Wat is firewalld / ufw?"
 
@@ -330,7 +330,7 @@ te schakelen:
 
     Ubuntu
     ```bash
-    sudo apt install chrony
+    apt install chrony
     ```
 
 Controleer na de installatie of Chrony is ingeschakeld en draait door de status
@@ -498,7 +498,7 @@ Wijzig het Chrony-configuratiebestand om de tijdservers bij te werken:
 
     Ubuntu
     ```bash
-    sudo vi /etc/chrony/chrony.conf
+    vi /etc/chrony/chrony.conf
     ```
 
 Vervang de bestaande NTP-serverpool door eentje die dichter bij jouw locatie
