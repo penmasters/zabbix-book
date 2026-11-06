@@ -110,6 +110,7 @@ nav:
       - ch11-zabbix-visualisation/automated-pdf-reports.md
   - "Chapter 12 : Zabbix API":
       - ch12-zabbix-api/chapter.md
+      - ch12-zabbix-api/API basics.md
       - ch12-zabbix-api/self-engaging.md
   - "Chapter 13 : Advanced set up and security":
       - ch13-advanced-security/chapter.md
