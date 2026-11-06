@@ -12,21 +12,22 @@ tags: [beginner]
 
 # Installing a PostgreSQL database
 
-Alternatively to MariaDB/MySQL, you can choose to use PostgreSQL as the database backend for Zabbix.
-Similar to MariaDB, PostgreSQL can be installed using either the OS vendor-provided
-packages or the official PostgreSQL repositories.
+Alternatively to MariaDB/MySQL, you can choose to use PostgreSQL as the database
+backend for Zabbix. Similar to MariaDB, PostgreSQL can be installed using either
+the OS vendor-provided packages or the official PostgreSQL repositories.
 
-If you already have installed MariaDB in the previous section, you can skip this section.
+If you already have installed MariaDB in the previous section, you can skip this
+section.
 
-As of writing PostgreSQL 13-18 are supported by Zabbix. Check the Zabbix documentation
+As of writing PostgreSQL 15.x-18.x are supported by Zabbix. Check the Zabbix documentation
 for an up-to-date list of supported versions for your Zabbix version. Usually it's
-a good idea to go with the latest version that is supported by Zabbix. 
+a good idea to go with the latest version that is supported by Zabbix.
 
 ???+ tip "TimescaleDB extension"
 
-    Zabbix also supports the extension TimescaleDB but due to its advanced nature, 
+    Zabbix also supports the extension TimescaleDB but due to its advanced nature,
     we won't cover it in this chapter. Refer to [_Partitioning PostgreSQL with TimescaleDB_](../ch13-advanced-security/partitioning-postgresql-database.md)
-    for detailed instructions on that topic. 
+    for detailed instructions on that topic.
 
     Do note that if you want to use TimescaleDB RPM packages provided
     by Timescale, you will need to install PostgreSQL from the official
@@ -35,7 +36,7 @@ a good idea to go with the latest version that is supported by Zabbix.
     you will need to compile and install the TimescaleDB extension from source.
 
     Extra note: TimescaleDB doesn't not provide packages for SUSE Linux Enterprise
-    Server (SLES) or openSUSE Leap. Instead Suse provides the TimescaleDB 
+    Server (SLES) or openSUSE Leap. Instead Suse provides the TimescaleDB
     extension in their own repositories. But for that to work you will need to
     install PostgreSQL from the OS vendor-provided packages instead of the official
     PostgreSQL repositories.
@@ -44,7 +45,7 @@ a good idea to go with the latest version that is supported by Zabbix.
 
 ## Installing PostgreSQL Server and Client from OS Vendor-Provided Packages
 
-To install the distribution default PostgreSQL server, execute the following 
+To install the distribution default PostgreSQL server, execute the following
 commands:
 
 !!! info "Install the Postgres server"
@@ -182,17 +183,17 @@ and manage your database.
     Red Hat
     ```bash
     # Install Postgres server:
-    dnf install postgresql17 postgresql17-server postgresql17-contrib
+    dnf install postgresql18 postgresql18-server postgresql18-contrib
     ```
 
     SUSE
     ```bash
-    zypper install postgresql17 postgresql17-server postgresql17-contrib
+    zypper install postgresql18 postgresql18-server postgresql18-contrib
     ```
 
     Ubuntu
     ```bash
-    sudo apt install postgresql-17 postgresql-client-17
+    sudo apt install postgresql-18 postgresql-client-18
     ```
 
 This command will download and install both the server and client packages, enabling
@@ -204,7 +205,7 @@ empty database:
 !!! info "Initialize empty PostgreSQL database"
 
     ```
-    sudo /usr/pgsql-17/bin/postgresql-17-setup initdb
+    sudo /usr/pgsql-18/bin/postgresql-18-setup initdb
     ```
 
 Once the installation is complete, you can proceed to the [Starting the PostgreSQL Database](#starting-the-postgresql-database) section.
@@ -225,7 +226,7 @@ upon boot as well as start it immediately. Use the following command to accompli
 
     for official PostgreSQL packages:
     ```bash
-    sudo systemctl enable postgresql-17 --now
+    sudo systemctl enable postgresql-18 --now
     ```
 
 This command will both enable and start the PostgreSQL service.
@@ -244,7 +245,7 @@ The expected output should resemble this:
 
     ```shell-session
     localhost:~ $ psql -V
-    psql (PostgreSQL) 17.7
+    psql (PostgreSQL) 18.7
     ```
 
 To ensure that the PostgreSQL service is running properly, you can check its status
@@ -259,7 +260,7 @@ with the following command:
 
     for official PostgreSQL packages:
     ```bash
-    sudo systemctl status postgresql-17
+    sudo systemctl status postgresql-18
     ```
 
 You should see an output similar to this, indicating that the PostgreSQL service
@@ -268,18 +269,18 @@ is active and running:
 ???+ example "PostgreSQL service status example"
 
     ```shell-session
-    localhost:~ $ sudo systemctl status postgresql-17
-    ● postgresql-17.service - PostgreSQL 17 database server
-        Loaded: loaded (/usr/lib/systemd/system/postgresql-17.service; enabled; preset: disabled)
-        Active: active (running) since Mon 2025-12-29 17:24:07 CET; 6s ago
+    localhost:~ $ sudo systemctl status postgresql-18
+    ● postgresql-18.service - PostgreSQL 18 database server
+        Loaded: loaded (/usr/lib/systemd/system/postgresql-18.service; enabled; preset: disabled)
+        Active: active (running) since Mon 2025-12-29 18:24:07 CET; 6s ago
     Invocation: 43ba47dfee5b415db223e3452c3cfacc
-        Docs: https://www.postgresql.org/docs/17/static/
-        Process: 11131 ExecStartPre=/usr/pgsql-17/bin/postgresql-17-check-db-dir ${PGDATA} (code=exited, status=0/SUCCESS)
+        Docs: https://www.postgresql.org/docs/18/static/
+        Process: 11131 ExecStartPre=/usr/pgsql-18/bin/postgresql-18-check-db-dir ${PGDATA} (code=exited, status=0/SUCCESS)
     Main PID: 11137 (postgres)
         Tasks: 7 (limit: 4672)
             CPU: 471ms
-        CGroup: /system.slice/postgresql-17.service
-                ├─11137 /usr/pgsql-17/bin/postgres -D /var/lib/pgsql/17/data/
+        CGroup: /system.slice/postgresql-18.service
+                ├─11137 /usr/pgsql-18/bin/postgres -D /var/lib/pgsql/18/data/
                 ├─11138 "postgres: logger "
                 ├─11139 "postgres: checkpointer "
                 ├─11140 "postgres: background writer "
@@ -287,10 +288,10 @@ is active and running:
                 ├─11143 "postgres: autovacuum launcher "
                 └─11144 "postgres: logical replication launcher "
 
-    Dec 29 17:24:07 localhost.localdomain systemd[1]: Starting PostgreSQL 17 database server...
-    Dec 29 17:24:07 localhost.localdomain postgres[11137]: 2025-12-29 17:24:07.650 CET [11137] LOG:  redirecting log output to logging co>
-    Dec 29 17:24:07 localhost.localdomain postgres[11137]: 2025-12-29 17:24:07.650 CET [11137] HINT:  Future log output will appear in di>
-    Dec 29 17:24:07 localhost.localdomain systemd[1]: Started PostgreSQL 17 database server.
+    Dec 29 18:24:07 localhost.localdomain systemd[1]: Starting PostgreSQL 18 database server...
+    Dec 29 18:24:07 localhost.localdomain postgres[11137]: 2025-12-29 18:24:07.650 CET [11137] LOG:  redirecting log output to logging co>
+    Dec 29 18:24:07 localhost.localdomain postgres[11137]: 2025-12-29 18:24:07.650 CET [11137] HINT:  Future log output will appear in di>
+    Dec 29 18:24:07 localhost.localdomain systemd[1]: Started PostgreSQL 18 database server.
     ```
 
 This confirms that your PostgreSQL server is up and running, ready for further configuration.
@@ -321,16 +322,14 @@ Add the following lines, the order here is important.
     vi /var/lib/pgsql/data/pg_hba.conf
 
     # for official packages
-    vi /var/lib/pgsql/17/data/pg_hba.conf
+    vi /var/lib/pgsql/18/data/pg_hba.conf
     ```
 
     Ubuntu
     ``` bash
-    # for OS-provided packages
     sudo vi /etc/postgresql/current/main/pg_hba.conf
-
-    # for official packages
-    sudo vi /etc/postgresql/17/main/pg_hba.conf
+    or
+    sudo vi /etc/postgresql/<version>/main/pg_hba.conf
     ```
 
 !!! warning "Location of pg_hba file"
@@ -381,16 +380,14 @@ from the Zabbix server. PostgreSQL will by default only allow connections from a
     vi /var/lib/pgsql/data/postgresql.conf
 
     # for official packages
-    vi /var/lib/pgsql/17/data/postgresql.conf
+    vi /var/lib/pgsql/18/data/postgresql.conf
     ```
 
     Ubuntu
     ``` bash
-    # for OS-provided packages
     sudo vi /etc/postgresql/current/main/postgresql.conf
-
-    # for official packages
-    sudo vi /etc/postgresql/17/main/postgresql.conf
+    or
+    sudo vi /etc/postgresql/<version>/main/postgresql.conf
     ```
 
 Locate the following line:
@@ -426,7 +423,7 @@ After making this change, restart the PostgreSQL service to apply the new settin
 
     for official packages
     ```bash
-    sudo systemctl restart postgresql-17
+    sudo systemctl restart postgresql-<version>
     ```
 
 ???+ tip
@@ -491,7 +488,19 @@ the `zabbix-srv` user:
 !!! info "Login as user zabbix-srv"
 
     ```bash
-    psql -d zabbix -U zabbix-srv
+    psql -d zabbix -U zabbix-srv -W
+    ```
+
+!!! warning
+
+    This will only work if you allow the connection in your ph_hba file. If you
+    run this from your DB server you will need to add an extra line to your
+    pg_hba.conf file to allow local socket connections like this:
+
+    ```
+    #"local" is for Unix domain socket connections only
+    local   zabbix          zabbix-srv                            scram-sha-256
+    local   all             all
     ```
 
 After logging in, run the following SQL query to confirm that both the `session_user`

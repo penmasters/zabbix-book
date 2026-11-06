@@ -10,7 +10,7 @@ tags: [beginner]
 ## Choosing a Database Backend for Zabbix
 
 A critical decision when managing Zabbix installations is selecting the database
-backend. Zabbix supports several database options: MySQL/Percona, MariaDB, 
+backend. Zabbix supports several database options: MySQL/Percona, MariaDB,
 PostgreSQL (including TimescaleDB), and Oracle (up to Zabbix 7.0).
 
 ???+ warning "Oracle Database deprecation"
@@ -18,15 +18,15 @@ PostgreSQL (including TimescaleDB), and Oracle (up to Zabbix 7.0).
     Zabbix 7.0 marks the final release to offer support for Oracle Database.
     Consequently, systems running Zabbix 7.0 or any prior version must undertake
     a database migration to either PostgreSQL, MySQL, or a compatible fork such
-    as MariaDB before upgrading to a later Zabbix release. This migration is a
-    mandatory step to ensure continued functionality and compatibility with future
+    as MariaDB before upgrading to Zabbix 8.0. This migration is a mandatory
+    step to ensure continued functionality and compatibility with future
     Zabbix versions.
 
-All supported databases perform similarly under typical Zabbix workloads, and 
-Zabbix treats them equally in terms of functionality. As such, the choice 
-primarily depends on your or your team’s familiarity with a particular database system. 
-One notable exception is TimescaleDB, a PostgreSQL extension optimized for 
-time-series data. This makes it especially well-suited for monitoring applications 
+All supported databases perform similarly under typical Zabbix workloads, and
+Zabbix treats them equally in terms of functionality. As such, the choice
+primarily depends on your or your team’s familiarity with a particular database system.
+One notable exception is TimescaleDB, a PostgreSQL extension optimized for
+time-series data. This makes it especially well-suited for monitoring applications
 like Zabbix, which handle large volumes of timestamped data.
 
 In large-scale environments with high-frequency data collection, TimescaleDB can
@@ -50,13 +50,13 @@ In this chapter we will focus on installing MariaDB and PostgreSQL, as they are
 the most commonly used databases with Zabbix. For MySQL or Percona installations,
 except for the package installation commands, the steps are very similar to MariaDB.
 
-When installing MariaDB or PostgreSQL you must determine the source 
-from which you will want to install the database server. Two primary options are 
+When installing MariaDB or PostgreSQL you must determine the source
+from which you will want to install the database server. Two primary options are
 available:
 
 1. **Vendor-Provided Packages**
 
-:   These are included in the software repositories of most Linux distributions 
+:   These are included in the software repositories of most Linux distributions
     and are maintained by the distribution vendor.
  
     **Advantages:**
@@ -107,7 +107,7 @@ available:
     for the latest supported versions.
 
 Before installing the database software, ensure that the server
-meets the configuration requirements and is prepared as outlined in the previous 
+meets the configuration requirements and is prepared as outlined in the previous
 chapter: [_Getting started_](../ch00-getting-started/Requirements.md).
 
 ---
@@ -118,9 +118,9 @@ We have discussed the various database backends supported by Zabbix. We've also
 examined the advantages and disadvantages of using vendor-provided packages
 versus official repositories for installing MariaDB and PostgreSQL.
 
-Armed with this knowledge, you are now ready to proceed with the installation 
-of your chosen database backend. In the following chapters, we will guide you 
-through the installation process for MariaDB or PostgreSQL, ensuring that your 
+Armed with this knowledge, you are now ready to proceed with the installation
+of your chosen database backend. In the following chapters, we will guide you
+through the installation process for MariaDB or PostgreSQL, ensuring that your
 Zabbix instance is equipped with a robust and efficient database system.
 
 Now that you have a clear understanding of the database options available, let's
