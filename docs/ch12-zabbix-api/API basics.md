@@ -164,7 +164,7 @@ We send the token, API token or session token, in the `Authorization` header of 
 
 A valid token is not enough. The role of the user must allow API access:
 
-1. Go to **Users** → **User roles** and open the role.
+1. Go to **Users** | **User roles** and open the role.
 2. In the section **Access to API** set **Enabled**.
 3. Under **API methods** choose an **Allow list** or a **Deny list** and add the
    methods. Wildcards work: `*` is any method, `dashboard.*` is every method of
@@ -291,7 +291,7 @@ The `create` methods return the IDs of the new objects. This request creates an
 item on the host with ID 10084, using the host and interface IDs from the
 previous result:
 
-!!! example "Example output"
+!!! example "Example"
 
     ```json
     {

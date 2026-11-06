@@ -146,26 +146,34 @@ This means your cloned template is independent:
 
 ## Template Groups
 
-Template groups in Zabbix are used for `organisation` and `access control targeting`.
-They provide a logical way to categorise templates (for example, Operating Systems,
-Databases, Network Devices), but they do not themselves define access rights.
+Template groups in Zabbix serve two purposes: organising templates and controlling
+access to them. They provide a logical way to categorise templates, such as Operating
+Systems, Databases, and Network Devices.
 
-A template group itself does not carry permissions.
-Instead, `user groups` are granted `permissions` on `template groups`.
-These permissions determine whether members of a user group can view (read-only)
-or modify (read-write) the templates contained within those groups when working
-in the frontend.
+Every template must belong to at least one template group, and a template can belong
+to multiple groups.
 
-In other words:
+Access permissions are assigned to user groups through Users | User groups | Template
+permissions, rather than directly to individual users or templates.
 
-- **Template groups:** organise and classify templates.
-- **User groups:** hold the permissions that control access to those template groups.
+Three permission levels are available:
 
-This model provides flexible role-based access control (RBAC): administrators can
-manage access centrally by assigning or revoking permissions for user groups
-rather than editing individual templates.
+* Read: Allows access to template data but does not provide access to view or edit
+  template configuration under Data collection → Templates. Admin users with Read
+  access can still link or unlink these templates from hosts for which they have
+  Read-write permissions.
+* Read-write: Allows Admin users to view and modify template configuration, provided
+  their user role permits access to the relevant frontend sections.
+* Deny: Explicitly denies access to templates within the group.
 
-If you would like to make a new template group then they can be found under `Data collection` | `Host groups` | `Create template group`.
+Super admin users automatically have Read-write access to all template groups,
+regardless of the permissions assigned to their user groups.
+
+!!! note
+
+    Read access to a template group does not mean that users can browse its templates
+    under Data collection → Templates. This is an important distinction between access
+    to template data and access to template configuration.
 
 ![ch06.01-template-group.png](ch06.1-template-group.png)
 
