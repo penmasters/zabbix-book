@@ -130,6 +130,32 @@ following content.
     ZBX_PROXYMODE=0
     ```
 
+!!! warning "port 10051 conflict on a single-system install"
+
+    The Zabbix server listens on TCP port 10051 by default. If you run the proxy
+    container on the same host and publish it with PublishPort=10051:10051, the
+    container fails to start with:
+
+    ```
+    Error: rootlessport listen tcp 0.0.0.0:10051: bind: address already in use
+    ```
+ 
+    Publish the proxy on a free host port instead, and leave the port inside
+    the container unchanged:
+ 
+    ```ini
+    PublishPort=10052:10051
+    ```
+ 
+    Note that PublishPort= in the .container file controls the host port. Variables
+    in the environment file only affect the proxy inside the container and do not
+    change the published port. Agents and the server must connect to the proxy on
+    the published host port (10052 in this example).
+ 
+    Port 10052 is the default port of the Zabbix Java gateway, so choose a different
+    one if you run it on the same host.
+
+
 With our configuration now complete, the final step is to reload the systemd user daemon
 so it recognizes the new Quadlet unit. This can be done using the following command:
 

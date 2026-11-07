@@ -230,7 +230,10 @@ If you plan to run Zabbix components as containers using Podman, you need to
 ensure that Podman is installed and properly configured on your system. Below
 are the instructions for installing Podman on different operating systems.
 
-You can skip this section if you do not plan to run any Zabbix components as containers on the current system.
+You can skip this section if you do not plan to run any Zabbix components as
+containers on the current system. It's probably best to run the conainters on
+the database server or a dedicated VM to not have any port confilicts with
+Zabbix server or other components.
 
 ???+ note "Why Podman?"
 
@@ -276,10 +279,17 @@ be running only zabbix-proxy in a container.
 !!! info "Create and init podman user"
 
     ```bash
-    sudo useradd --comment "User for running container workloads" podman
-    sudo -i -u podman
-    mkdir -p ~/.local/share/containers
-    mkdir -p ~/.config/containers/systemd/
+    sudo useradd --create-home --shell /bin/bash --comment "User for running container
+    workloads" podman
+
+    # Check subuid/subgid, and only define if they are missing (no output is
+    expected here)
+    sudo grep -q '^podman:' /etc/subuid && grep -q '^podman:' /etc/subgid || \
+    sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 podman
+
+    # Create folders as user podman
+    sudo -iu podman bash -c 'mkdir -p ~/.local/share/containers ~/.config/containers/systemd'
+
     exit
     ```
 
