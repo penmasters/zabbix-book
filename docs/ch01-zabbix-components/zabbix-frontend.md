@@ -139,9 +139,16 @@ use the standard config and serve the Zabbix frontend on port 80.
     ```bash
     vi /etc/nginx/nginx.conf
     ```
-If you are on Ubuntu no need to edit `nginx.conf` just run `sudo unlink /etc/nginx/sites-enabled/default`
 
-In this configuration file look for the following block that starts with `server {`:
+!!! info
+
+    ```
+    If you are on Ubuntu no need to edit `nginx.conf` just run `sudo unlink /etc/nginx/sites-enabled/default`
+   ```
+
+
+In the configuration file `/etc/nginx/conf.d/zabbix.conf` look for the following
+block that starts with `server {`:
 
 !!! example "Original config"
 
@@ -155,7 +162,6 @@ In this configuration file look for the following block that starts with `server
     ???+ tip
 
         This block may be different depending on your distribution and Nginx version.
-
 
 Then, comment out the any `listen` and `server_name` directives to disable the default
 http server configuration. You can do this by adding a `#` at the beginning of
@@ -224,11 +230,14 @@ startup. Execute the following commands to enable and start them immediately:
     Red Hat / SUSE
     ```bash
     systemctl enable nginx php-fpm --now
+    systemctl restart nginx php-fpm
     ```
 
     Ubuntu
     ```bash
     sudo systemctl enable nginx php8.3-fpm --now
+    sudo systemctl restart nginx php8.3-fpm
+
     ```
 
 Let's verify if the service is properly started and enabled so that it survives

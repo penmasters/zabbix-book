@@ -85,7 +85,7 @@ directory that will hold our database connection settings:
 !!! info "Add Zabbix database connection settings"
 
     ``` bash
-    vi /etc/zabbix/zabbix_server.d/database.conf
+    sudo vi /etc/zabbix/zabbix_server.d/database.conf
     ```
 
     Add the following lines in the configuration file to match your database setup:
@@ -227,7 +227,7 @@ are any issues, the log file will provide details to help with troubleshooting.
 !!! example "Example output"
 
     ```
-    12074:20250225:145333.529 Starting Zabbix Server. Zabbix 8.0.0 (revision dd0d9c26a3a).
+    12074:20250225:145333.529 Starting Zabbix Server. Zabbix 8.0.0 (revision c81e276e505).
     12074:20250225:145333.530 ****** Enabled features ******
     12074:20250225:145333.530 SNMP monitoring:           YES
     12074:20250225:145333.530 IPMI monitoring:           YES
@@ -261,7 +261,7 @@ would see something like this in the server log file :
 !!! example "Example log with errors"
 
     ```
-    12068:20250225:145309.018 Starting Zabbix Server. Zabbix 8.0.0 (revision dd0d9c26a3a).
+    12068:20250225:145309.018 Starting Zabbix Server. Zabbix 8.0.0 (revision c81e276e505).
     12068:20250225:145309.018 ****** Enabled features ******
     12068:20250225:145309.018 SNMP monitoring:           YES
     12068:20250225:145309.018 IPMI monitoring:           YES
