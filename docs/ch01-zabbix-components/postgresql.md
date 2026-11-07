@@ -52,7 +52,9 @@ commands:
 
     Red Hat
     ``` bash
-    dnf install postgresql-server postgresql-client	postgresql-contrib
+    dnf module list postgresql
+    dnf module enable postgresql:18
+    dnf install postgresql-server postgresql postgresql-contrib
     ```
 
     SUSE
@@ -488,13 +490,13 @@ the `zabbix-srv` user:
 !!! info "Login as user zabbix-srv"
 
     ```bash
-    psql -d zabbix -U zabbix-srv -W
+    psql -d zabbix -U zabbix-srv
     ```
 
 !!! warning
 
-    This will only work if you allow the connection in your ph_hba file. If you
-    run this from your DB server you will need to add an extra line to your
+    This will only work if you allow the connection in your pg_hba.conf file. If
+    you run this from your DB server you will need to add an extra line to your
     pg_hba.conf file to allow local socket connections like this:
 
     ```

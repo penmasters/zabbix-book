@@ -169,7 +169,7 @@ To allow these connections, you need to open this port in your firewall.
 
     Red Hat / SUSE
     ``` bash
-    sudo firewall-cmd --add-service=zabbix-trapper --permanent
+    sudo firewall-cmd --add-service=zabbix-server --permanent
     sudo firewall-cmd --reload
     ```
 

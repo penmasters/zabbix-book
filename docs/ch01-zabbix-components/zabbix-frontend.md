@@ -28,9 +28,9 @@ Perform all subsequent steps on the server designated for the frontend.
 
     Red Hat
     ```bash
-    # List all available php modules and active php-8.2
+    # List all available php modules and active php-8.3
     dnf module list php -y
-    dnf module enable php:8.2
+    dnf module enable php:8.3
     # When using MySQL/MariaDB
     dnf install zabbix-nginx-conf zabbix-web-mysql
     # or when using PostgreSQL
@@ -175,7 +175,6 @@ each line, like in the example below:
         #listen [::]:80;
         #server_name *;
     ...
-    ```
 
 The Zabbix configuration file must now be modified to take over the default 
 service on port 80 we just disabled.
