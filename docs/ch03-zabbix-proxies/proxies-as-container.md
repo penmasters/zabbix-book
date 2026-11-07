@@ -212,7 +212,7 @@ then retrieve the container's logs using:
 
     On some distributions, you can also view the logs directly through Systemd:
     ```bash
-    journalctl --user -u zabbix-proxy-sqlite.service
+    journalctl --user -u zabbix-proxy-sqlite.service --no-pager
     ```
 
 This command will return the startup and runtime logs for the container, which

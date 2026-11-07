@@ -52,7 +52,9 @@ commands:
 
     Red Hat
     ``` bash
-    dnf install postgresql-server postgresql-client	postgresql-contrib
+    dnf module list postgresql
+    dnf module enable postgresql:18
+    dnf install postgresql-server postgresql postgresql-contrib
     ```
 
     SUSE
@@ -351,8 +353,8 @@ The resulting pg_hba file should look like :
     local    zabbix     zabbix-srv                                 scram-sha-256
     local    all        all                                        peer
     # IPv4 local connections
-    host     zabbix         zabbix-srv      <ip from zabbix server/24>     scram-sha-256
-    host     zabbix         zabbix-web      <ip from zabbix frontend/24>   scram-sha-256
+    host     zabbix         zabbix-srv      <ip from zabbix server/32>     scram-sha-256
+    host     zabbix         zabbix-web      <ip from zabbix frontend/32>   scram-sha-256
     host     all            all             127.0.0.1/32                   scram-sha-256
     # IPv6 local connections:
     host    zabbix          zabbix-srv      ::1/128                 scram-sha-256
@@ -488,13 +490,13 @@ the `zabbix-srv` user:
 !!! info "Login as user zabbix-srv"
 
     ```bash
-    psql -d zabbix -U zabbix-srv -W
+    psql -d zabbix -U zabbix-srv
     ```
 
 !!! warning
 
-    This will only work if you allow the connection in your ph_hba file. If you
-    run this from your DB server you will need to add an extra line to your
+    This will only work if you allow the connection in your pg_hba.conf file. If
+    you run this from your DB server you will need to add an extra line to your
     pg_hba.conf file to allow local socket connections like this:
 
     ```
