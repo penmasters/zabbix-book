@@ -142,7 +142,7 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
     Red Hat
     ```bash
-    dnf install timescaledb-2-postgresql-17 postgresql-client-17
+    dnf install timescaledb-2-postgresql-17 postgresql17
     ```
 
     SLES 15 SP7
@@ -172,7 +172,7 @@ supported by TimescaleDB, you can follow the instructions in the next section.
     the corresponding TimescaleDB packages for version 14. The installation would
     look like this:
     ```
-    dnf install timescaledb-2-postgresql-14 postgresql-client-14
+    dnf install timescaledb-2-postgresql-14 postgresql14
     ```
     Using mismatched versions can lead to compatibility issues, so always make
     sure the TimescaleDB packages align with your PostgreSQL version.
@@ -318,7 +318,7 @@ For Ubuntu and Debian-based systems, simply run:
 !!! info ""
 
     ```bash
-    sudo timescaledb tune
+    sudo timescaledb-tune
     ```
 
 This script will suggest configuration changes and can update your PostgreSQL configuration file automatically. If you prefer to tune the settings manually,

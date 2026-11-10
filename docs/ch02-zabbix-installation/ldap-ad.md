@@ -245,7 +245,7 @@ In `Users` | `Authentication` we need to do two things:
 
   _2.40 Default authentication_
 
-  Click `Update` button`.
+  Click the `Update` button.
 
 - Enable JIT provisioning check-box which obviously needs to be checked for this
   feature to work. It's done in our _Test LDAP server_ configuration - select
@@ -297,7 +297,7 @@ _2.42 LDAP server groupOfNames_
 
 Firstly we define LDAP “sub-tree” where Zabbix will be searching for LDAP
 groups – note _ou=Group,dc=example,dc=org_ in Group base DN field. Then in the
-field `Group name attribute` field we what attribute to use when we search in
+`Group name attribute` field we specify which attribute to use when we search in
 mapping rules (in this case we take _cn_, i.e. only _zabbix-admins_ from full
 DN _cn=zabbix-admins,ou=Group,dc=example,dc=org_). Each LDAP group in our LDAP
 server has _member_ attribute that has all users that belong to this LDAP group
@@ -343,7 +343,7 @@ _2.44 Test user3_
 ## Conclusion
 
 Integrating Zabbix with LDAP—or specifically, Active Directory elevates your system's
-authentication capabilities by leveraging existing organizational credentials. It
+authentication capabilities by leveraging existing organisational credentials. It
 allows users to log in using familiar domain credentials, while Zabbix offloads
 the password verification process to a trusted external directory. Notably, even
 when configuring LDAP authentication, corresponding user accounts must still exist
@@ -353,19 +353,19 @@ is active.
 Particularly powerful is the Just-In-Time (JIT) provisioning feature: this enables
 Zabbix to dynamically create user accounts upon first successful LDAP login streamlining
 onboarding and reducing manual administration. Beyond that, JIT supports ongoing
-synchronization updating user roles, group memberships, or even user removals in
+synchronisation updating user roles, group memberships, or even user removals in
 Zabbix to mirror changes in LDAP—either when a user logs in or during configured
 provisioning intervals.
 
 Important configuration details such as case sensitivity, authentication binding
 methods, search filters, and group mapping need careful attention to ensure reliable
 and secure operation. And while LDAP offers seamless integration, Zabbix still
-maintains control over roles, permissions, and access behavior through its own
+maintains control over roles, permissions, and access behaviour through its own
 user and user group models Zabbix.
 
 In sum, LDAP/AD authentication offers a scalable, secure, and enterprise-aligned
 approach to centralizing identity management in Zabbix. With flexible provisioning
-and synchronization, organizations can reduce administrative load while reinforcing
+and synchronisation, organisations can reduce administrative load while reinforcing
 consistency across their access control and authentication strategy.
 
 ## Questions
@@ -380,9 +380,9 @@ consistency across their access control and authentication strategy.
   and what potential risks or caveats should an administrator consider when
   enabling it?
 
-- What is the difference between user authentication and user authorization in
+- What is the difference between user authentication and user authorisation in
   the context of LDAP integration with Zabbix? (Hint: Authentication verifies
-  credentials, while authorization determines permissions inside Zabbix.)
+  credentials, while authorisation determines permissions inside Zabbix.)
 
 - Imagine an administrator incorrectly configures the LDAP search filter. What issues
   might users encounter when attempting to log in, and how could you troubleshoot
@@ -391,7 +391,7 @@ consistency across their access control and authentication strategy.
 - How could LDAP group mappings be used to streamline permission assignment in
   Zabbix? Can you think of an example from your own environment?
 
-- If an organization disables a user account in Active Directory, how does JIT
+- If an organisation disables a user account in Active Directory, how does JIT
   provisioning ensure that Zabbix access is also updated? What would happen if
   JIT was not enabled?
 

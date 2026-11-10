@@ -35,8 +35,8 @@ a good idea to go with the latest version that is supported by Zabbix.
     If you choose to install PostgreSQL from the OS vendor-provided packages,
     you will need to compile and install the TimescaleDB extension from source.
 
-    Extra note: TimescaleDB doesn't not provide packages for SUSE Linux Enterprise
-    Server (SLES) or openSUSE Leap. Instead Suse provides the TimescaleDB
+    Extra note: TimescaleDB does not provide packages for SUSE Linux Enterprise
+    Server (SLES) or openSUSE Leap. Instead SUSE provides the TimescaleDB
     extension in their own repositories. But for that to work you will need to
     install PostgreSQL from the OS vendor-provided packages instead of the official
     PostgreSQL repositories.
@@ -70,18 +70,18 @@ commands:
 This command will download and install both the server and client packages, enabling
 you to set up, configure, and interact with your PostgreSQL database.
 
-!!! warning "Database initialization required on Red Hat"
+!!! warning "Database initialisation required on Red Hat"
 
     Due to policies for Red Hat family distributions, the PostgreSQL service
-    does not initialize an empty database required for PostgreSQL to function.
-    So for Red Hat we need to initialize an empty database before continuing:
+    does not initialise an empty database required for PostgreSQL to function.
+    So for Red Hat we need to initialise an empty database before continuing:
 
     Red Hat
     ```bash
     postgresql-setup --initdb --unit postgresql
     ```
 
-    On SUSE and Ubuntu the OS provided Systemd service will automatically initialize
+    On SUSE and Ubuntu the OS provided Systemd service will automatically initialise
     an empty database on first startup.
 
 Once the installation is complete, you can proceed to the [_Starting the PostgreSQL Database_](#starting-the-postgresql-database) section.
@@ -142,7 +142,7 @@ for more information.
         Choose from above solutions by number or cancel [1/2/c/d/?] (c): 2
         ```
 
-    ???+ note "Suse Linux Enterprise Server"
+    ???+ note "SUSE Linux Enterprise Server"
 
         On SUSE Linux Enterprise Server (SLES), ensure you are subscribed to the
         "SUSE Package Hub extension" repository to access necessary dependency
@@ -201,10 +201,10 @@ and manage your database.
 This command will download and install both the server and client packages, enabling
 you to set up, configure, and interact with your PostgreSQL database. 
 
-Next, before we can start the PostgreSQL server we need to initialize a new
+Next, before we can start the PostgreSQL server we need to initialise a new
 empty database:
 
-!!! info "Initialize empty PostgreSQL database"
+!!! info "Initialise empty PostgreSQL database"
 
     ```
     sudo /usr/pgsql-18/bin/postgresql-18-setup initdb
@@ -535,7 +535,7 @@ its own schema, preventing accidental interference with each other's data.
 ???+ note
 
     PostgreSQL comes with a default schema, typically called `public`, but in
-    general, it's a best practice to create custom schemas to better organize and separate
+    general, it's a best practice to create custom schemas to better organise and separate
     database objects, especially in complex or multi-user environments.
 
     For more in-depth information, I recommend checking out the detailed guide at
@@ -614,10 +614,10 @@ If you are ready you can exit the database and return to your linux shell.
     ```
 
 At this point, your Zabbix database is ready, but before it can actually be used by
-Zabbix, we still need to populate the database with the necessary tables and initial data,
-but that will be covered in the next section when we install the Zabbix server.
+Zabbix, we still need to populate it with the necessary tables and initial data,
+as covered in the next section.
 
-If you intent to install Zabbix server on a different machine than the one hosting
+If you intend to install Zabbix server on a different machine than the one hosting
 the database you will need to open the host firewall to allow incoming connections
 to the database server. By default, PostgreSQL listens on port 5432.
 

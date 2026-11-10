@@ -205,7 +205,7 @@ Zabbix agent will be updated when updating with commands like `dnf update` and
 other and as such new versions will contain security and bug fixes. Whatever
 installation method you choose, keep your Zabbix agent up-to-date.
 
-We will be using the packages on RedHat-, SUSE-based, or Ubuntu to install 
+We will be using packages on RHEL-based systems, SUSE, or Ubuntu to install
 `Zabbix agent 2`. To use the packages we will need to prepare our system 
 as outlined in chapter: [_Getting started_](../ch00-getting-started/preparation.md).
 Only adding the Zabbix repository is mandatory here, however following the 
@@ -239,7 +239,7 @@ After installation make sure to start and enable the Zabbix agent.
 !!! info "Start and enable Zabbix agent 2"
 
 
-    ``` yaml
+    ```bash
     systemctl enable zabbix-agent2 --now
     ```
 
@@ -334,7 +334,7 @@ operating system.
 
 !!! warning "SUSE Linux"
 
-    On SUSE Linux (SLES or OpenSUSE) 16 or higher, the Zabbix agent configuration
+    On SUSE Linux (SLES or openSUSE) 16 or higher, the Zabbix agent configuration
     file is located at `/usr/etc/zabbix/zabbix_agent2.conf` and should not be edited
     as it will be overwritten when the package is updated. 
     Alternatively, you need to create an additional configuration file in the 

@@ -25,7 +25,7 @@ PostgreSQL (including TimescaleDB), and Oracle (up to Zabbix 7.0).
 All supported databases perform similarly under typical Zabbix workloads, and
 Zabbix treats them equally in terms of functionality. As such, the choice
 primarily depends on your or your team’s familiarity with a particular database system.
-One notable exception is TimescaleDB, a PostgreSQL extension optimized for
+One notable exception is TimescaleDB, a PostgreSQL extension optimised for
 time-series data. This makes it especially well-suited for monitoring applications
 like Zabbix, which handle large volumes of timestamped data.
 
@@ -67,7 +67,7 @@ available:
       active subscriptions include official support.
     - **Compatibility:** Guaranteed integration with other system packages and
       dependencies.
-      - **Distribution-specific optimizations:** Includes tailored configurations
+      - **Distribution-specific optimisations:** Includes tailored configurations
         (e.g., logrotate, bash completion,...).
       - **Long-term maintenance:** Security and bug fixes are backported by the
         vendor for the duration of the distribution’s support lifecycle.

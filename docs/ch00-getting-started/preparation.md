@@ -23,9 +23,9 @@ way.
 
 When using a Red Hat-based system in a test or lab environment, you may (temporarily) disable SELinux to prevent it from interfering with the installation and initial configuration of Zabbix.
 
-Do not disable SELinux on production systems. For production deployments, SELinux should remain enabled and enforcing. Refer to the SELinux configuration section in a the Advanced Setup and Security chapter for instructions on configuring the required policies for Zabbix.
+Do not disable SELinux on production systems. For production deployments, SELinux should remain enabled and enforcing. Refer to the SELinux configuration section in the Advanced Setup and Security chapter for instructions on configuring the required policies for Zabbix.
 
-To check the current status of SELinux, you can use the following command: `sestatus``
+To check the current status of SELinux, you can use the following command: `sestatus`
 
 !!! info "Selinux status"
 
@@ -117,12 +117,12 @@ download_
 
 ---
 
-### Red Hat specific remarks
+### RHEL-based systems
 
-If you make use of a RHEL based system like Rocky then the first step is to disable
+If you make use of an RHEL-based system like Rocky then the first step is to disable
 the Zabbix packages provided by the EPEL repository, if it's installed on your system.
 To do this, edit the `/etc/yum.repos.d/epel.repo` file and add the following statement
-to disable the EPEL repository by default:
+to exclude the Zabbix packages provided by EPEL:
 
 !!! info "Exclude packages"
 
@@ -143,7 +143,7 @@ to disable the EPEL repository by default:
 
 ---
 
-### OpenSUSE specific remarks
+### openSUSE specific remarks
 
 On openSUSE, Zabbix packages are also available in the default `repo-oss` repository. 
 Unlike RHEL-based systems, openSUSE does not provide a built-in way to exclude
@@ -165,7 +165,7 @@ as you select a Zabbix repository version newer than the packages available in
     - Upgrade them after adding the new Zabbix repositories, using the zypper 
       option `--allow-vendor-change`.
 
-???+ note "Suse Linux Enterprise Server (SLES)"
+???+ note "SUSE Linux Enterprise Server (SLES)"
 
     If you are using SLES, the Zabbix packages are not included in the default
     repositories. Therefore, you can proceed to add the official Zabbix repository

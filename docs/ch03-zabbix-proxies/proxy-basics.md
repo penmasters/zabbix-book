@@ -64,14 +64,14 @@ updates from the _Zabbix server_. These include:
 - New or modified monitoring items, triggers, or templates assigned to the proxy.
 - Changes to host configurations or data collection rules. 
 
-Before Zabbix 7.0, a full configuration synchronization was performed by proxies
+Before Zabbix 7.0, a full configuration synchronisation was performed by proxies
 every 3600 seconds (1 hour) by default. With the introduction of Zabbix 7.0, this
-behavior changed significantly. Now, configuration synchronization occurs much more
+behaviour changed significantly. Now, configuration synchronisation occurs much more
 frequently, every 10 seconds by default. With this change, incremental configuration updates
 were introduced, meaning that instead of transferring the entire configuration, only
-the modified entities are synchronized, greatly improving efficiency and reducing network overhead.
+the modified entities are synchronised, greatly improving efficiency and reducing network overhead.
 
-Upon initial proxy startup, a full configuration synchronization is always performed.
+Upon initial proxy startup, a full configuration synchronisation is always performed.
 Subsequently, both the server and the proxy maintain a revision of the configuration.
 When a change is made on the Zabbix server side, only the differences, based on these revision
 numbers, are applied to the proxy's configuration, rather than a complete replacement
@@ -138,7 +138,7 @@ reaches 80% again before that, the server stops accepting proxy data again.
 
 !!! tip
 
-    Use the internal item `zabbix[wcache,history,pused]` to correlate this behavior
+    Use the internal item `zabbix[wcache,history,pused]` to correlate this behaviour
     with a metric. The throttling decision is made at the moment the server evaluates
     a proxy upload, so a short spike may not be visible in the graph, depending on
     the item's update interval.
@@ -199,7 +199,7 @@ most two trapper processes on the server at any one time:
 
 - One trapper handles the exchange of collected data (and tasks, such as remote
 commands).
-- One trapper handles configuration synchronization.
+- One trapper handles configuration synchronisation.
 
 This is the result of two changes introduced in Zabbix 6.4:
 
@@ -217,7 +217,7 @@ This is the result of two changes introduced in Zabbix 6.4:
     As a rule of thumb, allow for two trapper processes per active proxy on the
     Zabbix server. Trappers are a shared pool that is also used by active agents
     and Zabbix sender, so treat this as a minimum rather than a complete sizing.
-    Monitor trapper utilization (`zabbix[process,trapper,avg,busy]`) and increase
+    Monitor trapper utilisation (`zabbix[process,trapper,avg,busy]`) and increase
     `StartTrappers` if it stays high.
 
 ![Active proxy communication](ch03.2-active-communication.png)
@@ -306,7 +306,7 @@ options available to use.
 
 :   Decreases the log verbosity level for a specific target, reducing the amount
     of log output generated. This is helpful to lower noise in logs after debugging
-    or to optimize performance by reducing I/O overhead.
+    or to optimise performance by reducing I/O overhead.
     _Example_: `log_level_decrease=trapper,2` would reduce the verbosity of
     trapper-related logs of the second trapper process.
 

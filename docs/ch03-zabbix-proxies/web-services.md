@@ -40,7 +40,7 @@ Google Chrome or Chromium.
     Both Google Chrome and Chromium are supported by the Zabbix web service.
     However, Google Chrome is a proprietary browser developed by Google, while
     Chromium is an open-source project that serves as the basis for Google Chrome.
-    Depending on your organization's policies and preferences, you may choose
+    Depending on your organisation's policies and preferences, you may choose
     one over the other.
 
 !!! warning "Known Chromium issue on Ubuntu 20-based distributions"
@@ -72,8 +72,8 @@ installation, especially if you are installing Zabbix server or proxy on a minim
 system and want to keep those systems clean and minimal.
 
 Alternatively, you can also run the Zabbix web service as a container using Podman
-or Docker, which includes a headless browser in the container image and keep
-you host system clean of all those dependency packages. 
+or Docker, which includes a headless browser in the container image and keeps
+your host system clean of all those dependency packages.
 
 ---
 
@@ -94,7 +94,7 @@ the requirements as outlined in the [_Getting Started: Requirements_](../ch00-ge
 
 Before we can install the Zabbix web service package, we need to prepare the server for Zabbix installation as outlined in the [_Preparing the server for Zabbix_](../ch00-getting-started/preparation.md) chapters.
 
-When the system is ready and know where to find the Zabbix software packages, we
+When the system is ready and knows where to find the Zabbix software packages, we
 can proceed with the installation of the Zabbix web service package. The package
 is named `zabbix-web-service` and can be installed using the package manager of
 your operating system.
@@ -113,7 +113,7 @@ your operating system.
 
     Ubuntu
     ```bash
-    sudo apt-get install zabbix-web-service
+    sudo apt install zabbix-web-service
     ```
 
 As mentioned before, the Zabbix web service requires a headless Google Chrome or Chromium
@@ -142,7 +142,7 @@ you can install it using the package manager of your operating system.
 
     Ubuntu
     ```bash
-    sudo apt-get install chromium-browser
+    sudo apt install chromium-browser
     ```
 
 Alternatively, you can also install Google Chrome by downloading the package
@@ -165,7 +165,7 @@ configuration file.
 
 !!! warning "SUSE Linux"
 
-    On SUSE Linux (SLES or OpenSUSE) 16 or higher, the Zabbix web service configuration
+    On SUSE Linux (SLES or openSUSE) 16 or higher, the Zabbix web service configuration
     file is located at `/usr/etc/zabbix/zabbix_web_service.conf` and should not be edited
     as it will be overwritten when the package is updated. 
     Alternatively, you need to create an additional configuration file in the 
@@ -273,7 +273,7 @@ and their functions is clearly documented on the container's Docker Hub page.
     ```
 
 With our configuration now complete, the final step is to reload the systemd user daemon
-so it recognizes the new Quadlet unit. This can be done using the following command:
+so it recognises the new Quadlet unit. This can be done using the following command:
 
 !!! info "Reload Systemd user daemon"
 

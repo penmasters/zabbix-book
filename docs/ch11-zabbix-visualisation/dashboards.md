@@ -744,7 +744,7 @@ wide and 4 rows tall.
 
 Click *Add widget*, select *Item value*. In *Item*, search for and select
 `system.cpu.util` on your host. Set the units to `%`. Enable the sparkline. Add a
-threshold: 0–75 = green, 75–90 = orange, 90–100 = red. Name it *CPU Utilization*.
+threshold: 0–75 = green, 75–90 = orange, 90–100 = red. Name it *CPU Utilisation*.
 Click *Add*. Place it below the Problems widget on the left.
 
 **Step 4 — Add an Item value widget for Memory**

@@ -99,7 +99,7 @@ All other calls need authentication. There are two common ways to authenticate:
 
 | Method | How | Use it for |
 | --- | --- | --- |
-| API token | Created in the frontend (Users → API tokens) or with the `token` API. Valid until it expires or is disabled. | Scripts, integrations, webhooks and items: everything that runs unattended. |
+| API token | Created in the frontend (`Users` \| `API tokens`) or with the `token` API. Valid until it expires or is disabled. | Scripts, integrations, webhooks and items: everything that runs unattended. |
 | Session token | Returned by `user.login` after sending a username and password. | Short-lived interactive scripts. |
 
 For automation we use an API token. A password in a script is one more secret to
@@ -109,7 +109,7 @@ tokens are tied to a login session and can be invalidated using `user.logout`.
 ### Creating an API token
 
 1. Create a dedicated service user for the API and give it a user role. The next section does this step by step.
-2. Go to **Users** → **API tokens** and press **Create API token**.
+2. Go to `Users` | `API tokens` and press **Create API token**.
 3. Fill in a **Name**, select the **User** and, for anything beyond a lab, set an **Expiry date**.
 4. Press **Add** and copy the **Auth token**. It is only shown now. If we lose it, we have to regenerate the token, and the old value stops working.
 
@@ -153,7 +153,7 @@ We send the token, API token or session token, in the `Authorization` header of 
 !!! warning
 
     Header names are case-insensitive, and the header also works in cross-origin (CORS)
-    requests. If the API keeps answering that we are not authorized although the token
+    requests. If the API keeps answering that we are not authorised although the token
     is correct, the web server may not forward the header to PHP. See *Authorization
     header forwarding* in the Zabbix known issues: https://www.zabbix.com/documentation/8.0/en/manual/installation/known_issues#authorization-header-forwarding
     Older versions also accepted the token inside the JSON body. The 8.0 documentation
@@ -422,7 +422,7 @@ production environment: [https://www.zabbix.com/documentation/8.0/en/manual/api/
 
 ### Breaking changes
 
-Scripts that use these methods or behaviors need to be changed:
+Scripts that use these methods or behaviours need to be changed:
 
 | Change | What to do |
 | --- | --- |

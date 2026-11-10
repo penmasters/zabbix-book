@@ -489,7 +489,7 @@ Next step is to alter your Nginx config and open the firewall on port 443
     ``` bash
     vi /etc/nginx/conf.d/no-ssl-zabbix.conf
     ```
-    ``` bash
+    ```nginx
     server{
         listen  80;
         return 301 https://$host$request_uri?;
@@ -506,6 +506,6 @@ certificate.
 
 !!! note
 
-    You should probably add a bit more security to your web server this is only
-    the bare minimum to make SSL working, A good place to start is probably
+    You should probably add a bit more security to your web server. This is only
+    the bare minimum to get SSL working. A good place to start is probably
     https://cipherlist.eu/

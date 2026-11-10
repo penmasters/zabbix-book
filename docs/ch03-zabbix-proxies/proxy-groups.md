@@ -1,6 +1,6 @@
 ---
 description: |
-    Optimize Zabbix monitoring with Proxy Groups for automated High Availability
+    Optimise Zabbix monitoring with Proxy Groups for automated High Availability
     (HA) and Load Balancing (LB). Master configuration and failover logic.
 tags: [advanced]
 ---
@@ -70,7 +70,7 @@ Example:
 
 ## Advanced Operational Detail
 
-The following technical details govern the behavior of the Proxy Group Manager and agents.
+The following technical details govern the behaviour of the Proxy Group Manager and agents.
 
 ### Internal Management and Communication
 
@@ -194,7 +194,7 @@ _3.11 Zabbix proxy group architecture and failover_
 ---
 ## Practical Example
 
-This example utilizes a single Zabbix Server and a three node Proxy Group to provide
+This example utilises a single Zabbix Server and a three node Proxy Group to provide
 superior High Availability (HA) and load balancing for a large remote location.
 This configuration allows for failure tolerance and demonstrates mixed Active/Passive
 monitoring modes.
@@ -230,9 +230,9 @@ The IPs are just examples, adapt them to your own setup.
 
 Follow these steps in the Zabbix Web Interface (Administration section) to create and assign the Proxy Group.
 
-#### Define Individual Proxies (Administration -> Proxies)
+#### Define Individual Proxies (`Administration` | `Proxies`)
 
-- Navigate to `Administration`-> `Proxies`.
+- Navigate to `Administration` | `Proxies`.
 - Click `Create proxy`.
 - Define all three proxies one by one:
     - Proxy name: Enter the `Hostname` (e.g., `zbx-proxy-A1`).
@@ -243,9 +243,9 @@ Follow these steps in the Zabbix Web Interface (Administration section) to creat
 ![ch03-add-proxy.png](ch03.12-add-proxy.png)
 _3.12 Add proxy_
 
-#### Create the Proxy Group (Administration -> Proxy groups)
+#### Create the Proxy Group (`Administration` | `Proxy groups`)
 
-- Navigate to `Administration`-> `Proxy groups`.
+- Navigate to `Administration` | `Proxy groups`.
 - Click `Create proxy group`.
 - Configure the group parameters for High Availability:
     - Name: `Branch-A_HA_Group`
@@ -258,9 +258,9 @@ _3.12 Add proxy_
 ![ch03-create-proxy-group.png](ch03.13-create-proxy-group.png)
 _3.13 Create Proxy groups_
 
-#### Assign Proxies to the Group (Administration -> Proxies)
+#### Assign Proxies to the Group (`Administration` | `Proxies`)
 
-- Go back to `Administration -> `Proxies`.
+- Go back to `Administration` | `Proxies`.
 - Edit each proxy (`zbx-proxy-A1`, `zbx-proxy-A2`, and `zbx-proxy-A3`).
 - Change the Proxy group dropdown from `None` to `Branch-A_HA_Group`.
 - Define `Address for active agents` add the IP of the proxy.
@@ -427,7 +427,7 @@ _3.16 proxy groups_
 | Symptom | Possible Cause | Resolution |
 | :--- | :--- | :--- |
 | **Hosts remain on a failed proxy** | Proxy is still within the **Failover period** OR proxy group is *Offline*. | **Reduce `Failover period`** in the group configuration. Ensure `Minimum number of proxies` is set correctly (e.g., $N-1$). |
-| **Load balancing does not occur** | Host difference is below the imbalance threshold (less than 10 hosts difference **or** less than $2\times$ average). | This is **expected behavior**. The imbalance must exceed the $10$ host and $2\times$ factor rules. |
+| **Load balancing does not occur** | Host difference is below the imbalance threshold (less than 10 hosts difference **or** less than $2\times$ average). | This is **expected behaviour**. The imbalance must exceed the $10$ host and $2\times$ factor rules. |
 | **Proxy not receiving new configuration** | Proxy is running a version older than the Zabbix server. | **Upgrade the proxy** to match the Zabbix server's major version. |
 | **Active agents fail to report after failover** | Incorrect **`ServerActive`** setting OR firewall blocks the redirected proxy. | Ensure the agent can connect to *every* proxy IP address. Verify `ServerActive` includes all proxies or the Zabbix server IP. |
 | **SNMP devices not monitored** | Proxy group is being used for SNMP Traps. | Proxy groups **do not support SNMP traps**. Use a dedicated SNMP trap proxy. |

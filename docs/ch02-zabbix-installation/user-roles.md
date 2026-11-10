@@ -88,11 +88,11 @@ initial **User Type** before any **Custom User Role** adjustments are made.
 | Macros | | | ✅ |
 | Queue | | | ✅ |
 
-## Customizing Role Permissions
+## Customising Role Permissions
 
 When defining a custom role (based on `Admin` or `User`), the Zabbix administrator
 can selectively **revoke** or **grant** specific rights within the scope of the
-base User Type. Customization is split into three main areas:
+base User Type. Customisation is split into three main areas:
 
 ### UI Elements (Frontend Menu Access Permissions)
 
@@ -119,7 +119,7 @@ of which menu they are in.
   **Acknowledge problems** and **Close problems manually**, but *deny* them the
   right to **Execute scripts** to prevent unauthorized command execution.
 * **Example Use 2 (Dashboard):** Allow a **Manager** role (based on `User`) to
-  **Create and edit dashboards** so they can customize their view, but deny them
+  **Create and edit dashboards** so they can customise their view, but deny them
   the ability to **Acknowledge problems**.
 
 | Permission | Description |
@@ -223,7 +223,7 @@ _2.28 template maintainer_
 
 **Objective*:*
 
-Create a role for a 24/7 Network Operations Center (NOC) operator who monitors
+Create a role for a 24/7 Network Operations Centre (NOC) operator who monitors
 problems and acknowledges them, but cannot alter configuration.
 
 **Base Role:**

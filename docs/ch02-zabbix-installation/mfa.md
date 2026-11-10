@@ -1,5 +1,5 @@
 ---
-descripton: |
+description: |
     This section from The Zabbix Book, titled "Duo MFA Provider," explains how
     to integrate Duo Security with Zabbix for multi-factor authentication. It
     covers setup, configuration, and login testing, adding an extra security
@@ -21,7 +21,7 @@ by configuring password policy:
 To secure sign in process even more you can configure multi factor authentication
 (MFA). MFA protects Zabbix by using a second source of validation before granting
 access to its WebUI after a user enters his/her password correctly. Zabbix offers
-to types of MFA - Time-based one-time password (TOTP) and Duo MFA provider.
+two types of MFA - Time-based one-time password (TOTP) and Duo MFA provider.
 
 ---
 
@@ -43,7 +43,7 @@ _2.58 New MFA method_
 In `Hash function` drop-down list you can choose SHA-1, SHA-256 or SHA-512, the higher
 number is the better security.
 
-In `Code lentgh` you can select how many digits will be generated for you by Authenticator
+In `Code length` you can select how many digits will be generated for you by Authenticator
 application on your phone.
 
 Click `Add` and then `Update`. Now you have TOTP MFA configured and it is the default
@@ -322,13 +322,13 @@ This chapter outlined how Zabbix supports two robust MFA mechanisms:
   time settings to avoid authentication issues.
 
 - Duo MFA: Integrates a more advanced, enterprise grade solution that provides
-  features like push notifications and customizable authentication methods. Duo
+  features like push notifications and customisable authentication methods. Duo
   offers flexible and strong security, albeit requiring a bit more setup (including
   HTTPS on the Zabbix WebUI).
 
 Both MFA options elevate the login process by introducing an additional layer of
 validation. Administrators can apply MFA selectively by assigning it to specific
-user groups thus tailoring the security posture to organizational needs.
+user groups thus tailoring the security posture to organisational needs.
 
 Ultimately, enabling MFA not only enhances protection against unauthorized access
 but also fits within a broader strategy of robust authentication. Whether through
@@ -345,13 +345,13 @@ Zabbix environment and fortifying your monitoring infrastructure.n
   security, and user experience?
 
 - How does accurate system time affect the reliability of TOTP authentication,
-  and what could go wrong if time synchronization is not maintained?
+  and what could go wrong if time synchronisation is not maintained?
 
 - If you were tasked with enabling MFA for a production Zabbix system, which method
   (TOTP or Duo) would you choose, and why? (Consider factors such as environment
   size, user skill level, regulatory requirements, and available resources.)
 
-- What are some potential challenges when rolling out MFA in an organization,
+- What are some potential challenges when rolling out MFA in an organisation,
   and how could an administrator mitigate user resistance or technical issues?
 
 - Why might it be useful to enable MFA only for certain user groups in Zabbix

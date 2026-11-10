@@ -108,7 +108,7 @@ The `AllowKey` parameter allows an item key to be executed, while `DenyKey`
 blocks it. We can specify an exact item key or use the wildcard `*` to match
 any number of characters.
 
-Let's say we want to collect the size of a specfic application log file, but we do 
+Let's say we want to collect the size of a specific application log file, but we do
 not want to allow file size checks for other files. We also want to block checks
 that read file contents. To do this, we can add the following parameters to our Zabbix
 agent configuration file.
@@ -129,7 +129,7 @@ checks using `vfs.file.contents`, regardless of which file is requested.
 This makes sure that we can read the log file we need, but block the monitoring of
 all other file sizes and especially their content. Of course, Zabbix agent (on Linux)
 run as the `zabbix` user by default, already giving us limited permissions. But the 
-AllowKey and DenyKey paramters give us additional options to secure our agent 
+AllowKey and DenyKey parameters give us additional options to secure our agent
 configuration further.
 
 !!! tip "Put specific rules first"

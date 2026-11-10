@@ -112,7 +112,7 @@ and their functions is clearly documented on the container's Docker Hub page:
 
 These variables allow you to configure key parameters such as the proxy mode, server
 address, hostname, database settings, and logging options, providing a flexible
-and declarative way to tailor the proxy’s behavior to your environment.
+and declarative way to tailor the proxy’s behaviour to your environment.
 
 Let's create the file `~/.config/containers/systemd/ZabbixProxy.env` and add the
 following content.
@@ -157,7 +157,7 @@ following content.
 
 
 With our configuration now complete, the final step is to reload the systemd user daemon
-so it recognizes the new Quadlet unit. This can be done using the following command:
+so it recognises the new Quadlet unit. This can be done using the following command:
 
 !!! info "Reload Systemd user daemon"
 
@@ -402,7 +402,7 @@ This activates a systemd timer that periodically invokes `podman-auto-update.ser
 
 In this chapter, we deployed a Zabbix active proxy using Podman and Systemd 
 Quadlets. We configured SELinux, enabled user lingering, and created
-both `.container` and `.env` files to define proxy behavior. Using Podman in rootless
+both `.container` and `.env` files to define proxy behaviour. Using Podman in rootless
 mode ensures improved security and system integration. Systemd management makes
 the container easy to control and monitor. This setup offers a lightweight, flexible,
 and secure approach to deploying Zabbix proxies. It is ideal for modern environments,

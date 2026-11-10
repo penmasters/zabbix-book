@@ -2,7 +2,7 @@
 
 In this chapter, we expand on the foundational knowledge from the "Getting Started"
 section to provide a comprehensive guide for both beginners who are installing
-Zabbix for the first time and advanced users who seek to optimize their setup.
+Zabbix for the first time and advanced users who seek to optimise their setup.
 We’ll not only cover the essential steps for a basic installation but also delve
 into the finer details of Zabbix architecture, components, and best practices.
 
@@ -30,7 +30,7 @@ you to leverage Zabbix to its fullest potential, regardless of the complexity of
 your environment.
 
 Let’s embark on this detailed journey into Zabbix and equip ourselves with the
-knowledge to both start and optimize a powerful monitoring solution.
+knowledge to both start and optimise a powerful monitoring solution.
 
 ???+ note
 
@@ -39,5 +39,5 @@ knowledge to both start and optimize a powerful monitoring solution.
     of the AGPLv3 is designed to close the 'cloud loophole,' ensuring that any entity
     offering Zabbix as a hosted service must contribute their modifications back to the
     community. While this protects the project’s integrity and ensures long-term 
-    sustainability, it is a change that organizations should review to ensure compliance
+    sustainability, it is a change that organisations should review to ensure compliance
     with their internal open-source policies."

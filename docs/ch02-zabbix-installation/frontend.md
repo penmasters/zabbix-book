@@ -437,12 +437,12 @@ single global dashboard.
 
 ## Conclusion
 
-The Zabbix frontend serves as the central command center for monitoring, configuration,
+The Zabbix frontend serves as the central command centre for monitoring, configuration,
 and system awareness. In this chapter, you explored how to navigate its interface
-from dashboards and the customizable main menu to powerful tools like system information
+from dashboards and the customisable main menu to powerful tools like system information
 and global search. You learned how each menu section (Monitoring, Data Collection,
 Alerts, Users, Administration, and more) aligns with distinct functions, and how
-kiosk mode and layout controls help optimize visibility during daily operations.
+kiosk mode and layout controls help optimise visibility during daily operations.
 
 Additionally, the system information widget stands out as a real time diagnostic
 snapshot, revealing critical metrics such as server status, number of hosts, templates,

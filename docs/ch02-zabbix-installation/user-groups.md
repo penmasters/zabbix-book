@@ -1,7 +1,7 @@
 ---
 description: |
     Learn how Zabbix user groups simplify access control, improve security, and
-    organize monitoring teams efficiently for better network management.
+    organise monitoring teams efficiently for better network management.
 tags: [beginner]
 ---
 
@@ -37,7 +37,7 @@ This group centric architecture provides several major benefits:
   and configuration (read-write) access.
 
 > **Technical Definition:**
-> User groups allow grouping users for both organizational purposes and for assigning
+> User groups allow grouping users for both organisational purposes and for assigning
   permissions to data. Permissions to viewing and configuring data of host groups
   and template groups are assigned to user groups, not individual users. A user
   can belong to any number of groups.
@@ -179,9 +179,9 @@ tags, the user will see it.
 
 ---
 
-### Template Permissions — Frontend Behavior and Editing Limitations
+### Template Permissions — Frontend Behaviour and Editing Limitations
 
-The behavior of the `Data collection` | `Templates` view and host configuration screens
+The behaviour of the `Data collection` | `Templates` view and host configuration screens
 is strictly tied to the user’s permission level on template groups.
 Zabbix intentionally hides templates from users who have only Read-only access.
 This is by design, as described in [https://support.zabbix.com/browse/ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)
@@ -269,8 +269,8 @@ groups and permissions.
 3. **Principle of Least Privilege:** Start with the most restrictive access (**Read-only**)
    and only escalate to **Read-write** when configuration-level changes are an
    absolute requirement of the user's role.
-4. **Align with Organizational Structure:** Ensure your Host Groups and Template
-   Groups mirror your organization's teams or asset categories (e.g., `EU-Network`,
+4. **Align with Organisational Structure:** Ensure your Host Groups and Template
+   Groups mirror your organisation's teams or asset categories (e.g., `EU-Network`,
    `US-Database`, `Finance-Templates`). This makes permission assignment intuitive.
 5. **Regular Review and Audit:** Periodically review group memberships and permissions.
    A user's role may change, and their access in Zabbix must be adjusted accordingly.
@@ -353,7 +353,7 @@ _2.26 test user_
 
 #### Create the hosts
 
-We will create 2 host a linux server and a db server.
+We will create two hosts: a Linux server and a database server.
 
 * Navigate to `Data collection` | `Hosts`.
 * Click on create  host.

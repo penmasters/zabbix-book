@@ -20,12 +20,12 @@ features that allow you to:
 
 - **Monitor diverse environments**: Track the performance and availability of
 servers, virtual machines, network devices, databases, and applications.
-- **Create dynamic visualizations**: Use dashboards, graphs, maps, and screens
-to visualize data and get an overview of your system's health at a glance.
+- **Create dynamic visualisations**: Use dashboards, graphs, maps, and screens
+to visualise data and get an overview of your system's health at a glance.
 - **Set up complex alerting mechanisms**: Define triggers and actions that notify
 you of potential issues before they become critical, using various channels
 like email, SMS, and integrations with external services.
 - **Automate monitoring tasks**: Leverage auto-discovery and auto-registration to
 keep up with changing environments without manual intervention.
-- **Customize and extend**: Build custom scripts, templates, and integrations to
+- **Customise and extend**: Build custom scripts, templates, and integrations to
 tailor Zabbix to your specific needs.

@@ -140,7 +140,7 @@ add these lines:
 
 ???+ example
 
-    RedHat:
+    Red Hat:
     ```
         <Directory "/usr/share/zabbix">
             ...
@@ -227,7 +227,7 @@ frontend usability with robust protective measures.
 - Why is it essential that a user must exist in Zabbix even when HTTP authentication
   is enabled and why does the Zabbix password become irrelevant in that case?
 
-- What are the configuration options in Zabbix's frontend under `Administration` | `Authentication` for HTTP authentication, and how might each affect login behavior?
+- What are the configuration options in Zabbix's frontend under `Administration` | `Authentication` for HTTP authentication, and how might each affect login behaviour?
   Examples include enabling/disabling case sensitivity, domain stripping, and choice
   of login form. 
 

@@ -18,7 +18,7 @@ and configuration steps are the same.
 
 There are 2 things we need to do when we like to setup a Zabbix proxy and one of
 those steps is adding the proxy in the frontend of Zabbix. So from the menu let's select
-`Administration` => `Proxies` and click in the upper right corner on `Create proxy`.
+`Administration` | `Proxies` and click in the upper right corner on `Create proxy`.
 
 ![Create proxy](ch03.4-add-active-proxy.png)
 
@@ -187,7 +187,7 @@ To configure the database settings, create a dedicated configuration file at
 `/etc/zabbix/zabbix_proxy.d/database.conf`. This file will contain the database
 connection parameters. 
 
-For SQLite3 implementations, only the `DBName` parameter requires configuration, specifying the path to the database file. The Zabbix Proxy will automatically create and utilize this database file upon its initial startup.
+For SQLite3 implementations, only the `DBName` parameter requires configuration, specifying the path to the database file. The Zabbix Proxy will automatically create and utilise this database file upon its initial startup.
 
 ???+ example "/etc/zabbix/zabbix_proxy.d/database.conf"
 
@@ -286,7 +286,7 @@ Possible buffer modes:
 
     In Proxies that where installed before `7.0` the data was first written to
     disk in the database and then sent to the `Zabbix server`. For these installations
-    when we upgrade this remains the default behavior after upgrading to Zabbix
+    when we upgrade this remains the default behaviour after upgrading to Zabbix
     7.x or higher. It's now recommended for performance reasons to use the new
     setting `hybrid` and to define the `ProxyMemoryBufferSize`.
 
@@ -306,7 +306,7 @@ If all goes well we can check the log file from our proxy and we will see that Z
 ???+ example "View Zabbix proxy logs"
 
     ```shell-session
-    localhost:~> sudo tail -f /var/log/zabbix/zabbix_proxy.log`
+    localhost:~> sudo tail -f /var/log/zabbix/zabbix_proxy.log
     11134:20250519:152232.419 Starting Zabbix Proxy (active) [Zabbix proxy]. Zabbix 7.4.0beta2 (revision 7cd11a01d42).
     11134:20250519:152232.419 **** Enabled features ****
     11134:20250519:152232.419 SNMP monitoring:       YES
@@ -389,14 +389,14 @@ their individual strengths, from simplified firewall configurations with
 _active proxies_ to the server-initiated control of _passive proxies_, is crucial
 for optimal system design.
 
-We delved into the comprehensive settings that govern proxy behavior, emphasizing
+We delved into the comprehensive settings that govern proxy behaviour, emphasising
 how proper configuration of parameters like proxy polling intervals and data buffers,
 directly impacts performance and data accuracy. The evolution of data storage mechanisms
 within the proxy, from purely memory-based approaches to the flexible options of
-disk and hybrid storage, empowers administrators to finely tune resource utilization
+disk and hybrid storage, empowers administrators to finely tune resource utilisation
 and data persistence based on their specific needs and the volume of monitored data.
 
-Finally, we examined the critical advancements in configuration synchronization,
+Finally, we examined the critical advancements in configuration synchronisation,
 particularly the significant improvements introduced with proxies receiving near-instant configuration. The shift
 towards more efficient and streamlined config sync processes, moving beyond the
 limitations of earlier versions, underscores Zabbix's continuous commitment to

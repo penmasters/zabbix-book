@@ -25,7 +25,7 @@ for establishing a secure trust relationship between Zabbix and the Identity Pro
 (IdP).
 
 By default, Zabbix expects these files to reside within the `ui/conf/certs/`
-directory. However, for environments requiring customized storage locations, the
+directory. However, for environments requiring customised storage locations, the
 zabbix.conf.php configuration file allows for the specification of alternative
 paths.
 
@@ -68,7 +68,7 @@ _2.46 add certificate_
 
 ---
 
-### SAML Attribute Mapping and Group Authorization
+### SAML Attribute Mapping and Group Authorisation
 
 A key aspect of SAML configuration is the mapping of attributes between Google
 Workspace and Zabbix. This mapping defines how user information is transferred
@@ -81,12 +81,12 @@ and interpreted.
   Google Workspace email addresses.
 - Furthermore, mapping relevant Google Workspace group attributes allows for granular
   control over Zabbix user access. For instance, specific Google Workspace groups
-  can be authorized to access particular Zabbix resources or functionalities.
+  can be authorised to access particular Zabbix resources or functionalities.
 
 **Group Authorization:**
 
 - Within the Google Workspace application settings, define the groups that are
-  authorized to utilize SAML authentication with Zabbix.
+  authorised to utilise SAML authentication with Zabbix.
 - This configuration enables the administrator to control which users can use
   SAML to log into Zabbix.
 - In Zabbix, you will also need to create matching user groups and configure
@@ -115,7 +115,7 @@ the final step involves configuring Zabbix to complete the SAML integration.
 **Accessing SAML Settings in Zabbix:**
 
 - **Navigate to User Management:** Log in to the Zabbix web interface as an administrator.
-- **Access Authentication Settings:** Go to "Users" -> "Authentication" in the
+- **Access Authentication Settings:** Go to `Users` | `Authentication` in the
   left-hand menu.
 - **Select SAML Settings:** Choose the "SAML settings" tab.
 
@@ -167,7 +167,7 @@ _2.48 SAML config_
 
 The Zabbix documentation provides a comprehensive overview of additional SAML
 configuration options. Consult the official Zabbix documentation for advanced settings,
-such as attribute mapping customization, session timeouts, and error handling configurations.
+such as attribute mapping customisation, session timeouts, and error handling configurations.
 
 **Verification and Testing:**
 
@@ -191,8 +191,8 @@ delivery is dynamically determined based on SAML attributes.
 
 **Mapping Media Types within SAML Configuration:**
 
-- **Navigate to SAML Settings:** In the Zabbix web interface, go to "Users" ->
-  "Authentication" and select the "SAML settings" tab.
+- **Navigate to SAML Settings:** In the Zabbix web interface, go to `Users` |
+  `Authentication` and select the `SAML settings` tab.
 - **Locate Media Mapping Section:** Within the SAML settings, look for the section
   related to media type mapping. This section might be labeled "Media mappings"
   or similar.
@@ -273,7 +273,7 @@ in the search bar and it should come right up.
 
 ![Microsoft Entra ID](ch02.48-ms-entra-id-app.png){ align=center }
 
-*2.48 Microsoft Entra ID*
+*2.48-1 Microsoft Entra ID*
 
 Here you should be able to find an `add` button and then navigate to `Enterprise
 application`. This is where we are going to create the SAML integration by clicking
@@ -418,7 +418,7 @@ type.
 
     If you want more control over user lifecycle management beyond first login,
     that's where SCIM comes in. SCIM allows your Identity Provider (like Entra
-    ID) to continuously synchronize users with Zabbix.
+    ID) to continuously synchronise users with Zabbix.
 
     The key difference:
 
@@ -445,7 +445,7 @@ multi-factor authentication, and access control.
 In this chapter, you've learned how to configure SAML authentication, exchange
 certificates, map user attributes, and integrate user groups with Zabbix. You also
 explored Just-in-Time (JIT) provisioning, which automatically creates user accounts
-during their first login, and saw how SCIM can extend this by continuously synchronizing
+during their first login, and saw how SCIM can extend this by continuously synchronising
 users and their permissions from the Identity Provider.
 
 Although the initial configuration can seem complex, especially when working with

@@ -441,7 +441,7 @@ Follow the steps below to get the SNMP agent installed.
     sudo dnf install net-snmp net-snmp-utils
     ```
 
-    Suse
+    SUSE
     ```bash
     zypper install net-snmp
     ```
@@ -611,7 +611,7 @@ and Configure the Firewall
 
     If your system uses a firewall, ensure that SNMP traffic is allowed:
 
-    RedHat / Suse
+    Red Hat / SUSE
     ```bash
     firewall-cmd --add-service=snmp --permanent
     firewall-cmd --reload
@@ -713,7 +713,7 @@ Installing too many MIBs will cause degradation for the
 SNMP trap translation process and slow down the SNMP polling process.
 
 Usually the Linux distribution comes with a set of basic MIB files. For example, on
-Ubuntu, the `snmp-mibs-downloader` package, or on Suse the `snmp-mibs` package
+Ubuntu, the `snmp-mibs-downloader` package, or on SUSE the `snmp-mibs` package
 provides a collection of MIB files that can be used for SNMP monitoring. However,
 these MIBs may not cover all the devices in your network, especially if you have
 equipment from multiple vendors.

@@ -26,13 +26,13 @@ Just above the header add a short description that webcrawlers can use.
 ```` markdown
     ```
     description: |
-        A short deescption of a few lines preferable around 150-200 words.
+        A short description of a few lines preferable around 150-200 words.
     tags: [beginner, advanced, expert] #Add one of these tags so that reader knows what level of knowledge is required.
     ```
 ````
 
 
-## headings and Captialization
+## headings and Capitalisation
 
 Always start with # followed by the name of the chapter starting with a Capital.
 After and before the heading keep 1 line open for readability.
@@ -98,9 +98,9 @@ so it looks like `my special word`.
 Try to avoid tables, lists are preferred over tables.
 When you create a table always try to align the text in the table to the left.
 
-This can be doen with :---- as can be seen in next example
+This can be done with :---- as can be seen in next example
 
-| column 1 | column 2 | colunn 3 |
+| column 1 | column 2 | column 3 |
 | :------- | :------- | :------- |
 |          |          |          |
 
@@ -119,7 +119,7 @@ the image automatically.
 
 `![Example image 33 in chapter 5](ch05.33-image-example){ align=center }`
 
-`_5.33 Example image 33 in chapter 5`
+`_5.33 Example image 33 in chapter 5_`
 
 ## Code blocks
 

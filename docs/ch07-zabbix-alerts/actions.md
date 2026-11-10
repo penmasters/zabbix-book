@@ -993,7 +993,7 @@ Some macros depend on:
 
 Adapt the template to your own environment rather than copying it blindly.
 
-!!! exampel "Example"
+!!! example "Example"
 
     ``` text
     ==============================
