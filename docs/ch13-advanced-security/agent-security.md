@@ -102,13 +102,13 @@ This will make sure only the zabbix user on your Linux system has read-only acce
 Open your host configuration and go to the `Encryption` tab. By default it will be set to not use encryption.
 
 ![Unencrypted agent](ch13.4-frontend-agent-host-no-encryption.png){ align=center }
-*13.4 Unencrypted agent settings*
+_13.4 Unencrypted agent settings_
 
 Let's fill out the details here, just as we did on the Zabbix agent host side.
 
 ![Encrypted agent](ch13.5-frontend-agent-host-encryption.png){ align=center }
 
-*13.5 Encrypted agent settings*
+_13.5 Encrypted agent settings_
 
 As you can see, even though this is an active Zabbix agent, I set up encryption requirements for both. Click on the `Update` button to save these changes and go back to the Zabbix agent host CLI to restart the agent.
 
@@ -123,7 +123,7 @@ Your agent icon should remain green and you should now see that the agent is enc
 
 ![Encrypted agent status](ch13.6-frontend-agent-host-encryption-status.png){ align=center }
 
-*13.6 Encrypted agent status*
+_13.6 Encrypted agent status_
 
 ### Active agent autoregistration
 Another thing you might want to do is encrypt all of the Zabbix agents in active mode that are being registered into Zabbix automatically. This process called autoregistration was discussed in detail in chapter 10. What we did not cover, is how to encrypt this process.
@@ -131,12 +131,12 @@ Another thing you might want to do is encrypt all of the Zabbix agents in active
 When you navigate to `Administration` | `General` | `Autoregistration` there are not many options available. As you can see we are using `No encryption` by default. 
 
 ![Autoregistration without encryption](ch13.7-autoregistration-no-encryption.png){ align=center }
-*13.7 Autoregistration without encryption*
+_13.7 Autoregistration without encryption_
 
 We can only change this to `PSK` to encrypt all of the autoregistered Zabbix agents. There is no certificate option for autoregistration. But, we can now do the following setup.
 
 ![Autoregistration with encryption](ch13.8-autoregistration-encryption.png){ align=center }
-*13.8 Autoregistration with encryption*
+_13.8 Autoregistration with encryption_
 
 This will allow us to define our PSK identity and PSK value on the agents configured for autoregistration. 
 
@@ -347,7 +347,7 @@ under `Data collection` | `Hosts` and add the following information under `Encry
 
 ![Encrypted agent certificate](ch13.9-agent-certificate-encryption.png){ align=center }
 
-*13.9 Encrypted agent settings certificate*
+_13.9 Encrypted agent settings certificate_
 
 ## Conclusion
 

@@ -88,11 +88,11 @@ Adding those checks will look like this.
 
 ![Network discovery rule check hostname](network-discovery/ch10.1-network-discovery-check-hostname.png){ align=center }
 
-*10.1 Network discovery rule check hostname*
+_10.1 Network discovery rule check hostname_
 
 ![Network discovery rule check description](network-discovery/ch10.2-network-discovery-check-description.png){ align=center }
 
-*10.2 Network discovery rule check description*
+_10.2 Network discovery rule check description_
 
 Our Linux servers in the IP range `192.168.46.1-254` will only be discovered when
 these checks succeed.
@@ -111,7 +111,7 @@ With everything set our discovery rule now looks like the image below.
 
 ![Creating a network discovery rule](network-discovery/ch10.3-network-discovery-rule.png){ align=center }
 
-*10.3 Creating a network discovery rule*
+_10.3 Creating a network discovery rule_
 
 ## Creating discovery actions
 
@@ -129,13 +129,13 @@ conditions.
 
 ![Network discovery action condition](network-discovery/ch10.4-network-discovery-action-condition-linux.png){ align=center }
 
-*10.4 Network discovery action condition*
+_10.4 Network discovery action condition_
 
 Once added, that looks like the following.
 
 ![Network discovery action conditions](network-discovery/ch10.5-network-discovery-action-conditions.png){ align=center }
 
-*10.5 Network discovery action conditions*
+_10.5 Network discovery action conditions_
 
 When the conditions are met, we can then set up the operations to:
 
@@ -146,7 +146,7 @@ When the conditions are met, we can then set up the operations to:
 
 ![Network discovery action operations](network-discovery/ch10.6-network-discovery-action-operations.png){ align=center }
 
-*10.6 Network discovery action operations*
+_10.6 Network discovery action operations_
 
 ## Checking the discovered hosts
 
@@ -156,7 +156,7 @@ in the IP range, as well as their linked host, if any was created.
 
 ![Network discovery monitoring](network-discovery/ch10.7-network-discovery-result.png){ align=center }
 
-*10.7 Network discovery monitoring*
+_10.7 Network discovery monitoring_
 
 ## Discovery by proxies
 

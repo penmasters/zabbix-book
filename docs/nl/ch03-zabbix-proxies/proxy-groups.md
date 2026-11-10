@@ -299,8 +299,7 @@ _3.12 Add proxy_
 
 ![ch03.13-create-proxy-group.png](ch03.13-create-proxy-group.png)
 
-_3.13 Create
-Proxy groups_
+_3.13 Create Proxy groups_
 
 #### Assign Proxies to the Group (Administration -> Proxies)
 
@@ -312,13 +311,11 @@ Proxy groups_
 
 ![ch03.14-add-proxy-to-group.png](ch03.14-add-proxy-to-group.png)
 
-_3.14 Add proxy
-to proxy group_
+_3.14 Add proxy to proxy group_
 
 ![ch03.15-all-proxy-linked.png](ch03.15-all-proxy-linked.png)
 
-_3.15 All proxies
-linked with a proxy group_
+_3.15 All proxies linked with a proxy group_
 
 ### Zabbix Agent Configuration (zabbix_agentd.conf)
 

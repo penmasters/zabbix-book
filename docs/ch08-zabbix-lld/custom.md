@@ -395,7 +395,7 @@ _8.9 lld override_
 
 ![lld override operation ](ch08.10-lld-override-operation.png)
 
-_8.10 lld override operation _
+_8.10 lld override operation_
 
 ???+ note
     It can take a while before changes are applied to your host. Don't panic this

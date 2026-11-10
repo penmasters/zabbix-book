@@ -13,8 +13,7 @@ Für diese Anleitung verwenden wir zwei Zabbix-Servers und eine Datenbank, aber 
 
 ![HA-Setup](./ha-setup/ch01.10-HA-setup.png)
 
-_1.10 HA
-Setup_
+_1.10 HA Setup_
 
 Es ist wichtig zu beachten, dass die Zabbix-HA-Konfiguration einfach ist und Redundanz bietet,
 ohne komplexe Funktionen wie Lastverteilung. Nur ein Knoten wird aktiv sein, alle anderen Knoten werden in Bereitschaft stehen. Alle bereitstehenden Zabbix-Servers im HA-Cluster überwachen den aktiven Knoten durch Herzenbumps mithilfe der gemeinsamen Datenbank. Es erfordert keine zusätzliche Clustering-Software oder sogar Firewall-Ports für den Zabbix-Server selbst. Allerdings werden wir Keepalived zum Bereitstellen einer
@@ -413,8 +412,7 @@ Am unteren Ende der Seite sollten Sie eine Liste von Servern sehen, wobei mindes
 
 ![1st active frontend](ha-setup/ch01.11-HA-check1.png)
 
-_1.11 verify
-HA_
+_1.11 verify HA_
 
 Schalten Sie den aktiven Frontend-Server aus oder neustarten Sie ihn und beobachten Sie, dass der Zabbix-Frontend
 immer noch erreichbar ist. Bei Neuladen der Seite werden Sie feststellen, dass der andere Frontend-Server als aktive Instanz übernommen hat,
@@ -422,8 +420,7 @@ was eine fast nahtlose Failover und Hochverfügbarkeit sicherstellt.
 
 ![2nd active frontend](ha-setup/ch01.12-HA-check2.png)
 
-_1.12 verify
-HA_
+_1.12 verify HA_
 
 Neben der Überwachung des Status von HA-Knoten bietet Zabbix mehrere Runtime-Befehle, die Administratoren ermöglichen,
 Failover-Einstellungen zu verwalten und inaktive Knoten dynamisch zu entfernen.

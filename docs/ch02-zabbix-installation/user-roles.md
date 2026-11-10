@@ -213,9 +213,9 @@ not modify host configurations or system settings.
 Ideal in environments with **segregated duties**, e.g., one team maintains templates
 while another handles discovery and host setup.
 
-![ch02.29-template_maintainer.png](ch02.29-template_maintainer.png)
+![ch02.30-template_maintainer.png](ch02.30-template_maintainer.png)
 
-_2.29 template maintainer_
+_2.30 template maintainer_
 
 ---
 
@@ -270,9 +270,9 @@ Assign this role to a **User Group** with `Read` access to specific Host Groups
 Used by **first-line support teams** who handle incident acknowledgment and
 escalation during live monitoring.
 
-![ch02.30-noc_operator.png](ch02.30-noc_operator.png)
+![ch02.31-noc_operator.png](ch02.31-noc_operator.png)
 
-_2.30 noc operator_
+_2.31 noc operator_
 
 ---
 

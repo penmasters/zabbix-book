@@ -207,9 +207,9 @@ sistema.
 Ideal em ambientes com **tarefas segregadas**, por exemplo, uma equipe mantém
 modelos enquanto outra lida com a descoberta e a configuração do host.
 
-![ch02.29-template_maintainer.png](ch02.29-template_maintainer.png)
+![ch02.30-template_maintainer.png](ch02.30-template_maintainer.png)
 
-_2.29 ch02.29_template_maintainer.png_
+_2.30 ch02.30_template_maintainer.png_
 
 ---
 
@@ -267,9 +267,9 @@ hosts específicos (por exemplo, *Production Routers*, *Datacenter Switches*).
 Usado pelas **equipes de suporte de primeira linha do** que lidam com o
 reconhecimento e o escalonamento de incidentes durante o monitoramento ao vivo.
 
-![ch02.30-noc_operator.png](ch02.30-noc_operator.png)
+![ch02.31-noc_operator.png](ch02.31-noc_operator.png)
 
-_2.30 ch02.30_noc_operator.png_
+_2.31 ch02.31_noc_operator.png_
 
 ---
 

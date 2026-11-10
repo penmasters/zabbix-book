@@ -34,8 +34,7 @@ que nous examinerons en détail.
 
 ![aperçu](ch01.1-basic-installation-zabbixserver.png){ align=left }
 
-_1.1 Installation de base de Zabbix
-en plusieurs étapes_
+_1.1 Installation de base de Zabbix en plusieurs étapes_
 
 Tous ces composants peuvent être installés sur un seul serveur ou répartis
 sur trois serveurs distincts. Le cœur du système est le serveur Zabbix, souvent

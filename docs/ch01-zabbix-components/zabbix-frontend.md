@@ -318,8 +318,7 @@ should appear:
 
 ![overview](ch01.2-basic-installation-setup.png){ align=left }
 
-_1.2 Zabbix
-welcome_
+_1.2 Zabbix welcome_
 
 !!! tip "Choose the appropriate English locale"
 
@@ -330,8 +329,7 @@ The Zabbix frontend presents a limited array of available localisations, as show
 
 ![overview language](ch01.3-basic-installation-setuplanguage.png){ align=left }
 
-_1.3 Zabbix welcome language
-choice_
+_1.3 Zabbix welcome language choice_
 
 What if we want to install Chinese as language or another language from the list?
 Run the next command to get a list of all locales available for your OS.
@@ -462,8 +460,7 @@ after a reload of our browser.
 
 ![select language](ch01.4-basic-installation-selectlanguage.png){ align=left }
 
-_1.4 Zabbix select
-language_
+_1.4 Zabbix select language_
 
 ???+ note
 
@@ -485,8 +482,7 @@ is in order, you should be able to proceed by clicking `Next`.
 
 ![pre-requisites](ch01.5-basic-installation-prerequisites.png){ align=left }
 
-_1.5 Zabbix
-pre-requisites_
+_1.5 Zabbix pre-requisites_
 
 On the next page, you'll configure the database connection parameters:
 
@@ -509,8 +505,7 @@ Ensure that the `Database TLS encryption` option is not selected, and then click
 
 ![dbconnection](ch01.6-basic-installation-dbconnection.png){ align=left }
 
-_1.6 Zabbix
-connections_
+_1.6 Zabbix connections_
 
 You're almost finished with the setup! The final steps involve:
 
@@ -532,23 +527,20 @@ You're almost finished with the setup! The final steps involve:
 
 ![settings](ch01.7-basic-installation-settings.png){ align=left }
 
-_1.7 Zabbix
-summary_
+_1.7 Zabbix summary_
 
 After clicking `Next step` again, you'll be taken to a page confirming that the
 configuration was successful. Click `Finish` to complete the setup process.
 
 ![settings](ch01.8-basic-installation-final.png){ align=left }
 
-_1.8 Zabbix
-install_
+_1.8 Zabbix install_
 
 We are now ready to login :
 
 ![settings](ch01.9-basic-installation-login.png)
 
-_1.9 Zabbix
-login_
+_1.9 Zabbix login_
 
 - Login : Admin
 - Password : zabbix

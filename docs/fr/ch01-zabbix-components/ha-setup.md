@@ -365,15 +365,13 @@ Pour vérifier que la configuration est correctement mise en place, accédez à 
 
 ![1er frontend actif](ha-setup/ch01.11-HA-check1.png)
 
-_1.11 vérifier
-HA_
+_1.11 vérifier HA_
 
 Éteignez ou redémarrez le serveur frontend actif et observez que l'interface Zabbix reste accessible. En rechargeant la page, vous verrez que le deuxième serveur frontend a pris en charge comme instance active, assurant un basculement presque transparent et une haute disponibilité.
 
 ![2ème frontend actif](ha-setup/ch01.12-HA-check2.png)
 
-_1.12 vérifier
-HA_
+_1.12 vérifier HA_
 
 En plus de surveiller l'état des nœuds HA, Zabbix fournit plusieurs commandes en temps réel qui permettent aux administrateurs de gérer les paramètres de basculement et d'effacer dynamiquement les nœuds inactifs.
 

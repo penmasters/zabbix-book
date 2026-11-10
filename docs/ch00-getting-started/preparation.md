@@ -112,8 +112,7 @@ the front-end. Make sure to download the relevant packages for your chosen confi
 
 ![Zabbix Download](./getting-started/ch00.1-getting-started-zabbixdownload.png)
 
-_0.1 Zabbix
-download_
+_0.1 Zabbix download_
 
 ---
 

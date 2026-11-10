@@ -45,15 +45,13 @@ which will automatically give the user the type **Super admin**.
 
 ![Create API user](ch12.1-create-api-user.png)
 
-_12.1
-Create API user_
+_12.1 Create API user_
 
 Permissions tab:
 
 ![API user permissions](ch12.2-api-user-permissions.png)
 
-_12.2
-API user role and user type_
+_12.2 API user role and user type_
 
 Under `Users` | `API tokens`, press **New API token**,
 assign the user **api**. We can uncheck **Set expiration date and time**.
@@ -61,8 +59,7 @@ Press **Add**. Copy the macro to the clipboard.
 
 ![Add token to user object](ch12.3-token-added-to-user.png)
 
-_12.3
-Add token to user object_
+_12.3 Add token to user object_
 
 Visit `Administration` | `Macros` and install the macro.
 To simulate all upcoming chapters much faster,
@@ -98,8 +95,7 @@ Now we can take the two new variables and install them globally:
 
 ![User macros](ch12.4-user-macro-global.png)
 
-_12.4
-User macros_
+_12.4 User macros_
 
 ## First API call
 
@@ -201,8 +197,7 @@ Headers
 
 ![User macros](ch12.5-host-get.png)
 
-_12.5
-Host get method via HTTP agent item_
+_12.5 Host get method via HTTP agent item_
 
 Preprocessing steps
 
@@ -213,8 +208,7 @@ Preprocessing steps
 
 ![User macros](ch12.6-host-get-preprocessing.png)
 
-_12.6
-Preprocessing_
+_12.6 Preprocessing_
 
 The last step is to store the outcome in the inventory.
 Scroll down to the bottom of the HTTP agent item and select an inventory field,
@@ -232,8 +226,7 @@ To include extra information inside the message template, follow this lead:
 
 ![Inventory fields in media type](ch12.7-use-invenotry-field-in-media-type-with-numbers.png)
 
-_12.7
-Inventory fields in media type_
+_12.7 Inventory fields in media type_
 
 !!! warning "Warning"
 
@@ -263,8 +256,7 @@ To implement, visit `Alerts` | `Scripts` and press **Create script**.
 
 ![Auto close problem](ch12.8-zabbix-api-auto-close-problem-webhook.png)
 
-_12.8
-Auto close problem_
+_12.8 Auto close problem_
 
 | Field               | Value                                                 |
 | :------------------ | :-----------------------------------------------------|
@@ -305,15 +297,13 @@ For the triggers which need to be closed automatically, we need to:
 
 ![Allow manual close](ch12.9-trigger-configuration-allow-manual-close.png)
 
-_12.9
-Allow manual close_
+_12.9 Allow manual close_
 
 2) Add the tag `auto` with the value `close`
 
 ![Install trigger tags](ch12.10-trigger-configuration-install-tags.png)
 
-_12.10
-Trigger tags_
+_12.10 Trigger tags_
 
 Go to `Alerts` | `Actions` | `Trigger actions`
 
@@ -322,22 +312,19 @@ by using the tag name `auto` with a tag value `close`.
 
 ![Set up conditions for action](ch12.11-create-new-action-install-conditions.png)
 
-_12.11
-Conditions for action_
+_12.11 Conditions for action_
 
 It's important to not create operation step 1, but start operation with step 2:
 
 ![A delayed operation](ch12.12-create-new-action-install-operations.png)
 
-_12.12
-A delayed operation_
+_12.12 A delayed operation_
 
 The **Default operation step duration** field will indicate how long the event will be in the problem state.
 
 ![Default operation step](ch12.13-default-operation-step-duration.png)
 
-_12.13
-Close event later_
+_12.13 Close event later_
 
 This solution has been tested with 7.0/7.4.
 
@@ -363,8 +350,7 @@ To implement, visit `Alerts` | `Scripts` and press **Create script**.
 
 ![Delete host webhook](ch12.14-delete-host-webhook.png)
 
-_12.14
-Delete host webhook_
+_12.14 Delete host webhook_
 
 | Field               | Value                                                 |
 | :------------------ | :-----------------------------------------------------|
@@ -404,16 +390,14 @@ The conditions can be to target tag plus value and trigger severity:
 
 ![Delete host action conditions](ch12.15-delete-host-action-conditions.png)
 
-_12.15
-Delete host target tag and tag value_
+_12.15 Delete host target tag and tag value_
 
 Here we are running a delayed action with a step number 31.
 Because the default duration is `1d`, the host will be deleted after 30 days.
 
 ![Delete host action operations](ch12.16-delete-host-action-operations.png)
 
-_12.16
-Delete host operations_
+_12.16 Delete host operations_
 
 ## Replace host Visible name (Script item)
 
@@ -539,15 +523,13 @@ All together
 
 ![Script item, host Visible name](ch12.17-script-item-host-visible-name.png)
 
-_12.17
-Script item, host Visible name_
+_12.17 Script item, host Visible name_
 
 The item will sit at host level and serve the purpose of a cron job.
 
 ![Script item ready](ch12.18-script-item-ready.png)
 
-_12.18
-Script item ready_
+_12.18 Script item ready_
 
 This is tested and works with Zabbix 7.0.
 
@@ -563,8 +545,7 @@ This is tested and works with Zabbix 7.0.
 
 ![Unknown ZBX passive interfaces](ch12.19-host-availability-unknown-passive-agent-checks.png)
 
-_12.19
-Unknown ZBX passive interfaces_
+_12.19 Unknown ZBX passive interfaces_
 
 
 !!! tip "Use case 2"
@@ -595,8 +576,7 @@ To implement, visit `Alerts` | `Scripts` and press **Create script**.
 
 ![Remove unused ZBX interfaces](ch12.20-remove-unused-zbx-hosts.png)
 
-_12.20
-Remove unused ZBX interfaces_
+_12.20 Remove unused ZBX interfaces_
 
 Webhook
 
@@ -726,22 +706,19 @@ To put the webhook into action, visit `Alerts` | `Actions` | `Autoregistration a
 
 ![Conditions for ZBX active checks](ch12.21-autoreg-conditions.png)
 
-_12.21
-Conditions for ZBX active checks_
+_12.21 Conditions for ZBX active checks_
 
 The operations will use the newly created webhook.
 
 ![Operations of Zabbix agent autoregistration](ch12.22-autoreg-actions.png)
 
-_12.22
-Operations of Zabbix agent autoregistration_
+_12.22 Operations of Zabbix agent autoregistration_
 
 The complete picture is:
 
 ![Zabbix agent autoregistration completed](ch12.23-autoreg-completed.png)
 
-_12.23
-Zabbix agent autoregistration completed_
+_12.23 Zabbix agent autoregistration completed_
 
 ## Read log file from YYYY.MM.DD filename (Script)
 
@@ -924,15 +901,13 @@ The script to create and maintain global variables:
 
 ![Reinstall YYYY-MM-DD](ch12.24-yyyy-mm-dd.png)
 
-_12.24
-Create or reinstall global macros_
+_12.24 Create or reinstall global macros_
 
 After running the script, the global variables are now available:
 
 ![Reinstall YYYY-MM-DD](ch12.25-yyyy-mm-dd-result.png)
 
-_12.25
-Global YYYY, MM, and DD macros_
+_12.25 Global YYYY, MM, and DD macros_
 
 For log item monitoring, we can use the native log item key:
 

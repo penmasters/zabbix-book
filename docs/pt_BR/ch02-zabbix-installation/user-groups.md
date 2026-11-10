@@ -197,6 +197,8 @@ flowchart TB
     classDef ro fill:#a7f3d0,stroke:#065f46,stroke-width:2px,color:black;
 ```
 
+_2.25 User group permission precedence_
+
 Essa precedência pode ser resumida em duas regras principais:
 
 1. **Negar sempre substitui:** Se algum grupo conceder acesso **Deny** a um host
@@ -307,10 +309,9 @@ Você pode criá-los em `Coleta de dados` | `Grupos de hosts`.
     - HG_All_Linux_Servers: Somente leitura (Read)
     - HG_Critical_Databases (Bancos de dados críticos): Somente leitura (Read)
 
-![ch02.25-junior-monitoring.png](ch02.25-junior-monitoring.png)
+![ch02.26-junior-monitoring.png](ch02.26-junior-monitoring.png)
 
-_2.25 Junior
-monitoring_
+_2.26 Junior monitoring_
 
 
 - Criar Grupo B: 'Exclusão crítica'
@@ -318,10 +319,9 @@ monitoring_
     * Na guia Permissões de host, atribua o seguinte direito:
     * HG_Critical_Databases: Deny
 
-![ch02.26-critical-exclusioin.png](ch02.26-critical-exclusioin.png)
+![ch02.27-critical-exclusioin.png](ch02.27-critical-exclusioin.png)
 
-_2.26
-Critical exclusion_
+_2.27 Critical exclusion_
 
 #### Creating the Test User
 
@@ -340,9 +340,9 @@ We will create the user first, then assign them to the groups.
     * Add the user to both group `Junior Monitoring` and `Critical Exclusion`.
 * Save: Click Add.
 
-![ch02.27-test-junior.png](ch02.27-test-junior.png)
+![ch02.28-test-junior.png](ch02.28-test-junior.png)
 
-_2.27 test user_
+_2.28 test user_
 
 #### Criar os hosts
 
@@ -357,9 +357,9 @@ Criaremos 2 hosts, um servidor Linux e um servidor de banco de dados.
     * Interfaces: Agent with IP 127.0.0.1
 * Save: Click Add.
 
-![ch02.28-hosts.png](ch02.28-hosts.png)
+![ch02.29-hosts.png](ch02.29-hosts.png)
 
-_2.28 Add hosts_
+_2.29 Add hosts_
 
 Add a DB server exact as above but change :
 

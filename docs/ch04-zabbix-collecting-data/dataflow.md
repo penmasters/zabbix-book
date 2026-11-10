@@ -28,7 +28,7 @@ which will take the collected data and change it before storing it in the Zabbix
 Our dataflow in the end then looks like this:
 
 ![Basic dataflow](ch04.2-dataflow-basic.png){ align=left }
-*4.2 Zabbix basic dataflow*
+_4.2 Zabbix basic dataflow_
 
 This gives us a very basic understanding of what steps we have to go through in
 Zabbix to get from data being collected to alerts being sent out. Very important
@@ -142,7 +142,7 @@ build the perfect Zabbix environment. When we put the entire dataflow together i
 looks like the image below.
 
 ![Detailed dataflow](ch04.3-dataflow-detailed.png){ align=left }
-*4.3 Zabbix detailed dataflow*
+_4.3 Zabbix detailed dataflow_
 
 Here we can see the various steps coming together.
 

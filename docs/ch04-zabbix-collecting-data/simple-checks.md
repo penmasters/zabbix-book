@@ -31,7 +31,7 @@ window:
 
 ![Empty Item creation](ch04.6-empty-item-creation.png){ align=left }
 
-*4.6 Empty Item creation window*
+_4.6 Empty Item creation window_
 
 Make sure to change the `Type` to `Simple check` to get a similar result. We can see there are
 only two fields mandatory (that aren't selectors). These, we have to fill in to make our
@@ -75,7 +75,7 @@ default template:
 
 ![MEM-CPU sorting](ch04.7-latest-data-memcpu-sorting.png){ align=center }
 
-*4.7 Latest data Memory and CPU items sorting*
+_4.7 Latest data Memory and CPU items sorting_
 
 If this template had used CPU and Memory as a prefix for all respective items, then this page
 would have nicely sorted them together. While right now, there are CPU items right between the
@@ -131,13 +131,13 @@ now let's use the parameter instead.
 The item will now look like this:
 
 ![ICMP Ping item](ch04.8-icmpping-item.png){ align=center }
-*4.8 ICMP Ping item*
+_4.8 ICMP Ping item_
 
 It's also best practice to add a tag with the name `component` to every item we create. Let's switch
 to the `Tags` tab on the item creation window, and create the tag `component:system`.
 
 ![ICMP Ping item tags](ch04.9-icmpping-item-tags.png){ align=center }
-*4.9 ICMP Ping item tags*
+_4.9 ICMP Ping item tags_
 
 Zabbix utilises the fping utility, installed on the Zabbix server and/or proxy, to execute
 ICMP Ping checks. By default, Zabbix adds a repository containing the tool and installs

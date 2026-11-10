@@ -1284,8 +1284,7 @@ so add this as the second *preprocessing step*.
 
 ![ch04.35-snmp-item-preprocessing.png](ch04.35-snmp-item-preprocessing.png)
 
-_4.35 preprocessing
-steps_
+_4.35 preprocessing steps_
 
 Going now to the **Latest data** page, it will show the "In" and "Out" traffic for our
 network card but with data gathered in different ways. Both ways use the

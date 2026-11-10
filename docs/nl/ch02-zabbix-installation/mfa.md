@@ -30,16 +30,16 @@ Time-based one-time password (TOTP) en Duo MFA provider.
 
 Selecteer in het menu `Gebruikers` sectie en dan `Authenticatie`
 
-![MFA Settings initial](ch02.59-mfa_settings_initial.png){ width=90% }
+![MFA Settings initial](ch02.60-mfa_settings_initial.png){ width=90% }
 
-_2.59 Initial MFA settings_
+_2.60 Initial MFA settings_
 
 Now in `MFA settings` tab select the `Enable multi-factor authentication`
 check-box, then select `TOTP` in Type drop-down list.
 
-![MFA Settings TOTP](ch02.60-mfa_settings_TOTP_new.png){ width=90% }
+![MFA Settings TOTP](ch02.61-mfa_settings_TOTP_new.png){ width=90% }
 
-_2.60 New MFA method_
+_2.61 New MFA method_
 
 In `Hash function` drop-down list you can choose SHA-1, SHA-256 or SHA-512, the
 higher number is the better security.
@@ -50,9 +50,9 @@ Authenticator application on your phone.
 Click `Add` and then `Update`. Now you have TOTP MFA configured and it is the
 default method of MFA.
 
-![MFA Settings TOTP configured](ch02.61-mfa_settings_TOTP_configured.png){ width=90% }
+![MFA Settings TOTP configured](ch02.62-mfa_settings_TOTP_configured.png){ width=90% }
 
-_2.61 New MFA method added_
+_2.62 New MFA method added_
 
 Now you need to tell Zabbix for which User group (or groups) to use MFA. Let's
 create a User group that would require MFA.
@@ -60,9 +60,9 @@ create a User group that would require MFA.
 In the menu select `Users` section and then `User groups`, then click `Create
 user group` button
 
-![MFA list of user groups](ch02.62-mfa_create_user_groups.png){ width=90% }
+![MFA list of user groups](ch02.63-mfa_create_user_groups.png){ width=90% }
 
-_2.62 Create user group_
+_2.63 Create user group_
 
 In `Group name` put "test". Note that `Multi-factor authentication` field is
 "Default", as currently we have only one MFA method configured it does not
@@ -70,9 +70,9 @@ matter whether we select "Default" or "TOTP1" that we created above. You also
 can disable MFA for all users belonging to this User group. Click `Add` button
 to create "test" User group.
 
-![MFA new user group](ch02.63-mfa_new_user_group.png){ width=90% }
+![MFA new user group](ch02.64-mfa_new_user_group.png){ width=90% }
 
-_2.63 New user group configuration_
+_2.64 New user group configuration_
 
 ???+ Note
 
@@ -82,22 +82,22 @@ _2.63 New user group configuration_
 Let's add a user to this user group. In the menu select `Users` section and then
 `Users`, then click `Create user` button
 
-![MFA create user](ch02.64-mfa_create_user.png){ width=90% }
+![MFA create user](ch02.65-mfa_create_user.png){ width=90% }
 
-_2.64 Create user_
+_2.65 Create user_
 
 Fill in `Username`, `Password` and `Password (once again)` fields. Make sure you
 select `test` user group in `Groups` field.
 
-![MFA new user](ch02.65-mfa_new_user.png){ width=90% }
+![MFA new user](ch02.66-mfa_new_user.png){ width=90% }
 
-_2.65 New user configuration_
+_2.66 New user configuration_
 
 Then switch to `Permissions` tab and select any role.
 
-![MFA new user permissions](ch02.66-mfa_new_user_permissions.png){ width=90% }
+![MFA new user permissions](ch02.67-mfa_new_user_permissions.png){ width=90% }
 
-_2.66 New user permissions_
+_2.67 New user permissions_
 
 Click `Add` button to add the user.
 
@@ -105,9 +105,9 @@ Now we can test how TOTP MFA works. Sign out and then try to sign in as a test
 user you just created. You will be presented with a QR code. That means that the
 user `test` has not been enrolled in TOTP MFA yet.
 
-![MFA TOTP QR code](ch02.67-mfa_totp_qr_code.png){ width=30% }
+![MFA TOTP QR code](ch02.68-mfa_totp_qr_code.png){ width=30% }
 
-_2.67 TOTP QR code_
+_2.68 TOTP QR code_
 
 On your phone you need to install either "Microsoft authenticator" or "Google
 authenticator" application. The procedure of adding new QR code is quite
@@ -115,17 +115,17 @@ similar, here is how it looks in "Google authenticator". Tap `Add a code` and
 then `Scan a QR code`. You'll be immediately presented with a 6 digit code
 (remember we selected 6 in `Code length` when we configured TOTP MFA?)
 
-![MFA TOTP auth app1](ch02.68-mfa_totp_auth_app1.png){ width=32% }
+![MFA TOTP auth app1](ch02.69-mfa_totp_auth_app1.png){ width=32% }
 
-_2.68 Authenticator app, step 1_
+_2.69 Authenticator app, step 1_
 
-![MFA TOTP auth app2](ch02.69-mfa_totp_auth_app2.png){ width=32% }
+![MFA TOTP auth app2](ch02.70-mfa_totp_auth_app2.png){ width=32% }
 
-_2.69 Authenticator app, step 2_
+_2.70 Authenticator app, step 2_
 
-![MFA TOTP auth app3](ch02.70-mfa_totp_auth_app3.png){ width=32% }
+![MFA TOTP auth app3](ch02.71-mfa_totp_auth_app3.png){ width=32% }
 
-_2.70 Authenticator app, step 3_
+_2.71 Authenticator app, step 3_
 
 Enter this code into `Verification code` field of your login screen and click
 `Sign in`, if you did everything right you are logged in into Zabbix at this
@@ -134,9 +134,9 @@ Zabbix stores a special code used for further authentications in its database.
 The next time user "test" tries to login into Zabbix there will be only a field
 to enter verification code
 
-![MFA TOTP second login](ch02.71-mfa_totp_second_login.png){ width=32% }
+![MFA TOTP second login](ch02.72-mfa_totp_second_login.png){ width=32% }
 
-_2.71 Verification code request_
+_2.72 Verification code request_
 
 ???+ warning
 
@@ -148,9 +148,9 @@ If a user changes (or loses) his/her phone, then Zabbix administrator should
 reset his/her enrolment. To do that in the menu select `Users` then mark a
 check-box to the left of "test" user and click "Reset TOTP secret" button.
 
-![MFA TOTP reset password](ch02.72-mfa_totp_reset_password.png){ width=99% }
+![MFA TOTP reset password](ch02.73-mfa_totp_reset_password.png){ width=99% }
 
-_2.72 Reset TOTP secret_
+_2.73 Reset TOTP secret_
 
 After you reset TOTP secret the "test" user will have to undergo enrolment
 procedure again.
@@ -172,67 +172,67 @@ First of all you need to create an account with Duo (it's free to manage up to
 10 users) then login into Duo, you are an admin here. In the menu on the left
 select `Applications` and click `Protect an Application` button.
 
-![MFA DUO applications](ch02.73-mfa_duo_applications.png){ width=99% }
+![MFA DUO applications](ch02.74-mfa_duo_applications.png){ width=99% }
 
-_2.73 DUO Applications menu_
+_2.74 DUO Applications menu_
 
 Then you will see WebSDK in applications list, click on it
 
-![MFA DUO applications list](ch02.74-mfa_duo_applications_list.png){ width=99% }
+![MFA DUO applications list](ch02.75-mfa_duo_applications_list.png){ width=99% }
 
-_2.74 DUO Applications list_
+_2.75 DUO Applications list_
 
 Here you'll see all the data needed for Zabbix.
 
-![MFA DUO ](ch02.75-mfa_duo_data.png){ width=99% }
+![MFA DUO ](ch02.76-mfa_duo_data.png){ width=99% }
 
-_2.75 DUO WebSDK application settings_
+_2.76 DUO WebSDK application settings_
 
 Now let's go to Zabbix. First we need to configure Duo MFA method. In the menu
 select `Users` and click `Authentication`. Then on `MFA settings` tab click
 `Add` in `Methods` section.
 
-![MFA DUO ](ch02.76-mfa_duo_add_method.png){ width=99% }
+![MFA DUO ](ch02.77-mfa_duo_add_method.png){ width=99% }
 
-_2.76 Add MFA method_
+_2.77 Add MFA method_
 
 Fill in all the fields with data from Duo Dashboard -> Applications -> Web SDK
 page (see screenshot above) and click `Add`, then click `Update` to update
 Authentication settings.
 
-![MFA DUO ](ch02.77-mfa_duo_method_data.png){ width=99% }
+![MFA DUO ](ch02.78-mfa_duo_method_data.png){ width=99% }
 
-_2.77 DUO method settings_
+_2.78 DUO method settings_
 
 After the MFA method is configured let's switch the "Test" group to use Duo MFA.
 In the menu select `Users` and click `User groups`, then click "test" group. In
 the field `Multi-factor authentication` select "DUO1" and click `Update`.
 
-![MFA DUO ](ch02.78-mfa_duo_user_group.png){ width=99% }
+![MFA DUO ](ch02.79-mfa_duo_user_group.png){ width=99% }
 
-_2.78 DUO MFA authentication method for user group_
+_2.79 DUO MFA authentication method for user group_
 
 Everything is ready. Let's test it. Sign out of Zabbix and sign back in with
 "test" user. You should see a welcome screen from Duo. Click several `Next`
 buttons.
 
-![MFA DUO ](ch02.79-mfa_duo_welcome.png){ width=32% }
+![MFA DUO ](ch02.80-mfa_duo_welcome.png){ width=32% }
 
-_2.79 Enrolling into DUO, step1_
+_2.80 Enrolling into DUO, step1_
 
-![MFA DUO ](ch02.80-mfa_duo_welcome1.png){ width=32% }
+![MFA DUO ](ch02.81-mfa_duo_welcome1.png){ width=32% }
 
-_2.80 Enrolling into DUO, step2_
+_2.81 Enrolling into DUO, step2_
 
-![MFA DUO ](ch02.81-mfa_duo_welcome2.png){ width=32% }
+![MFA DUO ](ch02.82-mfa_duo_welcome2.png){ width=32% }
 
-_2.81 Enrolling into DUO, step3_
+_2.82 Enrolling into DUO, step3_
 
 Then you need to select the method of authentication.
 
-![MFA DUO ](ch02.82-mfa_duo_auth_method.png){ width=50% }
+![MFA DUO ](ch02.83-mfa_duo_auth_method.png){ width=50% }
 
-_2.82 Enrolling into DUO, step4_
+_2.83 Enrolling into DUO, step4_
 
 It is up to you what to select you can experiment with all these methods. Let's
 select "Duo Mobile" (you need to install "Duo mobile" application on your
@@ -240,28 +240,28 @@ device). Click `I have a tablet` (it's just easier to activate your device this
 way) and confirm that you installed "Duo mobile" on your phone. At this point
 you should see a QR code that you need to scan in "Duo mobile" application.
 
-![MFA DUO ](ch02.83-mfa_duo_duo_app.png){ width=32% }
+![MFA DUO ](ch02.84-mfa_duo_duo_app.png){ width=32% }
 
-_2.83 Enrolling into DUO, step5_
+_2.84 Enrolling into DUO, step5_
 
-![MFA DUO ](ch02.84-mfa_duo_confirm_app_installed.png){ width=32% }
+![MFA DUO ](ch02.85-mfa_duo_confirm_app_installed.png){ width=32% }
 
-_2.84 Enrolling into DUO, step6_
+_2.85 Enrolling into DUO, step6_
 
-![MFA DUO ](ch02.85-mfa_duo_scan_qr.png){ width=32% }
+![MFA DUO ](ch02.86-mfa_duo_scan_qr.png){ width=32% }
 
-_2.85 Enrolling into DUO, step7_
+_2.86 Enrolling into DUO, step7_
 
 Open "Duo mobile" on your phone. If you did not have this application previously
 installed (thus no accounts enrolled) you will see couple of welcome screens.
 
-![MFA DUO ](ch02.86-mfa_duo_phone_welcome.png){ width=48% }
+![MFA DUO ](ch02.87-mfa_duo_phone_welcome.png){ width=48% }
 
-_2.86 Configure DUO app, step 1_
+_2.87 Configure DUO app, step 1_
 
-![MFA DUO ](ch02.87-mfa_duo_phone_add_account.png){ width=48% }
+![MFA DUO ](ch02.88-mfa_duo_phone_add_account.png){ width=48% }
 
-_2.87 Configure DUO app, step 2_
+_2.88 Configure DUO app, step 2_
 
 Tap on "Use a QR code" and then scan the code presented by Duo in your Zabbix
 login screen. After you do that you will see that the account is enrolled to
@@ -269,48 +269,48 @@ your Duo MFA. Enter account name and tap "Done" and you will see the account in
 the list of all accounts enrolled into Duo MFA on this device. In Zabbix WebUI
 you will also see a confirmation, click "Continue".
 
-![MFA DUO ](ch02.88-mfa_duo_phone_account_added.png){ width=32% }
+![MFA DUO ](ch02.89-mfa_duo_phone_account_added.png){ width=32% }
 
-_2.88 Configure DUO app, step 3_
+_2.89 Configure DUO app, step 3_
 
-![MFA DUO ](ch02.89-mfa_duo_phone_accounts.png){ width=32% }
+![MFA DUO ](ch02.90-mfa_duo_phone_accounts.png){ width=32% }
 
-_2.89 Configure DUO app, step 4_
+_2.90 Configure DUO app, step 4_
 
-![MFA DUO ](ch02.90-mfa_duo_enrollement_confirmation.png){ width=32% }
+![MFA DUO ](ch02.91-mfa_duo_enrollement_confirmation.png){ width=32% }
 
-_2.90 Enrolment confirmation_
+_2.91 Enrolment confirmation_
 
 Duo will ask you now whether you want to add another method of authentication,
 click `Skip for now` and you'll see a confirmation that set up completed. Click
 `Login with Duo` and a notification will be pushed to your device.
 
-![MFA DUO ](ch02.91-mfa_duo_another_method.png){ width=32% }
+![MFA DUO ](ch02.92-mfa_duo_another_method.png){ width=32% }
 
-_2.91 Add another way to login_
+_2.92 Add another way to login_
 
-![MFA DUO ](ch02.92-mfa_duo_setup_completed.png){ width=32% }
+![MFA DUO ](ch02.93-mfa_duo_setup_completed.png){ width=32% }
 
-_2.92 MFA DUO set up completed_
+_2.93 MFA DUO set up completed_
 
-![MFA DUO ](ch02.93-mfa_duo_push_sent.png){ width=32% }
+![MFA DUO ](ch02.94-mfa_duo_push_sent.png){ width=32% }
 
-_2.93 DUO push notification sent_
+_2.94 DUO push notification sent_
 
 Now just tap on "Approve" on your device and you will be logged in into Zabbix.
 
-![MFA DUO ](ch02.94-mfa_duo_phone_push_notification.png){ width=50% }
+![MFA DUO ](ch02.95-mfa_duo_phone_push_notification.png){ width=50% }
 
-_2.94 DUO push notification on the phone_
+_2.95 DUO push notification on the phone_
 
 Duo MFA enrolment complete. If you sign out and sign in back then immediately a
 push notification will be sent to your device and all you need is tap on
 "Approve". Also you will see the user "test" in Duo where you can delete the
 user, or deactivate just click on it and experiment.
 
-![MFA DUO ](ch02.95-mfa_duo_users.png){ width=98% }
+![MFA DUO ](ch02.96-mfa_duo_users.png){ width=98% }
 
-_2.95 New user registered in DUO_
+_2.96 New user registered in DUO_
 
 ## Conclusie
 

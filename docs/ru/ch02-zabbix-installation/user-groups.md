@@ -187,6 +187,8 @@ flowchart TB
     classDef ro fill:#a7f3d0,stroke:#065f46,stroke-width:2px,color:black;
 ```
 
+_2.25 User group permission precedence_
+
 This precedence can be summarized by two core rules:
 
 1. **Deny Always Overrides:** If any group grants **Deny** access to a host or
@@ -293,10 +295,9 @@ You can create them under `Data collection` | `Host groups`.
     - HG_All_Linux_Servers: Read-only (Read)
     - HG_Critical_Databases: Read-only (Read)
 
-![ch02.25-junior-monitoring.png](ch02.25-junior-monitoring.png)
+![ch02.26-junior-monitoring.png](ch02.26-junior-monitoring.png)
 
-_2.25 Junior
-monitoring_
+_2.26 Junior monitoring_
 
 
 - Create Group B: 'Critical Exclusion'
@@ -304,10 +305,9 @@ monitoring_
     * In the Host permissions tab, assign the following right:
     * HG_Critical_Databases: Deny
 
-![ch02.26-critical-exclusioin.png](ch02.26-critical-exclusioin.png)
+![ch02.27-critical-exclusioin.png](ch02.27-critical-exclusioin.png)
 
-_2.26
-Critical exclusion_
+_2.27 Critical exclusion_
 
 #### Creating the Test User
 
@@ -325,9 +325,9 @@ We will create the user first, then assign them to the groups.
     * Add the user to both group `Junior Monitoring` and `Critical Exclusion`.
 * Save: Click Add.
 
-![ch02.27-test-junior.png](ch02.27-test-junior.png)
+![ch02.28-test-junior.png](ch02.28-test-junior.png)
 
-_2.27 test user_
+_2.28 test user_
 
 #### Create the hosts
 
@@ -342,9 +342,9 @@ We will create 2 host a linux server and a db server.
     * Interfaces: Agent with IP 127.0.0.1
 * Save: Click Add.
 
-![ch02.28-hosts.png](ch02.28-hosts.png)
+![ch02.29-hosts.png](ch02.29-hosts.png)
 
-_2.28 Add hosts_
+_2.29 Add hosts_
 
 Add a DB server exact as above but change :
 

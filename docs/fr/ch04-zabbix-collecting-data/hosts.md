@@ -26,8 +26,7 @@ host` button. This will open up the following modal window:
 
 ![Host creation empty](ch04.4-empty-host-creation.png){ align=left }
 
-*4.4 Empty
-host creation window*
+_4.4 Empty host creation window_
 
 There are a lot of fields we can fill in, but few are important to note here
 specifically.
@@ -112,7 +111,7 @@ Let's add the host `simple-checks` in the `Linux/Servers` host group:
 
 ![Host creation - new host group](ch04.5-host-creation-new-group.png){ align=center }
 
-*4.5 Host creation - new host group*
+_4.5 Host creation - new host group_
 
 And this is it for creating our first host in Zabbix. We can leave the rest of
 the fields empty as they are optional. Another very important element of a host

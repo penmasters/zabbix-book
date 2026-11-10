@@ -420,15 +420,13 @@ Para verificar se a configuração está funcionando corretamente, acesse seu se
 
 ![1ª frente ativa](ha-setup/ch01.11-HA-check1.png)
 
-_1.11 verificar
-HA_
+_1.11 verificar HA_
 
 Desligue ou reinicie o servidor frontend ativo e observe que o Zabbix frontend permanece acessível. Ao recarregar a página, você notará que outro frontend tomou conta como instância ativa, garantindo um failover quase imperceptível e alta disponibilidade.
 
 ![2ª frente ativa](ha-setup/ch01.12-HA-check2.png)
 
-_1.12 verificar
-HA_
+_1.12 verificar HA_
 
 Além de monitorar o status dos nós HA, o Zabbix fornece vários comandos em tempo real que permitem aos administradores gerenciar configurações de failover e remover dinamicamente nós inativos.
 

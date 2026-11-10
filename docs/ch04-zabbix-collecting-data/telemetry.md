@@ -101,6 +101,8 @@ flowchart TB
     class DB,CH database
 ```
 
+_4.106 Zabbix telemetry collection and query flow_
+
 The diagram is simplified: when the server executes a Telemetry query, its
 result is handled locally rather than being forwarded from a proxy. A proxy
 that executes a query forwards **only the resulting item value** through the
@@ -160,6 +162,8 @@ flowchart TB
     class S,UI,Q server
 ```
 
+_4.107 Traditional monitoring and APM data paths_
+
 The ClickHouse endpoint can be local or remote. For a central APM deployment,
 every proxy ingesting telemetry needs a network path to the selected ClickHouse
 endpoint. This matters especially for MSPs and customer-site proxies behind
@@ -203,6 +207,8 @@ flowchart TB
     OTHER[("Separate ClickHouse<br/>Telemetry source")] --> POLLER["Telemetry query poller<br/>Server or proxy"]
     POLLER --> ITEMS["Zabbix item values<br/>Triggers and dashboards"]
 ```
+
+_4.108 Central APM storage and a separate telemetry source_
 
 The second ClickHouse source is optional and independent. It is not populated
 by the first one automatically.
@@ -561,9 +567,9 @@ connectivity. Also check that your generator is actually sending OTLP/gRPC.
 Create a host named `otel-lab`, monitored by the server or proxy that should
 execute the Telemetry query. This item type does not require an agent.
 
-![ch04.104-new_host.png](ch04.104-new_host.png)
+![ch04.109-new_host.png](ch04.109-new_host.png)
 
-_4.104 Add new host_
+_4.109 Add new host_
 
 ### Step 5: Create the Telemetry query item
 
@@ -587,9 +593,9 @@ Create the following item on `otel-lab`:
 | JsonPath | $.columns.p95 |
 | Custom multiplier | 0.000001 |
 
-![ch04.105-create_item.png](ch04.105-create_item.png)
+![ch04.110-create_item.png](ch04.110-create_item.png)
 
-_4.105 Create Item_
+_4.110 Create Item_
 
 Use `Test` | `Get value` to inspect the actual result.
 Configure preprocessing only for the observed result format; do not
@@ -634,9 +640,9 @@ one-minute buckets:
 Go to `APM`|`Traces` and click on the right side of the screen and drag it to
 the middle so you can see the traces.
 
-![ch04.106-apm_traces.png](ch04.106-apm_traces.png)
+![ch04.111-apm_traces.png](ch04.111-apm_traces.png)
 
-_4.106 APM traces panel_
+_4.111 APM traces panel_
 
 Avoid overlapping the baseline and slow runs in the same buckets if you want
 a clean rise above 500 ms. The latency trigger should activate once sufficient
