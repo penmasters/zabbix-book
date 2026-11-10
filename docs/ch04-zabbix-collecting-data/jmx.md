@@ -99,6 +99,8 @@ flowchart LR
     class F,G zabbix;
 
 ```
+
+_4.69 JMX monitoring data flow_
 ---
 
 ## Where Does the Zabbix Java Gateway Fit in this picture?
@@ -149,7 +151,7 @@ flowchart LR
 
 ```
 
-_4.69 Zabbix JMX monitoring architecture_
+_4.70 Zabbix JMX monitoring architecture_
 
 ---
 
@@ -281,9 +283,9 @@ in a passive mode, which means it polls data directly from your JMX application.
 The Zabbix server or proxy then polls the gateway to retrieve this data, completing
 the connection chain.
 
-![Zabbix java gateway](ch04.70-jmx-zabbix.png)
+![Zabbix java gateway](ch04.71-jmx-zabbix.png)
 
-_4.70 JMX Gateway_
+_4.71 JMX Gateway_
 
 ???+ info "Install the JAVA Gateway"
 
@@ -393,17 +395,17 @@ rich experience. You can download it from [https://visualvm.github.io/download.h
 
 Start your preferred application and connect to our JMX port on 8686.
 
-![Jconsole](ch04.71-jconsole.png)
+![Jconsole](ch04.72-jconsole.png)
 
-_4.71 Jconsole_
+_4.72 Jconsole_
 
 After a successful login you should be greeted with a screen like this, where you
 have a tree view overview of all the MBeans we can use to gather information
 from.
 
-![ch04.37 Successful login](ch04.72-jconsole-mbeans-tree.png)
+![ch04.73 Successful login](ch04.73-jconsole-mbeans-tree.png)
 
-_4.72 Login screen_
+_4.73 Login screen_
 
 Before we can do this we need to create a new host in our Zabbix server. Let's
 go to `Data collection` | `Hosts` and click on `Create host` in the upper right
@@ -436,9 +438,9 @@ On our host Tomcat create a new item and add the following information.
 - **Type of information**: Numeric(unsigned)
 - **Host interface**: The JMX interface we just created on our host.
 
-![JMX Item](ch04.73-jmx-requestCount-item.png)
+![JMX Item](ch04.74-jmx-requestCount-item.png)
 
-_4.73 JMX item_
+_4.74 JMX item_
 
 ???+ info "Verifying and Saving the Item"
 
@@ -468,9 +470,9 @@ append an attribute name, such as `maxTime`, `requestCount`, or `bytesReceived`,
 the end of the key, separated by a comma.
 `jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\"","requestCount"]`
 
-![requestCount item](ch04.74-jconsole-requestCount.png)
+![requestCount item](ch04.75-jconsole-requestCount.png)
 
-_4.74 requestCount item_
+_4.75 requestCount item_
 
 The `java.lang.management.Memory` MBean provides a good example of how to handle
 CompositeData types in Zabbix. This MBean has an attribute called `HeapMemoryUsage`,
@@ -485,9 +487,9 @@ To monitor a specific value from this composite object, you must specify the
 attribute name within the `CompositeData` structure. For example, to get the maximum
 heap memory usage, the Zabbix item key would be: `jmx["java.lang:type=Memory","HeapMemoryUsage.max"]`.
 
-![](ch04.75-jconsole-HeapMemory.Max.png)
+![](ch04.76-jconsole-HeapMemory.Max.png)
 
-_4.75 HeapMemoryUsage_
+_4.76 HeapMemoryUsage_
 
 ---
 

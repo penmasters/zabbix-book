@@ -17,8 +17,7 @@ for adding more zabbix servers if necessary.
 
 ![HA-Setup](./ha-setup/ch01.10-HA-setup.png)
 
-_1.10 HA
-Setup_
+_1.10 HA Setup_
 
 It's important to note that Zabbix HA setup is straightforward, providing redundancy
 without complex features like load balancing. Only one node will be an active node, 
@@ -450,8 +449,7 @@ in your HA setup.
 
 ![1st active frontend](ha-setup/ch01.11-HA-check1.png)
 
-_1.11 verify
-HA_
+_1.11 verify HA_
 
 Shut down or reboot the active frontend server and observe that the Zabbix frontend
 remains accessible. Upon reloading the page, you will notice that the other frontend
@@ -460,8 +458,7 @@ and high availability.
 
 ![2nd active frontend](ha-setup/ch01.12-HA-check2.png)
 
-_1.12 verify
-HA_
+_1.12 verify HA_
 
 In addition to monitoring the status of HA nodes, Zabbix provides several runtime
 commands that allow administrators to manage failover settings and remove inactive

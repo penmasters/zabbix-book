@@ -44,7 +44,7 @@ The Zabbix agent type interface and JMX interface work quite similarly. Both
 interface types allow us to define four things.
 
 ![Agent and JMX type interfaces](ch04.10-agent-jmx-interfaces.png){ align=center }
-*4.10 Agent and JMX type interfaces*
+_4.10 Agent and JMX type interfaces_
 
 - **IP address** 
 - **DNS name**
@@ -76,7 +76,7 @@ for this is because the SNMP type interface allows us to specify the SNMP detail
 like version, community, and credentials.
 
 ![SNMPv2 interface](ch04.11-snmpv2-interface.png){ align=center }
-*4.11 SNMPv2 interface*
+_4.11 SNMPv2 interface_
 
 When selecting the `SNMP version` as either `SNMPv1` or `SNMPv2`, we are shown
 the `SNMP community` field. `SNMPv1` and `SNMPv2` both use unauthenticated and
@@ -96,7 +96,7 @@ values per OID base in a single call. This option is used to reduce SNMP traffic
 overhead when using the `walk[]` SNMP agent item key.
 
 ![SNMPv3 interface](ch04.12-snmpv3-interface.png){ align=center }
-*4.12 SNMPv3 interface*
+_4.12 SNMPv3 interface_
 
 For `SNMPv3` many additional fields will be available for configuration. 
 
@@ -142,14 +142,14 @@ it to connect to `BMCs (Baseboard Management Controllers)` like `iDRAC` and `iLo
 This interface is slightly different again from the previous three interfaces.
 
 ![IPMI interface](ch04.13-ipmi-interface.png){ align=center }
-*4.13 IPMI interface*
+_4.13 IPMI interface_
 
 We have the same settings for `IP`, `DNS`, and `Port` again, but in the case of
 IPMI we do not define credentials on the interface level. Instead these are provided
  on a different tab on the host configuration settings.
 
 ![IPMI host settings](ch04.14-ipmi-settings.png){ align=center }
-*4.14 IPMI host settings*
+_4.14 IPMI host settings_
 
 For a host in Zabbix we can only define one IPMI user for authentication,
 regardless of the number of interfaces we add.

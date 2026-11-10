@@ -113,7 +113,7 @@ Go to the host and click on `Items`. The next step will be to create our item so
 that we can retrieve the data from our printers.
 
 ![Create Host](ch08.12-dependent-lld-create-host.png)
-*8.12 Create host*
+_8.12 Create host_
 
 ???+ note
     Remember, this is just an example file we made. In real life you will use probably
@@ -129,7 +129,7 @@ Once the `New Item` popup is on the screen fill in the following details:
 - **Key**: vfs.file.contents[/home/printer-status.txt\]
 
 ![Create lld item](ch08.13-dependent-lld-item.png)
-*8.13 Create an LLD item*
+_8.13 Create an LLD item_
 
 Before you press `Add` let's test our item first to see if we can retrieve the
 data we need.
@@ -147,7 +147,7 @@ and return you the information from the txt file.
     first by yourself.
 
 ![test lld item](ch08.14-dependent-lld-test-item.png)
-*8.14 Test LLD item*
+_8.14 Test LLD item_
 
 ???+ tip
     Keep a copy of the output somewhere, you will need it in the following steps
@@ -159,7 +159,7 @@ To create a discovery rule first go to `Discovery rules` on the top next to Item
 Triggers, and Graphs and click on `Create discovery rule`.
 
 ![Create discovery rule](ch08.15-dependent-lld-create-discovery.png)
-*8.15 Create a discovery rule*
+_8.15 Create a discovery rule_
 
 Before configuring our Low-Level Discovery (LLD) rule, we can test our JSON queries
 using tools like [https://www.jsonquerytool.com/](https://www.jsonquerytool.com/). If we apply the
@@ -194,7 +194,7 @@ in our LLD items, triggers, graphs, etc.
     ```
 
 ![LLD Macros](ch08.16-dependent-lld-create-lldmacro.png)
-*8.16 Create a LLD Macro*
+_8.16 Create a LLD Macro_
 
 When ready press `Update` at the bottom of the page.
 
@@ -217,7 +217,7 @@ This setup ensures that the discovered printer statuses are correctly assigned a
 processed through the LLD mechanism.  
 
 ![LLD Item create](ch08.17-dependent-lld-create-llditem.png)
-*8.17 Create an LLD item*
+_8.17 Create an LLD item_
 
 Before saving the item, navigate to the `Preprocessing` tab to define the necessary
 preprocessing steps. These steps will ensure that the extracted data is correctly
@@ -371,7 +371,7 @@ This script will change the status of our printers you can verify this in the
 `Latest data` page.
 
 ![Latest data updated](ch08.18-dependent-lld-create-latestdata-updated.png)
-*8.18 Latest data*
+_8.18 Latest data_
 
 But hey wait as we can see there is an extra device detected with the name
 `This is not a printer` and Zabbix hasn't detected any status for it .....
@@ -397,7 +397,7 @@ following to the fields:
 - **regular expression**: `{$PRINTERS.NOT.TO.DETECT}`
 
 ![LLD Filters](ch08.19-dependent-lld-create-filters.png)
-*8.19 LLD Filters*
+_8.19 LLD Filters_
 
 Press `Update` and go to our Host and click on the tab `Macros`. Here we will create
 our macro and link it with a regular expression.
@@ -407,7 +407,7 @@ Fill in the following values:
 - **Value**: `^This is not a printer$`
 
 ![Filter macros](ch08.20-dependent-lld-create-filter-macro.png)
-*8.20 LLD Filter Macros*
+_8.20 LLD Filter Macros_
 
 After executing our discovery rule and sending updated values to Zabbix, we can
 verify the filter's effectiveness by checking the `Latest data` view, where the

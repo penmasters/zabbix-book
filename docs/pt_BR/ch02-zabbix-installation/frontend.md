@@ -256,9 +256,9 @@ _2.11 Menu de monitoramento_
 
 ---
 
-![Menu Serviços](ch02.12-services-menu.png){ width="20%" }
+![Menu Serviços](ch02.13-services-menu.png){ width="20%" }
 
-_2.12 Menu Serviços_
+_2.13 Menu Serviços_
 
 - **Serviços**: Esta página nos dará uma visão geral de alto nível de todos os
   serviços configurados no Zabbix.
@@ -268,9 +268,9 @@ _2.12 Menu Serviços_
 
 ---
 
-![Menu Inventário](ch02.13-inventory-menu.png){ width="20%" }
+![Menu Inventário](ch02.14-inventory-menu.png){ width="20%" }
 
-_2.13 Menu Inventário_
+_2.14 Menu Inventário_
 
 - **Visão geral**: Um local onde podemos ver todos os dados de inventário que
   recuperamos de nossos hosts.
@@ -279,9 +279,9 @@ _2.13 Menu Inventário_
 
 ---
 
-![Menu de relatórios](ch02.14-reports-menu.png){ width="20%" }
+![Menu de relatórios](ch02.15-reports-menu.png){ width="20%" }
 
-_2.14 Menu Inventário_
+_2.15 Menu Inventário_
 
 - **Informações do sistema**: As informações do sistema são um resumo dos
   principais dados do servidor Zabbix e do sistema.
@@ -300,9 +300,9 @@ _2.14 Menu Inventário_
 
 ---
 
-![Coleta de dados](ch02.15-datacollection-menu.png){ width="20%" }
+![Coleta de dados](ch02.16-datacollection-menu.png){ width="20%" }
 
-_2.15 Coleta de dados_
+_2.16 Coleta de dados_
 
 - **Grupos de modelos**: Um local para agrupar logicamente todos os modelos em
   diferentes grupos. Antes, eles eram misturados com hosts em grupos de hosts.
@@ -321,9 +321,9 @@ _2.15 Coleta de dados_
 
 ---
 
-![Menu de alertas](ch02.16-alerts-menu.png){ width="20%" }
+![Menu de alertas](ch02.17-alerts-menu.png){ width="20%" }
 
-_2.16 Menu de alertas_
+_2.17 Menu de alertas_
 
 - **Ações**: Esse menu permite configurar ações com base nos `eventos` do
   Zabbix. Podemos criar essas ações para gatilhos, serviços, descoberta,
@@ -336,9 +336,9 @@ _2.16 Menu de alertas_
 
 ---
 
-![Menu de usuários](ch02.17-users-menu.png){ width="20%" }
+![Menu de usuários](ch02.18-users-menu.png){ width="20%" }
 
-_2.17 Menu de usuários_
+_2.18 Menu de usuários_
 
 - **Grupos de usuários**: A seção do menu `User groups` permite a criação e o
   gerenciamento de grupos de usuários para simplificar o acesso e o controle de
@@ -359,9 +359,9 @@ _2.17 Menu de usuários_
 
 ---
 
-![Menu de administração](ch02.18-administration-menu.png){ width="20%" }
+![Menu de administração](ch02.19-administration-menu.png){ width="20%" }
 
-_2.18 Menu de administração_
+_2.19 Menu de administração_
 
 - **Geral**: A seção do menu `General` na administração permite a configuração
   das principais definições e parâmetros de todo o sistema.

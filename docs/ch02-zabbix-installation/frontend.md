@@ -33,16 +33,14 @@ our `main menu` marked in
 
 ![Overview](ch02.1-frontend-overview.png)
 
-_2.1
-Overview_
+_2.1 Overview_
 
 The main menu can be hidden by collapsing it completely or to reduce it to a set
 of small icons. When we click on the button with the 2 arrows to the left:
 
 ![Collapse](ch02.2-frontend-collapse.png)
 
-_2.2
-Collapse_
+_2.2 Collapse_
 
 You will see that the menu collapses to a set of small icons. Pressing ">>" will
 bring the `main menu` back to it's original state.
@@ -52,8 +50,7 @@ to the "<<" button will hide the `main menu` completely.
 
 ![Hide](ch02.3-frontend-hide.png)
 
-_2.3
-Hide_
+_2.3 Hide_
 
 To bring back our `main menu` is rather easy, we just look for the button on the
 left with three horizontal lines and click on it. This will show the `main menu`
@@ -68,8 +65,7 @@ to focus on.
 
 ![Expand](ch02.4-frontend-expand.png)
 
-_2.4
-Expand_
+_2.4 Expand_
 
 When we want to leave the kiosk mode, the button will be changed to 2 arrows pointing
 to the inside of the screen. Pressing this button will revert us back to the original
@@ -77,8 +73,7 @@ state.
 
 ![Expand](ch02.5-frontend-shrink.png)
 
-_2.5
-Shrink_
+_2.5 Shrink_
 
 ???+ tip
 
@@ -99,16 +94,14 @@ why this is called the `global search` box.
 
 ![Global search](ch02.6-global-search.png)
 
-_2.6 Global
-search_
+_2.6 Global search_
 
 This is our result after we looked for the word `server`. If you have a standard
 Zabbix setup your page should look more or less the same.
 
 ![Global search result](ch02.7-global-search-result.png)
 
-_2.7 Global search
-result_
+_2.7 Global search result_
 
 ---
 
@@ -152,8 +145,7 @@ display.
 
 ![Edit dashboard](ch02.8-edit-dashboard.png)
 
-_2.8 Edit
-dashboard_
+_2.8 Edit dashboard_
 
 The `Edit dashboard` button facilitates modification of the user's dashboard configuration,
 a feature that will be elaborated upon in subsequent sections. Located on the extreme
@@ -176,8 +168,7 @@ interpretation is crucial for system comprehension.
 
 ![System Information](ch02.9-system-information.png)
 
-_2.9 System
-Information_
+_2.9 System Information_
 
 | Parameter                                         | Value                                                                                                                                                                                                                                       | Details                                                                                                                                                                                                                                                                         |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -225,8 +216,7 @@ with 3 different levels of users we have the regular `users`, `Zabbix Admin` and
 
 ![Main Menu sections](ch02.10-main-menu.png){ width=20% }
 
-_2.10 Main
-menu sections_
+_2.10 Main menu sections_
 
 - A `Zabbix User` will only see the <font color='red'>red</font> part of our
   `main menu` and will only be able to see our collected data.
@@ -239,8 +229,7 @@ menu sections_
 
   ![Monitoring Menu](ch02.11-monitoring-menu.png){ width=20% }
 
-_2.11 Monitoring
-menu_
+_2.11 Monitoring menu_
 
 - **Problems**: This page will give us an overview of all the problems.
   With filter we can look at recent problems past problems and problems
@@ -268,8 +257,7 @@ _2.12 APM menu_
 
 ![Services menu](ch02.13-services-menu.png){ width="20%" }
 
-_2.13 Services
-menu_
+_2.13 Services menu_
 
 - **Services**: This page will give us a high level overview of all services
   configured in Zabbix.
@@ -280,8 +268,7 @@ menu_
 
 ![Inventory menu](ch02.14-inventory-menu.png){ width="20%" }
 
-_2.14 Inventory
-menu_
+_2.14 Inventory menu_
 
 - **Overview**: A place where we can watch all our inventory data that
   we have retrieved from our hosts.
@@ -292,8 +279,7 @@ menu_
 
 ![Reports menu](ch02.15-reports-menu.png){ width="20%" }
 
-_2.15 Inventory
-menu_
+_2.15 Inventory menu_
 
 - **System information**: System information is a summary of key Zabbix server
   and system data.
@@ -314,8 +300,7 @@ menu_
 
 ![Data collection](ch02.16-datacollection-menu.png){ width="20%" }
 
-_2.16 Data
-collection_
+_2.16 Data collection_
 
 - **Template groups**: A place to logical group all templates together in different
   groups. Before it was mixed together with hosts in host groups.
@@ -335,8 +320,7 @@ collection_
 
 ![Alerts menu](ch02.17-alerts-menu.png){ width="20%" }
 
-_2.17 Alerts
-menu_
+_2.17 Alerts menu_
 
 - **Actions**: This menu allows us to configure actions based on `events` in
   Zabbix. We can create such actions for triggers, services, discovery,
@@ -350,8 +334,7 @@ menu_
 
 ![Users menu](ch02.18-users-menu.png){ width="20%" }
 
-_2.18 Users
-menu_
+_2.18 Users menu_
 
 - **User groups**: The `User groups` menu section enables the creation and management of user groupings for streamlined access and permission control.
 - **User roles**: The `User roles` menu section defines sets of permissions that can be assigned to individual users, limiting their allowed actions based on the user type they have within the system.
@@ -384,8 +367,7 @@ menu_
 
 ![Administration menu](ch02.19-administration-menu.png){ width="20%" }
 
-_2.19 Administration
-menu_
+_2.19 Administration menu_
 
 - **General**: The `General` menu section within administration allows configuration of core system-wide settings and parameters.
 - **Audit log**: The `Audit log` menu section provides a chronological record of system activities and user actions for security monitoring and troubleshooting.

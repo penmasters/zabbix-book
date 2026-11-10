@@ -315,8 +315,7 @@ Beim Zugriff auf die entsprechende URL sollte eine Seite erscheinen, wie im Folg
 
 ![Übersicht](ch01.2-basic-installation-setup.png){ align=left }
 
-_1.2 Zabbix
-Willkommenseite_
+_1.2 Zabbix Willkommenseite_
 
 !!! tip "Wähle das passende Englische Locale"
 
@@ -470,8 +469,7 @@ nach einem Neuladen des Browsers.
 
 ![Sprache wählen](ch01.4-basic-installation-selectlanguage.png){ align=left }
 
-_1.4 Zabbix Sprache
-auswählen_
+_1.4 Zabbix Sprache auswählen_
 
 ???+ note
 
@@ -487,8 +485,7 @@ Benutzererfahrung.Wenn Sie mit den verfügbaren Übersetzungen zufrieden sind, k
 
 ![pre-requisites](ch01.5-basic-installation-prerequisites.png){ align=left }
 
-_1.5 Zabbix
-Voraussetzungen_
+_1.5 Zabbix Voraussetzungen_
 
 Auf der nächsten Seite konfigurieren Sie die Datenbankverbindungsparameter:
 
@@ -507,8 +504,7 @@ Stellen Sie sicher, dass die Option `Database TLS encryption` nicht ausgewählt 
 
 ![dbconnection](ch01.6-basic-installation-dbconnection.png){ align=left }
 
-_1.6 Zabbix
-Verbindungen_
+_1.6 Zabbix Verbindungen_
 
 Sie sind fast mit der Einrichtung fertig! Die letzten Schritte beinhalten:
 
@@ -528,23 +524,20 @@ Sie sind fast mit der Einrichtung fertig! Die letzten Schritte beinhalten:
 
 ![settings](ch01.7-basic-installation-settings.png){ align=left }
 
-_1.7 Zabbix
-Übersicht_
+_1.7 Zabbix Übersicht_
 
 Nachdem Sie auf `Next step` geklickt haben, werden Sie zu einer Seite weitergeleitet, die bestätigt, dass die
 Konfiguration erfolgreich war. Klicken Sie auf `Finish`, um den Einrichtungsprozess abzuschließen.
 
 ![settings](ch01.8-basic-installation-final.png){ align=left }
 
-_1.8 Zabbix
-Installieren_
+_1.8 Zabbix Installieren_
 
 Wir sind nun bereit, uns anzumelden:
 
 ![settings](ch01.9-basic-installation-login.png)
 
-_1.9 Zabbix
-Anmelden_
+_1.9 Zabbix Anmelden_
 
 - Anmeldung: Admin
 - Passwort: zabbix

@@ -462,8 +462,7 @@ Let's have a look at them: go to `Administration` | `Housekeeping`.
 
 ![TimescaleDB settings](ch13.12-timescaledb.png)
 
-_13.12 housekeeper
-settings_
+_13.12 housekeeper settings_
 
 ---
 

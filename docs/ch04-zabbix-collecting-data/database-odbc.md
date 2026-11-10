@@ -52,6 +52,8 @@ flowchart TD
     E[Target Database]
 ```
 
+_4.85 Zabbix ODBC query processing_
+
 The first layer is unixODBC, the driver manager. It is responsible for maintaining
 the registry of installed drivers and translating the symbolic DSN name in your
 Zabbix item into a concrete connection. It reads two configuration files:

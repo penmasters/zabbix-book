@@ -235,7 +235,7 @@ If everything is configured correctly, the AI application will use the available
 
 ![Zabbix MCP connected AI response](mcp/ch09.15-mcp-query-example.png)
 
-*9.15 Zabbix MCP connected AI response*
+_9.15 Zabbix MCP connected AI response_
 
 ### Understanding approvals before making changes
 

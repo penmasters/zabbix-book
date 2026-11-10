@@ -1104,7 +1104,7 @@ in the item information.
   will use synchronous polling.
 - **Units:** The data is in bytes so use `B`.
 
-![ch04.30-snmp-item.png](ch04.31-snmp-item.png)
+![ch04.31-snmp-item.png](ch04.31-snmp-item.png)
 
 _4.31 SNMP Item_
 
@@ -1118,9 +1118,9 @@ first before we save it.
 
 Add a *preprocessing step* with the name `Change per second`
 
-![ch04.31-snmp-item-preprocessing.png](ch04.32-snmp-item-preprocessing.png)
+![ch04.32-snmp-item-preprocessing.png](ch04.32-snmp-item-preprocessing.png)
 
-_4.32 ch04.31-snmp-item-preprocessing.png_
+_4.32 ch04.32-snmp-item-preprocessing.png_
 
 _snmp preprocessing_
 
@@ -1187,7 +1187,7 @@ some changes.
 The rest can stay as is, just remove the *preprocessing step* we added in the earlier
 example as this item will return us a whole list of information.
 
-![ch04.32-snmp-walk.png](ch04.33-snmp-walk.png)
+![ch04.33-snmp-walk.png](ch04.33-snmp-walk.png)
 
 _4.33 SNMP Walk_
 
@@ -1261,7 +1261,7 @@ Fill in the new item with the following information:
   before.
 - **Units:** `B`
 
-![ch04.33-snmp-dependent-item.png](ch04.34-snmp-dependent-item.png)
+![ch04.34-snmp-dependent-item.png](ch04.34-snmp-dependent-item.png)
 
 _4.34 Dependent SNMP Item_
 
@@ -1282,10 +1282,9 @@ Add the step **SNMP walk value** and paste the OID in the **Parameter** field:
 Remember from our previous item we need to calculate the **Change per second**
 so add this as the second *preprocessing step*.
 
-![ch04.34-snmp-item-preprocessing.png](ch04.35-snmp-item-preprocessing.png)
+![ch04.35-snmp-item-preprocessing.png](ch04.35-snmp-item-preprocessing.png)
 
-_4.35 preprocessing
-steps_
+_4.35 preprocessing steps_
 
 Going now to the **Latest data** page, it will show the "In" and "Out" traffic for our
 network card but with data gathered in different ways. Both ways use the

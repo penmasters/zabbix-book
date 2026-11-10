@@ -43,6 +43,8 @@ flowchart LR
     D --> E[Problems and actions]
 ```
 
+_7.3 CEP in the Zabbix event processing flow_
+
 A CEP rule consists of the following important parts:
 
 - **Conditions** define which events should be processed by the rule
@@ -54,9 +56,9 @@ A CEP rule consists of the following important parts:
 CEP rules are executed in their configured sort order. Changes made by an
 earlier rule’s operations (such as adding a tag) are visible to rules executed afterwards.
 
-![Event processing overview](ch07.5-cep-event-processing-overview.png){ align=center }
+![Event processing overview](ch07.4-cep-event-processing-overview.png){ align=center }
 
-_7.5 Event processing overview_
+_7.4 Event processing overview_
 
 These are only the basics, as we can get more options through `Simple (multiple)`, `Simple (once)`, `Cause and symptom grouping`, and `Pattern match`.
 
@@ -83,6 +85,8 @@ flowchart LR
     end
     A -. Older than 10 minutes .-> B
 ```
+
+_7.5 Sliding time window_
 
 A window can also be configured to have a limited `Capacity`.
 For example, a capacity of `5` means that only five events
@@ -220,6 +224,8 @@ flowchart TB
     S --> A3[ap-03]
 ```
 
+_7.6 Switch and access point topology_
+
 If `ap-01` goes down, we want to retain our traditional Zabbix logic and see the
 problem for the access point come up on our dashboards. However, if the switch
 goes down, we want the switch to become the cause and the three access points to
@@ -258,9 +264,9 @@ tag is our opt-in tag. A trigger without `scope=cep` will not be processed by
 the CEP rule in this example, giving us granular control over which problems will 
 be processed by CEP.
 
-![CEP host and trigger tags](ch07.6-cep-host-trigger-tags.png){ align=center }
+![CEP host and trigger tags](ch07.7-cep-host-trigger-tags.png){ align=center }
 
-_7.6 CEP host and trigger tags_
+_7.7 CEP host and trigger tags_
 
 ### Making the switch faster
 
@@ -307,9 +313,9 @@ Let's configure the rule as follows:
 In this specific case, operations can remain empty as the Cause and symptoms grouping 
 CEP rule type will create the relation for us automatically.
 
-![CEP switch rule configuration](ch07.7-cep-switch-rule.png){ align=center }
+![CEP switch rule configuration](ch07.8-cep-switch-rule.png){ align=center }
 
-_7.7 CEP switch rule configuration_
+_7.8 CEP switch rule configuration_
 
 Since we are matching on the generic tag `failure_domain`, we can use this CEP rule for
 many more failure domains, not just `edge-01`. This immediately shows us the flexibility of 
@@ -337,9 +343,9 @@ access point events follow, they are added as symptoms of the switch problem.
     `- ap-03 is unavailable             Symptom
     ```
 
-![CEP cause and symptoms result](ch07.8-cep-switch-result.png){ align=center }
+![CEP cause and symptoms result](ch07.9-cep-switch-result.png){ align=center }
 
-_7.8 Switch cause with access point symptoms_
+_7.9 Switch cause with access point symptoms_
 
 ### A very important limitation
 

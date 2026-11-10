@@ -222,8 +222,7 @@ This is the result of two changes introduced in Zabbix 6.4:
 
 ![Active proxy communication](ch03.2-active-communication.png)
 
-_3.2 Active proxy
-communication_
+_3.2 Active proxy communication_
 
 ---
 
@@ -273,8 +272,7 @@ And finally the config settings we need to change on our _Zabbix server_:
 
 ![Passive proxy communication](ch03.3-passive-communication.png)
 
-_3.3 Passive proxy
-communication_
+_3.3 Passive proxy communication_
 
 ---
 

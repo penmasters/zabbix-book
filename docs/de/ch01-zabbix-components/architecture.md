@@ -33,8 +33,7 @@ die wir im Detail besprechen werden.
 
 ![Übersicht](ch01.1-basic-installation-zabbixserver.png){ align=left }
 
-_1.1 Zabbix-Basiseinrichtung
-geteilt_
+_1.1 Zabbix-Basiseinrichtung geteilt_
 
 Alle diese Komponenten können entweder auf einem einzelnen Server installiert werden oder über drei separate Server verteilt.
 Der Kern des Systems ist der Zabbix-Server, oft als "Hirn" bezeichnet. Diese Komponente ist für die Verarbeitung von Triggerberechnungen und das Senden von Warnungen verantwortlich. Die Datenbank dient als Speicherort für die Konfiguration des Zabbix-Servers und alle gesammelten Daten. Der Webserver bietet die Benutzeroberfläche (Frontend) zur Interaktion mit dem System. Es ist wichtig zu beachten, dass der Zabbix-API Teil der Frontend-Komponente ist, nicht des Zabbix-Servers selbst.

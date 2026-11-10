@@ -288,8 +288,7 @@ Cela devrait vous aider à localiser les erreurs que vous avez commises.
 
 ![aperçu](ch01.2-basic-installation-setup.png){ align=left }
 
-_1.2 Zabbix
-accueil_
+_1.2 Zabbix accueil_
 
 !!! tip "Choisissez la localisation anglaise appropriée"
 
@@ -299,8 +298,7 @@ L'interface utilisateur Zabbix présente un ensemble limité de localisations di
 
 ![aperçu langue](ch01.3-basic-installation-setuplanguage.png){ align=left }
 
-_1.3 Choix de la langue
-d'accueil Zabbix_
+_1.3 Choix de la langue d'accueil Zabbix_
 
 Que se passe-t-il si nous voulons installer le chinois ou une autre langue de cette liste ?
 Exécutez la commande suivante pour obtenir la liste des localisations disponibles pour votre système d'exploitation.
@@ -437,8 +435,7 @@ Lorsque nous revenons maintenant à notre interface utilisateur, nous sommes en 
 
 ![sélection de langue](ch01.4-basic-installation-selectlanguage.png){ align=left }
 
-_1.4 Zabbix sélection
-de langue_
+_1.4 Zabbix sélection de langue_
 
 ???+ note
 

@@ -31,8 +31,7 @@ You can manage host groups by navigating to:
 
 ![Host Groups Menu Screenshot](ch02.20-host-grouops.png)
 
-_2.20 Host
-Groups menu_
+_2.20 Host Groups menu_
 
 In this menu under `Data collection`, you'll notice two distinct sections:
 
@@ -80,8 +79,7 @@ When adding a new host:
 
 ![Create new host group](ch02.21-new-host-group.png)
 
-_2.21 Create new
-host groups_
+_2.21 Create new host groups_
 
 ## Nested Host Groups
 
@@ -115,8 +113,7 @@ an option to apply permissions and tag filters to all subgroups:
 
 ![Apply subgroup permissions](ch02.22-sub-groups.png)
 
-_2.22 subgroup
-permissions_
+_2.22 subgroup permissions_
 
 This is especially useful for user groups. For example:
 

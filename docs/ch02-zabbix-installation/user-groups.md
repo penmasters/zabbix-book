@@ -57,7 +57,7 @@ generations, ensuring a familiar configuration experience for administrators.
 3. The configuration form is divided into five critical tabs: **User group**,
    **Template permissions**, **Host permissions**, **Proxy access list** and **Problem tag filter**.
 
-![ch02.23_user-groups_menu.png](ch02.23-user-groups_menu.png)
+![ch02.23-user-groups_menu.png](ch02.23-user-groups_menu.png)
 
 _2.23 user group menu_
 
@@ -145,7 +145,7 @@ list always overrides an allow list, so if any group denies access to a proxy,
 the user cannot access it. Allow lists are cumulative, so the user can access
 every proxy allowed by any of their groups.
 
-![ch02.23-1 proxy-access-list](ch02.23-1-proxy-access-list.png)
+![ch02.24 proxy-access-list](ch02.24-proxy-access-list.png)
 
 _2.24 Proxy Access List_
 
@@ -216,6 +216,8 @@ flowchart TB
     classDef rw fill:#60a5fa,stroke:#1e3a8a,stroke-width:2px,color:white;
     classDef ro fill:#a7f3d0,stroke:#065f46,stroke-width:2px,color:black;
 ```
+
+_2.25 User group permission precedence_
 
 This precedence can be summarized by two core rules:
 
@@ -317,9 +319,9 @@ You can create them under `Data collection` | `Host groups`.
     - HG_All_Linux_Servers: Read-only (Read)
     - HG_Critical_Databases: Read-only (Read)
 
-![ch02.24_junior-monitoring.png](ch02.24-junior-monitoring.png)
+![ch02.26-junior-monitoring.png](ch02.26-junior-monitoring.png)
 
-_2.25 Junior monitoring_
+_2.26 Junior monitoring_
 
 
 - Create Group B: 'Critical Exclusion'
@@ -327,9 +329,9 @@ _2.25 Junior monitoring_
     * In the Host permissions tab, assign the following right:
     * HG_Critical_Databases: Deny
 
-![ch02.25_critical-exclusioin.png](ch02.25-critical-exclusioin.png)
+![ch02.27-critical-exclusioin.png](ch02.27-critical-exclusioin.png)
 
-_2.26 Critical exclusion_
+_2.27 Critical exclusion_
 
 #### Creating the Test User
 
@@ -347,9 +349,9 @@ We will create the user first, then assign them to the groups.
     * Add the user to both group `Junior Monitoring` and `Critical Exclusion`.
 * Save: Click Add.
 
-![ch02.26_test-junior.png](ch02.26-test-junior.png)
+![ch02.28-test-junior.png](ch02.28-test-junior.png)
 
-_2.27 test user_
+_2.28 test user_
 
 #### Create the hosts
 
@@ -364,9 +366,9 @@ We will create two hosts: a Linux server and a database server.
     * Interfaces: Agent with IP 127.0.0.1
 * Save: Click Add.
 
-![ch02.27_hosts.png](ch02.27-hosts.png)
+![ch02.29-hosts.png](ch02.29-hosts.png)
 
-_2.28 Add hosts_
+_2.29 Add hosts_
 
 Add a DB server exact as above but change :
 

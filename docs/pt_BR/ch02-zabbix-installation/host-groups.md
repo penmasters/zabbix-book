@@ -31,9 +31,9 @@ Você pode gerenciar grupos de hosts navegando até:
 
 `Menu` | `Coleta de dados` | `Grupos de hosts`
 
-![Captura de tela do menu Grupos de hosts](ch02.19-host-grouops.png)
+![Captura de tela do menu Grupos de hosts](ch02.20-host-grouops.png)
 
-_2.19 Menu Grupos de hosts_
+_2.20 Menu Grupos de hosts_
 
 Nesse menu, em `Coleta de dados`, você verá duas seções distintas:
 
@@ -80,9 +80,9 @@ Ao adicionar um novo host:
 2. Clique em **Create host group** no canto superior direito.
 3. Digite um **nome de grupo** e clique em **Add**.
 
-![Criar novo grupo de hosts](ch02.20-new-host-group.png)
+![Criar novo grupo de hosts](ch02.21-new-host-group.png)
 
-_2.20 Criar novos grupos de hosts_
+_2.21 Criar novos grupos de hosts_
 
 ## Grupos de hosts aninhados
 
@@ -115,9 +115,9 @@ opção para aplicar permissões e filtros de tags a todos os subgrupos:
 3. Ao ativar essa opção, os direitos atribuídos ao grupo principal serão
    transferidos em cascata para seus subgrupos.
 
-![Aplicar permissões de subgrupo](ch02.21-sub-groups.png)
+![Aplicar permissões de subgrupo](ch02.22-sub-groups.png)
 
-_2.21 permissões de subgrupo_
+_2.22 permissões de subgrupo_
 
 Isso é especialmente útil para grupos de usuários. Por exemplo:
 

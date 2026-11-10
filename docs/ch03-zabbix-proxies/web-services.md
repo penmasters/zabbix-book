@@ -25,8 +25,7 @@ The actual usage of the Zabbix web service to generate reports is covered in the
 
 ![zabbix-web-service-overview](ch03.17-web-services-component.png)
 
-_3.17 Zabbix web
-service overview_
+_3.17 Zabbix web service overview_
 
 ---
 
