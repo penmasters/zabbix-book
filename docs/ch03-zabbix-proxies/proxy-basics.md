@@ -347,7 +347,7 @@ your proxy, whether it is an active or a passive one, this will require port
 
 !!! info "Open firewall for zabbix-trapper"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ``` bash
     sudo firewall-cmd --add-service=zabbix-trapper --permanent
     sudo firewall-cmd --reload

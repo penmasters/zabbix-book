@@ -89,7 +89,7 @@ in the [_Zabbix components and installation: Database_](../ch01-zabbix-component
 
 !!! info "Install zabbix-proxy-sqlite3"
 
-    Red Hat
+    Red Hat-based
     ```
     dnf install zabbix-proxy-sqlite3
     ```

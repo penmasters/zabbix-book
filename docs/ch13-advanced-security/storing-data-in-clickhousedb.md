@@ -77,7 +77,7 @@ The examples in this chapter were tested using:
 * ClickHouse 26.6.1.1193
 * Zabbix 8
 
-but should work with any recent Red Hat or SUSE derivative.
+but should work with any recent Red Hat-based or SUSE-based distribution.
 
 ---
 
@@ -87,7 +87,7 @@ Begin by installing the official ClickHouse repository and packages.
 
 !!! info "Installing ClickHouse"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install -y dnf-plugins-core
     dnf config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo
@@ -135,7 +135,7 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
     To configure Transparent Huge Pages (THP) in `madvise` mode, the kernel boot
     parameters must be updated. The procedure differs depending on your Linux distribution.
     **Red Hat Enterprise Linux / Rocky Linux 9**
-    On RHEL-based systems, use `grubby` to update the kernel parameters. This is the
+    On Red Hat-based systems, use `grubby` to update the kernel parameters. This is the
     recommended approach for systems using Boot Loader Specification (BLS).
 
     ```bash
@@ -254,7 +254,8 @@ Enable the ClickHouse service so it starts automatically at boot.
     systemctl enable clickhouse-server
     systemctl start clickhouse-server
     ```
-    Note: On Red Hat and SUSE 15, the above commands work as expected. However, on
+    Note: On Red Hat-based systems and SUSE 15, the above commands work as
+    expected. However, on
     SUSE 16, the helper script `systemd-sysv-install` is not available as SysV init
     compatibility is removed on that platform. This will cause `systemctl enable
     clickhouse-server` to fail. Therefore we need to use the full path to the systemd
@@ -561,7 +562,7 @@ Monitor the log:
 
 !!! note "SELinux considerations"
 
-    On RHEL-based systems, SELinux may block connections from the
+    On Red Hat-based systems, SELinux may block connections from the
     Zabbix server to ClickHouse (TCP port 8123).
 
     If you encounter connection errors, check for SELinux denials:

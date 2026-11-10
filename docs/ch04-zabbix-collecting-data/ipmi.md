@@ -237,7 +237,7 @@ distributions:
 
 !!! info "Installing ipmitool"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install -y ipmitool
     ```

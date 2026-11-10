@@ -44,7 +44,7 @@ to ensure we have this utility:
 
 !!! info "Install htpasswd utility"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install httpd-utils
     ```
@@ -68,7 +68,7 @@ Next we will create the required file and the `Admin` user in it:
     sudo htpasswd -c /etc/nginx/httpauth Admin
     ```
 
-    Apache on Red Hat
+    Apache on Red Hat-based systems
     ```bash
     sudo htpasswd -c /etc/httpd/.htpasswd Admin
     ```
@@ -140,7 +140,7 @@ add these lines:
 
 ???+ example
 
-    Red Hat:
+    Red Hat-based:
     ```
         <Directory "/usr/share/zabbix">
             ...
@@ -172,7 +172,7 @@ and confirm the changes by clicking `OK` button.
 
 ![HTTP users authentication](ch02.30-http-auth-settings.png){ align=center }
 
-_2.30 HTTP users authentication_
+_2.31 HTTP users authentication_
 
 `Remove domain name` field should have a comma separated list of domains that
 Zabbix will remove from provided username, e.g. if a user enters
@@ -192,7 +192,7 @@ Username and Password and normally log in into Zabbix WebUI as different user.
 
 ![HTTP users authentication login](ch02.31-http-auth-login.png){ align=center }
 
-_2.31 HTTP users authentication login form_
+_2.32 HTTP users authentication login form_
 
 If you select "HTTP login form" in `Default login form` drop-down you won't see
 standard Zabbix login form when you try to log out. You actually won't be able

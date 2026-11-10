@@ -176,7 +176,8 @@ two approaches:
   server or a dedicated virtual machine.
 
 In this chapter, we will walk through the installation and configuration of a basic
-SNMP agent on a Red Hat, SUSE, or Ubuntu-based Zabbix server. However, the same setup can
+SNMP agent on a Red Hat-based, SUSE-based, or Ubuntu Zabbix server. However,
+the same setup can
 be applied to any compatible Linux system.
 
 Note: If you're using a device already present on your network, ensure:
@@ -436,7 +437,7 @@ Follow the steps below to get the SNMP agent installed.
 
 !!! info "Install Net-SNMP agent and utilities"
 
-    Red Hat
+    Red Hat-based
     ```bash
     sudo dnf install net-snmp net-snmp-utils
     ```
@@ -611,7 +612,7 @@ and Configure the Firewall
 
     If your system uses a firewall, ensure that SNMP traffic is allowed:
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ```bash
     firewall-cmd --add-service=snmp --permanent
     firewall-cmd --reload

@@ -205,7 +205,7 @@ Zabbix agent will be updated when updating with commands like `dnf update` and
 other and as such new versions will contain security and bug fixes. Whatever
 installation method you choose, keep your Zabbix agent up-to-date.
 
-We will be using packages on RHEL-based systems, SUSE, or Ubuntu to install
+We will be using packages on Red Hat-based systems, SUSE, or Ubuntu to install
 `Zabbix agent 2`. To use the packages we will need to prepare our system 
 as outlined in chapter: [_Getting started_](../ch00-getting-started/preparation.md).
 Only adding the Zabbix repository is mandatory here, however following the 
@@ -217,7 +217,7 @@ After adding the repository, we should be able to install `Zabbix agent 2`.
 
 !!! info "install Zabbix agent 2 package"
 
-    Red Hat
+    Red Hat-based
 
     ```bash
     dnf install zabbix-agent2

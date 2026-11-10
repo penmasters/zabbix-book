@@ -26,7 +26,7 @@ The process of the authenticating users follows this diagram.
 
 ![LDAP users authentication](ch02.32-ldap-auth-diagram.png){ align=center }
 
-_2.32 LDAP users authentication_
+_2.33 LDAP users authentication_
 
 As shown on the diagram a user that tries to log in must be pre-created in
 Zabbix to be able to log in using LDAP. The database user records do not have
@@ -60,7 +60,7 @@ First we will need to ensure that we have a container engine installed.
 
 !!! info "Install Podman container engine"
 
-  Red Hat
+  Red Hat-based
   ```bash
   dnf install podman
   ```
@@ -121,7 +121,7 @@ Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
 
     ![LDAP server data](ch02.33-ldap-ldap-server-data.png){ align=center }
 
-    _2.33 LDAP server data_
+    _2.34 LDAP server data_
 
 ### Configure Zabbix LDAP authentication
 
@@ -132,14 +132,14 @@ of your LDAP server and port number according to your set up):
 
 ![LDAP server settings in Zabbix](ch02.34-ldap-server-settings-in-zabbix.png){ align=center }
 
-_2.34 LDAP server settings in Zabbix_
+_2.35 LDAP server settings in Zabbix_
 
 Following diagram can help you understand how to configure LDAP server in
 Zabbix based on your LDAP server data structure:
 
 ![LDAP server to Zabbix](ch02.35-ldap-server-to-zabbix.png){ align=center }
 
-_2.35 LDAP server to Zabbix_
+_2.36 LDAP server to Zabbix_
 
 “Special” _Distinguished Name_ (DN) _cn=ldap_search,dc=example,dc=org_ is used
 for searching, i.e. Zabbix uses this DN to connect to LDAP server and of course
@@ -177,7 +177,7 @@ server and in `LDAP server` drop-down select LDAP server we earlier configured
 
 ![Add user group in zabbix](ch02.36-ldap-add-user-group-in-zabbix.png){ align=center }
 
-_2.36 Add user group in zabbix_
+_2.37 Add user group in zabbix_
 
 Now we need to create our test user. In Zabbix menu select `Users` | `Users` and
 click `Create user` button. Then enter "user3" in `Username` field. Select
@@ -190,13 +190,13 @@ password strength policy defined in `Users` | `Authentication`.
 
 ![Add user in Zabbix](ch02.37-ldap-add-user-in-zabbix.png){ align=center }
 
-_2.37 Add user in Zabbix_
+_2.38 Add user in Zabbix_
 
 Then click `Permissions` tab and select "User role" in `Role` field:
 
 ![Add user in Zabbix - permissions](ch02.38-ldap-add-user-in-zabbix-permissions.png){ align=center }
 
-_2.38 Add user in Zabbix - permissions_
+_2.39 Add user in Zabbix - permissions_
 
 Click `Add` button to create the user.
 
@@ -215,7 +215,7 @@ provisioning (JIT) available since Zabbix 6.4.
 This picture illustrates on high level how it works:
 ![LDAP JIT explained](ch02.39-ldap-jit-explained.png){ align=center }
 
-_2.39 LDAP JIT explained_
+_2.40 LDAP JIT explained_
 
 Here when Zabbix gets a username and password from the Zabbix Login form it
 goes to the LDAP server and gets all the information available for this user
@@ -243,7 +243,7 @@ In `Users` | `Authentication` we need to do two things:
 
   ![Default authentication](ch02.40-ldap-default-authentication.png){ align=center }
 
-  _2.40 Default authentication_
+  _2.41 Default authentication_
 
   Click the `Update` button.
 
@@ -269,7 +269,7 @@ group membership attribute` field:
 
 ![LDAP groups mapping](ch02.41-ldap-groups-mapping.png){ align=center }
 
-_2.41 LDAP groups mapping_
+_2.42 LDAP groups mapping_
 
 In the picture above we are telling Zabbix to use _memberOf_ attribute to
 extract DN defining user’s group membership (in this case it is
@@ -293,7 +293,7 @@ It’s easier to explain with pictures depicting an example:
 
 ![LDAP server group of names](ch02.42-ldap-group-of-names.png){ align=center }
 
-_2.42 LDAP server groupOfNames_
+_2.43 LDAP server groupOfNames_
 
 Firstly we define LDAP “sub-tree” where Zabbix will be searching for LDAP
 groups – note _ou=Group,dc=example,dc=org_ in Group base DN field. Then in the
@@ -332,11 +332,11 @@ into _Zabbix users_ user group:
 
 ![Test user1](ch02.43-ldap-jit-test-user1.png){ align=center }
 
-_2.43 Test user1_
+_2.44 Test user1_
 
 ![Test user3](ch02.44-ldap-jit-test-user3.png){ align=center }
 
-_2.44 Test user3_
+_2.45 Test user3_
 
 ---
 

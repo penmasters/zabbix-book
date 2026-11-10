@@ -147,7 +147,7 @@ every proxy allowed by any of their groups.
 
 ![ch02.23-1 proxy-access-list](ch02.23-1-proxy-access-list.png)
 
-_2.23-1 Proxy Access List_
+_2.24 Proxy Access List_
 
 #### Problem Tag Filters: Granular Alert Access
 
@@ -319,7 +319,7 @@ You can create them under `Data collection` | `Host groups`.
 
 ![ch02.24_junior-monitoring.png](ch02.24-junior-monitoring.png)
 
-_2.24 Junior monitoring_
+_2.25 Junior monitoring_
 
 
 - Create Group B: 'Critical Exclusion'
@@ -329,7 +329,7 @@ _2.24 Junior monitoring_
 
 ![ch02.25_critical-exclusioin.png](ch02.25-critical-exclusioin.png)
 
-_2.25 Critical exclusion_
+_2.26 Critical exclusion_
 
 #### Creating the Test User
 
@@ -349,7 +349,7 @@ We will create the user first, then assign them to the groups.
 
 ![ch02.26_test-junior.png](ch02.26-test-junior.png)
 
-_2.26 test user_
+_2.27 test user_
 
 #### Create the hosts
 
@@ -366,7 +366,7 @@ We will create two hosts: a Linux server and a database server.
 
 ![ch02.27_hosts.png](ch02.27-hosts.png)
 
-_2.27 Add hosts_
+_2.28 Add hosts_
 
 Add a DB server exact as above but change :
 

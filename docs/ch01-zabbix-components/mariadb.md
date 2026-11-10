@@ -30,7 +30,7 @@ following command:
 
 !!! info "Install distribution version of MariaDB"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install mariadb-server
     ```
@@ -65,7 +65,7 @@ To create the MariaDB repository file, execute the following command in your ter
 
 !!! info "Define the MariaDB repository"
 
-    Red Hat
+    Red Hat-based
     ``` bash
     vi /etc/yum.repos.d/mariadb.repo
     ```
@@ -94,7 +94,7 @@ Here's an example configuration for MariaDB 11.4 repositories:
 
 !!! example "MariaDB repository configuration"
 
-    Red Hat
+    Red Hat-based
     ```ini
     # MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-02-21 10:15 UTC
     # https://mariadb.org/download/
@@ -153,7 +153,7 @@ To install the MariaDB server and client, execute the following command:
 
 !!! info "Install MariaDB from official repository"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install MariaDB-server
     ```
@@ -425,7 +425,8 @@ can reach. Many packages bind MariaDB to localhost by default.
 On the database server, check the `bind-address` setting in the MariaDB server
 configuration. For a remote connection, set it to the database server's
 appropriate network IP address. For example, add the following to a `.cnf` file
-in `/etc/my.cnf.d/` on Red Hat or SUSE, or `/etc/mysql/mariadb.conf.d/` on Ubuntu:
+in `/etc/my.cnf.d/` on Red Hat-based systems or SUSE, or
+`/etc/mysql/mariadb.conf.d/` on Ubuntu:
 
 !!! info "Allow database connections over the network"
 
@@ -445,7 +446,7 @@ and frontend. By default, MariaDB listens on port 3306.
 
 !!! info "Add firewall rules"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ``` bash
     firewall-cmd --add-service=mysql --permanent
     firewall-cmd --reload
@@ -470,7 +471,7 @@ import scripts for the database.
 
 !!! info "Install SQL scripts"
 
-    Red Hat
+    Red Hat-based
     ``` bash
     dnf install zabbix-sql-scripts
     ```

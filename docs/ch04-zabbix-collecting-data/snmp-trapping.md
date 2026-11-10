@@ -305,7 +305,7 @@ that Zabbix can read.
 
 !!! info "Install needed packages"
 
-    Red Hat
+    Red Hat-based
     ``` bash
     sudo dnf install net-snmp-utils net-snmp-perl net-snmp
     ```
@@ -339,7 +339,7 @@ Make sure this port is open on your Zabbix server:
 
 !!! info "Open firewall port 162/udp"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ``` bash
     sudo firewall-cmd --add-service=snmptrap --permanent
     sudo firewall-cmd --reload

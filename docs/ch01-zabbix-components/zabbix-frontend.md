@@ -26,7 +26,7 @@ Perform all subsequent steps on the server designated for the frontend.
 
 !!! info "install frontend packages"
 
-    Red Hat
+    Red Hat-based
     ```bash
     # List all available php modules and active php-8.3
     dnf module list php -y
@@ -136,7 +136,7 @@ use port 80.
 
 !!! info "Disable the default Nginx site"
 
-    Red Hat
+    Red Hat-based / SUSE
     ```bash
     vi /etc/nginx/nginx.conf
     ```
@@ -146,7 +146,8 @@ use port 80.
     sudo unlink /etc/nginx/sites-enabled/default
     ```
 
-On Red Hat, find the default `server { ... }` block in `/etc/nginx/nginx.conf`:
+On Red Hat-based systems and SUSE, find the default `server { ... }` block in
+`/etc/nginx/nginx.conf`:
 
 !!! example "Original config"
 
@@ -231,7 +232,7 @@ startup. Execute the following commands to enable and start them immediately:
 
 !!! info "Restart the front-end services"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ```bash
     systemctl enable nginx php-fpm --now
     systemctl restart nginx php-fpm
@@ -281,7 +282,7 @@ following commands:
 
 !!! info "Configure the firewall"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ```bash
     firewall-cmd --add-service=http --permanent
     firewall-cmd --reload
@@ -337,7 +338,7 @@ Run the next command to get a list of all locales available for your OS.
 
 !!! info "Install language packs"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf list glibc-langpack-*
     ```
@@ -367,7 +368,7 @@ This will give you a list like:
 
 ???+ example "Example output"
 
-    Red Hat
+    Red Hat-based
     ```
     Installed Packages
     glibc-langpack-en.x86_64
@@ -408,7 +409,7 @@ the code starts with zh.
 
 !!! info "search for language pack"
 
-    Red Hat
+    Red Hat-based
     ```shell-session
     ~# dnf list glibc-langpack-* | grep zh
     glibc-langpack-zh.x86_64
@@ -429,7 +430,8 @@ the code starts with zh.
     sudo apt-cache search language-pack | grep -i zh
     ```
 
-On Red Hat and Ubuntu, the command outputs two lines; however, given the identified language code,
+On Red Hat-based systems and Ubuntu, the command outputs two lines; however,
+given the identified language code,
 'zh_CN,' only the first package requires installation.
 on SUSE either only locales `C.UTF-8` and `en_US.UTF-8` are installed or all
 available locales are installed, depending on whether the package `glibc-locale`
@@ -437,7 +439,7 @@ is installed or not.
 
 !!! info "Install the locale package"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install glibc-langpack-zh.x86_64
     sudo systemctl restart nginx php-fpm

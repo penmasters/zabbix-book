@@ -53,7 +53,7 @@ Retrieving the IdP Certificate (idp.crt) from Google Workspace:
    the necessary IdP certificate.
    ![Add google app](ch02.45-add-google-app.png)
 
-_2.45 create
+_2.46 create
 new application_
 
 5. **Download the IdP Certificate:** Within the newly created application's settings,
@@ -64,7 +64,7 @@ new application_
 
 ![Add google app](ch02.46-saml-download.png)
 
-_2.46 add certificate_
+_2.47 add certificate_
 
 ---
 
@@ -103,7 +103,7 @@ by their Google Workspace group memberships.
 
 ![saml mappings](ch02.47-saml-mappings.png)
 
-_2.47 SAML mappings_
+_2.48 SAML mappings_
 
 ---
 
@@ -149,7 +149,7 @@ Example Configuration (Conceptual)
 
 ![google saml config](ch02.48-saml-zabbix-options.png)
 
-_2.48 SAML config_
+_2.49 SAML config_
 
 !!! note
 
@@ -273,7 +273,7 @@ in the search bar and it should come right up.
 
 ![Microsoft Entra ID](ch02.48-ms-entra-id-app.png){ align=center }
 
-*2.48-1 Microsoft Entra ID*
+*2.50 Microsoft Entra ID*
 
 Here you should be able to find an `add` button and then navigate to `Enterprise
 application`. This is where we are going to create the SAML integration by clicking
@@ -285,7 +285,7 @@ you don’t find in the gallery`.
 
 ![Microsoft Entra ID - Create app](ch02.49-ms-entra-id-create-app.png){ align=center }
 
-*2.49 Microsoft Entra ID - Create app*
+*2.51 Microsoft Entra ID - Create app*
 
 After creating the application, open it and go to `Manage` | `Single sign-on`,
 where you can enable `SAML`. This should present you with the form to configure
@@ -302,7 +302,7 @@ https://your_zabbix_server/zabbix/index_sso.php?acs
 
 ![Microsoft Entra ID - Basic configuration](ch02.50-ms-entra-id-basic.png){ align=center }
 
-*2.50 Microsoft Entra ID - Basic configuration*
+*2.52 Microsoft Entra ID - Basic configuration*
 
 Next, at `Attributes & Claims` we need to specify some claims. Click `Add new claim`
 and add at least the following:
@@ -313,14 +313,14 @@ and add at least the following:
 
 ![Microsoft Entra ID - Claim](ch02.51-ms-entra-id-claim.png){ align=center }
 
-*2.51 Microsoft Entra ID - Claim*
+*2.53 Microsoft Entra ID - Claim*
 
 We also need to add click on `Add a group claim` to make sure our users groups
 can be sent to Zabbix. Add the following.
 
 ![Microsoft Entra ID - Group claims](ch02.52-ms-entra-id-group-claims.png){ align=center }
 
-*2.52 Microsoft Entra ID - Group claims*
+*2.54 Microsoft Entra ID - Group claims*
 
 Now, let's download the `Certificate (Base64)` under `SAML Certificates` and save
 it as `idp.crt`. Then we upload this to the Zabbix server(s).
@@ -366,7 +366,7 @@ need to configure Zabbix.
 
 ![Microsoft Entra ID - SAML URLs](ch02.53-ms-entra-id-saml-urls.png){ align=center }
 
-*2.53 Microsoft Entra ID - SAML URLs*
+*2.55 Microsoft Entra ID - SAML URLs*
 
 Copy the `Login URL` as the `SSO service URL` and `SLO service URL`. The `Microsoft
 Entra Identifier` can go into the `IdP entity ID` field.
@@ -376,7 +376,7 @@ of your application, in this case `Zabbix SAML`.
 
 ![Microsoft Entra ID - Zabbix basic SAML configuration](ch02.54-ms-entra-id-zabbix-basic-config.png){ align=center }
 
-*2.54 Microsoft Entra ID - Zabbix basic SAML configuration*
+*2.56 Microsoft Entra ID - Zabbix basic SAML configuration*
 
 If you press `Update` now, I would recommend you to test these settings first.
 
@@ -399,7 +399,7 @@ and `User roles` to assign permissions in Zabbix, like below.
 
 ![Microsoft Entra ID - Zabbix SAML group configuration](ch02.55-ms-entra-id-zabbix-group-config.png){ align=center }
 
-*2.55 Microsoft Entra ID - Zabbix SAML group configuration*
+*2.57 Microsoft Entra ID - Zabbix SAML group configuration*
 
 The end result should look something like the image below, but in your environment
 you will probably add more groups. It is also possible to map certain media types
@@ -408,7 +408,7 @@ type.
 
 ![Microsoft Entra ID - Zabbix SAML JIT configuration](ch02.56-ms-entra-id-zabbix-jit-config.png){ align=center }
 
-*2.56 Microsoft Entra ID - Zabbix SAML JIT configuration*
+*2.58 Microsoft Entra ID - Zabbix SAML JIT configuration*
 
 ???+ note
 

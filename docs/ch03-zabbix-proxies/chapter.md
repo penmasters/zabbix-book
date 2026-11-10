@@ -142,7 +142,7 @@ well-defined configuration file, it exposes one port, it has no web interface, a
 its only external dependency is the database it uses for local buffering. Podman
 is the container runtime used in this chapter because it runs containers without a
 daemon and does not require root privileges, which makes it a practical choice for
-proxy deployments on standard RHEL-based systems.
+proxy deployments on standard Red Hat-based systems.
 
 This chapter uses Quadlet to manage the proxy container. Quadlet is a Podman
 feature, available from Podman 4.4 onwards, that generates systemd unit files from

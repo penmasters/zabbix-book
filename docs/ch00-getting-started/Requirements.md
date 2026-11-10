@@ -59,8 +59,8 @@ For simplicity, take note of the server details:
 Operating systems, so many choices, each with its own advantages and loyal user base.
 While Zabbix can be installed on a wide range of platforms, documenting the process
 for every available OS would be impractical. To keep this book focused and efficient,
-we have chosen to cover only the most widely used options: Ubuntu, Red Hat, and SUSE
-based distributions.
+we have chosen to cover only the most widely used options: Ubuntu,
+Red Hat-based distributions, and SUSE-based distributions.
 
 Not everyone has access to a Red Hat Enterprise Linux (RHEL) or SUSE Linux Enterprise 
 Server (SLES) subscription, even though a developer account provides limited access.
@@ -109,7 +109,7 @@ To update your system, run the following command based on your OS:
 
 !!! info "Update your system"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf update
     ```
@@ -173,7 +173,7 @@ To install `sudo`, run the following command based on your OS:
 
 !!! info "Install sudo"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install sudo
     ```
@@ -205,7 +205,7 @@ To install and enable the firewall, run the following command:
 
 !!! info "Install and enable the firewall"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install firewalld
     systemctl enable firewalld --now
@@ -223,7 +223,8 @@ To install and enable the firewall, run the following command:
     ```
 ???+ note "What is firewalld / ufw"
 
-    Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
+    Firewalld is the replacement for iptables in Red Hat-based and SUSE-based
+    systems and allows
     changes to take effect immediately without needing to restart the service.
     If your distribution does not use firewalld [https://www.firewalld.org](https://www.firewalld.org),
     refer to your OS documentation for the appropriate firewall configuration steps.
@@ -317,7 +318,7 @@ To install and enable chrony, our NTP client, use the following command:
 
 !!! info "Install NTP client"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install chrony
     systemctl enable chronyd --now
@@ -481,7 +482,7 @@ To update the time servers, modify the Chrony configuration file:
 
 !!! info "Edit chrony config file"
 
-    Red Hat
+    Red Hat-based
     ```bash
     vi /etc/chrony.conf
     ```

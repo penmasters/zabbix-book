@@ -22,7 +22,7 @@ To install the Zabbix server components, run the following command:
 
 !!! info "Install the zabbix server"
 
-    Red Hat
+    Red Hat-based
     ``` bash
     # For MySQL/MariaDB backend:
     dnf install zabbix-server-mysql
@@ -94,8 +94,7 @@ directory that will hold our database connection settings:
     # Zabbix database configuration
     DBHost=<database-host>
     DBName=<database-name>
-    # Only for PostgreSQL:
-    DBSchema=<database-schema>
+    DBSchema=<database-schema>  # Only for PostgreSQL
     DBUser=<database-user>
     DBPassword=<database-password>
     DBPort=<database-port>
@@ -169,7 +168,7 @@ To allow these connections, you need to open this port in your firewall.
 
 !!! info "Open firewall for zabbix-trapper"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ``` bash
     sudo firewall-cmd --add-service=zabbix-server --permanent
     sudo firewall-cmd --reload
@@ -207,7 +206,7 @@ to enable the Zabbix server and ensure it starts automatically on boot:
 
 !!! info "Enable and start zabbix-server service"
 
-    Red Hat, SUSE, and Ubuntu
+    Red Hat-based, SUSE, and Ubuntu
     ``` bash
     sudo systemctl enable zabbix-server --now
     ```

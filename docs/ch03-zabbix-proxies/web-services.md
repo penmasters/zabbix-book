@@ -101,7 +101,7 @@ your operating system.
 
 !!! info "Install zabbix-web-service package"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install zabbix-web-service
     ```
@@ -126,7 +126,7 @@ you can install it using the package manager of your operating system.
     install and enable the EPEL repository [https://docs.fedoraproject.org/en-US/epel/](https://docs.fedoraproject.org/en-US/epel/)
     first. This is not required for Fedora.
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install --enablerepo=epel chromium
     ```
@@ -357,7 +357,7 @@ firewall allows incoming connections on the new port.
 
 !!! info "Configure firewall for Zabbix web service"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ```bash
     sudo firewall-cmd --add-service=zabbix-web-service --permanent
     sudo firewall-cmd --reload

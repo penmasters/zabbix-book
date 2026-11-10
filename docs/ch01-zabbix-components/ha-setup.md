@@ -255,7 +255,7 @@ servers to ensure high availability of both the frontend and the server.
 
 !!! info "Install keepalived"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install keepalived
     ```
@@ -359,7 +359,7 @@ firewall. Perform the following commands on all servers:
 
 !!! info "Allow keepalived traffic through the firewall"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ```yaml
     firewall-cmd --add-rich-rule='rule protocol value="vrrp" accept' --permanent
     firewall-cmd --reload

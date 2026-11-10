@@ -82,7 +82,7 @@ If you get no result, try to install the MariaDB client.
 
 !!! info "Install MariaDB client"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install mariadb
     ```
@@ -147,7 +147,7 @@ storing it to disk. To do this, we can install a compression tool like `lz4`.
 
 !!! info "Install `lz4` compression tool"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install lz4
     ```
@@ -413,7 +413,7 @@ Lastly, it is also recommended to create a backup of your web server configurati
 
 !!! info "Back up web server configuration"
 
-    Red Hat HTTPD
+    Red Hat-based HTTPD
     ```bash
     cp -R /etc/httpd/ /opt/zabbix-backup/
     cp -R /var/www/ /opt/zabbix-backup/

@@ -19,7 +19,7 @@ way.
 
 ---
 
-## Disable SELinux on RHEL
+## Disable SELinux on Red Hat-based systems
 
 When using a Red Hat-based system in a test or lab environment, you may (temporarily) disable SELinux to prevent it from interfering with the installation and initial configuration of Zabbix.
 
@@ -73,7 +73,7 @@ following command:
 
 !!! info "Disable SeLinux permanent"
 
-    Red Hat
+    Red Hat-based
     ``` bash
     sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
     ```
@@ -117,16 +117,16 @@ download_
 
 ---
 
-### RHEL-based systems
+### Red Hat-based systems
 
-If you make use of an RHEL-based system like Rocky then the first step is to disable
+If you make use of a Red Hat-based system like Rocky then the first step is to disable
 the Zabbix packages provided by the EPEL repository, if it's installed on your system.
 To do this, edit the `/etc/yum.repos.d/epel.repo` file and add the following statement
 to exclude the Zabbix packages provided by EPEL:
 
 !!! info "Exclude packages"
 
-    Red Hat
+    Red Hat-based
     ``` ini
     [epel]
     ...
@@ -146,7 +146,7 @@ to exclude the Zabbix packages provided by EPEL:
 ### openSUSE specific remarks
 
 On openSUSE, Zabbix packages are also available in the default `repo-oss` repository. 
-Unlike RHEL-based systems, openSUSE does not provide a built-in way to exclude
+Unlike Red Hat-based systems, openSUSE does not provide a built-in way to exclude
 specific packages from individual repositories. However, the Zabbix packages
 included in the default repositories are typically one to two LTS versions behind
 the latest releases. As a result, they are unlikely to interfere with your
@@ -182,7 +182,7 @@ by running:
 
 !!! info "Add the zabbix repo"
 
-    Red Hat
+    Red Hat-based
     ``` bash
     rpm -Uvh https://repo.zabbix.com/zabbix/8.0/release/rocky/9/noarch/zabbix-release-latest-8.0.el9.noarch.rpm
     dnf clean all
@@ -255,7 +255,7 @@ some additional tools that will help us manage containers with Systemd.
 
 !!! info "Install podman and needed tools"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install podman policycoreutils-python-utils
     ```

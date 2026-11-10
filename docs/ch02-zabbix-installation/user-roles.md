@@ -215,7 +215,7 @@ while another handles discovery and host setup.
 
 ![ch02.28_template_maintainer.png](ch02.28-template_maintainer.png)
 
-_2.28 template maintainer_
+_2.29 template maintainer_
 
 ---
 
@@ -272,7 +272,7 @@ escalation during live monitoring.
 
 ![ch02.29_noc_operator.png](ch02.29-noc_operator.png)
 
-_2.29 noc operator_
+_2.30 noc operator_
 
 ---
 
