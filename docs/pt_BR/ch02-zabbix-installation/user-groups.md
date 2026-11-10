@@ -63,9 +63,9 @@ configuração familiar para os administradores.
    de usuários**, **Permissões de modelo**, **Permissões de host**, e **Filtro
    de tag de problema**.
 
-![ch02.20_user-groups_menu.png](ch02.22-user-groups_menu.png)
+![ch02.23-user-groups_menu.png](ch02.23-user-groups_menu.png)
 
-_2.22 user group menu_
+_2.23 user group menu_
 
 #### O `grupo de usuários` Guia
 
@@ -307,9 +307,9 @@ Você pode criá-los em `Coleta de dados` | `Grupos de hosts`.
     - HG_All_Linux_Servers: Somente leitura (Read)
     - HG_Critical_Databases (Bancos de dados críticos): Somente leitura (Read)
 
-![ch02.21_junior-monitoring.png](ch02.23-junior-monitoring.png) _2.23 Junior
+![ch02.25-junior-monitoring.png](ch02.25-junior-monitoring.png)
 
-_2.23 ch02.21_junior-monitoring.png_
+_2.25 Junior
 monitoring_
 
 
@@ -318,9 +318,9 @@ monitoring_
     * Na guia Permissões de host, atribua o seguinte direito:
     * HG_Critical_Databases: Deny
 
-![ch02.22_critical-exclusioin.png](ch02.24-critical-exclusioin.png) _2.24
+![ch02.26-critical-exclusioin.png](ch02.26-critical-exclusioin.png)
 
-_2.24 ch02.22_critical-exclusioin.png_
+_2.26
 Critical exclusion_
 
 #### Creating the Test User
@@ -340,9 +340,9 @@ We will create the user first, then assign them to the groups.
     * Add the user to both group `Junior Monitoring` and `Critical Exclusion`.
 * Save: Click Add.
 
-![ch02.23_test-junior.png](ch02.25-test-junior.png) _2.25 test user_
+![ch02.27-test-junior.png](ch02.27-test-junior.png)
 
-_2.25 ch02.23_test-junior.png_
+_2.27 test user_
 
 #### Criar os hosts
 
@@ -357,9 +357,9 @@ Criaremos 2 hosts, um servidor Linux e um servidor de banco de dados.
     * Interfaces: Agent with IP 127.0.0.1
 * Save: Click Add.
 
-![ch02.24_hosts.png](ch02.26-hosts.png) _2.26 Add hosts_
+![ch02.28-hosts.png](ch02.28-hosts.png)
 
-_2.26 ch02.24_hosts.png_
+_2.28 Add hosts_
 
 Add a DB server exact as above but change :
 

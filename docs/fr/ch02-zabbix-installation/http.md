@@ -176,12 +176,9 @@ Une fois le serveur WEB configuré avec l'authentification de base, il est temps
 de configurer le serveur Zabbix. Dans le menu Zabbix, sélectionnez `Users` | `Authentication` | `HTTP settings` et cochez la case `Enable HTTP authentication`.
 Cliquez sur `Update` et confirmez les changements en cliquant sur `OK`.
 
-![Authentification des utilisateurs HTTP](ch02.29-http-auth-settings.png){
+![Authentification des utilisateurs HTTP](ch02.31-http-auth-settings.png){ align=center }
 
-_2.29 Authentification des utilisateurs HTTP_
-align=center }
-
-_2.29 HTTP users authentication_
+_2.31 Authentification des utilisateurs HTTP_
 
 `Remove domain name` Le champ doit contenir une liste de domaines séparés par
 des virgules que Zabbix supprimera du nom d'utilisateur fourni. Par exemple, si
@@ -203,9 +200,9 @@ utilisé précédemment. Vous pouvez également saisir un nom d'utilisateur et u
 mot de passe différents et vous connecter normalement à Zabbix WebUI en tant
 qu'utilisateur différent.
 
-[HTTP users authentication login](ch02.30-http-auth-login.png){ align=center }
+![HTTP users authentication login](ch02.32-http-auth-login.png){ align=center }
 
-_2.30 HTTP users authentication login form_
+_2.32 HTTP users authentication login form_
 
 Si vous sélectionnez "HTTP login form" dans le menu déroulant `Default login
 form`, vous ne verrez pas le formulaire de connexion standard de Zabbix lorsque

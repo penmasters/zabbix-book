@@ -107,9 +107,9 @@ be something like `http://192.168.0.1/`, `https://myzabbixurl/`, or even
 `https://my_zabbix_domain/zabbix/`. This depends on how you have configured your
 frontend.
 
-![ch11.50-frontend-url.png](ch11.37-frontend-url.png)
+![ch11.43-frontend-url.png](ch11.43-frontend-url.png)
 
-_11.37 Frontend URL_
+_11.43 Frontend URL_
 
 Receiving an error indicating that the HTTP method is not supported is expected
 and confirms that the Web Service is operational. After configuring the Frontend URL,

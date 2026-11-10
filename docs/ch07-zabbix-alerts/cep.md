@@ -54,9 +54,9 @@ A CEP rule consists of the following important parts:
 CEP rules are executed in their configured sort order. Changes made by an
 earlier rule’s operations (such as adding a tag) are visible to rules executed afterwards.
 
-![Event processing overview](ch07.5-cep-event-processing-overview.png){ align=center }
+![Event processing overview](ch07.3-cep-event-processing-overview.png){ align=center }
 
-_7.5 Event processing overview_
+_7.3 Event processing overview_
 
 These are only the basics, as we can get more options through `Simple (multiple)`, `Simple (once)`, `Cause and symptom grouping`, and `Pattern match`.
 
@@ -258,9 +258,9 @@ tag is our opt-in tag. A trigger without `scope=cep` will not be processed by
 the CEP rule in this example, giving us granular control over which problems will 
 be processed by CEP.
 
-![CEP host and trigger tags](ch07.6-cep-host-trigger-tags.png){ align=center }
+![CEP host and trigger tags](ch07.4-cep-host-trigger-tags.png){ align=center }
 
-_7.6 CEP host and trigger tags_
+_7.4 CEP host and trigger tags_
 
 ### Making the switch faster
 
@@ -307,9 +307,9 @@ Let's configure the rule as follows:
 In this specific case, operations can remain empty as the Cause and symptoms grouping 
 CEP rule type will create the relation for us automatically.
 
-![CEP switch rule configuration](ch07.7-cep-switch-rule.png){ align=center }
+![CEP switch rule configuration](ch07.5-cep-switch-rule.png){ align=center }
 
-_7.7 CEP switch rule configuration_
+_7.5 CEP switch rule configuration_
 
 Since we are matching on the generic tag `failure_domain`, we can use this CEP rule for
 many more failure domains, not just `edge-01`. This immediately shows us the flexibility of 
@@ -337,9 +337,9 @@ access point events follow, they are added as symptoms of the switch problem.
     `- ap-03 is unavailable             Symptom
     ```
 
-![CEP cause and symptoms result](ch07.8-cep-switch-result.png){ align=center }
+![CEP cause and symptoms result](ch07.6-cep-switch-result.png){ align=center }
 
-_7.8 Switch cause with access point symptoms_
+_7.6 Switch cause with access point symptoms_
 
 ### A very important limitation
 

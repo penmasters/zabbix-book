@@ -249,9 +249,9 @@ _2.11 Monitoring menu_
 
 ---
 
-![Services menu](ch02.12-services-menu.png){ width="20%" }
+![Services menu](ch02.13-services-menu.png){ width="20%" }
 
-_2.12 Services menu_
+_2.13 Services menu_
 
 - **Services**: This page will give us a high level overview of all services
   configured in Zabbix.
@@ -260,9 +260,9 @@ _2.12 Services menu_
 
 ---
 
-![Inventory menu](ch02.13-inventory-menu.png){ width="20%" }
+![Inventory menu](ch02.14-inventory-menu.png){ width="20%" }
 
-_2.13 Inventory menu_
+_2.14 Inventory menu_
 
 - **Overview**: A place where we can watch all our inventory data that we have
   retrieved from our hosts.
@@ -271,9 +271,9 @@ _2.13 Inventory menu_
 
 ---
 
-![Reports menu](ch02.14-reports-menu.png){ width="20%" }
+![Reports menu](ch02.15-reports-menu.png){ width="20%" }
 
-_2.14 Inventory menu_
+_2.15 Inventory menu_
 
 - **System information**: System information is a summary of key Zabbix server
   and system data.
@@ -292,9 +292,9 @@ _2.14 Inventory menu_
 
 ---
 
-![Data collection](ch02.15-datacollection-menu.png){ width="20%" }
+![Data collection](ch02.16-datacollection-menu.png){ width="20%" }
 
-_2.15 Data collection_
+_2.16 Data collection_
 
 - **Template groups**: A place to logical group all templates together in
   different groups. Before it was mixed together with hosts in host groups.
@@ -312,9 +312,9 @@ _2.15 Data collection_
 
 ---
 
-![Alerts menu](ch02.16-alerts-menu.png){ width="20%" }
+![Alerts menu](ch02.17-alerts-menu.png){ width="20%" }
 
-_2.16 Alerts menu_
+_2.17 Alerts menu_
 
 - **Actions**: This menu allows us to configure actions based on `events` in
   Zabbix. We can create such actions for triggers, services, discovery,
@@ -326,9 +326,9 @@ _2.16 Alerts menu_
 
 ---
 
-![Users menu](ch02.17-users-menu.png){ width="20%" }
+![Users menu](ch02.18-users-menu.png){ width="20%" }
 
-_2.17 Users menu_
+_2.18 Users menu_
 
 - **User groups**: The `User groups` menu section enables the creation and
   management of user groupings for streamlined access and permission control.
@@ -346,9 +346,9 @@ _2.17 Users menu_
 
 ---
 
-![Administration menu](ch02.18-administration-menu.png){ width="20%" }
+![Administration menu](ch02.19-administration-menu.png){ width="20%" }
 
-_2.18 Administration menu_
+_2.19 Administration menu_
 
 - **General**: The `General` menu section within administration allows
   configuration of core system-wide settings and parameters.

@@ -401,7 +401,7 @@ After a successful login you should be greeted with a screen like this, where yo
 have a tree view overview of all the MBeans we can use to gather information
 from.
 
-![ch04.37 Successful login](ch04.72-jconsole-mbeans-tree.png)
+![ch04.72 Successful login](ch04.72-jconsole-mbeans-tree.png)
 
 _4.72 Login screen_
 

@@ -24,7 +24,7 @@ LDAP authentication can be configured in two modes:
 
 The process of the authenticating users follows this diagram.
 
-![LDAP users authentication](ch02.32-ldap-auth-diagram.png){ align=center }
+![LDAP users authentication](ch02.33-ldap-auth-diagram.png){ align=center }
 
 _2.33 LDAP users authentication_
 
@@ -119,7 +119,7 @@ Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
     Password field, click Authenticate. You should see the following structure
     of the LDAP server (picture shows ‘zabbix-admins’ group configuration):
 
-    ![LDAP server data](ch02.33-ldap-ldap-server-data.png){ align=center }
+    ![LDAP server data](ch02.34-ldap-ldap-server-data.png){ align=center }
 
     _2.34 LDAP server data_
 
@@ -130,14 +130,14 @@ Let's configure LDAP server settings in Zabbix. In Zabbix menu select
 `Enable LDAP authentication` and click `Add` under `Servers` (change IP address
 of your LDAP server and port number according to your set up):
 
-![LDAP server settings in Zabbix](ch02.34-ldap-server-settings-in-zabbix.png){ align=center }
+![LDAP server settings in Zabbix](ch02.35-ldap-server-settings-in-zabbix.png){ align=center }
 
 _2.35 LDAP server settings in Zabbix_
 
 Following diagram can help you understand how to configure LDAP server in
 Zabbix based on your LDAP server data structure:
 
-![LDAP server to Zabbix](ch02.35-ldap-server-to-zabbix.png){ align=center }
+![LDAP server to Zabbix](ch02.36-ldap-server-to-zabbix.png){ align=center }
 
 _2.36 LDAP server to Zabbix_
 
@@ -175,7 +175,7 @@ will make Zabbix to authenticate users belonging to this group against LDAP
 server and in `LDAP server` drop-down select LDAP server we earlier configured
 "Test LDAP server". Click `Add` button to create this User group:
 
-![Add user group in zabbix](ch02.36-ldap-add-user-group-in-zabbix.png){ align=center }
+![Add user group in zabbix](ch02.37-ldap-add-user-group-in-zabbix.png){ align=center }
 
 _2.37 Add user group in zabbix_
 
@@ -188,13 +188,13 @@ it's a member of the User group that has authentication method `LDAP`, just
 make sure you enter the same string in these two fields and it satisfied your
 password strength policy defined in `Users` | `Authentication`.
 
-![Add user in Zabbix](ch02.37-ldap-add-user-in-zabbix.png){ align=center }
+![Add user in Zabbix](ch02.38-ldap-add-user-in-zabbix.png){ align=center }
 
 _2.38 Add user in Zabbix_
 
 Then click `Permissions` tab and select "User role" in `Role` field:
 
-![Add user in Zabbix - permissions](ch02.38-ldap-add-user-in-zabbix-permissions.png){ align=center }
+![Add user in Zabbix - permissions](ch02.39-ldap-add-user-in-zabbix-permissions.png){ align=center }
 
 _2.39 Add user in Zabbix - permissions_
 
@@ -213,7 +213,7 @@ Now let's talk about really cool feature Zabbix provides - "Just-in-Time user
 provisioning (JIT) available since Zabbix 6.4.
 
 This picture illustrates on high level how it works:
-![LDAP JIT explained](ch02.39-ldap-jit-explained.png){ align=center }
+![LDAP JIT explained](ch02.40-ldap-jit-explained.png){ align=center }
 
 _2.40 LDAP JIT explained_
 
@@ -241,7 +241,7 @@ In `Users` | `Authentication` we need to do two things:
   where all _de-provisioned_ users will be put into so effectively will get
   disabled from accessing Zabbix.
 
-  ![Default authentication](ch02.40-ldap-default-authentication.png){ align=center }
+  ![Default authentication](ch02.41-ldap-default-authentication.png){ align=center }
 
   _2.41 Default authentication_
 
@@ -267,7 +267,7 @@ provides users’ group membership, and of course, you can easily configure what
 attribute to use when searching for user’s LDAP groups by putting it into `User
 group membership attribute` field:
 
-![LDAP groups mapping](ch02.41-ldap-groups-mapping.png){ align=center }
+![LDAP groups mapping](ch02.42-ldap-groups-mapping.png){ align=center }
 
 _2.42 LDAP groups mapping_
 
@@ -291,7 +291,7 @@ more flexibility if needed. Here Zabbix is not querying LDAP server for a user
 instead it is searching for LDAP groups based on a given criterion (filter).
 It’s easier to explain with pictures depicting an example:
 
-![LDAP server group of names](ch02.42-ldap-group-of-names.png){ align=center }
+![LDAP server group of names](ch02.43-ldap-group-of-names.png){ align=center }
 
 _2.43 LDAP server groupOfNames_
 
@@ -330,11 +330,11 @@ created by Zabbix and put into _Zabbix administrators_ user group, when you
 login with _user3_ username then this user will be created by Zabbix and put
 into _Zabbix users_ user group:
 
-![Test user1](ch02.43-ldap-jit-test-user1.png){ align=center }
+![Test user1](ch02.44-ldap-jit-test-user1.png){ align=center }
 
 _2.44 Test user1_
 
-![Test user3](ch02.44-ldap-jit-test-user3.png){ align=center }
+![Test user3](ch02.45-ldap-jit-test-user3.png){ align=center }
 
 _2.45 Test user3_
 

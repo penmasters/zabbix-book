@@ -30,9 +30,9 @@ tags: [beginner]
 
 `Меню` | `Сбор данных` | `Группы узлов сети`
 
-![Скриншот меню Группы узлов сети] (ch02.19-host-grouops.png)
+![Скриншот меню Группы узлов сети](ch02.20-host-grouops.png)
 
-_2.19 Меню Группы узлов сети_
+_2.20 Меню Группы узлов сети_
 
 В этом меню в разделе `Сбор данных` вы увидите два отдельных раздела:
 
@@ -79,9 +79,9 @@ When adding a new host:
 2. Click **Create host group** in the top right.
 3. Enter a **Group name** and click **Add**.
 
-![Create new host group](ch02.20-new-host-group.png)
+![Create new host group](ch02.21-new-host-group.png)
 
-_2.20 Create new host groups_
+_2.21 Create new host groups_
 
 ## Nested Host Groups
 
@@ -113,9 +113,9 @@ an option to apply permissions and tag filters to all subgroups:
 3. Enabling this will cascade any rights assigned to the parent group down to
    its subgroups.
 
-![Apply subgroup permissions](ch02.21-sub-groups.png)
+![Apply subgroup permissions](ch02.22-sub-groups.png)
 
-_2.21 subgroup permissions_
+_2.22 subgroup permissions_
 
 This is especially useful for user groups. For example:
 

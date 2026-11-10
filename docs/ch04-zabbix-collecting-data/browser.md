@@ -735,7 +735,7 @@ In this example we will monitor the website https://www.zabbix.com
 Since we only make screenshots when it fails, also add a custom on fail option to
 your item.
 
-![ch03_xx_discard-value.png](ch04.101-discard-value.png)
+![ch04.101-discard-value.png](ch04.101-discard-value.png)
 _4.101 Discard Value_
 
 **A few other JSONPath regexes that you can use:**

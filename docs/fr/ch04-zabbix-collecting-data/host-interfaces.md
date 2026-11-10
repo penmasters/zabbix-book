@@ -43,8 +43,9 @@ interface IP or DNS to connect to the remote monitoring target.
 The Zabbix agent type interface and JMX interface work quite similarly. Both
 interface types allow us to define four things.
 
-![Agent and JMX type interfaces](ch04.10-agent-jmx-interfaces.png){ align=center
-} *4.10 Agent and JMX type interfaces*
+![Agent and JMX type interfaces](ch04.10-agent-jmx-interfaces.png){ align=center }
+
+*4.10 Agent and JMX type interfaces*
 
 - **IP address**
 - **DNS name**
@@ -75,7 +76,9 @@ The SNMP interface has the most options of all four interface types. The reason
 for this is because the SNMP type interface allows us to specify the SNMP
 details like version, community and credentials.
 
-![SNMPv2 interface](ch04.11-snmpv2-interface.png){ align=center } *4.11 SNMPv2
+![SNMPv2 interface](ch04.11-snmpv2-interface.png){ align=center }
+
+*4.11 SNMPv2
 interface*
 
 When selecting the `SNMP version` as either `SNMPv1` or `SNMPv2`, we are shown
@@ -95,7 +98,9 @@ Additionally when selecting `SNMPv2` or `SNMPv3` we are also presented with the
 multiple values per OID base in a single call. This option is used to reduce
 SNMP traffic overhead when using the `walk[]` SNMP agent item key.
 
-![SNMPv3 interface](ch04.12-snmpv3-interface.png){ align=center } *4.12 SNMPv3
+![SNMPv3 interface](ch04.12-snmpv3-interface.png){ align=center }
+
+*4.12 SNMPv3
 interface*
 
 For `SNMPv3` many additional fields will be available for configuration.
@@ -142,14 +147,18 @@ it to connect to `BMC's (Baseboard Management Controller)` like `iDRAC` and
 `iLo`. This interface is slightly different again from the previous three
 interfaces.
 
-![IPMI interface](ch04.13-ipmi-interface.png){ align=center } *4.13 IPMI
+![IPMI interface](ch04.13-ipmi-interface.png){ align=center }
+
+*4.13 IPMI
 interface*
 
 We have the same settings for `IP`, `DNS` and `Port` again, but in the case of
 IPMI we do not define credentials on the interface level. Instead these are
 provided on a different tab on the host configuration settings.
 
-![IPMI host settings](ch04.14-ipmi-settings.png){ align=center } *4.14 IPMI host
+![IPMI host settings](ch04.14-ipmi-settings.png){ align=center }
+
+*4.14 IPMI host
 settings*
 
 For a host in Zabbix we can only define one IPMI use for authentication,

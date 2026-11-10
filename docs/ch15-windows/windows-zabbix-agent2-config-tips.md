@@ -304,11 +304,11 @@ group fails over to a new node, the Zabbix server or proxy still queries the
 same IP, even though the data now comes from a different server and Zabbix
 agent.
 
-![Normal Operations](diagrams/ch15-msaosql_normal.png)
+![Normal Operations](diagrams/ch15.1-msaosql_normal.png)
 
 _15.1 Normal operations_
 
-![Failover of VIP To Healthy Node](diagrams/ch15-msaosql_failover.png)
+![Failover of VIP To Healthy Node](diagrams/ch15.2-msaosql_failover.png)
 
 _15.2 Microsoft Always On listener failover_
 

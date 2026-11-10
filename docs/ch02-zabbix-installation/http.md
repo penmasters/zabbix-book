@@ -170,7 +170,7 @@ When we have a WEB server configured with basic authentication it is high time
 to configure Zabbix server. In Zabbix menu select `Users` | `Authentication` | `HTTP settings` and check `Enable HTTP authentication` check-box. Click `Update`
 and confirm the changes by clicking `OK` button.
 
-![HTTP users authentication](ch02.30-http-auth-settings.png){ align=center }
+![HTTP users authentication](ch02.31-http-auth-settings.png){ align=center }
 
 _2.31 HTTP users authentication_
 
@@ -190,7 +190,7 @@ If you click on the link you will be automatically logged in into Zabbix WebUI
 with the same username you previously used. Or you can enter different
 Username and Password and normally log in into Zabbix WebUI as different user.
 
-![HTTP users authentication login](ch02.31-http-auth-login.png){ align=center }
+![HTTP users authentication login](ch02.32-http-auth-login.png){ align=center }
 
 _2.32 HTTP users authentication login form_
 
