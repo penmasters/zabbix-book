@@ -82,7 +82,7 @@ If you get no result, try to install the MariaDB client.
 
 !!! info "Install MariaDB client"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install mariadb
     ```
@@ -106,12 +106,12 @@ balance consistency, performance, and compatibility during restore operations.
 
     Linux
     ```bash
-    mysqldump zabbix \
+    sudo mariadb-dump zabbix \
     --add-drop-table \
     --add-locks \
     --extended-insert \
     --single-transaction \
-    --quick
+    --quick > zabbix.sql
     ```
 
 The `--single-transaction` option ensures a consistent snapshot for transactional
@@ -120,24 +120,25 @@ for active Zabbix systems. The `--quick` option reduces memory usage during the 
 process, making the dump of the database more predictable under load.
 
 This will log in using MariaDB Unix socket authentication and create a database
-dump in your current working directory. It is also possible to pass your `username`
-and `password` directly, if password-based authentication is required.
+dump named `zabbix.sql` in your current working directory. If password-based
+authentication is required, specify the database username and use `-p` to prompt
+for its password instead.
 
 !!! info "Create a Zabbix MariaDB database dump with username and password"
 
     Linux
     ```bash
-    mysqldump zabbix \
+    mariadb-dump zabbix \
     --add-drop-table \
     --add-locks \
     --extended-insert \
     --single-transaction \
     --quick \
     -u<USER> \
-    -p<PASSWORD> 
+    -p > zabbix.sql
     ```
 
-Keep in mind that passing plaintext passwords on the CLI might not be secure.
+The `-p` option prompts for the password without putting it in the command line.
 
 One more issue with creating the database dump like this is that it takes up a lot of space
 on your disk. There is one more improvement to recommend here to make sure the 
@@ -146,7 +147,7 @@ storing it to disk. To do this, we can install a compression tool like `lz4`.
 
 !!! info "Install `lz4` compression tool"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install lz4
     ```
@@ -168,7 +169,7 @@ Using `lz4`, we can now compress our database dump by using a quick pipe in our
 
     Linux
     ```bash
-    mysqldump zabbix \
+    sudo mariadb-dump zabbix \
     --add-drop-table \
     --add-locks \
     --extended-insert \
@@ -184,9 +185,8 @@ make this work in a safe manner.
 - Attach a separate dump disk to store the dumps on (still within the same
   server however)
 - Store on a separate disk and then transfer to remote storage (more secure)
-- Directly pipe the `lz4` compressed data to a tool like `rsync` to send it over
-  SSH to a remote storage location (takes up the least amount of duplicated
-  resources)
+- Pipe the `lz4` compressed data through SSH to write it directly to remote
+  storage, or save the file locally and transfer it with `rsync`
 
 ### Limitations of Logical dumps
 
@@ -413,7 +413,7 @@ Lastly, it is also recommended to create a backup of your web server configurati
 
 !!! info "Back up web server configuration"
 
-    Red Hat HTTPD
+    Red Hat-based HTTPD
     ```bash
     cp -R /etc/httpd/ /opt/zabbix-backup/
     cp -R /var/www/ /opt/zabbix-backup/

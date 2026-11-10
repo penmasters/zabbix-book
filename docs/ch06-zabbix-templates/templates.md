@@ -153,13 +153,13 @@ Systems, Databases, and Network Devices.
 Every template must belong to at least one template group, and a template can belong
 to multiple groups.
 
-Access permissions are assigned to user groups through Users | User groups | Template
-permissions, rather than directly to individual users or templates.
+Access permissions are assigned to user groups through `Users` | `User groups` | `Template
+permissions`, rather than directly to individual users or templates.
 
 Three permission levels are available:
 
 * Read: Allows access to template data but does not provide access to view or edit
-  template configuration under Data collection → Templates. Admin users with Read
+  template configuration under `Data collection` | `Templates`. Admin users with Read
   access can still link or unlink these templates from hosts for which they have
   Read-write permissions.
 * Read-write: Allows Admin users to view and modify template configuration, provided
@@ -172,7 +172,7 @@ regardless of the permissions assigned to their user groups.
 !!! note
 
     Read access to a template group does not mean that users can browse its templates
-    under Data collection → Templates. This is an important distinction between access
+    under `Data collection` | `Templates`. This is an important distinction between access
     to template data and access to template configuration.
 
 ![ch06.01-template-group.png](ch06.1-template-group.png)
@@ -700,7 +700,7 @@ renders **three dashboards,** each showing real metrics for its respective insta
 ## Template Management Operations
 
 Template management in Zabbix 8.0 offers multiple actions for maintaining, cloning,
-cleaning, and synchronizing templates efficiently.
+cleaning, and synchronising templates efficiently.
 
 These operations are accessible under:
 
@@ -840,7 +840,7 @@ The button is on the upper right side of your window.
 
 _6.10 Template Import_
 
-Zabbix supports both `YAML` `JSON and `XML`, though YAML is preferred due to its
+Zabbix supports `YAML`, `JSON`, and `XML`, though YAML is preferred due to its
 readability and UUID retention.
 
 ### Import Options and Their Effects

@@ -435,10 +435,10 @@ is needed.
 - A server or proxy with working Telemetry query pollers and access to ClickHouse.
 - Network access to the proxy's OTLP/gRPC port and to ClickHouse.
 
-### Initializing the ClickHouse APM schema
+### Initialising the ClickHouse APM schema
 
 Before collecting OpenTelemetry data, the required ClickHouse tables must be
-created. Zabbix provides an initialization script for traces, metrics, and
+created. Zabbix provides an initialisation script for traces, metrics, and
 logs in the following directory:
 
 !!! info ""
@@ -491,7 +491,7 @@ The expected tables are:
 | `otel_metrics_histogram` | Histogram metrics |
 | `otel_metrics_exponential_histogram` | Exponential histogram metrics |
 
-The initialization scripts are also available in the official
+The initialisation scripts are also available in the official
 [https://github.com/zabbix/zabbix/tree/master/database/clickhous](https://github.com/zabbix/zabbix/tree/master/database/clickhouse).
 
 !!! note "Telemetry retention"
@@ -499,7 +499,7 @@ The initialization scripts are also available in the official
     OpenTelemetry data is retained according to the TTL configured in
     ClickHouse. The Zabbix housekeeper does not manage this data.
     Adjust the retention period using the `--ttl` parameter when
-    initializing the tables.
+    initialising the tables.
 
 ### Step 1: Configure the global APM data source
 
@@ -563,7 +563,7 @@ execute the Telemetry query. This item type does not require an agent.
 
 ![ch04.104_new_host.png](ch04.104_new_host.png)
 
-4.104 Add new host_
+_4.104 Add new host_
 
 ### Step 5: Create the Telemetry query item
 

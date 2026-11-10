@@ -166,7 +166,7 @@ then continue with the following steps to set up Tomcat and enable JMX monitorin
 
 ???+ info "Set up Tomcat"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install tomcat
     vi /etc/sysconfig/tomcat
@@ -287,7 +287,7 @@ _4.70 JMX Gateway_
 
 ???+ info "Install the JAVA Gateway"
 
-    Red Hat
+    Red Hat-based
     ```
     dnf install zabbix-java-gateway
     ```
@@ -363,7 +363,7 @@ On the application side don't forget to open the firewall so that our
 
 !!! info "Allow JMX"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ```
     firewall-cmd --add-port=8686/tcp --permanent
     firewall-cmd --reload

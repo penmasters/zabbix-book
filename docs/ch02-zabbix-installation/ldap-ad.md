@@ -26,7 +26,7 @@ The process of the authenticating users follows this diagram.
 
 ![LDAP users authentication](ch02.32-ldap-auth-diagram.png){ align=center }
 
-_2.32 LDAP users authentication_
+_2.33 LDAP users authentication_
 
 As shown on the diagram a user that tries to log in must be pre-created in
 Zabbix to be able to log in using LDAP. The database user records do not have
@@ -60,7 +60,7 @@ First we will need to ensure that we have a container engine installed.
 
 !!! info "Install Podman container engine"
 
-  Red Hat
+  Red Hat-based
   ```bash
   dnf install podman
   ```
@@ -121,7 +121,7 @@ Users `user1` and `user2` is a member of `zabbix-admins` LDAP group. User
 
     ![LDAP server data](ch02.33-ldap-ldap-server-data.png){ align=center }
 
-    _2.33 LDAP server data_
+    _2.34 LDAP server data_
 
 ### Configure Zabbix LDAP authentication
 
@@ -132,14 +132,14 @@ of your LDAP server and port number according to your set up):
 
 ![LDAP server settings in Zabbix](ch02.34-ldap-server-settings-in-zabbix.png){ align=center }
 
-_2.34 LDAP server settings in Zabbix_
+_2.35 LDAP server settings in Zabbix_
 
 Following diagram can help you understand how to configure LDAP server in
 Zabbix based on your LDAP server data structure:
 
 ![LDAP server to Zabbix](ch02.35-ldap-server-to-zabbix.png){ align=center }
 
-_2.35 LDAP server to Zabbix_
+_2.36 LDAP server to Zabbix_
 
 “Special” _Distinguished Name_ (DN) _cn=ldap_search,dc=example,dc=org_ is used
 for searching, i.e. Zabbix uses this DN to connect to LDAP server and of course
@@ -177,7 +177,7 @@ server and in `LDAP server` drop-down select LDAP server we earlier configured
 
 ![Add user group in zabbix](ch02.36-ldap-add-user-group-in-zabbix.png){ align=center }
 
-_2.36 Add user group in zabbix_
+_2.37 Add user group in zabbix_
 
 Now we need to create our test user. In Zabbix menu select `Users` | `Users` and
 click `Create user` button. Then enter "user3" in `Username` field. Select
@@ -190,13 +190,13 @@ password strength policy defined in `Users` | `Authentication`.
 
 ![Add user in Zabbix](ch02.37-ldap-add-user-in-zabbix.png){ align=center }
 
-_2.37 Add user in Zabbix_
+_2.38 Add user in Zabbix_
 
 Then click `Permissions` tab and select "User role" in `Role` field:
 
 ![Add user in Zabbix - permissions](ch02.38-ldap-add-user-in-zabbix-permissions.png){ align=center }
 
-_2.38 Add user in Zabbix - permissions_
+_2.39 Add user in Zabbix - permissions_
 
 Click `Add` button to create the user.
 
@@ -215,7 +215,7 @@ provisioning (JIT) available since Zabbix 6.4.
 This picture illustrates on high level how it works:
 ![LDAP JIT explained](ch02.39-ldap-jit-explained.png){ align=center }
 
-_2.39 LDAP JIT explained_
+_2.40 LDAP JIT explained_
 
 Here when Zabbix gets a username and password from the Zabbix Login form it
 goes to the LDAP server and gets all the information available for this user
@@ -243,9 +243,9 @@ In `Users` | `Authentication` we need to do two things:
 
   ![Default authentication](ch02.40-ldap-default-authentication.png){ align=center }
 
-  _2.40 Default authentication_
+  _2.41 Default authentication_
 
-  Click `Update` button`.
+  Click the `Update` button.
 
 - Enable JIT provisioning check-box which obviously needs to be checked for this
   feature to work. It's done in our _Test LDAP server_ configuration - select
@@ -269,7 +269,7 @@ group membership attribute` field:
 
 ![LDAP groups mapping](ch02.41-ldap-groups-mapping.png){ align=center }
 
-_2.41 LDAP groups mapping_
+_2.42 LDAP groups mapping_
 
 In the picture above we are telling Zabbix to use _memberOf_ attribute to
 extract DN defining user’s group membership (in this case it is
@@ -293,11 +293,11 @@ It’s easier to explain with pictures depicting an example:
 
 ![LDAP server group of names](ch02.42-ldap-group-of-names.png){ align=center }
 
-_2.42 LDAP server groupOfNames_
+_2.43 LDAP server groupOfNames_
 
 Firstly we define LDAP “sub-tree” where Zabbix will be searching for LDAP
 groups – note _ou=Group,dc=example,dc=org_ in Group base DN field. Then in the
-field `Group name attribute` field we what attribute to use when we search in
+`Group name attribute` field we specify which attribute to use when we search in
 mapping rules (in this case we take _cn_, i.e. only _zabbix-admins_ from full
 DN _cn=zabbix-admins,ou=Group,dc=example,dc=org_). Each LDAP group in our LDAP
 server has _member_ attribute that has all users that belong to this LDAP group
@@ -332,18 +332,18 @@ into _Zabbix users_ user group:
 
 ![Test user1](ch02.43-ldap-jit-test-user1.png){ align=center }
 
-_2.43 Test user1_
+_2.44 Test user1_
 
 ![Test user3](ch02.44-ldap-jit-test-user3.png){ align=center }
 
-_2.44 Test user3_
+_2.45 Test user3_
 
 ---
 
 ## Conclusion
 
 Integrating Zabbix with LDAP—or specifically, Active Directory elevates your system's
-authentication capabilities by leveraging existing organizational credentials. It
+authentication capabilities by leveraging existing organisational credentials. It
 allows users to log in using familiar domain credentials, while Zabbix offloads
 the password verification process to a trusted external directory. Notably, even
 when configuring LDAP authentication, corresponding user accounts must still exist
@@ -353,19 +353,19 @@ is active.
 Particularly powerful is the Just-In-Time (JIT) provisioning feature: this enables
 Zabbix to dynamically create user accounts upon first successful LDAP login streamlining
 onboarding and reducing manual administration. Beyond that, JIT supports ongoing
-synchronization updating user roles, group memberships, or even user removals in
+synchronisation updating user roles, group memberships, or even user removals in
 Zabbix to mirror changes in LDAP—either when a user logs in or during configured
 provisioning intervals.
 
 Important configuration details such as case sensitivity, authentication binding
 methods, search filters, and group mapping need careful attention to ensure reliable
 and secure operation. And while LDAP offers seamless integration, Zabbix still
-maintains control over roles, permissions, and access behavior through its own
+maintains control over roles, permissions, and access behaviour through its own
 user and user group models Zabbix.
 
 In sum, LDAP/AD authentication offers a scalable, secure, and enterprise-aligned
 approach to centralizing identity management in Zabbix. With flexible provisioning
-and synchronization, organizations can reduce administrative load while reinforcing
+and synchronisation, organisations can reduce administrative load while reinforcing
 consistency across their access control and authentication strategy.
 
 ## Questions
@@ -380,9 +380,9 @@ consistency across their access control and authentication strategy.
   and what potential risks or caveats should an administrator consider when
   enabling it?
 
-- What is the difference between user authentication and user authorization in
+- What is the difference between user authentication and user authorisation in
   the context of LDAP integration with Zabbix? (Hint: Authentication verifies
-  credentials, while authorization determines permissions inside Zabbix.)
+  credentials, while authorisation determines permissions inside Zabbix.)
 
 - Imagine an administrator incorrectly configures the LDAP search filter. What issues
   might users encounter when attempting to log in, and how could you troubleshoot
@@ -391,7 +391,7 @@ consistency across their access control and authentication strategy.
 - How could LDAP group mappings be used to streamline permission assignment in
   Zabbix? Can you think of an example from your own environment?
 
-- If an organization disables a user account in Active Directory, how does JIT
+- If an organisation disables a user account in Active Directory, how does JIT
   provisioning ensure that Zabbix access is also updated? What would happen if
   JIT was not enabled?
 

@@ -6,7 +6,7 @@ Patrik and Nathan felt a strong pull to share their knowledge in a way that was 
 to everyone. That's how the initial idea of a free, online Zabbix resource was
 conceived – **a community-driven project dedicated to empowering users**.
 
-As the online resource grew, so did the vision. We recognized the potential to create
+As the online resource grew, so did the vision. We recognised the potential to create
 something even more impactful. This led to the formation of a foundation, dedicated
 to ensuring the long-term sustainability and growth of this community effort.
 This book, a tangible culmination of that vision, represents the next step. All

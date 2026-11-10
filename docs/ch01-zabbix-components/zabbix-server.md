@@ -22,7 +22,7 @@ To install the Zabbix server components, run the following command:
 
 !!! info "Install the zabbix server"
 
-    Red Hat
+    Red Hat-based
     ``` bash
     # For MySQL/MariaDB backend:
     dnf install zabbix-server-mysql
@@ -106,8 +106,9 @@ setup. This ensures that the Zabbix server can communicate with your database.
 
 Ensure that there is no `#` (comment symbol) in front of the configuration parameters,
 as Zabbix will treat lines beginning with `#` as comments, ignoring them during execution.
-Additionally, double-check for duplicate configuration lines; if there are multiple
-lines with the same parameter, Zabbix will use the value from the last occurrence.
+Additionally, ensure that each database connection parameter is defined only
+once across the main configuration file and its included files. Do not rely on
+included-file ordering to override duplicate parameters.
 
 For our setup, the configuration will look like this:
 
@@ -167,7 +168,7 @@ To allow these connections, you need to open this port in your firewall.
 
 !!! info "Open firewall for zabbix-trapper"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ``` bash
     sudo firewall-cmd --add-service=zabbix-server --permanent
     sudo firewall-cmd --reload
@@ -178,7 +179,7 @@ To allow these connections, you need to open this port in your firewall.
     sudo ufw allow 10051/tcp
     ```
 
-If the service is not recognized using `firewall-cmd --add-service`, you can
+If the service is not recognised using `firewall-cmd --add-service`, you can
 manually specify the port:
 
 !!! info "Add port instead of the service name"
@@ -201,11 +202,11 @@ to enable the Zabbix server and ensure it starts automatically on boot:
     considered best practice to validate the configuration to prevent potential
     issues. Running a configuration check ensures that any errors are detected
     beforehand, avoiding downtime caused by an invalid configuration. This can
-    be accomplished using the following command: `zabbix-server -T`
+    be accomplished using the following command: `zabbix_server -T`
 
 !!! info "Enable and start zabbix-server service"
 
-    Red Hat, SUSE, and Ubuntu
+    Red Hat-based, SUSE, and Ubuntu
     ``` bash
     sudo systemctl enable zabbix-server --now
     ```

@@ -101,7 +101,7 @@ fields at the top of its configuration form.
     - Service
     - Service recovery
     - Service update
-    - Disscovery
+    - Discovery
     - Auto registration
     - Internal problem.
     - Internal problem recovery

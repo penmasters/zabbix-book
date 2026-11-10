@@ -771,7 +771,7 @@ scalable environment:
 - **Load-Based Scalability:** Dynamically manage StartBrowserPollers and use Zabbix
   Proxies to isolate the synthetic workload from core infrastructure monitoring.
 - **Defensive Scripting:** Invest time in writing robust JavaScript scripts that
-  utilize setElementWaitTimeout and integrate error handling with screenshots,
+  utilise setElementWaitTimeout and integrate error handling with screenshots,
   significantly reducing the Mean Time To Resolution (MTTR) upon failure.
 - **Efficient Data Processing:** Use Dependent Items and JSONPath preprocessing to
   transform the Master Item's JSON payload into usable, individual metrics and

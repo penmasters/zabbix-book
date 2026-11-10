@@ -26,7 +26,7 @@ Perform all subsequent steps on the server designated for the frontend.
 
 !!! info "install frontend packages"
 
-    Red Hat
+    Red Hat-based
     ```bash
     # List all available php modules and active php-8.3
     dnf module list php -y
@@ -43,7 +43,7 @@ Perform all subsequent steps on the server designated for the frontend.
     # or when using PostgreSQL
     zypper install zabbix-nginx-conf zabbix-web-pgsql php8-openssl php8-xmlreader php8-xmlwriter
     ```
-    ???+ note "Suse Linux Enterprise Server"
+    ???+ note "SUSE Linux Enterprise Server"
 
         On SUSE Linux Enterprise Server (SLES), ensure you are subscribed to the
         "SUSE Linux Enterprise Module Web and Scripting" repository to access
@@ -131,24 +131,23 @@ Zabbix frontend setup. To enable this we need to create a drop-in file to allow 
     of the Zabbix frontend. After the setup is complete you can remove the drop-in
     file again to further harden the security of your system.
 
-First thing we have to do is alter the Nginx configuration file so that we don't
-use the standard config and serve the Zabbix frontend on port 80.
+First we need to disable the default Nginx site so that the Zabbix frontend can
+use port 80.
 
-!!! info "Edit nginx config for Red Hat"
+!!! info "Disable the default Nginx site"
 
+    Red Hat-based / SUSE
     ```bash
     vi /etc/nginx/nginx.conf
     ```
 
-!!! info
-
+    Ubuntu
+    ```bash
+    sudo unlink /etc/nginx/sites-enabled/default
     ```
-    If you are on Ubuntu no need to edit `nginx.conf` just run `sudo unlink /etc/nginx/sites-enabled/default`
-   ```
 
-
-In the configuration file `/etc/nginx/conf.d/zabbix.conf` look for the following
-block that starts with `server {`:
+On Red Hat-based systems and SUSE, find the default `server { ... }` block in
+`/etc/nginx/nginx.conf`:
 
 !!! example "Original config"
 
@@ -157,24 +156,31 @@ block that starts with `server {`:
         listen 80;
         listen [::]:80;
         server_name *;
-    ...
+        # ...
+    }
     ```
+
     ???+ tip
 
-        This block may be different depending on your distribution and Nginx version.
+        The location and contents of the default site may differ depending on
+        your distribution and Nginx version. Use `nginx -T` to inspect the loaded
+        configuration if needed.
 
-Then, comment out the any `listen` and `server_name` directives to disable the default
-http server configuration. You can do this by adding a `#` at the beginning of
-each line, like in the example below:
+Remove or comment out the entire default server block. Commenting out only its
+`listen` directives does not disable it, as Nginx can still listen on port 80
+by default. On Ubuntu, the `unlink` command above already disables the default
+site, so you can skip this edit.
 
-!!! example "Config after edit"
+!!! example "Default server block commented out"
 
     ```nginx
-    server {
-        #listen 80;
-        #listen [::]:80;
-        #server_name *;
-    ...
+    #server {
+    #    listen 80;
+    #    listen [::]:80;
+    #    server_name *;
+    #    ...
+    #}
+    ```
 
 The Zabbix configuration file must now be modified to take over the default 
 service on port 80 we just disabled.
@@ -226,7 +232,7 @@ startup. Execute the following commands to enable and start them immediately:
 
 !!! info "Restart the front-end services"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ```bash
     systemctl enable nginx php-fpm --now
     systemctl restart nginx php-fpm
@@ -276,7 +282,7 @@ following commands:
 
 !!! info "Configure the firewall"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ```bash
     firewall-cmd --add-service=http --permanent
     firewall-cmd --reload
@@ -320,7 +326,7 @@ welcome_
     The `en_US` locale uses American date notation and a 12-hour clock, whereas
     `en_GB` uses international date notation and a 24-hour clock.
 
-The Zabbix frontend presents a limited array of available localizations, as shown.
+The Zabbix frontend presents a limited array of available localisations, as shown.
 
 ![overview language](ch01.3-basic-installation-setuplanguage.png){ align=left }
 
@@ -332,7 +338,7 @@ Run the next command to get a list of all locales available for your OS.
 
 !!! info "Install language packs"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf list glibc-langpack-*
     ```
@@ -347,10 +353,10 @@ Run the next command to get a list of all locales available for your OS.
     apt-cache search language-pack
     ```
 
-Users on Ubuntu will probably notice following error `"Locale for language "en_US"
-is not found on the web server."``
+Users on Ubuntu may see the following error:
+`Locale for language "en_US" is not found on the web server.`
 
-!!! info "This can be solved easy with the following commands."
+!!! info "This can be solved with the following commands"
 
     ```bash
     sudo locale-gen en_US.UTF-8
@@ -362,7 +368,7 @@ This will give you a list like:
 
 ???+ example "Example output"
 
-    Red Hat
+    Red Hat-based
     ```
     Installed Packages
     glibc-langpack-en.x86_64
@@ -403,7 +409,7 @@ the code starts with zh.
 
 !!! info "search for language pack"
 
-    Red Hat
+    Red Hat-based
     ```shell-session
     ~# dnf list glibc-langpack-* | grep zh
     glibc-langpack-zh.x86_64
@@ -424,15 +430,16 @@ the code starts with zh.
     sudo apt-cache search language-pack | grep -i zh
     ```
 
-On RedHat and Ubuntu, the command outputs two lines; however, given the identified language code,
+On Red Hat-based systems and Ubuntu, the command outputs two lines; however,
+given the identified language code,
 'zh_CN,' only the first package requires installation.
-on SUSE either only locales `C.UTF-8` and `en_US.UTF-8` are install or all
+on SUSE either only locales `C.UTF-8` and `en_US.UTF-8` are installed or all
 available locales are installed, depending on whether the package `glibc-locale`
 is installed or not. 
 
 !!! info "Install the locale package"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install glibc-langpack-zh.x86_64
     sudo systemctl restart nginx php-fpm
@@ -490,9 +497,9 @@ On the next page, you'll configure the database connection parameters:
 3. `Enter the Database Name`: Specify the name of your database. In our case, it
    is zabbix. If you are using PostgreSQL, you will also need to provide the schema
    name, which is zabbix_server in our case.
-4. `Enther the Database Schema`: Only for PostgreSQL users, enter the schema name
+4. `Enter the Database Schema`: Only for PostgreSQL users, enter the schema name
    created for Zabbix server, which is `zabbix_server` in our case.
-4. `Enter the Database User`: Input the database user created for the web front-end,
+5. `Enter the Database User`: Input the database user created for the web front-end,
    remember in our basic installation guide we created 2 users `zabbix-web` and `zabbix-srv`.
    One for the frontend and the other one for our zabbix server so here we will use 
    the user `zabbix-web`. Enter the corresponding password for this user.
@@ -578,11 +585,11 @@ The font family used for monospace content and graphs remains unchanged.
 With the installation and configuration of the Zabbix frontend now complete,
 you have successfully set up the user interface for your Zabbix monitoring system.
 This process included installing the necessary packages, configuring a web server and
-PHP engine, setting up the database connection, and customizing the frontend settings.
+PHP engine, setting up the database connection, and customising the frontend settings.
 
 At this stage, your Zabbix instance is operational, providing the foundation for
 advanced monitoring and alerting. In the upcoming chapters, we will delve into
-fine-tuning Zabbix, optimizing performance, and exploring key features that transform
+fine-tuning Zabbix, optimising performance, and exploring key features that transform
 it into a powerful observability platform.
 
 Now that your Zabbix environment is up and running, let’s take it to the next level.

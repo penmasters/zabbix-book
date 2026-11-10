@@ -50,7 +50,7 @@ command to install the additional package(s) and you should be ready to go.
 
 !!! info "Install Zabbix agent 2 database monitoring plugins"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
     ```

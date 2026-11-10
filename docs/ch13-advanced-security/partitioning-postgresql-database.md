@@ -31,10 +31,10 @@ essential for efficient long-term data storage and performance in larger environ
 
 ???+ info
 
-    When using TimescaleDB with Zabbix on Red Hat or its derivatives, make sure
+    When using TimescaleDB with Zabbix on Red Hat-based systems, make sure
     PostgreSQL is installed from the official PostgreSQL community repositories,
     as described in our setup guide. **Do not** use the PostgreSQL version provided 
-    by Red Hat or its derivatives. The TimescaleDB extension is not compatible
+    by your distribution. The TimescaleDB extension is not compatible
     with that version, and attempting to use it will lead to failure in the
     configuration.
 
@@ -74,7 +74,7 @@ essential for efficient long-term data storage and performance in larger environ
 
 !!! info "adding the repository"
 
-    Red Hat
+    Red Hat-based
     ```bash
     sudo tee /etc/yum.repos.d/timescale_timescaledb.repo <<EOL
     [timescale_timescaledb]
@@ -113,7 +113,7 @@ essential for efficient long-term data storage and performance in larger environ
 
 !!! info "Update your local repository list"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf update -y
     ```
@@ -132,7 +132,7 @@ essential for efficient long-term data storage and performance in larger environ
 ### Install TimescaleDB from package
 
 We will now install the TimescaleDB extension using the package manager, either
-from the official TimescaleDB repository for Red Hat and Ubuntu, or from the 
+from the official TimescaleDB repository for Red Hat-based systems and Ubuntu, or from the
 SUSE PackageHub or SUSE Factory repository for SLES and openSUSE. 
 If you prefer to compile TimescaleDB from source, for example if you want the 
 Community edition on SUSE or if you are using a different Linux flavour not
@@ -140,9 +140,9 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
 !!! info "Install TimescaleDB"
 
-    Red Hat
+    Red Hat-based
     ```bash
-    dnf install timescaledb-2-postgresql-17 postgresql-client-17
+    dnf install timescaledb-2-postgresql-17 postgresql17
     ```
 
     SLES 15 SP7
@@ -172,7 +172,7 @@ supported by TimescaleDB, you can follow the instructions in the next section.
     the corresponding TimescaleDB packages for version 14. The installation would
     look like this:
     ```
-    dnf install timescaledb-2-postgresql-14 postgresql-client-14
+    dnf install timescaledb-2-postgresql-14 postgresql14
     ```
     Using mismatched versions can lead to compatibility issues, so always make
     sure the TimescaleDB packages align with your PostgreSQL version.
@@ -193,7 +193,7 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
 !!! info "Check for specific versions"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf list timescaledb-2-postgresql-17 --showduplicates
     ```
@@ -210,7 +210,7 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
 !!! info "Install and lock a specific version"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install timescaledb-2-postgresql-17-2.19.3
     dnf versionlock add timescaledb-2-postgresql-17
@@ -246,7 +246,7 @@ First, we need to install the required dependencies for building TimescaleDB:
 
 !!! info "Install build dependencies"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install -y git cmake gcc-c++ make postgresql17-devel libicu-devel
     ```
@@ -318,7 +318,7 @@ For Ubuntu and Debian-based systems, simply run:
 !!! info ""
 
     ```bash
-    sudo timescaledb tune
+    sudo timescaledb-tune
     ```
 
 This script will suggest configuration changes and can update your PostgreSQL configuration file automatically. If you prefer to tune the settings manually,
@@ -342,7 +342,7 @@ TimescaleDB extension and apply the new settings:
 
 !!! info "Restart PostgreSQL service"
 
-    Red Hat
+    Red Hat-based
     ```bash
     systemctl restart postgresql-17
     ```
@@ -484,7 +484,8 @@ your environment for long-term growth and data retention.
 
 - What are the key advantages of using TimescaleDB compared to partitioning with
   MySQL or MariaDB?
-- What might go wrong if you install PostgreSQL from the default Red Hat repositories
+- What might go wrong if you install PostgreSQL from the default repositories
+  on Red Hat-based systems
   when planning to use TimescaleDB?
 - How does enabling compression in TimescaleDB benefit your Zabbix installation?
 

@@ -1,7 +1,7 @@
 ---
 description: |
     Learn how Zabbix user groups simplify access control, improve security, and
-    organize monitoring teams efficiently for better network management.
+    organise monitoring teams efficiently for better network management.
 tags: [beginner]
 ---
 
@@ -37,7 +37,7 @@ This group centric architecture provides several major benefits:
   and configuration (read-write) access.
 
 > **Technical Definition:**
-> User groups allow grouping users for both organizational purposes and for assigning
+> User groups allow grouping users for both organisational purposes and for assigning
   permissions to data. Permissions to viewing and configuring data of host groups
   and template groups are assigned to user groups, not individual users. A user
   can belong to any number of groups.
@@ -147,7 +147,7 @@ every proxy allowed by any of their groups.
 
 ![ch02.23-1 proxy-access-list](ch02.23-1-proxy-access-list.png)
 
-_2.23-1 Proxy Access List_
+_2.24 Proxy Access List_
 
 #### Problem Tag Filters: Granular Alert Access
 
@@ -179,9 +179,9 @@ tags, the user will see it.
 
 ---
 
-### Template Permissions — Frontend Behavior and Editing Limitations
+### Template Permissions — Frontend Behaviour and Editing Limitations
 
-The behavior of the `Data collection` | `Templates` view and host configuration screens
+The behaviour of the `Data collection` | `Templates` view and host configuration screens
 is strictly tied to the user’s permission level on template groups.
 Zabbix intentionally hides templates from users who have only Read-only access.
 This is by design, as described in [https://support.zabbix.com/browse/ZBXNEXT-1070](https://support.zabbix.com/browse/ZBXNEXT-1070)
@@ -269,8 +269,8 @@ groups and permissions.
 3. **Principle of Least Privilege:** Start with the most restrictive access (**Read-only**)
    and only escalate to **Read-write** when configuration-level changes are an
    absolute requirement of the user's role.
-4. **Align with Organizational Structure:** Ensure your Host Groups and Template
-   Groups mirror your organization's teams or asset categories (e.g., `EU-Network`,
+4. **Align with Organisational Structure:** Ensure your Host Groups and Template
+   Groups mirror your organisation's teams or asset categories (e.g., `EU-Network`,
    `US-Database`, `Finance-Templates`). This makes permission assignment intuitive.
 5. **Regular Review and Audit:** Periodically review group memberships and permissions.
    A user's role may change, and their access in Zabbix must be adjusted accordingly.
@@ -319,7 +319,7 @@ You can create them under `Data collection` | `Host groups`.
 
 ![ch02.24_junior-monitoring.png](ch02.24-junior-monitoring.png)
 
-_2.24 Junior monitoring_
+_2.25 Junior monitoring_
 
 
 - Create Group B: 'Critical Exclusion'
@@ -329,7 +329,7 @@ _2.24 Junior monitoring_
 
 ![ch02.25_critical-exclusioin.png](ch02.25-critical-exclusioin.png)
 
-_2.25 Critical exclusion_
+_2.26 Critical exclusion_
 
 #### Creating the Test User
 
@@ -349,11 +349,11 @@ We will create the user first, then assign them to the groups.
 
 ![ch02.26_test-junior.png](ch02.26-test-junior.png)
 
-_2.26 test user_
+_2.27 test user_
 
 #### Create the hosts
 
-We will create 2 host a linux server and a db server.
+We will create two hosts: a Linux server and a database server.
 
 * Navigate to `Data collection` | `Hosts`.
 * Click on create  host.
@@ -366,7 +366,7 @@ We will create 2 host a linux server and a db server.
 
 ![ch02.27_hosts.png](ch02.27-hosts.png)
 
-_2.27 Add hosts_
+_2.28 Add hosts_
 
 Add a DB server exact as above but change :
 

@@ -1,7 +1,7 @@
 # Supporters & Contributors
 
 This book would not have been possible without the dedication, generosity, and
-expertise of many individuals and organizations. We extend our heartfelt thanks
+expertise of many individuals and organisations. We extend our heartfelt thanks
 to everyone who has supported this project, whether through financial contributions,
 technical expertise, content reviews, or community engagement.
 

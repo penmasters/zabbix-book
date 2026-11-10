@@ -80,7 +80,7 @@ For the complete list of parameters, see the
 
 ---
 
-## Installing and Configuring Vault on RHEL
+## Installing and Configuring Vault on Red Hat-based systems
 
 This section covers a minimal production-ready Vault installation on Red Hat
 Enterprise Linux 8/9/10 (or compatible distributions such as AlmaLinux and Rocky Linux).
@@ -92,12 +92,12 @@ for SLES.
 
 ### Install Vault
 
-!!! info "Installing Vault on RHEL"
+!!! info "Installing Vault on Red Hat-based systems"
 
-    HashiCorp provides an official YUM repository for RHEL-based distributions. To
+    HashiCorp provides an official YUM repository for Red Hat-based distributions. To
     install Vault, run the following commands:
 
-    RHEL
+    Red Hat-based
     ```bash
     dnf install -y dnf-plugins-core
     dnf config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
@@ -767,7 +767,7 @@ by the web server process:
 
 !!! info "Securing zabbix.conf.php"
 
-    RHEL - Apache
+    Red Hat-based - Apache
     ```bash
     sudo chown apache:apache /etc/zabbix/web/zabbix.conf.php
     sudo chmod 600 /etc/zabbix/web/zabbix.conf.php
@@ -1027,7 +1027,7 @@ error log:
 
 !!! info "Tailing the web server error log for Vault messages"
 
-    RHEL - Apache
+    Red Hat-based - Apache
     ```bash
     sudo tail -f /var/log/httpd/error_log | grep -i vault
     ```

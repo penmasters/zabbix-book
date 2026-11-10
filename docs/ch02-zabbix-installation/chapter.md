@@ -15,4 +15,4 @@ security and manageability. Whether you're just getting started or looking to im
 robust security measures, there's something here for everyone.
 
 By the end, you'll be well equipped to navigate the Zabbix frontend with confidence
-and set up a secure, scalable user management system tailored to your organization's needs.
+and set up a secure, scalable user management system tailored to your organisation's needs.

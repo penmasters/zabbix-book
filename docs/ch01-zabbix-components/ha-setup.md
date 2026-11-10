@@ -163,7 +163,7 @@ On the first server:
     sudo grep HA /var/log/zabbix/zabbix_server.log
     ```
 
-In the system logs, you should observe the following entries, indicating the initialization
+In the system logs, you should observe the following entries, indicating the initialisation
 of the High Availability (HA) manager:
 
 ???+ example "HA log messages on active node"
@@ -195,7 +195,7 @@ but not currently acting as the active HA instance, awaiting further state trans
 based on the configured HA strategy.
 
 At this stage, your Zabbix cluster is successfully configured for High Availability
-(HA). The system logs confirm that the HA manager has been initialized and is running
+(HA). The system logs confirm that the HA manager has been initialised and is running
 in standby mode, indicating that failover mechanisms are in place. This setup ensures
 uninterrupted monitoring, even in the event of a server failure, by allowing automatic
 role transitions based on the HA configuration.
@@ -255,7 +255,7 @@ servers to ensure high availability of both the frontend and the server.
 
 !!! info "Install keepalived"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install keepalived
     ```
@@ -359,7 +359,7 @@ firewall. Perform the following commands on all servers:
 
 !!! info "Allow keepalived traffic through the firewall"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ```yaml
     firewall-cmd --add-rich-rule='rule protocol value="vrrp" accept' --permanent
     firewall-cmd --reload
@@ -458,7 +458,7 @@ remains accessible. Upon reloading the page, you will notice that the other fron
 server has taken over as the active instance, ensuring an almost seamless failover
 and high availability.
 
-![2st active frontend](ha-setup/ch01.12-HA-check2.png)
+![2nd active frontend](ha-setup/ch01.12-HA-check2.png)
 
 _1.12 verify
 HA_
@@ -485,7 +485,7 @@ runtime command must be used:
 !!! info ""
 
     ```bash
-    sudo zabbix_server -R ha_remove_node=`zabbix1`
+    sudo zabbix_server -R ha_remove_node=zabbix1
     ```
 
 Executing this command removes the node from the HA cluster. Upon successful
@@ -494,7 +494,7 @@ removal, the output confirms the action:
 !!! example "Removal of a node"
 
     ```shell-session
-    localhost:~ # zabbix_server -R ha_remove_node=`zabbix1`
+    localhost:~ # zabbix_server -R ha_remove_node=zabbix1
     Removed node "zabbix1" with ID "cm8agwr2b0001h6kzzsv19ng6"
     ```
 

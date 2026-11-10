@@ -225,7 +225,7 @@ We need to update the CA certificates. Run the below command to update the CA ce
 
 !!! info "Install/Update CA certs"
 
-    RHEL
+    Red Hat-based
     ```
     cp myCA.pem /etc/pki/ca-trust/source/anchors/myCA.crt
     update-ca-trust extract
@@ -292,7 +292,7 @@ will enable SSL and HTTP2.
 
 !!! info "Adapt the Nginx config"
 
-    Red Hat
+    Red Hat-based
     ```
     # vi /etc/nginx/conf.d/zabbix.conf
     ```
@@ -358,7 +358,7 @@ You have a DNS server and everything is properly configured, configuring this is
 
     Install the needed packages for your OS:
 
-    RHEL
+    Red Hat-based
     ``` bash
     dnf install epel-release
     dnf install certbot python3-certbot-nginx
@@ -406,7 +406,7 @@ get.acme.
 !!! info "Set up Let's Encrypt without a local DNS server"
 
     Install the needed packages
-    RHEL
+    Red Hat-based
     ``` bash
     sudo dnf install epel-release
     sudo dnf install certbot python3-certbot-nginx
@@ -489,7 +489,7 @@ Next step is to alter your Nginx config and open the firewall on port 443
     ``` bash
     vi /etc/nginx/conf.d/no-ssl-zabbix.conf
     ```
-    ``` bash
+    ```nginx
     server{
         listen  80;
         return 301 https://$host$request_uri?;
@@ -506,6 +506,6 @@ certificate.
 
 !!! note
 
-    You should probably add a bit more security to your web server this is only
-    the bare minimum to make SSL working, A good place to start is probably
+    You should probably add a bit more security to your web server. This is only
+    the bare minimum to get SSL working. A good place to start is probably
     https://cipherlist.eu/

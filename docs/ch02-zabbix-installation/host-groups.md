@@ -1,6 +1,6 @@
 ---
 description: |
-    This chapter from The Zabbix Book, titled "Host Groups," explains how to organize
+    This chapter from The Zabbix Book, titled "Host Groups," explains how to organise
     and manage monitored hosts effectively in Zabbix. It covers the creation of
     host groups, their role in permission management, and how they simplify large
     environments by structuring hosts for better visibility and control.
@@ -9,7 +9,7 @@ tags: [beginner]
 
 # Host Groups
 
-In Zabbix, **host groups** serve as a foundational mechanism for organizing monitored
+In Zabbix, **host groups** serve as a foundational mechanism for organising monitored
 entities. They allow you to logically categorize hosts for easier management, simplified
 permissions, and streamlined configuration, especially useful in larger environments.
 
@@ -17,7 +17,7 @@ Common examples include:
 
 - Grouping all **Linux servers** together.
 - Separating **database servers** (e.g., PostgreSQL, MySQL).
-- Organizing hosts by **team**, **location**, or **function**.
+- Organising hosts by **team**, **location**, or **function**.
 
 Host groups are not only for structuring your monitored hosts, they also play an
 important role in assigning templates, setting up user permissions, and filtering
@@ -37,7 +37,7 @@ Groups menu_
 In this menu under `Data collection`, you'll notice two distinct sections:
 
 - **Host groups**: Groups that contain hosts.
-- **Template groups**: A newer addition, specifically created for organizing templates.
+- **Template groups**: A newer addition, specifically created for organising templates.
 
 ???+ info "Migrating from an older Zabbix version"
 
@@ -138,10 +138,10 @@ This is especially useful for user groups. For example:
 
 ## Conclusion
 
-Host groups are a key organizational tool in Zabbix. With the introduction of **template
+Host groups are a key organisational tool in Zabbix. With the introduction of **template
 groups**, clearer group separation, and support for **nested structures**, modern
 versions of Zabbix offer great flexibility for tailoring your monitoring setup
-to your organization's structure and workflows.
+to your organisation's structure and workflows.
 
 ## Questions
 

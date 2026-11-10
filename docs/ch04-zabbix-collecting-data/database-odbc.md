@@ -205,7 +205,7 @@ listing the full set of macros, items, and triggers.
 
 ### Driver Packages by Platform
 
-| Database | RHEL / Rocky / Alma | Ubuntu / Debian | SUSE | Vendor Repo? |
+| Database | Red Hat-based | Ubuntu / Debian | SUSE | Vendor Repo? |
 |---|---|---|---|---|
 | MySQL / MariaDB | `mariadb-connector-odbc` | `mariadb-connector-odbc` | `mariadb-connector-odbc` | No |
 | PostgreSQL | `psqlodbc` | `odbc-postgresql` | `psqlODBC` | No |
@@ -221,7 +221,7 @@ the database-specific driver on top.
 
 !!! info "ODBC Driver Installation"
 
-    Red Hat
+    Red Hat-based
     ```
     bash
     sudo dnf install unixODBC unixODBC-devel

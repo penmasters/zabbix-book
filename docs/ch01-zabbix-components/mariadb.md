@@ -28,9 +28,9 @@ and proceed to the [_Installing the PostgreSQL Database_](postgresql.md) section
 To install the distribution default MariaDB server and client, execute the
 following command:
 
-!!! info "Install distribution version of Mariadb"
+!!! info "Install distribution version of MariaDB"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install mariadb-server
     ```
@@ -65,7 +65,7 @@ To create the MariaDB repository file, execute the following command in your ter
 
 !!! info "Define the MariaDB repository"
 
-    Red Hat
+    Red Hat-based
     ``` bash
     vi /etc/yum.repos.d/mariadb.repo
     ```
@@ -92,9 +92,9 @@ The latest config can be found here: [https://mariadb.org/download/?t=repo-confi
 
 Here's an example configuration for MariaDB 11.4 repositories:
 
-!!! example "Mariadb repository configuration"
+!!! example "MariaDB repository configuration"
 
-    Red Hat
+    Red Hat-based
     ```ini
     # MariaDB 11.4 RedHatEnterpriseLinux repository list - created 2025-02-21 10:15 UTC
     # https://mariadb.org/download/
@@ -153,7 +153,7 @@ To install the MariaDB server and client, execute the following command:
 
 !!! info "Install MariaDB from official repository"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install MariaDB-server
     ```
@@ -167,6 +167,7 @@ To install the MariaDB server and client, execute the following command:
 
     Ubuntu
     ```bash
+    sudo apt update
     sudo apt install mariadb-server
     ```
 
@@ -188,11 +189,11 @@ upon boot and start it immediately. Use the following command to accomplish this
     ```
 
 This command will both enable and start the MariaDB service and since this will be
-the first time the service is started, it will initialize the database directory.
+the first time the service is started, it will initialise the database directory.
 With the MariaDB service now up and running, you can verify that the installation
 was successful by checking the version of MariaDB using the following command:
 
-!!! info "Check Mariadb version"
+!!! info "Check MariaDB version"
 
     ```bash
     mariadb -V
@@ -219,7 +220,7 @@ with the following command:
 You should see an output similar to this, indicating that the MariaDB service
 is active and running:
 
-???+ example "Mariadb service status example"
+???+ example "MariaDB service status example"
 
     ```shell-session
     localhost:~ $ sudo systemctl status mariadb
@@ -253,13 +254,15 @@ This confirms that your MariaDB server is up and running, ready for further conf
 ## Securing the MariaDB Database
 
 To enhance the security of your MariaDB server, it's essential to remove unnecessary
-test databases, anonymous users, and set a root password. This can be done using
+test databases and anonymous users. Keep Unix socket authentication enabled for
+the root account so that the operating system's root user can administer MariaDB
+without a database password. This can be done using
 the mariadb-secure-installation script, which provides a step-by-step guide to
 securing your database.
 
 Run the following command:
 
-!!! info "Secure Mariadb setup"
+!!! info "Secure MariaDB setup"
 
     ```bash
     sudo mariadb-secure-installation
@@ -267,7 +270,7 @@ Run the following command:
 
 The mariadb-secure-installation script will guide you through several key steps:
 
-1. Set a root password if one isn't already set.
+1. Keep Unix socket authentication for root and skip setting a root password.
 2. Remove anonymous users.
 3. Disallow remote root logins.
 4. Remove the test database.
@@ -299,12 +302,8 @@ Once complete, your MariaDB instance will be significantly more secure.
 
     You already have your root account protected, so you can safely answer 'n'.
 
-    Change the root password? [Y/n] y
-    New password:
-    Re-enter new password:
-    Password updated successfully!
-    Reloading privilege tables..
-     ... Success!
+    Change the root password? [Y/n] n
+     ... skipping.
 
 
     By default, a MariaDB installation has an anonymous user, allowing anyone
@@ -358,14 +357,13 @@ including configuration information and monitoring data.
 
 Follow these steps to create the Zabbix database:
 
-Log in to the MariaDB shell as the root user:
-You'll be prompted to enter the root password that you set during the mariadb-secure-installation
-process.
+Log in to the MariaDB shell as the operating system's root user using Unix
+socket authentication:
 
-!!! info "Enter Mariadb as user root"
+!!! info "Enter MariaDB as user root"
 
     ```bash
-    mariadb -uroot -p
+    sudo mariadb
     ```
 
 Once you're logged into the MariaDB shell, run the following command to create a
@@ -397,7 +395,7 @@ with a strong password of your choice.
     MariaDB [(none)]> CREATE USER 'zabbix-web'@'<zabbix frontend ip>' IDENTIFIED BY '<password>';
     MariaDB [(none)]> CREATE USER 'zabbix-srv'@'<zabbix server ip>' IDENTIFIED BY '<password>';
     MariaDB [(none)]> GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix-srv'@'<zabbix server ip>';
-    MariaDB [(none)]> GRANT SELECT, UPDATE, DELETE, INSERT ON zabbix.* TO 'zabbix-web'@'<zabbix server ip>';
+    MariaDB [(none)]> GRANT SELECT, UPDATE, DELETE, INSERT ON zabbix.* TO 'zabbix-web'@'<zabbix frontend ip>';
     MariaDB [(none)]> FLUSH PRIVILEGES;
     ```
 
@@ -417,16 +415,38 @@ This creates new users `zabbix-web` and `zabbix-srv`, grants them access to the
 Zabbix database, and ensures that the privileges are applied immediately.
 
 At this point, your Zabbix database is ready, but before it can actually be used by
-Zabbix, we still need to populate the database with the necessary tables and initial data,
-but that will be covered in the next section when we install the Zabbix server.
+Zabbix, we still need to populate it with the necessary tables and initial data,
+as covered in the next section.
 
-If you intent to install Zabbix server on a different machine than the one hosting
-the database you will need to open the host firewall to allow incoming connections
-to the database server. By default, MariaDB listens on port 3306.
+If you intend to install the Zabbix server or frontend on a different machine
+from the database, MariaDB must listen on a network interface that those systems
+can reach. Many packages bind MariaDB to localhost by default.
+
+On the database server, check the `bind-address` setting in the MariaDB server
+configuration. For a remote connection, set it to the database server's
+appropriate network IP address. For example, add the following to a `.cnf` file
+in `/etc/my.cnf.d/` on Red Hat-based systems or SUSE, or
+`/etc/mysql/mariadb.conf.d/` on Ubuntu:
+
+!!! info "Allow database connections over the network"
+
+    ```ini
+    [mysqld]
+    bind-address = <database server ip>
+    ```
+
+    Restart MariaDB to apply the change:
+
+    ```bash
+    sudo systemctl restart mariadb
+    ```
+
+Then open the host firewall to allow incoming connections from the Zabbix server
+and frontend. By default, MariaDB listens on port 3306.
 
 !!! info "Add firewall rules"
 
-    Red Hat / SUSE
+    Red Hat-based / SUSE
     ``` bash
     firewall-cmd --add-service=mysql --permanent
     firewall-cmd --reload
@@ -451,7 +471,7 @@ import scripts for the database.
 
 !!! info "Install SQL scripts"
 
-    Red Hat
+    Red Hat-based
     ``` bash
     dnf install zabbix-sql-scripts
     ```
@@ -483,23 +503,24 @@ import scripts for the database.
     !!! info "Activate temporarily extra privileges for non root users"
 
         ```bash
-        mariadb -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 1;"
+        sudo mariadb -e "SET GLOBAL log_bin_trust_function_creators = 1;"
         ```
 
-Now let's upload the data from zabbix (db structure, images, user, ... )
-for this we make use of the user `zabbix-srv` and we upload it all in our DB `zabbix`.
+Now let's import the Zabbix schema and initial data into our `zabbix` database.
+Run this on the database server as the operating system's root user, using Unix
+socket authentication.
 
 !!! info "Populate the database"
 
     ``` bash
-    sudo zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mariadb --default-character-set=utf8mb4 -uroot -p zabbix
+    zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | sudo mariadb --default-character-set=utf8mb4 zabbix
     ```
 
 !!! warning
 
     Depending on the speed of your hardware or virtual machine, the process may
     take anywhere from a few seconds to several minutes without any visual feedback
-    after entering the root password.
+    while the schema is being imported.
 
     Please be patient and avoid cancelling the operation; just wait for the linux 
     prompt to reappear.
@@ -521,13 +542,14 @@ MySQL/MariaDB shell:
 !!! info "Disable function log_bin_trust again"
 
     ```bash
-    mariadb -uroot -p -e "SET GLOBAL log_bin_trust_function_creators = 0;"
+    sudo mariadb -e "SET GLOBAL log_bin_trust_function_creators = 0;"
     ```
 
-This command will disable the setting, ensuring that the servers security
+This command will disable the setting, ensuring that the server's security
 posture remains robust.
 
-This concludes our installation of the MariaDB. You can now proceed to [Preparing the Zabbix server](preparation.md).
+This concludes our installation of MariaDB. You can now proceed to
+[Installing the Zabbix server](zabbix-server.md).
 
 ---
 

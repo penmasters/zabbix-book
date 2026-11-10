@@ -59,8 +59,8 @@ For simplicity, take note of the server details:
 Operating systems, so many choices, each with its own advantages and loyal user base.
 While Zabbix can be installed on a wide range of platforms, documenting the process
 for every available OS would be impractical. To keep this book focused and efficient,
-we have chosen to cover only the most widely used options: Ubuntu, Red Hat, and Suse 
-based distributions.
+we have chosen to cover only the most widely used options: Ubuntu,
+Red Hat-based distributions, and SUSE-based distributions.
 
 Not everyone has access to a Red Hat Enterprise Linux (RHEL) or SUSE Linux Enterprise 
 Server (SLES) subscription, even though a developer account provides limited access.
@@ -109,7 +109,7 @@ To update your system, run the following command based on your OS:
 
 !!! info "Update your system"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf update
     ```
@@ -173,7 +173,7 @@ To install `sudo`, run the following command based on your OS:
 
 !!! info "Install sudo"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install sudo
     ```
@@ -205,7 +205,7 @@ To install and enable the firewall, run the following command:
 
 !!! info "Install and enable the firewall"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install firewalld
     systemctl enable firewalld --now
@@ -223,7 +223,8 @@ To install and enable the firewall, run the following command:
     ```
 ???+ note "What is firewalld / ufw"
 
-    Firewalld is the replacement for iptables in RHEL- and SUSE-based systems and allows
+    Firewalld is the replacement for iptables in Red Hat-based and SUSE-based
+    systems and allows
     changes to take effect immediately without needing to restart the service.
     If your distribution does not use firewalld [https://www.firewalld.org](https://www.firewalld.org),
     refer to your OS documentation for the appropriate firewall configuration steps.
@@ -265,7 +266,7 @@ Here’s why zones are beneficial:
 
 - **Simplified Rule management:**
 
-:   Instead of manually defining complex iptables rules, zones provide an organized
+:   Instead of manually defining complex iptables rules, zones provide an organised
     way to group and manage firewall rules based on usage scenarios.
 
 - **Enhanced security:**
@@ -307,7 +308,7 @@ in the following chapters accordingly.
 
 Another crucial step is configuring the time server and syncing the Zabbix server
 using an NTP client.
-Accurate time synchronization is vital for Zabbix, both for the server and the
+Accurate time synchronisation is vital for Zabbix, both for the server and the
 devices it monitors.
 If one of the hosts has an incorrect time zone, it could lead to confusion, such
 as investigating an issue in Zabbix that appears to have happened hours earlier
@@ -317,7 +318,7 @@ To install and enable chrony, our NTP client, use the following command:
 
 !!! info "Install NTP client"
 
-    Red Hat
+    Red Hat-based
     ```bash
     dnf install chrony
     systemctl enable chronyd --now
@@ -346,7 +347,7 @@ status with the following command:
 ???+ note "what is Chrony"
 
     Chrony is a modern replacement for `ntpd`, offering faster and
-    more accurate time synchronization. If your OS does not support Chrony
+    more accurate time synchronisation. If your OS does not support Chrony
     [https://chrony-project.org/](https://chrony-project.org/), consider using
     `ntpd` instead.
 
@@ -419,16 +420,16 @@ command again:
 ???+ note
 
     Some administrators prefer installing all servers in the UTC time zone to
-    ensure that server logs across global deployments are synchronized.
+    ensure that server logs across global deployments are synchronised.
     Zabbix supports user-based time zone settings, which allows the server to
     remain in UTC while individual users can adjust the time zone via the
     interface if needed.
 
 ---
 
-#### Verifying Chrony Synchronization
+#### Verifying Chrony Synchronisation
 
-To ensure that Chrony is synchronizing with the correct time servers, you can
+To ensure that Chrony is synchronising with the correct time servers, you can
 run the following command:
 
 !!! info "Verify chrony"
@@ -481,7 +482,7 @@ To update the time servers, modify the Chrony configuration file:
 
 !!! info "Edit chrony config file"
 
-    Red Hat
+    Red Hat-based
     ```bash
     vi /etc/chrony.conf
     ```
@@ -567,7 +568,7 @@ system is prepared for the task.
 
 ## Questions
 
-- Why do you think accurate time synchronization is so crucial for a monitoring
+- Why do you think accurate time synchronisation is so crucial for a monitoring
   system like Zabbix?
 - Now that the groundwork is laid, what do you anticipate will be the first step
   in the actual Zabbix installation process?

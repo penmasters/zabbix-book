@@ -434,7 +434,7 @@ You now understand not just how to fetch and return data, but how to:
 * Debug effectively
 * Secure your credentials
 * Handle API errors gracefully
-* Optimize poller usage
+* Optimise poller usage
 * Reuse scripts for multiple metrics
 
 These skills let you integrate Zabbix with virtually any system.

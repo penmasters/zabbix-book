@@ -10,8 +10,8 @@ tags: [beginner]
 Monitoring a Windows host with Zabbix means installing the Zabbix agent (or agent 2)
 on the host and then leaning on a handful of Windows-specific item keys that give
 you access to data sources unique to the platform: performance counters, the Windows
-Event Log, the Service Control Manager, and WMI. None of this is exotic or new
-these item keys have existed for a long time and the underlying Windows interfaces
+Event Log, the Service Control Manager, and WMI. None of this is exotic or new.
+These item keys have existed for a long time and the underlying Windows interfaces
 (Perflib, the event log API, WMI) haven't fundamentally changed either. What this
 chapter focuses on is putting those pieces together correctly.
 

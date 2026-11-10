@@ -202,7 +202,7 @@ to use the `tmux` command as we mentioned earlier.
 !!! info "Login to MariaDB"
 
     ```bash
-    mariadb -u root -p
+    sudo mariadb
     ```
 
 Execute the history and trends partitioning commands you prepared in your notepad
@@ -249,7 +249,7 @@ with our MariaDB login details.
 
 !!! info "Add login details to the script"
 
-    ```bash
+    ```perl
     my $dsn = 'DBI:mysql:'.$db_schema.':mysql_socket=/var/lib/mysql/mysql.sock';
 
     my $db_user_name = 'zabbix';
@@ -271,7 +271,7 @@ We define that in the following block.
 
 !!! info "Add login details to the script"
 
-    ```bash
+    ```perl
     my $tables = {  'history' => { 'period' => 'day', 'keep_history' => '31'},
 
                     'history_log' => { 'period' => 'day', 'keep_history' => '31'},
@@ -296,7 +296,7 @@ database server. As this was written in the Netherlands, I will use `Europe/Amst
 
 !!! info "Add correct time zone"
 
-    ```bash
+    ```perl
     my $curr_tz = 'Europe/Amsterdam';
     ```
 
@@ -311,7 +311,7 @@ to do anything.
 For `MySQL 8.x` users, comment the following `MariaDB` lines.
 !!! info "Comment MariaDB"
 
-    ```bash
+    ```perl
     # MySQL 5.6 + MariaDB
 
         #my $sth = $dbh->prepare(qq{SELECT plugin_status FROM information_schema.plugins
@@ -332,7 +332,7 @@ For `MySQL 8.x` users, comment the following `MariaDB` lines.
 And uncomment the `MySQL 8.x` lines.
 !!! info "Uncomment MySQL 8.x"
 
-    ```bash
+    ```perl
     # MySQL 8.x (NOT MariaDB!)
 
         my $sth = $dbh->prepare(qq{select version();});
@@ -353,7 +353,7 @@ But do not do this for Zabbix 6.0 and higher though.
 
 !!! info "Uncomment for Zabbix 5.4 and older only"
 
-    ```bash
+    ```perl
     # Uncomment the following line for Zabbix 5.4 and earlier
 
         # $dbh->do("DELETE FROM auditlog_details WHERE NOT EXISTS (SELECT NULL FROM
@@ -362,12 +362,12 @@ But do not do this for Zabbix 6.0 and higher though.
         }
     ```
 
-For Zabbix 6.4 and OLDER versions, also make sure to comment the following line.
+For Zabbix 6.4 and OLDER versions, also make sure to uncomment the following line.
 Do not do this for Zabbix 7.0 and higher though:
 
 !!! info "Uncomment for Zabbix 6.4 and older only"
 
-    ```bash
+    ```perl
     'history_bin' => { 'period' => 'day', 'keep_history' => '60'},
     ```
 
@@ -389,32 +389,32 @@ We also need to install some Perl dependencies to make sure we can execute the s
 
     Debian-based
     ```bash
-    apt-get install libdatetime-perl liblogger-syslog-perl
+    apt install libdatetime-perl liblogger-syslog-perl
     ```
 
-If `perl-DateTime` isn't available on your Red Hat 7.x installation, make sure to install
-the powertools repo.
+If `perl-DateTime` isn't available, enable the additional repository for your
+distribution and version:
 
 !!! info "Install correct repository"
 
-    Red Hat 7-based
+    Rocky Linux / AlmaLinux 8
     ```bash
-    yum config-manager --set-enabled powertools
+    dnf config-manager --set-enabled powertools
     ```
 
-    Red Hat 9-based
+    Rocky Linux / AlmaLinux 9
     ```bash
     dnf config-manager --enable crb
     ```
 
-    Genuine Red Hat
+    RHEL 9
     ```bash
-    subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms
+    subscription-manager repos --enable codeready-builder-for-rhel-9-x86_64-rpms
     ```
 
-    Oracle Linux
+    Oracle Linux 9
     ```bash
-    dnf config-manager --set-enabled ol8_codeready_builder
+    dnf config-manager --set-enabled ol9_codeready_builder
     ```
 
 Then the last step is to add a cron job to execute the script every day.

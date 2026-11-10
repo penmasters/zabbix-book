@@ -99,7 +99,7 @@ works, including your Zabbix server itself.
     snmpwalk -v2c -c public localhost 1.3.6.1.2.1.2.2.1.2
     ```
     
-    Red Hat
+    Red Hat-based
     
     1. **Install the SNMP daemon and client tools**
     

@@ -1,5 +1,5 @@
 ---
-descripton: |
+description: |
     This section from The Zabbix Book, titled "Duo MFA Provider," explains how
     to integrate Duo Security with Zabbix for multi-factor authentication. It
     covers setup, configuration, and login testing, adding an extra security

@@ -7,7 +7,7 @@ system, but it doesn't stop there.
 
 One of Zabbix's greatest strengths is its extensibility. Instead of being limited
 to what's available out of the box, you can tailor the platform to your exact
-environment and requirements. In this chapter we explore two of the most practical
+environment and requirements. In this chapter we explore three of the most practical
 and powerful ways to extend Zabbix:
 
 ## Frontend Scripts
@@ -24,6 +24,12 @@ create your own custom item keys to monitor virtually anything: application-spec
 metrics, log files, databases, hardware sensors, business processes, or complex
 calculations. This is where Zabbix truly becomes infinitely flexible.
 
-By mastering Frontend Scripts and User Parameters, you move from being a Zabbix
-*user* to a Zabbix *builder*, capable of shaping the system to perfectly fit your
+## MCP Server
+
+Connect AI applications to Zabbix through the Model Context Protocol (MCP).
+We'll cover how to configure the Zabbix MCP server and control which tools
+those applications can use.
+
+By mastering Frontend Scripts, User Parameters, and the MCP server, you move
+from being a Zabbix *user* to a Zabbix *builder*, capable of shaping the system to perfectly fit your
 infrastructure and operational needs.
