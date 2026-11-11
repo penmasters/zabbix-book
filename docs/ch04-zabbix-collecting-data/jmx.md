@@ -182,8 +182,8 @@ then continue with the following steps to set up Tomcat and enable JMX monitorin
 
     Ubuntu
     ```bash
-    apt install tomcat10
-    vi /etc/default/tomcat10
+    sudo apt install tomcat10
+    sudo vi /etc/default/tomcat10
     ```
     Add the following config: in Ubuntu remove the original JAVA_OPTS line or
     place a # in front
@@ -301,7 +301,7 @@ _4.71 JMX Gateway_
 
     Ubuntu
     ```
-    apt install zabbix-java-gateway
+    sudo apt install zabbix-java-gateway
     ```
 
 ---
