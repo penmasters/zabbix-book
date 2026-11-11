@@ -70,7 +70,7 @@ Among other information, the report shows:
 The host, item, and trigger statistics are further divided into states
 such as monitored, disabled, and unsupported where applicable.
 
-![ch11.37-system-information.png](ch11.37-system-information.png)
+![ch11.37-system-information.png](ch11.37-system-information.png){ align=center }
 
 _11.37 system-information_
 
@@ -231,7 +231,7 @@ generated from that data during the maintenance period.
 Keep this behaviour in mind when using Availability reports for
 historical analysis.
 
-![ch11.38-availability-report.png](ch11.38-availability-report.png)
+![ch11.38-availability-report.png](ch11.38-availability-report.png){ align=center }
 
 _11.38 availability-report_
 
@@ -286,7 +286,7 @@ The report is therefore useful not only for finding infrastructure
 problems, but also for improving the quality of the monitoring
 configuration itself.
 
-![ch11.39-triggers-100.png](ch11.39-triggers-100.png)
+![ch11.39-triggers-100.png](ch11.39-triggers-100.png){ align=center }
 
 _11.39 triggers Top 100_
 
@@ -359,7 +359,7 @@ export contains the filtered records.
 
     Audit records are only collected when audit logging is enabled under `Administration` | `Audit log`. If audit logging is disabled, user and system activities are not recorded in the audit log database records.
 
-![ch11.40-audit-log.png](ch11.40-audit-log.png)
+![ch11.40-audit-log.png](ch11.40-audit-log.png){ align=center }
 
 _11.40 Audit log_
 
@@ -417,7 +417,7 @@ specific notification or action.
 If an operation failed, the **Info** column can contain information
 about the failure.
 
-![ch11.41-action-log.png](ch11.41-action-log.png)
+![ch11.41-action-log.png](ch11.41-action-log.png){ align=center }
 
 _11.41 Action log_
 
@@ -524,7 +524,7 @@ differently, the Top 100 triggers report may reveal that it is
 generating many events, but the Audit log can help determine whether its
 configuration was recently changed.
 
-![ch11.42-notifications.png](ch11.42-notifications.png)
+![ch11.42-notifications.png](ch11.42-notifications.png){ align=center }
 
 _11.42 Notifications_
 

@@ -426,7 +426,7 @@ Write both policies to Vault:
     - Zabbix server - secrets are retrieved by Zabbix server and forwarded to proxies when needed (default);
     - Zabbix server and proxy - secrets are retrieved by both Zabbix server and proxies, allowing them to resolve macros independently.
 
-![ch13.10-vault_resolve_secret.png](ch13.10-vault_resolve_secret.png)
+![ch13.10-vault_resolve_secret.png](ch13.10-vault_resolve_secret.png){ align=center }
 
 _13.10 Resolve secret vault macro by_
 
@@ -1171,7 +1171,7 @@ value. Then trigger a reload on the Zabbix server:
     ```bash
     zabbix_server -R secrets_reload
     ```
-![ch13.11-vault_login.png](ch13.11-vault_login.png)
+![ch13.11-vault_login.png](ch13.11-vault_login.png){ align=center }
 
 _13.11 Vault login_
 

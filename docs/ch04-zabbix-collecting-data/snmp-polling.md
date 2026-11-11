@@ -1085,7 +1085,7 @@ So let's add a **SNMP Interface** and give it the IP of the device we would like
 to monitor. If you have been following our steps on the local machine you can
 use IP `127.0.0.1`, our own server.
 
-![Host Interface](ch04.30-snmp-host-.png)
+![Host Interface](ch04.30-snmp-host-.png){ align=center }
 
 _4.30 SNMP Interface_
 
@@ -1104,7 +1104,7 @@ in the item information.
   will use synchronous polling.
 - **Units:** The data is in bytes so use `B`.
 
-![ch04.31-snmp-item.png](ch04.31-snmp-item.png)
+![ch04.31-snmp-item.png](ch04.31-snmp-item.png){ align=center }
 
 _4.31 SNMP Item_
 
@@ -1118,7 +1118,7 @@ first before we save it.
 
 Add a *preprocessing step* with the name `Change per second`
 
-![ch04.32-snmp-item-preprocessing.png](ch04.32-snmp-item-preprocessing.png)
+![ch04.32-snmp-item-preprocessing.png](ch04.32-snmp-item-preprocessing.png){ align=center }
 
 _4.32 ch04.32-snmp-item-preprocessing.png_
 
@@ -1187,7 +1187,7 @@ some changes.
 The rest can stay as is, just remove the *preprocessing step* we added in the earlier
 example as this item will return us a whole list of information.
 
-![ch04.33-snmp-walk.png](ch04.33-snmp-walk.png)
+![ch04.33-snmp-walk.png](ch04.33-snmp-walk.png){ align=center }
 
 _4.33 SNMP Walk_
 
@@ -1261,7 +1261,7 @@ Fill in the new item with the following information:
   before.
 - **Units:** `B`
 
-![ch04.34-snmp-dependent-item.png](ch04.34-snmp-dependent-item.png)
+![ch04.34-snmp-dependent-item.png](ch04.34-snmp-dependent-item.png){ align=center }
 
 _4.34 Dependent SNMP Item_
 
@@ -1282,7 +1282,7 @@ Add the step **SNMP walk value** and paste the OID in the **Parameter** field:
 Remember from our previous item we need to calculate the **Change per second**
 so add this as the second *preprocessing step*.
 
-![ch04.35-snmp-item-preprocessing.png](ch04.35-snmp-item-preprocessing.png)
+![ch04.35-snmp-item-preprocessing.png](ch04.35-snmp-item-preprocessing.png){ align=center }
 
 _4.35 preprocessing steps_
 

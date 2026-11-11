@@ -224,8 +224,7 @@ the database-specific driver on top.
 !!! info "ODBC Driver Installation"
 
     Red Hat-based
-    ```
-    bash
+    ```bash
     sudo dnf install unixODBC unixODBC-devel
     sudo dnf install mariadb-connector-odbc    # for MySQL or MariaDB targets
     sudo dnf install postgresql-odbc           # for PostgreSQL targets
@@ -238,7 +237,7 @@ the database-specific driver on top.
     sudo zypper install psqlODBC               # for PostgreSQL targets
     ```
 
-    Debian
+    Ubuntu
     ```bash
     sudo apt update
     sudo apt install unixodbc unixodbc-dev

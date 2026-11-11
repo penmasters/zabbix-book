@@ -43,13 +43,13 @@ set **Groups** to **No access to the frontend**,
 Under the **Permissions** tab, assign user role **Super admin role**
 which will automatically give the user the type **Super admin**.
 
-![Create API user](ch12.1-create-api-user.png)
+![Create API user](ch12.1-create-api-user.png){ align=center }
 
 _12.1 Create API user_
 
 Permissions tab:
 
-![API user permissions](ch12.2-api-user-permissions.png)
+![API user permissions](ch12.2-api-user-permissions.png){ align=center }
 
 _12.2 API user role and user type_
 
@@ -57,7 +57,7 @@ Under `Users` | `API tokens`, press **New API token**,
 assign the user **api**. We can uncheck **Set expiration date and time**.
 Press **Add**. Copy the macro to the clipboard.
 
-![Add token to user object](ch12.3-token-added-to-user.png)
+![Add token to user object](ch12.3-token-added-to-user.png){ align=center }
 
 _12.3 Add token to user object_
 
@@ -93,7 +93,7 @@ we will use a reference to the API endpoint in the following format:
 
 Now we can take the two new variables and install them globally:
 
-![User macros](ch12.4-user-macro-global.png)
+![User macros](ch12.4-user-macro-global.png){ align=center }
 
 _12.4 User macros_
 
@@ -195,7 +195,7 @@ Headers
 | :---------------------- | :-------------------------------------------------|
 | **Authorization**       | `Bearer {$ZABBIX.API.TOKEN}`                      |
 
-![User macros](ch12.5-host-get.png)
+![User macros](ch12.5-host-get.png){ align=center }
 
 _12.5 Host get method via HTTP agent item_
 
@@ -206,7 +206,7 @@ Preprocessing steps
 | JSONPath            | `$.result[0].hostgroups[*].name`                      |
 | JavaScript          | `return JSON.parse(value).join(',');`                 |
 
-![User macros](ch12.6-host-get-preprocessing.png)
+![User macros](ch12.6-host-get-preprocessing.png){ align=center }
 
 _12.6 Preprocessing_
 
@@ -224,7 +224,7 @@ To access the suggested inventory field, we must use:
 
 To include extra information inside the message template, follow this lead:
 
-![Inventory fields in media type](ch12.7-use-invenotry-field-in-media-type-with-numbers.png)
+![Inventory fields in media type](ch12.7-use-invenotry-field-in-media-type-with-numbers.png){ align=center }
 
 _12.7 Inventory fields in media type_
 
@@ -254,7 +254,7 @@ _12.7 Inventory fields in media type_
 
 To implement, visit `Alerts` | `Scripts` and press **Create script**.
 
-![Auto close problem](ch12.8-zabbix-api-auto-close-problem-webhook.png)
+![Auto close problem](ch12.8-zabbix-api-auto-close-problem-webhook.png){ align=center }
 
 _12.8 Auto close problem_
 
@@ -295,13 +295,13 @@ For the triggers which need to be closed automatically, we need to:
 
 1) Select the `Allow manual close` checkbox
 
-![Allow manual close](ch12.9-trigger-configuration-allow-manual-close.png)
+![Allow manual close](ch12.9-trigger-configuration-allow-manual-close.png){ align=center }
 
 _12.9 Allow manual close_
 
 2) Add the tag `auto` with the value `close`
 
-![Install trigger tags](ch12.10-trigger-configuration-install-tags.png)
+![Install trigger tags](ch12.10-trigger-configuration-install-tags.png){ align=center }
 
 _12.10 Trigger tags_
 
@@ -310,19 +310,19 @@ Go to `Alerts` | `Actions` | `Trigger actions`
 Create an action which will be targetable
 by using the tag name `auto` with a tag value `close`.
 
-![Set up conditions for action](ch12.11-create-new-action-install-conditions.png)
+![Set up conditions for action](ch12.11-create-new-action-install-conditions.png){ align=center }
 
 _12.11 Conditions for action_
 
 It's important to not create operation step 1, but start operation with step 2:
 
-![A delayed operation](ch12.12-create-new-action-install-operations.png)
+![A delayed operation](ch12.12-create-new-action-install-operations.png){ align=center }
 
 _12.12 A delayed operation_
 
 The **Default operation step duration** field will indicate how long the event will be in the problem state.
 
-![Default operation step](ch12.13-default-operation-step-duration.png)
+![Default operation step](ch12.13-default-operation-step-duration.png){ align=center }
 
 _12.13 Close event later_
 
@@ -348,7 +348,7 @@ This solution has been tested with 7.0/7.4.
 
 To implement, visit `Alerts` | `Scripts` and press **Create script**.
 
-![Delete host webhook](ch12.14-delete-host-webhook.png)
+![Delete host webhook](ch12.14-delete-host-webhook.png){ align=center }
 
 _12.14 Delete host webhook_
 
@@ -388,14 +388,14 @@ Script:
 To set up an action, the trigger must have a tag `delete` with value `host`.
 The conditions can be to target tag plus value and trigger severity:
 
-![Delete host action conditions](ch12.15-delete-host-action-conditions.png)
+![Delete host action conditions](ch12.15-delete-host-action-conditions.png){ align=center }
 
 _12.15 Delete host target tag and tag value_
 
 Here we are running a delayed action with a step number 31.
 Because the default duration is `1d`, the host will be deleted after 30 days.
 
-![Delete host action operations](ch12.16-delete-host-action-operations.png)
+![Delete host action operations](ch12.16-delete-host-action-operations.png){ align=center }
 
 _12.16 Delete host operations_
 
@@ -521,13 +521,13 @@ Script:
 
 All together
 
-![Script item, host Visible name](ch12.17-script-item-host-visible-name.png)
+![Script item, host Visible name](ch12.17-script-item-host-visible-name.png){ align=center }
 
 _12.17 Script item, host Visible name_
 
 The item will sit at host level and serve the purpose of a cron job.
 
-![Script item ready](ch12.18-script-item-ready.png)
+![Script item ready](ch12.18-script-item-ready.png){ align=center }
 
 _12.18 Script item ready_
 
@@ -543,7 +543,7 @@ This is tested and works with Zabbix 7.0.
 
 ---
 
-![Unknown ZBX passive interfaces](ch12.19-host-availability-unknown-passive-agent-checks.png)
+![Unknown ZBX passive interfaces](ch12.19-host-availability-unknown-passive-agent-checks.png){ align=center }
 
 _12.19 Unknown ZBX passive interfaces_
 
@@ -574,7 +574,7 @@ _12.19 Unknown ZBX passive interfaces_
 
 To implement, visit `Alerts` | `Scripts` and press **Create script**.
 
-![Remove unused ZBX interfaces](ch12.20-remove-unused-zbx-hosts.png)
+![Remove unused ZBX interfaces](ch12.20-remove-unused-zbx-hosts.png){ align=center }
 
 _12.20 Remove unused ZBX interfaces_
 
@@ -704,19 +704,19 @@ Script:
     ```
 To put the webhook into action, visit `Alerts` | `Actions` | `Autoregistration actions`. Press **Create action**. For example, to autoregister Linux servers, we can target a pattern ".lnx" inside the hostname.
 
-![Conditions for ZBX active checks](ch12.21-autoreg-conditions.png)
+![Conditions for ZBX active checks](ch12.21-autoreg-conditions.png){ align=center }
 
 _12.21 Conditions for ZBX active checks_
 
 The operations will use the newly created webhook.
 
-![Operations of Zabbix agent autoregistration](ch12.22-autoreg-actions.png)
+![Operations of Zabbix agent autoregistration](ch12.22-autoreg-actions.png){ align=center }
 
 _12.22 Operations of Zabbix agent autoregistration_
 
 The complete picture is:
 
-![Zabbix agent autoregistration completed](ch12.23-autoreg-completed.png)
+![Zabbix agent autoregistration completed](ch12.23-autoreg-completed.png){ align=center }
 
 _12.23 Zabbix agent autoregistration completed_
 
@@ -899,13 +899,13 @@ The script to create and maintain global variables:
     })
     ```
 
-![Reinstall YYYY-MM-DD](ch12.24-yyyy-mm-dd.png)
+![Reinstall YYYY-MM-DD](ch12.24-yyyy-mm-dd.png){ align=center }
 
 _12.24 Create or reinstall global macros_
 
 After running the script, the global variables are now available:
 
-![Reinstall YYYY-MM-DD](ch12.25-yyyy-mm-dd-result.png)
+![Reinstall YYYY-MM-DD](ch12.25-yyyy-mm-dd-result.png){ align=center }
 
 _12.25 Global YYYY, MM, and DD macros_
 

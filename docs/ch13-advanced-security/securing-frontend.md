@@ -29,13 +29,13 @@ create our own root certificate and private key.
 
 <br />
 
-![SSL Ok](ch13.1-ssl-ca.png)
+![SSL Ok](ch13.1-ssl-ca.png){ align=center }
 
 _13.1 SSL Ok_
 
 ## How SSL works - Client - Server flow
 
-![SSL Ok](ch13.2-ssl-workflow.png)
+![SSL Ok](ch13.2-ssl-workflow.png){ align=center }
 
 _13.2 SSL Ok_
 
@@ -336,7 +336,7 @@ will enable SSL and HTTP2.
 
 When we go to our URL `http://<IP or DNS>/` we get redirected to our `https://` page and when we check we can see that our site is secure:
 
-![SSL Ok](ch13.3-cert-ok.png)
+![SSL Ok](ch13.3-cert-ok.png){ align=center }
 
 _13.3 SSL Ok_
 

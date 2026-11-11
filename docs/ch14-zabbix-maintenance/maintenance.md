@@ -60,7 +60,7 @@ This tab defines the precise scheduling:
     maintenance period that will show whether the server is in maintenance
     in the frontend.
 
-![ch14.1-maintenance.png](ch14.1-maintenance.png)
+![ch14.1-maintenance.png](ch14.1-maintenance.png){ align=center }
 
 _14.1 Maintenance_
 
@@ -165,7 +165,7 @@ When suppressed problems are configured to be shown, a dedicated status icon is
 displayed next to the problem. Hovering the mouse pointer over this icon reveals
 additional details about the suppression state.
 
-![ch14.3-maintenance-icon.png](ch14.3-maintenance-icon.png)
+![ch14.3-maintenance-icon.png](ch14.3-maintenance-icon.png){ align=center }
 
 _14.3 Maintenance icon_
 
@@ -251,7 +251,7 @@ every month** at midnight for **2 hours**. Only suppress problems related to the
 | **Tags Tab** | **Tag evaluation:** `AND` | Ensures both conditions (maintenance and tag) are met for suppression. |
 | **Tags Tab** | **Tag:** `service` **Operator:** `=` **Value:** `database` | **Crucial:** Only problems with the tag `service:database` are suppressed. |
 
-![ch14.4-maintenance-config.png](ch14.4-maintenance-config.png)
+![ch14.4-maintenance-config.png](ch14.4-maintenance-config.png){ align=center }
 
 _14.4 Maintenance config_
 
@@ -490,7 +490,7 @@ script.
 
 A working, easy-to-use maintenance script can be found here: [https://github.com/penmasters/trikke76-fork/tree/master/maintenance](https://github.com/penmasters/trikke76-fork/tree/master/maintenance)
 
-![ch14.5-maintenance-api.png](ch14.5-maintenance-api.png)
+![ch14.5-maintenance-api.png](ch14.5-maintenance-api.png){ align=center }
 
 _14.5 Maintenance API_
 

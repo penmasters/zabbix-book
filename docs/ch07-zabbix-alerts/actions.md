@@ -135,7 +135,7 @@ B, C, D, and so on as you add them, and you write the formula yourself. For exam
 `(A or B) and C and not D`. Use this when the default AND/OR logic does not produce
 the correct result.
 
-![ch07.10-type_of_calculation.png](ch07.10-type_of_calculation.png)
+![ch07.10-type_of_calculation.png](ch07.10-type_of_calculation.png){ align=center }
 
 _7.10 type of calculation_
 
@@ -258,7 +258,7 @@ When a problem event fires:
    3–0 mean "step 3 to infinity"), `management` gets notified again.
 5. This continues indefinitely until the problem resolves.
 
-![ch07.11-pause_operations.png](ch07.11-pause_operations.png)
+![ch07.11-pause_operations.png](ch07.11-pause_operations.png){ align=center }
 
 _7.11 pause operations_
 

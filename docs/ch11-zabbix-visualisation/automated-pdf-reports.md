@@ -107,7 +107,7 @@ be something like `http://192.168.0.1/`, `https://myzabbixurl/`, or even
 `https://my_zabbix_domain/zabbix/`. This depends on how you have configured your
 frontend.
 
-![ch11.43-frontend-url.png](ch11.43-frontend-url.png)
+![ch11.43-frontend-url.png](ch11.43-frontend-url.png){ align=center }
 
 _11.43 Frontend URL_
 

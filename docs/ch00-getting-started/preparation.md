@@ -110,7 +110,7 @@ for your environment, which will be Rocky Linux 9, openSUSE Leap 16, or Ubuntu 2
 We will be installing the Zabbix Server along with NGINX as the web server for
 the front-end. Make sure to download the relevant packages for your chosen configuration.
 
-![Zabbix Download](./getting-started/ch00.1-getting-started-zabbixdownload.png)
+![Zabbix Download](./getting-started/ch00.1-getting-started-zabbixdownload.png){ align=center }
 
 _0.1 Zabbix download_
 
@@ -137,7 +137,7 @@ to exclude the Zabbix packages provided by EPEL:
     It's considered bad practice to keep the EPEL repository enabled all the time,
     as it may cause conflicts by unintentionally overwriting or installing unwanted
     packages. Instead, it's safer to enable the repository only when needed, by using
-    the following command during installations: dnf install --enablerepo=epel <package-name>
+    the following command during installations: `dnf install --enablerepo=epel <package-name>`
     This ensures that EPEL is only enabled when explicitly required.
 
 ---
@@ -230,13 +230,13 @@ ensure that Podman is installed and properly configured on your system. Below
 are the instructions for installing Podman on different operating systems.
 
 You can skip this section if you do not plan to run any Zabbix components as
-containers on the current system. It's probably best to run the conainters on
-the database server or a dedicated VM to not have any port confilicts with
+containers on the current system. It's probably best to run the containers on
+the database server or a dedicated VM to not have any port conflicts with
 Zabbix server or other components.
 
 ???+ note "Why Podman?"
 
-    Podman is a popular containerization tool that allows you to run and manage
+    Podman is a popular containerisation tool that allows you to run and manage
     containers without requiring a daemon like Docker. It is the recommended
     container engine on most modern distributions and offers several advantages
     over Docker.
@@ -328,7 +328,7 @@ as defined by the previous `semanage` commands.
 This command enables “linger” for the user `podman`. Linger allows user services
 (such as containers managed by Systemd) to continue running even when the user
 is not actively logged in. This is useful for running Podman containers in the
-background and ensures that containerized proxies or other services remain active
+background and ensures that containerised proxies or other services remain active
 after logout or system reboots.
 
 As the final step in creating the Podman setup we need to tell Systemd where 

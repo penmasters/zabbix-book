@@ -60,7 +60,7 @@ Zabbix ships with a default dashboard called *Global view* that gives a good sta
 point. You can edit it or leave it as is and create additional dashboards for specific
 purposes.
 
-![ch11.1-action_menu.png](ch11.1-action_menu.png)
+![ch11.1-action_menu.png](ch11.1-action_menu.png){ align=center }
 
 _11.1 Actions menu_
 
@@ -78,7 +78,7 @@ Click *Create dashboard*. A dialog appears asking for:
 - **Start slideshow automatically**: When selected, Zabbix will automatically start
   the slideshow if you have multiple pages.
 
-![ch11.2-create_dashboards.png](ch11.2-create_dashboards.png)
+![ch11.2-create_dashboards.png](ch11.2-create_dashboards.png){ align=center }
 
 _11.2 Create Dashboard_
 
@@ -149,7 +149,7 @@ executed. Useful for an audit-style view of what your alerting system has been d
 
 **Key options:** filter by time period, media type, status, and recipient.
 
-![ch11.3-action_log.png](ch11.3-action_log.png)
+![ch11.3-action_log.png](ch11.3-action_log.png){ align=center }
 
 _11.3 Action Log widget_
 
@@ -164,7 +164,7 @@ time. Useful for teams operating across time zones to know the server time.
 Key options: *Clock type* (digital / analog), *Time type* (local / server /
 specified time zone).
 
-![ch11.4-clock.png](ch11.4-clock.png)
+![ch11.4-clock.png](ch11.4-clock.png){ align=center }
 
 _11.4 Clock widget_
 
@@ -175,7 +175,7 @@ _11.4 Clock widget_
 Displays a summary of the last network discovery run: how many devices were found
 and in what state. Useful on infrastructure overview dashboards.
 
-![ch11.5-discovery.png](ch11.5-discovery.png)
+![ch11.5-discovery.png](ch11.5-discovery.png){ align=center }
 
 _11.5 Discovery status_
 
@@ -187,7 +187,7 @@ Shows a list of manually bookmarked graphs (custom graphs that a user has marked
 as favourites). This widget is personal, it reflects the graphs favourited by the
 user currently viewing the dashboard.
 
-![ch11.6-fav_graph.png](ch11.6-fav_graph.png)
+![ch11.6-fav_graph.png](ch11.6-fav_graph.png){ align=center }
 
 _11.6 Favourite Graphs_
 
@@ -198,7 +198,7 @@ _11.6 Favourite Graphs_
 The network map equivalent of Favourite graphs. Shows the user's bookmarked network
 maps.
 
-![ch11.7-fav_maps.png](ch11.7-fav_maps.png)
+![ch11.7-fav_maps.png](ch11.7-fav_maps.png){ align=center }
 
 _11.7 Favourite Maps_
 
@@ -213,7 +213,7 @@ is in a healthy range.
 **Key options:** item to display, minimum and maximum values for the scale, threshold
 zones with configurable colours, needle/arc display style.
 
-![ch11.8-gauge.png](ch11.8-gauge.png)
+![ch11.8-gauge.png](ch11.8-gauge.png){ align=center }
 
 _11.8 Gauge_
 
@@ -230,7 +230,7 @@ Click a marker to drill down to the host.
 > **Prerequisite:** Host inventory must be populated with latitude and longitude
   values for the Geomap to place hosts correctly.
 
-![ch11.9-geomaps.png](ch11.9-geomaps.png)
+![ch11.9-geomaps.png](ch11.9-geomaps.png){ align=center }
 
 _11.9 Geomap_
 
@@ -267,7 +267,7 @@ far more display options.
     Since Zabbix 8.0 we now have the option in the Graph widget to display our
     data with inverted Y-axis values.
 
-![ch11.10-graph.png](ch11.10-graph.png)
+![ch11.10-graph.png](ch11.10-graph.png){ align=center }
 
 _11.10 Graph_
 
@@ -282,7 +282,7 @@ Use this widget when you need to display a named custom graph that you have alre
 defined elsewhere and do not want to reconfigure in the widget itself. For new
 visualisation work, prefer the *Graph* widget.
 
-![ch11.11-classic_graph.png](ch11.11-classic_graph.png)
+![ch11.11-classic_graph.png](ch11.11-classic_graph.png){ align=center }
 
 _11.11 Classic Graph_
 
@@ -297,7 +297,7 @@ generated graphs appear in this widget.
 **Key options:** select the LLD items or the graph prototype whose results you want
 to display.
 
-![ch11.12-graph_prototype.png](ch11.12-graph_prototype.png)
+![ch11.12-graph_prototype.png](ch11.12-graph_prototype.png){ align=center }
 
 _11.12 Graph prototype_
 
@@ -313,7 +313,7 @@ entities.
 **Key options:** hosts/items to include, threshold definitions that control cell
 colouring.
 
-![ch11.13-honeycomb.png](ch11.13-honeycomb.png)
+![ch11.13-honeycomb.png](ch11.13-honeycomb.png){ align=center }
 
 _11.13 Honeycomb_
 
@@ -325,7 +325,7 @@ Shows a summary bar chart of how many hosts in selected host groups are *availab
 *not available*, *unknown*, or *disabled* per interface type (Zabbix agent, SNMP,
 JMX, IPMI).
 
-![ch11.14-host_availability.png](ch11.14-host_availability.png)
+![ch11.14-host_availability.png](ch11.14-host_availability.png){ align=center }
 
 _11.14 Host availability_
 
@@ -339,7 +339,7 @@ host-specific dashboard page.
 
 **Key options:** the host to display, which details to include.
 
-![ch11.15-host_card.png](ch11.15-host_card.png)
+![ch11.15-host_card.png](ch11.15-host_card.png){ align=center }
 
 _11.15 Host card_
 
@@ -358,7 +358,7 @@ any host by selection, without needing a separate dashboard per host.
 **Key options:** host groups, tags, and problem severity filters to limit which
 hosts appear in the list.
 
-![ch11.16-host_navigator.png](ch11.16-host_navigator.png)
+![ch11.16-host_navigator.png](ch11.16-host_navigator.png){ align=center }
 
 _11.16 Host Navigator_
 
@@ -369,7 +369,7 @@ _11.16 Host Navigator_
 Similar to *Host card*, but focused on a single item rather than a whole host.
 Displays the item's current value, units, and a small sparkline trend.
 
-![ch11.17-item_card.png](ch11.17-item_card.png)
+![ch11.17-item_card.png](ch11.17-item_card.png){ align=center }
 
 _11.17 Item Card_
 
@@ -383,7 +383,7 @@ on discrete event-like metrics (log entries, state changes).
 
 **Key options:** items to display, number of rows to show, sort order.
 
-![ch11.18-item_history.png](ch11.18-item_history.png)
+![ch11.18-item_history.png](ch11.18-item_history.png){ align=center }
 
 _11.18 Item History_
 
@@ -394,7 +394,7 @@ _11.18 Item History_
 The item-level equivalent of *Host navigator*. Renders a searchable list of items
 and allows other widgets on the page to be driven by the user's selection.
 
-![ch11.19-item_navigator.png](ch11.19-item_navigator.png)
+![ch11.19-item_navigator.png](ch11.19-item_navigator.png){ align=center }
 
 _11.19 Item Navigator_
 
@@ -412,7 +412,7 @@ a single value, big and clear, with immediate colour feedback.
 **Key options:** item to display, units override, decimal places, threshold zones,
 sparkline on/off.
 
-![ch11.20-item_value.png](ch11.20-item_value.png)
+![ch11.20-item_value.png](ch11.20-item_value.png){ align=center }
 
 _11.20 Item Value_
 
@@ -425,7 +425,7 @@ and connection states, and updates in real time as problem states change.
 
 **Key options:** which map to display, whether to fit it to the widget size automatically.
 
-![ch11.21-map.png](ch11.21-map.png)
+![ch11.21-map.png](ch11.21-map.png){ align=center }
 
 _11.21 Map_
 
@@ -439,7 +439,7 @@ a map in the tree updates the map displayed in the *Map* widget on the same page
 
 **Key options:** the tree definition (you build the hierarchy of maps manually).
 
-![ch11.22-map_navigation.png](ch11.22-map_navigation.png)
+![ch11.22-map_navigation.png](ch11.22-map_navigation.png){ align=center }
 
 _11.22 Map Navigation_
 
@@ -453,7 +453,7 @@ distribution (disk usage breakdown, traffic by interface, etc.).
 **Key options:** data sets (host/item pairs that become slices), colours, whether
 to show as pie or donut, legend.
 
-![ch11.23-pie.png](ch11.23-pie.png)
+![ch11.23-pie.png](ch11.23-pie.png){ align=center }
 
 _11.23 Pie_
 
@@ -465,7 +465,7 @@ Shows a summary table of hosts that currently have active problems, grouped or
 filtered by host group. Each row shows a host name and a count of problems per
 severity level, colour-coded.
 
-![ch11.24-problem_hosts.png](ch11.24-problem_hosts.png)
+![ch11.24-problem_hosts.png](ch11.24-problem_hosts.png){ align=center }
 
 _11.24 Problem Hosts_
 
@@ -482,7 +482,7 @@ age; number of rows to display.
 
 This is one of the most commonly placed widgets on any operational dashboard.
 
-![ch11.25-problems.png](ch11.25-problems.png)
+![ch11.25-problems.png](ch11.25-problems.png){ align=center }
 
 _11.25 Problems_
 
@@ -494,7 +494,7 @@ Shows a single summary bar (or count cells) broken down by severity level (Disas
 High, Average, Warning, Information, Not classified). Gives an immediate count of
 active problems at each level across a selected scope.
 
-![ch11.26-problems_by_severity.png](ch11.26-problems_by_severity.png)
+![ch11.26-problems_by_severity.png](ch11.26-problems_by_severity.png){ align=center }
 
 _11.26 Problems By Severity_
 
@@ -507,7 +507,7 @@ analysis between two metrics.
 
 **Key options:** X-axis item, Y-axis item, point size and colour, axis labels.
 
-![ch11.27-scatter_plot.png](ch11.27-scatter_plot.png)
+![ch11.27-scatter_plot.png](ch11.27-scatter_plot.png){ align=center }
 
 _11.27 Scatter Plot_
 
@@ -519,7 +519,7 @@ Displays SLA compliance data for services defined in Zabbix's Service monitoring
 module. Shows SLI values and OK/problem time breakdowns for a selected SLA and
 time period.
 
-![ch11.28-sla_reports.png](ch11.28-sla_reports.png)
+![ch11.28-sla_reports.png](ch11.28-sla_reports.png){ align=center }
 
 _11.28 SLA Reports_
 
@@ -531,7 +531,7 @@ Shows key Zabbix server status figures: number of hosts, items, triggers, users
 logged in, required server performance, etc. Typically placed on an internal
 administration dashboard.
 
-![ch11.29-system_information.png](ch11.29-system_information.png)
+![ch11.29-system_information.png](ch11.29-system_information.png){ align=center }
 
 _11.29 System Information_
 
@@ -545,7 +545,7 @@ find the outliers.
 
 **Key options:** items to rank by, host group filter, number of rows, sort order.
 
-![ch11.30-top_hosts.png](ch11.30-top_hosts.png)
+![ch11.30-top_hosts.png](ch11.30-top_hosts.png){ align=center }
 
 _11.30 Top Hosts_
 
@@ -554,7 +554,7 @@ _11.30 Top Hosts_
 Similar to *Top hosts* but item-centric: lists all item values matching a pattern
 across hosts, ranked by value.
 
-![ch11.31-top_items.png](ch11.31-top_items.png)
+![ch11.31-top_items.png](ch11.31-top_items.png){ align=center }
 
 _11.31 Top Items_
 
@@ -563,7 +563,7 @@ _11.31 Top Items_
 Lists the triggers that have fired most frequently in the selected time period,
 ranked by event count. Useful for identifying noisy or chronic problem sources.
 
-![ch11.32-top_triggers.png](ch11.32-top_triggers.png)
+![ch11.32-top_triggers.png](ch11.32-top_triggers.png){ align=center }
 
 _11.32 Top Triggers_
 
@@ -576,7 +576,7 @@ health view.
 **Key options:** host groups, trigger name filter, whether to show triggers in
 OK state.
 
-![ch11.33-trigger_overview.png](ch11.33-trigger_overview.png)
+![ch11.33-trigger_overview.png](ch11.33-trigger_overview.png){ align=center }
 
 _11.33 Trigger Overview_
 
@@ -589,7 +589,7 @@ dashboards, documentation pages, or any web content alongside your Zabbix data.
   must not set `X-Frame-Options: DENY` or an equivalent CSP header, otherwise
   the browser will refuse to render it.
 
-![ch11.34-url.png](ch11.34-url.png)
+![ch11.34-url.png](ch11.34-url.png){ align=center }
 
 _11.34 URL_
 
@@ -598,7 +598,7 @@ _11.34 URL_
 Displays the results of Zabbix web scenario checks: which scenarios are OK, failed,
 or unknown, along with availability percentages and average response times.
 
-![ch11.35-web_monitoring.png](ch11.35-web_monitoring.png)
+![ch11.35-web_monitoring.png](ch11.35-web_monitoring.png){ align=center }
 
 _11.35 Web Monitoring_
 
@@ -621,7 +621,7 @@ the dashboard properties, and also override it per page in the page settings.
 To delete a page, click on the 3 dots in its tab and choose *Delete page*. Note: a dashboard
 must always have at least one page.
 
-![ch11.36-add_page.png](ch11.36-add_page.png)
+![ch11.36-add_page.png](ch11.36-add_page.png){ align=center }
 
 _11.36 Add Page_
 

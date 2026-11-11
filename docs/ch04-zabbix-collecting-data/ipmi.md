@@ -677,7 +677,7 @@ In the Zabbix frontend, go to `Data collection` | `Hosts`
 
 ---
 
-![ch04.78-create_redfish_host.png](ch04.78-create_redfish_host.png)
+![ch04.78-create_redfish_host.png](ch04.78-create_redfish_host.png){ align=center }
 
 _4.78 create Redfish host_
 
@@ -738,13 +738,13 @@ the *master item* using preprocessing.
 
 Press **Add** to save the item.
 
-![ch04.79-create_dependent_item.png](ch04.79-create_dependent_item.png)
+![ch04.79-create_dependent_item.png](ch04.79-create_dependent_item.png){ align=center }
 
 _4.79 Dependent item_
 
 Let's go to our latest data page and have a look at our newly created item.
 
-![ch04.80-latest_data.png](ch04.80-latest_data.png)
+![ch04.80-latest_data.png](ch04.80-latest_data.png){ align=center }
 
 _4.80 Latest data_
 
@@ -809,7 +809,7 @@ Press the '**...**' in front of the item and select **Create dependent discovery
 | **Preprocessing** | JSONPath | `$.Members[*]` |
 | **LLD macros** | `{#CHASSIS_URI}` | `$['@odata.id']` |
 
-![ch04.81-discovery_rule.png](ch04.81-discovery_rule.png)
+![ch04.81-discovery_rule.png](ch04.81-discovery_rule.png){ align=center }
 
 _4.81 LLD Discovery rule_
 
@@ -855,7 +855,7 @@ queries each discovered chassis.
 
 This produces one HTTP item per discovered chassis.
 
-![ch04.82-item_prototype_raw.png](ch04.82-item_prototype_raw.png)
+![ch04.82-item_prototype_raw.png](ch04.82-item_prototype_raw.png){ align=center }
 
 _4.82 Item prototype raw_
 
@@ -888,7 +888,7 @@ We can extract this cleanly using a dependent item.
 | **Type of information** | Character | |
 | **Preprocessing** | JSONPath | `$.Status.Health` |
 
-![ch04.83-item_prototype_health.png](ch04.83-item_prototype_health.png)
+![ch04.83-item_prototype_health.png](ch04.83-item_prototype_health.png){ align=center }
 
 _4.83 Dependent discovery item health_
 
@@ -906,7 +906,7 @@ And as a final step we can create a simple **Trigger prototype** to make the dis
 | **Name:** | `Chassis health is not OK` | |
 | **Expression** | `last(/Redfish Mockup Server/redfish.chassis.health[{#CHASSIS_URI}])<>"OK"` | Adapt trigger names if needed |
 
-![ch04.84-trigger_prototype.png](ch04.84-trigger_prototype.png)
+![ch04.84-trigger_prototype.png](ch04.84-trigger_prototype.png){ align=center }
 
 _4.84 Trigger Prototype_
 
@@ -921,7 +921,7 @@ environments are gradually transitioning from IPMI to Redfish.
 
 | Topic                   | IPMI                                          | Redfish                                             |
 | ----------------------- | --------------------------------------------- | --------------------------------------------------- |
-| Standardization         | Older, widely implemented standard            | Modern DMTF standard designed for automation        |
+| Standardisation         | Older, widely implemented standard            | Modern DMTF standard designed for automation        |
 | Transport               | Binary protocol over UDP (typically port 623) | RESTful API over HTTPS                              |
 | Data format             | Sensor-based, vendor-defined naming           | Structured JSON with formal schemas                 |
 | Security model          | Historically weak, varies by firmware         | Designed with modern security in mind               |

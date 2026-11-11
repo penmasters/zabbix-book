@@ -10,7 +10,7 @@ tags: [beginner]
 # Zabbix architecture
 
 In this chapter, we will walk through the process of installing the Zabbix server.
-There are many different ways to setup a Zabbix server. We will cover the most
+There are many different ways to set up a Zabbix server. We will cover the most
 common setups with MariaDB and PostgreSQL on Red Hat-based and SUSE-based
 distributions and Ubuntu.
 

@@ -34,7 +34,7 @@ valuable for the monitoring and open-source communities.
 - Robin Roevens: [https://github.com/RobinR1](https://github.com/RobinR1)
 - Jacob Yuhas: [https://github.com/sneakdella](https://github.com/sneakdella)
 
-A list of all the contributors who where so kind to fix typos etc .. can be found here :
+A list of all the contributors who were so kind to fix typos etc .. can be found here :
 [https://github.com/penmasters/zabbix-book/graphs/contributors](https://github.com/penmasters/zabbix-book/graphs/contributors)
 
 ### Translators

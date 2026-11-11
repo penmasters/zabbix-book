@@ -54,7 +54,7 @@ To install the Zabbix MCP server, we need to log in to the CLI of the machine wh
     dnf install zabbix-mcp-server
     ```
 
-    Debian-based
+    Ubuntu
 
     ```bash
     apt install zabbix-mcp-server
@@ -210,7 +210,7 @@ With our Zabbix MCP server configured, let's make sure the configuration file is
 
 Once the Zabbix MCP server is running, we can connect our preferred AI application to it. Most AI applications that support MCP follow a similar configuration process, although the exact steps will differ between applications.
 
-First, we need to create a Zabbix user and an API token under ``Users`` | ``Users`` and ``Users`` | ``API tokens`` in the Zabbix frontend. This is important, as the Zabbix user determines what the AI application can read and write according to the user's permissions.
+First, we need to create a Zabbix user and an API token under `Users` | `Users` and `Users` | `API tokens` in the Zabbix frontend. This is important, as the Zabbix user determines what the AI application can read and write according to the user's permissions.
 
 After setting up the user, open the MCP configuration part of your AI application and add a new MCP server connection. Generally, you will need to provide three things:
 
@@ -233,7 +233,7 @@ To test the connection, simply ask your AI assistant to retrieve information fro
 
 If everything is configured correctly, the AI application will use the available MCP tools to retrieve the requested information from Zabbix.
 
-![Zabbix MCP connected AI response](mcp/ch09.15-mcp-query-example.png)
+![Zabbix MCP connected AI response](mcp/ch09.15-mcp-query-example.png){ align=center }
 
 _9.15 Zabbix MCP connected AI response_
 

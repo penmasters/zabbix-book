@@ -6,7 +6,7 @@ tags: [advanced]
 ---
 # Web services
 
-This chapter explains what the Zabbix Web service component is why you may need
+This chapter explains what the Zabbix web service component is, why you may need
 or consider it, what the requirements are and finally how to install it.
 
 ---
@@ -23,7 +23,7 @@ releases of Zabbix.
 The actual usage of the Zabbix web service to generate reports is covered in the
 [_Scheduled reports_](../ch11-zabbix-visualisation/built-in-reports.md) chapter.
 
-![zabbix-web-service-overview](ch03.17-web-services-component.png)
+![zabbix-web-service-overview](ch03.17-web-services-component.png){ align=center }
 
 _3.17 Zabbix web service overview_
 

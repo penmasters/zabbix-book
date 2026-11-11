@@ -16,7 +16,7 @@ rewrite or move `v8.0-1`, `v8.0-1-<locale>.1`, or any later publication tag.
 ## What data formats do we accept ?
 
 - We prefer you clone the project and deliver us your text in markdown.
-- However if you are not familiar with mdocs and / or markdown you can deliver us a document in .doc(x)
+- However if you are not familiar with MkDocs and / or markdown you can deliver us a document in .doc(x)
   or .pages with all needed text and screenshots we will convert it to .md for you
 
 ## Meta description
@@ -26,7 +26,7 @@ Just above the header add a short description that webcrawlers can use.
 ```` markdown
     ```
     description: |
-        A short description of a few lines preferable around 150-200 words.
+        A short description of a few lines preferably around 150-200 words.
     tags: [beginner, advanced, expert] #Add one of these tags so that reader knows what level of knowledge is required.
     ```
 ````
@@ -109,7 +109,7 @@ This can be done with :---- as can be seen in next example
 ## Adding images
 
 If you like to add images just create a folder under the chapter folder with
-the name of your topic and place the `.png` file it. 7. Naming your images. Always
+the name of your topic and place the `.png` file in it. Always
 use the following naming convention: `chxx.y-topic-imagename.png`. Where xx is
 the chapter number and y is the number of the image within the chapter.
 

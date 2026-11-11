@@ -132,7 +132,7 @@ The result is the authentication token for the session:
 
 !!! info ""
 
-    ```bash
+    ```json
     {
         "jsonrpc": "2.0",
         "result": "<session token>",

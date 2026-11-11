@@ -60,7 +60,7 @@ command to install the additional package(s) and you should be ready to go.
     zypper install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
     ```
 
-    Debian
+    Ubuntu
     ```bash
     apt install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
     ```

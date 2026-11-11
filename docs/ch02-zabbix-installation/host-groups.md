@@ -10,7 +10,7 @@ tags: [beginner]
 # Host Groups
 
 In Zabbix, **host groups** serve as a foundational mechanism for organising monitored
-entities. They allow you to logically categorize hosts for easier management, simplified
+entities. They allow you to logically categorise hosts for easier management, simplified
 permissions, and streamlined configuration, especially useful in larger environments.
 
 Common examples include:
@@ -29,7 +29,7 @@ You can manage host groups by navigating to:
 
 `Menu` | `Data collection` | `Host groups`
 
-![Host Groups Menu Screenshot](ch02.20-host-grouops.png)
+![Host Groups Menu Screenshot](ch02.20-host-grouops.png){ align=center }
 
 _2.20 Host Groups menu_
 
@@ -77,7 +77,7 @@ When adding a new host:
 2. Click **Create host group** in the top right.
 3. Enter a **Group name** and click **Add**.
 
-![Create new host group](ch02.21-new-host-group.png)
+![Create new host group](ch02.21-new-host-group.png){ align=center }
 
 _2.21 Create new host groups_
 
@@ -111,7 +111,7 @@ an option to apply permissions and tag filters to all subgroups:
 3. Enabling this will cascade any rights assigned to the parent group down to its
    subgroups.
 
-![Apply subgroup permissions](ch02.22-sub-groups.png)
+![Apply subgroup permissions](ch02.22-sub-groups.png){ align=center }
 
 _2.22 subgroup permissions_
 

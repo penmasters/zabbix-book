@@ -67,7 +67,7 @@ template for this purpose, and add a new **Zabbix trapper** item to it:
   * Key: `hello.world`
   * Type of information: **Text**
 
-![Zabbix trapper - first item](ch04.93-trapper-hello-world.png)
+![Zabbix trapper - first item](ch04.93-trapper-hello-world.png){ align=center }
 
 _4.93 Zabbix trapper - first item_
 
@@ -87,7 +87,7 @@ the item key from the previous step using the `-k` option:
 
 And that is about it! Our trapper item is updated.
 
-![Zabbix trapper - first item result](ch04.94-trapper-hello-world-result.png)
+![Zabbix trapper - first item result](ch04.94-trapper-hello-world-result.png){ align=center }
 
 _4.94 Zabbix trapper - first item result_
 
@@ -156,14 +156,14 @@ send this duration to Zabbix via `zabbix_sender`:
     exit 0
     ```
 
-![Zabbix trapper - not aligned time](ch04.95-trapper-not-aligned-time.png)
+![Zabbix trapper - not aligned time](ch04.95-trapper-not-aligned-time.png){ align=center }
 
 _4.95 Zabbix trapper - not aligned time_
 
 Problem here is that since the script runs with chaotic durations, results will be
 displayed on the time axis of graphs at unequal intervals between collected values:
 
-![Zabbix trapper - not aligned time graph](ch04.96-trapper-not-aligned-time-graph.png)
+![Zabbix trapper - not aligned time graph](ch04.96-trapper-not-aligned-time-graph.png){ align=center }
 
 _4.96 Zabbix trapper - not aligned time graph_
 
@@ -193,13 +193,13 @@ seconds of the minute the script was started:
 
 Now the values are collected exactly at second 00 of each minute:
 
-![Zabbix trapper - not aligned time](ch04.97-trapper-aligned-time.png)
+![Zabbix trapper - not aligned time](ch04.97-trapper-aligned-time.png){ align=center }
 
 _4.97 Zabbix trapper - not aligned time_
 
 And our graph becomes smooth:
 
-![Zabbix trapper - aligned time graph](ch04.98-trapper-aligned-time-graph.png)
+![Zabbix trapper - aligned time graph](ch04.98-trapper-aligned-time-graph.png){ align=center }
 
 _4.98 Zabbix trapper - aligned time graph_
 
@@ -215,7 +215,7 @@ possible. Just form sets of data from your data sources (e.g. logs) and feed
 them into Zabbix by creating some temporary trapper items. You will then have a
 view of what has happened, even if you didn't monitor it in real time.
 
-![Zabbix trapper - past incident](ch04.99-trapper-past-incident.png)
+![Zabbix trapper - past incident](ch04.99-trapper-past-incident.png){ align=center }
 
 _4.99 Zabbix trapper - past incident_
 
@@ -226,7 +226,7 @@ in Zabbix by creating sets of data aligned so in time and value amplitude, that
 it would form some image. That is a fun way to entertain your colleagues or
 just sharpen your skills in scripting!
 
-![Zabbix trapper - fun](ch04.100-trapper-fun.png)
+![Zabbix trapper - fun](ch04.100-trapper-fun.png){ align=center }
 
 _4.100 Zabbix trapper - fun_
 
@@ -369,7 +369,7 @@ you will update this item:
 You will see the result in the Zabbix GUI **Latest data** section for the host 
 where the Zabbix trapper item resides:
 
-![Zabbix trapper - API item result](ch04.101-trapper-api-item-result.png)
+![Zabbix trapper - API item result](ch04.101-trapper-api-item-result.png){ align=center }
 
 _4.101 Zabbix trapper - API item result_
 

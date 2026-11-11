@@ -544,7 +544,7 @@ its own schema, preventing accidental interference with each other's data.
     this URI, [https://hevodata.com/learn/postgresql-schema/#schema](https://hevodata.com/learn/postgresql-schema/#schema)
     which explains the benefits and use cases for schemas in PostgreSQL.
 
-To finalize the initial database setup for Zabbix, we need to configure schema permissions
+To finalise the initial database setup for Zabbix, we need to configure schema permissions
 for both the `zabbix-srv` and `zabbix-web` users.
 
 First, we create a custom schema named `zabbix_server` and assign ownership to

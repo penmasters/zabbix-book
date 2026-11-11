@@ -27,7 +27,7 @@ You can check the current SELinux mode with the `getenforce` command:
 
 !!! info ""
 
-    ```yaml
+    ```bash
     getenforce
     ```
 
@@ -39,7 +39,7 @@ To properly secure Zabbix with SELinux, the system should be in `Enforcing` mode
 
 !!! info ""
 
-    ```yaml
+    ```bash
     sudo setenforce 1
     ```
 
@@ -47,7 +47,7 @@ For permanent configuration, edit `/etc/selinux/config` and set:
 
 !!! info ""
 
-    ```yaml
+    ```ini
     SELINUX=Enforcing
     ```
 
@@ -90,16 +90,16 @@ policy rules.
 
 !!! info "You can view the contexts of files using:"
 
-    ```yaml
+    ```bash
     ls -Z /path/to/zabbix/files
     ```
 
 !!! info "And for the processes:"
 
-    ```yaml
-    ps -eZ | grep zabbix"
+    ```bash
+    ps -eZ | grep zabbix
     ```
-    ``` yaml
+    ```text
     system_u:system_r:unconfined_service_t:s0 691 ?  00:02:20 zabbix_agent2
     system_u:system_r:zabbix_t:s0       707 ?        00:00:59 zabbix_server
     system_u:system_r:zabbix_t:s0      1203 ?        00:02:00 zabbix_server
@@ -107,7 +107,7 @@ policy rules.
 
 !!! info "And for log files"
 
-    ``` yaml
+    ```bash
     ls -alZ /var/log/zabbix/zabbix_server.log
     ```
 
@@ -145,7 +145,7 @@ The package is typically installed alongside other Zabbix components:
 
 !!! info
 
-    ```yaml
+    ```bash
     dnf install zabbix-selinux-policy
     ```
 
@@ -185,7 +185,7 @@ writing. Key Zabbix booleans include:
 
 !!! info "You can view these settings with:"
 
-    ```yaml
+    ```bash
     getsebool -a | grep zabbix
     ```
 
@@ -195,7 +195,7 @@ And you can toggle them as needed with `setsebool`.
 
 !!! info
 
-    ```yaml
+    ```bash
     setsebool -P zabbix_can_network on
     ```
 
@@ -221,19 +221,19 @@ First, capture the denial events from the audit log:
 
 !!! info
 
-    ```yaml
+    ```bash
     sudo grep zabbix /var/log/audit/audit.log | grep fping | audit2allow -M zabbix_fping
     ```
 
 !!! info "Install the generated policy module:"
 
-    ```yaml
+    ```bash
     sudo semodule -i zabbix_fping.pp
     ```
 
 !!! info "Apply the correct SELinux context to the `fping` binary:"
 
-    ```yaml
+    ```bash
     sudo chcon -t fping_exec_t /usr/sbin/fping
     ```
 
@@ -246,7 +246,7 @@ Create a policy file named `zabbix_fping.te` with the following content:
 
 !!! example
 
-    ```yaml
+    ```text
     module zabbix_fping 1.0;
     
     require {
@@ -264,19 +264,19 @@ Create a policy file named `zabbix_fping.te` with the following content:
 
 !!! info "Compile the policy module:"
 
-    ```yaml
+    ```bash
     checkmodule -M -m -o zabbix_fping.mod zabbix_fping.te
     ```
 
 !!! info "Package the compiled module:"
 
-    ```yaml
+    ```bash
     semodule_package -o zabbix_fping.pp -m zabbix_fping.mod
     ```
 
 !!! info "Install the policy module:"
 
-    ```yaml
+    ```bash
     semodule -i zabbix_fping.pp
     ```
 

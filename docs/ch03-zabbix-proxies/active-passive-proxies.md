@@ -16,11 +16,11 @@ and configuration steps are the same.
 
 ## Zabbix GUI configuration
 
-There are 2 things we need to do when we like to setup a Zabbix proxy and one of
+There are 2 things we need to do when we like to set up a Zabbix proxy and one of
 those steps is adding the proxy in the frontend of Zabbix. So from the menu let's select
 `Administration` | `Proxies` and click in the upper right corner on `Create proxy`.
 
-![Create proxy](ch03.4-add-active-proxy.png)
+![Create proxy](ch03.4-add-active-proxy.png){ align=center }
 
 _3.4 Create proxy_
 
@@ -41,7 +41,7 @@ field you could enter some text to make it even more clear that this is an activ
     This hostname acts as the unique identifier that the Zabbix server uses to distinguish
     between different active proxies and manage their data correctly.
 
-![Active proxy](ch03.5-new-active-proxy.png)
+![Active proxy](ch03.5-new-active-proxy.png){ align=center }
 
 _3.5 New proxy_
 
@@ -54,7 +54,7 @@ to specify the _Interface_ field. Here we add the IP of the host where our proxy
 runs on. You also notice that we use the same port
 `10051` as the _Zabbix server_ to communicate with our proxy.
 
-![Passive proxy](ch03.6-new-passive-proxy.png)
+![Passive proxy](ch03.6-new-passive-proxy.png){ align=center }
 
 _3.6 New passive proxy_
 
@@ -75,14 +75,14 @@ actually install the Zabbix Proxy software. It's pretty simple, but there's one
 thing we need to decide upfront. Zabbix proxies need a place to store their 
 information, and they can use one of three options: MySQL/MariaDB, PostgreSQL, or SQLite3.
 
-We will only cover SQlite as MySQL and PostgreSQL are basically already covered
+We will only cover SQLite as MySQL and PostgreSQL are basically already covered
 in the [_Zabbix components and installation: Database_](../ch01-zabbix-components/database.md) chapter.
 
 ???+ note
 
-    The only thing that is a bit different when you setup a MySQL or
+    The only thing that is a bit different when you set up a MySQL or
     PostgreSQL database for use with a Zabbix Proxy instead of a Zabbix Server 
-    are the scripts you will need to setup the DB structure. 
+    are the scripts you will need to set up the DB structure.
     
     - For MySQL/MariaDB they are located in `/usr/share/zabbix/sql-scripts/mysql/proxy.sql`.
     - For PostgreSQL they can be found in `/usr/share/zabbix/sql-scripts/postgresql/proxy.sql`.
@@ -329,7 +329,7 @@ In case of the _active_ proxy, we are now ready. Going back to our frontend we
 should be able to see that our proxy is now online. Zabbix will also show the
 version of our proxy and the last seen age.
 
-![ProxyA ready](ch03.7-active-proxy-installed.png)
+![ProxyA ready](ch03.7-active-proxy-installed.png){ align=center }
 
 _3.7 Active proxy configured_
 
@@ -337,7 +337,7 @@ For the _passive_ proxy however, you will notice in the frontend that nothing
 seems to be working at all even when we have configured everything correctly on 
 our proxy.
 
-![Passive Proxy not working](ch03.8-passive-not-working.png)
+![Passive Proxy not working](ch03.8-passive-not-working.png){ align=center }
 
 _3.8 Proxy not working_
 
@@ -366,7 +366,7 @@ Now going back to the frontend, we will see that our _passive proxy_ becomes
 available. If it's not green give it a few seconds or check all steps again
 and verify your log files.
 
-![Passive Proxy working](ch03.9-passive-working.png)
+![Passive Proxy working](ch03.9-passive-working.png){ align=center }
 
 _3.9 Proxy working_
 

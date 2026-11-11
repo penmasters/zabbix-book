@@ -30,7 +30,7 @@ the preprocessing logic and alter the incoming data.
 We do this on the item configuration, under the **preprocessing** tab of the item 
 we are editing.
 
-![ch04.43-preprocessing-item-tab.png](ch04.43-preprocessing-item-tab.png)
+![ch04.43-preprocessing-item-tab.png](ch04.43-preprocessing-item-tab.png){ align=center }
 
 _4.43 Preprocessing item tab_
 
@@ -51,7 +51,7 @@ the preprocessor. This happens before the data is stored in the Zabbix database
 and that is why it is called *preprocessing*. We process the data before we store
 it in the database.
 
-![ch04.44-preprocessing-basic-functionality.png](ch04.44-preprocessing-basic-functionality.png)
+![ch04.44-preprocessing-basic-functionality.png](ch04.44-preprocessing-basic-functionality.png){ align=center }
 _4.44 Preprocessing basic functionality_
 
 When data is received, Zabbix will internally kick off a few steps. First, it will 
@@ -174,7 +174,7 @@ we could configure our preprocessing like this.
     - Regular expression: `The error is value:\s(\d+)`
     - Output format: `\1`
 
-![ch04.45-preprocessing-regex.png](ch04.45-preprocessing-regex.png)
+![ch04.45-preprocessing-regex.png](ch04.45-preprocessing-regex.png){ align=center }
 _4.45 Preprocessing regular expression_
 
 This would then result in the value `0`, which we can store as a
@@ -209,7 +209,7 @@ following.
     - Replace: `false` with `0`
     - Replace: `true` with `1`
 
-![ch04.46-preprocessing-jsonpath.png](ch04.46-preprocessing-jsonpath.png)
+![ch04.46-preprocessing-jsonpath.png](ch04.46-preprocessing-jsonpath.png){ align=center }
 _4.46 Preprocessing JSONPath_
 
 This will extract the value `true`. However, as a bonus we said we would also like
@@ -218,7 +218,7 @@ used an additional 2 preprocessing steps of type **Replace** after the **JSONPat
 step, replacing `false` with `0` and `true` with `1`. If we press the 
 **Test all steps** button, we can see the result happen live.
 
-![ch04.47-preprocessing-jsonpath-test.png](ch04.47-preprocessing-jsonpath-test.png)
+![ch04.47-preprocessing-jsonpath-test.png](ch04.47-preprocessing-jsonpath-test.png){ align=center }
 _4.47 Preprocessing JSONPath test_
 
 It's important to know that we can add an unlimited number of preprocessing 
@@ -513,7 +513,7 @@ where in Zabbix you would generally like to store Bytes (B) instead.
 
     - Custom multiplier: `1048576` (1,024 * 1,024)
 
-![ch04.48-preprocessing-multiplier.png](ch04.48-preprocessing-multiplier.png)
+![ch04.48-preprocessing-multiplier.png](ch04.48-preprocessing-multiplier.png){ align=center }
 _4.48 Preprocessing Custom Multiplier_
 
 This will now store the received MegaByte value as Bytes by multiplying the incoming
@@ -640,7 +640,7 @@ Keep in mind, Zabbix will already put this JavaScript code in a function for
 preprocessing as `function (value) { }`. When testing this code, we can see it
 executed for us now, converting our weird date format into a nice Unixtime.
 
-![ch04.49-preprocessing-javascript.png](ch04.49-preprocessing-javascript.png)
+![ch04.49-preprocessing-javascript.png](ch04.49-preprocessing-javascript.png){ align=center }
 _4.49 Preprocessing JavaScript_
 
 ---

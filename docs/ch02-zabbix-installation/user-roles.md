@@ -117,7 +117,7 @@ of which menu they are in.
 
 * **Example Use (NOC):** Allow a **NOC Operator** role (based on `User`) to
   **Acknowledge problems** and **Close problems manually**, but *deny* them the
-  right to **Execute scripts** to prevent unauthorized command execution.
+  right to **Execute scripts** to prevent unauthorised command execution.
 * **Example Use 2 (Dashboard):** Allow a **Manager** role (based on `User`) to
   **Create and edit dashboards** so they can customise their view, but deny them
   the ability to **Acknowledge problems**.
@@ -213,7 +213,7 @@ not modify host configurations or system settings.
 Ideal in environments with **segregated duties**, e.g., one team maintains templates
 while another handles discovery and host setup.
 
-![ch02.30-template_maintainer.png](ch02.30-template_maintainer.png)
+![ch02.30-template_maintainer.png](ch02.30-template_maintainer.png){ align=center }
 
 _2.30 template maintainer_
 
@@ -263,14 +263,14 @@ Assign this role to a **User Group** with `Read` access to specific Host Groups
 **This ensures:**
 
 * The operator can view and acknowledge only relevant alerts.
-* No risk of unauthorized system modifications.
+* No risk of unauthorised system modifications.
 
 **Use Case:**
 
 Used by **first-line support teams** who handle incident acknowledgment and
 escalation during live monitoring.
 
-![ch02.31-noc_operator.png](ch02.31-noc_operator.png)
+![ch02.31-noc_operator.png](ch02.31-noc_operator.png){ align=center }
 
 _2.31 noc operator_
 

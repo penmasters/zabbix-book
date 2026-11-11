@@ -1,7 +1,7 @@
 ---
 description: |
     This section from The Zabbix Book, titled "LDAP/AD Authentication," explains
-    how to integrate Zabbix with LDAP or Active Directory for centralized user
+    how to integrate Zabbix with LDAP or Active Directory for centralised user
     management. It covers connection setup, binding options, and login verification,
     making user authentication more secure and easier to maintain.
 tags: [expert]
@@ -231,7 +231,7 @@ details about how all this should be configured.
 In `Users` | `Authentication` we need to do two things:
 
 - Set `Default authentication` to _LDAP_. When JIT is turned off then type of
-  authentication is defined based on the _User group_ a user that tries to login
+  authentication is defined based on the _User group_ a user that tries to log in
   belongs to. In case of JIT the user does not exist in Zabbix yet thus obviously
   does not belong to any _User group_ so _Default_ method authentication is used
   and we want it to be _LDAP_.
@@ -325,7 +325,7 @@ your LDAP data.
 
 ### Ready to test
 
-Now when you login with _user1_ or _user2_ username then these users will be
+Now when you log in with _user1_ or _user2_ username then these users will be
 created by Zabbix and put into _Zabbix administrators_ user group, when you
 login with _user3_ username then this user will be created by Zabbix and put
 into _Zabbix users_ user group:
@@ -364,7 +364,7 @@ maintains control over roles, permissions, and access behaviour through its own
 user and user group models Zabbix.
 
 In sum, LDAP/AD authentication offers a scalable, secure, and enterprise-aligned
-approach to centralizing identity management in Zabbix. With flexible provisioning
+approach to centralising identity management in Zabbix. With flexible provisioning
 and synchronisation, organisations can reduce administrative load while reinforcing
 consistency across their access control and authentication strategy.
 
