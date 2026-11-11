@@ -11,7 +11,7 @@ edition tags are immutable and must never be moved, recreated, or force-pushed.
 | English 8.0 maintenance and errata | `release/8.0` | `/8.0/en/` |
 | 8.0 translation development | `translation/8.0/<locale>` | `/8.0/<locale>/` when enabled |
 
-Every translation branch starts from the finalized English `v8.0-1` tag. The
+Every translation branch starts from the finalised English `v8.0-1` tag. The
 current locales are `de`, `es`, `fr`, `it`, `nl`, `pt_BR`, `ru`, `th`, and `zh`.
 Branch existence and website publication are separate: only metadata entries
 with `website: true` are built and shown in the selector.

@@ -3,7 +3,7 @@ description: |
     This chapter from The Zabbix Book, titled "Proxies as Containers," explains
     how to deploy Zabbix proxies using container technologies like Docker or Podman.
     It covers installation, configuration, and networking considerations, showing
-    how containerized proxies simplify scaling and management in modern monitoring
+    how containerised proxies simplify scaling and management in modern monitoring
     environments.
 tags: [expert]
 ---
@@ -13,7 +13,7 @@ tags: [expert]
 As discussed in the previous section, Zabbix proxies offer a lightweight and efficient
 solution for distributed monitoring. Leveraging SQLite as their backend database,
 they are inherently flexible and portable, making them well-suited for deployment
-in containerized environments. This chapter provides a step-by-step guide on deploying
+in containerised environments. This chapter provides a step-by-step guide on deploying
 a Zabbix proxy within a container, outlining configuration options and best practices
 for optimal performance and maintainability.
 
@@ -32,7 +32,7 @@ chapter for instructions on preparing your system for running containers using P
 
 ### Add the proxy to the zabbix frontend
 
-![Add the proxy](ch03.10-container-proxy-new.png)
+![Add the proxy](ch03.10-container-proxy-new.png){ align=center }
 
 _3.10 Add proxy to frontend_
 

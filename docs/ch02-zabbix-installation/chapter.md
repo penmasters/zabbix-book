@@ -1,4 +1,4 @@
-# Getting started with the Zabbix installation
+# Zabbix Frontend
 
 We begin this chapter with a **deep dive into the Zabbix frontend**, the central hub
 where all monitoring and configuration tasks come together. Alongside the basic

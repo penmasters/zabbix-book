@@ -18,7 +18,7 @@ Telnet and execute any command we'd normally execute ourselves manually. We can
 then use our preprocessing rules and other methods to parse this information and
 create valuable monitoring metrics from it. 
 
-???+ security notice
+???+ warning "Security notice"
 
     Please keep in mind that Telnet sends Usernames/Passwords unencrypted over 
     your network. This means that it is not considered a secure connection and 

@@ -198,7 +198,7 @@ will proceed to install it.
 
 Next, we need to ensure that the firewall is installed and configured. 
 A firewall is a crucial security component that helps protect your server
-from unauthorized access and potential threats by controlling incoming and
+from unauthorised access and potential threats by controlling incoming and
 outgoing network traffic based on predetermined security rules.
 
 To install and enable the firewall, run the following command:
@@ -271,7 +271,7 @@ Here’s why zones are beneficial:
 
 - **Enhanced security:**
 
-:   By restricting application access to a specific zone, you prevent unauthorized
+:   By restricting application access to a specific zone, you prevent unauthorised
     connections from other interfaces or networks.
 
 - **Dynamic configuration:**

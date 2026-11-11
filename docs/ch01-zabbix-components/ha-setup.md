@@ -15,7 +15,7 @@ another can take over seamlessly.
 For this guide, we will use two Zabbix servers and one database, but the setup allows
 for adding more zabbix servers if necessary.
 
-![HA-Setup](./ha-setup/ch01.10-HA-setup.png)
+![HA-Setup](./ha-setup/ch01.10-HA-setup.png){ align=center }
 
 _1.10 HA Setup_
 
@@ -320,7 +320,7 @@ We can now do the same modification on our second or any subsequent Zabbix serve
 Delete again everything in the `/etc/keepalived/keepalived.conf` file like we did 
 before and replace it with following lines:
 
-!!!info ""
+!!! info ""
 
     ```
     vrrp_track_process track_nginx {
@@ -359,14 +359,14 @@ firewall. Perform the following commands on all servers:
 !!! info "Allow keepalived traffic through the firewall"
 
     Red Hat-based / SUSE
-    ```yaml
+    ```bash
     firewall-cmd --add-rich-rule='rule protocol value="vrrp" accept' --permanent
     firewall-cmd --reload
     ```
 
     Ubuntu
-    ```yaml
-    sudo ufw allow to 224.0.0.18 comment ‘keepalived multicast’
+    ```bash
+    sudo ufw allow to 224.0.0.18 comment 'keepalived multicast'
     ```
 
 This ends the configuration of Keepalived. We can now continue adapting the frontend.
@@ -432,7 +432,7 @@ managing the VIP:
 
 !!! info "Start and enable keepalived"
 
-    ```yaml
+    ```bash
     sudo systemctl enable keepalived nginx --now
     ```
 
@@ -447,7 +447,7 @@ At the bottom of the page, you should see a list of servers, with at least one
 marked as active. The number of servers displayed will depend on the total configured
 in your HA setup.
 
-![1st active frontend](ha-setup/ch01.11-HA-check1.png)
+![1st active frontend](ha-setup/ch01.11-HA-check1.png){ align=center }
 
 _1.11 verify HA_
 
@@ -456,7 +456,7 @@ remains accessible. Upon reloading the page, you will notice that the other fron
 server has taken over as the active instance, ensuring an almost seamless failover
 and high availability.
 
-![2nd active frontend](ha-setup/ch01.12-HA-check2.png)
+![2nd active frontend](ha-setup/ch01.12-HA-check2.png){ align=center }
 
 _1.12 verify HA_
 
@@ -513,7 +513,7 @@ continuous accessibility.
 
 Additionally, we configured the firewall to allow Keepalived traffic and ensured
 that the service starts automatically after a reboot. With this setup, the Zabbix
-frontend can dynamically switch between servers, minimizing downtime and improving
+frontend can dynamically switch between servers, minimising downtime and improving
 reliability.
 
 While database HA is an important consideration, it falls outside the scope of

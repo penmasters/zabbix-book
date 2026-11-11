@@ -841,7 +841,7 @@ In the Zabbix web interface, navigate to:
 - **Host groups:** SNMP Devices
 - **Interfaces:** SNMP with IP `127.0.0.1`
 
-![ch04.37-snmp-host.png](ch04.37-snmp-host.png)
+![ch04.37-snmp-host.png](ch04.37-snmp-host.png){ align=center }
 
 _4.37 ch04.37-snmp-host.png_
 
@@ -995,7 +995,7 @@ Use `IF-MIB::ifAdminStatus[\s\S]*?INTEGER:\s+(\d+)` in the Parameters field and
 
 Select the box **Custom on fail** and use the option **Discard value**.
 
-![ch04.38-snmp-preprocessing.png](ch04.38-snmp-preprocessing.png)
+![ch04.38-snmp-preprocessing.png](ch04.38-snmp-preprocessing.png){ align=center }
 
 _4.38 ch04.38-snmp-preprocessing.png_
 
@@ -1014,7 +1014,7 @@ and `\1` in the Output box.
 
 Again add a **Custom on fail** step and select **Discard value**.
 
-![ch04.39-snmp-preprocessing.png](ch04.39-snmp-preprocessing.png)
+![ch04.39-snmp-preprocessing.png](ch04.39-snmp-preprocessing.png){ align=center }
 
 _4.39 ch04.39-snmp-preprocessing.png_
 
@@ -1026,7 +1026,7 @@ and click on the triggers and add the following trigger.
 - **Problem expression:** `last(/Network Switch 01/trap.ifOperStatus)=2 and last(/Network Switch 01/trap.ifAdminStatus)=2`
 - **Recovery expression:** `last(/Network Switch 01/trap.ifOperStatus)=1 and last(/Network Switch 01/trap.ifAdminStatus)=1`
 
-![ch04.40-snmp-trigger.png](ch04.40-snmp-trigger.png)
+![ch04.40-snmp-trigger.png](ch04.40-snmp-trigger.png){ align=center }
 
 _4.40 ch04.40-snmp-trigger.png_
 
@@ -1045,7 +1045,7 @@ based on the status of the ifOperStatus and the ifAdminStatus
 
 As a bonus you can add on the host a value map and link the items with it.
 
-![ch04.41-snmp-valuemap.png](ch04.41-snmp-valuemap.png)
+![ch04.41-snmp-valuemap.png](ch04.41-snmp-valuemap.png){ align=center }
 
 _4.41 ch04.41-snmp-valuemap.png_
 

@@ -53,6 +53,10 @@ entries:
           - label: media types
             start: ch07-zabbix-alerts/media-types.md
             end: ch07-zabbix-alerts/media-types.md#conclusion
+      - term: delivery troubleshooting
+        targets:
+          - label: following the alerting pipeline
+            start: ch07-zabbix-alerts/chapter.md#where-alerting-problems-come-from
 
   - term: API
     see: Zabbix API
@@ -68,9 +72,33 @@ entries:
 
   - term: backups
     targets:
-      - label: creating and restoring
+      - label: choosing a backup strategy
         start: ch14-zabbix-maintenance/taking-backups.md
-        end: ch14-zabbix-maintenance/taking-backups.md#conclusion
+    subterms:
+      - term: MariaDB
+        targets:
+          - label: creating MariaDB logical backups
+            start: ch14-zabbix-maintenance/taking-backups.md#creating-a-logical-database-backup
+      - term: PostgreSQL logical backups
+        targets:
+          - label: creating PostgreSQL logical backups
+            start: ch14-zabbix-maintenance/taking-backups.md#logical-dumps-with-pg_dump
+      - term: PostgreSQL physical backups
+        targets:
+          - label: using physical backups and WAL archiving
+            start: ch14-zabbix-maintenance/taking-backups.md#physical-backups-and-wal-archiving
+      - term: backup tools
+        targets:
+          - label: choosing pgBackRest or Barman
+            start: ch14-zabbix-maintenance/taking-backups.md#pgbackrest-and-pgbarman-the-preferred-production-solution
+      - term: configuration files
+        targets:
+          - label: backing up configuration and scripts
+            start: ch14-zabbix-maintenance/taking-backups.md#other-important-config-files
+      - term: ClickHouse
+        targets:
+          - label: backing up ClickHouse
+            start: ch13-advanced-security/storing-data-in-clickhousedb.md#backups
 
   - term: browser items
     targets:
@@ -79,6 +107,15 @@ entries:
         end: ch04-zabbix-collecting-data/browser.md#conclusion
     see_also:
       - web monitoring
+    subterms:
+      - term: WebDriver
+        targets:
+          - label: configuring the WebDriver endpoint
+            start: ch04-zabbix-collecting-data/browser.md#architectural-requirements-setting-up-the-webdriver-endpoint
+      - term: screenshots
+        targets:
+          - label: capturing and storing screenshots
+            start: ch04-zabbix-collecting-data/browser.md#capturing-and-storing-screenshots
 
   - term: calculated items
     targets:
@@ -87,11 +124,37 @@ entries:
         end: ch04-zabbix-collecting-data/calculated.md#conclusion
     see_also:
       - items
+    subterms:
+      - term: aggregation
+        targets:
+          - label: aggregating data across items
+            start: ch04-zabbix-collecting-data/calculated.md#data-aggregation
+      - term: troubleshooting
+        targets:
+          - label: troubleshooting calculated items
+            start: ch04-zabbix-collecting-data/calculated.md#troubleshooting-calculated-items
 
   - term: ClickHouse
     targets:
       - label: storing Zabbix data
         start: ch13-advanced-security/storing-data-in-clickhousedb.md
+    subterms:
+      - term: history storage
+        targets:
+          - label: configuring item history storage
+            start: ch13-advanced-security/storing-data-in-clickhousedb.md#configuring-zabbix
+      - term: retention
+        targets:
+          - label: configuring retention and partitioning
+            start: ch13-advanced-security/storing-data-in-clickhousedb.md#configuring-retention-and-partitioning
+      - term: APM telemetry
+        targets:
+          - label: storing APM telemetry
+            start: ch04-zabbix-collecting-data/telemetry.md#how-apm-works-in-zabbix
+      - term: troubleshooting
+        targets:
+          - label: troubleshooting history storage
+            start: ch13-advanced-security/storing-data-in-clickhousedb.md#troubleshooting
 
   - term: complex event processing
     targets:
@@ -146,6 +209,19 @@ entries:
     see_also:
       - graphs
       - maps
+    subterms:
+      - term: widgets
+        targets:
+          - label: adding and configuring widgets
+            start: ch11-zabbix-visualisation/dashboards.md#adding-and-configuring-widgets
+      - term: sharing
+        targets:
+          - label: sharing dashboards
+            start: ch11-zabbix-visualisation/dashboards.md#sharing-dashboards
+      - term: importing and exporting
+        targets:
+          - label: importing and exporting dashboards
+            start: ch11-zabbix-visualisation/dashboards.md#exporting-and-importing-dashboards
 
   - term: dependent items
     targets:
@@ -155,6 +231,11 @@ entries:
     see_also:
       - low-level discovery
       - preprocessing
+    subterms:
+      - term: LLD lookup keys
+        targets:
+          - label: designing discovery and item payloads
+            start: ch16-zabbix-real-world-examples/filter-lld-without-jsonpath.md#the-two-approaches
 
   - term: discovery
     subterms:
@@ -220,6 +301,11 @@ entries:
         end: ch01-zabbix-components/ha-setup.md#conclusion
     see_also:
       - proxy groups
+    subterms:
+      - term: frontend failover
+        targets:
+          - label: configuring Keepalived
+            start: ch01-zabbix-components/ha-setup.md#setting-up-keepalived
 
   - term: host groups
     targets:
@@ -263,12 +349,28 @@ entries:
       - label: monitoring Zabbix health
         start: ch14-zabbix-maintenance/internal-health.md
         end: ch14-zabbix-maintenance/internal-health.md#conclusion
+    subterms:
+      - term: queues
+        targets:
+          - label: diagnosing delayed checks
+            start: ch14-zabbix-maintenance/internal-health.md#queue-metrics
+      - term: cache performance
+        targets:
+          - label: monitoring cache and database performance
+            start: ch14-zabbix-maintenance/internal-health.md#cache-and-database-performance
+      - term: pollers and processes
+        targets:
+          - label: understanding internal worker processes
+            start: ch14-zabbix-maintenance/internal-health.md#internal-processes
 
   - term: IPMI
     targets:
-      - label: configuring IPMI monitoring
-        start: ch04-zabbix-collecting-data/ipmi.md
-        end: ch04-zabbix-collecting-data/ipmi.md#conclusion
+      - label: understanding IPMI
+        start: ch04-zabbix-collecting-data/ipmi.md#understanding-ipmi
+      - label: configuring native IPMI monitoring
+        start: ch04-zabbix-collecting-data/ipmi.md#native-ipmi-monitoring-in-zabbix
+    see_also:
+      - Redfish
 
   - term: items
     subterms:
@@ -302,6 +404,10 @@ entries:
           - label: trapper items
             start: ch04-zabbix-collecting-data/zabbix-trapper.md
             end: ch04-zabbix-collecting-data/zabbix-trapper.md#conclusion
+      - term: telemetry query
+        targets:
+          - label: querying telemetry as item values
+            start: ch04-zabbix-collecting-data/telemetry.md#telemetry-query-items-in-brief
 
   - term: Java Management Extensions
     see: JMX
@@ -311,6 +417,11 @@ entries:
       - label: monitoring Java applications
         start: ch04-zabbix-collecting-data/jmx.md
         end: ch04-zabbix-collecting-data/jmx.md#conclusion
+    subterms:
+      - term: Jolokia
+        targets:
+          - label: monitoring JMX through Jolokia
+            start: ch04-zabbix-collecting-data/jmx.md#monitoring-jmx-through-jolokia
 
   - term: LDAP
     targets:
@@ -319,6 +430,11 @@ entries:
         end: ch02-zabbix-installation/ldap-ad.md#conclusion
     see_also:
       - external authentication
+    subterms:
+      - term: provisioning
+        targets:
+          - label: configuring just-in-time user provisioning
+            start: ch02-zabbix-installation/ldap-ad.md#just-in-time-user-provisioning
 
   - term: low-level discovery
     subterms:
@@ -337,6 +453,26 @@ entries:
           - label: SNMP LLD
             start: ch08-zabbix-lld/snmp-lld.md
             end: ch08-zabbix-lld/snmp-lld.md#conclusion
+      - term: nested discovery
+        targets:
+          - label: configuring nested discovery prototypes
+            start: ch08-zabbix-lld/nested-lld.md
+      - term: filtering
+        targets:
+          - label: filtering discovered objects
+            start: ch08-zabbix-lld/lld-with-dependent-items.md#creating-a-low-level-discovery-lld-filter
+      - term: overrides
+        targets:
+          - label: overriding discovered objects
+            start: ch08-zabbix-lld/chapter.md#overrides
+      - term: lifecycle
+        targets:
+          - label: disabling and deleting lost resources
+            start: ch08-zabbix-lld/chapter.md#lifecycle-of-discovered-entities
+      - term: JSON payload design
+        targets:
+          - label: using LLD macros as lookup keys
+            start: ch16-zabbix-real-world-examples/filter-lld-without-jsonpath.md#json-payload-design
     see_also:
       - discovery
 
@@ -348,6 +484,19 @@ entries:
       - label: creating and managing maintenance periods
         start: ch14-zabbix-maintenance/maintenance.md
         end: ch14-zabbix-maintenance/maintenance.md#conclusion
+    subterms:
+      - term: API automation
+        targets:
+          - label: creating maintenance through the API
+            start: ch14-zabbix-maintenance/maintenance.md#practical-example-creating-maintenance-via-the-api
+      - term: scheduling and time zones
+        targets:
+          - label: understanding maintenance time zones
+            start: ch14-zabbix-maintenance/maintenance.md#time-zones-and-maintenance-schedule-logic
+      - term: problem tag filtering
+        targets:
+          - label: filtering maintenance by problem tags
+            start: ch14-zabbix-maintenance/maintenance.md#5-problem-tag-filtering-advanced-suppression
 
   - term: maps
     targets:
@@ -383,6 +532,23 @@ entries:
     see_also:
       - actions
       - alerting
+    subterms:
+      - term: email
+        targets:
+          - label: configuring email notifications
+            start: ch07-zabbix-alerts/media-types.md#email
+      - term: push notifications
+        targets:
+          - label: configuring push notifications
+            start: ch07-zabbix-alerts/media-types.md#push-notification
+      - term: webhooks
+        targets:
+          - label: configuring webhook integrations
+            start: ch07-zabbix-alerts/media-types.md#webhook
+      - term: delivery troubleshooting
+        targets:
+          - label: troubleshooting notification delivery
+            start: ch07-zabbix-alerts/media-types.md#troubleshooting-notification-delivery
 
   - term: MFA
     see: multi-factor authentication
@@ -392,6 +558,15 @@ entries:
       - label: configuring
         start: ch02-zabbix-installation/mfa.md
         end: ch02-zabbix-installation/mfa.md#conclusion
+    subterms:
+      - term: TOTP
+        targets:
+          - label: configuring time-based one-time passwords
+            start: ch02-zabbix-installation/mfa.md#time-based-one-time-password
+      - term: Duo
+        targets:
+          - label: configuring Duo MFA
+            start: ch02-zabbix-installation/mfa.md#duo-mfa-provider
 
   - term: network discovery
     targets:
@@ -407,6 +582,25 @@ entries:
         start: ch04-zabbix-collecting-data/database-odbc.md
     see_also:
       - database
+    subterms:
+      - term: driver setup
+        targets:
+          - label: installing ODBC drivers
+            start: ch04-zabbix-collecting-data/database-odbc.md#driver-selection-and-installation
+          - label: validating the ODBC stack
+            start: ch04-zabbix-collecting-data/database-odbc.md#validating-the-stack-before-touching-zabbix
+      - term: item design
+        targets:
+          - label: choosing scalar or bulk queries
+            start: ch04-zabbix-collecting-data/database-odbc.md#item-design-two-keys-different-philosophies
+      - term: discovery
+        targets:
+          - label: discovering database objects
+            start: ch04-zabbix-collecting-data/database-odbc.md#low-level-discovery-with-odbc
+      - term: performance
+        targets:
+          - label: tuning queries and pollers
+            start: ch04-zabbix-collecting-data/database-odbc.md#operational-discipline
 
   - term: passive checks
     see: Zabbix agent, passive checks
@@ -428,12 +622,36 @@ entries:
 
   - term: preprocessing
     targets:
-      - label: transforming item values
-        start: ch04-zabbix-collecting-data/preprocessing.md
-        end: ch04-zabbix-collecting-data/preprocessing.md#conclusion
+      - label: understanding preprocessing
+        start: ch04-zabbix-collecting-data/preprocessing.md#preprocessing-functionality
     see_also:
       - dependent items
       - items
+    subterms:
+      - term: regular expressions
+        targets:
+          - label: extracting values with regular expressions
+            start: ch04-zabbix-collecting-data/preprocessing.md#regular-expression
+      - term: JSONPath
+        targets:
+          - label: extracting JSON values
+            start: ch04-zabbix-collecting-data/preprocessing.md#jsonpath-and-additional-steps
+      - term: JavaScript
+        targets:
+          - label: transforming values with JavaScript
+            start: ch04-zabbix-collecting-data/preprocessing.md#javascript
+      - term: discarding unchanged values
+        targets:
+          - label: discarding unchanged values with a heartbeat
+            start: ch04-zabbix-collecting-data/preprocessing.md#discard-unchanged-discard-unchanged-with-heartbeat
+      - term: SNMP walk conversion
+        targets:
+          - label: converting an SNMP walk to JSON
+            start: ch04-zabbix-collecting-data/preprocessing.md#snmp-walk-to-json
+      - term: Prometheus
+        targets:
+          - label: extracting Prometheus metrics
+            start: ch04-zabbix-collecting-data/preprocessing.md#prometheus-pattern
 
   - term: proxy groups
     targets:
@@ -456,6 +674,22 @@ entries:
           - label: built-in reports
             start: ch11-zabbix-visualisation/built-in-reports.md
             end: ch11-zabbix-visualisation/built-in-reports.md#conclusion
+      - term: availability
+        targets:
+          - label: checking historical availability
+            start: ch11-zabbix-visualisation/built-in-reports.md#availability-report
+      - term: audit log
+        targets:
+          - label: reviewing configuration changes
+            start: ch11-zabbix-visualisation/built-in-reports.md#audit-log
+      - term: action log
+        targets:
+          - label: troubleshooting action delivery
+            start: ch11-zabbix-visualisation/built-in-reports.md#action-log
+      - term: notifications
+        targets:
+          - label: reviewing notification history
+            start: ch11-zabbix-visualisation/built-in-reports.md#notifications
 
   - term: SAML
     targets:
@@ -464,6 +698,15 @@ entries:
         end: ch02-zabbix-installation/saml.md#conclusion
     see_also:
       - external authentication
+    subterms:
+      - term: Microsoft Entra ID
+        targets:
+          - label: configuring Microsoft Entra ID
+            start: ch02-zabbix-installation/saml.md#microsoft-entra-id-azure-ad
+      - term: Google Workspace
+        targets:
+          - label: configuring Google Workspace
+            start: ch02-zabbix-installation/saml.md#google
 
   - term: script items
     targets:
@@ -500,24 +743,35 @@ entries:
           - label: trapping
             start: ch04-zabbix-collecting-data/snmp-trapping.md
             end: ch04-zabbix-collecting-data/snmp-trapping.md#conclusion
+      - term: MIB files
+        targets:
+          - label: understanding MIB files
+            start: ch04-zabbix-collecting-data/snmp-polling.md#what-is-a-mib
+          - label: installing MIB files
+            start: ch04-zabbix-collecting-data/snmp-polling.md#deploying-bare-minimum-mib-files
+      - term: object identifiers
+        targets:
+          - label: understanding OIDs
+            start: ch04-zabbix-collecting-data/snmp-polling.md#what-is-an-oid
+      - term: SNMPv3 security
+        targets:
+          - label: choosing SNMPv3 security levels
+            start: ch04-zabbix-collecting-data/snmp-polling.md#snmpv3-security-levels
 
   - term: SSH checks
     targets:
       - label: configuring SSH checks
-        start: ch04-zabbix-collecting-data/ssh-telnet.md
-        end: ch04-zabbix-collecting-data/ssh-telnet.md#conclusion
+        start: ch04-zabbix-collecting-data/ssh-telnet.md#ssh-monitoring
 
   - term: tags
     targets:
-      - label: using in templates
-        start: ch06-zabbix-templates/templates.md
-        end: ch06-zabbix-templates/templates.md#conclusion
+      - label: using tags and inheritance
+        start: ch06-zabbix-templates/templates.md#tags
 
   - term: Telnet checks
     targets:
       - label: configuring Telnet checks
-        start: ch04-zabbix-collecting-data/ssh-telnet.md
-        end: ch04-zabbix-collecting-data/ssh-telnet.md#conclusion
+        start: ch04-zabbix-collecting-data/ssh-telnet.md#telnet-monitoring
 
   - term: templates
     targets:
@@ -527,6 +781,25 @@ entries:
     see_also:
       - low-level discovery
       - user macros
+    subterms:
+      - term: groups and permissions
+        targets:
+          - label: configuring template groups
+            start: ch06-zabbix-templates/templates.md#template-groups
+          - label: controlling template access
+            start: ch06-zabbix-templates/templates.md#permissions-and-access-control
+      - term: importing and exporting
+        targets:
+          - label: importing and exporting templates
+            start: ch06-zabbix-templates/templates.md#importing-and-exporting-templates
+      - term: unlinking and clearing
+        targets:
+          - label: choosing unlink or unlink and clear
+            start: ch06-zabbix-templates/templates.md#unlink-vs-unlink-and-clear
+      - term: value maps
+        targets:
+          - label: configuring value maps
+            start: ch06-zabbix-templates/templates.md#value-maps
 
   - term: TimescaleDB
     targets:
@@ -552,6 +825,22 @@ entries:
           - label: creating and configuring
             start: ch05-zabbix-triggers/triggers.md
             end: ch05-zabbix-triggers/triggers.md#conclusion
+      - term: recovery expressions
+        targets:
+          - label: configuring recovery expressions
+            start: ch05-zabbix-triggers/advanced-triggers.md#recovery-expression
+      - term: dependencies
+        targets:
+          - label: configuring trigger dependencies
+            start: ch05-zabbix-triggers/advanced-triggers.md#trigger-dependency
+      - term: flapping
+        targets:
+          - label: reducing trigger flapping
+            start: ch05-zabbix-triggers/advanced-triggers.md#reducing-flapping-even-more
+      - term: multiple problem events
+        targets:
+          - label: generating multiple problem events
+            start: ch05-zabbix-triggers/advanced-triggers.md#multiple-problem-event-generation
 
   - term: upgrades
     targets:
@@ -560,6 +849,15 @@ entries:
         end: ch14-zabbix-maintenance/upgrades.md#conclusion
     see_also:
       - backups
+    subterms:
+      - term: database primary keys
+        targets:
+          - label: checking primary keys before upgrading
+            start: ch14-zabbix-maintenance/upgrades.md#a-crucial-detour-primary-keys-and-database-health
+      - term: database migration
+        targets:
+          - label: choosing an upgrade or migration strategy
+            start: ch14-zabbix-maintenance/upgrades.md#choosing-the-right-approach
 
   - term: user groups
     targets:
@@ -571,9 +869,21 @@ entries:
 
   - term: user macros
     targets:
-      - label: using in templates
-        start: ch06-zabbix-templates/templates.md
-        end: ch06-zabbix-templates/templates.md#conclusion
+      - label: using template macros
+        start: ch06-zabbix-templates/templates.md#template-macros
+    subterms:
+      - term: precedence
+        targets:
+          - label: resolving macro precedence
+            start: ch06-zabbix-templates/templates.md#macro-precedence-and-conflict-resolution
+      - term: context macros
+        targets:
+          - label: using context macros
+            start: ch05-zabbix-triggers/advanced-triggers.md#context-macros
+      - term: secret macros
+        targets:
+          - label: resolving secrets from Vault
+            start: ch13-advanced-security/using-vault.md#using-vault-secrets-as-macros-in-zabbix
 
   - term: user parameters
     targets:
@@ -594,6 +904,23 @@ entries:
       - label: storing Zabbix secrets
         start: ch13-advanced-security/using-vault.md
         end: ch13-advanced-security/using-vault.md#conclusion
+    subterms:
+      - term: AppRole
+        targets:
+          - label: configuring AppRole authentication
+            start: ch13-advanced-security/using-vault.md#alternative-configure-approle-authentication-in-zabbix-80
+      - term: secret macros
+        targets:
+          - label: using Vault secrets in macros
+            start: ch13-advanced-security/using-vault.md#using-vault-secrets-as-macros-in-zabbix
+      - term: TLS
+        targets:
+          - label: securing Vault connections
+            start: ch13-advanced-security/using-vault.md#tls-configuration
+      - term: troubleshooting
+        targets:
+          - label: troubleshooting Vault integration
+            start: ch13-advanced-security/using-vault.md#troubleshooting
 
   - term: visualisation
     subterms:
@@ -636,6 +963,34 @@ entries:
         targets:
           - label: monitoring Windows
             start: ch15-windows/windows.md
+      - term: performance counters
+        targets:
+          - label: collecting Windows performance counters
+            start: ch15-windows/windows.md#performance-counters
+      - term: event logs
+        targets:
+          - label: monitoring Windows event logs
+            start: ch15-windows/windows.md#event-log-monitoring
+      - term: services
+        targets:
+          - label: monitoring Windows services
+            start: ch15-windows/windows.md#service-state-via-serviceinfo
+      - term: WMI queries
+        targets:
+          - label: querying WMI
+            start: ch15-windows/windows.md#wmi-queries-with-wmiget-and-wmigetall
+      - term: registry
+        targets:
+          - label: reading the Windows Registry
+            start: ch15-windows/windows.md#registryget-as-a-complement-to-wmi
+      - term: fleet deployment
+        targets:
+          - label: deploying agents with MSI and PowerShell
+            start: ch15-windows/windows-zabbix-agent2-config-tips.md#using-the-msi-installer
+      - term: autoregistration
+        targets:
+          - label: setting Windows host metadata
+            start: ch15-windows/windows-zabbix-agent2-config-tips.md#metadata-and-autoregistration
 
   - term: Zabbix agent
     subterms:
@@ -654,20 +1009,56 @@ entries:
           - label: passive checks
             start: ch04-zabbix-collecting-data/zabbix-agent-passive.md
             end: ch04-zabbix-collecting-data/zabbix-agent-passive.md#conclusion
+      - term: item key restrictions
+        targets:
+          - label: restricting keys with AllowKey and DenyKey
+            start: ch04-zabbix-collecting-data/zabbix-agent-active.md#restricting-which-item-keys-the-agent-can-execute
+      - term: pre-shared keys
+        targets:
+          - label: configuring PSK encryption
+            start: ch13-advanced-security/agent-security.md#pre-shared-keys
+      - term: certificates
+        targets:
+          - label: configuring certificate encryption
+            start: ch13-advanced-security/agent-security.md#certificates
+      - term: Windows fleet deployment
+        targets:
+          - label: configuring and deploying Windows agents
+            start: ch15-windows/windows-zabbix-agent2-config-tips.md
 
   - term: Zabbix API
     targets:
-      - label: using the API
+      - label: understanding requests and authentication
+        start: ch12-zabbix-api/API basics.md
+      - label: automating Zabbix workflows
         start: ch12-zabbix-api/self-engaging.md
     see_also:
       - API tokens
+    subterms:
+      - term: permissions
+        targets:
+          - label: checking API and object permissions
+            start: ch12-zabbix-api/API basics.md#api-methods-versus-object-permissions
+      - term: error handling
+        targets:
+          - label: handling errors
+            start: ch12-zabbix-api/API basics.md#error-handling
+          - label: troubleshooting API requests
+            start: ch12-zabbix-api/API basics.md#troubleshooting-common-api-errors
+      - term: compatibility
+        targets:
+          - label: checking compatibility and breaking changes
+            start: ch12-zabbix-api/API basics.md#compatibility
 
   - term: API tokens
     targets:
-      - label: using with the Zabbix API
-        start: ch12-zabbix-api/self-engaging.md
+      - label: creating API tokens
+        start: ch12-zabbix-api/API basics.md#creating-an-api-token
+      - label: sending bearer tokens
+        start: ch12-zabbix-api/API basics.md#sending-the-token
     see_also:
       - Zabbix API
+      - Zabbix MCP server
 
   - term: Zabbix architecture
     targets:
@@ -682,6 +1073,11 @@ entries:
       - label: navigating and configuring
         start: ch02-zabbix-installation/frontend.md
         end: ch02-zabbix-installation/frontend.md#conclusion
+    subterms:
+      - term: HTTPS
+        targets:
+          - label: securing the frontend with HTTPS
+            start: ch13-advanced-security/securing-frontend.md
 
   - term: Zabbix proxy
     subterms:
@@ -700,6 +1096,22 @@ entries:
           - label: proxy groups
             start: ch03-zabbix-proxies/proxy-groups.md
             end: ch03-zabbix-proxies/proxy-groups.md#conclusion
+      - term: requirements
+        targets:
+          - label: sizing proxies
+            start: ch03-zabbix-proxies/proxy-basics.md#proxy-requirements
+      - term: throttling
+        targets:
+          - label: understanding proxy throttling
+            start: ch03-zabbix-proxies/proxy-basics.md#proxy-throttling
+      - term: runtime control
+        targets:
+          - label: using proxy runtime controls
+            start: ch03-zabbix-proxies/proxy-basics.md#proxy-runtime-control-options
+      - term: APM collector
+        targets:
+          - label: receiving OTLP telemetry
+            start: ch04-zabbix-collecting-data/telemetry.md#1-proxy-configuration-receiving-otlp-data
 
   - term: Zabbix server
     targets:
@@ -717,3 +1129,342 @@ entries:
         end: ch03-zabbix-proxies/web-services.md#conclusion
     see_also:
       - automated PDF reports
+  - term: OpenTelemetry
+    targets:
+      - label: understanding the APM data paths
+        start: ch04-zabbix-collecting-data/telemetry.md#how-apm-works-in-zabbix
+    subterms:
+      - term: OTLP ingestion
+        targets:
+          - label: receiving OTLP through a Zabbix proxy
+            start: ch04-zabbix-collecting-data/telemetry.md#1-proxy-configuration-receiving-otlp-data
+      - term: distributed deployments
+        targets:
+          - label: planning distributed telemetry storage
+            start: ch04-zabbix-collecting-data/telemetry.md#architecture-considerations-for-distributed-environments
+      - term: collector pipelines
+        targets:
+          - label: using an OpenTelemetry Collector
+            start: ch04-zabbix-collecting-data/telemetry.md#alternative-opentelemetry-collector
+      - term: data sources
+        targets:
+          - label: configuring global and component data sources
+            start: ch04-zabbix-collecting-data/telemetry.md#central-apm-storage-and-other-telemetry-data-sources
+      - term: latency alerting
+        targets:
+          - label: generating traces and alerting on span latency
+            start: ch04-zabbix-collecting-data/telemetry.md#lab-generate-traces-and-alert-on-span-latency
+    see_also:
+      - ClickHouse
+      - Telemetry query items
+
+  - term: Telemetry query items
+    targets:
+      - label: querying telemetry as regular item values
+        start: ch04-zabbix-collecting-data/telemetry.md#telemetry-query-items-in-brief
+      - label: understanding timing and aggregation
+        start: ch04-zabbix-collecting-data/telemetry.md#understanding-query-timing-and-aggregation
+    see_also:
+      - OpenTelemetry
+      - items
+
+  - term: Zabbix MCP server
+    targets:
+      - label: installing and configuring
+        start: ch09-zabbix-extending/mcp-server.md#installing-and-configuring-the-mcp-server
+    subterms:
+      - term: TLS
+        targets:
+          - label: securing MCP connections
+            start: ch09-zabbix-extending/mcp-server.md#securing-the-connection-with-tls
+      - term: tool access
+        targets:
+          - label: restricting tools and sensitive data
+            start: ch09-zabbix-extending/mcp-server.md#controlling-access-to-tools-and-sensitive-data
+      - term: AI clients
+        targets:
+          - label: connecting an AI application
+            start: ch09-zabbix-extending/mcp-server.md#connecting-an-ai-application
+      - term: connection testing
+        targets:
+          - label: testing the connection and listing tools
+            start: ch09-zabbix-extending/mcp-server.md#testing-the-connection-and-listing-available-tools
+    see_also:
+      - API tokens
+      - Zabbix API
+
+  - term: Redfish
+    targets:
+      - label: understanding Redfish
+        start: ch04-zabbix-collecting-data/ipmi.md#introduction-to-redfish
+      - label: testing with a simulator
+        start: ch04-zabbix-collecting-data/ipmi.md#testing-redfish-with-a-simulator
+      - label: monitoring Redfish with Zabbix
+        start: ch04-zabbix-collecting-data/ipmi.md#monitoring-redfish-with-zabbix
+    see_also:
+      - IPMI
+      - HTTP agent items
+
+  - term: JSONPath
+    targets:
+      - label: extracting values during preprocessing
+        start: ch04-zabbix-collecting-data/preprocessing.md#jsonpath-and-additional-steps
+      - label: using LLD macros as lookup keys
+        start: ch16-zabbix-real-world-examples/filter-lld-without-jsonpath.md#approach-b-lld-macro-as-lookup-key-the-recommended-pattern
+    see_also:
+      - low-level discovery
+      - preprocessing
+
+  - term: HTML visualisation
+    targets:
+      - label: displaying HTML in the Item history widget
+        start: ch16-zabbix-real-world-examples/html-for-the-win.md
+      - label: building custom tables
+        start: ch16-zabbix-real-world-examples/html-for-the-win.md#tables
+    see_also:
+      - dashboards
+
+  - term: containers
+    subterms:
+      - term: Podman setup
+        targets:
+          - label: preparing rootless Podman
+            start: ch00-getting-started/preparation.md#preparing-the-system-for-running-containers-using-podman
+      - term: proxy deployment
+        targets:
+          - label: deploying proxies with Quadlet
+            start: ch03-zabbix-proxies/proxies-as-container.md#setting-up-containers
+      - term: upgrading proxies
+        targets:
+          - label: upgrading proxy containers
+            start: ch03-zabbix-proxies/proxies-as-container.md#upgrading-our-containers
+      - term: web service deployment
+        targets:
+          - label: running the web service as a container
+            start: ch03-zabbix-proxies/web-services.md#installing-the-zabbix-web-service-as-a-container
+    see_also:
+      - Zabbix proxy
+      - Zabbix web service
+
+  - term: system requirements
+    targets:
+      - label: planning hardware and software requirements
+        start: ch00-getting-started/Requirements.md#requirements
+
+  - term: firewalls
+    targets:
+      - label: configuring the host firewall
+        start: ch00-getting-started/Requirements.md#firewall
+      - label: allowing proxy connections
+        start: ch03-zabbix-proxies/proxy-basics.md#proxy-firewall
+
+  - term: time synchronisation
+    targets:
+      - label: configuring Chrony and time sources
+        start: ch00-getting-started/Requirements.md#time-server
+    see_also:
+      - maintenance
+
+  - term: certificates
+    subterms:
+      - term: agent encryption
+        targets:
+          - label: configuring agent certificates
+            start: ch13-advanced-security/agent-security.md#certificates
+      - term: self-signed certificates
+        targets:
+          - label: securing the frontend with a private CA
+            start: ch13-advanced-security/securing-frontend.md#securing-the-frontend-with-self-signed-certificates
+      - term: Let's Encrypt
+        targets:
+          - label: securing the frontend with Let's Encrypt
+            start: ch13-advanced-security/securing-frontend.md#securing-the-frontend-with-lets-encrypt-on-nginx
+    see_also:
+      - TLS
+
+  - term: TLS
+    subterms:
+      - term: agent connections
+        targets:
+          - label: encrypting agent communication
+            start: ch13-advanced-security/agent-security.md
+      - term: frontend HTTPS
+        targets:
+          - label: securing frontend connections
+            start: ch13-advanced-security/securing-frontend.md
+      - term: MCP connections
+        targets:
+          - label: enabling TLS on the MCP server
+            start: ch09-zabbix-extending/mcp-server.md#securing-the-connection-with-tls
+      - term: Vault connections
+        targets:
+          - label: verifying Vault TLS certificates
+            start: ch13-advanced-security/using-vault.md#tls-configuration
+    see_also:
+      - certificates
+
+  - term: permissions
+    targets:
+      - label: understanding user roles and groups
+        start: ch02-zabbix-installation/user-roles.md#summary-role-vs-group
+    subterms:
+      - term: host access
+        targets:
+          - label: resolving user-group permission precedence
+            start: ch02-zabbix-installation/user-groups.md#the-rule-of-precedence-deny-always-wins
+      - term: template access
+        targets:
+          - label: controlling template access
+            start: ch06-zabbix-templates/templates.md#permissions-and-access-control
+      - term: API access
+        targets:
+          - label: distinguishing API methods from object permissions
+            start: ch12-zabbix-api/API basics.md#api-methods-versus-object-permissions
+    see_also:
+      - user groups
+      - user roles
+
+  - term: template groups
+    targets:
+      - label: organising template groups and permissions
+        start: ch06-zabbix-templates/templates.md#template-groups
+    see_also:
+      - templates
+      - permissions
+
+  - term: value maps
+    targets:
+      - label: mapping item values to readable labels
+        start: ch06-zabbix-templates/templates.md#value-maps
+    see_also:
+      - templates
+
+  - term: Zabbix sender
+    targets:
+      - label: sending monitoring values
+        start: ch04-zabbix-collecting-data/zabbix-trapper.md#how-to-send-data
+      - label: sending historical values
+        start: ch04-zabbix-collecting-data/zabbix-trapper.md#you-can-travel-in-time-with-zabbix_sender
+      - label: sending multiple values
+        start: ch04-zabbix-collecting-data/zabbix-trapper.md#sending-multiple-values-at-once
+    see_also:
+      - trapper items
+
+  - term: Prometheus
+    targets:
+      - label: extracting Prometheus metrics during preprocessing
+        start: ch04-zabbix-collecting-data/preprocessing.md#prometheus-pattern
+
+  - term: Active Directory
+    see: LDAP
+
+  - term: AllowKey
+    see: Zabbix agent, item key restrictions
+
+  - term: APM
+    see: OpenTelemetry
+
+  - term: application performance monitoring
+    see: OpenTelemetry
+
+  - term: AppRole
+    see: Vault, AppRole
+
+  - term: audit log
+    see: reports, audit log
+
+  - term: availability reports
+    see: reports, availability
+
+  - term: CEP
+    see: complex event processing
+
+  - term: context macros
+    see: user macros, context macros
+
+  - term: DenyKey
+    see: Zabbix agent, item key restrictions
+
+  - term: Duo
+    see: multi-factor authentication, Duo
+
+  - term: email notifications
+    see: media types, email
+
+  - term: event log monitoring
+    see: Windows monitoring, event logs
+
+  - term: Jolokia
+    see: JMX, Jolokia
+
+  - term: just-in-time provisioning
+    see: LDAP, provisioning
+
+  - term: Keepalived
+    see: high availability, frontend failover
+
+  - term: Let's Encrypt
+    see: certificates, Let's Encrypt
+
+  - term: MCP
+    see: Zabbix MCP server
+
+  - term: MIB files
+    see: SNMP, MIB files
+
+  - term: Microsoft Entra ID
+    see: SAML, Microsoft Entra ID
+
+  - term: Model Context Protocol
+    see: Zabbix MCP server
+
+  - term: nested LLD
+    see: low-level discovery, nested discovery
+
+  - term: OIDs
+    see: SNMP, object identifiers
+
+  - term: OTLP
+    see: OpenTelemetry, OTLP ingestion
+
+  - term: performance counters
+    see: Windows monitoring, performance counters
+
+  - term: Podman
+    see: containers
+
+  - term: pre-shared keys
+    see: Zabbix agent, pre-shared keys
+
+  - term: PSK
+    see: Zabbix agent, pre-shared keys
+
+  - term: regular expressions
+    see: preprocessing, regular expressions
+
+  - term: secret macros
+    see: user macros, secret macros
+
+  - term: SMART monitoring
+    see: Windows monitoring, disk health
+
+  - term: SNMPv3
+    see: SNMP, SNMPv3 security
+
+  - term: SSL
+    see: TLS
+
+  - term: trigger dependencies
+    see: triggers, dependencies
+
+  - term: WebDriver
+    see: browser items, WebDriver
+
+  - term: webhooks
+    see: media types, webhooks
+
+  - term: widgets
+    see: dashboards, widgets
+
+  - term: WMI
+    see: Windows monitoring, WMI queries

@@ -207,7 +207,7 @@ server basic authentication procedure again.
 Configuring HTTP level authentication adds a critical layer of access control to
 your Zabbix Web UI by leveraging your web server's native authentication mechanisms.
 Whether using Nginx or Apache, this approach ensures that users are prompted for
-credentials before even reaching Zabbix, effectively guarding against unauthorized
+credentials before even reaching Zabbix, effectively guarding against unauthorised
 access at the HTTP entry point. Key considerations include ensuring that usernames
 used in the HTTP authentication are already defined within Zabbix itself only the
 password from the web server matters for credential checks and correctly setting

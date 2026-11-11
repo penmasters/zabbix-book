@@ -15,7 +15,7 @@ considerably easier to comprehend.
 Below is a sample JSON structure that Zabbix can interpret for Low-Level Discovery:
 
 !!! info ""
-    ``` yaml
+    ```json
     {
       "data": [
         {
@@ -57,13 +57,13 @@ systems running Zabbix Agent (either version 1 or 2). Create the following scrip
 in the `/usr/bin/` directory on each system with an agent installed:
 
 !!! info "create our script"
-    ``` yaml
+    ```bash
     sudo vi /usr/bin/users-discovery.sh
     ```
 Paste the following content in the file:
 
 !!! info "users-discovery.sh"
-    ``` yaml
+    ```bash
     #!/bin/bash
 
     # Find all users with UID ≥ 1000 of UID = 0 from /etc/passwd, except "nobody"
@@ -93,7 +93,7 @@ Paste the following content in the file:
 Once you have created the script, don't forget to make it executable.
 
 !!! info ""
-    ``` yaml
+    ```bash
     sudo chmod +x /usr/bin/users-discovery.sh
     ```
 The script will be executed by the Zabbix agent and will return discovery data
@@ -111,11 +111,11 @@ a more comprehensive testing environment beyond the default root account and you
 personal user account. Feel free to add as many users as you like.
 
 !!! info "create some users"
-    ``` yaml
-    sudo for user in sven brian cartman kenny; do sudo useradd $user; done
+    ```bash
+    for user in sven brian cartman kenny; do sudo useradd "$user"; done
     ```
     Create a password for every user so that we can log in on the console
-    ``` yaml
+    ```bash
     sudo passwd <user>
     ```
 
@@ -131,7 +131,7 @@ in the upper-right corner.
 Fill in the required information, specifying at least a **template name** and 
 the **template group** it belongs to.
 
-![lld user template](ch08.2-template-lld-users.png)
+![lld user template](ch08.2-template-lld-users.png){ align=center }
 
 _8.2 lld user template_
 
@@ -143,7 +143,7 @@ Click on the button.
 
 Fill in the needed information as shown in the screenshot:
 
-![discovery rule](ch08.3-template-discovery-rule.png)
+![discovery rule](ch08.3-template-discovery-rule.png){ align=center }
 
 _8.3 discovery rule_
 
@@ -169,7 +169,7 @@ Log in to your console on the host that you would like to monitor and go to the
 following path. 
 
 !!! info ""
-    ``` yaml
+    ```bash
     cd `/etc/zabbix/zabbix_agent2.d/`
     or in case you are using Agent 1
     cd `/etc/zabbix/zabbix_agentd.d/`
@@ -182,7 +182,7 @@ map it to the corresponding script. By doing this, Zabbix can associate the item
 key with the correct script execution.
 
 !!! info ""
-    ``` yaml
+    ```bash
     vi userparameter-users.conf
     ```
 Add the following line in the config file and save it.
@@ -224,7 +224,7 @@ With the setup complete, it is time to perform some tests.
 If everything is configured correctly, Zabbix will retrieve the expected value and
 store it in the database.
 
-![lld-test](ch08.4-lld-discovery-test.png)
+![lld-test](ch08.4-lld-discovery-test.png){ align=center }
 
 _8.4 lld-test_
 
@@ -294,7 +294,7 @@ item prototype. Follow these steps to configure the item prototype correctly:
 
 With these configurations, your LLD item prototype is ready for deployment.
 
-  ![create lld item](ch08.5-lld-item-create.png)
+  ![create lld item](ch08.5-lld-item-create.png){ align=center }
 
   _8.5 create lld item_
 
@@ -333,7 +333,7 @@ at the bottom. Fill in the needed information:
 Press `Get value` and if all goes well Zabbix will return the value 1 or 0 depending
 on whether the user is online or not.
 
-![test lld item](ch08.6-lld-test-item.png)
+![test lld item](ch08.6-lld-test-item.png){ align=center }
 
 _8.6 test lld item_
 
@@ -352,7 +352,7 @@ Fill in the following fields:
 - **Expression**: We want to get a notification if someone is online. You can
   make use of the `Add` button or just copy: `last(/Discover users/custom.user[{#USERNAME}])=1`
 
-![lld trigger](ch08.7-lld-trigger.png)
+![lld trigger](ch08.7-lld-trigger.png){ align=center }
 
 _8.7 lld trigger_
 
@@ -364,7 +364,7 @@ You can now log in with a user that we created before or root and have a look at
 our dashboard. A notification should pop up soon to inform you that a user was
 logged in.
 
-![user root logged](ch08.8-lld-user-root-loggedin.png)
+![user root logged](ch08.8-lld-user-root-loggedin.png){ align=center }
 
 _8.8 user root logged_
 
@@ -384,7 +384,7 @@ Press on the button `Add` and fill in the needed information.
 - **Filters**: Here we filter for certain information that we find in our LLD 
   macros. In our case we look in the macro `{#USERNAME}` for the user `root`.
 
-![lld override](ch08.9-lld-override.png)
+![lld override](ch08.9-lld-override.png){ align=center }
 
 _8.9 lld override_
 
@@ -393,7 +393,7 @@ _8.9 lld override_
   the `Severity` and select `High`. This will modify the severity of our trigger
   and change it to `High` if the user that is detected is the user `root`.
 
-![lld override operation ](ch08.10-lld-override-operation.png)
+![lld override operation ](ch08.10-lld-override-operation.png){ align=center }
 
 _8.10 lld override operation_
 
@@ -406,7 +406,7 @@ Once everything is changed you can log in on your system with the user `root` an
 one of the other users. As you will see both triggers will fire off but with
 different severity levels.
 
-![lld different severity](ch08.11-lld-users-override.png)
+![lld different severity](ch08.11-lld-users-override.png){ align=center }
 
 _8.11 lld different severity_
 

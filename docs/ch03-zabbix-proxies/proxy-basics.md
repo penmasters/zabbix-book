@@ -76,7 +76,7 @@ Subsequently, both the server and the proxy maintain a revision of the configura
 When a change is made on the Zabbix server side, only the differences, based on these revision
 numbers, are applied to the proxy's configuration, rather than a complete replacement
 of the entire configuration as in older versions. This incremental approach allows
-for near real-time propagation of configuration changes while minimizing resource
+for near real-time propagation of configuration changes while minimising resource
 consumption.
 
 ???+ note Configuration settings vs configuration updates
@@ -131,7 +131,7 @@ reaches 80% again before that, the server stops accepting proxy data again.
 
 | History write cache usage | Zabbix server mode                   | Zabbix server action                                                                                                                                   |
 |---------------------------|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Reaches 80%               | Wait                                 | Stops accepting proxy data, but maintains a throttling list (prioritized list of proxies to be contacted later).                                       |
+| Reaches 80%               | Wait                                 | Stops accepting proxy data, but maintains a throttling list (prioritised list of proxies to be contacted later).                                       |
 | Falls to 60%              | Throttled                            | Starts processing the throttling list, one proxy at a time. May still reject very large uploads (approximately 10,000+ records).                       |
 | Above 60% (normal mode)   | Normal, but prepared to be throttled | May refuse very large proxy uploads from individual proxies; continues accepting other proxy data.                                                     |
 | Drops to 20%              | Normal                               | Drops the throttling list and starts accepting proxy data normally.                                                                                    |
@@ -220,7 +220,7 @@ This is the result of two changes introduced in Zabbix 6.4:
     Monitor trapper utilisation (`zabbix[process,trapper,avg,busy]`) and increase
     `StartTrappers` if it stays high.
 
-![Active proxy communication](ch03.2-active-communication.png)
+![Active proxy communication](ch03.2-active-communication.png){ align=center }
 
 _3.2 Active proxy communication_
 
@@ -251,7 +251,7 @@ And finally the config settings we need to change on our _Zabbix server_:
 
 - `StartProxyPollers`: The number of pollers to contact proxies.
 - `ProxyConfigFrequency`: Replaces `ConfigFrequency` and defines how often
-  _Zabbix server_ will sent configuration changes to all proxies.
+  _Zabbix server_ will send configuration changes to all proxies.
 - `ProxyDataFrequency`: How often _Zabbix server_ will request monitored data
   from our proxies.
 
@@ -270,7 +270,7 @@ And finally the config settings we need to change on our _Zabbix server_:
     the number of values the proxy has received that are yet to be sent to the 
     _Zabbix server_. 
 
-![Passive proxy communication](ch03.3-passive-communication.png)
+![Passive proxy communication](ch03.3-passive-communication.png){ align=center }
 
 _3.3 Passive proxy communication_
 

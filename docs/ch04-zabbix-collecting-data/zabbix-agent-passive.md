@@ -43,7 +43,7 @@ We have prepared an example setup in our Book LAB environment.
 
 _4.15 Zabbix Agent passive hosts_
 
-What we can see here is a setup you might see in any datacenter or office server
+What we can see here is a setup you might see in any data centre or office server
 cabinet. We have a Zabbix server monitoring one Windows server and one Linux server
 directly (or through a proxy). We call Zabbix a network monitoring solution as it
 communicates over the network. In Zabbix we have two methods of communication.

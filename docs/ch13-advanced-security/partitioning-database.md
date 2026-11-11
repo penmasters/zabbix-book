@@ -76,7 +76,7 @@ installed onto your database server yet, do that now.
     zypper install tmux
     ```
 
-    Debian-based
+    Ubuntu
     ```bash
     apt install tmux
     ```
@@ -387,7 +387,7 @@ We also need to install some Perl dependencies to make sure we can execute the s
     note: on SUSE, the Sys::Syslog module is included in the perl package, so no 
     separate installation is needed.
 
-    Debian-based
+    Ubuntu
     ```bash
     apt install libdatetime-perl liblogger-syslog-perl
     ```

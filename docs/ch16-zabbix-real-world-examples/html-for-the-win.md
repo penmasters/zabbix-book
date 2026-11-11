@@ -15,7 +15,7 @@ many different custom ways as your imagination (or HTML limitations) allows you
 to. That widget is "Item history", but with these two options taken into
 consideration:
 
-![HTML for the win - how to](ch16.12-html-for-the-win-how-to.png)
+![HTML for the win - how to](ch16.12-html-for-the-win-how-to.png){ align=center }
 
 _16.12 HTML for the win - how to_
 
@@ -89,7 +89,7 @@ progress-bar display of how much time we have spent today so far:
 
 Now look at the result. Isn't it beautiful?
 
-![HTML for the win - how to](ch16.13-html-for-the-win-hello-world.png)
+![HTML for the win - how to](ch16.13-html-for-the-win-hello-world.png){ align=center }
 
 _16.13 HTML for the win - how to_
 
@@ -171,13 +171,13 @@ end sooner. So here we have a script that forms HTML output:
 Here is the configuration in the Zabbix GUI — worth noting that we provide a list of
 websites straight from here:
 
-![HTML for the win - how to](ch16.14-html-for-the-win-simple-table-config.png)
+![HTML for the win - how to](ch16.14-html-for-the-win-simple-table-config.png){ align=center }
 
 _16.14 HTML for the win - how to_
 
 And here is the result:
 
-![HTML for the win - how to](ch16.15-html-for-the-win-simple-table-result.png)
+![HTML for the win - how to](ch16.15-html-for-the-win-simple-table-result.png){ align=center }
 
 _16.15 HTML for the win - how to_
 
@@ -254,7 +254,7 @@ display it. In this case — with the additional help of the `<details>` element
 
 Result:
 
-![HTML for the win - how to](ch16.16-html-for-the-win-advanced-table-result.png)
+![HTML for the win - how to](ch16.16-html-for-the-win-advanced-table-result.png){ align=center }
 
 _16.16 HTML for the win - how to_
 
@@ -324,7 +324,7 @@ its current floor at any given moment and we want to visualise it.
 
 Result:
 
-![HTML for the win - how to](ch16.17-html-for-the-win-vertical-position-result.png)
+![HTML for the win - how to](ch16.17-html-for-the-win-vertical-position-result.png){ align=center }
 
 _16.17 HTML for the win - how to_
 

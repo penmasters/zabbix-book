@@ -51,7 +51,7 @@ various different entities are contained within our **Hosts**.
 Often times, Zabbix users and administrators have the misconception here that a
 *`host`* always represents a physical or virtualised host. But in the end, hosts
 are nothing more than a representation of a `monitoring target`. A monitoring
-target is something we want to monitor. This can be a server in your datacenter,
+target is something we want to monitor. This can be a server in your data centre,
 a virtual machine on your hypervisor, a Docker container, or even just a website.
 Everything you want to monitor in Zabbix will need a host and the host will then
 contain your monitoring configuration on its entities.
@@ -137,7 +137,7 @@ for example reboot a host without the right problem being first detected.
 
 ## Conclusion
 
-To summarize, all the steps in the dataflow work together to make sure that you can
+To summarise, all the steps in the dataflow work together to make sure that you can
 build the perfect Zabbix environment. When we put the entire dataflow together it
 looks like the image below.
 

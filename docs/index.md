@@ -1,7 +1,7 @@
 # Welcome
 
 This book is born from a simple desire: **to give back**. After years of
-working with Zabbix, and authoring previous many other publications about the platform,
+working with Zabbix, and authoring many other publications about the platform,
 Patrik and Nathan felt a strong pull to share their knowledge in a way that was accessible
 to everyone. That's how the initial idea of a free, online Zabbix resource was
 conceived – **a community-driven project dedicated to empowering users**.
@@ -13,23 +13,23 @@ This book, a tangible culmination of that vision, represents the next step. All
 profits generated from its sales will be reinvested back into the community, enabling
 us to further expand and enhance the resources and support we offer. This is more
 than just a book; it's a testament to the power of shared knowledge and a commitment
-to fostering a thriving Zabbix community."
+to fostering a thriving Zabbix community.
 
-## License
+## Licence
 
-Please note: The english version is the primary source document.
+Please note: The English version is the primary source document.
 Translations are provided for convenience, but this version is considered the
 most accurate.
 
 
-Please before you start take a look at our most updated license : [https://github.com/penmasters/zabbix-book/blob/main/readme.md](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
+Please before you start take a look at our most updated licence : [https://github.com/penmasters/zabbix-book/blob/main/readme.md](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
 on Github.
 
 *The Zabbix Book* is a freely accessible resource designed to help users understand
 and master Zabbix. Contributions are highly encouraged to improve and expand its
 content. However, the book is distributed under the
 **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)**
-license, meaning it is free for non-commercial use only.
+licence, meaning it is free for non-commercial use only.
 
 Contributors should be aware that:
 

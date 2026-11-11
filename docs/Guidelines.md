@@ -2,11 +2,11 @@
 
 ## How to contribute
 
-- Sign the [https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf) preferable electronically
-- Clone this project to your Github account
-- Clone the repository to you pc
+- Sign the [https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf](https://www.thezabbixbook.com/files/form%20deed%20of%20transfer%20Book%20Zabbix.pdf) preferably electronically
+- Clone this project to your GitHub account
+- Clone the repository to your PC
 
-- Install the needed software for Mkdocs to work,
+- Install the needed software for MkDocs to work,
   check the file in the root folder how-to-install-mkdocs.md
   - Create a new branch to make your changes
     - git branch "<your branch name\>"
@@ -21,7 +21,7 @@
   - Merge your branch into the main branch
     - git merge "<your branch name\>"
     - git push
-  - cleanup your branch
+  - clean up your branch
     - git branch -d "<your branch name\>"
-- Create a pull requests so that we can merge it :)
+- Create a pull request so that we can merge it :)
 - Follow these [https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md](https://github.com/penmasters/zabbix-book/blob/main/how-to-rules-for-writing.md) when you write a topic.

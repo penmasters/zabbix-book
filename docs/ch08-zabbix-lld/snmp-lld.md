@@ -185,7 +185,7 @@ Go to `Data collection` | `Hosts` and either create a new host or open an
 existing one, then add an `SNMP interface` pointing at the device (IP,
 port 161, SNMP version, and community).
 
-![SNMP Interface](ch08.21-snmp_interface.png)
+![SNMP Interface](ch08.21-snmp_interface.png){ align=center }
 
 _8.21 SNMP Interface_
 
@@ -234,7 +234,7 @@ in front of the item and select the `create dependent discovery rule`.
 - **Key**: `net.if.discovery`
 - **Master item**: RAW: Interface table walk
 
-![Discovery Rule](ch08.22-discovery_rule.png)
+![Discovery Rule](ch08.22-discovery_rule.png){ align=center }
 
 _8.22 LLD discovery rule_
 
@@ -245,7 +245,7 @@ Now open the `Preprocessing` tab and add a single step:
 - **OID prefix**: `1.3.6.1.2.1.2.2.1.2`
 - **Format**: Unchanged
 
-![Discovery Preprocessing](ch08.23-discovery_preprocessing.png)
+![Discovery Preprocessing](ch08.23-discovery_preprocessing.png){ align=center }
 
 _8.23 LLD discovery preprocessing_
 
@@ -289,7 +289,7 @@ Then, on the host, go to `Macros` and create:
 - **Macro**: `{$IF.NOT.MATCHES}`
 - **Value**: `^lo$`
 
-![LLD Filters](ch08.24-filters.png)
+![LLD Filters](ch08.24-filters.png){ align=center }
 
 _8.24 LLD Filters_
 
@@ -310,7 +310,7 @@ In `Preprocessing`, add:
 - **Parameter**: `1.3.6.1.2.1.2.2.1.8.{#SNMPINDEX}`
 - **Format**: Unchanged
 
-![LLD Prototype item](ch08.25-lld_item.png)
+![LLD Prototype item](ch08.25-lld_item.png){ align=center }
 
 _8.25 LLD item_
 

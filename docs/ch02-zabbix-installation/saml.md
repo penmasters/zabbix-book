@@ -3,7 +3,7 @@ description: |
     This chapter from The Zabbix Book, titled "SAML Authentication," explains how
     to integrate Zabbix with SAML-based identity providers for single sign-on (SSO).
     It covers configuration steps, metadata exchange, and login testing, enabling
-    secure and centralized access management for the Zabbix frontend.
+    secure and centralised access management for the Zabbix frontend.
 tags: [advanced]
 ---
 
@@ -51,7 +51,7 @@ Retrieving the IdP Certificate (idp.crt) from Google Workspace:
 4. **Create a New Application:** Initiate the creation of a new application to
    facilitate SAML integration. This action will trigger Google Workspace to generate
    the necessary IdP certificate.
-   ![Add google app](ch02.47-add-google-app.png)
+   ![Add google app](ch02.47-add-google-app.png){ align=center }
 
 _2.47 create new application_
 
@@ -61,7 +61,7 @@ _2.47 create new application_
 6. **Placement of idp.crt:** Copy the downloaded `idp.crt` file to the same directory
    as the SP certificates in Zabbix, under `ui/conf/certs/`.
 
-![Add google app](ch02.48-saml-download.png)
+![Add google app](ch02.48-saml-download.png){ align=center }
 
 _2.48 add certificate_
 
@@ -82,7 +82,7 @@ and interpreted.
   control over Zabbix user access. For instance, specific Google Workspace groups
   can be authorised to access particular Zabbix resources or functionalities.
 
-**Group Authorization:**
+**Group Authorisation:**
 
 - Within the Google Workspace application settings, define the groups that are
   authorised to utilise SAML authentication with Zabbix.
@@ -100,7 +100,7 @@ This attribute mapping ensures that users can log in using their familiar Google
 Workspace credentials and that their access privileges within Zabbix are determined
 by their Google Workspace group memberships.
 
-![saml mappings](ch02.49-saml-mappings.png)
+![saml mappings](ch02.49-saml-mappings.png){ align=center }
 
 _2.49 SAML mappings_
 
@@ -146,7 +146,7 @@ Example Configuration (Conceptual)
 - SP entity ID: https://your_zabbix_server/zabbix
 - Sign: Assertions
 
-![google saml config](ch02.50-saml-zabbix-options.png)
+![google saml config](ch02.50-saml-zabbix-options.png){ align=center }
 
 _2.50 SAML config_
 
@@ -193,7 +193,7 @@ delivery is dynamically determined based on SAML attributes.
 - **Navigate to SAML Settings:** In the Zabbix web interface, go to `Users` |
   `Authentication` and select the `SAML settings` tab.
 - **Locate Media Mapping Section:** Within the SAML settings, look for the section
-  related to media type mapping. This section might be labeled "Media mappings"
+  related to media type mapping. This section might be labelled "Media mappings"
   or similar.
 - **Add Media Mapping:** Click "Add" to create a new media type mapping.
 - **Select Media Type:** Choose the desired media type, such as "Gmail relay."

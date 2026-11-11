@@ -1,4 +1,4 @@
-# Advanced set-up and security
+# Advanced setup and security
 
 In today's interconnected IT landscape, monitoring systems like Zabbix have become
 critical infrastructure components, offering visibility into the health and performance

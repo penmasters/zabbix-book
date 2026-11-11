@@ -32,7 +32,7 @@ main (English development)                              [DEV]
             `-- v8.0-1-<locale>.1                       [IMMUTABLE TAG]
 ```
 
-Each translation branch starts from the finalized English `v8.0-1` tag. The
+Each translation branch starts from the finalised English `v8.0-1` tag. The
 current translation locales are `de`, `es`, `fr`, `it`, `nl`, `pt_BR`, `ru`,
 `th`, and `zh`; each receives its own `translation/8.0/<locale>` branch.
 
@@ -55,14 +55,14 @@ Translation branches can compare their pages with the English release without
 switching branches. See [TRANSLATION_STATUS.md](TRANSLATION_STATUS.md) for the
 read-only report and the explicit review command.
 
-Please before you start take a look at our most updated license : [License](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
+Please before you start take a look at our most updated licence : [Licence](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
 on Github.
 
 *The Zabbix Book* is a freely accessible resource designed to help users understand
 and master Zabbix. Contributions are highly encouraged to improve and expand its
 content. However, the book is distributed under the
 **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)**
-license, meaning it is free for non-commercial use only.
+licence, meaning it is free for non-commercial use only.
 
 Contributors should be aware that:  
 

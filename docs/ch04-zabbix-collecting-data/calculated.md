@@ -120,7 +120,7 @@ To create a **calculated item**:
     - History/Trend storage
 5. Save the item
 
-![ch04.104-calculated-item.png](ch04.104-calculated-item.png)
+![ch04.104-calculated-item.png](ch04.104-calculated-item.png){ align=center }
 
 _4.104 ch04.104-calculated-item.png_
 
@@ -301,7 +301,7 @@ This is far more meaningful for:
 If we now go to the **Latest data** page we can take a look at our item and click on the
 graph button at the right end of the screen.
 
-![ch04.105-calculated-p99.png](ch04.105-calculated-p99.png)
+![ch04.105-calculated-p99.png](ch04.105-calculated-p99.png){ align=center }
 
 _4.105 ch04.105-calculated-p99.png_
 

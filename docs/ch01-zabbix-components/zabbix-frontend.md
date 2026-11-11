@@ -536,9 +536,9 @@ configuration was successful. Click `Finish` to complete the setup process.
 
 _1.8 Zabbix install_
 
-We are now ready to login :
+We are now ready to log in :
 
-![settings](ch01.9-basic-installation-login.png)
+![settings](ch01.9-basic-installation-login.png){ align=center }
 
 _1.9 Zabbix login_
 

@@ -448,7 +448,7 @@ with an expression that is immediately true, such as `last(/your-host/system.upt
 The moment that trigger fires, Zabbix runs the webhook script for real and the
 request will appear in webhook.site within seconds.
 
-![webhook](ch07.2-webhook.png)
+![webhook](ch07.2-webhook.png){ align=center }
 
 _7.2 webhook_
 
@@ -568,7 +568,7 @@ Click **Message templates** and then **Add** to create a template for the
     Problem: {EVENT.NAME}
     ```
 
-!!! info "Message body:""
+!!! info "Message body:"
 
     ```
     Problem started at {EVENT.TIME} on {EVENT.DATE}

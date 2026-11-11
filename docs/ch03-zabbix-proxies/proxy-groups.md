@@ -240,7 +240,7 @@ Follow these steps in the Zabbix Web Interface (Administration section) to creat
     - Proxy group: Leave as None for now.
 - Click Add.
 
-![ch03.12-add-proxy.png](ch03.12-add-proxy.png)
+![ch03.12-add-proxy.png](ch03.12-add-proxy.png){ align=center }
 _3.12 Add proxy_
 
 #### Create the Proxy Group (`Administration` | `Proxy groups`)
@@ -255,7 +255,7 @@ _3.12 Add proxy_
     - Failover period: `1m` (The time the server waits before redistributing hosts
       from an offline proxy).
 
-![ch03.13-create-proxy-group.png](ch03.13-create-proxy-group.png)
+![ch03.13-create-proxy-group.png](ch03.13-create-proxy-group.png){ align=center }
 _3.13 Create Proxy groups_
 
 #### Assign Proxies to the Group (`Administration` | `Proxies`)
@@ -266,10 +266,10 @@ _3.13 Create Proxy groups_
 - Define `Address for active agents` add the IP of the proxy.
 - Click `Update`.
 
-![ch03.14-add-proxy-to-group.png](ch03.14-add-proxy-to-group.png)
+![ch03.14-add-proxy-to-group.png](ch03.14-add-proxy-to-group.png){ align=center }
 _3.14 Add proxy to proxy group_
 
-![ch03.15-all-proxy-linked.png](ch03.15-all-proxy-linked.png)
+![ch03.15-all-proxy-linked.png](ch03.15-all-proxy-linked.png){ align=center }
 _3.15 All proxies linked with a proxy group_
 
 ### Zabbix Agent Configuration (zabbix_agentd.conf)
@@ -419,7 +419,7 @@ if __name__ == "__main__":
     create_hosts()
 ```
 
-![ch03.16-proxy-groups.png](ch03.16-proxy-groups.png)
+![ch03.16-proxy-groups.png](ch03.16-proxy-groups.png){ align=center }
 _3.16 proxy groups_
 
 ## Troubleshooting Tips

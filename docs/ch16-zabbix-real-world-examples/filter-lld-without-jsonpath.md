@@ -281,7 +281,7 @@ zabbix_export:
     Create two files with the content from the above examples and import them as a
     host. When importing, make sure not to delete missing hosts.
 
-![import-host.png](ch16.11-import-host.png)
+![import-host.png](ch16.11-import-host.png){ align=center }
 
 _16.11 Import host_
 

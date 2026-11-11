@@ -297,8 +297,8 @@ Once complete, your MariaDB instance will be significantly more secure.
 
     You already have your root account protected, so you can safely answer 'n'.
 
-    Switch to unix_socket authentication [Y/n] n
-     ... skipping.
+    Switch to unix_socket authentication [Y/n] y
+    Enabled successfully!
 
     You already have your root account protected, so you can safely answer 'n'.
 

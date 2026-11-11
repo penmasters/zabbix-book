@@ -394,7 +394,7 @@ The **Columns** setting groups records by selected fields, such as
 such as count, maximum, or percentile, with a distinct alias for each result.
 **Conditions** filter records *before* grouping and aggregation. Thus one
 query can conceptually calculate multiple results for each group and time
-bucket. The exact serialization of those results into a Zabbix item value
+bucket. The exact serialisation of those results into a Zabbix item value
 is subject to the RC3 changes discussed below.
 
 For traces, commonly useful columns include `Duration`, `ServiceName`,
@@ -567,7 +567,7 @@ connectivity. Also check that your generator is actually sending OTLP/gRPC.
 Create a host named `otel-lab`, monitored by the server or proxy that should
 execute the Telemetry query. This item type does not require an agent.
 
-![ch04.109-new_host.png](ch04.109-new_host.png)
+![ch04.109-new_host.png](ch04.109-new_host.png){ align=center }
 
 _4.109 Add new host_
 
@@ -593,7 +593,7 @@ Create the following item on `otel-lab`:
 | JsonPath | $.columns.p95 |
 | Custom multiplier | 0.000001 |
 
-![ch04.110-create_item.png](ch04.110-create_item.png)
+![ch04.110-create_item.png](ch04.110-create_item.png){ align=center }
 
 _4.110 Create Item_
 
@@ -640,7 +640,7 @@ one-minute buckets:
 Go to `APM`|`Traces` and click on the right side of the screen and drag it to
 the middle so you can see the traces.
 
-![ch04.111-apm_traces.png](ch04.111-apm_traces.png)
+![ch04.111-apm_traces.png](ch04.111-apm_traces.png){ align=center }
 
 _4.111 APM traces panel_
 

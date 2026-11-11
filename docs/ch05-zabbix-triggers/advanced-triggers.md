@@ -72,14 +72,14 @@ compared to the original problem expression and that is how you would avoid
 flapping in such situations. It would only fall into the "OK" state when the
 problem is really fixed (beginning of each hour in our example):
 
-![Advanced triggers - recovery expression](ch05.8-advanced-triggers-recovery-expression.png)
+![Advanced triggers - recovery expression](ch05.8-advanced-triggers-recovery-expression.png){ align=center }
 
 _5.8 Advanced triggers - recovery expression_
 
 Difference just with this small idea is huge - less monitoring noise, fewer
 alerts:
 
-![Advanced triggers - recovery expression](ch05.9-advanced-triggers-recovery-expression-vs-simple-threshold.png)
+![Advanced triggers - recovery expression](ch05.9-advanced-triggers-recovery-expression-vs-simple-threshold.png){ align=center }
 
 _5.9 Advanced triggers - recovery expression_
 
@@ -113,7 +113,7 @@ store anything.
 The same goes for the ICMP ping trigger - it checks if ping failed or there was no
 data for the last 3 minutes:
 
-![Advanced triggers - no dependencies](ch05.10-advanced-triggers-no-dependencies.png)
+![Advanced triggers - no dependencies](ch05.10-advanced-triggers-no-dependencies.png){ align=center }
 
 _5.10 Advanced triggers - no dependencies_
 
@@ -127,7 +127,7 @@ Let's apply it to "thezabbixbook.com" host - and it has a typo (note double "b"
 is missing in the "zabbix"). What happens is that data can't be retrieved; the host
 can't be pinged:
 
-![Advanced triggers - no dependencies result](ch05.11-advanced-triggers-no-dependencies-result.png)
+![Advanced triggers - no dependencies result](ch05.11-advanced-triggers-no-dependencies-result.png){ align=center }
 
 _5.11 Advanced triggers - no dependencies result_
 
@@ -140,7 +140,7 @@ So here comes the "trigger dependency". We will configure all HTTP-based
 triggers to depend on the ICMP ping one. It is done in trigger configuration, tab
 "Dependencies":
 
-![Advanced triggers - dependency configuration](ch05.12-advanced-triggers-dependency-config.png)
+![Advanced triggers - dependency configuration](ch05.12-advanced-triggers-dependency-config.png){ align=center }
 
 _5.12 Advanced triggers - dependency configuration_
 
@@ -148,13 +148,13 @@ Keep in mind that you are not limited to just one dependency - you can add more.
 Once added, all the triggers for which you configure dependencies will display
 them under their names:
 
-![Advanced triggers - with dependencies](ch05.13-advanced-triggers-dependencies.png)
+![Advanced triggers - with dependencies](ch05.13-advanced-triggers-dependencies.png){ align=center }
 
 _5.13 Advanced triggers - with dependencies_
 
 And we can see that from now on, only one event is generated and displayed:
 
-![Advanced triggers - no dependencies result](ch05.14-advanced-triggers-dependencies-result.png)
+![Advanced triggers - no dependencies result](ch05.14-advanced-triggers-dependencies-result.png){ align=center }
 
 _5.14 Advanced triggers - no dependencies result_
 
@@ -178,20 +178,20 @@ thresholds.
 Here we have different thresholds for different discovered entities. The default is
 95 and we have two exceptions:
 
-![Advanced triggers - no dependencies result](ch05.15-advanced-triggers-context-macros.png)
+![Advanced triggers - no dependencies result](ch05.15-advanced-triggers-context-macros.png){ align=center }
 
 _5.15 Advanced triggers - no dependencies result_
 
 So the trigger prototype will look like this:
 
-![Advanced triggers - no dependencies result](ch05.16-advanced-triggers-context-macros-trigger-config.png)
+![Advanced triggers - no dependencies result](ch05.16-advanced-triggers-context-macros-trigger-config.png){ align=center }
 
 _5.16 Advanced triggers - no dependencies result_
 
 And real events will then be like this (note the different thresholds for "a"
 and "h"):
 
-![Advanced triggers - no dependencies result](ch05.17-advanced-triggers-context-macros-trigger-result.png)
+![Advanced triggers - no dependencies result](ch05.17-advanced-triggers-context-macros-trigger-result.png){ align=center }
 
 _5.17 Advanced triggers - no dependencies result_
 
@@ -220,14 +220,14 @@ where HTTP 404 status code was returned. You can catch those as multiple
 events, and, as we just learned, display some more details (e.g. path in this
 case) directly in the trigger / event name:
 
-![Advanced triggers - multiple events - config](ch05.18-advanced-triggers-multiple-regsub-config.png)
+![Advanced triggers - multiple events - config](ch05.18-advanced-triggers-multiple-regsub-config.png){ align=center }
 
 _5.18 Advanced triggers - multiple events - config_
 
 This item / trigger combination will catch and display all of the 404 lines,
 with the exact path of the URL that was "Not found":
 
-![Advanced triggers - multiple events - result](ch05.19-advanced-triggers-multiple-regsub-result.png)
+![Advanced triggers - multiple events - result](ch05.19-advanced-triggers-multiple-regsub-result.png){ align=center }
 
 _5.19 Advanced triggers - multiple events - result_
 
@@ -251,7 +251,7 @@ else but a simple regexp and native Zabbix features do it!
 
 Following the previous warning, here is an example of such a setup:
 
-![Advanced triggers - multiple events - no data](ch05.20-advanced-triggers-multiple-events-no-data.png)
+![Advanced triggers - multiple events - no data](ch05.20-advanced-triggers-multiple-events-no-data.png){ align=center }
 
 _5.20 Advanced triggers - multiple events - no data_
 
@@ -286,7 +286,7 @@ adding a time component to it. Zabbix has multiple different functions for this.
 For example, you have a trigger which is important only during the daytime, so you
 can easily do this:
 
-![Advanced triggers - time component](ch05.21-advanced-triggers-time-component.png)
+![Advanced triggers - time component](ch05.21-advanced-triggers-time-component.png){ align=center }
 
 _5.21 Advanced triggers - time component_
 
@@ -318,7 +318,7 @@ For example, we will treat any big spike lasting for 3 minutes in a row as an
 incident, as well as treating the incident as over only if it drops and stays low
 for 10 minutes in a row:
 
-![Advanced triggers - more functions](ch05.22-advanced-triggers-more-functions.png)
+![Advanced triggers - more functions](ch05.22-advanced-triggers-more-functions.png){ align=center }
 
 _5.22 Advanced triggers - more functions_
 
@@ -335,7 +335,7 @@ Macros in this trigger configuration are set accordingly:
 
 So now let's illustrate what it would look like during a real incident:
 
-![Advanced triggers - more functions - result](ch05.23-advanced-triggers-more-functions-result.png)
+![Advanced triggers - more functions - result](ch05.23-advanced-triggers-more-functions-result.png){ align=center }
 
 _5.23 Advanced triggers - more functions - result_
 
@@ -360,7 +360,7 @@ evaluates the number of changes during a defined period. Given that constant "0"
 not mean anything wrong, we must combine it with a simple threshold and that is
 how we can catch the defined issue in a fast and reliable way.
 
-![Advanced triggers - detecting stuck](ch05.24-advanced-triggers-stuck-config.png)
+![Advanced triggers - detecting stuck](ch05.24-advanced-triggers-stuck-config.png){ align=center }
 
 _5.24 Advanced triggers - detecting stuck_
 
@@ -368,7 +368,7 @@ And now we can see it in action - first case is regular processing, second one
 is stuck - exactly what we intended to catch! After "fixing" it - trigger goes
 away:
 
-![Advanced triggers - detecting stuck - result](ch05.25-advanced-triggers-stuck-result.png)
+![Advanced triggers - detecting stuck - result](ch05.25-advanced-triggers-stuck-result.png){ align=center }
 
 _5.25 Advanced triggers - detecting stuck - result_
 
@@ -393,7 +393,7 @@ growing tempo to be less than 1% during a 30-minute window.
 
 Full trigger configuration is this:
 
-![Advanced triggers - growing fast](ch05.26-advanced-triggers-growing-fast-config.png)
+![Advanced triggers - growing fast](ch05.26-advanced-triggers-growing-fast-config.png){ align=center }
 
 _5.26 Advanced triggers - growing fast_
 
@@ -416,7 +416,7 @@ And we can see how nicely it works. If disk used space grows slowly - trigger
 is silent. If disk grows fast, but the threshold has not yet been reached - trigger is
 silent. And only once it grows fast and 60% is reached - we know about it:
 
-![Advanced triggers - growing fast - result](ch05.27-advanced-triggers-growing-fast-result.png)
+![Advanced triggers - growing fast - result](ch05.27-advanced-triggers-growing-fast-result.png){ align=center }
 
 _5.27 Advanced triggers - growing fast - result_
 

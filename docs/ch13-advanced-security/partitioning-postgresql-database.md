@@ -460,7 +460,7 @@ Let's start our Zabbix server again before we continue.
 
 Let's have a look at them: go to `Administration` | `Housekeeping`.
 
-![TimescaleDB settings](ch13.12-timescaledb.png)
+![TimescaleDB settings](ch13.12-timescaledb.png){ align=center }
 
 _13.12 housekeeper settings_
 

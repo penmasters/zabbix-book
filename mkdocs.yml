@@ -42,7 +42,7 @@ nav:
           - ch02-zabbix-installation/ldap-ad.md
           - ch02-zabbix-installation/saml.md
           - ch02-zabbix-installation/mfa.md
-  - "Chapter 03 : Proxies and Webcomponents":
+  - "Chapter 03 : Proxies and the Zabbix web service":
       - ch03-zabbix-proxies/chapter.md
       - ch03-zabbix-proxies/proxy-basics.md
       - ch03-zabbix-proxies/active-passive-proxies.md
@@ -112,7 +112,7 @@ nav:
       - ch12-zabbix-api/chapter.md
       - ch12-zabbix-api/API basics.md
       - ch12-zabbix-api/self-engaging.md
-  - "Chapter 13 : Advanced set up and security":
+  - "Chapter 13 : Advanced setup and security":
       - ch13-advanced-security/chapter.md
       - SELinux: ch13-advanced-security/selinux-zabbix.md
       - Securing the frontend: ch13-advanced-security/securing-frontend.md
@@ -120,10 +120,10 @@ nav:
       - Storing secrets: ch13-advanced-security/using-vault.md
       - Partitioning MariaDB: ch13-advanced-security/partitioning-database.md
       - Partitioning PostgreSQL with TimescaleDB: ch13-advanced-security/partitioning-postgresql-database.md
-      - Storing data in Clickhouse: ch13-advanced-security/storing-data-in-clickhousedb.md
+      - Storing data in ClickHouse: ch13-advanced-security/storing-data-in-clickhousedb.md
   - "Chapter 14 : Maintenance":
       - ch14-zabbix-maintenance/chapter.md
-      - maintenance: ch14-zabbix-maintenance/maintenance.md
+      - Maintenance: ch14-zabbix-maintenance/maintenance.md
       - Internal health: ch14-zabbix-maintenance/internal-health.md
       - Backups: ch14-zabbix-maintenance/taking-backups.md
       - Upgrades: ch14-zabbix-maintenance/upgrades.md

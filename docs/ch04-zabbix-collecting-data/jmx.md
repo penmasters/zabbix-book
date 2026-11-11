@@ -283,7 +283,7 @@ in a passive mode, which means it polls data directly from your JMX application.
 The Zabbix server or proxy then polls the gateway to retrieve this data, completing
 the connection chain.
 
-![Zabbix java gateway](ch04.71-jmx-zabbix.png)
+![Zabbix java gateway](ch04.71-jmx-zabbix.png){ align=center }
 
 _4.71 JMX Gateway_
 
@@ -395,7 +395,7 @@ rich experience. You can download it from [https://visualvm.github.io/download.h
 
 Start your preferred application and connect to our JMX port on 8686.
 
-![Jconsole](ch04.72-jconsole.png)
+![Jconsole](ch04.72-jconsole.png){ align=center }
 
 _4.72 Jconsole_
 
@@ -403,7 +403,7 @@ After a successful login you should be greeted with a screen like this, where yo
 have a tree view overview of all the MBeans we can use to gather information
 from.
 
-![ch04.73 Successful login](ch04.73-jconsole-mbeans-tree.png)
+![ch04.73 Successful login](ch04.73-jconsole-mbeans-tree.png){ align=center }
 
 _4.73 Login screen_
 
@@ -438,7 +438,7 @@ On our host Tomcat create a new item and add the following information.
 - **Type of information**: Numeric(unsigned)
 - **Host interface**: The JMX interface we just created on our host.
 
-![JMX Item](ch04.74-jmx-requestCount-item.png)
+![JMX Item](ch04.74-jmx-requestCount-item.png){ align=center }
 
 _4.74 JMX item_
 
@@ -470,7 +470,7 @@ append an attribute name, such as `maxTime`, `requestCount`, or `bytesReceived`,
 the end of the key, separated by a comma.
 `jmx["Catalina:type=GlobalRequestProcessor,name=\"http-nio-8080\"","requestCount"]`
 
-![requestCount item](ch04.75-jconsole-requestCount.png)
+![requestCount item](ch04.75-jconsole-requestCount.png){ align=center }
 
 _4.75 requestCount item_
 
@@ -487,7 +487,7 @@ To monitor a specific value from this composite object, you must specify the
 attribute name within the `CompositeData` structure. For example, to get the maximum
 heap memory usage, the Zabbix item key would be: `jmx["java.lang:type=Memory","HeapMemoryUsage.max"]`.
 
-![](ch04.76-jconsole-HeapMemory.Max.png)
+![](ch04.76-jconsole-HeapMemory.Max.png){ align=center }
 
 _4.76 HeapMemoryUsage_
 

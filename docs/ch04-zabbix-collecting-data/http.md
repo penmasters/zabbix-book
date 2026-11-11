@@ -337,7 +337,7 @@ The HTTP agent item is configured with a POST request and the following body:
 The `Content-Type` header must be set to `application/json`. Without it, the API
 will reject the request.
 
-![ch04.42-http_item.png](ch04.42-http_item.png)
+![ch04.42-http_item.png](ch04.42-http_item.png){ align=center }
 
 _4.42 ch04.42_http_item.png_
 
@@ -409,7 +409,7 @@ the proxy's logs must be examined with increased logging.
 
 ### HTTP Agent Item Parameters Reference
 
-The table below summarizes the key HTTP agent parameters and their purpose.
+The table below summarises the key HTTP agent parameters and their purpose.
 
 | Parameter           | Description                                                           |
 |:---                 |:---                                                                  |

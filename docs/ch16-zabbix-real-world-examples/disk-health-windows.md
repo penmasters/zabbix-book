@@ -23,7 +23,7 @@ During installation:
   the server IP.
 - Complete the installation normally.
 
-![ch16.1-agent_config.jpg](ch16.1-agent_config.jpg)
+![ch16.1-agent_config.jpg](ch16.1-agent_config.jpg){ align=center }
 
 _16.1 Agent configuration_
 
@@ -38,7 +38,7 @@ In Windows:
 - Click `Start` if the service is not already running. This ensures
   monitoring continues after PC restarts.
 
-![ch16.2-services.jpg](ch16.2-services.jpg)
+![ch16.2-services.jpg](ch16.2-services.jpg){ align=center }
 
 _16.2 Configure Services_
 
@@ -55,7 +55,7 @@ After installing Smartmontools, open Command Prompt (CMD) and run:
 If everything is correct, it will display detailed information about your SSD/HDD
 such as temperature, usage hours, alerts, and more.
 
-![ch16.3-smartmontool.jpg](ch16.3-smartmontool.jpg)
+![ch16.3-smartmontool.jpg](ch16.3-smartmontool.jpg){ align=center }
 
 _16.3 Smartmontools_
 
@@ -70,11 +70,11 @@ Locate the plugin configuration folder:
   Save and close the file.
 
 
-![ch16.4-plugins.jpg](ch16.4-plugins.jpg)
+![ch16.4-plugins.jpg](ch16.4-plugins.jpg){ align=center }
 
 _16.4 Plugins_
 
-![ch16.5-plugins.jpg](ch16.5-plugins.jpg)
+![ch16.5-plugins.jpg](ch16.5-plugins.jpg){ align=center }
 
 _16.5 Plugin config_
 
@@ -83,7 +83,7 @@ _16.5 Plugin config_
 Inside the Zabbix Agent 2 installation folder, run: `zabbix_agent2.exe -t smart.disk.get`
 If successful, it will return the disk information that will be sent to Zabbix.
 
-![ch16.6-communication.png](ch16.6-communication.png)
+![ch16.6-communication.png](ch16.6-communication.png){ align=center }
 
 _16.6 Communication check_
 
@@ -95,7 +95,7 @@ In Zabbix, follow these steps:
 - Go to Templates
 - Add the following template:
 
-![ch16.7-host-add.png](ch16.7-host-add.png)
+![ch16.7-host-add.png](ch16.7-host-add.png){ align=center }
 
 _16.7 Host add_
 
@@ -117,7 +117,7 @@ After collecting all the data, Zabbix will display all relevant disk health data
 
 Let's have a look at our latest data page. `Monitoring` | `Latest data`.
 
-![ch16.8-latestdata.png](ch16.8-latestdata.png)
+![ch16.8-latestdata.png](ch16.8-latestdata.png){ align=center }
 
 _16.8 Latest data_
 

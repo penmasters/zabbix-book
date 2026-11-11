@@ -48,6 +48,7 @@ When writing or updating documentation, run:
 
 ```bash
 make serve
+```
 
 ## Build and validate the complete selector locally the hard way
 
