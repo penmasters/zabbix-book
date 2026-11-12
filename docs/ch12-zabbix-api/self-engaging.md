@@ -602,21 +602,21 @@ Script:
     ```javascript
     // Load all variables
     var params = JSON.parse(value);
- 
+
     var request = new HttpRequest();
     request.addHeader('Content-Type: application/json');
     request.addHeader('Authorization: Bearer ' + params.token);
- 
+
     // Pick up hostid
     var hostid = JSON.parse(request.post(params.url,
         '{"jsonrpc":"2.0","method":"host.get","params":{"output":["hostid"],"filter":{"host":["' + params.host + '"]}},"id":1}'
     )).result[0].hostid;
- 
+
     // Extract all passive Zabbix agent interfaces
     var allAgentInterfaces = JSON.parse(request.post(params.url,
         '{"jsonrpc":"2.0","method":"hostinterface.get","params":{"output":["interfaceid","main"],"filter":{"type":"1"},"hostids":"' + hostid + '"},"id":1}'
     )).result;
- 
+
     // If any ZBX interface was found then proceed fetching all items because need to find out if any items use an interface
     if (allAgentInterfaces.length > 0) {
         // Fetch all items which are defined at host level and ask which item use passive ZBX agent interface
@@ -625,19 +625,19 @@ Script:
             '{"jsonrpc":"2.0","method":"item.get","params":{"output":["type","interfaces"],"hostids":"' + hostid + '","selectInterfaces":"query"},"id":1}'
         )).result;
     }
- 
+
     // Define an interface array. This is required if more than one ZBX interface exists on host level
     var interfacesInUse = [];
- 
+
     // Iterate through all ZBX interfaces
     for (var zbx = 0; zbx < allAgentInterfaces.length; zbx++) {
- 
+
         // Go through all items which is defined at host level
         for (var int = 0; int < items_with_int.length; int++) {
- 
+
             // There are many items which does not need interface. Specifically analyze the ones which has an interface defined
             if (items_with_int[int].interfaces.length > 0) {
- 
+
                 // There is an interface found for the item
                 if (items_with_int[int].interfaces[0].interfaceid == allAgentInterfaces[zbx].interfaceid) {
                     // Put this item in list which use an interface
@@ -650,13 +650,14 @@ Script:
             }
         }
     }
- 
+
     // Final scan to identify if any interface is wasted
     var needToDelete = 1;
     var evidenceOfDeletedInterfaces = [];
-    var mainNotUsed = 0;
+    var interfacesToDelete = {};
+    var deleteCount = 0;
     for (var defined = 0; defined < allAgentInterfaces.length; defined++) {
- 
+
         // Scan all items
         needToDelete = 1;
         for (var used = 0; used < interfacesInUse.length; used++) {
@@ -664,42 +665,89 @@ Script:
                 needToDelete = 0;
             }
         }
- 
+
         // If flag was not turned off, then no items with this interface were found. No items are using this interface. Safe to delete
-        // Delete all slaves first
-        if (needToDelete == 1 && allAgentInterfaces[defined].main == 0) {
-            var deleteInt = JSON.parse(request.post(params.url,
-                '{"jsonrpc":"2.0","method":"hostinterface.delete","params":["' + allAgentInterfaces[defined].interfaceid + '"],"id":1}'
-            ));
-            var row = {};
-            row["deleted"] = deleteInt;
-            evidenceOfDeletedInterfaces.push(row);
+        if (needToDelete == 1) {
+            interfacesToDelete[allAgentInterfaces[defined].interfaceid] = true;
+            deleteCount++;
         }
- 
-        if (needToDelete == 1 && allAgentInterfaces[defined].main == 1) {
-            var mainNotUsed = allAgentInterfaces[defined].interfaceid;
+    }
+
+    // If some interface were recognized then get full interface list (all types)
+    if (deleteCount > 0) {
+        var allHostInterfaces = JSON.parse(request.post(params.url, JSON.stringify({
+            "jsonrpc": "2.0",
+            "method": "hostinterface.get",
+            "params": {
+                "output": ["interfaceid", "type", "main", "useip", "ip", "dns", "port", "details"],
+                "hostids": hostid
+            },
+            "id": 1
+        }))).result;
+
+        // Calculate interfaces to delete
+        var remainingInterfaces = [];
+        var agentMainLeft = false;
+        for (var i = 0; i < allHostInterfaces.length; i++) {
+            var iface = allHostInterfaces[i];
+            if (interfacesToDelete[iface.interfaceid]) {
+                evidenceOfDeletedInterfaces.push({ "interfaceid": iface.interfaceid, "main": iface.main });
+                continue;
+            }
+
+            // Pass interfaceid so existing interfaces are kept (not recreated) and item links stay intact
+            var keep = {
+                "interfaceid": iface.interfaceid,
+                "type": iface.type,
+                "main": iface.main,
+                "useip": iface.useip,
+                "ip": iface.ip,
+                "dns": iface.dns,
+                "port": iface.port
+            };
+            // "details" is only valid for SNMP interfaces
+            if (iface.type == 2) {
+                keep["details"] = iface.details;
+            }
+            if (iface.type == 1 && iface.main == 1) {
+                agentMainLeft = true;
+            }
+            remainingInterfaces.push(keep);
         }
- 
+
+        // If the main agent interface was removed but secondary agent interfaces remain,
+        // promote the first remaining one to main (each interface type requires exactly one main)
+        if (!agentMainLeft) {
+            for (var r = 0; r < remainingInterfaces.length; r++) {
+                if (remainingInterfaces[r].type == 1) {
+                    remainingInterfaces[r].main = "1";
+                    break;
+                }
+            }
+        }
+
+        // Keep only interfaces which are used by items
+        var updateResult = JSON.parse(request.post(params.url, JSON.stringify({
+            "jsonrpc": "2.0",
+            "method": "host.update",
+            "params": {
+                "hostid": hostid,
+                "interfaces": remainingInterfaces
+            },
+            "id": 1
+        })));
+
+        evidenceOfDeletedInterfaces.push({ "hostUpdate": updateResult });
     }
- 
-    // Delete main interface at the end
-    if (mainNotUsed > 0) {
-        var deleteInt = JSON.parse(request.post(params.url,
-            '{"jsonrpc":"2.0","method":"hostinterface.delete","params":["' + mainNotUsed + '"],"id":1}'
-        ));
-        var row = {};
-        row["deleted"] = deleteInt;
-        evidenceOfDeletedInterfaces.push(row);
-    }
- 
+
     var output = JSON.stringify({
         "allAgentInterfaces": allAgentInterfaces,
         "interfacesInUse": interfacesInUse,
         "evidenceOfDeletedInterfaces": evidenceOfDeletedInterfaces
     });
- 
+
     Zabbix.Log(params.debug, 'Auto remove unused ZBX agent passive interfaces: ' + output)
- 
+
     return 0;
     ```
 To put the webhook into action, visit `Alerts` | `Actions` | `Autoregistration actions`. Press **Create action**. For example, to autoregister Linux servers, we can target a pattern ".lnx" inside the hostname.
