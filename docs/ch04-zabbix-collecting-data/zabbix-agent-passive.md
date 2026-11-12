@@ -88,11 +88,13 @@ for the collected value, which may reduce accuracy.
   having the same agent being queried from multiple *hosts* in the Zabbix frontend.
 
 **Pros:**
+
   - Simple to configure and manage.
   - Ideal for environments where the server can directly access the agent.
   - Supports concurrent checks, reducing delays caused by slow scripts or commands.
 
 **Cons:**
+
   - Increases server load and network traffic as the number of agents and items
     grows.
   - Requires additional firewall/NAT configuration for incoming connections on all
@@ -116,6 +118,7 @@ cannot directly access the agent.
   accuracy but requiring synchronised time between the agent and server.
 
 **Pros:**
+
   - Reduces server load by eliminating constant polling.
   - Works well in restricted network environments, as the agent initiates the
     connection.
@@ -125,6 +128,7 @@ cannot directly access the agent.
     of collection.
 
 **Cons:**
+
   - Requires the hostname in the agent configuration to match the hostname in the
     Zabbix frontend, reducing flexibility.
   - Uses a single thread for data collection, so slow checks can delay subsequent

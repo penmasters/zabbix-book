@@ -265,6 +265,7 @@ With our Low-Level Discovery (LLD) rule in place, we are ready to create our LLD
 item prototype. Follow these steps to configure the item prototype correctly:
 
 1. **Navigating to Item Prototype Configuration**
+
    - Open your template in Zabbix.
    - Click on the **Discovery** tab.
    - Navigate to **Item Prototypes**.
@@ -274,21 +275,26 @@ item prototype. Follow these steps to configure the item prototype correctly:
    Several key fields must be completed for the prototype to function correctly:
    
    - **Name:**
+
      - Use the macro `{#USERNAME}` to create dynamically generated item names.
      - Example: `User {#USERNAME} login status`.
 
    - **Type:**
+
      - Select `Zabbix agent` as the item type to facilitate testing.
 
    - **Key:**
+
      - The item key must be unique.
      - Utilise macros to ensure a unique key for each item instance.
 
    - **Type of Information:**
+
      - Defines the format of the received data.
      - Since our script returns `0` or `1`, set this to `Numeric`.
 
    - **Update Interval:**
+
      - Determines how frequently the item is checked.
      - A reasonable interval for checking user online status is `1m` (one minute).
 

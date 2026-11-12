@@ -60,29 +60,29 @@ First we will need to ensure that we have a container engine installed.
 
 !!! info "Install Podman container engine"
 
-  Red Hat-based
-  ```bash
-  dnf install podman
-  ```
+    Red Hat-based
+    ```bash
+    dnf install podman
+    ```
 
-  SUSE
-  ```bash
-  zypper install podman
-  ```
+    SUSE
+    ```bash
+    zypper install podman
+    ```
 
-  Ubuntu
-  ```bash
-  sudo apt install podman
-  ```
+    Ubuntu
+    ```bash
+    sudo apt install podman
+    ```
 
 ???+ note "What is Podman"
 
-  Podman is a container engine designed as a drop-in replacement for Docker, 
-  but with a daemonless architecture. This means it runs containers directly 
-  under the user’s control, improving security and simplicity. Podman is fully 
-  compatible with Docker’s CLI and supports rootless containers, making it ideal 
-  for development, testing, and production environments where security and 
-  isolation are priorities.
+    Podman is a container engine designed as a drop-in replacement for Docker, 
+    but with a daemonless architecture. This means it runs containers directly 
+    under the user’s control, improving security and simplicity. Podman is fully 
+    compatible with Docker’s CLI and supports rootless containers, making it ideal 
+    for development, testing, and production environments where security and 
+    isolation are priorities.
 
 ???+ tip
 
@@ -93,9 +93,9 @@ Now we can start containers. Start an OpenLDAP server in a container:
 
 !!! info "Start an OpenLDAP server in a container with pre-loaded data"
 
-  ```bash
-  podman run -p 3389:389 -p 6636:636 --name openldap-server --detach bgmot42/openldap-server:0.1.1
-  ```
+    ```bash
+    podman run -p 3389:389 -p 6636:636 --name openldap-server --detach bgmot42/openldap-server:0.1.1
+    ```
 
 For simplicity, all users (including `ldap_search`) in this test LDAP server
 have the word `password` as their passwords.

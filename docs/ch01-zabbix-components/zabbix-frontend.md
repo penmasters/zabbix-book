@@ -70,10 +70,12 @@ This command will install the front-end packages along with the required depende
 for Nginx. 
 
 As of SUSE 16 SELinux is now the default security module instead of AppArmor.
-By default PHP-FPM is not allowed by SELinux on SUSE to 
+By default PHP-FPM is not allowed by SELinux on SUSE to:
+
 - map exec memory required for PHP JIT compilation,
 - connect to Zabbix server or
 - connect to the database server over TCP.
+
 We need to tell SELinux to allow all this:
     
 !!! info "SELinux: Allow PHP-FPM to map exec memory"

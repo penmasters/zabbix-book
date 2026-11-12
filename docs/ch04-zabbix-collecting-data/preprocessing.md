@@ -72,6 +72,7 @@ steps available:
 
 **Text**:
 Transform text data using the following methods:
+
 - **Regular expression** is a simple way (once you understand regex) to extract 
   data. 
 - **Replace** is used to simply replace one value with another, especially useful
@@ -84,6 +85,7 @@ Transform text data using the following methods:
 **Structured data**:
 Parse and extract data from structured formats like XML, JSON, and CSV using 
 the following methods:
+
 - **XML XPath** is used to extract specific data from XML using XPath expressions.
 - **JSONPath** is used to extract specific data from JSON using JSONPath expressions.
 - **CSV to JSON** is used to convert collected CSV data to JSON.
@@ -91,6 +93,7 @@ the following methods:
 
 **SNMP**:
 Process SNMP data using the following methods:
+
 - **SNMP walk value** is used to extract a specific SNMP OID from a larger SNMP
   walk. Also used to format UTF8 or MAC as HEX, as well as BITS as integer.
 - **SNMP walk to JSON** is used to convert an SNMP walk to JSON format (ready 
@@ -100,12 +103,14 @@ Process SNMP data using the following methods:
 
 **Arithmetic:**
 Perform arithmetic operations on numeric data using the following methods:
+
 - **Custom multiplier** is a simple mathematical multiplier, which can also be 
   used to divide.
 
 **Change**:
 Calculate the change between current (last) and previous values using the 
 following methods:
+
 - **Simple change** is a simple calculation to get the difference between the 
   last and previous value.
 - **Change per second** is a calculation to get the difference between the last 
@@ -113,17 +118,20 @@ following methods:
 
 **Numeral systems**:
 Convert values in different numeral systems to decimal using the following methods:
+
 - **Boolean to decimal** is used to convert the aforementioned value.
 - **Octal to decimal** is used to convert the aforementioned value. 
 - **Hexadecimal to decimal** is used to convert the aforementioned value. 
 
 **Custom scripts**:
 Process data using custom scripts with the following method:
+
 - **JavaScript** is an extensive preprocessor, where we can use the built-in
   JavaScript Duktape engine to apply complex scripts for processing.
 
 **Validation**:
 Validate data using the following methods:
+
 - **In range** is used to validate if the value falls within a defined range.
 - **Matches regular expression** is used to validate if the value matches the 
   regular expression. 
@@ -140,12 +148,14 @@ Validate data using the following methods:
 
 **Throttling**:
 Throttle data to reduce storage using the following methods:
+
 - **Discard unchanged** is used to discard any duplicate values. 
 - **Discard unchanged with heartbeat** is used to discard any duplicate values,
   but still save it if the heartbeat has passed. 
 
 **Prometheus**:
 Parse and extract data from Prometheus metrics using the following methods:
+
 - **Prometheus pattern** is used to extract values from prometheus data.
 - **Prometheus to JSON** is used to convert prometheus data to JSON data (ready
   for low level discovery).
@@ -223,11 +233,13 @@ _4.47 Preprocessing JSONPath test_
 
 It's important to know that we can add an unlimited number of preprocessing 
 steps, but that Zabbix will always execute all of them in the order in which they 
-are defined. 
+are defined.
+
   - First, we extract the value from JSON. 
   - Second, we try to replace `false` with `0` which didn't do anything as there 
     was no match. 
   - Third, we replace `true` with `1` which worked.
+
 Now all we have to do is apply a **value mapping** onto the item to translate true
 and false back into human readable format. 
 

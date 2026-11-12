@@ -57,6 +57,7 @@ the best practice here?
 - **Item names should contain suffixes where useful**
 
 Some examples of good item names:
+
 - Use `Memory utilization`, not `The memory util of this host`. Keep it short and descriptive
 - Use `CPU load` or if you have multiple use a suffix: `CPU load 1m` and
   `CPU load 5m` for example

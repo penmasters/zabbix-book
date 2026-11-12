@@ -141,8 +141,9 @@ This means your cloned template is independent:
 
     Add a suffix or prefix such as (Custom) to distinguish cloned templates and
     document their origin in the template notes like:
-    - Origin: Linux by Zabbix agent
-    - Based on UUID: a4c1d0f2d7de4a40a8b347afeb9a88df
+
+      - Origin: Linux by Zabbix agent
+      - Based on UUID: a4c1d0f2d7de4a40a8b347afeb9a88df
 
 ## Template Groups
 
