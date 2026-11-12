@@ -386,6 +386,7 @@ could otherwise cause locks or unexpected behaviour.
     psql -Uzabbix-srv zabbix -W
     ```
     ```sql
+    sudo -u postgres psql -d zabbix
     CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
     ```
 

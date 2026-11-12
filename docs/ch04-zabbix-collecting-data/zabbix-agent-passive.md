@@ -76,15 +76,15 @@ configuration.
 ---
 
 #### Passive Mode
-In **Passive** mode, the Zabbix server initiates the connection to the agent to 
-request data. The server polls the agent for each metric, waits for the response, 
-and closes the connection after receiving the data. The server sets the timestamp 
+In **Passive** mode, the Zabbix server initiates the connection to the agent to
+request data. The server polls the agent for each metric, waits for the response,
+and closes the connection after receiving the data. The server sets the timestamp
 for the collected value, which may reduce accuracy.
 
-- **Concurrency:** The agent can handle multiple simultaneous checks using 
+- **Concurrency:** The agent can handle multiple simultaneous checks using
   multiple threads (default: 3).
-- **Flexibility:** The agent is not bound to the hostname in its configuration 
-  file, allowing the same configuration to be reused across multiple hosts or 
+- **Flexibility:** The agent is not bound to the hostname in its configuration
+  file, allowing the same configuration to be reused across multiple hosts or
   having the same agent being queried from multiple *hosts* in the Zabbix frontend.
 
 **Pros:**
@@ -93,7 +93,7 @@ for the collected value, which may reduce accuracy.
   - Supports concurrent checks, reducing delays caused by slow scripts or commands.
 
 **Cons:**
-  - Increases server load and network traffic as the number of agents and items 
+  - Increases server load and network traffic as the number of agents and items
     grows.
   - Requires additional firewall/NAT configuration for incoming connections on all
     monitored hosts, which may pose security risks.
@@ -105,36 +105,37 @@ for the collected value, which may reduce accuracy.
 ---
 
 #### Active Mode
-In **Active** mode, the agent proactively requests item lists from the server 
-and periodically sends collected metrics without waiting for server requests. 
-This mode is useful in environments with strict firewall rules or when the server 
+In **Active** mode, the agent proactively requests item lists from the server
+and periodically sends collected metrics without waiting for server requests.
+This mode is useful in environments with strict firewall rules or when the server
 cannot directly access the agent.
 
-- **Buffering:** Zabbix Agent 2 can buffer active check results during server 
+- **Buffering:** Zabbix Agent 2 can buffer active check results during server
   outages, ensuring uninterrupted data collection.
-- **Timestamps:** The agent sets the timestamp for collected values, improving 
+- **Timestamps:** The agent sets the timestamp for collected values, improving
   accuracy but requiring synchronised time between the agent and server.
 
 **Pros:**
   - Reduces server load by eliminating constant polling.
-  - Works well in restricted network environments, as the agent initiates the 
+  - Works well in restricted network environments, as the agent initiates the
     connection.
   - Improves scalability in large environments by distributing part of the load.
   - Supports buffering of item values during server outages (Agent 2 only).
-  - Provides more accurate timestamps, as they are set by the agent at the time 
+  - Provides more accurate timestamps, as they are set by the agent at the time
     of collection.
 
 **Cons:**
-  - Requires the hostname in the agent configuration to match the hostname in the 
+  - Requires the hostname in the agent configuration to match the hostname in the
     Zabbix frontend, reducing flexibility.
-  - Uses a single thread for data collection, so slow checks can delay subsequent 
-    ones.
-  - Accurate time synchronisation between the agent and server is critical for 
+  - Uses a single thread for data collection, so slow checks can delay subsequent
+    ones. (classic agent only)
+  - Accurate time synchronisation between the agent and server is critical for
     data integrity.
 
 ---
 
 #### Choosing Between Active and Passive Modes
+
 The choice depends on your environment and requirements:
   - Use **Passive** mode for simplicity and direct server-agent communication.
   - Use **Active** mode to reduce server load or navigate network restrictions.
@@ -151,9 +152,8 @@ Finally, let's do a bit of a comparison between the two modes.
 | Port                  | Connects to server port 10051     | Listens on 10050            |
 | Hostname              | Must match frontend configuration | Flexible                    |
 | Remote Commands       | Supported                         | Supported                   |
-| Concurrency           | Single thread                     | Multiple threads            |
+| Concurrency           | Single thread  (classic agent only)                   | Multiple threads            |
 | Buffering on Outage   | Yes (Agent 2)                     | No                          |
-
 
 The flexibility of Zabbix allows you to tailor your monitoring solution to best 
 fit your needs.
@@ -181,7 +181,7 @@ between them is in programming language and features.
 | Storage on outage    | No                               | SQLite                                  |
 | Item timeouts        | Agent wide                       | Per plugin                              |
 
-???+ note 
+???+ note
 
     As you can see, `Zabbix agent 2` is the more feature-rich agent and is the 
     recommended agent to use when available. However, `Zabbix agent` is equally 
@@ -238,7 +238,6 @@ After installation make sure to start and enable the Zabbix agent.
 
 !!! info "Start and enable Zabbix agent 2"
 
-
     ```bash
     systemctl enable zabbix-agent2 --now
     ```
@@ -274,7 +273,7 @@ Step 1 is a simple welcome screen, nothing to do here except click on `Next`.
 
 _4.17 Zabbix Agent Windows install step 2_
 
-For step 2, make sure to read the `License Agreement` (or don't, we do not give 
+For step 2, make sure to read the `License Agreement` (or don't, we do not give
 legal advice). Then click `Next`.
 
 ![Zabbix Agent Windows install step 3](ch04.18-windows-agent-install-step3.png){ align=center }
@@ -328,9 +327,9 @@ through the `.pkg` installer.
 ## Agent side configuration
 
 Configuring the Zabbix agent is similar for all installations. Whether you are on
-`Linux`, `Unix`, `Windows`, or `macOS` you will always find the `zabbix_agent2.conf` file.
-The parameters in this configuration file are mostly the same, regardless of the
-operating system.
+`Linux`, `Unix`, `Windows`, or `macOS` you will always find the `zabbix_agent2.conf`
+file. The parameters in this configuration file are mostly the same, regardless
+of the operating system.
 
 !!! warning "SUSE Linux"
 
