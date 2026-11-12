@@ -7,45 +7,76 @@ tags: [advanced]
 
 # Zabbix MCP server
 
-The world of IT will never be the same with the introduction of AI assistants. Cloud-based and locally running AI have both been shown to be valuable resources for IT engineers and developers. However, we usually still lack a way to interface with our various applications cleanly.
+The world of IT will never be the same with the introduction of AI assistants.
+Cloud-based and locally running AI have both been shown to be valuable resources
+for IT engineers and developers. However, we usually still lack a way to interface
+with our various applications cleanly.
 
-This is where the Model Context Protocol (MCP) comes in. It's an open-source standard that allows us to interface applications like Zabbix with AI applications like Claude, ChatGPT or any supported application you might be running.
+This is where the Model Context Protocol (MCP) comes in. It's an open-source standard
+that allows us to interface applications like Zabbix with AI applications like
+Claude, ChatGPT or any supported application you might be running.
 
-The idea is simple. By introducing an open-source protocol that is widely supported by AI applications, we can easily integrate one or multiple AI applications. This is especially useful to control what an AI application can do with your data, instead of just handing over API keys and letting AI run its course. It's easier, faster and more secure.
+The idea is simple. By introducing an open-source protocol that is widely supported
+by AI applications, we can easily integrate one or multiple AI applications. This
+is especially useful to control what an AI application can do with your data, instead
+of just handing over API keys and letting AI run its course. It's easier, faster
+and more secure.
 
 ## What you can do with the Zabbix MCP server
 
-For AI applications to interface with our Zabbix environment, we will need three things:
+For AI applications to interface with our Zabbix environment, we will need three
+things:
 
-1. The MCP Server Layer: Provided by the `zabbix-mcp-server` package, it acts as a secure bridge receiving HTTP requests from the AI application's client.
-2. The MCP Client Layer: Built into the AI application, the MCP client establishes and manages communication with the Zabbix MCP server. It discovers available tools, sends requests, and returns the results to the AI application.
-3. The MCP Host Layer: This is the AI application itself, such as Claude Desktop, ChatGPT, Cursor, or Visual Studio Code. It provides the interface through which users interact with the AI, interprets their requests, and uses the MCP client to access Zabbix functionality.
+1. The MCP Server Layer: Provided by the `zabbix-mcp-server` package, it acts as
+   a secure bridge receiving HTTP requests from the AI application's client.
+2. The MCP Client Layer: Built into the AI application, the MCP client establishes
+   and manages communication with the Zabbix MCP server. It discovers available
+   tools, sends requests, and returns the results to the AI application.
+3. The MCP Host Layer: This is the AI application itself, such as Claude Desktop,
+   ChatGPT, Cursor, or Visual Studio Code. It provides the interface through which
+   users interact with the AI, interprets their requests, and uses the MCP client
+   to access Zabbix functionality.
 
 ???+ note
-    Important Zabbix detail: The MCP server is a separate process, not part of the Zabbix server daemon. It communicates with the Zabbix frontend API, while the MCP client runs within the AI application. Each request uses a Zabbix API token, and access is further restricted by the token owner's permissions.
 
-Once we have the three layers prepared, we can start using our AI applications to request data from or execute actions in Zabbix. In Zabbix 8.0, what we can do is limited to:
+     Important Zabbix detail: The MCP server is a separate process, not part of the
+     Zabbix server daemon. It communicates with the Zabbix frontend API, while the
+     MCP client runs within the AI application. Each request uses a Zabbix API token,
+     and access is further restricted by the token owner's permissions.
 
-- Monitoring data: Retrieve hosts, host groups, templates, items, triggers, problems, and historical data.
-- Problem management: Acknowledge, comment on, close, suppress, or change the severity of problems.
+Once we have the three layers prepared, we can start using our AI applications to
+request data from or execute actions in Zabbix. In Zabbix 8.0, what we can do is
+limited to:
+
+- Monitoring data: Retrieve hosts, host groups, templates, items, triggers, problems,
+  and historical data.
+- Problem management: Acknowledge, comment on, close, suppress, or change the severity
+  of problems.
 - Maintenance management: Create, modify, or delete maintenance periods.
 
 ## Preparing your environment
 
-Before installing the Zabbix MCP server, consider where you would like to run it. The MCP server can run on the Zabbix server itself or on a completely separate machine.
+Before installing the Zabbix MCP server, consider where you would like to run it.
+The MCP server can run on the Zabbix server itself or on a completely separate machine.
 
 Make sure the following requirements are met:
 
-- Network connectivity: The Zabbix MCP server must be able to reach the Zabbix frontend API, while the AI applications' MCP clients must be able to reach the MCP server.
+- Network connectivity: The Zabbix MCP server must be able to reach the Zabbix
+  frontend API, while the AI applications' MCP clients must be able to reach the
+  MCP server.
 - API authentication: Each user needs a Zabbix API token with the appropriate permissions.
-- Access control: Determine which MCP clients can connect and which tools they are allowed to execute.
+- Access control: Determine which MCP clients can connect and which tools they are
+  allowed to execute.
 - Encryption: Use HTTPS/TLS to protect communication and API tokens.
 
-For security reasons, it is recommended to start with read-only permissions and enable write operations only when necessary.
+For security reasons, it is recommended to start with read-only permissions and
+enable write operations only when necessary.
 
 ## Installing and configuring the MCP server
 
-To install the Zabbix MCP server, we need to log in to the CLI of the machine where we'd like to install it. For this example, we will be installing it on the same server where our Zabbix server and frontend are already running (single-server setup).
+To install the Zabbix MCP server, we need to log in to the CLI of the machine where
+we'd like to install it. For this example, we will be installing it on the same server
+where our Zabbix server and frontend are already running (single-server setup).
 
 !!! info "Install Zabbix MCP server"
     Red Hat-based
@@ -57,7 +88,7 @@ To install the Zabbix MCP server, we need to log in to the CLI of the machine wh
     Ubuntu
 
     ```bash
-    apt install zabbix-mcp-server
+    sudo apt install zabbix-mcp-server
     ```
 
     SUSE Linux Enterprise / openSUSE
@@ -115,7 +146,7 @@ Open the configuration file again:
 
 !!! info "Configure TLS encryption"
     ```bash
-    vi /etc/zabbix/zabbix_mcp_server.conf
+    sudo vi /etc/zabbix/zabbix_mcp_server.conf
     ```
 
 Find the TLS-related parameters and configure them as follows:
@@ -208,7 +239,9 @@ With our Zabbix MCP server configured, let's make sure the configuration file is
 
 ## Connecting an AI application
 
-Once the Zabbix MCP server is running, we can connect our preferred AI application to it. Most AI applications that support MCP follow a similar configuration process, although the exact steps will differ between applications.
+Once the Zabbix MCP server is running, we can connect our preferred AI application
+to it. Most AI applications that support MCP follow a similar configuration process,
+although the exact steps will differ between applications.
 
 First, we need to create a Zabbix user and an API token under `Users` | `Users` and `Users` | `API tokens` in the Zabbix frontend. This is important, as the Zabbix user determines what the AI application can read and write according to the user's permissions.
 
@@ -221,13 +254,18 @@ After setting up the user, open the MCP configuration part of your AI applicatio
 Depending on the AI application, these settings can be configured through its graphical interface or a configuration file.
 
 ???+ note "Protect your API tokens"
-    Treat API tokens like passwords. Avoid sharing them or storing them in publicly accessible configuration files. Whenever possible, use environment variables or a secure credential store.
+
+    Treat API tokens like passwords. Avoid sharing them or storing them in publicly
+    accessible configuration files. Whenever possible, use environment variables
+    or a secure credential store.
 
 ### Testing the connection and listing available tools
 
-Once connected, the AI application should automatically discover the tools exposed by the Zabbix MCP server.
+Once connected, the AI application should automatically discover the tools exposed
+by the Zabbix MCP server.
 
-To test the connection, simply ask your AI assistant to retrieve information from Zabbix. For example, I asked:
+To test the connection, simply ask your AI assistant to retrieve information from
+Zabbix. For example, I asked:
 
 - "Analyse the data on server-01 and switch-01 and see if there is any interesting relation between their live data."
 

@@ -10,8 +10,8 @@ tags: [advanced]
 As your Zabbix environment grows, you'll eventually notice that the built-in housekeeper
 struggles to keep up. This happens because the Zabbix housekeeper works by scanning
 the database for each history or trend entry that exceeds its configured retention
-period and deleting it row by row. While this works for smaller setups, as the database grows, your housekeeper process will reach a limit as to what it can delete
-in time.
+period and deleting it row by row. While this works for smaller setups, as the database
+grows, your housekeeper process will reach a limit as to what it can delete in time.
 
 You can usually see this issue happening when the housekeeper process runs at 100%
 continuously and the database keeps growing larger. This indicates that the cleanup
@@ -78,7 +78,7 @@ installed onto your database server yet, do that now.
 
     Ubuntu
     ```bash
-    apt install tmux
+    sudo apt install tmux
     ```
 
 Now we can issue the tmux command to open a new tmux session:
@@ -389,7 +389,7 @@ We also need to install some Perl dependencies to make sure we can execute the s
 
     Ubuntu
     ```bash
-    apt install libdatetime-perl liblogger-syslog-perl
+    sudo apt install libdatetime-perl liblogger-syslog-perl
     ```
 
 If `perl-DateTime` isn't available, enable the additional repository for your

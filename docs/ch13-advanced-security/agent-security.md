@@ -6,28 +6,48 @@ tags: [advanced]
 ---
 
 # Securing the Zabbix agent with encryption
-In chapter 4, we learned how to set up our Zabbix agent in both the active and the passive mode. In an internal network, this might be all you need to do for your monitoring of Linux, Unix, and Windows systems. But what if you need to monitor a Zabbix agent host over the internet or what if you'd just like to add an additional layer of security? This is where Zabbix agent encryption comes in.
 
-There are two basic methods to encrypt your Zabbix agent, and they apply to both passive and active agents.
+In chapter 4, we learned how to set up our Zabbix agent in both the active and
+the passive mode. In an internal network, this might be all you need to do for
+your monitoring of Linux, Unix, and Windows systems. But what if you need to monitor
+a Zabbix agent host over the internet or what if you'd just like to add an additional
+layer of security? This is where Zabbix agent encryption comes in.
+
+There are two basic methods to encrypt your Zabbix agent, and they apply to both
+passive and active agents.
+
 - Pre-shared keys
 - Certificates
 
-Both provide a secure method of encrypting the communication between your Zabbix agent and Zabbix server or proxy. So let's dive into both of them.
+Both provide a secure method of encrypting the communication between your
+Zabbix agent and Zabbix server or proxy. So let's dive into both of them.
 
 ## Pre-shared keys
-Whenever you start working with Zabbix agent encryption, pre-shared keys are the easiest method to provide an additional layer of security on your internal networks or encrypt internet-connected agents. They are easy to understand and do not require maintenance, as they are a set-and-forget kind of encryption method.
 
-The basis is simple: the Zabbix agent uses a pre-shared key (PSK) identity and a PSK string. We set these up both on the Zabbix agent and Zabbix server side to encrypt the communication between them. If you are using Zabbix proxies, the Zabbix server will make sure the proxies know about the pre-shared keys (do not forget to encrypt proxy communication).
+Whenever you start working with Zabbix agent encryption, pre-shared keys are the
+easiest method to provide an additional layer of security on your internal networks
+or encrypt internet-connected agents. They are easy to understand and do not require
+maintenance, as they are a set-and-forget kind of encryption method.
 
-- *PSK identity*: A non-secret UTF-8 string. 
-- *PSK string*: A secret string between 128 bits (16 bytes, 32 hexadecimal characters) and 2048 bits (256 bytes, 512 hexadecimal characters).
+The basis is simple: the Zabbix agent uses a pre-shared key (PSK) identity and
+a PSK string. We set these up both on the Zabbix agent and Zabbix server side
+to encrypt the communication between them. If you are using Zabbix proxies, the
+Zabbix server will make sure the proxies know about the pre-shared keys (do not
+forget to encrypt proxy communication).
+
+- *PSK identity*: A non-secret UTF-8 string.
+- *PSK string*: A secret string between 128 bits (16 bytes, 32 hexadecimal characters)
+  and 2048 bits (256 bytes, 512 hexadecimal characters).
 
 ???+ important note
 
-    The combination of the PSK identity and PSK string has to be unique. There cannot be two PSKs with the same identity string but different values.
-    We have to keep this in mind when setting up the PSK identity and I usually use something that cannot be duplicate like the hostname of the host we're encrypting.
+    The combination of the PSK identity and PSK string has to be unique. There cannot
+    be two PSKs with the same identity string but different values.
+    We have to keep this in mind when setting up the PSK identity and I usually use
+    something that cannot be duplicate like the hostname of the host we're encrypting.
 
-Let's log in to the CLI of a host with the Zabbix agent installed. We are going to edit the Zabbix agent 2 configuration file to allow for PSK encryption.
+Let's log in to the CLI of a host with the Zabbix agent installed. We are going
+to edit the Zabbix agent 2 configuration file to allow for PSK encryption.
 
 !!! info "Edit Zabbix agent 2 configuration file"
 
@@ -36,7 +56,8 @@ Let's log in to the CLI of a host with the Zabbix agent installed. We are going 
     vi /etc/zabbix/zabbix_agent2.d/encryption.conf
     ```
 
-In the configuration file, there are 4 parameters we need to edit. By default, they aren't set, but we will set them as specified below.
+In the configuration file, there are 4 parameters we need to edit. By default,
+they aren't set, but we will set them as specified below.
 
 !!! info "Zabbix agent 2 configuration file encryption parameters"
 
@@ -298,6 +319,7 @@ Let's move these files to a folder where we can use them from the Zabbix agent.
 
     Linux CLI
     ```bash
+    mkdir -p /home/zabbix/pki
     mv zabbix_agent.key /home/zabbix/the-zabbix-book-ca.key
     mv zabbix_agent.crt /home/zabbix/the-zabbix-book-ca.crt
     ```
@@ -308,9 +330,9 @@ Of course it will also be important to secure the files.
 
     Linux CLI
     ```bash
-    sudo chown zabbix:zabbix /home/zabbix/zabbix_agent.key /home/zabbix/zabbix_agent.crt
-    sudo chmod 400 /home/zabbix/zabbix_agent.key
-    sudo chmod 444 /home/zabbix/zabbix_agent.crt
+    sudo chown zabbix:zabbix /home/zabbix/pki/zabbix_agent.key /home/zabbix/pki/zabbix_agent.crt
+    sudo chmod 400 /home/zabbix/pki/zabbix_agent.key
+    sudo chmod 444 /home/zabbix/pki/zabbix_agent.crt
     ```
 
 ### Setting up the agent configuration

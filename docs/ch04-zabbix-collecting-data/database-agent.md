@@ -62,7 +62,7 @@ command to install the additional package(s) and you should be ready to go.
 
     Ubuntu
     ```bash
-    apt install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
+    sudo apt install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
     ```
 
 On Windows we do have some additional steps, as we need to download an additional

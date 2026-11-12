@@ -142,17 +142,17 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
     Red Hat-based
     ```bash
-    dnf install timescaledb-2-postgresql-17 postgresql17
+    dnf install timescaledb-2-postgresql-18 postgresql18
     ```
 
     SLES 15 SP7
     ```bash
-    zypper install postgresql17-timescaledb
+    zypper install postgresql18-timescaledb
     ```
 
     SLES 16 and openSUSE Leap 16.0
     ```bash
-    zypper install --allow-vendor-change postgresql17-timescaledb
+    zypper install --allow-vendor-change postgresql18-timescaledb
     ```
     Note: the `--allow-vendor-change` option is required because the TimescaleDB package
     is provided by the SUSE Factory repository, which is considered a different
@@ -162,7 +162,7 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
     Ubuntu
     ```
-    sudo apt install timescaledb-2-postgresql-17 postgresql-client-17
+    sudo apt install timescaledb-2-postgresql-18 postgresql-client-18
     ```
 
 ???+ note
@@ -195,31 +195,31 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
     Red Hat-based
     ```bash
-    dnf list timescaledb-2-postgresql-17 --showduplicates
+    dnf list timescaledb-2-postgresql-18 --showduplicates
     ```
 
     SUSE
     ```bash
-    zypper search -v postgresql17-timescaledb
+    zypper search -v postgresql18-timescaledb
     ```
 
     Ubuntu
     ```bash
-    apt-cache policy timescaledb-2-postgresql-17
+    apt-cache policy timescaledb-2-postgresql-18
     ```
 
 !!! info "Install and lock a specific version"
 
     Red Hat-based
     ```bash
-    dnf install timescaledb-2-postgresql-17-2.19.3
-    dnf versionlock add timescaledb-2-postgresql-17
+    dnf install timescaledb-2-postgresql-18-2.30.2
+    dnf versionlock add timescaledb-2-postgresql-18
     ```
 
     SUSE
     ```bash
-    zypper install postgresql17-timescaledb-2.29.1
-    zypper addlock postgresql17-timescaledb
+    zypper install postgresql18-timescaledb-2.29.1
+    zypper addlock postgresql18-timescaledb
     ```
     Warning: on SLES 15 using PackageHub you have all versions starting from the
     version that was originally shipped with SLES 15 up to the most recent version.
@@ -231,8 +231,8 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 
     Ubuntu
     ```bash
-    sudo apt install timescaledb-2-postgresql-17=2.19.3~ubuntu24.04 timescaledb-2-loader-postgresql-17=2.19.3~ubuntu24.04
-    sudo apt-mark hold timescaledb-2-postgresql-17
+    sudo apt install timescaledb-2-postgresql-18=2.30.2~ubuntu24.04 timescaledb-2-loader-postgresql-18=2.30.2~ubuntu24.04
+    sudo apt-mark hold timescaledb-2-postgresql-18
     ```
 ---
 
@@ -248,29 +248,32 @@ First, we need to install the required dependencies for building TimescaleDB:
 
     Red Hat-based
     ```bash
-    dnf install -y git cmake gcc-c++ make postgresql17-devel libicu-devel
+    dnf install -y git cmake gcc-c++ make postgresql18-devel libicu-devel
     ```
 
     SUSE
     ```bash
-    zypper install -y git cmake gcc-c++ make postgresql17-server-devel libicu-devel
+    zypper install -y git cmake gcc-c++ make postgresql18-server-devel libicu-devel
     ```
 
     Ubuntu
     ```bash
-    sudo apt install -y git cmake g++ make postgresql-server-dev-17 libicu-dev
+    sudo apt install -y git cmake g++ make postgresql-server-dev-18 libicu-dev
     ```
 
 Next we will download the TimescaleDB source code from the official GitHub 
-repository and check out a version that is supported by Zabbix:
+repository and check out a version that is supported by Zabbix.
 
 !!! info "Download TimescaleDB source code"
 
     ```bash
     git clone https://github.com/timescale/timescaledb
     cd timescaledb
-    git checkout 2.19.3
+    git checkout 2.30.2
     ```
+!!! info
+
+    The lowest TimescaleDB version supported by Zabbix 8.0 is 2.20.x at time of writing.
 
 Now it is time to actually build and install TimescaleDB:
 
@@ -296,19 +299,19 @@ settings to optimise performance. On Red Hat-based systems, you can run:
 !!! info ""
 
     ```bash
-    sudo timescaledb-tune --pg-config=/usr/pgsql/17/bin/pg_config
+    sudo timescaledb-tune --pg-config=/usr/pgsql/18/bin/pg_config
     ```
 
 When installed on SUSE using the SUSE packages, the script is not available and 
 you will need to install it manually using Go. Additionally, the `pg_config` binary
-is part of the `postgresql17-server-devel` package, which is not installed by default.
+is part of the `postgresql18-server-devel` package, which is not installed by default.
 So we will install both packages, use Go to install the tuning script, and then
 run it to tune your PostgreSQL configuration:
 
 !!! info
 
     ```bash
-    zypper install postgresql17-server-devel go
+    zypper install postgresql18-server-devel go
     go install github.com/timescale/timescaledb-tune/cmd/timescaledb-tune@main
     /root/go/bin/timescaledb-tune -conf-path=/var/lib/pgsql/data/postgresql.conf
     ```
@@ -332,9 +335,9 @@ At a minimum, make sure to add the following line at the end of the file:
     shared_preload_libraries = 'timescaledb'
     ```
 
-    Your PostgreSQL configuration file is typically located at `/var/lib/pgsql/17/data/postgresql.conf` 
+    Your PostgreSQL configuration file is typically located at `/var/lib/pgsql/18/data/postgresql.conf` 
     on Red Hat-based systems, `/var/lib/pgsql/data/postgresql.conf` on SUSE, and
-    `/etc/postgresql/17/main/postgresql.conf` on Ubuntu.
+    `/etc/postgresql/18/main/postgresql.conf` on Ubuntu.
 
 After making these changes to your PostgreSQL configuration, either manually or 
 using the tuning script, you must restart the PostgreSQL service to load the 
@@ -344,7 +347,7 @@ TimescaleDB extension and apply the new settings:
 
     Red Hat-based
     ```bash
-    systemctl restart postgresql-17
+    systemctl restart postgresql-18
     ```
 
     SUSE
@@ -391,7 +394,7 @@ Make sure the extension is installed by running `\dx`.
     Name     | Version |   Schema   |                                      Description
     -------------+---------+------------+---------------------------------------------------------------------------------------
      plpgsql     | 1.0     | pg_catalog | PL/pgSQL procedural language
-     timescaledb | 2.19.3  | public     | Enables scalable inserts and complex queries for time-series data (Community Edition)
+     timescaledb | 2.30.2  | public     | Enables scalable inserts and complex queries for time-series data (Community Edition)
     (2 rows)
 
     zabbix=>
@@ -419,7 +422,7 @@ Run the following command inside the database session:
 
 ???+ warning
 
-    When running the `schema.sql` script on TimescaleDB version 2.9.0 or higher,
+    When running the `schema.sql` script on TimescaleDB since version 2.9.0 or higher,
     you may see warning messages indicating that certain best practices are not
     being followed. These warnings can be safely ignored. They do not affect the
     outcome of the configuration process.
