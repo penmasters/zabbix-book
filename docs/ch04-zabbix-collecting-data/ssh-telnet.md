@@ -76,6 +76,7 @@ work comes along: we need to log in using SSH and execute commands.
 At **Authentication method** we will select **Password** for the example, but
 you are also able to select **Public key** as an option here. Going with 
 **Public key** would allow you to set:
+
 - **User name**: The user to log in as.
 - **Public key file**: The path to the Public key we will use to log in.
 - **Private key file**: The path to the Private key we will use to log in.
@@ -173,7 +174,8 @@ Let's add the item **Type** as **TELNET agent** and you will see the **Key**
 field already filled out just like the SSH check:
 `telnet.run[<unique short description>,<ip>,<port>,<encoding>]`
 
-The fields are almost the same as SSH, with a few fewer options.
+The fields are almost the same as SSH, with a few fewer options:
+
 - `<unique short description>`: Is used to make this item unique, as we cannot 
   have duplicate keys on Zabbix hosts.
 - `<ip>`: Can be used to specify the target IP Address for Telnet to connect to.

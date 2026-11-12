@@ -362,16 +362,21 @@ of the database server and can be accessed during a full system failure.
 
 ### Hot standby database
 
-While it is important to take a backup/dump of the database at regular intervals, 
+While it is important to take a backup/dump of the database at regular intervals,
 it can be a time-consuming task restoring this backup. For this reason, it can make
 sense to maintain a standby database, which is constantly synced with the changes
 that occur in the active database, thus having a restored and recovered copy of
-the database running and ready to take over, should a disaster occur on the active 
+the database running and ready to take over, should a disaster occur on the active
 database.
 
-
 ## Other important (config) files
-Often overlooked, since we focus so much on the database, are the Zabbix configuration files and possibly custom scripts. For a full restore of your Zabbix environment, these files cannot be missed as they are vital to getting Zabbix back online in case of an issue. Of course, configuration files are easy to rebuild with a bit of time. However, it is best practice to also include these to make sure a speedy restoration can happen.
+
+Often overlooked, since we focus so much on the database, are the Zabbix configuration
+files and possibly custom scripts. For a full restore of your Zabbix environment,
+these files cannot be missed as they are vital to getting Zabbix back online in case
+of an issue. Of course, configuration files are easy to rebuild with a bit of time.
+However, it is best practice to also include these to make sure a speedy restoration
+can happen.
 
 Let's create a quick working folder to place our backups in.
 
@@ -382,7 +387,9 @@ Let's create a quick working folder to place our backups in.
     mkdir /opt/zabbix-backup/
     ```
 
-When Zabbix is installed from packages, it will always store the configuration files in a single location. That location, `/etc/zabbix/`, should contain most of our important files already. We can take a manual backup with the following command.
+When Zabbix is installed from packages, it will always store the configuration files
+in a single location. That location, `/etc/zabbix/`, should contain most of our
+important files already. We can take a manual backup with the following command.
 
 !!! info "Create a Zabbix configuration files backup"
 
@@ -391,7 +398,9 @@ When Zabbix is installed from packages, it will always store the configuration f
     cp -R /etc/zabbix/* /opt/zabbix-backup/
     ```
 
-You can run this command on all of your Zabbix server, Frontend, Database, and Proxy hosts. This should cover the most important configuration files already, but there is another folder that could contain very important files.
+You can run this command on all of your Zabbix server, Frontend, Database, and
+Proxy hosts. This should cover the most important configuration files already,
+but there is another folder that could contain very important files.
 
 !!! info "Create other Zabbix files backup"
 
@@ -400,7 +409,9 @@ You can run this command on all of your Zabbix server, Frontend, Database, and P
     cp -R /usr/share/zabbix/ /opt/zabbix-backup/
     ```
 
-The `/usr/share/zabbix/` folder contains important PHP files and Zabbix binaries. A similar folder we should back up is the `/usr/lib/zabbix` folder, which contains our custom `alertscripts` and `externalscripts`.
+The `/usr/share/zabbix/` folder contains important PHP files and Zabbix binaries.
+A similar folder we should back up is the `/usr/lib/zabbix` folder, which contains
+our custom `alertscripts` and `externalscripts`.
 
 !!! info "Create other Zabbix files backup"
 
@@ -409,7 +420,9 @@ The `/usr/share/zabbix/` folder contains important PHP files and Zabbix binaries
     cp -R /usr/lib/zabbix/ /opt/zabbix-backup/
     ```
 
-Lastly, it is also recommended to create a backup of your web server configuration. Depending on whether you have `httpd`, `apache2`, or `nginx`, we will need to create the backup slightly differently.
+Lastly, it is also recommended to create a backup of your web server configuration.
+Depending on whether you have `httpd`, `apache2`, or `nginx`, we will need to create
+the backup slightly differently.
 
 !!! info "Back up web server configuration"
 

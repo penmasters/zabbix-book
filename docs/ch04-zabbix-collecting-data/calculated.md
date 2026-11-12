@@ -28,7 +28,7 @@ Both were powerful but came with inconsistent syntax and separate configuration
 workflows. This led to confusion, especially when building larger monitoring
 models or template driven designs.
 
-Starting with Zabbix 7.0, these functions were unified into a single item type:
+Starting with Zabbix 5.4, these functions were unified into a single item type:
 **Calculated**, with a single expression syntax. All former aggregation logic per host,
 per group, or cross group is now accessed directly through functions such as:
 

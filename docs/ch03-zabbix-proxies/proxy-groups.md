@@ -90,6 +90,7 @@ The following technical details govern the behaviour of the Proxy Group Manager 
 
 #### Passive Agents (`Server=`)
 A Zabbix agent in passive mode **must accept connections from all members of its proxy group**.
+
 * Configure the `Server` parameter with a comma-separated list of all node IP addresses or DNS names.
 * It is also possible to specify entire network segments if appropriate.
 

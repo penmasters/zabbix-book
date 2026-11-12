@@ -97,14 +97,17 @@ where our Zabbix server and frontend are already running (single-server setup).
     zypper install zabbix-mcp-server
     ```
 
-After this is done, we are ready to configure the Zabbix MCP server. It comes with its own configuration file, by default located at `/etc/zabbix/zabbix_mcp_server.conf`. Let's edit it.
+After this is done, we are ready to configure the Zabbix MCP server. It comes with
+its own configuration file, by default located at `/etc/zabbix/zabbix_mcp_server.conf`.
+Let's edit it.
 
 !!! info "Edit Zabbix MCP server configuration"
     ```bash
-    vi /etc/zabbix/zabbix_mcp_server.conf
+    sudo vi /etc/zabbix/zabbix_mcp_server.conf
     ```
 
-The configuration file contains several parameters that control how the MCP server communicates with Zabbix and which clients are allowed to connect.
+The configuration file contains several parameters that control how the MCP server
+communicates with Zabbix and which clients are allowed to connect.
 
 For our single-server setup, we only need to modify the following parameter:
 
@@ -117,19 +120,33 @@ Replace the URL with the address of your Zabbix frontend API.
 
 There are also several other parameters worth understanding:
 
-- **ListenIP:** Defines the IP address on which the MCP server listens for incoming connections. By default, `0.0.0.0` (all IPv4 interfaces).
+- **ListenIP:** Defines the IP address on which the MCP server listens for incoming
+  connections. By default, `0.0.0.0` (all IPv4 interfaces).
 - **ListenPort:** Defines the TCP port used by the MCP server. By default, `8443`.
-- **AllowedIP:** Restricts which IP addresses are allowed to connect to the MCP server. By default, only localhost (`127.0.0.1,::1`) is allowed. Remote MCP clients require additional addresses to be permitted.
-- **MaxResponseSize:** Defines the maximum size of responses returned by the MCP server. By default, `64K`.
+- **AllowedIP:** Restricts which IP addresses are allowed to connect to the MCP
+  server. By default, only localhost (`127.0.0.1,::1`) is allowed. Remote MCP clients require additional addresses to be permitted.
+- **MaxResponseSize:** Defines the maximum size of responses returned by the MCP
+  server. By default, `64K`.
 
-For now, we can leave these parameters unchanged if the MCP client runs on the same machine. However, if your AI application connects from a different machine, you will need to adjust `AllowedIP` accordingly and allow access to the MCP server's listening port, `8443` by default.
+For now, we can leave these parameters unchanged if the MCP client runs on the same
+machine. However, if your AI application connects from a different machine, you
+will need to adjust `AllowedIP` accordingly and allow access to the MCP server's
+listening port, `8443` by default.
 
-If you'd like to use cloud-hosted AI tools such as ChatGPT or Claude, you can restrict access to their published outbound IP ranges instead of allowing connections from every IP address.
+If you'd like to use cloud-hosted AI tools such as ChatGPT or Claude, you can
+restrict access to their published outbound IP ranges instead of allowing connections
+from every IP address.
 
-- **ChatGPT:** OpenAI publishes its connector IP ranges in a [JSON file](https://openai.com/chatgpt-connectors.json), linked from its [IP egress documentation](https://developers.openai.com/api/docs/guides/ip-addresses). Add the listed CIDR ranges to `AllowedIP`.
-- **Claude:** Anthropic currently lists `160.79.104.0/21` and `153.61.208.0/20` as its outbound IP ranges, including connections to MCP servers. Check its [IP address documentation](https://platform.claude.com/docs/en/api/ip-addresses) for the latest values.
+- **ChatGPT:** OpenAI publishes its connector IP ranges in a [JSON file](https://openai.com/chatgpt-connectors.json),
+  linked from its [IP egress documentation](https://developers.openai.com/api/docs/guides/ip-addresses).
+  Add the listed CIDR ranges to `AllowedIP`.
+- **Claude:** Anthropic currently lists `160.79.104.0/21` and `153.61.208.0/20`
+  as its outbound IP ranges, including connections to MCP servers. Check its
+  [IP address documentation](https://platform.claude.com/docs/en/api/ip-addresses)
+  for the latest values.
 
-These ranges can change, so check the provider's documentation regularly and update both `AllowedIP` and your firewall rules when needed.
+These ranges can change, so check the provider's documentation regularly and update
+both `AllowedIP` and your firewall rules when needed.
 
 ???+ note "Security considerations"
     Avoid setting `AllowedIP` to `0.0.0.0/0,::/0`, as this permits connections from any IP address. Restrict access to the clients or provider ranges you need and use HTTPS/TLS to protect your API tokens. A provider's IP ranges are shared by its users, so allowing those ranges does not restrict access to your own account. Zabbix API tokens and the associated user permissions are still required to control access to your Zabbix environment.

@@ -311,7 +311,6 @@ This allows you to reuse the same script safely across environments.
     Manage secrets via *template macros* so that they are portable if you
     export the template. Store secrets in a vault instead of the DB.
 
-
 ### 3. Error handling and fallback logic
 
 Production scripts should degrade gracefully.
@@ -320,6 +319,7 @@ You can catch and handle network failures, retry, or return a fallback value:
 ???+ example "Error handling in Script items"
 
     ```js
+    var parameters = JSON.parse(value);
     var req = new HttpRequest();
     try {
       var data = req.get(parameters.url);
@@ -333,8 +333,8 @@ You can catch and handle network failures, retry, or return a fallback value:
     }
     ```
 
-    This script catches any errors (network failure, bad JSON, missing .value, etc.) and
-    logs the error at severity level 2 (Warning) into the Zabbix server log.
+    This script catches any errors (network failure, bad JSON, missing .value, etc.)
+    and logs the error at severity level 2 (Warning) into the Zabbix server log.
     It returns a numeric 0 instead of throwing errors, so the item remains
     supported.
 

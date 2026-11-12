@@ -432,6 +432,7 @@ flowchart TD
 _7.12 Zabbix problem event lifecycle_
 
 A single problem lifecycle can therefore contain:
+
 - one **problem event**
 - zero or more **update events**
 - zero or one **recovery event**
@@ -987,6 +988,7 @@ in your receiving system is fragile; using the JSON variant is much cleaner.
 This template is intended as a realistic example, not a universal drop-in solution.
 
 Some macros depend on:
+
 - the presence of specific items (CPU, memory, uptime)
 - the trigger definition (single vs multiple items)
 - the environment (proxy usage, host configuration)

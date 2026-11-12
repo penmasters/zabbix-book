@@ -308,12 +308,12 @@ _4.71 JMX Gateway_
 
 ## Configuring Zabbix and the JAVA Gateway
 
-After installing the gateway, you'll find its configuration file at 
-`/etc/zabbix/zabbix_java_gateway.conf`. 
+After installing the gateway, you'll find its configuration file at
+`/etc/zabbix/zabbix_java_gateway.conf`.
 On SUSE 16+, the file is located at `/usr/etc/zabbix/java_gateway.conf` but is not
 intended to be modified directly and will be overwritten on next package upgrade.
-Instead create a new `.conf` file in `/etc/zabbix/zabbix_java_gateway.d/` adding any
-overrides to the default `zabbix_java_gateway.conf`.
+Instead create a new `.conf` file in `/etc/zabbix/zabbix_java_gateway.d/` adding
+any overrides to the default `zabbix_java_gateway.conf`.
 
 The default `LISTEN_IP` is set to `0.0.0.0`, which means it listens on all network
 interfaces, though you can change this. The gateway listens on port `10052`, a non
@@ -355,9 +355,9 @@ forget to enable the `Zabbix Java Gateway` service.
 
 ???+ info "Restart the services"
 
-    ```
-    systemctl enable zabbix-java-gateway --now
-    systemctl restart zabbix-server
+    ``` bash
+    sudo systemctl enable zabbix-java-gateway --now
+    sudo systemctl restart zabbix-server
     ```
 
 On the application side don't forget to open the firewall so that our
@@ -386,8 +386,8 @@ On the application side don't forget to open the firewall so that our
 
 ## Monitoring JMX items
 
-After having set up everything, we can now connect to our Java application's JMX port to
-verify everything is working.
+After having set up everything, we can now connect to our Java application's JMX
+port to verify everything is working.
 
 For this, we can use JConsole, a monitoring tool that comes with the Java Development
 Kit (JDK). Another great option is VisualVM, which offers a more visual and feature

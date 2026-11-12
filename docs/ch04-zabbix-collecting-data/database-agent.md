@@ -14,7 +14,8 @@ environments, this might be out of the question. ODBC monitoring also requires
 additional tooling to be installed, which is something you will need to maintain.
 
 The Zabbix agent 2 however, comes with built-in functionality to monitor some 
-of the most popular SQL and NoSQL databases.
+of the most popular SQL and NoSQL databases:
+
 - MariaDB
 - MySQL
 - PostgreSQL
