@@ -163,8 +163,8 @@ as a separate process on the operating system. This is useful for checks that
 require system libraries, external tools, or network access from the server's
 own network perspective.
 
-- **Browser items**: Use a headless Chromium instance, managed through the Zabbix
-web service, to interact with a web page and collect metrics from it. This is the
+- **Browser items**: Use a headless Chromium instance, accessed through a WebDriver
+endpoint, to interact with a web page and collect metrics from it. This is the
 correct method for monitoring web applications that require JavaScript execution
 or user interaction flows that cannot be replicated with a plain HTTP request.
 
