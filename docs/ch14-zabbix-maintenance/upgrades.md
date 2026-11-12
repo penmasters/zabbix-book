@@ -30,8 +30,8 @@ starts, it compares the current database version with the one it expects and app
 all missing patches automatically.
 
 This means that a database created with Zabbix 2.0 can be upgraded directly to
-Zabbix 8.0. No intermediate versions are required. No manual schema juggling is
-needed.
+Zabbix 8.0. No intermediate versions are required. TimescaleDB installations may
+require an additional schema configuration step after the automatic upgrade.
 
 This capability is powerful and often misunderstood.
 
@@ -62,6 +62,52 @@ _“Skipping minor upgrades is how small problems grow up unsupervised.”_
 This book focuses on Zabbix 8.0 as the target version. Older releases matter only
 in how they shape the path toward it.
 
+???+ warning "Before upgrading"
+
+    Check that your PHP, database, and optional TimescaleDB versions meet the
+    requirements of the Zabbix release you are installing.
+
+    Upgrading Zabbix does not automatically update existing templates or media
+    types. Review and import updated versions separately, preserving your
+    customisations.
+
+    Updated HTTP templates and webhook media types may enable TLS certificate
+    verification by default. Check their release notes and ensure the issuing
+    CA is trusted, especially when connecting to services with private certificates.
+
+???+ warning "TimescaleDB: configure the new history_json hypertable"
+
+    When upgrading from Zabbix to 8.0 with TimescaleDB, the new `history_json`
+    table must be configured as a hypertable manually. Otherwise, the server logs:
+
+    ```text
+    Table "history_json" is not a hypertable. Execute TimescaleDB configuration step
+    as described in Zabbix documentation to upgrade schema.
+    ```
+
+    First, let Zabbix server complete the automatic database upgrade and confirm
+    completion in its log. Then stop Zabbix server and keep the frontend unavailable
+    during the TimescaleDB migration. With a current database backup available,
+    run the TimescaleDB script supplied with the installed Zabbix 8.0 packages.
+    For a local database and operating-system user both named `zabbix`:
+
+    ```bash
+    sudo systemctl stop zabbix-server
+    sudo -u zabbix psql -v ON_ERROR_STOP=1 -d zabbix \
+      -f /usr/share/zabbix/sql-scripts/postgresql/timescaledb/schema.sql
+    ```
+
+    Adjust the database connection and script path for your installation. Use the
+    TimescaleDB `schema.sql`, not the initial PostgreSQL database creation script.
+    Only after the script completes successfully, restart Zabbix server:
+
+    ```bash
+    sudo systemctl start zabbix-server
+    ```
+
+    Check the new startup log for errors before restoring frontend access.
+    See the official TimescaleDB schema upgrade procedure
+    [https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/timescaledb#upgrading-timescaledb-schema](https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/timescaledb#upgrading-timescaledb-schema).
 
 ## The Stack Beneath the Server
 
