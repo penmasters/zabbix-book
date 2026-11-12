@@ -249,7 +249,7 @@ distributions:
 
     Ubuntu
     ```bash
-    apt install -y ipmitool
+    sudo apt install -y ipmitool
     ```
 
 Once installed, no additional services are required. The tool is invoked directly

@@ -362,7 +362,7 @@ following parameters.
 
     Linux CLI
     ```bash
-    systemctl restart zabbix-agent2
+    sudo systemctl restart zabbix-agent2
     ```
 
 Moving to the Zabbix frontend, all that's left to do is edit our host configuration
