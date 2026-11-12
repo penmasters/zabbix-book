@@ -290,7 +290,7 @@ loads files from that directory):
 !!! info ""
 
     ```conf
-    StartAPMCollectors=1
+    StartAPMCollector=1
     APMListenPort=4317
     TelemetryProvider=clickhouse;url=http://clickhouse.example.com:8123,db=zabbix,username=zabbix,password=your_password
     ```
