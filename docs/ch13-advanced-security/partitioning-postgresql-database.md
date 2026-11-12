@@ -168,11 +168,11 @@ supported by TimescaleDB, you can follow the instructions in the next section.
 ???+ note
 
     Of course, you need to match the TimescaleDB version to the version of PostgreSQL
-    you installed. For example, if you are using PostgreSQL 14, you must install
-    the corresponding TimescaleDB packages for version 14. The installation would
+    you installed. For example, if you are using PostgreSQL 15, you must install
+    the corresponding TimescaleDB packages for version 15. The installation would
     look like this:
     ```
-    dnf install timescaledb-2-postgresql-14 postgresql14
+    dnf install timescaledb-2-postgresql-15 postgresql15
     ```
     Using mismatched versions can lead to compatibility issues, so always make
     sure the TimescaleDB packages align with your PostgreSQL version.
@@ -215,6 +215,11 @@ supported by TimescaleDB, you can follow the instructions in the next section.
     dnf install timescaledb-2-postgresql-18-2.30.2
     dnf versionlock add timescaledb-2-postgresql-18
     ```
+
+!!! note
+
+    In this example we use version 2.30.2 be aware that this version is only
+    supported in Zabbix 8.0.1 zabbix 8.0 only supports up to version 2.29.x
 
     SUSE
     ```bash

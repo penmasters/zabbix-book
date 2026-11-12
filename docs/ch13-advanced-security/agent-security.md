@@ -292,14 +292,15 @@ in our environment.
     ```bash
     openssl x509 -req \
     -in zabbix_agent.csr \
-    -CA the-zabbix-book-ca.crt \
-    -CAkey the-zabbix-book-ca.key \
+    -CA /home/zabbix/the-zabbix-book-ca.crt \
+    -CAkey /home/zabbix/the-zabbix-book-ca.key \
     -CAcreateserial \
     -out zabbix_agent.crt \
     -days 825 -sha256
     ```
 
 We now have our Zabbix agent certificate and private key:
+
 - *zabbix_agent.key*: Keep secret on the agent
 - *zabbix_agent.crt*: Public certificate for the agent
 - *the-zabbix-book-ca.crt*: CA certificate the agent uses to trust the Zabbix server/proxy
@@ -320,8 +321,8 @@ Let's move these files to a folder where we can use them from the Zabbix agent.
     Linux CLI
     ```bash
     mkdir -p /home/zabbix/pki
-    mv zabbix_agent.key /home/zabbix/the-zabbix-book-ca.key
-    mv zabbix_agent.crt /home/zabbix/the-zabbix-book-ca.crt
+    mv zabbix_agent.key /home/zabbix/pki/zabbix_agent.key
+    mv zabbix_agent.crt /home/zabbix/pki/zabbix_agent.crt
     ```
 
 Of course it will also be important to secure the files.
@@ -374,7 +375,8 @@ _13.9 Encrypted agent settings certificate_
 ## Conclusion
 
 If you want simple-to-set-up security for your Zabbix agent, use pre-shared keys.
-They are secure, especially when using 2048-bit keys (512 hexadecimal digits) and, if possible, unique pre-shared keys for each agent.
+They are secure, especially when using 2048-bit keys (512 hexadecimal digits) and,
+if possible, unique pre-shared keys for each agent.
 
 If you want some more layers of security, certificates do provide more security
 in the way they work alone. With certificate expiry, we are forced to set up good
@@ -385,7 +387,7 @@ issuer/subject.
 If you are using active agent autoregistration, pre-shared keys seem like your only
 viable option out of the box. We are forced to use a single pre-shared key for this
 method, and as such it is less secure. This can still be a good option to provide
-that additional layer of security on internal networks. 
+that additional layer of security on internal networks.
 
 ## Questions
 
