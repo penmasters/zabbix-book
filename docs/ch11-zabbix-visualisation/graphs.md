@@ -121,9 +121,10 @@ that template inherits the graph).
    you're scrolling through a long list of graphs.
 5. Set the **Width** and **Height**, or leave them at the defaults.
 6. Under **Items**, click **Add** to bring in the items you want to plot.
-   - If the first item you add comes from a template, you can only add
+
+    - If the first item you add comes from a template, you can only add
      further items from that same template.
-   - If the first item comes from a host directly, you can add items from
+    - If the first item comes from a host directly, you can add items from
      any host, but no longer from templates.
 7. For each item, you can set its **draw style** (line, filled region,
    staircase, and so on), colour, and Y-axis side (left or right — handy when

@@ -224,16 +224,21 @@ preprocessing steps. These steps will ensure that the extracted data is correctl
 formatted for Zabbix. Configure the following preprocessing steps:
 
 1. **JSONPath**: `$.data..[?(@.name=='{#PRINTER.NAME}')].status.first()`
-2. **Replace**:  
-   - Convert `NOK` to `false`.  
-   - This step is required because Zabbix does not recognise `NOK` as a boolean
-     value but does recognise `false`.
-3. **Boolean to Decimal**:  
-   - This conversion transforms boolean values into a numerical representation
-   (`1` for `OK`, `0` for `false`).
-   - Numeric values are more suitable for graphing and analysis in Zabbix.
-4. **Type of Information**:  
-   - Set to **Numeric** to ensure proper data processing and visualisation.
+2. **Replace**:
+
+    - Convert `NOK` to `false`.
+    - This step is required because Zabbix does not recognise `NOK` as a boolean
+      value but does recognise `false`.
+
+3. **Boolean to Decimal**:
+
+    - This conversion transforms boolean values into a numerical representation
+      (`1` for `OK`, `0` for `false`).
+    - Numeric values are more suitable for graphing and analysis in Zabbix.
+
+4. **Type of Information**:
+
+    - Set to **Numeric** to ensure proper data processing and visualisation.
 
 ### Understanding the JSONPath Expression
 

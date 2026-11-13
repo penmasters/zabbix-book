@@ -276,8 +276,10 @@ the device at a set interval to retrieve values.
 !!! tip
 
     In production Zabbix environments, many administrators combine both methods:
+
     - Use SNMP polling for regular metrics (e.g., interface traffic, system uptime).
     - Use SNMP traps for immediate events (e.g., link down, power failure).
+
     This hybrid approach gives you both real-time alerts and historical performance
     data, achieving complete SNMP visibility with minimal overhead.
 

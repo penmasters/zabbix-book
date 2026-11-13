@@ -141,6 +141,7 @@ cannot directly access the agent.
 #### Choosing Between Active and Passive Modes
 
 The choice depends on your environment and requirements:
+
   - Use **Passive** mode for simplicity and direct server-agent communication.
   - Use **Active** mode to reduce server load or navigate network restrictions.
   - A **hybrid approach** is often optimal: for example, use **Active** mode for 
