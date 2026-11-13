@@ -424,7 +424,7 @@ exist and have the appropriate permissions.
     On Ubuntu only:
 
     ```bash
-    chown Debian-snmp: /var/log/zabbix_traps_archive/
+    sudo chown Debian-snmp: /var/log/zabbix_traps_archive/
     ```
 
 ---
