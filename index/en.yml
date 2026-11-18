@@ -63,7 +63,7 @@ entries:
 
   - term: automated PDF reports
     targets:
-      - label: creating
+      - label: configuring PDF report generation
         start: ch11-zabbix-visualisation/automated-pdf-reports.md
         end: ch11-zabbix-visualisation/automated-pdf-reports.md#conclusion
     see_also:
@@ -160,10 +160,18 @@ entries:
     targets:
       - label: configuring CEP rules
         start: ch07-zabbix-alerts/cep.md
-        end: ch07-zabbix-alerts/cep.md#conclusion
     see_also:
       - alerting
       - triggers
+    subterms:
+      - term: sliding windows
+        targets:
+          - label: processing sliding time windows
+            start: ch07-zabbix-alerts/cep.md#sliding-time-windows
+      - term: cause and symptoms
+        targets:
+          - label: grouping causes and symptoms
+            start: ch07-zabbix-alerts/cep.md#cause-and-symptoms-grouping
 
   - term: database
     subterms:
@@ -196,7 +204,6 @@ entries:
     targets:
       - label: understanding the data flow
         start: ch04-zabbix-collecting-data/dataflow.md
-        end: ch04-zabbix-collecting-data/dataflow.md#conclusion
     see_also:
       - items
       - preprocessing
@@ -312,6 +319,11 @@ entries:
       - label: creating and managing
         start: ch02-zabbix-installation/host-groups.md
         end: ch02-zabbix-installation/host-groups.md#conclusion
+    subterms:
+      - term: nested groups
+        targets:
+          - label: using nested groups and inherited permissions
+            start: ch02-zabbix-installation/host-groups.md#nested-host-groups
 
   - term: host interfaces
     targets:
@@ -340,9 +352,8 @@ entries:
 
   - term: ICMP checks
     targets:
-      - label: configuring simple checks
-        start: ch04-zabbix-collecting-data/simple-checks.md
-        end: ch04-zabbix-collecting-data/simple-checks.md#conclusion
+      - label: configuring ICMP checks
+        start: ch04-zabbix-collecting-data/simple-checks.md#icmp-ping
 
   - term: internal health
     targets:
@@ -367,8 +378,10 @@ entries:
     targets:
       - label: understanding IPMI
         start: ch04-zabbix-collecting-data/ipmi.md#understanding-ipmi
-      - label: configuring native IPMI monitoring
-        start: ch04-zabbix-collecting-data/ipmi.md#native-ipmi-monitoring-in-zabbix
+      - label: configuring an IPMI item
+        start: ch04-zabbix-collecting-data/ipmi.md#configuring-an-ipmi-item-in-zabbix
+      - label: configuring IPMI pollers
+        start: ch04-zabbix-collecting-data/ipmi.md#configuring-ipmi-pollers
     see_also:
       - Redfish
 
@@ -408,6 +421,16 @@ entries:
         targets:
           - label: querying telemetry as item values
             start: ch04-zabbix-collecting-data/telemetry.md#telemetry-query-items-in-brief
+    see_also:
+      - Zabbix agent
+      - database
+      - external checks
+      - IPMI
+      - JMX
+      - simple checks
+      - SNMP
+      - SSH checks
+      - Telnet checks
 
   - term: Java Management Extensions
     see: JMX
@@ -457,6 +480,8 @@ entries:
         targets:
           - label: configuring nested discovery prototypes
             start: ch08-zabbix-lld/nested-lld.md
+          - label: using nested LLD on host prototypes
+            start: ch08-zabbix-lld/nested-lld.md#nested-lld-on-discovered-hosts-host-prototypes
       - term: filtering
         targets:
           - label: filtering discovered objects
@@ -497,6 +522,14 @@ entries:
         targets:
           - label: filtering maintenance by problem tags
             start: ch14-zabbix-maintenance/maintenance.md#5-problem-tag-filtering-advanced-suppression
+      - term: trigger and event scope
+        targets:
+          - label: limiting maintenance to triggers and events
+            start: ch14-zabbix-maintenance/maintenance.md#6-trigger-and-event-based-maintenance-new-in-zabbix-80
+      - term: ad-hoc maintenance
+        targets:
+          - label: creating ad-hoc maintenance
+            start: ch14-zabbix-maintenance/maintenance.md#creating-ad-hoc-maintenance
 
   - term: maps
     targets:
@@ -652,6 +685,10 @@ entries:
         targets:
           - label: extracting Prometheus metrics
             start: ch04-zabbix-collecting-data/preprocessing.md#prometheus-pattern
+      - term: change per second
+        targets:
+          - label: calculating simple change and change per second
+            start: ch04-zabbix-collecting-data/preprocessing.md#simple-change-and-change-per-second
 
   - term: proxy groups
     targets:
@@ -661,6 +698,15 @@ entries:
     see_also:
       - high availability
       - Zabbix proxy
+    subterms:
+      - term: failover and load balancing
+        targets:
+          - label: understanding failover and load balancing
+            start: ch03-zabbix-proxies/proxy-groups.md#overview-and-core-concepts
+      - term: agent configuration
+        targets:
+          - label: configuring agents for proxy groups
+            start: ch03-zabbix-proxies/proxy-groups.md#agent-configuration-rules
 
   - term: reports
     subterms:
@@ -743,6 +789,10 @@ entries:
           - label: trapping
             start: ch04-zabbix-collecting-data/snmp-trapping.md
             end: ch04-zabbix-collecting-data/snmp-trapping.md#conclusion
+          - label: testing and debugging trap reception
+            start: ch04-zabbix-collecting-data/snmp-trapping.md#testing-and-debugging
+          - label: creating a fallback trap item
+            start: ch04-zabbix-collecting-data/snmp-trapping.md#creating-the-snmp-fallback-item
       - term: MIB files
         targets:
           - label: understanding MIB files
@@ -767,6 +817,12 @@ entries:
     targets:
       - label: using tags and inheritance
         start: ch06-zabbix-templates/templates.md#tags
+      - label: filtering action conditions
+        start: ch07-zabbix-alerts/actions.md#condition-types-for-trigger-actions
+      - label: restricting problem visibility
+        start: ch02-zabbix-installation/user-groups.md#problem-tag-filters-granular-alert-access
+    see_also:
+      - maintenance, problem tag filtering
 
   - term: Telnet checks
     targets:
@@ -800,6 +856,14 @@ entries:
         targets:
           - label: configuring value maps
             start: ch06-zabbix-templates/templates.md#value-maps
+      - term: UUID matching
+        targets:
+          - label: matching imports by UUID
+            start: ch06-zabbix-templates/templates.md#uuid-based-matching
+      - term: dashboards
+        targets:
+          - label: using template dashboards
+            start: ch06-zabbix-templates/templates.md#template-dashboards
 
   - term: TimescaleDB
     targets:
@@ -819,7 +883,6 @@ entries:
         targets:
           - label: advanced expressions
             start: ch05-zabbix-triggers/advanced-triggers.md
-            end: ch05-zabbix-triggers/advanced-triggers.md#conclusion
       - term: creating
         targets:
           - label: creating and configuring
@@ -835,7 +898,9 @@ entries:
             start: ch05-zabbix-triggers/advanced-triggers.md#trigger-dependency
       - term: flapping
         targets:
-          - label: reducing trigger flapping
+          - label: reducing flapping with recovery expressions
+            start: ch05-zabbix-triggers/advanced-triggers.md#recovery-expression
+          - label: reducing time-based trigger flapping
             start: ch05-zabbix-triggers/advanced-triggers.md#reducing-flapping-even-more
       - term: multiple problem events
         targets:
@@ -844,7 +909,7 @@ entries:
 
   - term: upgrades
     targets:
-      - label: planning and performing
+      - label: planning upgrades and migrations
         start: ch14-zabbix-maintenance/upgrades.md
         end: ch14-zabbix-maintenance/upgrades.md#conclusion
     see_also:
@@ -985,8 +1050,8 @@ entries:
             start: ch15-windows/windows.md#registryget-as-a-complement-to-wmi
       - term: fleet deployment
         targets:
-          - label: deploying agents with MSI and PowerShell
-            start: ch15-windows/windows-zabbix-agent2-config-tips.md#using-the-msi-installer
+          - label: configuring and deploying Windows agents
+            start: ch15-windows/windows-zabbix-agent2-config-tips.md
       - term: autoregistration
         targets:
           - label: setting Windows host metadata
@@ -1112,6 +1177,14 @@ entries:
         targets:
           - label: receiving OTLP telemetry
             start: ch04-zabbix-collecting-data/telemetry.md#1-proxy-configuration-receiving-otlp-data
+      - term: data buffering
+        targets:
+          - label: buffering data during connection loss
+            start: ch03-zabbix-proxies/chapter.md#data-buffering-and-resilience
+      - term: configuration synchronisation
+        targets:
+          - label: understanding configuration updates
+            start: ch03-zabbix-proxies/proxy-basics.md#proxy-configuration-updates
 
   - term: Zabbix server
     targets:
@@ -1154,6 +1227,10 @@ entries:
         targets:
           - label: generating traces and alerting on span latency
             start: ch04-zabbix-collecting-data/telemetry.md#lab-generate-traces-and-alert-on-span-latency
+      - term: OTLP transports
+        targets:
+          - label: understanding OTLP/gRPC and OTLP/HTTP
+            start: ch04-zabbix-collecting-data/telemetry.md#understanding-otlp-and-grpc
     see_also:
       - ClickHouse
       - Telemetry query items
@@ -1320,6 +1397,14 @@ entries:
         targets:
           - label: distinguishing API methods from object permissions
             start: ch12-zabbix-api/API basics.md#api-methods-versus-object-permissions
+      - term: proxy access
+        targets:
+          - label: controlling proxy access
+            start: ch02-zabbix-installation/user-groups.md#proxy-access-list
+      - term: problem visibility
+        targets:
+          - label: restricting problem visibility with tags
+            start: ch02-zabbix-installation/user-groups.md#problem-tag-filters-granular-alert-access
     see_also:
       - user groups
       - user roles
@@ -1468,3 +1553,67 @@ entries:
 
   - term: WMI
     see: Windows monitoring, WMI queries
+
+  - term: housekeeping
+    targets:
+      - label: managing retention and deleted-object cleanup
+        start: ch14-zabbix-maintenance/internal-health.md#housekeeper-data-cleanup
+
+  - term: database partitioning
+    see_also:
+      - MariaDB, partitioning
+      - TimescaleDB
+      - ClickHouse, retention
+
+  - term: escalations
+    targets:
+      - label: configuring escalation steps and operations
+        start: ch07-zabbix-alerts/actions.md#operations-and-escalations
+
+  - term: problem suppression
+    targets:
+      - label: understanding maintenance and manual suppression
+        start: ch07-zabbix-alerts/actions.md#maintenance-and-suppression
+    see_also:
+      - maintenance
+
+  - term: remote commands
+    targets:
+      - label: running global scripts from actions
+        start: ch07-zabbix-alerts/actions.md#remote-commands-via-global-scripts
+    see_also:
+      - frontend scripts
+
+  - term: Java Gateway
+    targets:
+      - label: configuring for JMX monitoring
+        start: ch04-zabbix-collecting-data/jmx.md#configuring-zabbix-and-the-java-gateway
+
+  - term: Microsoft SQL Server
+    targets:
+      - label: monitoring with agent 2 and custom queries
+        start: ch04-zabbix-collecting-data/database-agent.md#setting-up-microsoft-sql-monitoring
+
+  - term: aggregate functions
+    see: calculated items, aggregation
+
+  - term: traces
+    see: OpenTelemetry
+
+  - term: scheduled reports
+    see: automated PDF reports
+
+  - term: push notifications
+    see: media types, push notifications
+
+  - term: OpenBao
+    see: Vault
+
+  - term: Quadlet
+    see: containers, proxy deployment
+
+  - term: Chrony
+    see: time synchronisation
+
+  - term: queues
+    see: internal health, queues
