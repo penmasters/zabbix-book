@@ -6,6 +6,10 @@
 - Clone this project to your GitHub account
 - Clone the repository to your PC
 
+Choose the target branch for your contribution: `main` for new English content,
+`release/8.0` for English 8.0 corrections, or `translation/8.0/<locale>` for
+translation work. Use that branch in place of `<target branch>` below.
+
 - Install the needed software for MkDocs to work,
   check the file in the root folder how-to-install-mkdocs.md
   - Create a new branch to make your changes
@@ -14,11 +18,11 @@
   - Make the changes you want and commit them
     - git add "files you changed"
     - git commit -m "add useful commit info"
-  - Return back to the main branch
-    - git checkout main
-  - Make sure you have the latest changes merged from main
-    - git pull origin main
-  - Merge your branch into the main branch
+  - Return to the target branch
+    - `git checkout <target branch>`
+  - Make sure you have the latest changes merged from the target branch
+    - `git pull origin <target branch>`
+  - Merge your branch into the target branch
     - git merge "<your branch name\>"
     - git push
   - clean up your branch

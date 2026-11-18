@@ -327,7 +327,7 @@ The response contains the ID of the new item:
     ```
 
 `create` and `update` methods also accept an array of objects, so one call can
-create or update many items, triggers or hosts. Fewer calls means less load
+create or update many items, triggers or hosts. Fewer calls mean less load
 on the frontend and the database.
 
 ### Updating and deleting objects

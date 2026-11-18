@@ -156,8 +156,8 @@ Throttle data to reduce storage using the following methods:
 **Prometheus**:
 Parse and extract data from Prometheus metrics using the following methods:
 
-- **Prometheus pattern** is used to extract values from prometheus data.
-- **Prometheus to JSON** is used to convert prometheus data to JSON data (ready
+- **Prometheus pattern** is used to extract values from Prometheus data.
+- **Prometheus to JSON** is used to convert Prometheus data to JSON data (ready
   for low level discovery).
 
 ---
@@ -664,7 +664,7 @@ Then, lastly, let's have a more detailed look at the **Discard unchanged** and
 reduce the amount of data we store in our Zabbix database, by only storing values
 if they have changed. This is especially useful for items that receive a lot of data,
 but we only care about changes in the value. For example, a temperature sensor that
-only changes value when the temperature changes. If we would store every value,
+only changes value when the temperature changes. If we stored every value,
 we would have a lot of redundant data in our database, taking up unnecessary space.
 
 Zabbix provides us with two options to discard unchanged values. The first one

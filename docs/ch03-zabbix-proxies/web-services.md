@@ -31,7 +31,7 @@ _3.17 Zabbix web service overview_
 
 ## Zabbix web service requirements
 
-The Zabbix web service requires a linux-based operating system and headless
+The Zabbix web service requires a Linux-based operating system and headless
 Google Chrome or Chromium. 
 
 ???+ note "Google Chrome vs Chromium"
@@ -61,9 +61,9 @@ generate reports for a small to medium-sized Zabbix installation.
 
 Installing Google Chrome or Chromium on your system will pull in additional
 dependencies, such as Qt libraries, audio/video codecs, OpenGL libraries, font
-rendering libraries, and others. Depending on how you installed your linux
+rendering libraries, and others. Depending on how you installed your Linux
 operating system, many of these dependencies are probably not yet installed on
-your system. All together, these dependencies may require up to 1 Gb of additional
+your system. All together, these dependencies may require up to 1 GB of additional
 disk space on your system disk. 
 
 This may also be a reason to choose a separate system for the Zabbix web service
@@ -317,7 +317,7 @@ with:
     bfedb5d16505  docker.io/zabbix/zabbix-web-service:8.0-centos-latest    /usr/sbin/zabbix_...  12 minutes ago  Up 12 minutes  0.0.0.0:10053->10053/tcp  ZabbixWebService-Quadlet
     ```
 
-Take note of the `CONTAINER ID`—in this example, it is `b5716f8f379d`. You can
+Take note of the `CONTAINER ID`—in this example, it is `bfedb5d16505`. You can
 then retrieve the container's logs using:
 
 ???+ info "Retrieve container logs"
@@ -392,7 +392,7 @@ creating or editing the `/etc/zabbix/zabbix_server.d/web_service.conf` file.
     ```
 
 If you have SELinux enabled on your Zabbix server, you may also need to allow the
-Zabbix server to make network connections for it to be able connect to the Zabbix
+Zabbix server to make network connections for it to be able to connect to the Zabbix
 web service. This can be done using the following command:
 
 !!! info "Allow Zabbix server to connect to Zabbix web service with SELinux"

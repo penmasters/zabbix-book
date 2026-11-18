@@ -771,7 +771,7 @@ After that we will configure SNMP to use only the MIBs we require.
     rm -rf /tmp/netdisco*
     ```
 
-To enable bare minimum MIBs we need to enable two catalogs "rfc" and "net-snmp".
+To enable bare minimum MIBs we need to enable two catalogues "rfc" and "net-snmp".
 
 Overwrite/replace `/etc/snmp/snmp.conf` with:
 
@@ -1118,11 +1118,9 @@ first before we save it.
 
 Add a *preprocessing step* with the name `Change per second`
 
-![ch04.32-snmp-item-preprocessing.png](ch04.32-snmp-item-preprocessing.png){ align=center }
+![SNMP item preprocessing](ch04.32-snmp-item-preprocessing.png){ align=center }
 
-_4.32 ch04.32-snmp-item-preprocessing.png_
-
-_snmp preprocessing_
+_4.32 SNMP item preprocessing_
 
 We can now save the item and have a look at our latest data page we should have
 a nice graph with our data over time.

@@ -147,10 +147,10 @@ reaches 80% again before that, the server stops accepting proxy data again.
 
 ## Active versus Passive proxy
 
-Zabbix proxies have been available since Zabbix 1.6. At that time they where
+Zabbix proxies have been available since Zabbix 1.6. At that time they were
 available only as what we know today as **Active proxies**. _Active_ means that
 the proxy will initiate the connection by itself to the Zabbix Server. In
-version 1.8.3 _passive_ proxies where introduced. This allows the server to
+version 1.8.3 _passive_ proxies were introduced. This allows the server to
 connect to the proxy instead of the other way around.
 
 As mentioned before Zabbix agents can simultaneously be in an active _and_ passive
@@ -183,7 +183,9 @@ Mandatory:
 - `Server`: IP or DNS of the Zabbix server
 - `Hostname`: Proxy name - this needs to be exactly the same as configured in the
   frontend.
+
 Optional:
+
 - `ProxyOfflineBuffer`: How long we like to keep data in the DB (in hours) if
   we can't reach the _Zabbix server_.
 - `ProxyLocalBuffer`: How long we like to keep data in the DB (in hours) even when
@@ -235,13 +237,15 @@ Hence, configuring _passive_ proxies requires changes in both the _Zabbix server
 and the _Zabbix proxy_ configuration files as it is now the server
 that controls when and how proxy data is requested by making use of pollers.
 
-The most important setting we can find back in the _proxy_ configuration file are:
+The most important settings we can find back in the _proxy_ configuration file are:
 
 Mandatory:
 
 - `ProxyMode`: `1` - Sets the proxy in 'Passive' mode
 - `Server:` IP or DNS of the _Zabbix server_
+
 Optional:
+
 - `ProxyOfflineBuffer`: How long we like to keep data in the DB (in hours) if
   we can't reach the _Zabbix server_.
 - `ProxyLocalBuffer`: How long we like to keep data in the DB (in hours) even when
@@ -278,8 +282,8 @@ _3.3 Passive proxy communication_
 
 ## Proxy runtime control options
 
-Just like the _Zabbix server_ our proxy supports runtime control options always
-check latest options with the `--help` option. But here is a short overview of
+Just like the _Zabbix server_, our proxy supports runtime control options.
+Always check the latest options with the `--help` option. But here is a short overview of
 options available to use.
 
 `zabbix_proxy --runtime-control housekeeper_execute`

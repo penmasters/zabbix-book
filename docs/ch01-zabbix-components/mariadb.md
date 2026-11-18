@@ -522,7 +522,7 @@ socket authentication.
     take anywhere from a few seconds to several minutes without any visual feedback
     while the schema is being imported.
 
-    Please be patient and avoid cancelling the operation; just wait for the linux 
+    Please be patient and avoid cancelling the operation; just wait for the Linux
     prompt to reappear.
 
 ???+ note

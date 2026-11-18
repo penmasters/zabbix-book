@@ -7,7 +7,7 @@ tags: [advanced]
 
 # Low-Level Discovery with Dependent items
 
-Efficiency in monitoring isn't just about automation it's also about minimising
+Efficiency in monitoring isn't just about automation, it's also about minimising
 resource usage. Low-Level Discovery (LLD) with dependent items in Zabbix offers
 a powerful way to reduce agent load and database overhead by collecting data once
 and extracting multiple metrics from it.
@@ -117,7 +117,7 @@ _8.12 Create host_
 
 ???+ note
     Remember, this is just an example file we made. In real life you will use probably
-    a `HTTP agent` or a `Zabbix agent` to retrieve real-life data.
+    an `HTTP agent` or a `Zabbix agent` to retrieve real-life data.
 
 Click on top right of the page on `Create item` to create a new item so that we
 can retrieve our master item's data.
@@ -194,7 +194,7 @@ in our LLD items, triggers, graphs, etc.
     ```
 
 ![LLD Macros](ch08.16-dependent-lld-create-lldmacro.png){ align=center }
-_8.16 Create a LLD Macro_
+_8.16 Create an LLD macro_
 
 When ready press `Update` at the bottom of the page.
 

@@ -478,7 +478,7 @@ Script:
  
                     Zabbix.Log(params.debug, 'Host visible name field, host: ' + hostData[h].name + ' need to reinstall visible name');
  
-                    // formulate payload for easy printing for troubleshoting
+                    // formulate payload for easy printing for troubleshooting
                     payload = '{"jsonrpc":"2.0","method":"host.update","params":' + JSON.stringify({
                         'hostid':hostData[h].hostid,
                         'name':hostData[h].inventory.name
@@ -492,7 +492,7 @@ Script:
                         // save API errors, like name already exists:
                         if (typeof hostUpdate.error !== 'undefined') { listOfErrors.push({'error':hostUpdate.error,'origin':hostData[h].host}) }
  
-                        // save successfull operation:
+                        // save successful operation:
                         if (typeof hostUpdate.result !== 'undefined') { listOfSuccess.push(hostUpdate.result) }
  
                     }

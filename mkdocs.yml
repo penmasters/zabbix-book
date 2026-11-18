@@ -130,7 +130,7 @@ nav:
   - "Chapter 15 : Windows monitoring":
       - ch15-windows/chapter.md
       - Windows: ch15-windows/windows.md
-      - Zabbix Agent2 Config Tips For Windows: ch15-windows/windows-zabbix-agent2-config-tips.md
+      - Zabbix Agent 2 Config Tips For Windows: ch15-windows/windows-zabbix-agent2-config-tips.md
   - "Chapter 16 : Real world examples":
       - ch16-zabbix-real-world-examples/chapter.md
       - Disk health on Windows: ch16-zabbix-real-world-examples/disk-health-windows.md
@@ -154,7 +154,7 @@ theme:
     - navigation.expand
     - navigation.prune
     - navigation.path
-    #    - navigation.sections # removes the collapsable menu
+    #    - navigation.sections # removes the collapsible menu
     - navigation.indexes
     - navigation.top
     - search.suggest

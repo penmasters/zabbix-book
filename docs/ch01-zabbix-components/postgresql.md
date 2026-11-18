@@ -442,7 +442,7 @@ After making this change, restart the PostgreSQL service to apply the new settin
 With the necessary packages installed, you are now ready to create the Zabbix 
 database and users for both the server and frontend.
 
-The PostgreSQL packages automatically create a default `postgres` linux-user 
+The PostgreSQL packages automatically create a default `postgres` Linux user
 during installation which has administrative privileges on the PostgreSQL instance.
 To administer the database, you will need to execute commands as the `postgres` user.
 
@@ -607,7 +607,7 @@ First, we grant `USAGE` privileges on the schema to allow `zabbix-web` to connec
 Now, the `zabbix-web` user has appropriate access to interact with the schema
 while maintaining security by limiting permissions to essential operations.
 
-If you are ready you can exit the database and return to your linux shell.
+If you are ready you can exit the database and return to your Linux shell.
 
 !!! info "Exit the database shell"
 

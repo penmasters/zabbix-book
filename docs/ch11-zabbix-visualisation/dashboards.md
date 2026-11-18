@@ -157,7 +157,7 @@ _11.3 Action Log widget_
 
 ### Clock
 
-Shows the current date and time, either as a digital or an analog clock face. You
+Shows the current date and time, either as a digital or an analogue clock face. You
 can configure it to show the time in any time zone rather than the browser's local
 time. Useful for teams operating across time zones to know the server time.
 

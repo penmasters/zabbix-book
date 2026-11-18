@@ -132,9 +132,9 @@ Add the following code in the script box of the item.
 
     ```
 
-![ch04.66-script-example1.png](ch04.66-script-example1.png){ align=center }
+![Script item configuration](ch04.66-script-example1.png){ align=center }
 
-_4.66 ch04.66-script-example1.png_
+_4.66 Script item configuration_
 
 ### Example trigger
 
@@ -203,9 +203,9 @@ Add the following code in the script box.
 
     ```
 
-![ch04.67-script-example2.png](ch04.67-script-example2.png){ align=center }
+![Weather script item configuration](ch04.67-script-example2.png){ align=center }
 
-_4.67 ch04.67-script-example2.png_
+_4.67 Weather script item configuration_
 
 Next create a few dependent items that use this script as the master item.
 
@@ -237,9 +237,9 @@ Next create a few dependent items that use this script as the master item.
 | **Type of information:** | Unsigned                 |
 | Preprocessing            | JSONPath: -> `$.is_day`  |
 
-![ch04.68-script-example2.png](ch04.68-script-example2.png){ align=center }
+![Weather dependent items](ch04.68-script-example2.png){ align=center }
 
-_4.68 ch04.68-script-example2.png_
+_4.68 Weather dependent items_
 
 ---
 

@@ -712,7 +712,7 @@ Agora executaremos o arquivo SQL para preencher o banco de dados. Abra um `psql`
 
 ???+ warning "Certifique-se de que a search_path correta está configurada"
 
-    Certifique-se de ter seguido os passos anteriores conforme descrito em [Criando o banco de dados do Zabbix com PostgreSQL](postgresql.md#criando-a-instância-do-banco-de-dados-zabbix)
+    Certifique-se de ter seguido os passos anteriores conforme descrito em [Criando o banco de dados do Zabbix com PostgreSQL](postgresql.md#criando-a-instancia-do-banco-de-dados-zabbix)
     cuidadosamente para garantir que você tenha definido a `search_path` correta.
 
     Se você não definiu a `search_path` padrão para o usuário `zabbix-srv`,

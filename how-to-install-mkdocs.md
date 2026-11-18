@@ -1,6 +1,7 @@
 # How to install MkDocs on OSX
 
-This explains how to setup MkDocs on your Mac so that you can pull git on your pc and run the webserver local
+This explains how to set up MkDocs on your Mac so that you can pull changes
+from Git and run the web server locally.
 
 ## make sure brew is installed
 
@@ -18,7 +19,7 @@ brew install pango
 ## Install pip3
 
 ```
-pip3 install --upgrade pip3
+python3 -m pip install --upgrade pip
 ```
 
 ## Install MkDocs and extensions
@@ -40,7 +41,7 @@ All commands must be executed from the root of the repository.
 | `make serve` | Start a local development server with live reload. |
 | `make build` | Build the complete versioned documentation website. |
 | `make validate` | Validate the generated website and version selector. |
-| `make preview` | Build and serve the complete website locally. |
+| `make preview` | Serve the previously built website locally. |
 
 ### Local development
 
@@ -64,8 +65,8 @@ python3 tools/validate_versioned_site.py \
 python3 -m http.server --directory .build/site 8000
 ```
 
-Open `http://localhost:8000/` and verify all three selector entries. This local
-command uses the current checkout for every metadata entry; CI reads the same
+Open `http://localhost:8000/` and verify all enabled selector entries. This local
+command uses the current checkout for every enabled metadata entry; CI reads the same
 file and builds the real branches.
 
 ## Some guidelines

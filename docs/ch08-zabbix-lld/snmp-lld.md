@@ -26,7 +26,7 @@ focus on in this chapter.
 
     This chapter assumes you already went through `Custom LLD` and `Dependent LLD`
     earlier in this chapter. If dependent items and the `Discard unchanged with
-    heartbeat` preprocessing step are new to you, read those topics first, we will
+    heartbeat` preprocessing step are new to you, read those topics first. We will
     build directly on top of that knowledge here.
 
 ## Why the classic approach doesn't scale
@@ -221,7 +221,7 @@ session.
     ```
 
 This is not JSON yet, and that is fine. Both `SNMP walk to JSON` and `SNMP
-walk value` read this raw walk result directly, we never have to convert it
+walk value` read this raw walk result directly. We never have to convert it
 ourselves.
 
 ## Creating the discovery rule

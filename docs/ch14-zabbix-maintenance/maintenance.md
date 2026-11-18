@@ -324,8 +324,8 @@ to host group ID `4`.
 ???+ note
 
     You must replace `<ZABBIX_SERVER_IP_OR_DNS>` with your server's address and
-    `"YOUR API TOKEN"` with an active token from a successful `user.login` API
-    call. The **Host Group ID** (e.g., `"4"`) must be known beforehand. This ID
+    `"YOUR API TOKEN"` with an API token created for your API user.
+    The **Host Group ID** (e.g., `"4"`) must be known beforehand. This ID
     can be found in the URL when going to the host group in the Zabbix menu.
 
 !!! example "Example"

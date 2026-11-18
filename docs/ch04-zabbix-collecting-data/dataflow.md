@@ -129,7 +129,7 @@ the action conditions and only when the conditions match will the operations be 
 The operation can then be something like sending a message to Microsoft Teams or
 Telegram. But an operation could also be executing the reboot command on this host.
 
-As you can imagine, the conditions will be very important to make sure that operation
+As you can imagine, the conditions will be very important to make sure that operations
 on that action are only executed when we specifically want them to be. We do not want to
 for example reboot a host without the right problem being first detected.
 

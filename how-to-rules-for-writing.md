@@ -15,13 +15,13 @@ rewrite or move `v8.0-1`, `v8.0-1-<locale>.1`, or any later publication tag.
 
 ## What data formats do we accept ?
 
-- We prefer you clone the project and deliver us your text in markdown.
-- However if you are not familiar with MkDocs and / or markdown you can deliver us a document in .doc(x)
+- We prefer you clone the project and deliver us your text in Markdown.
+- However if you are not familiar with MkDocs and / or Markdown you can deliver us a document in .doc(x)
   or .pages with all needed text and screenshots we will convert it to .md for you
 
 ## Meta description
 
-Just above the header add a short description that webcrawlers can use.
+Just above the header add a short description that web crawlers can use.
 
 ```` markdown
     ```
@@ -159,15 +159,15 @@ chapter.
 
 - Add a list with questions so that the reader can reflect on the topic.
 
-## Useful URL's
+## Useful URLs
 
 - Add a list with useful URLs to point the reader to more info about this topic.
 
 ## Links
 
-If you like to add an URL always put the URi between [] followed by the same URi
+If you like to add a URL always put the URI between [] followed by the same URI
 again between ().
-This will make it easy to click the links online but also later to see the URi in
+This will make it easy to click the links online but also later to see the URI in
 the book.
 
 **Example:**

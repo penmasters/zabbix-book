@@ -289,7 +289,7 @@ session internally.
 - Navigation to the starting URL (`browser.navigate(url)`).
 - Execution of the defined interactions.
 - Data collection via `browser.collectPerfEntries()` at crucial points.
-- Returning the results as a JSON string via `JSON.stringify(browser.getResult())`).
+- Returning the results as a JSON string via `JSON.stringify(browser.getResult())`.
 
 ### Running Browsers in Headless Mode
 

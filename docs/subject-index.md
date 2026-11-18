@@ -14,7 +14,7 @@ print edition, locators are rendered as page numbers.
      python3 tools/build_subject_index.py instead. -->
 
 <nav class="subject-index-letters" aria-label="Subject index letters" markdown>
-[A](#index-letter-a) · [B](#index-letter-b) · [C](#index-letter-c) · [D](#index-letter-d) · [E](#index-letter-e) · [F](#index-letter-f) · [G](#index-letter-g) · [H](#index-letter-h) · [I](#index-letter-i) · [J](#index-letter-j) · [K](#index-letter-k) · [L](#index-letter-l) · [M](#index-letter-m) · [N](#index-letter-n) · [O](#index-letter-o) · [P](#index-letter-p) · [R](#index-letter-r) · [S](#index-letter-s) · [T](#index-letter-t) · [U](#index-letter-u) · [V](#index-letter-v) · [W](#index-letter-w) · [Z](#index-letter-z)
+[A](#index-letter-a) · [B](#index-letter-b) · [C](#index-letter-c) · [D](#index-letter-d) · [E](#index-letter-e) · [F](#index-letter-f) · [G](#index-letter-g) · [H](#index-letter-h) · [I](#index-letter-i) · [J](#index-letter-j) · [K](#index-letter-k) · [L](#index-letter-l) · [M](#index-letter-m) · [N](#index-letter-n) · [O](#index-letter-o) · [P](#index-letter-p) · [Q](#index-letter-q) · [R](#index-letter-r) · [S](#index-letter-s) · [T](#index-letter-t) · [U](#index-letter-u) · [V](#index-letter-v) · [W](#index-letter-w) · [Z](#index-letter-z)
 </nav>
 
 <div class="subject-index" markdown>
@@ -33,6 +33,8 @@ print edition, locators are rendered as page numbers.
     - *See* [LDAP](#index-ldap)
 - <span id="index-agent-encryption"></span>**agent encryption**
     - *See* [Zabbix agent, encryption](#index-zabbix-agent-encryption)
+- <span id="index-aggregate-functions"></span>**aggregate functions**
+    - *See* [calculated items, aggregation](#index-calculated-items-aggregation)
 - <span id="index-alert-scripts"></span>**alert scripts**
     - [creating custom scripts](ch07-zabbix-alerts/scripts.md){ .index-target }
     - *See also* [alerting](#index-alerting), [media types](#index-media-types)
@@ -58,7 +60,7 @@ print edition, locators are rendered as page numbers.
 - <span id="index-audit-log"></span>**audit log**
     - *See* [reports, audit log](#index-reports-audit-log)
 - <span id="index-automated-pdf-reports"></span>**automated PDF reports**
-    - [creating](ch11-zabbix-visualisation/automated-pdf-reports.md){ .index-target }[](ch11-zabbix-visualisation/automated-pdf-reports.md#conclusion){ .index-range-end }
+    - [configuring PDF report generation](ch11-zabbix-visualisation/automated-pdf-reports.md){ .index-target }[](ch11-zabbix-visualisation/automated-pdf-reports.md#conclusion){ .index-range-end }
     - *See also* [reports](#index-reports), [Zabbix web service](#index-zabbix-web-service)
 - <span id="index-availability-reports"></span>**availability reports**
     - *See* [reports, availability](#index-reports-availability)
@@ -93,6 +95,8 @@ print edition, locators are rendered as page numbers.
     - <span id="index-certificates-let-s-encrypt"></span>[securing the frontend with Let's Encrypt](ch13-advanced-security/securing-frontend.md#securing-the-frontend-with-lets-encrypt-on-nginx){ .index-target }
     - <span id="index-certificates-self-signed-certificates"></span>[securing the frontend with a private CA](ch13-advanced-security/securing-frontend.md#securing-the-frontend-with-self-signed-certificates){ .index-target }
     - *See also* [TLS](#index-tls)
+- <span id="index-chrony"></span>**Chrony**
+    - *See* [time synchronisation](#index-time-synchronisation)
 - <span id="index-clickhouse"></span>**ClickHouse**
     - [storing Zabbix data](ch13-advanced-security/storing-data-in-clickhousedb.md){ .index-target }
     - <span id="index-clickhouse-apm-telemetry"></span>[storing APM telemetry](ch04-zabbix-collecting-data/telemetry.md#how-apm-works-in-zabbix){ .index-target }
@@ -100,7 +104,9 @@ print edition, locators are rendered as page numbers.
     - <span id="index-clickhouse-retention"></span>[configuring retention and partitioning](ch13-advanced-security/storing-data-in-clickhousedb.md#configuring-retention-and-partitioning){ .index-target }
     - <span id="index-clickhouse-troubleshooting"></span>[troubleshooting history storage](ch13-advanced-security/storing-data-in-clickhousedb.md#troubleshooting){ .index-target }
 - <span id="index-complex-event-processing"></span>**complex event processing**
-    - [configuring CEP rules](ch07-zabbix-alerts/cep.md){ .index-target }[](ch07-zabbix-alerts/cep.md#conclusion){ .index-range-end }
+    - [configuring CEP rules](ch07-zabbix-alerts/cep.md){ .index-target }
+    - <span id="index-complex-event-processing-cause-and-symptoms"></span>[grouping causes and symptoms](ch07-zabbix-alerts/cep.md#cause-and-symptoms-grouping){ .index-target }
+    - <span id="index-complex-event-processing-sliding-windows"></span>[processing sliding time windows](ch07-zabbix-alerts/cep.md#sliding-time-windows){ .index-target }
     - *See also* [alerting](#index-alerting), [triggers](#index-triggers)
 - <span id="index-containers"></span>**containers**
     - <span id="index-containers-podman-setup"></span>[preparing rootless Podman](ch00-getting-started/preparation.md#preparing-the-system-for-running-containers-using-podman){ .index-target }
@@ -120,7 +126,7 @@ print edition, locators are rendered as page numbers.
     - <span id="index-dashboards-widgets"></span>[adding and configuring widgets](ch11-zabbix-visualisation/dashboards.md#adding-and-configuring-widgets){ .index-target }
     - *See also* [graphs](#index-graphs), [maps](#index-maps)
 - <span id="index-data-collection"></span>**data collection**
-    - [understanding the data flow](ch04-zabbix-collecting-data/dataflow.md){ .index-target }[](ch04-zabbix-collecting-data/dataflow.md#conclusion){ .index-range-end }
+    - [understanding the data flow](ch04-zabbix-collecting-data/dataflow.md){ .index-target }
     - *See also* [items](#index-items), [preprocessing](#index-preprocessing)
 - <span id="index-database"></span>**database**
     - <span id="index-database-choosing"></span>[choosing a database](ch01-zabbix-components/database.md){ .index-target }[](ch01-zabbix-components/database.md#conclusion){ .index-range-end }
@@ -128,6 +134,8 @@ print edition, locators are rendered as page numbers.
     - <span id="index-database-monitoring-with-agent-2"></span>[monitoring with Zabbix agent 2](ch04-zabbix-collecting-data/database-agent.md){ .index-target }[](ch04-zabbix-collecting-data/database-agent.md#conclusion){ .index-range-end }
     - <span id="index-database-odbc-monitoring"></span>[monitoring with ODBC](ch04-zabbix-collecting-data/database-odbc.md){ .index-target }
     - <span id="index-database-postgresql"></span>[installing PostgreSQL](ch01-zabbix-components/postgresql.md){ .index-target }[](ch01-zabbix-components/postgresql.md#conclusion){ .index-range-end }
+- <span id="index-database-partitioning"></span>**database partitioning**
+    - *See also* [MariaDB, partitioning](#index-mariadb-partitioning), [TimescaleDB](#index-timescaledb), [ClickHouse, retention](#index-clickhouse-retention)
 - <span id="index-denykey"></span>**DenyKey**
     - *See* [Zabbix agent, item key restrictions](#index-zabbix-agent-item-key-restrictions)
 - <span id="index-dependent-items"></span>**dependent items**
@@ -145,6 +153,8 @@ print edition, locators are rendered as page numbers.
 
 - <span id="index-email-notifications"></span>**email notifications**
     - *See* [media types, email](#index-media-types-email)
+- <span id="index-escalations"></span>**escalations**
+    - [configuring escalation steps and operations](ch07-zabbix-alerts/actions.md#operations-and-escalations){ .index-target }
 - <span id="index-event-log-monitoring"></span>**event log monitoring**
     - *See* [Windows monitoring, event logs](#index-windows-monitoring-event-logs)
 - <span id="index-external-authentication"></span>**external authentication**
@@ -178,12 +188,15 @@ print edition, locators are rendered as page numbers.
     - *See also* [proxy groups](#index-proxy-groups)
 - <span id="index-host-groups"></span>**host groups**
     - [creating and managing](ch02-zabbix-installation/host-groups.md){ .index-target }[](ch02-zabbix-installation/host-groups.md#conclusion){ .index-range-end }
+    - <span id="index-host-groups-nested-groups"></span>[using nested groups and inherited permissions](ch02-zabbix-installation/host-groups.md#nested-host-groups){ .index-target }
 - <span id="index-host-interfaces"></span>**host interfaces**
     - [configuring](ch04-zabbix-collecting-data/host-interfaces.md){ .index-target }[](ch04-zabbix-collecting-data/host-interfaces.md#conclusion){ .index-range-end }
     - *See also* [hosts](#index-hosts)
 - <span id="index-hosts"></span>**hosts**
     - [creating and configuring](ch04-zabbix-collecting-data/hosts.md){ .index-target }[](ch04-zabbix-collecting-data/hosts.md#conclusion){ .index-range-end }
     - *See also* [host groups](#index-host-groups), [host interfaces](#index-host-interfaces)
+- <span id="index-housekeeping"></span>**housekeeping**
+    - [managing retention and deleted-object cleanup](ch14-zabbix-maintenance/internal-health.md#housekeeper-data-cleanup){ .index-target }
 - <span id="index-html-visualisation"></span>**HTML visualisation**
     - [displaying HTML in the Item history widget](ch16-zabbix-real-world-examples/html-for-the-win.md){ .index-target }
     - [building custom tables](ch16-zabbix-real-world-examples/html-for-the-win.md#tables){ .index-target }
@@ -195,7 +208,7 @@ print edition, locators are rendered as page numbers.
 ## I {#index-letter-i}
 
 - <span id="index-icmp-checks"></span>**ICMP checks**
-    - [configuring simple checks](ch04-zabbix-collecting-data/simple-checks.md){ .index-target }[](ch04-zabbix-collecting-data/simple-checks.md#conclusion){ .index-range-end }
+    - [configuring ICMP checks](ch04-zabbix-collecting-data/simple-checks.md#icmp-ping){ .index-target }
 - <span id="index-internal-health"></span>**internal health**
     - [monitoring Zabbix health](ch14-zabbix-maintenance/internal-health.md){ .index-target }[](ch14-zabbix-maintenance/internal-health.md#conclusion){ .index-range-end }
     - <span id="index-internal-health-cache-performance"></span>[monitoring cache and database performance](ch14-zabbix-maintenance/internal-health.md#cache-and-database-performance){ .index-target }
@@ -203,7 +216,8 @@ print edition, locators are rendered as page numbers.
     - <span id="index-internal-health-queues"></span>[diagnosing delayed checks](ch14-zabbix-maintenance/internal-health.md#queue-metrics){ .index-target }
 - <span id="index-ipmi"></span>**IPMI**
     - [understanding IPMI](ch04-zabbix-collecting-data/ipmi.md#understanding-ipmi){ .index-target }
-    - [configuring native IPMI monitoring](ch04-zabbix-collecting-data/ipmi.md#native-ipmi-monitoring-in-zabbix){ .index-target }
+    - [configuring an IPMI item](ch04-zabbix-collecting-data/ipmi.md#configuring-an-ipmi-item-in-zabbix){ .index-target }
+    - [configuring IPMI pollers](ch04-zabbix-collecting-data/ipmi.md#configuring-ipmi-pollers){ .index-target }
     - *See also* [Redfish](#index-redfish)
 - <span id="index-items"></span>**items**
     - <span id="index-items-browser"></span>[browser items](ch04-zabbix-collecting-data/browser.md){ .index-target }[](ch04-zabbix-collecting-data/browser.md#conclusion){ .index-range-end }
@@ -213,9 +227,12 @@ print edition, locators are rendered as page numbers.
     - <span id="index-items-script"></span>[script items](ch04-zabbix-collecting-data/script.md){ .index-target }[](ch04-zabbix-collecting-data/script.md#conclusion){ .index-range-end }
     - <span id="index-items-telemetry-query"></span>[querying telemetry as item values](ch04-zabbix-collecting-data/telemetry.md#telemetry-query-items-in-brief){ .index-target }
     - <span id="index-items-trapper"></span>[trapper items](ch04-zabbix-collecting-data/zabbix-trapper.md){ .index-target }[](ch04-zabbix-collecting-data/zabbix-trapper.md#conclusion){ .index-range-end }
+    - *See also* [Zabbix agent](#index-zabbix-agent), [database](#index-database), [external checks](#index-external-checks), [IPMI](#index-ipmi), [JMX](#index-jmx), [simple checks](#index-simple-checks), [SNMP](#index-snmp), [SSH checks](#index-ssh-checks), [Telnet checks](#index-telnet-checks)
 
 ## J {#index-letter-j}
 
+- <span id="index-java-gateway"></span>**Java Gateway**
+    - [configuring for JMX monitoring](ch04-zabbix-collecting-data/jmx.md#configuring-zabbix-and-the-java-gateway){ .index-target }
 - <span id="index-java-management-extensions"></span>**Java Management Extensions**
     - *See* [JMX](#index-jmx)
 - <span id="index-jmx"></span>**JMX**
@@ -252,6 +269,7 @@ print edition, locators are rendered as page numbers.
     - <span id="index-low-level-discovery-json-payload-design"></span>[using LLD macros as lookup keys](ch16-zabbix-real-world-examples/filter-lld-without-jsonpath.md#json-payload-design){ .index-target }
     - <span id="index-low-level-discovery-lifecycle"></span>[disabling and deleting lost resources](ch08-zabbix-lld/chapter.md#lifecycle-of-discovered-entities){ .index-target }
     - <span id="index-low-level-discovery-nested-discovery"></span>[configuring nested discovery prototypes](ch08-zabbix-lld/nested-lld.md){ .index-target }
+    - [using nested LLD on host prototypes](ch08-zabbix-lld/nested-lld.md#nested-lld-on-discovered-hosts-host-prototypes){ .index-target }
     - <span id="index-low-level-discovery-overrides"></span>[overriding discovered objects](ch08-zabbix-lld/chapter.md#overrides){ .index-target }
     - <span id="index-low-level-discovery-snmp"></span>[SNMP LLD](ch08-zabbix-lld/snmp-lld.md){ .index-target }[](ch08-zabbix-lld/snmp-lld.md#conclusion){ .index-range-end }
     - *See also* [discovery](#index-discovery)
@@ -260,9 +278,11 @@ print edition, locators are rendered as page numbers.
 
 - <span id="index-maintenance"></span>**maintenance**
     - [creating and managing maintenance periods](ch14-zabbix-maintenance/maintenance.md){ .index-target }[](ch14-zabbix-maintenance/maintenance.md#conclusion){ .index-range-end }
+    - <span id="index-maintenance-ad-hoc-maintenance"></span>[creating ad-hoc maintenance](ch14-zabbix-maintenance/maintenance.md#creating-ad-hoc-maintenance){ .index-target }
     - <span id="index-maintenance-api-automation"></span>[creating maintenance through the API](ch14-zabbix-maintenance/maintenance.md#practical-example-creating-maintenance-via-the-api){ .index-target }
     - <span id="index-maintenance-problem-tag-filtering"></span>[filtering maintenance by problem tags](ch14-zabbix-maintenance/maintenance.md#5-problem-tag-filtering-advanced-suppression){ .index-target }
     - <span id="index-maintenance-scheduling-and-time-zones"></span>[understanding maintenance time zones](ch14-zabbix-maintenance/maintenance.md#time-zones-and-maintenance-schedule-logic){ .index-target }
+    - <span id="index-maintenance-trigger-and-event-scope"></span>[limiting maintenance to triggers and events](ch14-zabbix-maintenance/maintenance.md#6-trigger-and-event-based-maintenance-new-in-zabbix-80){ .index-target }
 - <span id="index-maps"></span>**maps**
     - [creating and configuring](ch11-zabbix-visualisation/maps.md){ .index-target }[](ch11-zabbix-visualisation/maps.md#conclusion){ .index-range-end }
     - *See also* [dashboards](#index-dashboards), [visualisation](#index-visualisation)
@@ -287,6 +307,8 @@ print edition, locators are rendered as page numbers.
     - *See* [SNMP, MIB files](#index-snmp-mib-files)
 - <span id="index-microsoft-entra-id"></span>**Microsoft Entra ID**
     - *See* [SAML, Microsoft Entra ID](#index-saml-microsoft-entra-id)
+- <span id="index-microsoft-sql-server"></span>**Microsoft SQL Server**
+    - [monitoring with agent 2 and custom queries](ch04-zabbix-collecting-data/database-agent.md#setting-up-microsoft-sql-monitoring){ .index-target }
 - <span id="index-model-context-protocol"></span>**Model Context Protocol**
     - *See* [Zabbix MCP server](#index-zabbix-mcp-server)
 - <span id="index-multi-factor-authentication"></span>**multi-factor authentication**
@@ -314,6 +336,8 @@ print edition, locators are rendered as page numbers.
     - *See also* [database](#index-database)
 - <span id="index-oids"></span>**OIDs**
     - *See* [SNMP, object identifiers](#index-snmp-object-identifiers)
+- <span id="index-openbao"></span>**OpenBao**
+    - *See* [Vault](#index-vault)
 - <span id="index-opentelemetry"></span>**OpenTelemetry**
     - [understanding the APM data paths](ch04-zabbix-collecting-data/telemetry.md#how-apm-works-in-zabbix){ .index-target }
     - <span id="index-opentelemetry-collector-pipelines"></span>[using an OpenTelemetry Collector](ch04-zabbix-collecting-data/telemetry.md#alternative-opentelemetry-collector){ .index-target }
@@ -321,6 +345,7 @@ print edition, locators are rendered as page numbers.
     - <span id="index-opentelemetry-distributed-deployments"></span>[planning distributed telemetry storage](ch04-zabbix-collecting-data/telemetry.md#architecture-considerations-for-distributed-environments){ .index-target }
     - <span id="index-opentelemetry-latency-alerting"></span>[generating traces and alerting on span latency](ch04-zabbix-collecting-data/telemetry.md#lab-generate-traces-and-alert-on-span-latency){ .index-target }
     - <span id="index-opentelemetry-otlp-ingestion"></span>[receiving OTLP through a Zabbix proxy](ch04-zabbix-collecting-data/telemetry.md#1-proxy-configuration-receiving-otlp-data){ .index-target }
+    - <span id="index-opentelemetry-otlp-transports"></span>[understanding OTLP/gRPC and OTLP/HTTP](ch04-zabbix-collecting-data/telemetry.md#understanding-otlp-and-grpc){ .index-target }
     - *See also* [ClickHouse](#index-clickhouse), [Telemetry query items](#index-telemetry-query-items)
 - <span id="index-otlp"></span>**OTLP**
     - *See* [OpenTelemetry, OTLP ingestion](#index-opentelemetry-otlp-ingestion)
@@ -335,6 +360,8 @@ print edition, locators are rendered as page numbers.
     - [understanding user roles and groups](ch02-zabbix-installation/user-roles.md#summary-role-vs-group){ .index-target }
     - <span id="index-permissions-api-access"></span>[distinguishing API methods from object permissions](ch12-zabbix-api/API basics.md#api-methods-versus-object-permissions){ .index-target }
     - <span id="index-permissions-host-access"></span>[resolving user-group permission precedence](ch02-zabbix-installation/user-groups.md#the-rule-of-precedence-deny-always-wins){ .index-target }
+    - <span id="index-permissions-problem-visibility"></span>[restricting problem visibility with tags](ch02-zabbix-installation/user-groups.md#problem-tag-filters-granular-alert-access){ .index-target }
+    - <span id="index-permissions-proxy-access"></span>[controlling proxy access](ch02-zabbix-installation/user-groups.md#proxy-access-list){ .index-target }
     - <span id="index-permissions-template-access"></span>[controlling template access](ch06-zabbix-templates/templates.md#permissions-and-access-control){ .index-target }
     - *See also* [user groups](#index-user-groups), [user roles](#index-user-roles)
 - <span id="index-podman"></span>**Podman**
@@ -347,6 +374,7 @@ print edition, locators are rendered as page numbers.
     - *See* [Zabbix agent, pre-shared keys](#index-zabbix-agent-pre-shared-keys)
 - <span id="index-preprocessing"></span>**preprocessing**
     - [understanding preprocessing](ch04-zabbix-collecting-data/preprocessing.md#preprocessing-functionality){ .index-target }
+    - <span id="index-preprocessing-change-per-second"></span>[calculating simple change and change per second](ch04-zabbix-collecting-data/preprocessing.md#simple-change-and-change-per-second){ .index-target }
     - <span id="index-preprocessing-discarding-unchanged-values"></span>[discarding unchanged values with a heartbeat](ch04-zabbix-collecting-data/preprocessing.md#discard-unchanged-discard-unchanged-with-heartbeat){ .index-target }
     - <span id="index-preprocessing-javascript"></span>[transforming values with JavaScript](ch04-zabbix-collecting-data/preprocessing.md#javascript){ .index-target }
     - <span id="index-preprocessing-jsonpath"></span>[extracting JSON values](ch04-zabbix-collecting-data/preprocessing.md#jsonpath-and-additional-steps){ .index-target }
@@ -354,13 +382,27 @@ print edition, locators are rendered as page numbers.
     - <span id="index-preprocessing-regular-expressions"></span>[extracting values with regular expressions](ch04-zabbix-collecting-data/preprocessing.md#regular-expression){ .index-target }
     - <span id="index-preprocessing-snmp-walk-conversion"></span>[converting an SNMP walk to JSON](ch04-zabbix-collecting-data/preprocessing.md#snmp-walk-to-json){ .index-target }
     - *See also* [dependent items](#index-dependent-items), [items](#index-items)
+- <span id="index-problem-suppression"></span>**problem suppression**
+    - [understanding maintenance and manual suppression](ch07-zabbix-alerts/actions.md#maintenance-and-suppression){ .index-target }
+    - *See also* [maintenance](#index-maintenance)
 - <span id="index-prometheus"></span>**Prometheus**
     - [extracting Prometheus metrics during preprocessing](ch04-zabbix-collecting-data/preprocessing.md#prometheus-pattern){ .index-target }
 - <span id="index-proxy-groups"></span>**proxy groups**
     - [configuring and managing](ch03-zabbix-proxies/proxy-groups.md){ .index-target }[](ch03-zabbix-proxies/proxy-groups.md#conclusion){ .index-range-end }
+    - <span id="index-proxy-groups-agent-configuration"></span>[configuring agents for proxy groups](ch03-zabbix-proxies/proxy-groups.md#agent-configuration-rules){ .index-target }
+    - <span id="index-proxy-groups-failover-and-load-balancing"></span>[understanding failover and load balancing](ch03-zabbix-proxies/proxy-groups.md#overview-and-core-concepts){ .index-target }
     - *See also* [high availability](#index-high-availability), [Zabbix proxy](#index-zabbix-proxy)
 - <span id="index-psk"></span>**PSK**
     - *See* [Zabbix agent, pre-shared keys](#index-zabbix-agent-pre-shared-keys)
+- <span id="index-push-notifications"></span>**push notifications**
+    - *See* [media types, push notifications](#index-media-types-push-notifications)
+
+## Q {#index-letter-q}
+
+- <span id="index-quadlet"></span>**Quadlet**
+    - *See* [containers, proxy deployment](#index-containers-proxy-deployment)
+- <span id="index-queues"></span>**queues**
+    - *See* [internal health, queues](#index-internal-health-queues)
 
 ## R {#index-letter-r}
 
@@ -371,6 +413,9 @@ print edition, locators are rendered as page numbers.
     - *See also* [IPMI](#index-ipmi), [HTTP agent items](#index-http-agent-items)
 - <span id="index-regular-expressions"></span>**regular expressions**
     - *See* [preprocessing, regular expressions](#index-preprocessing-regular-expressions)
+- <span id="index-remote-commands"></span>**remote commands**
+    - [running global scripts from actions](ch07-zabbix-alerts/actions.md#remote-commands-via-global-scripts){ .index-target }
+    - *See also* [frontend scripts](#index-frontend-scripts)
 - <span id="index-reports"></span>**reports**
     - <span id="index-reports-action-log"></span>[troubleshooting action delivery](ch11-zabbix-visualisation/built-in-reports.md#action-log){ .index-target }
     - <span id="index-reports-audit-log"></span>[reviewing configuration changes](ch11-zabbix-visualisation/built-in-reports.md#audit-log){ .index-target }
@@ -386,6 +431,8 @@ print edition, locators are rendered as page numbers.
     - <span id="index-saml-google-workspace"></span>[configuring Google Workspace](ch02-zabbix-installation/saml.md#google){ .index-target }
     - <span id="index-saml-microsoft-entra-id"></span>[configuring Microsoft Entra ID](ch02-zabbix-installation/saml.md#microsoft-entra-id-azure-ad){ .index-target }
     - *See also* [external authentication](#index-external-authentication)
+- <span id="index-scheduled-reports"></span>**scheduled reports**
+    - *See* [automated PDF reports](#index-automated-pdf-reports)
 - <span id="index-script-items"></span>**script items**
     - [creating and using](ch04-zabbix-collecting-data/script.md){ .index-target }[](ch04-zabbix-collecting-data/script.md#conclusion){ .index-range-end }
 - <span id="index-secret-macros"></span>**secret macros**
@@ -404,6 +451,8 @@ print edition, locators are rendered as page numbers.
     - <span id="index-snmp-polling"></span>[polling](ch04-zabbix-collecting-data/snmp-polling.md){ .index-target }[](ch04-zabbix-collecting-data/snmp-polling.md#conclusion){ .index-range-end }
     - <span id="index-snmp-snmpv3-security"></span>[choosing SNMPv3 security levels](ch04-zabbix-collecting-data/snmp-polling.md#snmpv3-security-levels){ .index-target }
     - <span id="index-snmp-trapping"></span>[trapping](ch04-zabbix-collecting-data/snmp-trapping.md){ .index-target }[](ch04-zabbix-collecting-data/snmp-trapping.md#conclusion){ .index-range-end }
+    - [testing and debugging trap reception](ch04-zabbix-collecting-data/snmp-trapping.md#testing-and-debugging){ .index-target }
+    - [creating a fallback trap item](ch04-zabbix-collecting-data/snmp-trapping.md#creating-the-snmp-fallback-item){ .index-target }
 - <span id="index-snmpv3"></span>**SNMPv3**
     - *See* [SNMP, SNMPv3 security](#index-snmp-snmpv3-security)
 - <span id="index-ssh-checks"></span>**SSH checks**
@@ -417,6 +466,9 @@ print edition, locators are rendered as page numbers.
 
 - <span id="index-tags"></span>**tags**
     - [using tags and inheritance](ch06-zabbix-templates/templates.md#tags){ .index-target }
+    - [filtering action conditions](ch07-zabbix-alerts/actions.md#condition-types-for-trigger-actions){ .index-target }
+    - [restricting problem visibility](ch02-zabbix-installation/user-groups.md#problem-tag-filters-granular-alert-access){ .index-target }
+    - *See also* [maintenance, problem tag filtering](#index-maintenance-problem-tag-filtering)
 - <span id="index-telemetry-query-items"></span>**Telemetry query items**
     - [querying telemetry as regular item values](ch04-zabbix-collecting-data/telemetry.md#telemetry-query-items-in-brief){ .index-target }
     - [understanding timing and aggregation](ch04-zabbix-collecting-data/telemetry.md#understanding-query-timing-and-aggregation){ .index-target }
@@ -428,10 +480,12 @@ print edition, locators are rendered as page numbers.
     - *See also* [templates](#index-templates), [permissions](#index-permissions)
 - <span id="index-templates"></span>**templates**
     - [creating and using](ch06-zabbix-templates/templates.md){ .index-target }[](ch06-zabbix-templates/templates.md#conclusion){ .index-range-end }
+    - <span id="index-templates-dashboards"></span>[using template dashboards](ch06-zabbix-templates/templates.md#template-dashboards){ .index-target }
     - <span id="index-templates-groups-and-permissions"></span>[configuring template groups](ch06-zabbix-templates/templates.md#template-groups){ .index-target }
     - [controlling template access](ch06-zabbix-templates/templates.md#permissions-and-access-control){ .index-target }
     - <span id="index-templates-importing-and-exporting"></span>[importing and exporting templates](ch06-zabbix-templates/templates.md#importing-and-exporting-templates){ .index-target }
     - <span id="index-templates-unlinking-and-clearing"></span>[choosing unlink or unlink and clear](ch06-zabbix-templates/templates.md#unlink-vs-unlink-and-clear){ .index-target }
+    - <span id="index-templates-uuid-matching"></span>[matching imports by UUID](ch06-zabbix-templates/templates.md#uuid-based-matching){ .index-target }
     - <span id="index-templates-value-maps"></span>[configuring value maps](ch06-zabbix-templates/templates.md#value-maps){ .index-target }
     - *See also* [low-level discovery](#index-low-level-discovery), [user macros](#index-user-macros)
 - <span id="index-time-synchronisation"></span>**time synchronisation**
@@ -445,22 +499,25 @@ print edition, locators are rendered as page numbers.
     - <span id="index-tls-mcp-connections"></span>[enabling TLS on the MCP server](ch09-zabbix-extending/mcp-server.md#securing-the-connection-with-tls){ .index-target }
     - <span id="index-tls-vault-connections"></span>[verifying Vault TLS certificates](ch13-advanced-security/using-vault.md#tls-configuration){ .index-target }
     - *See also* [certificates](#index-certificates)
+- <span id="index-traces"></span>**traces**
+    - *See* [OpenTelemetry](#index-opentelemetry)
 - <span id="index-trapper-items"></span>**trapper items**
     - [creating and using](ch04-zabbix-collecting-data/zabbix-trapper.md){ .index-target }[](ch04-zabbix-collecting-data/zabbix-trapper.md#conclusion){ .index-range-end }
 - <span id="index-trigger-dependencies"></span>**trigger dependencies**
     - *See* [triggers, dependencies](#index-triggers-dependencies)
 - <span id="index-triggers"></span>**triggers**
-    - <span id="index-triggers-advanced-expressions"></span>[advanced expressions](ch05-zabbix-triggers/advanced-triggers.md){ .index-target }[](ch05-zabbix-triggers/advanced-triggers.md#conclusion){ .index-range-end }
+    - <span id="index-triggers-advanced-expressions"></span>[advanced expressions](ch05-zabbix-triggers/advanced-triggers.md){ .index-target }
     - <span id="index-triggers-creating"></span>[creating and configuring](ch05-zabbix-triggers/triggers.md){ .index-target }[](ch05-zabbix-triggers/triggers.md#conclusion){ .index-range-end }
     - <span id="index-triggers-dependencies"></span>[configuring trigger dependencies](ch05-zabbix-triggers/advanced-triggers.md#trigger-dependency){ .index-target }
-    - <span id="index-triggers-flapping"></span>[reducing trigger flapping](ch05-zabbix-triggers/advanced-triggers.md#reducing-flapping-even-more){ .index-target }
+    - <span id="index-triggers-flapping"></span>[reducing flapping with recovery expressions](ch05-zabbix-triggers/advanced-triggers.md#recovery-expression){ .index-target }
+    - [reducing time-based trigger flapping](ch05-zabbix-triggers/advanced-triggers.md#reducing-flapping-even-more){ .index-target }
     - <span id="index-triggers-multiple-problem-events"></span>[generating multiple problem events](ch05-zabbix-triggers/advanced-triggers.md#multiple-problem-event-generation){ .index-target }
     - <span id="index-triggers-recovery-expressions"></span>[configuring recovery expressions](ch05-zabbix-triggers/advanced-triggers.md#recovery-expression){ .index-target }
 
 ## U {#index-letter-u}
 
 - <span id="index-upgrades"></span>**upgrades**
-    - [planning and performing](ch14-zabbix-maintenance/upgrades.md){ .index-target }[](ch14-zabbix-maintenance/upgrades.md#conclusion){ .index-range-end }
+    - [planning upgrades and migrations](ch14-zabbix-maintenance/upgrades.md){ .index-target }[](ch14-zabbix-maintenance/upgrades.md#conclusion){ .index-range-end }
     - <span id="index-upgrades-database-migration"></span>[choosing an upgrade or migration strategy](ch14-zabbix-maintenance/upgrades.md#choosing-the-right-approach){ .index-target }
     - <span id="index-upgrades-database-primary-keys"></span>[checking primary keys before upgrading](ch14-zabbix-maintenance/upgrades.md#a-crucial-detour-primary-keys-and-database-health){ .index-target }
     - *See also* [backups](#index-backups)
@@ -509,7 +566,7 @@ print edition, locators are rendered as page numbers.
     - <span id="index-windows-monitoring-autoregistration"></span>[setting Windows host metadata](ch15-windows/windows-zabbix-agent2-config-tips.md#metadata-and-autoregistration){ .index-target }
     - <span id="index-windows-monitoring-disk-health"></span>[monitoring disk health](ch16-zabbix-real-world-examples/disk-health-windows.md){ .index-target }
     - <span id="index-windows-monitoring-event-logs"></span>[monitoring Windows event logs](ch15-windows/windows.md#event-log-monitoring){ .index-target }
-    - <span id="index-windows-monitoring-fleet-deployment"></span>[deploying agents with MSI and PowerShell](ch15-windows/windows-zabbix-agent2-config-tips.md#using-the-msi-installer){ .index-target }
+    - <span id="index-windows-monitoring-fleet-deployment"></span>[configuring and deploying Windows agents](ch15-windows/windows-zabbix-agent2-config-tips.md){ .index-target }
     - <span id="index-windows-monitoring-overview"></span>[monitoring Windows](ch15-windows/windows.md){ .index-target }
     - <span id="index-windows-monitoring-performance-counters"></span>[collecting Windows performance counters](ch15-windows/windows.md#performance-counters){ .index-target }
     - <span id="index-windows-monitoring-registry"></span>[reading the Windows Registry](ch15-windows/windows.md#registryget-as-a-complement-to-wmi){ .index-target }
@@ -552,7 +609,9 @@ print edition, locators are rendered as page numbers.
 - <span id="index-zabbix-proxy"></span>**Zabbix proxy**
     - <span id="index-zabbix-proxy-active-and-passive-modes"></span>[active and passive modes](ch03-zabbix-proxies/active-passive-proxies.md){ .index-target }[](ch03-zabbix-proxies/active-passive-proxies.md#conclusion){ .index-range-end }
     - <span id="index-zabbix-proxy-apm-collector"></span>[receiving OTLP telemetry](ch04-zabbix-collecting-data/telemetry.md#1-proxy-configuration-receiving-otlp-data){ .index-target }
+    - <span id="index-zabbix-proxy-configuration-synchronisation"></span>[understanding configuration updates](ch03-zabbix-proxies/proxy-basics.md#proxy-configuration-updates){ .index-target }
     - <span id="index-zabbix-proxy-containers"></span>[running as containers](ch03-zabbix-proxies/proxies-as-container.md){ .index-target }[](ch03-zabbix-proxies/proxies-as-container.md#conclusion){ .index-range-end }
+    - <span id="index-zabbix-proxy-data-buffering"></span>[buffering data during connection loss](ch03-zabbix-proxies/chapter.md#data-buffering-and-resilience){ .index-target }
     - <span id="index-zabbix-proxy-proxy-groups"></span>[proxy groups](ch03-zabbix-proxies/proxy-groups.md){ .index-target }[](ch03-zabbix-proxies/proxy-groups.md#conclusion){ .index-range-end }
     - <span id="index-zabbix-proxy-requirements"></span>[sizing proxies](ch03-zabbix-proxies/proxy-basics.md#proxy-requirements){ .index-target }
     - <span id="index-zabbix-proxy-runtime-control"></span>[using proxy runtime controls](ch03-zabbix-proxies/proxy-basics.md#proxy-runtime-control-options){ .index-target }

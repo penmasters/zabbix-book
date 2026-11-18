@@ -23,7 +23,7 @@ most accurate.
 
 
 Please before you start take a look at our most updated licence : [https://github.com/penmasters/zabbix-book/blob/main/readme.md](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
-on Github.
+on GitHub.
 
 *The Zabbix Book* is a freely accessible resource designed to help users understand
 and master Zabbix. Contributions are highly encouraged to improve and expand its

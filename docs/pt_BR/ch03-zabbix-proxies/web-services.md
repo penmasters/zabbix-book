@@ -343,7 +343,7 @@ started correctly.
 
     If, in the future, you need to update the Zabbix web service container to a newer
     version, you can do so by pulling the latest image from Docker Hub and then
-    restarting the container. Refer to the [_Running Proxies as containers_](../ch03-zabbix-proxies/proxies-as-container.md#upgrading-our-containers)
+    restarting the container. Refer to the [_Running Proxies as containers_](../ch03-zabbix-proxies/proxies-as-container.md#atualizando-nossos-conteineres)
     chapter where we discuss updating containers in more detail including
     a way to automate the process.
 

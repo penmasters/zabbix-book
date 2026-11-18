@@ -377,7 +377,7 @@ Add a DB server exact as above but change :
 * Save: Click Add.
 
 This should work as long as you have your zabbix agent installed reporting back
-on `127.0.0.1`. This is how it's configured when you first setup the Zabbix
+on `127.0.0.1`. This is how it's configured when you first set up the Zabbix
 server with an agent.
 
 #### Test the Outcome

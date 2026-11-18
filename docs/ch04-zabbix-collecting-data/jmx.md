@@ -343,7 +343,7 @@ You'll need to add three key options:
   point is to match the number you set on the gateway, for
   example, `5`.
 
-After making the changes to both the Zabbix Server and the Zabbix java gateway
+After making the changes to both the Zabbix Server and the Zabbix Java gateway
 configuration files, you need to restart the following services:
 
 - Zabbix Java Gateway

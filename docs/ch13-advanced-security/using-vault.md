@@ -80,7 +80,7 @@ For the complete list of parameters, see the
 
 ---
 
-## Installing and Configuring Vault on Red Hat-based systems
+## Installing and configuring Vault with OpenBao
 
 This section covers a minimal production-ready Vault installation on Red Hat
 Enterprise Linux 8/9/10 (or compatible distributions such as AlmaLinux and Rocky Linux).
@@ -428,7 +428,7 @@ Write both policies to Vault:
 
 ![ch13.10-vault_resolve_secret.png](ch13.10-vault_resolve_secret.png){ align=center }
 
-_13.10 Resolve secret vault macro by_
+_13.10 Resolve secret vault macros by_
 
 ### Create a Token Role with Renewal Period
 

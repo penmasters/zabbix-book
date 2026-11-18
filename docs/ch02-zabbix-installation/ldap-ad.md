@@ -171,7 +171,7 @@ groups and users in Zabbix. In Zabbix menu select `Users` | `User groups`. Make
 sure `Zabbix administrators` group exists (we'll need it later) and create new
 group `Zabbix users` by clicking `Create user group` button. Enter "Zabbix
 users" in `Group name` field, select "LDAP" in `Frontend access` drop-down that
-will make Zabbix to authenticate users belonging to this group against LDAP
+will make Zabbix authenticate users belonging to this group against LDAP
 server and in `LDAP server` drop-down select LDAP server we earlier configured
 "Test LDAP server". Click `Add` button to create this User group:
 
@@ -185,7 +185,7 @@ click `Create user` button. Then enter "user3" in `Username` field. Select
 (once again)` fields does not matter as Zabbix will not try to use this
 password, instead it will go to LDAP server to authenticate this user since
 it's a member of the User group that has authentication method `LDAP`, just
-make sure you enter the same string in these two fields and it satisfied your
+make sure you enter the same string in these two fields and it satisfies your
 password strength policy defined in `Users` | `Authentication`.
 
 ![Add user in Zabbix](ch02.39-ldap-add-user-in-zabbix.png){ align=center }
@@ -201,11 +201,11 @@ _2.40 Add user in Zabbix - permissions_
 Click `Add` button to create the user.
 
 We are ready to test our LDAP server authentication! Click `Sign out` in Zabbix
-menu and login with "user3" as Username and "password" as `Password`, if you
-carefully followed the steps above you should successfully login with User role
+menu and log in with "user3" as Username and "password" as `Password`, if you
+carefully followed the steps above you should successfully log in with User role
 permissions.
 
-Click `Sign out` again and login as Admin again to proceed.
+Click `Sign out` again and log in as Admin again to proceed.
 
 ## Just-in-Time user provisioning
 
@@ -327,7 +327,7 @@ your LDAP data.
 
 Now when you log in with _user1_ or _user2_ username then these users will be
 created by Zabbix and put into _Zabbix administrators_ user group, when you
-login with _user3_ username then this user will be created by Zabbix and put
+log in with _user3_ username then this user will be created by Zabbix and put
 into _Zabbix users_ user group:
 
 ![Test user1](ch02.45-ldap-jit-test-user1.png){ align=center }

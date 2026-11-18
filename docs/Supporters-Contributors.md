@@ -70,8 +70,8 @@ are a valuable part of this project. Check out [https://github.com/penmasters/za
 
 ## Join the Community
 
-We welcome new contributors and supporters! If you'd like to get involved whether
-by contributing content, providing feedback, or supporting this initiative you can
+We welcome new contributors and supporters! If you'd like to get involved, whether
+by contributing content, providing feedback, or supporting this initiative, you can
 find more details on how to participate at [Guidelines](./Guidelines.md).
 
 Thank you for being part of this journey and helping us build a valuable resource
