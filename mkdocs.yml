@@ -14,6 +14,7 @@ docs_dir: !ENV [ZABBIX_BOOK_DOCS_DIR, ".build/docs"]
 # Navigation
 nav:
   - Welcome: index.md
+  - Foreword: foreword.md
   - Guidelines: Guidelines.md
   - Book Tags: tags.md
   - Supporters and contributors: Supporters-Contributors.md
