@@ -80,7 +80,7 @@ For the complete list of parameters, see the
 
 ---
 
-## Installing and configuring Vault and OpenBao
+## Installing and configuring Vault with OpenBao
 
 This section covers a minimal production-ready Vault installation on Red Hat
 Enterprise Linux 8/9/10 (or compatible distributions such as AlmaLinux and Rocky Linux).
