@@ -120,11 +120,9 @@ To create a **calculated item**:
     - History/Trend storage
 5. Save the item
 
-![ch04.104-calculated-item.png](ch04.104-calculated-item.png){ align=center }
+![Calculated item configuration](ch04.104-calculated-item.png){ align=center }
 
-_4.104 ch04.104-calculated-item.png_
-
-_calculated-item_
+_4.104 Calculated item configuration_
 
 ???+ example "Example Formula"
 
@@ -301,11 +299,9 @@ This is far more meaningful for:
 If we now go to the **Latest data** page we can take a look at our item and click on the
 graph button at the right end of the screen.
 
-![ch04.105-calculated-p99.png](ch04.105-calculated-p99.png){ align=center }
+![Calculated p99 graph](ch04.105-calculated-p99.png){ align=center }
 
-_4.105 ch04.105-calculated-p99.png_
-
-_p99 graph_
+_4.105 Calculated p99 graph_
 
 We now have a nice overview of the quality of our network thanks to our
 **calculated item**. Now that we have seen how to create **calculated items**, let's have

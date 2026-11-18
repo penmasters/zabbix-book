@@ -168,7 +168,7 @@ in regards to Zabbix MFA.
     (valid certificate is not required, self-signed certificate will work).
 
 First of all you need to create an account with Duo (it's free to manage up to
-10 users) then login into Duo, you are an admin here. In the menu on the left select
+10 users) then log in to Duo. You are an admin here. In the menu on the left select
 `Applications` and click `Protect an Application` button.
 
 ![MFA DUO applications](ch02.74-mfa_duo_applications.png){ width=99% align=center }
@@ -251,7 +251,7 @@ _2.85 Enrolling into DUO, step6_
 _2.86 Enrolling into DUO, step7_
 
 Open "Duo mobile" on your phone. If you did not have this application previously
-installed (thus no accounts enrolled) you will see couple of welcome screens.
+installed (thus no accounts enrolled) you will see a couple of welcome screens.
 
 ![MFA DUO ](ch02.87-mfa_duo_phone_welcome.png){ width=48% align=center }
 

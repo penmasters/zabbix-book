@@ -12,7 +12,7 @@ eventually, and yet hopes to postpone just a little longer. Not because it is
 particularly complex, but because it touches the one system everyone depends on
 when things go wrong.
 
-A monitoring system that is unavailable during an incident is not just inconvenient
+A monitoring system that is unavailable during an incident is not just inconvenient,
 it is actively harmful. This is why upgrades deserve planning, context, and restraint.
 
 This chapter is not a checklist. It is a guide to understanding what actually happens

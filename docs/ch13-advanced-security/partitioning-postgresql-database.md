@@ -216,11 +216,6 @@ supported by TimescaleDB, you can follow the instructions in the next section.
     dnf versionlock add timescaledb-2-postgresql-18
     ```
 
-!!! note
-
-    In this example we use version 2.30.2 be aware that this version is only
-    supported in Zabbix 8.0.1 zabbix 8.0 only supports up to version 2.29.x
-
     SUSE
     ```bash
     zypper install postgresql18-timescaledb-2.29.1
@@ -239,6 +234,12 @@ supported by TimescaleDB, you can follow the instructions in the next section.
     sudo apt install timescaledb-2-postgresql-18=2.30.2~ubuntu24.04 timescaledb-2-loader-postgresql-18=2.30.2~ubuntu24.04
     sudo apt-mark hold timescaledb-2-postgresql-18
     ```
+
+!!! note
+
+    In this example we use version 2.30.2. Be aware that this version is only
+    supported in Zabbix 8.0.1. Zabbix 8.0 only supports up to version 2.29.x.
+
 ---
 
 ### Compile TimescaleDB from source
@@ -368,7 +369,7 @@ TimescaleDB extension and apply the new settings:
 
 ### Enable TimescaleDB extension in Zabbix database
 
-Next, we connect to the Zabbix database as the user `zabbixsrv`, or whichever database
+Next, we connect to the Zabbix database as the user `zabbix-srv`, or whichever database
 user you have configured earlier, and create the TimescaleDB extension. However,
 before doing this, it is strongly recommended to stop the Zabbix server. This will
 prevent the application from interfering with the database during the process, which

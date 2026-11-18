@@ -282,13 +282,9 @@ passive agent and just create 300 dummy agents in the frontend.
 
 | Parameter | Configuration Value Example | Rationale for HA/Load Balancing |
 | :---      |:---                         |:---                             |
-| Server | "IP_A1,IP_A2,IP_A3,10.0.0.1" | "Passive Checks: Allows the host to accept |
-| | | incoming connections (checks) from any IP address in the group (and the Server,|
-| | | for redundancy or occasional checks)." |
-| ServerActive | IP_A1;IP_A2;IP_A3 | "Active Checks: The agent will attempt to |
-| | | send data to the first proxy in the semi-colon list. If that fails, it automatically |
-| | | tries the next one, providing agent-side failover."|
-| Hostname    | [ Not too important ] | We will use passive agents to the name is not important.|
+| Server | "IP_A1,IP_A2,IP_A3,10.0.0.1" | "Passive Checks: Allows the host to accept incoming connections (checks) from any IP address in the group (and the Server, for redundancy or occasional checks)." |
+| ServerActive | IP_A1;IP_A2;IP_A3 | "Active Checks: The agent will attempt to send data to the first proxy in the semi-colon list. If that fails, it automatically tries the next one, providing agent-side failover." |
+| Hostname    | [ Not too important ] | We will use passive agents, so the name is not important.|
 
 As a final step you now have to create 300 hosts in the frontend and select
 `Monitored by proxy` field to the `proxy group :` `Branch-A_HA_Group`.

@@ -42,7 +42,7 @@ respective IP addresses for your convenience :
 
     Our database (DB) in this setup is not configured for HA. Since it's not a
     Zabbix component, you will need to implement your own solution for database
-    HA, such as a HA SAN or a database cluster setup. A DB cluster configuration
+    HA, such as an HA SAN or a database cluster setup. A DB cluster configuration
     is out of the scope of this guide and unrelated to Zabbix, so it will not be
     covered here.
 

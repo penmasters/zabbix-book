@@ -221,7 +221,7 @@ _2.30 template maintainer_
 
 ### Scenario 2: NOC Operator Role
 
-**Objective*:*
+**Objective:**
 
 Create a role for a 24/7 Network Operations Centre (NOC) operator who monitors
 problems and acknowledges them, but cannot alter configuration.
@@ -286,7 +286,7 @@ _2.31 noc operator_
 
 !!! note
     Since Zabbix 7.4 there is now the **Action option** `Create and edit own media`
-    available. This option allows users to manage their own media something
+    available. This option allows users to manage their own media, something
     that wasn't possible before.
 
 It is crucial to understand that these two systems work in tandem:

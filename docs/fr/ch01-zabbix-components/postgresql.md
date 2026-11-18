@@ -85,7 +85,7 @@ configurer et interagir avec votre base de données PostgreSQL.
     Sur SUSE et Ubuntu, le service Systemd fourni par l'OS initiera automatiquement
     une base de données vide lors du premier démarrage.
 
-Une fois l'installation terminée, vous pouvez passer à la section [_Démarrer la base de données PostgreSQL_](#démarrage-de-la-base-de-données-postgresql).
+Une fois l'installation terminée, vous pouvez passer à la section [_Démarrer la base de données PostgreSQL_](#demarrage-de-la-base-de-donnees-postgresql).
 
 ---
 
@@ -218,7 +218,7 @@ base de données vide :
     ```
 
 
-Une fois l'installation terminée, vous pouvez passer à la section [Démarrage de la base de données PostgreSQL](#démarrage-de-la-base-de-données-postgresql).
+Une fois l'installation terminée, vous pouvez passer à la section [Démarrage de la base de données PostgreSQL](#demarrage-de-la-base-de-donnees-postgresql).
 
 ---
 
@@ -707,7 +707,7 @@ Maintenant, nous allons exécuter le fichier SQL pour remplir la base de donnée
 
 ???+ warning "Assurez-vous que le chemin de recherche correct est défini"
 
-    Assurez-vous d'avoir suivi les étapes précédentes comme indiqué dans [Créer une instance Zabbix avec PostgreSQL](postgresql.md#création-de-linstance-de-base-de-données-zabbix)
+    Assurez-vous d'avoir suivi les étapes précédentes comme indiqué dans [Créer une instance Zabbix avec PostgreSQL](postgresql.md#creation-de-linstance-de-base-de-donnees-zabbix)
     soigneusement pour avoir défini le chemin de recherche correct `search_path`.
 
     Si vous n'avez pas défini le chemin de recherche par défaut `search_path` pour l'utilisateur `zabbix-srv`,

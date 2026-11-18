@@ -56,7 +56,7 @@ switching branches. See [TRANSLATION_STATUS.md](TRANSLATION_STATUS.md) for the
 read-only report and the explicit review command.
 
 Please before you start take a look at our most updated licence : [Licence](https://github.com/penmasters/zabbix-book/blob/main/readme.md)
-on Github.
+on GitHub.
 
 *The Zabbix Book* is a freely accessible resource designed to help users understand
 and master Zabbix. Contributions are highly encouraged to improve and expand its

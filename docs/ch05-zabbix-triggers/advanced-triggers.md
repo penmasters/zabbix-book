@@ -154,9 +154,9 @@ _5.13 Advanced triggers - with dependencies_
 
 And we can see that from now on, only one event is generated and displayed:
 
-![Advanced triggers - no dependencies result](ch05.14-advanced-triggers-dependencies-result.png){ align=center }
+![Advanced triggers - with dependencies result](ch05.14-advanced-triggers-dependencies-result.png){ align=center }
 
-_5.14 Advanced triggers - no dependencies result_
+_5.14 Advanced triggers - with dependencies result_
 
 ???+ tip
     You can see that our HTTP-based triggers are configured for 5 minutes of
@@ -178,22 +178,22 @@ thresholds.
 Here we have different thresholds for different discovered entities. The default is
 95 and we have two exceptions:
 
-![Advanced triggers - no dependencies result](ch05.15-advanced-triggers-context-macros.png){ align=center }
+![Advanced triggers - context macros](ch05.15-advanced-triggers-context-macros.png){ align=center }
 
-_5.15 Advanced triggers - no dependencies result_
+_5.15 Advanced triggers - context macros_
 
 So the trigger prototype will look like this:
 
-![Advanced triggers - no dependencies result](ch05.16-advanced-triggers-context-macros-trigger-config.png){ align=center }
+![Advanced triggers - context macros trigger configuration](ch05.16-advanced-triggers-context-macros-trigger-config.png){ align=center }
 
-_5.16 Advanced triggers - no dependencies result_
+_5.16 Advanced triggers - context macros trigger configuration_
 
 And real events will then be like this (note the different thresholds for "a"
 and "h"):
 
-![Advanced triggers - no dependencies result](ch05.17-advanced-triggers-context-macros-trigger-result.png){ align=center }
+![Advanced triggers - context macros result](ch05.17-advanced-triggers-context-macros-trigger-result.png){ align=center }
 
-_5.17 Advanced triggers - no dependencies result_
+_5.17 Advanced triggers - context macros result_
 
 While constructing advanced triggers, you will find this concept being nicely
 incorporated into the big picture of trigger efficiency.

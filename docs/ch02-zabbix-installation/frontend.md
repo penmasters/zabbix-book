@@ -8,9 +8,9 @@ tags: [beginner]
 # Frontend explained
 
 This chapter is going to cover the basics we need to know when it comes to the
-Zabbix user interface and the thing we need to know before we can start to fully
-dive into our monitoring tool. We will see how the user interface works how to add
-a host, groups users, items ... so that we have a good understanding of the basics.
+Zabbix user interface and the things we need to know before we can start to fully
+dive into our monitoring tool. We will see how the user interface works and how to add
+hosts, groups, users and items, so that we have a good understanding of the basics.
 This is something that is sometimes missed and can lead to frustrations not knowing
 why things don't work like we had expected them to work. So even if you are an
 advanced user it may be useful to have a look into this chapter.
@@ -24,8 +24,7 @@ Let's get started
 Since Zabbix 7 the user interface after logging in is a bit changed. Our menu on
 the left side of the screen has a small overhaul. Let's dive into it.
 When we log in to our Zabbix setup the first time with our Admin user we see a page
-
-like this where we have our `main window` in <font color='green'>green</font>
+like this where we have our `main window` in <font color='green'>green</font>,
 our `main menu` marked in
 <font color='red'>red</font> and our `links` marked in <font color='gold'>yellow</font>.
 
@@ -43,8 +42,8 @@ _2.2 Collapse_
 You will see that the menu collapses to a set of small icons. Pressing ">>" will
 bring the `main menu` back to its original state.
 
-When you click on the icon that looks like a box with an arrow sticking out, next
-to the "<<" button will hide the `main menu` completely.
+Clicking on the icon that looks like a box with an arrow sticking out, next
+to the "<<" button, will hide the `main menu` completely.
 
 ![Hide](ch02.3-frontend-hide.png){ align=center }
 
@@ -55,7 +54,7 @@ left with three horizontal lines and click on it. This will show the `main menu`
 but it won't stay. When we click on the box with the arrow now pointing to the bottom
 right it will keep the `main menu` back in its position.
 
-Yet another way to make the screen bigger that is quite useful for monitors in `NOK
+Yet another way to make the screen bigger that is quite useful for monitors in `NOC
 teams` for example is the `kiosk mode` button. This one however is located on the
 left side of your screen and looks like 4 arrows pointing to every corner of the
 screen. Pressing this button will remove all the menus and leave only the `main window`
@@ -118,7 +117,7 @@ of ten distinct sections:
 | Inventory       | An overview of our collected inventory data.                                                      |
 | Reports         | Shows us the system information, scheduled reports, audit logs, action logs, etc .                |
 | Data collection | Contains all things related to collecting data like hosts, templates, maintenance, discovery, ... |
-| Alert           | The configuration of our media types, scripts and actions                                         |
+| Alerts          | The configuration of our media types, scripts and actions                                         |
 | Users           | User configuration like user roles, user groups, authentication, API tokens, ...                   |
 | Administration  | The administration part containing all global settings, housekeeper, proxies, queue, ...          |
 
@@ -236,8 +235,8 @@ _2.11 Monitoring menu_
   on our hosts and allows us to quickly go to the latest data, graphs, and dashboards.
 - **Latest data**: This page I probably use the most, it shows us all the information
   collected from all our hosts.
-- **Maps**: The location where we can create map that are an overview of our
-  IT infrastructure very useful to get a high level overview of the network.
+- **Maps**: The location where we can create maps that give an overview of our
+  IT infrastructure, very useful to get a high level overview of the network.
 - **Discovery**: When we run a network discovery this is the place where we can find
   the results.
 
@@ -277,7 +276,7 @@ _2.14 Inventory menu_
 
 ![Reports menu](ch02.15-reports-menu.png){ width="20%" align=center }
 
-_2.15 Inventory menu_
+_2.15 Reports menu_
 
 - **System information**: System information is a summary of key Zabbix server
   and system data.
@@ -300,17 +299,17 @@ _2.15 Inventory menu_
 
 _2.16 Data collection_
 
-- **Template groups**: A place to logical group all templates together in different
+- **Template groups**: A place to logically group all templates together in different
   groups. Before it was mixed together with hosts in host groups.
 - **Host groups**: A logical collection of different hosts put together.
   Host groups are used for our permissions.
-- **Templates**: A set off entities like items and triggers can be grouped together
-  on a template, A template can be applied to one or more hosts.
-- **Hosts**: What we need in Zabbix to monitor A host, application, service ...
+- **Templates**: A set of entities like items and triggers can be grouped together
+  on a template. A template can be applied to one or more hosts.
+- **Hosts**: What we need in Zabbix to monitor a host, application, service ...
 - **Maintenance**: The place to configure our maintenance windows. A maintenance
   can be planned in this location.
-- **Event correlation**: When we have multiple events that fires triggers related
-  we can configure correlations in this place.
+- **Event correlation**: When we have multiple related events, we can configure
+  correlations in this place.
 - **Discovery**: Sometimes we like to use Zabbix to discover devices, services,...
   on our network. This can be done here.
 
@@ -344,22 +343,21 @@ _2.18 Users menu_
 
 !!! note "Zabbix mobile app"
 
-    > Zabbix 8.0 supports the Zabbix mobile app, which lets you monitor your Zabbix
-    > environment from your mobile device. You can view problems, check their details,
-    > update problems, and receive push notifications when something needs attention.
-    >
-    > Supporting the app, Zabbix 8.0 adds the following:
-    >
-    > * **Device management** in the web interface: *Users* > *Devices* and *User
-    > settings* > *Devices*.
-    > * **Push notification media type** for sending problem notifications from
-    > the Zabbix server to the mobile app.
-    > * **Bridge adapter**, a component that allows your Zabbix server to communicate
-    > with the mobile app.
-    > * **Server configuration parameters**: `BridgeAdapterURL` and `EnableMobileDevices`.
-    >
-    > For setup details, see the [https://www.zabbix.com/documentation/devel/en/app](https://www.zabbix.com/documentation/
-    > devel/en/app) section of the Zabbix documentation.
+    Zabbix 8.0 supports the Zabbix mobile app, which lets you monitor your Zabbix
+    environment from your mobile device. You can view problems, check their details,
+    update problems, and receive push notifications when something needs attention.
+
+    Supporting the app, Zabbix 8.0 adds the following:
+
+    * **Device management** in the web interface: *Users* > *Devices* and *User
+    settings* > *Devices*.
+    * **Push notification media type** for sending problem notifications from
+    the Zabbix server to the mobile app.
+    * **Bridge adapter**, a component that allows your Zabbix server to communicate
+    with the mobile app.
+    * **Server configuration parameters**: `BridgeAdapterURL` and `EnableMobileDevices`.
+
+    For setup details, see the [https://www.zabbix.com/documentation/devel/en/app](https://www.zabbix.com/documentation/devel/en/app) section of the Zabbix documentation.
 
 ---
 

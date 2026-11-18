@@ -48,7 +48,7 @@ la commande suivante :
 
 
 Cette commande téléchargera et installera les paquets serveur et client, vous permettant de configurer,
-gérer et interagir avec votre base de données MariaDB. Une fois l'installation terminée, vous pouvez passer à la section [_Démarrage de la base de données MariaDB_](#démarrage-de-la-base-de-données-mariadb).
+gérer et interagir avec votre base de données MariaDB. Une fois l'installation terminée, vous pouvez passer à la section [_Démarrage de la base de données MariaDB_](#demarrage-de-la-base-de-donnees-mariadb).
 
 ---
 
@@ -176,7 +176,7 @@ Pour installer le serveur et le client MariaDB, exécutez la commande suivante :
 
 
 Cette commande téléchargera et installera les paquets serveur et client, vous permettant de configurer,
-gérer et interagir avec votre base de données MariaDB. Une fois l'installation terminée, vous pouvez passer à la section [_Démarrage de la base de données MariaDB_](#démarrage-de-la-base-de-données-mariadb).
+gérer et interagir avec votre base de données MariaDB. Une fois l'installation terminée, vous pouvez passer à la section [_Démarrage de la base de données MariaDB_](#demarrage-de-la-base-de-donnees-mariadb).
 
 ---
 

@@ -639,12 +639,12 @@ already installed.
 
 **Explanation:**
 
-    - This configuration rotates the trap log `weekly` or when it exceeds 
-      `size 10M` except `notifempty` and it will not fail on `missingok`.
-    - Old logs are `compress`ed and stored in the same `olddir`ectory with a 
-      `dateext`ension in `dateformat -%Y%m%d`.
-    - It keeps up to `rotate 10` rotated logs and deletes logs older than 
-      `maxage 365` days.
+- This configuration rotates the trap log `weekly` or when it exceeds
+  `size 10M` except `notifempty` and it will not fail on `missingok`.
+- Old logs are `compress`ed and stored in the same `olddir`ectory with a
+  `dateext`ension in `dateformat -%Y%m%d`.
+- It keeps up to `rotate 10` rotated logs and deletes logs older than
+  `maxage 365` days.
 
 #### Test log-rotation manually
 
@@ -843,9 +843,9 @@ In the Zabbix web interface, navigate to:
 - **Host groups:** SNMP Devices
 - **Interfaces:** SNMP with IP `127.0.0.1`
 
-![ch04.37-snmp-host.png](ch04.37-snmp-host.png){ align=center }
+![SNMP trap host configuration](ch04.37-snmp-host.png){ align=center }
 
-_4.37 ch04.37-snmp-host.png_
+_4.37 SNMP trap host configuration_
 
 In Zabbix, the macro `{$SNMP_COMMUNITY}` is often defined globally under `Administration` | `Macros`. This *global* macro provides a default SNMP community string used by all
 hosts that rely on SNMP for polling or trap-based communication.
@@ -997,9 +997,9 @@ Use `IF-MIB::ifAdminStatus[\s\S]*?INTEGER:\s+(\d+)` in the Parameters field and
 
 Select the box **Custom on fail** and use the option **Discard value**.
 
-![ch04.38-snmp-preprocessing.png](ch04.38-snmp-preprocessing.png){ align=center }
+![Administrative status trap preprocessing](ch04.38-snmp-preprocessing.png){ align=center }
 
-_4.38 ch04.38-snmp-preprocessing.png_
+_4.38 Administrative status trap preprocessing_
 
 Next we create our second item also dependent on our Fallback item.
 
@@ -1016,9 +1016,9 @@ and `\1` in the Output box.
 
 Again add a **Custom on fail** step and select **Discard value**.
 
-![ch04.39-snmp-preprocessing.png](ch04.39-snmp-preprocessing.png){ align=center }
+![Operational status trap preprocessing](ch04.39-snmp-preprocessing.png){ align=center }
 
-_4.39 ch04.39-snmp-preprocessing.png_
+_4.39 Operational status trap preprocessing_
 
 We have our items now but we still are missing our trigger. Go back to your host
 and click on the triggers and add the following trigger.
@@ -1028,9 +1028,9 @@ and click on the triggers and add the following trigger.
 - **Problem expression:** `last(/Network Switch 01/trap.ifOperStatus)=2 and last(/Network Switch 01/trap.ifAdminStatus)=2`
 - **Recovery expression:** `last(/Network Switch 01/trap.ifOperStatus)=1 and last(/Network Switch 01/trap.ifAdminStatus)=1`
 
-![ch04.40-snmp-trigger.png](ch04.40-snmp-trigger.png){ align=center }
+![SNMP trap trigger configuration](ch04.40-snmp-trigger.png){ align=center }
 
-_4.40 ch04.40-snmp-trigger.png_
+_4.40 SNMP trap trigger configuration_
 
 Make sure to also select the box **Allow manual close**. This can help to close
 the problem in case we don't receive a TRAP.
@@ -1047,9 +1047,9 @@ based on the status of the ifOperStatus and the ifAdminStatus
 
 As a bonus you can add on the host a value map and link the items with it.
 
-![ch04.41-snmp-valuemap.png](ch04.41-snmp-valuemap.png){ align=center }
+![SNMP status value map](ch04.41-snmp-valuemap.png){ align=center }
 
-_4.41 ch04.41-snmp-valuemap.png_
+_4.41 SNMP status value map_
 
 If you don't like 2 different items and want to have a fancier solution you
 could create a dependent item like we did above and use JS instead of perl regex.

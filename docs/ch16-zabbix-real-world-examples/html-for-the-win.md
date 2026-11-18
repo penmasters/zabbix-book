@@ -102,8 +102,8 @@ _16.13 HTML for the win - how to_
 ## Tables
 
 There are countless use cases when you want to display things in a table-like
-form, so the `<table> ... </table>` approach makes it most iconic out of them all
-here. Tables are a structured data display, which is what we often want when
+form, which makes the `<table>` approach the most iconic out of all of them here.
+Tables are a structured data display, which is what we often want when
 talking about displaying monitoring data. Besides that, with tables, you can
 easily display sorted output, so show "top" of something.
 

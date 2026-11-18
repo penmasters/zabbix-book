@@ -9,7 +9,7 @@ tags: [advanced]
 
 # Active and Passive proxies
 
-Whether you want to install an Active or a Passive proxy, much of the installation
+Whether you want to install an Active or a Passive proxy, many of the installation
 and configuration steps are the same.
 
 ---
@@ -24,7 +24,7 @@ those steps is adding the proxy in the frontend of Zabbix. So from the menu let'
 
 _3.4 Create proxy_
 
-Once pressed, a new modal form will pop-up where we need to fill in some information.
+Once pressed, a new modal form will pop up where we need to fill in some information.
 
 ---
 
@@ -154,7 +154,7 @@ directory that will hold some general proxy settings:
 
     You can fill in multiple servers here in case you have more than one _Zabbix Server_
     connecting to your proxy. Also the port can be added here in case your server
-    listens on another port then the standard port `10051`. Just be careful to not
+    listens on another port than the standard port `10051`. Just be careful to not
     add the IP and DNS name for the same server as this can return double values.
 
 - Another important option is `Hostname`, especially on an _Active_ proxy.
@@ -284,7 +284,7 @@ Possible buffer modes:
 
 ???+ warning
 
-    In Proxies that where installed before `7.0` the data was first written to
+    In Proxies that were installed before `7.0` the data was first written to
     disk in the database and then sent to the `Zabbix server`. For these installations
     when we upgrade this remains the default behaviour after upgrading to Zabbix
     7.x or higher. It's now recommended for performance reasons to use the new

@@ -305,7 +305,7 @@ _2.26 Junior monitoring_
     * In the Host permissions tab, assign the following right:
     * HG_Critical_Databases: Deny
 
-![ch02.27-critical-exclusioin.png](ch02.27-critical-exclusioin.png)
+![ch02.27-critical-exclusion.png](ch02.27-critical-exclusion.png)
 
 _2.27 Critical exclusion_
 
