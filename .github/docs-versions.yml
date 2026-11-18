@@ -22,7 +22,7 @@ versions:
     language: en
     path: 8.0/en/
     status: maintenance
-    website: false
+    website: true
     base:
       type: branch
       ref: main
