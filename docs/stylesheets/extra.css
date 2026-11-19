@@ -180,8 +180,10 @@ img[alt$="><"] {
     font-size: 10pt;
     color: var(--md-default-fg-color);
   }
+}
 
-/* MFA IMAGES */
+/* MFA IMAGES --------------------------------------------*/
+
 .mfa-steps {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
@@ -189,8 +191,10 @@ img[alt$="><"] {
 }
 
 .mfa-steps figure {
+  width: 80%;
   margin: 0;
   min-width: 0;
+  justify-self: center;
 }
 
 .mfa-steps img {
@@ -208,5 +212,8 @@ img[alt$="><"] {
   .mfa-steps {
     grid-template-columns: 1fr;
   }
-}
 
+  .mfa-steps figure {
+    width: min(80%, 18rem);
+  }
+}
