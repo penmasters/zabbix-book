@@ -835,17 +835,48 @@ For example:
 ???+ example "Example output"
 
     ```psql
-    zabbix=> \dp zabbix_server.*
-                                                         Access privileges
-        Schema     |            Name            |   Type   |         Access privileges          | Column privileges | Policies
-    ---------------+----------------------------+----------+------------------------------------+-------------------+----------
-     zabbix_server | acknowledges               | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
-     zabbix_server | actions                    | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
-     zabbix_server | alerts                     | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
-                   |                            |          | "zabbix-web"=arwd/"zabbix-srv"     |                   |
-     zabbix_server | auditlog                   | table    | "zabbix-srv"=arwdDxtm/"zabbix-srv"+|                   |
+    zabbix=# \x
+    Expanded display is on.
+    zabbix=#
+    zabbix=# \dp zabbix_server.*
+    Access privileges
+    -[ RECORD 1 ]-----+-----------------------------------
+    Schema            | zabbix_server
+    Name              | acknowledges
+    Type              | table
+    Access privileges | "zabbix-srv"=arwdDxtm/"zabbix-srv"+
+                      | "zabbix-web"=arwd/"zabbix-srv"
+    Column privileges |
+    Policies          |
+    -[ RECORD 2 ]-----+-----------------------------------
+    Schema            | zabbix_server
+    Name              | actions
+    Type              | table
+    Access privileges | "zabbix-srv"=arwdDxtm/"zabbix-srv"+
+                      | "zabbix-web"=arwd/"zabbix-srv"
+    Column privileges |
+    Policies          |
+    
+    ...
+    
+    -[ RECORD 231 ]---+-----------------------------------
+    Schema            | zabbix_server
+    Name              | widget
+    Type              | table
+    Access privileges | "zabbix-srv"=arwdDxtm/"zabbix-srv"+
+                      | "zabbix-web"=arwd/"zabbix-srv"
+    Column privileges |
+    Policies          |
+    -[ RECORD 232 ]---+-----------------------------------
+    Schema            | zabbix_server
+    Name              | widget_field
+    Type              | table
+    Access privileges | "zabbix-srv"=arwdDxtm/"zabbix-srv"+
+                      | "zabbix-web"=arwd/"zabbix-srv"
+    Column privileges |
+    Policies          |
+    
+    zabbix=#
     ```
 
 This will display the access privileges for all tables in the `zabbix_server`
