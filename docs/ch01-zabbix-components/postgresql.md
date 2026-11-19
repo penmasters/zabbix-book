@@ -764,14 +764,22 @@ Verify if the rights are correct on the schema :
 !!! example "Example schema rights"
 
     ```psql
-    zabbix=> \dn+
-                                               List of schemas
-         Name      |       Owner       |           Access privileges            |      Description
-    ---------------+-------------------+----------------------------------------+------------------------
-     public        | pg_database_owner | pg_database_owner=UC/pg_database_owner+| standard public schema
-                   |                   | =U/pg_database_owner                   |
-     zabbix_server | zabbix-srv        | "zabbix-srv"=UC/"zabbix-srv"          +|
-                   |                   | "zabbix-web"=U/"zabbix-srv"            |
+    zabbix=# \x
+    Expanded display is on.
+    zabbix=# \dn+
+    List of schemas
+    -[ RECORD 1 ]-----+---------------------------------------
+    Name              | public
+    Owner             | pg_database_owner
+    Access privileges | pg_database_owner=UC/pg_database_owner+
+                      | =U/pg_database_owner
+    Description       | standard public schema
+    -[ RECORD 2 ]-----+---------------------------------------
+    Name              | zabbix_server
+    Owner             | zabbix-srv
+    Access privileges | "zabbix-srv"=UC/"zabbix-srv"          +
+                      | "zabbix-web"=U/"zabbix-srv"
+    Description       |
     ```
 
 ???+ note
