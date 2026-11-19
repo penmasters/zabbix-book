@@ -180,4 +180,33 @@ img[alt$="><"] {
     font-size: 10pt;
     color: var(--md-default-fg-color);
   }
+
+/* MFA IMAGES */
+.mfa-steps {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
 }
+
+.mfa-steps figure {
+  margin: 0;
+  min-width: 0;
+}
+
+.mfa-steps img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mfa-steps figcaption {
+  margin-top: 0.4rem;
+  text-align: center;
+}
+
+@media screen and (max-width: 44.984375em) {
+  .mfa-steps {
+    grid-template-columns: 1fr;
+  }
+}
+

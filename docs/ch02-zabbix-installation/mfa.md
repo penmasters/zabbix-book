@@ -114,17 +114,24 @@ looks in "Google authenticator". Tap `Add a code` and then `Scan a QR code`. You
 be immediately presented with a 6 digit code (remember we selected 6 in `Code length`
 when we configured TOTP MFA?)
 
-![MFA TOTP auth app1](ch02.69-mfa_totp_auth_app1.png){ width=32% align=center }
+<div class="grid mfa-steps" markdown>
 
-_2.69 Authenticator app, step 1_
+<figure markdown="span">
+  ![MFA TOTP auth app step 1](ch02.69-mfa_totp_auth_app1.png)
+  <figcaption>2.69 Authenticator app, step 1</figcaption>
+</figure>
 
-![MFA TOTP auth app2](ch02.70-mfa_totp_auth_app2.png){ width=32% align=center }
+<figure markdown="span">
+  ![MFA TOTP auth app step 2](ch02.70-mfa_totp_auth_app2.png)
+  <figcaption>2.70 Authenticator app, step 2</figcaption>
+</figure>
 
-_2.70 Authenticator app, step 2_
+<figure markdown="span">
+  ![MFA TOTP auth app step 3](ch02.71-mfa_totp_auth_app3.png)
+  <figcaption>2.71 Authenticator app, step 3</figcaption>
+</figure>
 
-![MFA TOTP auth app3](ch02.71-mfa_totp_auth_app3.png){ width=32% align=center }
-
-_2.71 Authenticator app, step 3_
+</div>
 
 Enter this code into `Verification code` field of your login screen and click
 `Sign in`, if you did everything right you are logged in into Zabbix at this point.
