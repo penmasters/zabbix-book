@@ -27,7 +27,6 @@ valuable for the monitoring and open-source communities.
 - **Patrik Uytterhoeven** : [http://github.com/Trikke76](http://github.com/Trikke76)
 - **Nathan Liefting** : [https://github.com/larcorba](https://github.com/larcorba)
 - Evgeny Yurchenko: [https://github.com/BGmot](https://github.com/BGmot)
-- Nikolas Garofil: [https://github.com/ngaro](https://github.com/ngaro)
 - Aigars Kadikis : [https://github.com/aigarskadikis](https://github.com/aigarskadikis)
 - Giedrius Stasiulionis : [https://github.com/b1nary1](https://github.com/b1nary1)
 - Leonardo Cardoso: [https://github.com/leocardosoo](https://github.com/leocardosoo)
