@@ -536,4 +536,4 @@ a resilient monitoring infrastructure that can be further enhanced as needed.
 
 - <https://www.redhat.com/sysadmin/advanced-keepalived>
 - <https://keepalived.readthedocs.io/en/latest/introduction.html>
-- <https://www.zabbix.com/documentation/current/en/manual/concepts/server/ha>
+- <https://www.zabbix.com/documentation/8.0/en/manual/concepts/server/ha>

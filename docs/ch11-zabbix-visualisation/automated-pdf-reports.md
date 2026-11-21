@@ -148,6 +148,6 @@ PDF reports directly from Zabbix.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/reports](https://www.zabbix.com/documentation/current/en/manual/config/reports)
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service](https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/reports](https://www.zabbix.com/documentation/8.0/en/manual/config/reports)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/web_service](https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/web_service)
 - [https://www.google.com/chrome/](https://www.google.com/chrome/)

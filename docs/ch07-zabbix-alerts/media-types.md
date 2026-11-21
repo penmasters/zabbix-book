@@ -606,7 +606,7 @@ back to Zabbix's bare-bones defaults.
 !!! note
 
     A list of all macros that you can use here can be found at the following
-    location: [https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location](https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location)
+    location: [https://www.zabbix.com/documentation/8.0/en/manual/appendix/macros/supported_by_location](https://www.zabbix.com/documentation/8.0/en/manual/appendix/macros/supported_by_location)
 
 ### Step 5 — Save and Test
 

@@ -450,7 +450,7 @@ Zabbix Proxy Groups significantly enhance the resilience and scalability of dist
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring](https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring)
-- [https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring/proxies/ha](https://www.zabbix.com/documentation/current/en/manual/distributed_monitoring/proxies/ha)
-- [https://www.zabbix.com/documentation/current/en/manual/concepts/proxy](https://www.zabbix.com/documentation/current/en/manual/concepts/proxy)
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/zabbix_agent/config](https://www.zabbix.com/documentation/current/en/manual/config/items/zabbix_agent/config)
+- [https://www.zabbix.com/documentation/8.0/en/manual/distributed_monitoring](https://www.zabbix.com/documentation/8.0/en/manual/distributed_monitoring)
+- [https://www.zabbix.com/documentation/8.0/en/manual/distributed_monitoring/proxies/ha](https://www.zabbix.com/documentation/8.0/en/manual/distributed_monitoring/proxies/ha)
+- [https://www.zabbix.com/documentation/8.0/en/manual/concepts/proxy](https://www.zabbix.com/documentation/8.0/en/manual/concepts/proxy)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/zabbix_agent/config](https://www.zabbix.com/documentation/8.0/en/manual/config/items/zabbix_agent/config)

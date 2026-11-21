@@ -434,6 +434,6 @@ this pattern will discover and monitor it.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp)
-- [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/snmp_oids_walk](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/snmp_oids_walk)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/snmp](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/snmp)
+- [https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery/examples/snmp_oids_walk](https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery/examples/snmp_oids_walk)
 - [https://blog.zabbix.com/improving-snmp-monitoring-performance-with-bulk-snmp-data-collection/27231/](https://blog.zabbix.com/improving-snmp-monitoring-performance-with-bulk-snmp-data-collection/27231/)

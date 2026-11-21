@@ -521,6 +521,6 @@ a strategic tool for change management.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/maintenance](https://www.zabbix.com/documentation/current/en/manual/maintenance)
-- [https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/create](https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/create)
-- [https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/object#time-period](https://www.zabbix.com/documentation/current/en/manual/api/reference/maintenance/object#time-period)
+- [https://www.zabbix.com/documentation/8.0/en/manual/maintenance](https://www.zabbix.com/documentation/8.0/en/manual/maintenance)
+- [https://www.zabbix.com/documentation/8.0/en/manual/api/reference/maintenance/create](https://www.zabbix.com/documentation/8.0/en/manual/api/reference/maintenance/create)
+- [https://www.zabbix.com/documentation/8.0/en/manual/api/reference/maintenance/object#time-period](https://www.zabbix.com/documentation/8.0/en/manual/api/reference/maintenance/object#time-period)

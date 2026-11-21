@@ -471,6 +471,6 @@ learn how it works.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/installation/upgrade](https://www.zabbix.com/documentation/current/en/manual/installation/upgrade)
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_primary_keys](https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_primary_keys)
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_scripts](https://www.zabbix.com/documentation/current/en/manual/appendix/install/db_scripts)
+- [https://www.zabbix.com/documentation/8.0/en/manual/installation/upgrade](https://www.zabbix.com/documentation/8.0/en/manual/installation/upgrade)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/db_primary_keys](https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/db_primary_keys)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/db_scripts](https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/db_scripts)

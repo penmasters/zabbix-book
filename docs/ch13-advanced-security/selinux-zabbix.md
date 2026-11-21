@@ -343,6 +343,6 @@ more secure and reliable Zabbix monitoring environment.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/#selinux-configuration](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/#selinux-configuration)
+- [https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages/#selinux-configuration](https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages/#selinux-configuration)
 - [https://www.systutorials.com/docs/linux/man/8-zabbix_selinux/](https://www.systutorials.com/docs/linux/man/8-zabbix_selinux/)
 - [https://phoenixnap.com/kb/selinux](https://phoenixnap.com/kb/selinux)

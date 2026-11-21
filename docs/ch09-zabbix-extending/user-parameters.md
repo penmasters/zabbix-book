@@ -375,5 +375,5 @@ Zabbix will be there to help you collect and visualise it!
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/userparameters](https://www.zabbix.com/documentation/current/en/manual/config/items/userparameters)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/userparameters](https://www.zabbix.com/documentation/8.0/en/manual/config/items/userparameters)
 - [https://blog.zabbix.com/extending-zabbix-the-power-of-scripting/](https://blog.zabbix.com/extending-zabbix-the-power-of-scripting/)

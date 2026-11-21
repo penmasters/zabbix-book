@@ -992,7 +992,7 @@ legacy systems, Redfish for new deployments.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview)
+- [https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview](https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery/examples/ipmi_sensors#overview)
 - [https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmi-second-gen-interface-spec-v2-rev1-1.pdf](https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ipmi-second-gen-interface-spec-v2-rev1-1.pdf)
 - [https://github.com/ipmitool/ipmitool](https://github.com/ipmitool/ipmitool)
 - [https://www.dmtf.org/standards/redfish](https://www.dmtf.org/standards/redfish)

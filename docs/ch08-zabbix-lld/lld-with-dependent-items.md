@@ -166,7 +166,7 @@ using tools like [https://www.jsonquerytool.com/](https://www.jsonquerytool.com/
 query `$..name`, it extracts all printer names, while `$..status` retrieves
 their statuses.
 
-However, referring to the [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery),
+However, referring to the [https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery](https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery),
 we see that starting from **Zabbix 4.2**, the expected JSON format for LLD has changed.
 The `data` object is no longer required; instead, LLD now supports a direct JSON
 array. This update enables features like **item value preprocessing** and
@@ -481,5 +481,5 @@ providing actionable insights without constant reconfiguration.
 
 - [https://www.jsonquerytool.com/](https://www.jsonquerytool.com/)
 - [https://regex101.com/](https://regex101.com/)
-- [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery#filter](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery#filter)
+- [https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery#filter](https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery#filter)
 - [https://blog.zabbix.com/lld-filtering-with-macros/24959/](https://blog.zabbix.com/lld-filtering-with-macros/24959/)

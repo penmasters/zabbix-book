@@ -524,5 +524,5 @@ do you infer its health?
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/internal](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/internal)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/internal](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/internal)
 - [https://github.com/zabbix/zabbix/tree/master/templates/app/zabbix_server](https://github.com/zabbix/zabbix/tree/master/templates/app/zabbix_server)

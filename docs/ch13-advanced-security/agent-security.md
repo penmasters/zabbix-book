@@ -404,7 +404,7 @@ that additional layer of security on internal networks.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/encryption](https://www.zabbix.com/documentation/current/en/manual/encryption)
-- [https://www.zabbix.com/documentation/current/en/manual/encryption/using_pre_shared_keys](https://www.zabbix.com/documentation/current/en/manual/encryption/using_pre_shared_keys)
-- [https://www.zabbix.com/documentation/current/en/manual/encryption/using_certificates](https://www.zabbix.com/documentation/current/en/manual/encryption/using_certificates)
+- [https://www.zabbix.com/documentation/8.0/en/manual/encryption](https://www.zabbix.com/documentation/8.0/en/manual/encryption)
+- [https://www.zabbix.com/documentation/8.0/en/manual/encryption/using_pre_shared_keys](https://www.zabbix.com/documentation/8.0/en/manual/encryption/using_pre_shared_keys)
+- [https://www.zabbix.com/documentation/8.0/en/manual/encryption/using_certificates](https://www.zabbix.com/documentation/8.0/en/manual/encryption/using_certificates)
 - [https://docs.openssl.org/master/](https://docs.openssl.org/master/)

@@ -207,5 +207,5 @@ observability platform.
 ## Useful URLs
 
 [https://www.youtube.com/watch?v=5etxbNPrygU](https://www.youtube.com/watch?v=5etxbNPrygU)
-[https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/simple_checks](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/simple_checks)
+[https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/simple_checks](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/simple_checks)
 [https://www.zabbix.com/documentation/guidelines/en/template_guidelines#items](https://www.zabbix.com/documentation/guidelines/en/template_guidelines#items)

@@ -457,9 +457,9 @@ Zabbix agent.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/concepts/agent](https://www.zabbix.com/documentation/current/en/manual/concepts/agent)
-- [https://www.zabbix.com/documentation/current/en/manual/concepts/agent2](https://www.zabbix.com/documentation/current/en/manual/concepts/agent2)
-- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/agent_comparison](https://www.zabbix.com/documentation/current/en/manual/appendix/agent_comparison)
+- [https://www.zabbix.com/documentation/8.0/en/manual/concepts/agent](https://www.zabbix.com/documentation/8.0/en/manual/concepts/agent)
+- [https://www.zabbix.com/documentation/8.0/en/manual/concepts/agent2](https://www.zabbix.com/documentation/8.0/en/manual/concepts/agent2)
+- [https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/agent_comparison](https://www.zabbix.com/documentation/8.0/en/manual/appendix/agent_comparison)
 - [https://blog.zabbix.com/zabbix-agent-active-vs-passive/](https://blog.zabbix.com/zabbix-agent-active-vs-passive/)
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/items/activepassive](https://www.zabbix.com/documentation/current/en/manual/appendix/items/activepassive)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/items/activepassive](https://www.zabbix.com/documentation/8.0/en/manual/appendix/items/activepassive)

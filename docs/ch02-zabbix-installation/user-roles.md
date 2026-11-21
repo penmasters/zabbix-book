@@ -324,4 +324,4 @@ for every role within the monitoring ecosystem.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions#user-types](https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions#user-types)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/users_and_usergroups/permissions#user-types](https://www.zabbix.com/documentation/8.0/en/manual/config/users_and_usergroups/permissions#user-types)

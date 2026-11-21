@@ -447,5 +447,5 @@ one under which it started?
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/triggers](https://www.zabbix.com/documentation/current/en/manual/config/triggers)
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location](https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/triggers](https://www.zabbix.com/documentation/8.0/en/manual/config/triggers)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/macros/supported_by_location](https://www.zabbix.com/documentation/8.0/en/manual/appendix/macros/supported_by_location)

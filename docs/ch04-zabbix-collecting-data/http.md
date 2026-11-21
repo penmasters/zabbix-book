@@ -471,8 +471,8 @@ Or, as every experienced API engineer eventually learns:
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/http](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/http)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/http](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/http)
 - [https://curl.se/docs/](https://curl.se/docs/)
-- [https://www.zabbix.com/documentation/current/en/manual/api/reference/user/login?hl=user.login](https://www.zabbix.com/documentation/current/en/manual/api/reference/user/login?hl=user.login)
-- [https://www.zabbix.com/documentation/current/en/manual/api?hl=Bearer#by-authorization-header](https://www.zabbix.com/documentation/current/en/manual/api?hl=Bearer#by-authorization-header)
+- [https://www.zabbix.com/documentation/8.0/en/manual/api/reference/user/login?hl=user.login](https://www.zabbix.com/documentation/8.0/en/manual/api/reference/user/login?hl=user.login)
+- [https://www.zabbix.com/documentation/8.0/en/manual/api?hl=Bearer#by-authorization-header](https://www.zabbix.com/documentation/8.0/en/manual/api?hl=Bearer#by-authorization-header)
 

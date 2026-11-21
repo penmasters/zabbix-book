@@ -180,7 +180,7 @@ Now that we understand the various parts of our Zabbix dataflow we can dive deep
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items](https://www.zabbix.com/documentation/current/en/manual/config/items)
-- [https://www.zabbix.com/documentation/current/en/manual/config/triggers](https://www.zabbix.com/documentation/current/en/manual/config/triggers)
-- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/action](https://www.zabbix.com/documentation/current/en/manual/config/notifications/action)
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items](https://www.zabbix.com/documentation/8.0/en/manual/config/items)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/triggers](https://www.zabbix.com/documentation/8.0/en/manual/config/triggers)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/action](https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/action)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/preprocessing](https://www.zabbix.com/documentation/8.0/en/manual/config/items/preprocessing)

@@ -397,4 +397,4 @@ consistency across their access control and authentication strategy.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/ldap)
+- [https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/users/authentication/ldap](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/users/authentication/ldap)

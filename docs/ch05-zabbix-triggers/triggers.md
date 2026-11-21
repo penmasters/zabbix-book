@@ -324,5 +324,5 @@ trigger instantly makes you think of where to go and what to do to solve it.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/triggers](https://www.zabbix.com/documentation/current/en/manual/config/triggers)
-- [https://www.zabbix.com/documentation/current/en/manual/config/triggers/expression](https://www.zabbix.com/documentation/current/en/manual/config/triggers/expression)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/triggers](https://www.zabbix.com/documentation/8.0/en/manual/config/triggers)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/triggers/expression](https://www.zabbix.com/documentation/8.0/en/manual/config/triggers/expression)

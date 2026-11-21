@@ -44,7 +44,7 @@ Zabbix provides several JavaScript objects for script items:
 (depending on item settings).
 
 The complete list of objects can be found in the official Zabbix documentation:
-[https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects)
+[https://www.zabbix.com/documentation/8.0/en/manual/config/items/preprocessing/javascript/javascript_objects](https://www.zabbix.com/documentation/8.0/en/manual/config/items/preprocessing/javascript/javascript_objects)
 
 Let's create some example scripts so that you get a better understanding of how
 it works.
@@ -501,5 +501,5 @@ and the modern API world — simple, powerful, and entirely scriptable.
 
 ## Useful URLs
 
-* [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/javascript_objects)
-* [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/script](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/script)
+* [https://www.zabbix.com/documentation/8.0/en/manual/config/items/preprocessing/javascript/javascript_objects](https://www.zabbix.com/documentation/8.0/en/manual/config/items/preprocessing/javascript/javascript_objects)
+* [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/script](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/script)

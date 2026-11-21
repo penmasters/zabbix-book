@@ -938,7 +938,7 @@ but can become inefficient in large environments.
   single request to optimise performance. However, this still operates within 
   the synchronous framework, meaning Zabbix will wait for the combined response
   before moving on to the next check.
-  For more details about combined processing, refer to the [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing)
+  For more details about combined processing, refer to the [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/snmp#internal-workings-of-combined-processing)
 
 **Characteristics**:
 
@@ -1325,7 +1325,7 @@ go.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/snmp](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/snmp)
 - [https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol](https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol)
 - [https://datatracker.ietf.org/doc/html/rfc3410](https://datatracker.ietf.org/doc/html/rfc3410)
 - [https://blog.zabbix.com/zabbix-snmp-what-you-need-to-know-and-how-to-configure-it/10345/](https://blog.zabbix.com/zabbix-snmp-what-you-need-to-know-and-how-to-configure-it/10345/)

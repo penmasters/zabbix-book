@@ -546,5 +546,5 @@ concrete, measurable KPIs.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/calculated](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/calculated)
-- [https://www.zabbix.com/documentation/current/en/manual/config/triggers/expression/aggregate](https://www.zabbix.com/documentation/current/en/manual/config/triggers/expression/aggregate)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/calculated](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/calculated)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/triggers/expression/aggregate](https://www.zabbix.com/documentation/8.0/en/manual/config/triggers/expression/aggregate)

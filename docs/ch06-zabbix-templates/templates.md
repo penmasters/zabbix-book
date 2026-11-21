@@ -972,10 +972,10 @@ monitoring across diverse infrastructures.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/templates](https://www.zabbix.com/documentation/current/en/manual/config/templates)
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/mapping](https://www.zabbix.com/documentation/current/en/manual/config/items/mapping)
-- [https://www.zabbix.com/documentation/current/en/manual/config/templates/template](https://www.zabbix.com/documentation/current/en/manual/config/templates/template)
-- [https://www.zabbix.com/documentation/current/en/manual/xml_export_import](https://www.zabbix.com/documentation/current/en/manual/xml_export_import)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/templates](https://www.zabbix.com/documentation/8.0/en/manual/config/templates)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/mapping](https://www.zabbix.com/documentation/8.0/en/manual/config/items/mapping)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/templates/template](https://www.zabbix.com/documentation/8.0/en/manual/config/templates/template)
+- [https://www.zabbix.com/documentation/8.0/en/manual/xml_export_import](https://www.zabbix.com/documentation/8.0/en/manual/xml_export_import)
 - [https://git.zabbix.com/repos?visibility=public](https://git.zabbix.com/repos?visibility=public)
 - [https://jsonpathfinder.com/](https://jsonpathfinder.com/)
 - [https://www.yamllint.com/](https://www.yamllint.com/)

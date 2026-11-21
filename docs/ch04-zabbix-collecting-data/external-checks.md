@@ -211,4 +211,4 @@ simple, fast, and reliable.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/external](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/external)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/external](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/external)

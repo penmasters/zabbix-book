@@ -265,4 +265,4 @@ advantages and disadvantages, and both can be used in different scenarios.
 ## Useful URLs
 
 - [https://blog.zabbix.com/zabbix-agent-active-vs-passive/](https://blog.zabbix.com/zabbix-agent-active-vs-passive/)
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/items/activepassive](https://www.zabbix.com/documentation/current/en/manual/appendix/items/activepassive)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/items/activepassive](https://www.zabbix.com/documentation/8.0/en/manual/appendix/items/activepassive)

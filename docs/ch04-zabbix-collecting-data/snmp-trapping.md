@@ -327,7 +327,7 @@ script.
 
 Refer to previous topic [SNMP Polling: Deploying Bare Minimum MIB Files](./snmp-polling.md#deploying-bare-minimum-mib-files)
 on how to install MIB files if you want to have human readable trap messages in 
-the log file. 
+the log file.
 This is optional but highly recommended for easier troubleshooting and better 
 visibility of trap contents.
 
@@ -353,7 +353,7 @@ Make sure this port is open on your Zabbix server:
     sudo ufw reload
     ```
 
-This allows incoming traps from SNMP-enabled devices to be received by the 
+This allows incoming traps from SNMP-enabled devices to be received by the
 *snmptrapd* daemon.
 
 ---
@@ -361,11 +361,11 @@ This allows incoming traps from SNMP-enabled devices to be received by the
 ### Setting up SNMP traps with zabbix_trap_receiver.pl
 
 Next, we need to set up the trap receiver script that will process incoming traps
-and write them to a log file that Zabbix can read. This script is provided by 
+and write them to a log file that Zabbix can read. This script is provided by
 the Zabbix team and is commonly used to integrate SNMP traps with Zabbix.
 
-???+ tip 
-    Alternatively, you can use a custom script or SNMPTT (SNMP Trap Translator) if 
+???+ tip
+    Alternatively, you can use a custom script or SNMPTT (SNMP Trap Translator) if
     you prefer. We will give an example of creating a bash script later on, but
     for now let's use the official Zabbix Perl script.
 
@@ -433,7 +433,7 @@ exist and have the appropriate permissions.
 
 #### Configure snmptrapd
 
-So now that we have the trap receiver script installed and configured, we need to tell 
+So now that we have the trap receiver script installed and configured, we need to tell
 *snmptrapd* to use it to process incoming traps. This is done by editing the
 `/etc/snmp/snmptrapd.conf` file and adding the appropriate configuration to execute
 the script for each incoming trap.
@@ -554,7 +554,7 @@ Restart the Zabbix server to apply changes:
 #### SELinux
 
 If SELinux is enabled on your system, you may need to create a custom policy to
-allow the Zabbix Server to read the trap log file. 
+allow the Zabbix Server to read the trap log file.
 You can create a policy module using the `audit2allow` tool based on the denied
 actions logged in the audit logs.
 
@@ -608,9 +608,9 @@ This service will now listen on UDP 162 and feed incoming traps to Zabbix.
 
 Zabbix writes all traps into a temporary log file.
 To prevent this file from growing indefinitely, you can configure log rotation
-using *logrotate*. The *logrotate* utility will automatically rotate, compress, 
+using *logrotate*. The *logrotate* utility will automatically rotate, compress,
 and manage old logfiles and is installed by default on most Linux distributions.
-If not, you can install it using your package manager, but we will assume it's 
+If not, you can install it using your package manager, but we will assume it's
 already installed.
 
 !!! info "Configure log rotation for trap log"
@@ -641,8 +641,8 @@ already installed.
 
 - This configuration rotates the trap log `weekly` or when it exceeds
   `size 10M` except `notifempty` and it will not fail on `missingok`.
-- Old logs are `compress`ed and stored in the same `olddir`ectory with a
-  `dateext`ension in `dateformat -%Y%m%d`.
+- Old logs are `compressed` and stored in the same `olddir` directory with a
+  `dateext` extension in `dateformat -%Y%m%d`.
 - It keeps up to `rotate 10` rotated logs and deletes logs older than
   `maxage 365` days.
 
@@ -720,15 +720,16 @@ cannot send one.
     ```
 
 The most important part is having the keyword "ZBXTRAP" (all caps) followed by the
-IP address. The IP must belong to an **existing SNMP interface** behind 
+IP address. The IP must belong to an **existing SNMP interface** behind
 Zabbix proxy/server.
 
 ---
 
 ### Validate if proxy/server runs a correct mapping
 
-If the host is not yet configured in the frontend, that is a perfect opportunity to validate
-if the Zabbix proxy/server service has recognised the mapping with a `zabbix_traps.log` file.
+If the host is not yet configured in the frontend, that is a perfect opportunity
+to validate if the Zabbix proxy/server service has recognised the mapping with a
+`zabbix_traps.log` file.
 
 Every time a trap message is received for an unknown host in Zabbix it will
 print a line about "unmatched trap received from" in the log file.
@@ -739,7 +740,7 @@ print a line about "unmatched trap received from" in the log file.
     sudo snmptrap -v 1 -c public 127.0.0.1 '.1.3.6.1.6.3.1.1.5.4' '0.0.0.0' 6 33 '55' .1.3.6.1.6.3.1.1.5.4 s "eth0"
     ```
 
-Immediately after sending the trap, check the Zabbix proxy/server log for any 
+Immediately after sending the trap, check the Zabbix proxy/server log for any
 unmatched trap messages:
 
 !!! example "Check for unmatched trap messages in Zabbix logs"
@@ -833,8 +834,8 @@ This is only applicable to SNMPv2 traps. This will not work with SNMPv3 traps.
 ## Trap mapping and preprocessing
 
 With SNMP traps now configured and the trap receiver operational, the next step
-is to create a host in the Zabbix frontend so that we can link incoming traps to a
-specific monitored device.
+is to create a host in the Zabbix frontend so that we can link incoming traps to
+a specific monitored device.
 
 In the Zabbix web interface, navigate to:
 `Data collection` | `Hosts`, and click **Create host**.
@@ -847,8 +848,9 @@ In the Zabbix web interface, navigate to:
 
 _4.37 SNMP trap host configuration_
 
-In Zabbix, the macro `{$SNMP_COMMUNITY}` is often defined globally under `Administration` | `Macros`. This *global* macro provides a default SNMP community string used by all
-hosts that rely on SNMP for polling or trap-based communication.
+In Zabbix, the macro `{$SNMP_COMMUNITY}` is often defined globally under `Administration`
+| `Macros`. This *global* macro provides a default SNMP community string used by
+all hosts that rely on SNMP for polling or trap-based communication.
 
 However, a better approach, especially in larger or more secure environments is
 to define a unique SNMP community per device and override the global macro at
@@ -1143,7 +1145,7 @@ moment they happen, not minutes later.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmptrap](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmptrap)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/snmptrap](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/snmptrap)
 - [https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/misc/snmptrap](https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/misc/snmptrap)
 - [https://www.net-snmp.org/](https://www.net-snmp.org/)
 - [https://datatracker.ietf.org/doc/html/rfc3416](https://datatracker.ietf.org/doc/html/rfc3416)

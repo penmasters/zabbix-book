@@ -169,8 +169,8 @@ to see if it works.
 ### Testing the frontend script
 
 In Zabbix go to the menu `Monitoring` | `Hosts` and click on the host `Zabbix server`
-and from the `scripts` menu select `Maintenance` and click on the submenu
-`Create maintenance no data collection`. You should see a popup asking you how 
+and from the `scripts` menu select `Maintenance` and click on the sub-menu
+`Create maintenance no data collection`. You should see a popup asking you how
 many minutes you would like to place the host in maintenance.
 
 ![Monitoring host](ch09.7-host-testing-script.png){ align=center }
@@ -251,7 +251,7 @@ your Zabbix setup.
 ## Useful URLs
 
 - [https://blog.zabbix.com/setting-up-manual-ticket-creation-using-zabbix-frontend-scripts/15550/](https://blog.zabbix.com/setting-up-manual-ticket-creation-using-zabbix-frontend-scripts/15550/)
-- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/administration/scripts](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/administration/scripts)
+- [https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/administration/scripts](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/administration/scripts)
 - [https://github.com/Trikke76/Zabbix/tree/master/maintenance](https://github.com/Trikke76/Zabbix/tree/master/maintenance)
 
 

@@ -423,5 +423,5 @@ of access control in Zabbix 8.0. They define *what* each user can see and config
 
 ## Useful URLs
 
-- <https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/usergroup>
-- <https://www.zabbix.com/documentation/current/en/manual/config/users_and_usergroups/permissions>
+- <https://www.zabbix.com/documentation/8.0/en/manual/config/users_and_usergroups/usergroup>
+- <https://www.zabbix.com/documentation/8.0/en/manual/config/users_and_usergroups/permissions>

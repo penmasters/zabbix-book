@@ -321,6 +321,6 @@ As with any integration, the permissions deserve our attention. Start with read-
 
 ## Useful URLs
 
-- [Zabbix MCP server documentation](https://www.zabbix.com/documentation/current/en/manual/concepts/mcp_server)
-- [Zabbix MCP server configuration parameters](https://www.zabbix.com/documentation/current/en/manual/concepts/mcp_server/mcp_server_params)
-- [Zabbix MCP tools and resources](https://www.zabbix.com/documentation/current/en/manual/concepts/mcp_server/tools)
+- [Zabbix MCP server documentation](https://www.zabbix.com/documentation/8.0/en/manual/concepts/mcp_server)
+- [Zabbix MCP server configuration parameters](https://www.zabbix.com/documentation/8.0/en/manual/concepts/mcp_server/mcp_server_params)
+- [Zabbix MCP tools and resources](https://www.zabbix.com/documentation/8.0/en/manual/concepts/mcp_server/tools)

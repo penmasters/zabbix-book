@@ -245,4 +245,4 @@ frontend usability with robust protective measures.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/http)
+- [https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/users/authentication/http](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/users/authentication/http)
