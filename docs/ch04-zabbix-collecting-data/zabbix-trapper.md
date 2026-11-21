@@ -408,5 +408,5 @@ you should definitely try it out.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/trapper](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/trapper)
-- [https://www.zabbix.com/documentation/current/en/manpages/zabbix_sender](https://www.zabbix.com/documentation/current/en/manpages/zabbix_sender)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/trapper](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/trapper)
+- [https://www.zabbix.com/documentation/8.0/en/manpages/zabbix_sender](https://www.zabbix.com/documentation/8.0/en/manpages/zabbix_sender)

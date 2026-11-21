@@ -361,6 +361,6 @@ Let's proceed to the next chapter to set up the Zabbix frontend.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual](https://www.zabbix.com/documentation/current/en/manual)
-- [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements)
-- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)
+- [https://www.zabbix.com/documentation/8.0/en/manual](https://www.zabbix.com/documentation/8.0/en/manual)
+- [https://www.zabbix.com/documentation/8.0/en/manual/installation/requirements](https://www.zabbix.com/documentation/8.0/en/manual/installation/requirements)
+- [https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages)

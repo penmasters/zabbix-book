@@ -316,10 +316,6 @@ will enable SSL and HTTP2.
            return         301 https://$host$request_uri;
     }
     ```
-    Ubuntu
-    ```
-    ToDo
-    ```
 
 #### Restart all services and allow HTTPS traffic
 

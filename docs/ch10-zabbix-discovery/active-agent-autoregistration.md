@@ -288,4 +288,4 @@ monitored immediately, consistently, securely, and with minimal administrative l
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/discovery/auto_registration](https://www.zabbix.com/documentation/current/en/manual/discovery/auto_registration)
+- [https://www.zabbix.com/documentation/8.0/en/manual/discovery/auto_registration](https://www.zabbix.com/documentation/8.0/en/manual/discovery/auto_registration)

@@ -1157,9 +1157,9 @@ A few principles to keep in mind as you build your action configuration:
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/action](https://www.zabbix.com/documentation/current/en/manual/config/notifications/action)
-- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/action/escalations](https://www.zabbix.com/documentation/current/en/manual/config/notifications/action/escalations)
-- [https://www.zabbix.com/documentation/current/en/manual/maintenance](https://www.zabbix.com/documentation/current/en/manual/maintenance)
-- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/alerts/scripts](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/alerts/scripts)
-- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/action/update_operations](https://www.zabbix.com/documentation/current/en/manual/config/notifications/action/update_operations)
-- [https://www.zabbix.com/documentation/current/en/manual/it_services](https://www.zabbix.com/documentation/current/en/manual/it_services)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/action](https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/action)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/action/escalations](https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/action/escalations)
+- [https://www.zabbix.com/documentation/8.0/en/manual/maintenance](https://www.zabbix.com/documentation/8.0/en/manual/maintenance)
+- [https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/alerts/scripts](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/alerts/scripts)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/action/update_operations](https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/action/update_operations)
+- [https://www.zabbix.com/documentation/8.0/en/manual/it_services](https://www.zabbix.com/documentation/8.0/en/manual/it_services)

@@ -795,8 +795,8 @@ scalable environment:
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/browser](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/browser)
-- [https://www.zabbix.com/documentation/current/en/manual/guides/monitor_browser](https://www.zabbix.com/documentation/current/en/manual/guides/monitor_browser)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/browser](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/browser)
+- [https://www.zabbix.com/documentation/8.0/en/manual/guides/monitor_browser](https://www.zabbix.com/documentation/8.0/en/manual/guides/monitor_browser)
 - [https://blog.zabbix.com/monitoring-website-changes-with-zabbix-browser-item/31684/](https://blog.zabbix.com/monitoring-website-changes-with-zabbix-browser-item/31684/)
 - [https://blog.zabbix.com/an-introduction-to-browser-monitoring/29245/](https://blog.zabbix.com/an-introduction-to-browser-monitoring/29245/)
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/browser_item_javascript_objects](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing/javascript/browser_item_javascript_objects)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/preprocessing/javascript/browser_item_javascript_objects](https://www.zabbix.com/documentation/8.0/en/manual/config/items/preprocessing/javascript/browser_item_javascript_objects)

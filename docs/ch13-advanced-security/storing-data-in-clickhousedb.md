@@ -73,9 +73,9 @@ With that distinction in mind, let's set up the backend.
 
 The examples in this chapter were tested using:
 
-* Rocky Linux 9 and openSUSE Leap 16.0
-* ClickHouse 26.6.1.1193
-* Zabbix 8
+- Rocky Linux 9 and openSUSE Leap 16.0
+- ClickHouse 26.8.17.4
+- Zabbix 8
 
 but should work with any recent Red Hat-based or SUSE-based distribution.
 
@@ -104,10 +104,10 @@ Begin by installing the official ClickHouse repository and packages.
 Before starting ClickHouse, we need to tune the system for optimal performance.
 
 1. **Hugepages**
-   
+
 ClickHouse does not use hugepages and requires them to be disabled.
-On SUSE, transparent hugepages are enabled by default. 
-   
+On SUSE, transparent hugepages are enabled by default.
+
 You can check the current status with:
 
 !!! info ""
@@ -135,8 +135,8 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
     To configure Transparent Huge Pages (THP) in `madvise` mode, the kernel boot
     parameters must be updated. The procedure differs depending on your Linux distribution.
     **Red Hat Enterprise Linux / Rocky Linux 9**
-    On Red Hat-based systems, use `grubby` to update the kernel parameters. This is the
-    recommended approach for systems using Boot Loader Specification (BLS).
+    On Red Hat-based systems, use `grubby` to update the kernel parameters. This
+    is the recommended approach for systems using Boot Loader Specification (BLS).
 
     ```bash
     sudo grubby --update-kernel=ALL --args="transparent_hugepage=madvise"
@@ -144,8 +144,8 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
 
     **Ubuntu**
 
-    On Ubuntu, edit `/etc/default/grub` and add `transparent_hugepage=madvise` to the
-    existing `GRUB_CMDLINE_LINUX_DEFAULT` parameter.
+    On Ubuntu, edit `/etc/default/grub` and add `transparent_hugepage=madvise`
+    to the existing `GRUB_CMDLINE_LINUX_DEFAULT` parameter.
 
     For example:
 
@@ -190,7 +190,7 @@ parameter at the end of the `GRUB_CMDLINE_LINUX` variable:
     The output should contain `transparent_hugepage=madvise`.
 
 2. **Delay accounting**
-   
+
 ClickHouse requires kernel delay accounting to be enabled. You can check the
 current status with:
 
@@ -228,7 +228,7 @@ This applies all the changes at once:
 ClickHouse is a multi-threaded application and requires a sufficient number
 of threads to be available. On SUSE, the default max. number of threads is 15574
 however, ClickHouse requires at least 30000.
-To ensure that the ClickHouse-server service has enough threads, create a 
+To ensure that the ClickHouse-server service has enough threads, create a
 new systemd override file:
 
 !!! info ""
@@ -265,7 +265,7 @@ Enable the ClickHouse service so it starts automatically at boot.
     systemctl enable /lib/systemd/system/clickhouse-server.service
     ```
 
-    This will probably be fixed in a future SUSE release as, from systemd 260,
+    This will probably be fixed in a future SUSE release as, from system
     SysV init compatibility will also be removed from systemd itself, but for
     now SUSE ships systemd 257.
 
@@ -487,10 +487,10 @@ from monthly partitions instead:
 
 Monthly partitions typically strike the best balance between:
 
-* partition count
-* merge efficiency
-* retention management
-* query performance
+- partition count
+- merge efficiency
+- retention management
+- query performance
 
 For most production deployments, monthly partitions combined with an appropriate
 TTL are recommended.
@@ -523,7 +523,7 @@ Create the Zabbix server configuration file:
     HistoryProvider=clickhouse;value_types="uint,dbl,str,log,text,json",url=http://127.0.0.1:8123,db=zabbix,username=zabbix,password="zabbix"
     ```
 
-    When using ClickHouse 26.6 or another version newer than officially supported,
+    When using ClickHouse 26.10 or another version newer than officially supported,
     also set:
 
     ```ini
@@ -589,7 +589,7 @@ A successful connection produces output similar to:
 
     ```bash
     retrieving history provider "clickhouse" information
-    history provider "clickhouse" version "26.6.1.1193"
+    history provider "clickhouse" version "26.8.17.4"
     ```
 
 At this point, newly collected history values are being written directly
@@ -786,4 +786,4 @@ over a hostname, this avoids potential DNS or hostname resolution issues.
 
 - [https://clickhouse.com/docs/faq/operations/delete-old-data](https://clickhouse.com/docs/faq/operations/delete-old-data)
 - [https://clickhouse.com/docs/](https://clickhouse.com/docs/)
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE](https://www.zabbix.com/documentation/current/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE](https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/clickhouse_setup?hl=ClickHouse%2Cclickhouse%2CCLICKHOUSE)

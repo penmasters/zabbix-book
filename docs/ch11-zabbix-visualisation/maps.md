@@ -207,7 +207,7 @@ canvas and backgrounds scale in a predictable way.
 
 ## Useful URLs
 
-* <https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/monitoring/maps>
-* <https://www.zabbix.com/documentation/current/en/manual/config/visualization/maps/map>
-* <https://www.zabbix.com/documentation/current/en/manual/config/visualization/maps/links>
-* <https://www.zabbix.com/documentation/current/en/manual/api/changes>
+* <https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/monitoring/maps>
+* <https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/maps/map>
+* <https://www.zabbix.com/documentation/8.0/en/manual/config/visualization/maps/links>
+* <https://www.zabbix.com/documentation/8.0/en/manual/api/changes>

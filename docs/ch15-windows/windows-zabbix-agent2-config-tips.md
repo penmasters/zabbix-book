@@ -335,7 +335,7 @@ Command Prompt:
 !!! info ""
 
     ```shell
-    msiexec.exe /i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent
+    msiexec.exe /i "C:\temp\zabbix_agent2-8.0.0-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent
     ```
 
 PowerShell:
@@ -343,7 +343,7 @@ PowerShell:
 !!! info ""
 
     ```PowerShell
-    Start-Process msiexec.exe -ArgumentList '/i "C:\temp\zabbix_agent2-7.0.30-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent' -Wait
+    Start-Process msiexec.exe -ArgumentList '/i "C:\temp\zabbix_agent2-8.0.0-windows-amd64-openssl.msi" HOSTNAME="someendpoint.domain.com" SERVER="zabbixnode1ipaddress,zabbixnode2ipaddress" SERVERACTIVE="zabbixnode1ipaddress;zabbixnode2ipaddress" /qn /silent' -Wait
     ```
 
 ### Example Upgrade Command
@@ -356,7 +356,7 @@ Command Prompt:
 !!! info ""
 
     ```shell
-    msiexec.exe /i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent
+    msiexec.exe /i "zabbix_agent2-8.0.0-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent
     ```
 
 PowerShell:
@@ -364,7 +364,7 @@ PowerShell:
 !!! info ""
 
     ```PowerShell
-    Start-Process msiexec.exe -ArgumentList '/i "zabbix_agent2-7.0.31-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent' -Wait
+    Start-Process msiexec.exe -ArgumentList '/i "zabbix_agent2-8.0.0-windows-amd64-openssl.msi" NONMSICONFNAME="C:\Program Files\Zabbix Agent 2\zabbix_agent2.conf" /qn /silent' -Wait
     ```
 
 ### Order of the MSI and Script Installation
@@ -614,8 +614,8 @@ package. The recommendations below are covered in the order listed.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi)
-- [https://www.zabbix.com/documentation/7.0/en/manual/appendix/config/zabbix_agent2_win](https://www.zabbix.com/documentation/7.0/en/manual/appendix/config/zabbix_agent2_win)
-- [https://www.zabbix.com/documentation/7.0/en/manual/discovery/auto_registration](https://www.zabbix.com/documentation/7.0/en/manual/discovery/auto_registration)
+- [https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages/win_msi](https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages/win_msi)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/config/zabbix_agent2_win](https://www.zabbix.com/documentation/8.0/en/manual/appendix/config/zabbix_agent2_win)
+- [https://www.zabbix.com/documentation/8.0/en/manual/discovery/auto_registration](https://www.zabbix.com/documentation/8.0/en/manual/discovery/auto_registration)
 - [https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec)
 - [https://github.com/zabbix/zabbix/blob/master/src/go/conf/zabbix_agent2.win.conf](https://github.com/zabbix/zabbix/blob/master/src/go/conf/zabbix_agent2.win.conf)

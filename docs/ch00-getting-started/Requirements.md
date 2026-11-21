@@ -15,7 +15,7 @@ setup and the software stack you select.
 Before purchasing hardware or installing a database version, it's essential to
 consult the Zabbix documentation for the most up-to-date requirements for the
 version you plan to install.
-You can find the latest requirements [https://www.zabbix.com/documentation/current/en/manual/installation/requirements](https://www.zabbix.com/documentation/current/en/manual/installation/requirements).
+You can find the latest requirements [https://www.zabbix.com/documentation/8.0/en/manual/installation/requirements](https://www.zabbix.com/documentation/8.0/en/manual/installation/requirements).
 Make sure to select the correct Zabbix version from the list.
 
 For smaller or test setups, Zabbix can comfortably run on a system with 2 CPUs

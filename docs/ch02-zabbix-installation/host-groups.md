@@ -151,4 +151,4 @@ to your organisation's structure and workflows.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/hosts/host_groups](https://www.zabbix.com/documentation/current/en/manual/config/hosts/host_groups)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/hosts/host_groups](https://www.zabbix.com/documentation/8.0/en/manual/config/hosts/host_groups)

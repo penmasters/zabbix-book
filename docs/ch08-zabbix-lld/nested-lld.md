@@ -270,5 +270,5 @@ clusters → nodes → services, etc.).
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/discovery_prototypes](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/discovery_prototypes)
-- [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/discovery_prototypes#nested-lld-rules-on-discovered-hosts](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/discovery_prototypes#nested-lld-rules-on-discovered-hosts)
+- [https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery/discovery_prototypes](https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery/discovery_prototypes)
+- [https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery/discovery_prototypes#nested-lld-rules-on-discovered-hosts](https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery/discovery_prototypes#nested-lld-rules-on-discovered-hosts)

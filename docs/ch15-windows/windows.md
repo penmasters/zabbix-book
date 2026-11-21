@@ -408,8 +408,8 @@ likely to hit them:
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages/win_msi)
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/zabbix_agent/win_keys](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/zabbix_agent/win_keys)
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/perfcounters](https://www.zabbix.com/documentation/current/en/manual/config/items/perfcounters)
-- [https://www.zabbix.com/documentation/current/en/manual/guides/monitor_windows_eventlog](https://www.zabbix.com/documentation/current/en/manual/guides/monitor_windows_eventlog)
+- [https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages/win_msi](https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages/win_msi)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/zabbix_agent/win_keys](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/zabbix_agent/win_keys)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/perfcounters](https://www.zabbix.com/documentation/8.0/en/manual/config/items/perfcounters)
+- [https://www.zabbix.com/documentation/8.0/en/manual/guides/monitor_windows_eventlog](https://www.zabbix.com/documentation/8.0/en/manual/guides/monitor_windows_eventlog)
 

@@ -435,4 +435,4 @@ process of setting up the Zabbix server, database, and frontend.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/current/en/manual/installation/install_from_packages)
+- [https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages](https://www.zabbix.com/documentation/8.0/en/manual/installation/install_from_packages)

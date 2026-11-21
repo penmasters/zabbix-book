@@ -247,7 +247,7 @@ SELinux label `zabbix_var_lib_t`, then you will need to correct this:
 ???+ tip
 
     A list of all configuration options can be found in the Zabbix documentation.
-    [https://www.zabbix.com/documentation/current/en/manual/appendix/config/zabbix_proxy](https://www.zabbix.com/documentation/current/en/manual/appendix/config/zabbix_proxy)
+    [https://www.zabbix.com/documentation/8.0/en/manual/appendix/config/zabbix_proxy](https://www.zabbix.com/documentation/8.0/en/manual/appendix/config/zabbix_proxy)
 
 A notable configuration parameter that was added in `7.0` is `ProxyBufferMode` which
 determines how collected monitoring data is stored by the proxy before it is forwarded to
@@ -426,5 +426,5 @@ to future monitoring challenges.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy](https://www.zabbix.com/documentation/current/en/manpages/zabbix_proxy)
+- [https://www.zabbix.com/documentation/8.0/en/manpages/zabbix_proxy](https://www.zabbix.com/documentation/8.0/en/manpages/zabbix_proxy)
 

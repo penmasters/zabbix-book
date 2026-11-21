@@ -289,5 +289,5 @@ in any regular way?
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/dependent_items](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/dependent_items)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/dependent_items](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/dependent_items)
 - [https://github.com/b1nary1/zabbix/tree/main/log_discovery](https://github.com/b1nary1/zabbix/tree/main/log_discovery)

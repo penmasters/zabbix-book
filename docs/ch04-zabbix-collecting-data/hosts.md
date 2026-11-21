@@ -129,4 +129,4 @@ in the next section to create our first items.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/hosts/host](https://www.zabbix.com/documentation/current/en/manual/config/hosts/host)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/hosts/host](https://www.zabbix.com/documentation/8.0/en/manual/config/hosts/host)

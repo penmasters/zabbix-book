@@ -442,5 +442,5 @@ we've learned how to set it up and ensure it is properly configured so that the 
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/concepts/web_service](https://www.zabbix.com/documentation/current/en/manual/concepts/web_service)
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service](https://www.zabbix.com/documentation/current/en/manual/appendix/install/web_service)
+- [https://www.zabbix.com/documentation/8.0/en/manual/concepts/web_service](https://www.zabbix.com/documentation/8.0/en/manual/concepts/web_service)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/web_service](https://www.zabbix.com/documentation/8.0/en/manual/appendix/install/web_service)

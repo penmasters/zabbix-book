@@ -830,5 +830,5 @@ them. The Zabbix documentation also includes more details, as well as various ex
 
 ## Useful URLs
 
-  * [https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing](https://www.zabbix.com/documentation/current/en/manual/config/items/preprocessing)
+  * [https://www.zabbix.com/documentation/8.0/en/manual/config/items/preprocessing](https://www.zabbix.com/documentation/8.0/en/manual/config/items/preprocessing)
   

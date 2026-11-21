@@ -249,5 +249,5 @@ output, and then use it just like any other metric you have collected.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/ssh_checks](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/ssh_checks)
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/telnet_checks](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/telnet_checks)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/ssh_checks](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/ssh_checks)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/telnet_checks](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/telnet_checks)

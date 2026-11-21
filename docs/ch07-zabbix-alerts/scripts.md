@@ -573,7 +573,7 @@ for any custom script integration.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/config/notifications/media/script](https://www.zabbix.com/documentation/current/en/manual/config/notifications/media/script)
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location](https://www.zabbix.com/documentation/current/en/manual/appendix/macros/supported_by_location)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/media/script](https://www.zabbix.com/documentation/8.0/en/manual/config/notifications/media/script)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/macros/supported_by_location](https://www.zabbix.com/documentation/8.0/en/manual/appendix/macros/supported_by_location)
 - [https://www.gnu.org/software/bash/manual/bash.html](https://www.gnu.org/software/bash/manual/bash.html)
 - [https://linux.die.net/man/8/logrotate](https://linux.die.net/man/8/logrotate)

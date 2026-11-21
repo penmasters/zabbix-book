@@ -498,7 +498,7 @@ The expected tables are:
 | `otel_metrics_exponential_histogram` | Exponential histogram metrics |
 
 The initialisation scripts are also available in the official
-[https://github.com/zabbix/zabbix/tree/master/database/clickhous](https://github.com/zabbix/zabbix/tree/master/database/clickhouse).
+[https://github.com/zabbix/zabbix/tree/master/database/clickhouse](https://github.com/zabbix/zabbix/tree/master/database/clickhouse).
 
 !!! note "Telemetry retention"
 
@@ -558,7 +558,7 @@ configure TLS for production.
 Open `APM` | `Traces`, select the last 15–30 minutes and filter on
 `ServiceName = checkout`. You should see traces and be able to inspect spans.
 
-If the list is empty, inspect the proxy log, collector enablement, the proxy's
+If the list is empty, inspect the proxy log, collector enable, the proxy's
 `TelemetryProvider`, the frontend data source, ClickHouse tables, and network
 connectivity. Also check that your generator is actually sending OTLP/gRPC.
 

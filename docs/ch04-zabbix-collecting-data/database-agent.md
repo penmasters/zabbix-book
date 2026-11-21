@@ -284,7 +284,7 @@ processed using preprocessing steps to extract the desired values.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/appendix/plugins/agent2/database](https://www.zabbix.com/documentation/current/en/manual/appendix/plugins/agent2/database)
+- [https://www.zabbix.com/documentation/8.0/en/manual/appendix/plugins/agent2/database](https://www.zabbix.com/documentation/8.0/en/manual/appendix/plugins/agent2/database)
 - [https://blog.zabbix.com/database-monitoring-using-zabbix-agent-2-part-1-sql/30381/](https://blog.zabbix.com/database-monitoring-using-zabbix-agent-2-part-1-sql/30381/)
 - [https://www.zabbix.com/integrations/mysql#mysql_agent2](https://www.zabbix.com/integrations/mysql#mysql_agent2)
 - [https://www.zabbix.com/integrations/mssql](https://www.zabbix.com/integrations/mssql)

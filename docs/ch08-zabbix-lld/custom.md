@@ -456,5 +456,5 @@ goal.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery](https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery)
+- [https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery](https://www.zabbix.com/documentation/8.0/en/manual/discovery/low_level_discovery)
 

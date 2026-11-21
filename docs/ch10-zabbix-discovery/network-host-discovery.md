@@ -197,4 +197,4 @@ and other appliances where installing a Zabbix agent is either impossible or not
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/discovery/network_discovery](https://www.zabbix.com/documentation/current/en/manual/discovery/network_discovery)
+- [https://www.zabbix.com/documentation/8.0/en/manual/discovery/network_discovery](https://www.zabbix.com/documentation/8.0/en/manual/discovery/network_discovery)

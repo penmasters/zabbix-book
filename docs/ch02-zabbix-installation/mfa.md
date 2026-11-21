@@ -369,7 +369,7 @@ Zabbix environment and fortifying your monitoring infrastructure.n
 
 ## Useful URLs
 
-[https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/mfa](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/users/authentication/mfa)
+[https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/users/authentication/mfa](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/users/authentication/mfa)
 [https://duo.com/docs/sso-zabbix](https://duo.com/docs/sso-zabbix)
 
 

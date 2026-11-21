@@ -290,6 +290,6 @@ network somehow.
 
 ## Useful URLs
 
-- [https://www.zabbix.com/documentation/current/en/manual/quickstart/host](https://www.zabbix.com/documentation/current/en/manual/quickstart/host)
-- [https://www.zabbix.com/documentation/current/en/manual/config/hosts/host](https://www.zabbix.com/documentation/current/en/manual/config/hosts/host)
-- [https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/monitoring/hosts](https://www.zabbix.com/documentation/current/en/manual/web_interface/frontend_sections/monitoring/hosts)
+- [https://www.zabbix.com/documentation/8.0/en/manual/quickstart/host](https://www.zabbix.com/documentation/8.0/en/manual/quickstart/host)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/hosts/host](https://www.zabbix.com/documentation/8.0/en/manual/config/hosts/host)
+- [https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/monitoring/hosts](https://www.zabbix.com/documentation/8.0/en/manual/web_interface/frontend_sections/monitoring/hosts)

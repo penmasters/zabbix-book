@@ -700,5 +700,5 @@ overloading your monitoring system or your Java applications.
 
 - [https://www.youtube.com/watch?v=aKGYa6Y9r60&t=87s](https://www.youtube.com/watch?v=aKGYa6Y9r60&t=87s)
 - [https://docs.oracle.com/javase/1.5.0/docs/guide/management/agent.html](https://docs.oracle.com/javase/1.5.0/docs/guide/management/agent.html)
-- [https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/jmx_monitoring](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/jmx_monitoring)
+- [https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/jmx_monitoring](https://www.zabbix.com/documentation/8.0/en/manual/config/items/itemtypes/jmx_monitoring)
 - [https://jolokia.org/](https://jolokia.org/)
