@@ -173,25 +173,6 @@ creating new partitions later for us.
   to create.
 
 Now, create these `ALTER TABLE` commands with the partitions for all history tables.
-For Zabbix 8.0 and later, this includes `history_json`. Zabbix recommends daily
-partitions for this table because large JSON values can make it grow quickly and
-can keep the housekeeper busy for an extended period. For example, use the same
-daily layout as for the other history tables:
-
-!!! info "Prepare JSON history partitioning (Zabbix 8.0 and later)"
-
-    ```sql
-    ALTER TABLE history_json PARTITION BY RANGE (clock)
-    (
-        PARTITION p2025_04_10 VALUES LESS THAN
-            (UNIX_TIMESTAMP("2025-04-11 00:00:00")) ENGINE = InnoDB,
-        PARTITION p2025_04_11 VALUES LESS THAN
-            (UNIX_TIMESTAMP("2025-04-12 00:00:00")) ENGINE = InnoDB
-    );
-    ```
-
-Skip `history_json` when partitioning Zabbix 7.4 or older because the table does
-not exist in those versions.
 
 We then do the same for the trends tables:
 
