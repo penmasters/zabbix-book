@@ -103,6 +103,7 @@ the following tables:
 | history_text | Stores text values up to 64kB                                                       |           |
 | history_log  | Stores text values up to 64kB with additional log-related properties like timestamp |           |
 | history_bin  | Stores binary image data                                                            |           |
+| history_json | Stores JSON values up to 128MiB (Zabbix 8.0 and later)                              |           |
 | trends       | Stores the min/avg/max/count trends of numeric floating-point data                  |           |
 | trends_uint  | Stores the min/avg/max/count trends of numeric unsigned data                        |           |
 
@@ -172,6 +173,26 @@ creating new partitions later for us.
   to create.
 
 Now, create these `ALTER TABLE` commands with the partitions for all history tables.
+For Zabbix 8.0 and later, this includes `history_json`. Zabbix recommends daily
+partitions for this table because large JSON values can make it grow quickly and
+can keep the housekeeper busy for an extended period. For example, use the same
+daily layout as for the other history tables:
+
+!!! info "Prepare JSON history partitioning (Zabbix 8.0 and later)"
+
+    ```sql
+    ALTER TABLE history_json PARTITION BY RANGE (clock)
+    (
+        PARTITION p2025_04_10 VALUES LESS THAN
+            (UNIX_TIMESTAMP("2025-04-11 00:00:00")) ENGINE = InnoDB,
+        PARTITION p2025_04_11 VALUES LESS THAN
+            (UNIX_TIMESTAMP("2025-04-12 00:00:00")) ENGINE = InnoDB
+    );
+    ```
+
+Skip `history_json` when partitioning Zabbix 7.4 or older because the table does
+not exist in those versions.
+
 We then do the same for the trends tables:
 
 !!! info "Prepare trends partitioning (assuming today is May 10th 2025)"
@@ -284,6 +305,8 @@ We define that in the following block.
 
                     'history_bin' => { 'period' => 'day', 'keep_history' => '31'},
 
+                    'history_json' => { 'period' => 'day', 'keep_history' => '31'},
+
                     'trends' => { 'period' => 'month', 'keep_history' => '15'},
 
                     'trends_uint' => { 'period' => 'month', 'keep_history' => '15'},
@@ -362,13 +385,24 @@ But do not do this for Zabbix 6.0 and higher though.
         }
     ```
 
-For Zabbix 6.4 and OLDER versions, also make sure to uncomment the following line.
-Do not do this for Zabbix 7.0 and higher though:
+For Zabbix 6.4 and OLDER versions, comment out the following line because the
+`history_bin` table was added in Zabbix 7.0. Keep it enabled for Zabbix 7.0 and
+higher:
 
-!!! info "Uncomment for Zabbix 6.4 and older only"
+!!! info "Comment out for Zabbix 6.4 and older only"
 
     ```perl
     'history_bin' => { 'period' => 'day', 'keep_history' => '60'},
+    ```
+
+For Zabbix 7.4 and OLDER versions, comment out the following line because the
+`history_json` table was added in Zabbix 8.0. Keep it enabled for Zabbix 8.0 and
+higher:
+
+!!! info "Comment out for Zabbix 7.4 and older only"
+
+    ```perl
+    'history_json' => { 'period' => 'day', 'keep_history' => '60'},
     ```
 
 We also need to install some Perl dependencies to make sure we can execute the script.
